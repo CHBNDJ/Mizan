@@ -54,7 +54,7 @@ export default function FeedbackPage() {
   ];
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-50 via-white to-teal-50">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <div className="max-w-3xl mx-auto px-4 py-16">
         {success ? (
           <div className="bg-white rounded-xl shadow-xl p-16 text-center">
