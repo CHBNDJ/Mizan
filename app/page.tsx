@@ -1,103 +1,253 @@
-import Image from "next/image";
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Search, MapPin, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { CustomSelect } from "@/components/ui/CustomSelect";
+import { AvocatCard } from "@/components/cards/AvocatCard";
+import {
+  getTopRatedAvocats,
+  getSpecialites,
+  getWilayas,
+  getStatistiques,
+} from "@/lib/avocatsData";
+import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 
-export default function Home() {
+export default function HomePage() {
+  const router = useRouter();
+
+  const [selectedSpecialites, setSelectedSpecialites] = useState<string[]>([]);
+  const [selectedWilaya, setSelectedWilaya] = useState("");
+
+  const [topAvocats, setTopAvocats] = useState<any[]>([]);
+  const [wilayas, setWilayas] = useState<string[]>([]);
+  const [stats, setStats] = useState<any>({
+    total_avocats: 32,
+    pourcentage_verification: 100,
+  });
+
+  const specialites = getSpecialites();
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [topAvocatsData, wilayasData, statsData] = await Promise.all([
+          getTopRatedAvocats(6),
+          getWilayas(),
+          getStatistiques(),
+        ]);
+
+        setTopAvocats(topAvocatsData);
+        setWilayas(wilayasData);
+        setStats(statsData);
+      } catch (error) {
+        console.error("Erreur chargement données:", error);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  const specialiteOptions = specialites.map((specialite) => ({
+    value: specialite,
+    label: specialite,
+  }));
+
+  const wilayaOptions = wilayas.map((wilaya) => ({
+    value: wilaya,
+    label: wilaya,
+  }));
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const params = new URLSearchParams();
+
+    if (selectedSpecialites.length > 0) {
+      selectedSpecialites.forEach((spec) => {
+        params.append("specialite", spec);
+      });
+    }
+
+    if (selectedWilaya) {
+      params.set("wilaya", selectedWilaya);
+    }
+
+    const queryString = params.toString();
+    const url = queryString ? `/search?${queryString}` : "/search";
+    router.push(url);
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto text-center">
+          <h1 className="text-5xl font-bold text-slate-800 mb-6">
+            Besoin d'un avocat ?
+          </h1>
+          <p className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto">
+            Trouvez votre avocat en Algérie selon votre besoin juridique et
+            votre localisation. Avec Mizan, c'est simple, rapide et sécurisé.
+          </p>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          <div className="bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto">
+            <form onSubmit={handleSearch} className="space-y-6">
+              <div className="flex flex-col lg:flex-row gap-4">
+                <div className="flex-1">
+                  <MultiSelectWithCheckboxes
+                    placeholder="Choisir des spécialités..."
+                    options={specialiteOptions}
+                    value={selectedSpecialites}
+                    onChange={setSelectedSpecialites}
+                    className="h-12"
+                  />
+                </div>
+
+                <div className="lg:w-64">
+                  <CustomSelect
+                    placeholder="Choisir une wilaya"
+                    options={wilayaOptions}
+                    value={selectedWilaya}
+                    onChange={setSelectedWilaya}
+                    className="h-12"
+                  />
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full h-12 px-8 bg-teal-500 hover:bg-teal-500 md:text-lg font-semibold whitespace-nowrap"
+              >
+                <Search className="w-5 h-5 mr-2" />
+                Rechercher des avocats
+              </Button>
+            </form>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      <section className="py-16">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="text-3xl font-bold text-teal-600 mb-2">
+                {stats.total_avocats}
+              </div>
+              <div className="text-slate-600 font-medium">Avocats inscrits</div>
+            </div>
+
+            <div className="text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="text-3xl font-bold text-teal-600 mb-2">
+                {wilayas.length}
+              </div>
+              <div className="text-slate-600 font-medium">
+                Wilayas couvertes
+              </div>
+            </div>
+
+            <div className="text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="text-3xl font-bold text-teal-600 mb-2">
+                {specialites.length}
+              </div>
+              <div className="text-slate-600 font-medium">
+                Spécialités juridiques
+              </div>
+            </div>
+
+            <div className="text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="text-3xl font-bold text-teal-600 mb-2">
+                {stats.pourcentage_verification}%
+              </div>
+              <div className="text-slate-600 font-medium">
+                Taux de vérification
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-800 mb-4">
+              Avocats les mieux notés
+            </h2>
+            <p className="text-lg text-slate-600">
+              Découvrez les avocats recommandés par notre communauté
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {topAvocats.map((avocat) => (
+              <AvocatCard key={avocat.id} avocat={avocat} />
+            ))}
+          </div>
+
+          <div className="text-center">
+            <button
+              className="text-teal-600 cursor-pointer items-center justify-center inline-flex"
+              onClick={() => {
+                router.push("/search");
+              }}
+            >
+              Voir tous les avocats
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-800 mb-4">
+              Rechercher par région
+            </h2>
+            <p className="text-lg text-slate-600">
+              Trouvez des avocats près de chez vous
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {wilayas.map((wilaya) => (
+              <Link
+                key={wilaya}
+                href={`/search?wilaya=${wilaya}`}
+                className="group"
+              >
+                <div className="bg-gradient-to-br bg-teal-500 text-white rounded-xl p-6 text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
+                  <MapPin className="w-8 h-8 mx-auto mb-3 opacity-80" />
+                  <h3 className="font-bold text-lg">{wilaya}</h3>
+                  <p className="text-teal-100 text-sm mt-1">Voir les avocats</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-teal-500">
+        <div className="max-w-4xl mx-auto text-center px-4">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Vous êtes avocat ?
+          </h2>
+          <p className="text-xl text-teal-100 mb-8">
+            Rejoignez notre plateforme et développez votre clientèle
+          </p>
+          <Link href="/auth/lawyer/register">
+            <button
+              className="bg-white text-teal-600 px-8 py-3 rounded-lg font-semibold 
+                   hover:bg-gradient-to-r hover:from-white hover:to-teal-50
+                   hover:shadow-xl hover:scale-105
+                   transition-all duration-500 ease-out
+                   shadow-sm border border-teal-100 cursor-pointer"
+            >
+              S'inscrire sur Mizan
+            </button>
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
