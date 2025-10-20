@@ -14,6 +14,8 @@ import {
 } from "@/lib/avocatsData";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 
+export const dynamic = "force-dynamic";
+
 export default function HomePage() {
   const router = useRouter();
 
