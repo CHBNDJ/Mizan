@@ -308,6 +308,7 @@ export interface ClientConsultation {
 export interface AvocatCardProps {
   avocat: AvocatData;
   searchParams?: any;
+  className?: string;
 }
 
 export interface ConsultationModalProps {

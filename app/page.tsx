@@ -14,7 +14,7 @@ import {
 } from "@/lib/avocatsData";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 export default function HomePage() {
   const router = useRouter();
@@ -229,7 +229,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 bg-teal-500">
+      <section className="py-12 bg-teal-500">
         <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="text-3xl font-bold text-white mb-4">
             Vous êtes avocat ?
@@ -239,7 +239,7 @@ export default function HomePage() {
           </p>
           <Link href="/auth/lawyer/register">
             <button
-              className="bg-white text-teal-600 px-8 py-3 rounded-lg font-semibold 
+              className="bg-white text-teal-600 px-8 py-3 rounded-lg font-semibold
                    hover:bg-gradient-to-r hover:from-white hover:to-teal-50
                    hover:shadow-xl hover:scale-105
                    transition-all duration-500 ease-out
