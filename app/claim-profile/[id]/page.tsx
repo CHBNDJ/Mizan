@@ -145,7 +145,7 @@ export default function ClaimProfilePage({
   }
 
   return (
-    <div className="min-h-screen pt-24 bg-gradient-to-br from-teal-50 via-white to-teal-50">
+    <div className="min-h-screen pt-24 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <div className="max-w-md mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
