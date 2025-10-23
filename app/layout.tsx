@@ -24,6 +24,11 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
+        {/* Google Search Console Verification */}
+        <meta
+          name="google-site-verification"
+          content="W7PDaGtQ4F7JD8rOf8RDI1wmwSrgdMt0ivpebaRSeww"
+        />
         {/* SEO Canonical */}
         <link rel="canonical" href={siteConfig.url} />
 
