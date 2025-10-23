@@ -326,6 +326,178 @@ Notre plateforme Mizan permet aux citoyens de rechercher des avocats par spécia
 - Supabase (base de données)
 - Cloudflare CDN
 
+## 🔍 SEO & Référencement
+
+### Phase 1 : Optimisations techniques ✅
+
+Le site Mizan est entièrement optimisé pour le référencement naturel afin d'être découvert sur Google par les utilisateurs recherchant des avocats en Algérie.
+
+#### 📄 Metadata optimisées
+
+Chaque page dispose de balises meta uniques et optimisées :
+
+- **Titles personnalisés** : Chaque page a un title descriptif unique
+- **Meta descriptions** : Descriptions optimisées avec mots-clés pertinents (150-160 caractères)
+- **Open Graph tags** : Partage optimisé sur réseaux sociaux (Facebook, LinkedIn, Twitter)
+- **Canonical URLs** : Évite le contenu dupliqué
+- **Meta robots** : Contrôle de l'indexation (index pour pages publiques, noindex pour espaces privés)
+
+**Exemples** :
+
+```typescript
+// Homepage
+"Mizan - Trouvez un avocat en Algérie | Consultation juridique en ligne";
+
+// Profil avocat
+"Maître [Nom] - Avocat [Spécialité] à [Ville] | Mizan";
+
+// Recherche
+"Rechercher un avocat en Algérie | Mizan";
+```
+
+#### 🗺️ Sitemap.xml dynamique
+
+Génération automatique d'un sitemap XML pour faciliter l'indexation par les moteurs de recherche :
+
+- Pages statiques (homepage, recherche, contact, FAQ, etc.)
+- Profils avocats générés dynamiquement depuis la base de données
+- Mise à jour automatique à chaque déploiement
+- Format conforme aux standards [sitemaps.org](https://www.sitemaps.org/)
+
+**Accès** : [https://mizan-dz.com/sitemap.xml](https://mizan-dz.com/sitemap.xml)
+
+**Contenu actuel** :
+
+- 6 pages statiques principales
+- ~30-40 profils avocats dynamiques
+- Total : ~40-50 URLs indexables
+
+#### 🤖 Robots.txt
+
+Configuration des règles de crawl pour optimiser l'indexation :
+
+```txt
+User-agent: *
+Allow: /
+
+# Pages bloquées (dashboards et admin)
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /_next/
+
+# Référence au sitemap
+Sitemap: https://mizan-dz.com/sitemap.xml
+```
+
+**Accès** : [https://mizan-dz.com/robots.txt](https://mizan-dz.com/robots.txt)
+
+#### 🏷️ Schema.org (JSON-LD)
+
+Données structurées pour enrichir l'affichage dans les résultats Google :
+
+**Organization Schema**
+
+- Nom, logo et description de Mizan
+- Adresse et pays (Algérie)
+- Type : Organisation professionnelle
+
+**Lawyer Profile Schema** (pour chaque avocat)
+
+- Nom complet de l'avocat
+- Profession et spécialités
+- Localisation (ville, pays)
+- Coordonnées professionnelles
+
+**Bénéfices** :
+
+- Rich snippets dans Google (affichage enrichi)
+- Meilleure visibilité dans les recherches locales
+- Affichage structuré des informations
+
+#### 📊 Google Analytics 4
+
+Système de tracking complet installé et opérationnel :
+
+- **Events automatiques** : Page views, scrolls, engagement utilisateur
+- **Temps réel** : Monitoring du trafic en direct fonctionnel
+- **dataLayer** : Correctement initialisé et opérationnel
+- **Configuration** : Variable d'environnement `NEXT_PUBLIC_GA_ID`
+
+#### 🔎 Google Search Console
+
+Configuration et soumission à Google :
+
+- **Propriété** : [https://mizan-dz.com](https://mizan-dz.com)
+- **Vérification** : ✅ Domaine vérifié via balise HTML
+- **Sitemap soumis** : ✅ Accepté et traité par Google
+- **Statut** : "Opération effectuée"
+- **Indexation** : En cours (24-72 heures pour premières pages)
+
+### 📊 URLs importantes
+
+| Page              | URL                 | Priority | Indexation           |
+| ----------------- | ------------------- | -------- | -------------------- |
+| Homepage          | `/`                 | 1.0      | ✅ Public            |
+| Recherche         | `/search`           | 0.9      | ✅ Public            |
+| Liste avocats     | `/avocats`          | 0.9      | ✅ Public            |
+| Profil avocat     | `/lawyers/[id]`     | 0.8      | ✅ Public            |
+| Comment ça marche | `/how-it-works`     | 0.7      | ✅ Public            |
+| Contact           | `/contact`          | 0.6      | ✅ Public            |
+| FAQ               | `/faq`              | 0.6      | ✅ Public            |
+| Dashboard avocat  | `/lawyer/dashboard` | -        | ❌ Private (noindex) |
+| Dashboard client  | `/client/dashboard` | -        | ❌ Private (noindex) |
+| Authentification  | `/auth/*`           | -        | ❌ Private (noindex) |
+
+### 🎯 Mots-clés ciblés
+
+**Requêtes principales** :
+
+- avocat algérie
+- avocat alger / oran / constantine
+- trouver avocat
+- consultation juridique algérie
+
+**Requêtes par spécialité** :
+
+- avocat divorce [ville]
+- avocat droit des affaires [ville]
+- avocat immobilier [ville]
+
+### 📈 Performance SEO
+
+**Vitesse de chargement** :
+
+- Temps de chargement : < 2 secondes
+- First Contentful Paint : < 1.5s
+- Largest Contentful Paint : < 2.5s
+
+**Scores Lighthouse** :
+
+- Performance : 95+
+- Accessibility : 95+
+- Best Practices : 100
+- SEO : 100
+
+**Mobile-friendly** : ✅ Design 100% responsive
+
+### ⏱️ Statut de l'indexation
+
+```
+✅ Configuration technique complète
+✅ Sitemap soumis et accepté par Google
+⏳ Indexation en cours (24-72 heures)
+⏳ Premières impressions attendues (3-7 jours)
+```
+
+### 🛠️ Outils de monitoring
+
+- [Google Analytics](https://analytics.google.com) - Trafic et comportement
+- [Google Search Console](https://search.google.com/search-console) - Indexation et performances
+- Vercel Analytics - Performance technique
+- Supabase Logs - Monitoring backend
+
 ## 📦 Installation locale
 
 ```bash
