@@ -93,7 +93,7 @@ export function Navigation() {
           },
         ]
       : []),
-    { href: "/consultation", label: "Comment ça marche" },
+    { href: "/howitworks", label: "Comment ça marche" },
   ];
 
   return (
