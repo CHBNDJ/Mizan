@@ -430,11 +430,24 @@ export default function LawyerDashboardPage() {
       );
   }, [loading, loadingStats]);
 
+  // const checkVerification = async () => {
+  //   if (!user) return;
+
+  //   const { data } = await supabase
+  //     .from("users")
+  //     .select("verified")
+  //     .eq("id", user.id)
+  //     .single();
+
+  //   setIsVerified(data?.verified || false);
+  // };
+
   const checkVerification = async () => {
     if (!user) return;
 
+    // ✅ Lire depuis la table LAWYERS, pas USERS
     const { data } = await supabase
-      .from("users")
+      .from("lawyers") // ✅ BONNE TABLE !
       .select("verified")
       .eq("id", user.id)
       .single();
