@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   User,
   Mail,
@@ -21,10 +21,12 @@ import { CustomSelect } from "@/components/ui/CustomSelect";
 import { SPECIALITES, WILAYAS, LOCATION } from "@/utils/constants";
 import { getInitials } from "@/lib/utils";
 import ImageCropModal from "@/components/ImageCropModal";
+import { gsap } from "gsap";
 
 export default function ProfilePage() {
   const supabase = createClient();
   const { user, profile, lawyerProfile, loading, refreshProfile } = useAuth();
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string>("");
@@ -55,6 +57,43 @@ export default function ProfilePage() {
     specializations: [] as string[],
     wilayas: [] as string[],
   });
+
+  useEffect(() => {
+    if (!containerRef.current || loading) return;
+
+    const timeline = gsap.timeline();
+
+    timeline
+      .fromTo(
+        ".page-header",
+        { opacity: 0, y: -30 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }
+      )
+      .fromTo(
+        ".page-subtitle",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        "-=0.4"
+      )
+      .fromTo(
+        ".action-buttons",
+        { opacity: 0, y: -15 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+        "-=0.3"
+      )
+      .fromTo(
+        ".profile-card",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        "-=0.3"
+      )
+      .fromTo(
+        ".info-card",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        "-=0.3"
+      );
+  }, [loading]);
 
   const wilayaOptions = WILAYAS.map((wilaya) => ({
     value: wilaya.toLowerCase().replace(/\s+/g, "-"),
@@ -369,18 +408,28 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <style>{`
+        .page-header,
+        .page-subtitle,
+        .action-buttons,
+        .profile-card,
+        .info-card {
+          opacity: 0;
+        }
+      `}</style>
+
+      <div className="max-w-4xl mx-auto px-4 py-8" ref={containerRef}>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">
+            <h1 className="page-header text-2xl sm:text-3xl font-bold text-slate-800">
               Mon profil
             </h1>
-            <p className="text-slate-600 mt-1 sm:mt-2 text-sm sm:text-base">
+            <p className="page-subtitle text-slate-600 mt-1 sm:mt-2 text-sm sm:text-base">
               Gérez vos informations personnelles
             </p>
           </div>
 
-          <div className="flex gap-2 flex-shrink-0">
+          <div className="action-buttons flex gap-2 flex-shrink-0">
             <button
               onClick={refreshProfileData}
               className="flex-1 sm:flex-none px-3 sm:px-4 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer text-sm sm:text-base"
@@ -408,7 +457,7 @@ export default function ProfilePage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg p-6 shadow-sm border">
+            <div className="profile-card bg-white rounded-lg p-6 shadow-sm border">
               <div className="text-center">
                 <div className="relative w-24 h-24 mx-auto mb-2 group">
                   {avatarUrl ? (
@@ -561,7 +610,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg p-6 shadow-sm border">
+            <div className="info-card bg-white rounded-lg p-6 shadow-sm border">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <h3 className="text-lg font-semibold text-slate-800">
                   Informations personnelles

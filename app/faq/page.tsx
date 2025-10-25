@@ -3,12 +3,14 @@
 import { ArrowLeft, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 export default function FAQPage() {
   const router = useRouter();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState("Général");
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const faqs = [
     {
@@ -104,35 +106,96 @@ export default function FAQPage() {
     "Sécurité et confidentialité",
   ];
 
-  // Filtrer les FAQs selon l'onglet actif
   const filteredFaqs = faqs.filter(
     (category) => category.category === activeTab
   );
 
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const timeline = gsap.timeline();
+
+    timeline
+      .fromTo(
+        ".back-btn",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+      )
+      .fromTo(
+        ".main-title",
+        { opacity: 0, y: -30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+        "-=0.3"
+      )
+      .fromTo(
+        ".subtitle",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
+        "-=0.4"
+      )
+      .fromTo(
+        ".tabs-wrapper",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        "-=0.3"
+      )
+      .fromTo(
+        ".cta-block",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
+        "-=0.2"
+      );
+  }, []);
+
+  useEffect(() => {
+    const faqItems = document.querySelectorAll(".faq-item");
+
+    gsap.fromTo(
+      faqItems,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: "power2.out",
+        delay: 0.1,
+      }
+    );
+  }, [activeTab]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <div className="max-w-4xl mx-auto px-5 py-16">
-        {/* Back Button */}
+      <style>{`
+        .back-btn,
+        .main-title,
+        .subtitle,
+        .tabs-wrapper,
+        .faq-item,
+        .cta-block {
+          opacity: 0;
+        }
+      `}</style>
+
+      <div className="max-w-4xl mx-auto px-5 py-16" ref={containerRef}>
         <button
           onClick={() => router.back()}
-          className="cursor-pointer inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 transition-all mb-8 text-sm font-medium"
+          className="back-btn cursor-pointer inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 transition-all mb-8 text-sm font-medium"
         >
           <ArrowLeft size={18} />
           <span>Retour</span>
         </button>
 
-        {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-4">
+          <h1 className="main-title text-5xl md:text-6xl font-bold text-slate-900 mb-4">
             Questions Fréquentes
           </h1>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+          <p className="subtitle text-xl text-slate-600 max-w-2xl mx-auto">
             Trouvez rapidement les réponses à vos questions
           </p>
         </div>
 
-        {/* Tabs */}
-        <div className="mb-12">
+        <div className="tabs-wrapper mb-12">
           <div className="flex flex-wrap justify-center gap-2 bg-white p-2 rounded-2xl shadow-lg border border-slate-200">
             {tabs.map((tab) => (
               <button
@@ -150,12 +213,10 @@ export default function FAQPage() {
           </div>
         </div>
 
-        {/* FAQ List */}
         {filteredFaqs.length > 0 ? (
           <div className="space-y-8">
             {filteredFaqs.map((category, categoryIndex) => (
               <div key={categoryIndex} className="space-y-4">
-                {/* Questions */}
                 <div className="space-y-3">
                   {category.questions.map((faq, faqIndex) => {
                     const globalIndex = categoryIndex * 100 + faqIndex;
@@ -164,9 +225,8 @@ export default function FAQPage() {
                     return (
                       <div
                         key={faqIndex}
-                        className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all"
+                        className="faq-item bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all"
                       >
-                        {/* Question */}
                         <button
                           onClick={() =>
                             setOpenIndex(isOpen ? null : globalIndex)
@@ -183,7 +243,6 @@ export default function FAQPage() {
                           />
                         </button>
 
-                        {/* Answer */}
                         <div
                           className={`overflow-hidden transition-all duration-300 ${
                             isOpen ? "max-h-96" : "max-h-0"
@@ -212,8 +271,7 @@ export default function FAQPage() {
           </div>
         )}
 
-        {/* Contact CTA */}
-        <div className="mt-16 bg-teal-500 rounded-3xl p-8 md:p-10 shadow-2xl">
+        <div className="cta-block mt-16 bg-teal-500 rounded-3xl p-8 md:p-10 shadow-2xl">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">
               <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">

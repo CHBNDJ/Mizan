@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
           <html>
             <body style="font-family: Arial, sans-serif; padding: 20px;">
               <h2 style="color: #0d9488;">${typeEmojis[type as keyof typeof typeEmojis]} ${typeLabels[type as keyof typeof typeLabels]}</h2>
-              
+
               <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
                 ${
                   userData
@@ -95,13 +95,13 @@ export async function POST(request: NextRequest) {
                 <p><strong>Date :</strong> ${new Date().toLocaleString("fr-FR")}</p>
                 ${pageUrl ? `<p><strong>Page :</strong> ${pageUrl}</p>` : ""}
               </div>
-              
+
               ${title ? `<h3>${title}</h3>` : ""}
-              
+
               <div style="background: #f1f5f9; padding: 15px; border-radius: 5px;">
                 <p style="white-space: pre-wrap;">${message}</p>
               </div>
-              
+
               ${
                 type === "testimonial" && allowPublic
                   ? `
@@ -111,9 +111,9 @@ export async function POST(request: NextRequest) {
               `
                   : ""
               }
-              
+
               <p style="margin-top: 20px;">
-                <a href="${process.env.NEXT_PUBLIC_APP_URL}/admin/feedbacks/${feedback.id}" 
+                <a href="${process.env.NEXT_PUBLIC_APP_URL}/admin/feedbacks/${feedback.id}"
                    style="color: #0d9488;">
                   Voir et traiter ce feedback
                 </a>

@@ -21,7 +21,6 @@ serve(async (req: Request) => {
   }
 
   try {
-    // Variables d'environnement
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
@@ -62,53 +61,54 @@ serve(async (req: Request) => {
       );
     }
 
-    // Client admin pour la suppression
+    // Client admin
     const supabaseAdmin = createClient(supabaseUrl, serviceKey);
-
     const userId = user.id;
 
-    // Suppression en cascade dans l'ordre correct
-    const { error: preferencesError } = await supabaseAdmin
-      .from("user_preferences")
-      .delete()
-      .eq("user_id", userId);
-    if (preferencesError)
-      console.warn("⚠️ user_preferences:", preferencesError.message);
+    console.log("🗑️ Début suppression pour userId:", userId);
 
-    const { error: notificationsError } = await supabaseAdmin
-      .from("notifications")
-      .delete()
-      .eq("user_id", userId);
-    if (notificationsError)
-      console.warn("⚠️ notifications:", notificationsError.message);
-
-    const { error: lawyersError } = await supabaseAdmin
-      .from("lawyers")
-      .delete()
-      .eq("id", userId);
-    if (lawyersError) console.warn("⚠️ lawyers:", lawyersError.message);
-
-    const { error: usersError } = await supabaseAdmin
-      .from("users")
-      .delete()
-      .eq("id", userId);
-    if (usersError) console.warn("⚠️ users:", usersError.message);
-
-    // IMPORTANT : Supprimer le compte d'authentification
+    // ✅ STRATÉGIE : Supprimer auth.users en premier
+    // Les CASCADE s'occuperont du reste automatiquement
     const { error: authDeleteError } =
       await supabaseAdmin.auth.admin.deleteUser(userId);
 
     if (authDeleteError) {
       console.error("❌ Erreur suppression auth:", authDeleteError);
-      throw new Error(
-        `Erreur suppression compte auth: ${authDeleteError.message}`
-      );
+      throw new Error(`Erreur suppression compte: ${authDeleteError.message}`);
+    }
+
+    console.log("✅ Compte auth supprimé avec succès");
+
+    // ✅ Vérifier si les tables sont bien vides (optionnel)
+    const { data: userCheck } = await supabaseAdmin
+      .from("users")
+      .select("id")
+      .eq("id", userId)
+      .maybeSingle();
+
+    const { data: lawyerCheck } = await supabaseAdmin
+      .from("lawyers")
+      .select("id")
+      .eq("id", userId)
+      .maybeSingle();
+
+    if (userCheck || lawyerCheck) {
+      console.warn("⚠️ Les tables n'ont pas été vidées par CASCADE");
+
+      // Suppression manuelle si CASCADE n'a pas fonctionné
+      await supabaseAdmin
+        .from("user_preferences")
+        .delete()
+        .eq("user_id", userId);
+      await supabaseAdmin.from("notifications").delete().eq("user_id", userId);
+      await supabaseAdmin.from("lawyers").delete().eq("id", userId);
+      await supabaseAdmin.from("users").delete().eq("id", userId);
     }
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: "Compte supprimé avec succès (auth inclus)",
+        message: "Compte supprimé définitivement",
         userId: userId,
       }),
       {

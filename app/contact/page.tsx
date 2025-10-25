@@ -3,38 +3,89 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 export default function ContactPage() {
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const timeline = gsap.timeline();
+
+    timeline
+      .fromTo(
+        ".back-btn",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+      )
+      .fromTo(
+        ".header-title",
+        { opacity: 0, y: -30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+        "-=0.3"
+      )
+      .fromTo(
+        ".header-desc",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
+        "-=0.4"
+      )
+      .fromTo(
+        ".contact-item",
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.15,
+          ease: "power2.out",
+        },
+        "-=0.3"
+      )
+      .fromTo(
+        ".faq-block",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
+        "-=0.2"
+      );
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 pt-20">
-      <div className="max-w-4xl mx-auto px-5 py-20">
+      <style>{`
+        .back-btn,
+        .header-title,
+        .header-desc,
+        .contact-item,
+        .faq-block {
+          opacity: 0;
+        }
+      `}</style>
+
+      <div className="max-w-4xl mx-auto px-5 py-20" ref={containerRef}>
         <button
           onClick={() => router.back()}
-          className="inline-flex items-center gap-2 text-teal-600 transition-all mb-10 text-[0.95rem] cursor-pointer"
+          className="back-btn inline-flex items-center gap-2 text-teal-600 transition-all mb-10 text-[0.95rem] cursor-pointer"
         >
           <ArrowLeft size={16} />
           <span>Retour</span>
         </button>
 
-        {/* Header */}
         <div className="border-b-[3px] border-teal-600 pb-10 mb-16">
-          <h1 className="text-6xl font-light tracking-tight mb-5 text-slate-900">
+          <h1 className="header-title text-6xl font-light tracking-tight mb-5 text-slate-900">
             Contact
           </h1>
-          <p className="text-xl text-slate-600 max-w-2xl leading-relaxed">
+          <p className="header-desc text-xl text-slate-600 max-w-2xl leading-relaxed">
             Pour toute question, notre équipe est à votre disposition.
             Choisissez le service adapté à votre demande.
           </p>
         </div>
 
-        {/* Contact List */}
         <ul className="list-none mb-20">
-          {/* Support Technique */}
-          <li className="border-b border-slate-200 py-10 transition-all">
+          <li className="contact-item border-b border-slate-200 py-10 transition-all">
             <h2 className="text-3xl font-normal mb-3 text-slate-900">
               Support Technique
             </h2>
@@ -57,8 +108,7 @@ export default function ContactPage() {
             </span>
           </li>
 
-          {/* Contact Général */}
-          <li className="border-b border-slate-200 py-10 transition-all">
+          <li className="contact-item border-b border-slate-200 py-10 transition-all">
             <h2 className="text-3xl font-normal mb-3 text-slate-900">
               Contact Général
             </h2>
@@ -81,8 +131,7 @@ export default function ContactPage() {
             </span>
           </li>
 
-          {/* Support Avocats - Version discrète */}
-          <li className="border-b border-slate-200 py-10 transition-all">
+          <li className="contact-item border-b border-slate-200 py-10 transition-all">
             <div className="flex items-center gap-3 mb-3">
               <h2 className="text-3xl font-normal text-slate-900">
                 Support Avocats
@@ -111,7 +160,7 @@ export default function ContactPage() {
           </li>
         </ul>
 
-        <div>
+        <div className="faq-block">
           <h3 className="text-2xl font-normal mb-5 text-slate-900">
             Questions Fréquentes
           </h3>

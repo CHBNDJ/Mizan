@@ -3,6 +3,7 @@ export interface AvocatData {
   nom: string;
   prenom?: string;
   avatar_url?: string;
+  bio?: string;
   titre: string;
   genre?: "homme" | "femme";
   specialites?: string[];

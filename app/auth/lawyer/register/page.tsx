@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, Phone, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -8,10 +9,12 @@ import { ExtendedLawyerSignupFormData, FormErrors } from "@/types";
 import { SPECIALITES, WILAYAS, COUNTRIES } from "@/utils/constants";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { useAuth } from "@/hooks/useAuth";
+import { gsap } from "gsap";
 
 export default function LawyerRegisterPage() {
   const router = useRouter();
   const { signUp } = useAuth();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState<ExtendedLawyerSignupFormData>({
     firstName: "",
@@ -39,6 +42,31 @@ export default function LawyerRegisterPage() {
   const [selectedMobileCountry, setSelectedMobileCountry] = useState("213");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const timeline = gsap.timeline();
+
+    timeline
+      .fromTo(
+        ".page-title",
+        { opacity: 0, y: -30 },
+        { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }
+      )
+      .fromTo(
+        ".page-subtitle",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        "-=0.4"
+      )
+      .fromTo(
+        ".register-form",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        "-=0.3"
+      );
+  }, []);
 
   const wilayaOptions = WILAYAS.map((wilaya) => ({
     value: wilaya.toLowerCase().replace(/\s+/g, "-"),
@@ -259,12 +287,20 @@ export default function LawyerRegisterPage() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <div className="max-w-md mx-auto px-4 py-24">
+      <style>{`
+        .page-title,
+        .page-subtitle,
+        .register-form {
+          opacity: 0;
+        }
+      `}</style>
+
+      <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-slate-800 mb-2">
+          <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
             Inscription Avocat
           </h1>
-          <p className="text-slate-600">
+          <p className="page-subtitle text-slate-600">
             Créez votre compte et rejoignez notre réseau d'avocats
           </p>
         </div>
@@ -276,7 +312,11 @@ export default function LawyerRegisterPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+          <form
+            onSubmit={handleSubmit}
+            className="register-form space-y-4"
+            noValidate
+          >
             {/* Prénom et Nom */}
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -355,7 +395,7 @@ export default function LawyerRegisterPage() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   disabled={isSubmitting}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50"
+                  className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50"
                 >
                   {showPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -389,7 +429,7 @@ export default function LawyerRegisterPage() {
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   disabled={isSubmitting}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50"
+                  className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50"
                 >
                   {showConfirmPassword ? (
                     <EyeOff className="w-4 h-4" />

@@ -182,22 +182,6 @@ export default function ConsultationModal({
                 </div>
               </div>
 
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-                <div className="flex gap-3">
-                  <span className="text-2xl flex-shrink-0">💡</span>
-                  <div>
-                    <p className="text-amber-900 text-sm font-medium mb-1">
-                      Conseil pour une meilleure réponse
-                    </p>
-                    <p className="text-amber-800 text-sm leading-relaxed">
-                      Incluez tous les détails pertinents : dates, montants,
-                      parties impliquées, documents disponibles. Plus votre
-                      question est complète, plus la réponse sera précise.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
               <div className="flex gap-3 pt-2">
                 <button
                   type="button"

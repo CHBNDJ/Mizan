@@ -3,34 +3,60 @@
 import { Shield, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 export default function PrivacyPolicyPage() {
   const router = useRouter();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const sections = containerRef.current.querySelectorAll(".animate-section");
+
+    gsap.fromTo(
+      sections,
+      {
+        opacity: 0,
+        y: 30,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power2.out",
+        delay: 0.2,
+      }
+    );
+  }, []);
+
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="max-w-4xl mx-auto px-4 py-12" ref={containerRef}>
         <button
           onClick={() => router.back()}
-          className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 mb-8 transition-colors cursor-pointer"
+          className="animate-section inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 mb-8 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           Retour
         </button>
 
         <div className="bg-white rounded-2xl border border-slate-200 p-8 md:p-12">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="animate-section flex items-center gap-3 mb-6">
             <Shield className="w-8 h-8 text-teal-600" />
             <h1 className="text-3xl font-bold text-slate-900">
               Politique de Confidentialité
             </h1>
           </div>
 
-          <p className="text-slate-600 mb-8">
+          <p className="animate-section text-slate-600 mb-8">
             Dernière mise à jour : {new Date().toLocaleDateString("fr-FR")}
           </p>
 
           <div className="prose prose-slate max-w-none space-y-8">
-            <section>
+            <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 1. Introduction
               </h2>
@@ -41,7 +67,7 @@ export default function PrivacyPolicyPage() {
               </p>
             </section>
 
-            <section>
+            <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 2. Données collectées
               </h2>
@@ -80,7 +106,7 @@ export default function PrivacyPolicyPage() {
               </div>
             </section>
 
-            <section>
+            <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 3. Utilisation des données
               </h2>
@@ -103,7 +129,7 @@ export default function PrivacyPolicyPage() {
               </p>
             </section>
 
-            <section>
+            <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 4. Partage des données
               </h2>
@@ -127,7 +153,7 @@ export default function PrivacyPolicyPage() {
               </ul>
             </section>
 
-            <section>
+            <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 5. Sécurité des données
               </h2>
@@ -143,7 +169,7 @@ export default function PrivacyPolicyPage() {
               </ul>
             </section>
 
-            <section>
+            <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 6. Cookies et technologies similaires
               </h2>
@@ -154,7 +180,7 @@ export default function PrivacyPolicyPage() {
               </p>
             </section>
 
-            <section>
+            <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 7. Vos droits
               </h2>
@@ -183,7 +209,7 @@ export default function PrivacyPolicyPage() {
               </ul>
             </section>
 
-            <section>
+            <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 8. Conservation des données
               </h2>
@@ -203,7 +229,7 @@ export default function PrivacyPolicyPage() {
               </ul>
             </section>
 
-            <section>
+            <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 9. Modifications de cette politique
               </h2>
@@ -214,7 +240,7 @@ export default function PrivacyPolicyPage() {
               </p>
             </section>
 
-            <section>
+            <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 10. Contact
               </h2>

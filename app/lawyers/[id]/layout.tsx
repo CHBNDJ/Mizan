@@ -11,37 +11,56 @@ const supabase = createClient(
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   try {
-    // Récupérer l'avocat depuis Supabase
+    const { id } = await params;
+
+    // ✅ Même structure que getAvocatById - récupérer lawyers
     const { data: lawyer } = await supabase
-      .from("users")
-      .select("*, avocats(*)")
-      .eq("id", params.id)
-      .eq("user_type", "lawyer")
+      .from("lawyers")
+      .select("*")
+      .eq("id", id)
       .single();
 
-    if (!lawyer || !lawyer.avocats || lawyer.avocats.length === 0) {
+    if (!lawyer) {
       return {
         title: "Avocat non trouvé | Mizan",
         description: "Cet avocat n'existe pas ou son profil a été supprimé.",
       };
     }
 
-    const avocatData = lawyer.avocats[0];
+    // ✅ Récupérer les infos user séparément
+    const { data: user } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", id)
+      .eq("user_type", "lawyer")
+      .single();
 
-    // ✅ Utiliser la fonction helper avec l'ID en 2ème paramètre
+    if (!user) {
+      return {
+        title: "Avocat non trouvé | Mizan",
+        description: "Cet avocat n'existe pas ou son profil a été supprimé.",
+      };
+    }
+
+    // ✅ Extraire la première spécialisation du tableau
+    const specialite = lawyer.specializations?.[0] || "Droit général";
+
+    // ✅ Extraire la première wilaya du tableau
+    const ville = lawyer.wilayas?.[0] || "Algérie";
+
     return generateAvocatMetadata(
       {
-        prenom: lawyer.first_name || "",
-        nom: lawyer.last_name || "",
-        specialite: avocatData.specialite || "Droit général",
-        ville: avocatData.ville || "Algérie",
-        barreau: avocatData.barreau || "Algérie",
-        bio: avocatData.bio,
+        prenom: user.first_name || "",
+        nom: user.last_name || "",
+        specialite: specialite,
+        ville: ville,
+        barreau: ville,
+        bio: lawyer.bio,
       },
-      params.id
+      id
     );
   } catch (error) {
     console.error("Erreur récupération avocat:", error);
