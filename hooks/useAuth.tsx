@@ -234,92 +234,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // const signUp = async (
-  //   email: string,
-  //   password: string,
-  //   userData: {
-  //     firstName: string;
-  //     lastName: string;
-  //     phone?: string;
-  //     mobile?: string;
-  //     userType: "client" | "lawyer";
-  //     location?: string;
-  //     bar_number?: string;
-  //     specializations?: string[];
-  //     wilayas?: string[];
-  //     experience_years?: number;
-  //     address?: {
-  //       street: string;
-  //       neighborhood?: string | null;
-  //       city: string;
-  //       postalCode: string;
-  //     };
-  //   }
-  // ) => {
-  //   try {
-  //     const metaData: any = {
-  //       first_name: userData.firstName,
-  //       last_name: userData.lastName,
-  //       phone: userData.phone || null,
-  //       mobile: userData.mobile || null,
-  //       user_type: userData.userType,
-  //       location: userData.location || null,
-  //     };
-
-  //     if (userData.userType === "lawyer") {
-  //       metaData.bar_number = userData.bar_number || "";
-  //       metaData.specializations = userData.specializations || [];
-  //       metaData.wilayas = userData.wilayas || [];
-  //       metaData.experience_years = userData.experience_years || 0;
-  //       metaData.address = userData.address || null;
-  //     }
-
-  //     const { data: authData, error: authError } = await supabase.auth.signUp({
-  //       email,
-  //       password,
-  //       options: {
-  //         data: metaData,
-  //         emailRedirectTo: `${window.location.origin}/auth/callback`,
-  //       },
-  //     });
-
-  //     if (authError) {
-  //       console.error("Erreur inscription Supabase:", authError);
-  //       throw new Error(authError.message);
-  //     }
-
-  //     if (!authData.user) {
-  //       console.error("Aucun utilisateur créé");
-  //       throw new Error("Échec de création d'utilisateur");
-  //     }
-
-  //     await new Promise((resolve) => setTimeout(resolve, 3000));
-
-  //     return {
-  //       ...authData,
-  //       redirectPath: "/auth/verify-email",
-  //       userType: userData.userType,
-  //     };
-  //   } catch (error: any) {
-  //     console.error("Erreur inscription:", error);
-
-  //     if (
-  //       error.message?.includes("already registered") ||
-  //       error.message?.includes("User already registered")
-  //     ) {
-  //       throw new Error("Cette adresse email est déjà utilisée.");
-  //     } else if (error.message?.includes("Password should be at least")) {
-  //       throw new Error("Le mot de passe doit contenir au moins 6 caractères.");
-  //     } else if (error.message?.includes("Invalid email")) {
-  //       throw new Error("Format d'email invalide.");
-  //     } else if (error.message?.includes("Network error")) {
-  //       throw new Error("Problème de connexion. Vérifiez votre internet.");
-  //     }
-
-  //     throw error;
-  //   }
-  // };
-
   const signIn = async (
     email: string,
     password: string,
@@ -515,7 +429,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const value: AuthContextType = {
+  const value = {
     ...state,
     signUp,
     signIn,
