@@ -68,7 +68,8 @@ export async function POST(request: NextRequest) {
       .eq("user_id", body.lawyer_id)
       .maybeSingle();
 
-    const shouldSendEmail = lawyerPrefs?.email_notifications === true;
+    const shouldSendEmail =
+      !lawyerPrefs || lawyerPrefs.email_notifications !== false;
 
     if (shouldSendEmail) {
       // Récupérer les informations de l'avocat et du client

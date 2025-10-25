@@ -116,7 +116,8 @@ export async function POST(
           .eq("user_id", recipientId)
           .maybeSingle();
 
-        const shouldSendEmail = recipientPrefs?.email_notifications === true;
+        const shouldSendEmail =
+          !recipientPrefs || recipientPrefs.email_notifications !== false;
 
         if (shouldSendEmail) {
           const senderName =

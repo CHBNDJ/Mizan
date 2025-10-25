@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
         .maybeSingle();
 
       const shouldSendEmail =
-        clientPrefs && clientPrefs.email_notifications === true;
+        !clientPrefs || clientPrefs.email_notifications !== false;
 
       if (shouldSendEmail) {
         try {
