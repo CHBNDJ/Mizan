@@ -1022,6 +1022,30 @@ export default function LawyerConsultationsPage() {
     markAsRead();
   }, [selectedConsultation, user, supabase]);
 
+  // ✅ REAL-TIME : Recharger les compteurs
+  useEffect(() => {
+    if (!user || consultations.length === 0) return;
+
+    const unreadChannel = supabase
+      .channel("lawyer-unread-counts")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "consultation_messages",
+        },
+        () => {
+          loadUnreadCounts();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(unreadChannel);
+    };
+  }, [user, consultations]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };

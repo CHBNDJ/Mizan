@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";
-import { getInitials, formatPrice } from "@/lib/utils";
+import { getInitials } from "@/lib/utils";
 import { formatMultiplePhones } from "@/lib/phoneFormatter";
 import { AvocatData, ProfilePageProps } from "@/types";
 import { createClient } from "@/lib/supabase/client";
@@ -27,6 +27,7 @@ import ReviewSection from "@/components/reviews/ReviewSection";
 import Link from "next/link";
 import FeedbackPopup from "@/components/FeedbackPopup";
 import { useAuth } from "@/hooks/useAuth";
+import { formatPrice, calculateConsultationPrice } from "@/lib/priceUtils";
 
 export default function ProfilePage({ params }: ProfilePageProps) {
   const { id } = use(params);
@@ -108,7 +109,11 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   const experienceAnnees = avocat.experience?.annees || 0;
   const basePrice = 3000 + experienceAnnees * 200;
   const ratingBonus = avocat.rating ? avocat.rating * 500 : 0;
-  const tarifEstime = Math.round(basePrice + ratingBonus);
+  const tarifEstime = calculateConsultationPrice(
+    avocat.consultation_price,
+    avocat.experience?.annees || 0,
+    avocat.rating
+  );
 
   return (
     <div className="min-h-screen pt-24 bg-gradient-to-br from-teal-100 via-white to-teal-100">
@@ -190,7 +195,11 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   <div className="text-xl sm:text-2xl font-bold text-teal-600">
                     {formatPrice(tarifEstime)}
                   </div>
-                  <div className="text-sm text-slate-500">Tarif estimé</div>
+                  <div className="text-sm text-slate-500">
+                    {avocat.consultation_price
+                      ? "Tarif consultation"
+                      : "Tarif estimé"}
+                  </div>
                 </div>
               </div>
             </div>

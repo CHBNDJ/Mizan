@@ -56,6 +56,7 @@ export default function ProfilePage() {
     experienceYears: 0,
     specializations: [] as string[],
     wilayas: [] as string[],
+    consultationPrice: 0,
   });
 
   useEffect(() => {
@@ -263,6 +264,7 @@ export default function ProfilePage() {
         experienceYears: lawyerProfile.experience_years || 0,
         specializations: lawyerProfile.specializations || [],
         wilayas: lawyerProfile.wilayas || [],
+        consultationPrice: lawyerProfile.consultation_price || 0,
       });
     } else if (user?.user_metadata && profile?.user_type === "lawyer") {
       setLawyerFormData({
@@ -270,6 +272,7 @@ export default function ProfilePage() {
         experienceYears: user.user_metadata.experience_years || 0,
         specializations: user.user_metadata.specializations || [],
         wilayas: user.user_metadata.wilayas || [],
+        consultationPrice: user.user_metadata.consultation_price || 0,
       });
     }
   }, [user, profile, lawyerProfile, loading]);
@@ -338,6 +341,7 @@ export default function ProfilePage() {
               parseInt(lawyerFormData.experienceYears.toString()) || 0,
             specializations: lawyerFormData.specializations,
             wilayas: lawyerFormData.wilayas,
+            consultation_price: lawyerFormData.consultationPrice || null,
           })
           .eq("id", user.id);
 
@@ -383,6 +387,7 @@ export default function ProfilePage() {
         experienceYears: lawyerProfile.experience_years || 0,
         specializations: lawyerProfile.specializations || [],
         wilayas: lawyerProfile.wilayas || [],
+        consultationPrice: lawyerProfile.consultation_price || 0,
       });
     } else if (user?.user_metadata && profile?.user_type === "lawyer") {
       setLawyerFormData({
@@ -390,6 +395,7 @@ export default function ProfilePage() {
         experienceYears: user.user_metadata.experience_years || 0,
         specializations: user.user_metadata.specializations || [],
         wilayas: user.user_metadata.wilayas || [],
+        consultationPrice: user.user_metadata.consultation_price || 0,
       });
     }
 
@@ -904,6 +910,49 @@ export default function ProfilePage() {
                           </div>
                         )}
                       </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                        Tarif de consultation (DZD)
+                      </label>
+                      {isEditing ? (
+                        <div>
+                          <input
+                            type="text"
+                            value={lawyerFormData.consultationPrice || ""}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              if (
+                                /^\d*$/.test(value) &&
+                                (value === "" || parseInt(value) <= 100000)
+                              ) {
+                                setLawyerFormData((prev) => ({
+                                  ...prev,
+                                  consultationPrice: parseInt(value) || 0,
+                                }));
+                              }
+                            }}
+                            className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
+                            placeholder="15000"
+                          />
+                          <p className="text-xs text-slate-500 mt-1">
+                            Min: 5,000 DZD • Max: 100,000 DZD
+                          </p>
+                          <p className="text-xs text-slate-400 mt-0.5">
+                            Laissez vide (0) pour un tarif calculé
+                            automatiquement
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="p-3 bg-slate-50 rounded-lg">
+                          <span className="text-slate-800">
+                            {lawyerFormData.consultationPrice
+                              ? `${lawyerFormData.consultationPrice.toLocaleString("fr-DZ")} DZD`
+                              : "Tarif automatique"}
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     <div className="mb-4">

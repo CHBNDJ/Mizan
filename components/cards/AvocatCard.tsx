@@ -1,14 +1,19 @@
 "use client";
 import Link from "next/link";
 import { Star, MapPin, CheckCircle } from "lucide-react";
-import { getInitials, formatPrice } from "@/lib/utils";
+import { getInitials } from "@/lib/utils";
 import { AvocatCardProps } from "@/types";
+import { formatPrice, calculateConsultationPrice } from "@/lib/priceUtils";
 
 export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
   const experienceAnnees = avocat.experience?.annees || 0;
   const basePrice = 3000 + experienceAnnees * 200;
   const ratingBonus = avocat.rating ? avocat.rating * 500 : 0;
-  const tarifEstime = Math.round(basePrice + ratingBonus);
+  const tarifEstime = calculateConsultationPrice(
+    avocat.consultation_price,
+    avocat.experience?.annees || 0,
+    avocat.rating
+  );
 
   const getProfileUrl = () => {
     const params = searchParams?.toString();
@@ -112,7 +117,9 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
             <div className="text-3xl font-bold text-teal-600 mb-1">
               {formatPrice(tarifEstime)}
             </div>
-            <div className="text-sm text-slate-500">Consultation estimée</div>
+            <div className="text-sm text-slate-500">
+              {avocat.consultation_price ? "Tarif consultation" : "Estimation"}
+            </div>
           </div>
 
           <Link href={getProfileUrl()}>

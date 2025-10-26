@@ -431,6 +431,43 @@ export default function LawyerDashboardPage() {
   useEffect(() => {
     if (!containerRef.current || loading || loadingStats) return;
 
+    // ✅ REAL-TIME : Écouter les nouveaux messages
+    useEffect(() => {
+      if (!user || profile?.user_type !== "lawyer") return;
+
+      const messagesChannel = supabase
+        .channel("dashboard-messages")
+        .on(
+          "postgres_changes",
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "consultation_messages",
+          },
+          (payload) => {
+            if (payload.new.sender_id !== user.id) {
+              loadStats();
+            }
+          }
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "UPDATE",
+            schema: "public",
+            table: "consultation_messages",
+          },
+          () => {
+            loadStats();
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(messagesChannel);
+      };
+    }, [user, profile]);
+
     const timeline = gsap.timeline();
 
     timeline

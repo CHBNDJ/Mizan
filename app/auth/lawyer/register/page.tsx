@@ -28,6 +28,7 @@ export default function LawyerRegisterPage() {
     wilaya: [],
     specializations: [],
     experience: "",
+    consultationPrice: "",
     address: {
       street: "",
       neighborhood: "",
@@ -227,6 +228,16 @@ export default function LawyerRegisterPage() {
       newErrors.experience = "Expérience maximum 50 ans";
     }
 
+    // Validation prix
+    if (formData.consultationPrice.trim()) {
+      const price = parseInt(formData.consultationPrice);
+      if (price < 5000) {
+        newErrors.consultationPrice = "Prix minimum : 5,000 DZD";
+      } else if (price > 100000) {
+        newErrors.consultationPrice = "Prix maximum : 100,000 DZD";
+      }
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -255,6 +266,9 @@ export default function LawyerRegisterPage() {
         specializations: formData.specializations,
         wilayas: formData.wilaya,
         experience_years: parseInt(formData.experience) || 0,
+        consultation_price: formData.consultationPrice.trim()
+          ? parseInt(formData.consultationPrice)
+          : null,
         address: {
           street: formData.address.street.trim(),
           neighborhood: formData.address.neighborhood?.trim() || null,
@@ -671,6 +685,39 @@ export default function LawyerRegisterPage() {
                   <p className={errorClass}>{errors.experience}</p>
                 )}
               </div>
+            </div>
+
+            {/* Prix de consultation */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Tarif de consultation (DZD)
+              </label>
+              <input
+                type="text"
+                name="consultationPrice"
+                value={formData.consultationPrice}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (
+                    /^\d*$/.test(value) &&
+                    (value === "" || parseInt(value) <= 100000)
+                  ) {
+                    handleInputChange(e);
+                  }
+                }}
+                className={`${inputBaseClass} placeholder:text-slate-400`}
+                placeholder="15000"
+                disabled={isSubmitting}
+              />
+              <p className="text-xs text-slate-500 mt-1">
+                Optionnel • Min: 5,000 DZD • Max: 100,000 DZD
+              </p>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Laissez vide pour un tarif calculé automatiquement
+              </p>
+              {errors.consultationPrice && (
+                <p className={errorClass}>{errors.consultationPrice}</p>
+              )}
             </div>
 
             {/* Bouton submit */}

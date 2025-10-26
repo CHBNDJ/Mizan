@@ -28,6 +28,7 @@ export interface AvocatData {
     annees: number;
     date_inscription: string;
   };
+  consultation_price?: number;
   langues?: string[];
   verified?: boolean;
   rating?: number;
@@ -62,6 +63,7 @@ export interface LawyerProfile {
   experience_years: number;
   specializations: string[];
   wilayas: string[];
+  consultation_price: number;
   verified: boolean;
   created_at?: string;
   updated_at?: string;
@@ -186,6 +188,7 @@ export interface ExtendedLawyerSignupFormData {
   wilaya: string[];
   specializations: string[];
   experience: string;
+  consultationPrice: string;
   address: {
     street: string;
     neighborhood?: string;
@@ -218,6 +221,7 @@ export interface FormErrors {
   wilaya?: string;
   specializations?: string;
   experience?: string;
+  consultationPrice?: string;
   street?: string;
   neighborhood?: string;
   city?: string;

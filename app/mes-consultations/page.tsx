@@ -948,6 +948,30 @@ export default function MesConsultationsPage() {
     markAsRead();
   }, [selectedConsultation, user, supabase]);
 
+  // ✅ NOUVEAU : Recharger les compteurs en real-time
+  useEffect(() => {
+    if (!user || consultations.length === 0) return;
+
+    const unreadChannel = supabase
+      .channel("client-unread-counts")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "consultation_messages",
+        },
+        () => {
+          loadUnreadCounts();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(unreadChannel);
+    };
+  }, [user, consultations]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
