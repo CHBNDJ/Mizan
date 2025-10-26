@@ -14,11 +14,13 @@
 //   AlertCircle,
 //   User,
 // } from "lucide-react";
+// import { gsap } from "gsap";
 
 // export default function MesConsultationsPage() {
 //   const supabase = createClient();
 //   const { user, profile } = useAuth();
 //   const router = useRouter();
+//   const containerRef = useRef<HTMLDivElement>(null);
 //   const [consultations, setConsultations] = useState<ClientConsultation[]>([]);
 //   const [messages, setMessages] = useState<Message[]>([]);
 //   const [loading, setLoading] = useState(true);
@@ -59,7 +61,37 @@
 //     scrollToBottom();
 //   }, [messages]);
 
-//   // Écoute des nouveaux messages en temps réel
+//   useEffect(() => {
+//     if (!containerRef.current || loading) return;
+
+//     const timeline = gsap.timeline();
+
+//     timeline
+//       .fromTo(
+//         ".page-header",
+//         { opacity: 0, y: -30 },
+//         { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }
+//       )
+//       .fromTo(
+//         ".page-subtitle",
+//         { opacity: 0, y: -20 },
+//         { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+//         "-=0.4"
+//       )
+//       .fromTo(
+//         ".consultations-list",
+//         { opacity: 0, x: -20 },
+//         { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" },
+//         "-=0.3"
+//       )
+//       .fromTo(
+//         ".chat-container",
+//         { opacity: 0, x: 20 },
+//         { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" },
+//         "-=0.4"
+//       );
+//   }, [loading]);
+
 //   useEffect(() => {
 //     if (!selectedConsultation) return;
 
@@ -102,7 +134,6 @@
 //     };
 //   }, [selectedConsultation, supabase]);
 
-//   // Broadcast "typing" status
 //   useEffect(() => {
 //     if (!selectedConsultation || !user) return;
 
@@ -122,7 +153,6 @@
 //     };
 //   }, [selectedConsultation, user, supabase]);
 
-//   // Marquer les messages comme lus
 //   useEffect(() => {
 //     if (!selectedConsultation || !user) return;
 
@@ -360,13 +390,22 @@
 
 //   return (
 //     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-50 via-white to-teal-50">
-//       <div className="max-w-6xl mx-auto px-4 py-8">
+//       <style>{`
+//         .page-header,
+//         .page-subtitle,
+//         .consultations-list,
+//         .chat-container {
+//           opacity: 0;
+//         }
+//       `}</style>
+
+//       <div className="max-w-6xl mx-auto px-4 py-8" ref={containerRef}>
 //         {/* Header */}
 //         <div className="mb-8">
-//           <h1 className="text-3xl font-bold text-slate-900 mb-2">
+//           <h1 className="page-header text-3xl font-bold text-slate-900 mb-2">
 //             Mes consultations
 //           </h1>
-//           <p className="text-slate-600">
+//           <p className="page-subtitle text-slate-600">
 //             Suivez vos questions et les réponses de vos avocats
 //           </p>
 //         </div>
@@ -401,7 +440,7 @@
 //         ) : (
 //           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 //             {/* Liste des consultations */}
-//             <div className="space-y-4">
+//             <div className="consultations-list space-y-4">
 //               {consultations.map((consultation) => (
 //                 <div
 //                   key={consultation.id}
@@ -442,7 +481,7 @@
 //             </div>
 
 //             {/* Chat */}
-//             <div className="lg:sticky lg:top-24 lg:self-start">
+//             <div className="chat-container lg:sticky lg:top-24 lg:self-start">
 //               {selectedConsultation ? (
 //                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col h-[600px]">
 //                   {/* Header */}
@@ -761,6 +800,7 @@ export default function MesConsultationsPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [unreadCounts, setUnreadCounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
     if (!user) {
@@ -850,6 +890,9 @@ export default function MesConsultationsPage() {
                 },
               ]);
             });
+
+          // Mettre à jour les compteurs de messages non lus
+          loadUnreadCounts();
         }
       )
       .subscribe();
@@ -898,6 +941,7 @@ export default function MesConsultationsPage() {
           .in("id", messageIds);
 
         await loadMessages(selectedConsultation.id);
+        await loadUnreadCounts();
       }
     };
 
@@ -961,11 +1005,40 @@ export default function MesConsultationsPage() {
         }) || [];
 
       setConsultations(formattedData);
+
+      // Charger les compteurs de messages non lus
+      if (formattedData.length > 0) {
+        await loadUnreadCounts();
+      }
     } catch (error) {
       console.error("Erreur chargement consultations:", error);
       setError("Erreur lors du chargement des consultations.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadUnreadCounts = async () => {
+    if (!user || consultations.length === 0) return;
+
+    try {
+      const consultationIds = consultations.map((c) => c.id);
+
+      const { data: unreadData } = await supabase
+        .from("consultation_messages")
+        .select("consultation_id, id")
+        .in("consultation_id", consultationIds)
+        .eq("is_read", false)
+        .neq("sender_id", user.id);
+
+      const counts: Record<string, number> = {};
+      unreadData?.forEach((msg) => {
+        counts[msg.consultation_id] = (counts[msg.consultation_id] || 0) + 1;
+      });
+
+      setUnreadCounts(counts);
+    } catch (error) {
+      console.error("Erreur chargement messages non lus:", error);
     }
   };
 
@@ -1192,13 +1265,19 @@ export default function MesConsultationsPage() {
                         </p>
                       </div>
                     </div>
-                    {consultation.status === "pending" ? (
+                    {unreadCounts[consultation.id] > 0 ? (
+                      <span className="px-3 py-1 bg-red-500 text-white rounded-full text-xs font-medium flex items-center gap-1">
+                        <MessageSquare className="w-3 h-3" />
+                        {unreadCounts[consultation.id]} nouveau
+                        {unreadCounts[consultation.id] > 1 ? "x" : ""}
+                      </span>
+                    ) : consultation.status === "answered" ? (
+                      <CheckCircle className="w-5 h-5 text-teal-600" />
+                    ) : (
                       <span className="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium flex items-center gap-1">
                         <Clock className="w-3 h-3" />
-                        Nouveau
+                        En attente
                       </span>
-                    ) : (
-                      <CheckCircle className="w-5 h-5 text-teal-600" />
                     )}
                   </div>
                 </div>
@@ -1226,15 +1305,21 @@ export default function MesConsultationsPage() {
                           </p>
                         </div>
                       </div>
-                      {selectedConsultation.status === "pending" ? (
-                        <span className="flex items-center gap-1 px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
-                          <Clock className="w-4 h-4" />
-                          En attente
+                      {unreadCounts[selectedConsultation.id] > 0 ? (
+                        <span className="flex items-center gap-1 px-3 py-1 bg-red-500 text-white rounded-full text-sm font-medium">
+                          <MessageSquare className="w-4 h-4" />
+                          {unreadCounts[selectedConsultation.id]} nouveau
+                          {unreadCounts[selectedConsultation.id] > 1 ? "x" : ""}
                         </span>
-                      ) : (
+                      ) : selectedConsultation.status === "answered" ? (
                         <span className="flex items-center gap-1 px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">
                           <CheckCircle className="w-4 h-4" />
                           Répondu
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1 px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
+                          <Clock className="w-4 h-4" />
+                          En attente
                         </span>
                       )}
                     </div>

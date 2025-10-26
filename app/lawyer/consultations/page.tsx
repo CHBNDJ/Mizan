@@ -15,6 +15,7 @@
 //   MapPin,
 // } from "lucide-react";
 // import { Message, Consultation } from "@/types";
+// import { gsap } from "gsap";
 
 // const capitalizeWords = (text: string) => {
 //   if (!text) return "";
@@ -28,6 +29,7 @@
 //   const supabase = createClient();
 //   const { user, profile } = useAuth();
 //   const router = useRouter();
+//   const containerRef = useRef<HTMLDivElement>(null);
 //   const [consultations, setConsultations] = useState<Consultation[]>([]);
 //   const [messages, setMessages] = useState<Message[]>([]);
 //   const [loading, setLoading] = useState(true);
@@ -69,7 +71,45 @@
 //     scrollToBottom();
 //   }, [messages]);
 
-//   // Écoute des nouveaux messages en temps réel
+//   useEffect(() => {
+//     if (!containerRef.current || loading) return;
+
+//     const timeline = gsap.timeline();
+
+//     timeline
+//       .fromTo(
+//         ".page-header",
+//         { opacity: 0, y: -30 },
+//         { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }
+//       )
+//       .fromTo(
+//         ".page-subtitle",
+//         { opacity: 0, y: -20 },
+//         { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+//         "-=0.4"
+//       )
+//       .fromTo(
+//         ".filter-buttons",
+//         { opacity: 0, y: -15 },
+//         { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+//         "-=0.3"
+//       )
+//       .fromTo(
+//         ".consultations-list",
+//         { opacity: 0, x: -20 },
+//         { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" },
+//         "-=0.3"
+//       )
+//       .fromTo(
+//         ".chat-container",
+//         { opacity: 0, x: 20 },
+//         { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" },
+//         "-=0.4"
+//       );
+//   }, [loading]);
+
+//   // [Le reste du code continue avec les mêmes useEffect pour real-time, typing, etc...]
+
 //   useEffect(() => {
 //     if (!selectedConsultation) return;
 
@@ -112,7 +152,6 @@
 //     };
 //   }, [selectedConsultation, supabase]);
 
-//   // Broadcast "typing" status
 //   useEffect(() => {
 //     if (!selectedConsultation || !user) return;
 
@@ -132,7 +171,6 @@
 //     };
 //   }, [selectedConsultation, user, supabase]);
 
-//   // Marquer les messages comme lus
 //   useEffect(() => {
 //     if (!selectedConsultation || !user) return;
 
@@ -216,7 +254,6 @@
 
 //   const loadMessages = async (consultationId: string) => {
 //     try {
-//       // Charger les messages
 //       const { data: messagesData, error: messagesError } = await supabase
 //         .from("consultation_messages")
 //         .select("*")
@@ -233,7 +270,6 @@
 //         return;
 //       }
 
-//       // Récupérer les infos des senders
 //       const senderIds = [...new Set(messagesData.map((m) => m.sender_id))];
 
 //       const { data: sendersData, error: sendersError } = await supabase
@@ -245,7 +281,6 @@
 //         console.error("Erreur chargement senders:", sendersError);
 //       }
 
-//       // Fusionner les données
 //       const enrichedMessages: Message[] = messagesData.map((msg) => {
 //         const sender = sendersData?.find((s) => s.id === msg.sender_id);
 //         return {
@@ -395,13 +430,23 @@
 
 //   return (
 //     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-50 via-white to-teal-50">
-//       <div className="max-w-7xl mx-auto px-4 py-8">
+//       <style>{`
+//         .page-header,
+//         .page-subtitle,
+//         .filter-buttons,
+//         .consultations-list,
+//         .chat-container {
+//           opacity: 0;
+//         }
+//       `}</style>
+
+//       <div className="max-w-7xl mx-auto px-4 py-8" ref={containerRef}>
 //         {/* Header */}
 //         <div className="mb-8">
-//           <h1 className="text-3xl font-bold text-slate-900 mb-2">
+//           <h1 className="page-header text-3xl font-bold text-slate-900 mb-2">
 //             Mes consultations
 //           </h1>
-//           <p className="text-slate-600">
+//           <p className="page-subtitle text-slate-600">
 //             Gérez les questions de vos clients et apportez vos réponses
 //           </p>
 //         </div>
@@ -418,7 +463,7 @@
 //         )}
 
 //         {/* Filtres */}
-//         <div className="flex flex-wrap gap-3 mb-6">
+//         <div className="filter-buttons flex flex-wrap gap-3 mb-6">
 //           <button
 //             onClick={() => setFilter("all")}
 //             className={`cursor-pointer px-4 py-2 rounded-lg font-medium transition-all ${
@@ -471,7 +516,7 @@
 //         ) : (
 //           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 //             {/* Liste */}
-//             <div className="space-y-4">
+//             <div className="consultations-list space-y-4">
 //               {filteredConsultations.map((consultation) => (
 //                 <div
 //                   key={consultation.id}
@@ -515,7 +560,7 @@
 //             </div>
 
 //             {/* Chat */}
-//             <div className="lg:sticky lg:top-24 lg:self-start">
+//             <div className="chat-container lg:sticky lg:top-24 lg:self-start">
 //               {selectedConsultation ? (
 //                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col h-[600px]">
 //                   {/* Header */}
@@ -823,6 +868,7 @@ export default function LawyerConsultationsPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [unreadCounts, setUnreadCounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
     if (!user) {
@@ -885,8 +931,6 @@ export default function LawyerConsultationsPage() {
       );
   }, [loading]);
 
-  // [Le reste du code continue avec les mêmes useEffect pour real-time, typing, etc...]
-
   useEffect(() => {
     if (!selectedConsultation) return;
 
@@ -920,6 +964,9 @@ export default function LawyerConsultationsPage() {
                 },
               ]);
             });
+
+          // Mettre à jour les compteurs
+          loadUnreadCounts();
         }
       )
       .subscribe();
@@ -968,6 +1015,7 @@ export default function LawyerConsultationsPage() {
           .in("id", messageIds);
 
         await loadMessages(selectedConsultation.id);
+        await loadUnreadCounts();
       }
     };
 
@@ -1021,11 +1069,40 @@ export default function LawyerConsultationsPage() {
       })) || []) as Consultation[];
 
       setConsultations(formattedData);
+
+      // Charger les compteurs de messages non lus
+      if (formattedData.length > 0) {
+        await loadUnreadCounts();
+      }
     } catch (error) {
       console.error("Erreur chargement consultations:", error);
       setError("Erreur lors du chargement des consultations.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadUnreadCounts = async () => {
+    if (!user || consultations.length === 0) return;
+
+    try {
+      const consultationIds = consultations.map((c) => c.id);
+
+      const { data: unreadData } = await supabase
+        .from("consultation_messages")
+        .select("consultation_id, id")
+        .in("consultation_id", consultationIds)
+        .eq("is_read", false)
+        .neq("sender_id", user.id);
+
+      const counts: Record<string, number> = {};
+      unreadData?.forEach((msg) => {
+        counts[msg.consultation_id] = (counts[msg.consultation_id] || 0) + 1;
+      });
+
+      setUnreadCounts(counts);
+    } catch (error) {
+      console.error("Erreur chargement messages non lus:", error);
     }
   };
 
@@ -1193,8 +1270,8 @@ export default function LawyerConsultationsPage() {
     return c.status === filter;
   });
 
-  const pendingCount = consultations.filter(
-    (c) => c.status === "pending"
+  const pendingCount = Object.keys(unreadCounts).filter(
+    (id) => unreadCounts[id] > 0
   ).length;
 
   if (loading) {
@@ -1259,8 +1336,8 @@ export default function LawyerConsultationsPage() {
                 : "bg-white text-slate-700 border border-slate-200 hover:border-teal-300 hover:bg-teal-50"
             }`}
           >
-            <Clock className="w-4 h-4" />
-            En attente ({pendingCount})
+            <MessageSquare className="w-4 h-4" />
+            Nouveaux messages ({pendingCount})
           </button>
           <button
             onClick={() => setFilter("answered")}
@@ -1281,7 +1358,7 @@ export default function LawyerConsultationsPage() {
             <h3 className="text-xl font-semibold text-slate-800 mb-2">
               Aucune consultation{" "}
               {filter !== "all" && filter === "pending"
-                ? "en attente"
+                ? "avec nouveaux messages"
                 : "répondue"}
             </h3>
             <p className="text-slate-600">
@@ -1319,13 +1396,18 @@ export default function LawyerConsultationsPage() {
                         </p>
                       </div>
                     </div>
-                    {consultation.status === "pending" ? (
+                    {unreadCounts[consultation.id] > 0 ? (
+                      <span className="px-3 py-1 bg-red-500 text-white rounded-full text-xs font-medium flex items-center gap-1">
+                        <MessageSquare className="w-3 h-3" />
+                        {unreadCounts[consultation.id]}
+                      </span>
+                    ) : consultation.status === "answered" ? (
+                      <CheckCircle className="w-5 h-5 text-teal-600" />
+                    ) : (
                       <span className="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium flex items-center gap-1">
                         <Clock className="w-3 h-3" />
-                        Nouveau
+                        En attente
                       </span>
-                    ) : (
-                      <CheckCircle className="w-5 h-5 text-teal-600" />
                     )}
                   </div>
 
@@ -1385,14 +1467,12 @@ export default function LawyerConsultationsPage() {
                               : "bg-slate-100 text-slate-900"
                           } rounded-lg p-4`}
                         >
-                          {/* Message texte */}
                           {message.message && (
                             <p className="text-sm whitespace-pre-wrap leading-relaxed">
                               {message.message}
                             </p>
                           )}
 
-                          {/* Pièce jointe */}
                           {message.attachment_url && (
                             <div className="mt-2">
                               {message.attachment_type?.startsWith("image/") ? (
@@ -1423,7 +1503,6 @@ export default function LawyerConsultationsPage() {
                             </div>
                           )}
 
-                          {/* Timestamp + Checkmark */}
                           <div className="flex items-center gap-2 justify-end mt-3 pt-2 border-t border-white/10">
                             <p
                               className={`text-xs ${
