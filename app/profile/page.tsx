@@ -912,7 +912,7 @@ export default function ProfilePage() {
                       </div>
                     </div>
 
-                    <div>
+                    <div className="mb-4">
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Tarif de consultation (DZD)
                       </label>
