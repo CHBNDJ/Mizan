@@ -709,12 +709,6 @@ export default function LawyerRegisterPage() {
                 placeholder="15000"
                 disabled={isSubmitting}
               />
-              <p className="text-xs text-slate-500 mt-1">
-                Optionnel • Min: 5,000 DZD • Max: 100,000 DZD
-              </p>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Laissez vide pour un tarif calculé automatiquement
-              </p>
               {errors.consultationPrice && (
                 <p className={errorClass}>{errors.consultationPrice}</p>
               )}

@@ -7,8 +7,6 @@ import { formatPrice, calculateConsultationPrice } from "@/lib/priceUtils";
 
 export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
   const experienceAnnees = avocat.experience?.annees || 0;
-  const basePrice = 3000 + experienceAnnees * 200;
-  const ratingBonus = avocat.rating ? avocat.rating * 500 : 0;
   const tarifEstime = calculateConsultationPrice(
     avocat.consultation_price,
     avocat.experience?.annees || 0,

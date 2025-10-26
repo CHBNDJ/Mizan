@@ -936,13 +936,6 @@ export default function ProfilePage() {
                             className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
                             placeholder="15000"
                           />
-                          <p className="text-xs text-slate-500 mt-1">
-                            Min: 5,000 DZD • Max: 100,000 DZD
-                          </p>
-                          <p className="text-xs text-slate-400 mt-0.5">
-                            Laissez vide (0) pour un tarif calculé
-                            automatiquement
-                          </p>
                         </div>
                       ) : (
                         <div className="p-3 bg-slate-50 rounded-lg">
