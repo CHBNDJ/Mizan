@@ -1053,7 +1053,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     Connectez-vous pour voir les coordonnées
                   </p>
                   <Link href="/auth/login">
-                    <button className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors">
+                    <button className="bg-teal-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors">
                       Se connecter
                     </button>
                   </Link>
@@ -1066,15 +1066,15 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               <Card className="bg-white shadow-sm transition-all duration-300">
                 <CardContent className="p-6">
                   <div className="max-w-2xl mx-auto text-center space-y-6">
-                    <div className="space-y-4">
-                      <h3 className="text-2xl lg:text-xl font-semibold text-slate-700">
+                    <div className="space-y-3">
+                      <h3 className="font-medium text-slate-700">
                         Vous êtes cet avocat ?
                       </h3>
                     </div>
                     <div className="pt-2">
                       <Link
                         href={`/claim-profile/${avocat.id}`}
-                        className="inline-flex items-center gap-2 px-5 py-3 bg-teal-600 hover:from-teal-700 hover:to-teal-800 text-white font-semibold text-base rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-100"
+                        className="inline-flex items-center gap-2 px-6 py-2 bg-teal-600 hover:from-teal-700 hover:to-teal-800 text-white font-semibold text-base rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-100"
                       >
                         Réclamer ce profil
                       </Link>
