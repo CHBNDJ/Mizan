@@ -187,13 +187,6 @@ export default function LawyerOnboardingPage() {
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => router.push("/lawyer/dashboard")}
-              className="cursor-pointer bg-teal-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-teal-700 transition-colors flex items-center justify-center"
-            >
-              Voir mon tableau de bord
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </button>
-            <button
               onClick={() => router.push("/")}
               className="cursor-pointer border border-slate-300 text-slate-600 px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors"
             >
