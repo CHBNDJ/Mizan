@@ -8,6 +8,7 @@ import { homeMetadata, siteConfig } from "./metadata";
 import { OrganizationJsonLd } from "@/components/JsonLd";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import type { Metadata } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const merriweather = Merriweather({
   subsets: ["latin"],
@@ -54,6 +55,8 @@ export default function RootLayout({
           <ScrollManager>{children}</ScrollManager>
           <Footer />
         </AuthProvider>
+
+        <SpeedInsights />
       </body>
     </html>
   );

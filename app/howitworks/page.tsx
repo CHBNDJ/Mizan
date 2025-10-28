@@ -10,6 +10,7 @@ import {
   CheckCircle,
   Clock,
   MapPin,
+  MessageSquare,
 } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -159,10 +160,10 @@ export default function HowItWorksPage() {
       {/* Hero Section */}
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="hero-title text-4xl md:text-5xl font-bold text-slate-800 mb-6">
+          <h1 className="hero-title text-3xl md:text-5xl font-bold text-slate-800 mb-6">
             Comment fonctionne MIZAN ?
           </h1>
-          <p className="hero-subtitle text-xl text-slate-600 max-w-3xl mx-auto">
+          <p className="hero-subtitle text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto">
             La plateforme qui simplifie la recherche d'expertise juridique en
             Algérie. Découvrez comment clients et avocats se connectent en toute
             confiance.
@@ -174,7 +175,7 @@ export default function HowItWorksPage() {
       <section className="steps-section py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="section-title text-3xl font-bold text-slate-800 mb-4">
+            <h2 className="section-title text-2xl sm:text-3xl font-bold text-slate-800 mb-4">
               Pour les clients
             </h2>
             <p className="section-subtitle text-lg text-slate-600">
@@ -184,14 +185,13 @@ export default function HowItWorksPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Étape 1 */}
-            <div className="step-card bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mr-4">
-                  <Search className="w-6 h-6 text-teal-600" />
+            <div className="step-card bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-shadow text-center">
+              <div className="flex items-center justify-center mb-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                  <Search className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600" />
                 </div>
               </div>
-
-              <h3 className="text-xl font-semibold text-slate-800 mb-3">
+              <h3 className="text-xl font-bold text-slate-800 mb-3">
                 Recherchez votre avocat
               </h3>
 
@@ -200,27 +200,27 @@ export default function HowItWorksPage() {
                 juridique et région.
               </p>
 
-              <ul className="space-y-2">
-                <li className="flex items-center text-sm text-slate-500">
-                  <CheckCircle className="w-4 h-4 text-teal-500 mr-2" />
-                  Plus de 15 spécialités disponibles
+              <ul className="space-y-2 flex flex-col items-center">
+                <li className="flex justify-center text-center items-center text-sm text-slate-500 leading-tight tracking-tight gap-2">
+                  <CheckCircle className="w-4 h-4 text-teal-500 shrink-0" />
+                  Plus de 15 spécialités
                 </li>
-                <li className="flex items-center text-sm text-slate-500">
-                  <CheckCircle className="w-4 h-4 text-teal-500 mr-2" />
+                <li className="flex items-center text-sm text-slate-500 leading-tight tracking-tight gap-2">
+                  <CheckCircle className="w-4 h-4 text-teal-500 shrink-0" />
                   Recherche par région
                 </li>
               </ul>
             </div>
 
             {/* Étape 2 */}
-            <div className="step-card bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-center mb-4">
+            <div className="step-card bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-shadow text-center">
+              <div className="flex items-center justify-center mb-4">
                 <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mr-4">
                   <UserCheck className="w-6 h-6 text-teal-600" />
                 </div>
               </div>
 
-              <h3 className="text-xl font-semibold text-slate-800 mb-3">
+              <h3 className="text-xl font-bold text-slate-800 mb-3">
                 Consultez les profils
               </h3>
 
@@ -229,43 +229,43 @@ export default function HowItWorksPage() {
                 chaque avocat vérifié.
               </p>
 
-              <ul className="space-y-2">
-                <li className="flex items-center text-sm text-slate-500">
-                  <CheckCircle className="w-4 h-4 text-teal-500 mr-2" />
+              <ul className="space-y-2 flex flex-col items-center">
+                <li className="flex justify-center items-center text-center text-sm text-slate-500 leading-tight tracking-tight sm:tracking-tighter gap-2 sm:gap-1">
+                  <CheckCircle className="w-4 h-4 text-teal-500 shrink-0" />
                   Profils détaillés et vérifiés
                 </li>
-                <li className="flex items-center text-sm text-slate-500">
-                  <CheckCircle className="w-4 h-4 text-teal-500 mr-2" />
-                  Avis clients authentiques
+                <li className="flex justify-center items-center text-center text-sm text-slate-500 leading-tight tracking-tight gap-2">
+                  <CheckCircle className="w-4 h-4 text-teal-500 shrink-0" />
+                  Avis clients
                 </li>
               </ul>
             </div>
 
             {/* Étape 3 */}
-            <div className="step-card bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-center mb-4">
+            <div className="step-card bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-shadow text-center">
+              <div className="flex items-center justify-center mb-4">
                 <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mr-4">
-                  <MessageCircle className="w-6 h-6 text-teal-600" />
+                  <MessageSquare className="w-6 h-6 text-teal-600" />
                 </div>
               </div>
 
-              <h3 className="text-xl font-semibold text-slate-800 mb-3">
-                Prenez contact
+              <h3 className="text-xl font-bold text-slate-800 mb-3">
+                Discutez avec votre avocat
               </h3>
 
               <p className="text-slate-600 mb-4">
-                Contactez directement l'avocat de votre choix par téléphone ou
-                email.
+                Échangez directement avec votre avocat grâce à notre messagerie
+                intégrée.
               </p>
 
-              <ul className="space-y-2">
-                <li className="flex items-center text-sm text-slate-500">
-                  <CheckCircle className="w-4 h-4 text-teal-500 mr-2" />
-                  Contact direct garanti
+              <ul className="space-y-2 flex flex-col items-center">
+                <li className="tracking-tight flex justify-center items-center text-center text-sm text-slate-500 leading-tight gap-2">
+                  <CheckCircle className="w-4 h-4 text-teal-500 shrink-0" />
+                  Messagerie sécurisée
                 </li>
-                <li className="flex items-center text-sm text-slate-500">
-                  <CheckCircle className="w-4 h-4 text-teal-500 mr-2" />
-                  Réponse rapide
+                <li className="tracking-tight flex justify-center items-center text-center gap-2 text-sm text-slate-500 leading-tight">
+                  <CheckCircle className="w-4 h-4 text-teal-500 shrink-0" />
+                  Notifications en temps réel
                 </li>
               </ul>
             </div>

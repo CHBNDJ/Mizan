@@ -515,10 +515,10 @@ export default function HomePage() {
 
       <section className="hero-section py-16 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="hero-title text-5xl font-bold text-slate-800 mb-6">
+          <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 mb-6">
             Besoin d'un avocat ?
           </h1>
-          <p className="hero-subtitle text-xl text-slate-600 mb-8 max-w-3xl mx-auto">
+          <p className="hero-subtitle text-base sm:text-xl text-slate-600 mb-8 max-w-3xl mx-auto">
             Trouvez votre avocat en Algérie selon votre besoin juridique et
             votre localisation. Avec Mizan, c'est simple, rapide et sécurisé.
           </p>
@@ -656,10 +656,10 @@ export default function HomePage() {
 
       <section className="cta-section py-12 bg-teal-500">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h2 className="cta-title text-3xl font-bold text-white mb-4">
+          <h2 className="cta-title text-2xl sm:text-3xl font-bold text-white mb-4">
             Vous êtes avocat ?
           </h2>
-          <p className="cta-subtitle text-xl text-teal-100 mb-8">
+          <p className="cta-subtitle text-lg sm:text-xl text-teal-100 mb-8">
             Rejoignez notre plateforme et développez votre clientèle
           </p>
           <Link href="/auth/lawyer/register">
