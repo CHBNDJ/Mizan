@@ -1047,10 +1047,10 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
             {/* ✅ Message si pas client connecté */}
             {(!user || profile?.user_type !== "client") && (
-              <Card className="transition-all duration-300 bg-teal-50 border-teal-200">
+              <Card className="bg-white shadow-sm transition-all duration-300">
                 <CardContent className="p-6 text-center">
-                  <p className="text-teal-800 font-medium mb-3">
-                    Connectez-vous en tant que client pour voir les coordonnées
+                  <p className="text-slate-700 font-medium mb-3">
+                    Connectez-vous pour voir les coordonnées
                   </p>
                   <Link href="/auth/login">
                     <button className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors">
