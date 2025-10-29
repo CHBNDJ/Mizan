@@ -124,13 +124,32 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
   const capitalizedLocation = capitalizeWords(location);
   const userAddress = lawyer.users?.address;
 
+  // ✅ CORRECTION CRITIQUE : Récupérer le vrai genre depuis Supabase
+  const userGender = lawyer.users?.gender?.toLowerCase();
+  const genre: "homme" | "femme" =
+    userGender === "female" || userGender === "femme" ? "femme" : "homme";
+
+  // ✅ CORRECTION CRITIQUE : Récupérer les vraies langues depuis Supabase
+  let langues = ["Arabe", "Français"]; // Par défaut
+  if (lawyer.users?.languages && Array.isArray(lawyer.users.languages)) {
+    langues = lawyer.users.languages.map((lang: string) =>
+      capitalizeWords(lang)
+    );
+  } else if (lawyer.languages && Array.isArray(lawyer.languages)) {
+    langues = lawyer.languages.map((lang: string) => capitalizeWords(lang));
+  }
+
+  console.log(
+    `👤 Avocat ${lawyer.users?.last_name}: genre=${genre}, langues=${langues.join(", ")}, exp=${lawyer.experience_years}`
+  );
+
   return {
     id: lawyer.id,
     nom: lawyer.users?.last_name?.toUpperCase() || "",
     prenom: capitalizeWords(lawyer.users?.first_name || ""),
     avatar_url: lawyer.users?.avatar_url || undefined,
     titre: "Maître",
-    genre: "homme",
+    genre: genre, // ✅ Maintenant dynamique
     specialites: capitalizeSpecialites(lawyer.specializations),
     barreau: capitalizedLocation,
     wilaya: lawyer.wilayas?.[0]
@@ -154,7 +173,7 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
         new Date().getFullYear() - (lawyer.experience_years || 0)
       ).toString(),
     },
-    langues: ["Arabe", "Français"],
+    langues: langues, // ✅ Maintenant dynamique
     verified: lawyer.is_verified || false,
     rating: lawyer.average_rating || undefined,
     reviews_count: lawyer.total_reviews || 0,

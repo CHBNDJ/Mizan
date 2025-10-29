@@ -9,6 +9,7 @@ import { OrganizationJsonLd } from "@/components/JsonLd";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import type { Metadata } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const merriweather = Merriweather({
   subsets: ["latin"],
@@ -57,6 +58,7 @@ export default function RootLayout({
         </AuthProvider>
 
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
