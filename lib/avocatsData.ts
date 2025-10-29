@@ -167,18 +167,21 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
 export async function getSupabaseAvocats(): Promise<AvocatData[]> {
   const supabase = createClient();
   try {
-    // ✅ FILTRER LES NON VÉRIFIÉS
+    // ✅ CORRECTION : Enlever le filtre is_verified pour debug
     const { data: lawyers, error: lawyersError } = await supabase
       .from("lawyers")
-      .select("*")
-      .eq("is_verified", true);
+      .select("*");
+    // Temporairement sans .eq("is_verified", true)
 
-    if (lawyersError && Object.keys(lawyersError).length > 0) {
-      console.error("Erreur récupération lawyers:", lawyersError);
+    console.log("📊 Lawyers récupérés:", lawyers?.length, lawyers);
+
+    if (lawyersError) {
+      console.error("❌ Erreur Supabase lawyers:", lawyersError);
       return [];
     }
 
     if (!lawyers || lawyers.length === 0) {
+      console.warn("⚠️ Aucun lawyer trouvé dans Supabase");
       return [];
     }
 
@@ -187,96 +190,235 @@ export async function getSupabaseAvocats(): Promise<AvocatData[]> {
       .select("*")
       .eq("user_type", "lawyer");
 
-    if (usersError && Object.keys(usersError).length > 0) {
-      console.error("Erreur récupération users:", usersError);
+    console.log("👥 Users récupérés:", users?.length);
+
+    if (usersError) {
+      console.error("❌ Erreur Supabase users:", usersError);
       return [];
     }
 
-    if (!users || users.length === 0) {
-      return [];
-    }
+    // ✅ CORRECTION : Filtrer is_verified APRÈS la récupération
+    const verifiedLawyers = lawyers.filter(
+      (lawyer) => lawyer.is_verified === true
+    );
+    console.log("✅ Avocats vérifiés:", verifiedLawyers.length);
 
-    const combinedData = lawyers
+    const combinedData = verifiedLawyers
       .map((lawyer) => {
-        const user = users.find((u) => u.id === lawyer.id);
+        const user = users?.find((u) => u.id === lawyer.id);
         if (user) {
           return { ...lawyer, users: user };
         }
+        console.warn(`⚠️ User non trouvé pour lawyer ${lawyer.id}`);
         return null;
       })
       .filter((item) => item !== null);
 
+    console.log("🔗 Données combinées:", combinedData.length);
+
     return combinedData.map(convertSupabaseToAvocatData);
   } catch (error) {
-    console.error("Erreur récupération avocats Supabase:", error);
+    console.error("💥 Erreur critique récupération avocats:", error);
     return [];
   }
 }
 
+// ✅ AMÉLIORATION : Ajouter plus de logs dans searchAvocats
 export async function searchAvocats(
   filters: SearchFilters
 ): Promise<AvocatData[]> {
-  const allAvocats = await getSupabaseAvocats(); // ✅ Déjà filtrés par is_verified=true
+  const allAvocats = await getSupabaseAvocats();
 
-  return allAvocats.filter((avocat) => {
+  console.log("🔍 Filtres appliqués:", filters);
+  console.log("📋 Total avocats avant filtrage:", allAvocats.length);
+
+  const results = allAvocats.filter((avocat) => {
+    // Filtre spécialité
     if (filters.specialite && filters.specialite.length > 0) {
       const hasMatchingSpeciality = avocat.specialites?.some((avocatSpec) => {
         return filters.specialite!.some((filterSpec) => {
-          if (avocatSpec === filterSpec) return true;
-          const normalizedAvocatSpec = avocatSpec
-            .toLowerCase()
-            .replace(/\s+/g, "-");
-          const normalizedFilterSpec = filterSpec
-            .toLowerCase()
-            .replace(/\s+/g, "-");
-          if (normalizedAvocatSpec === normalizedFilterSpec) return true;
-          if (avocatSpec.toLowerCase() === filterSpec.toLowerCase())
-            return true;
-          return false;
+          const match =
+            avocatSpec === filterSpec ||
+            avocatSpec.toLowerCase() === filterSpec.toLowerCase() ||
+            avocatSpec.toLowerCase().replace(/\s+/g, "-") ===
+              filterSpec.toLowerCase().replace(/\s+/g, "-");
+
+          if (match) {
+            console.log(
+              `✅ Match spécialité: "${avocatSpec}" = "${filterSpec}"`
+            );
+          }
+          return match;
         });
       });
 
-      if (!hasMatchingSpeciality) return false;
+      if (!hasMatchingSpeciality) {
+        console.log(
+          `❌ Avocat ${avocat.nom} exclu (spécialités:`,
+          avocat.specialites,
+          ")"
+        );
+        return false;
+      }
     }
 
+    // Filtre wilaya
     if (filters.wilaya) {
       const matchesWilaya =
         avocat.wilaya === filters.wilaya ||
-        avocat.wilaya?.toLowerCase() === filters.wilaya.toLowerCase() ||
-        avocat.wilaya?.toLowerCase().replace(/\s+/g, "-") ===
-          filters.wilaya.toLowerCase() ||
-        filters.wilaya.toLowerCase().replace(/\s+/g, "-") ===
-          avocat.wilaya?.toLowerCase().replace(/\s+/g, "-") ||
-        (avocat as any).wilayas?.some(
-          (wilaya: string) =>
-            wilaya === filters.wilaya ||
-            wilaya.toLowerCase() === filters.wilaya!.toLowerCase() ||
-            wilaya.toLowerCase().replace(/\s+/g, "-") ===
-              filters.wilaya!.toLowerCase().replace(/\s+/g, "-")
+        avocat.wilaya?.toLowerCase() === filters.wilaya.toLowerCase();
+
+      if (!matchesWilaya) {
+        console.log(
+          `❌ Avocat ${avocat.nom} exclu (wilaya: ${avocat.wilaya} ≠ ${filters.wilaya})`
         );
-
-      if (!matchesWilaya) return false;
+        return false;
+      }
     }
 
-    if (filters.genre) {
-      if (avocat.genre !== filters.genre) return false;
+    // Filtre genre
+    if (filters.genre && avocat.genre !== filters.genre) {
+      return false;
     }
 
+    // Filtre expérience
     if (filters.experience_min !== undefined && filters.experience_min > 0) {
       const yearsExp = avocat.experience?.annees || 0;
-      if (yearsExp < filters.experience_min) return false;
+      if (yearsExp < filters.experience_min) {
+        return false;
+      }
     }
 
+    // Filtre langues
     if (filters.langues) {
       const hasLanguage = avocat.langues?.some((lang) =>
         lang.toLowerCase().includes(filters.langues!.toLowerCase())
       );
-      if (!hasLanguage) return false;
+      if (!hasLanguage) {
+        return false;
+      }
     }
 
     return true;
   });
+
+  console.log("✅ Résultats après filtrage:", results.length);
+  return results;
 }
+
+// export async function getSupabaseAvocats(): Promise<AvocatData[]> {
+//   const supabase = createClient();
+//   try {
+//     // ✅ FILTRER LES NON VÉRIFIÉS
+//     const { data: lawyers, error: lawyersError } = await supabase
+//       .from("lawyers")
+//       .select("*")
+//       .eq("is_verified", true);
+
+//     if (lawyersError && Object.keys(lawyersError).length > 0) {
+//       console.error("Erreur récupération lawyers:", lawyersError);
+//       return [];
+//     }
+
+//     if (!lawyers || lawyers.length === 0) {
+//       return [];
+//     }
+
+//     const { data: users, error: usersError } = await supabase
+//       .from("users")
+//       .select("*")
+//       .eq("user_type", "lawyer");
+
+//     if (usersError && Object.keys(usersError).length > 0) {
+//       console.error("Erreur récupération users:", usersError);
+//       return [];
+//     }
+
+//     if (!users || users.length === 0) {
+//       return [];
+//     }
+
+//     const combinedData = lawyers
+//       .map((lawyer) => {
+//         const user = users.find((u) => u.id === lawyer.id);
+//         if (user) {
+//           return { ...lawyer, users: user };
+//         }
+//         return null;
+//       })
+//       .filter((item) => item !== null);
+
+//     return combinedData.map(convertSupabaseToAvocatData);
+//   } catch (error) {
+//     console.error("Erreur récupération avocats Supabase:", error);
+//     return [];
+//   }
+// }
+
+// export async function searchAvocats(
+//   filters: SearchFilters
+// ): Promise<AvocatData[]> {
+//   const allAvocats = await getSupabaseAvocats(); // ✅ Déjà filtrés par is_verified=true
+
+//   return allAvocats.filter((avocat) => {
+//     if (filters.specialite && filters.specialite.length > 0) {
+//       const hasMatchingSpeciality = avocat.specialites?.some((avocatSpec) => {
+//         return filters.specialite!.some((filterSpec) => {
+//           if (avocatSpec === filterSpec) return true;
+//           const normalizedAvocatSpec = avocatSpec
+//             .toLowerCase()
+//             .replace(/\s+/g, "-");
+//           const normalizedFilterSpec = filterSpec
+//             .toLowerCase()
+//             .replace(/\s+/g, "-");
+//           if (normalizedAvocatSpec === normalizedFilterSpec) return true;
+//           if (avocatSpec.toLowerCase() === filterSpec.toLowerCase())
+//             return true;
+//           return false;
+//         });
+//       });
+
+//       if (!hasMatchingSpeciality) return false;
+//     }
+
+//     if (filters.wilaya) {
+//       const matchesWilaya =
+//         avocat.wilaya === filters.wilaya ||
+//         avocat.wilaya?.toLowerCase() === filters.wilaya.toLowerCase() ||
+//         avocat.wilaya?.toLowerCase().replace(/\s+/g, "-") ===
+//           filters.wilaya.toLowerCase() ||
+//         filters.wilaya.toLowerCase().replace(/\s+/g, "-") ===
+//           avocat.wilaya?.toLowerCase().replace(/\s+/g, "-") ||
+//         (avocat as any).wilayas?.some(
+//           (wilaya: string) =>
+//             wilaya === filters.wilaya ||
+//             wilaya.toLowerCase() === filters.wilaya!.toLowerCase() ||
+//             wilaya.toLowerCase().replace(/\s+/g, "-") ===
+//               filters.wilaya!.toLowerCase().replace(/\s+/g, "-")
+//         );
+
+//       if (!matchesWilaya) return false;
+//     }
+
+//     if (filters.genre) {
+//       if (avocat.genre !== filters.genre) return false;
+//     }
+
+//     if (filters.experience_min !== undefined && filters.experience_min > 0) {
+//       const yearsExp = avocat.experience?.annees || 0;
+//       if (yearsExp < filters.experience_min) return false;
+//     }
+
+//     if (filters.langues) {
+//       const hasLanguage = avocat.langues?.some((lang) =>
+//         lang.toLowerCase().includes(filters.langues!.toLowerCase())
+//       );
+//       if (!hasLanguage) return false;
+//     }
+
+//     return true;
+//   });
+// }
 
 export async function getAvocats(): Promise<AvocatData[]> {
   try {

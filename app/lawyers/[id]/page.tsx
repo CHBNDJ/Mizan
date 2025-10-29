@@ -1049,13 +1049,14 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             {(!user || profile?.user_type !== "client") && (
               <Card className="bg-white shadow-sm transition-all duration-300">
                 <CardContent className="p-6 text-center">
-                  <p className="text-slate-700 font-medium mb-3">
+                  <p className="text-slate-700 font-semibold mb-3">
                     Connectez-vous pour voir les coordonnées
                   </p>
-                  <Link href="/auth/login">
-                    <button className="bg-teal-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors">
-                      Se connecter
-                    </button>
+                  <Link
+                    href="/auth/client/register"
+                    className="inline-flex items-center gap-2 px-6 py-2 bg-teal-600 hover:from-teal-700 hover:to-teal-800 text-white font-semibold text-base rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-100"
+                  >
+                    Créez un compte
                   </Link>
                 </CardContent>
               </Card>
@@ -1065,9 +1066,9 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             {!avocat.is_claimed && (
               <Card className="bg-white shadow-sm transition-all duration-300">
                 <CardContent className="p-6">
-                  <div className="max-w-2xl mx-auto text-center space-y-6">
-                    <div className="space-y-3">
-                      <h3 className="font-medium text-slate-700">
+                  <div className="max-w-2xl mx-auto text-center space-y-2">
+                    <div className="space-y-2">
+                      <h3 className="font-semibold text-slate-700">
                         Vous êtes cet avocat ?
                       </h3>
                     </div>

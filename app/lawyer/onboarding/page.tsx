@@ -1,222 +1,9 @@
-// "use client";
-// import { useRouter } from "next/navigation";
-// import { CheckCircle, Clock, Scale, ArrowRight } from "lucide-react";
-// export default function LawyerOnboardingPage() {
-//   const router = useRouter();
-//   return (
-//     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-//       {" "}
-//       <div className="max-w-2xl mx-auto px-4 py-16">
-//         {" "}
-//         {/* Header simple */}{" "}
-//         <div className="text-center mb-12">
-//           {" "}
-//           <Scale className="h-16 w-16 text-teal-600 mx-auto mb-6" />{" "}
-//           <h1 className="text-3xl font-bold text-slate-800 mb-4">
-//             {" "}
-//             Bienvenue sur Mizan !{" "}
-//           </h1>{" "}
-//           <p className="text-lg text-slate-600">
-//             {" "}
-//             Votre compte avocat a été créé avec succès{" "}
-//           </p>{" "}
-//         </div>{" "}
-//         {/* Contenu principal simplifié */}{" "}
-//         <div className="bg-white rounded-2xl shadow-lg p-8">
-//           {" "}
-//           <div className="text-center mb-8">
-//             {" "}
-//             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-6">
-//               {" "}
-//               <CheckCircle className="w-10 h-10 text-green-600" />{" "}
-//             </div>{" "}
-//             <h2 className="text-2xl font-bold text-slate-800 mb-4">
-//               {" "}
-//               Compte créé avec succès !{" "}
-//             </h2>{" "}
-//             <p className="text-slate-600 mb-8">
-//               {" "}
-//               Nos équipes vont vérifier vos informations professionnelles. Ce
-//               processus prend généralement 24 à 48 heures.{" "}
-//             </p>{" "}
-//           </div>{" "}
-//           {/* Statut simple */}{" "}
-//           <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
-//             {" "}
-//             <div className="flex items-center mb-3">
-//               {" "}
-//               <Clock className="w-5 h-5 text-amber-600 mr-3" />{" "}
-//               <span className="font-medium text-amber-800">
-//                 {" "}
-//                 Vérification en cours{" "}
-//               </span>{" "}
-//             </div>{" "}
-//             <p className="text-amber-700 text-sm">
-//               {" "}
-//               Vous recevrez un email dès que votre profil sera validé et visible
-//               par les clients.{" "}
-//             </p>{" "}
-//           </div>{" "}
-//           {/* Actions simples */}{" "}
-//           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-//             {" "}
-//             <button
-//               onClick={() => router.push("/lawyer/dashboard")}
-//               className="cursor-pointer bg-teal-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-teal-700 transition-colors flex items-center justify-center"
-//             >
-//               {" "}
-//               Voir mon tableau de bord{" "}
-//               <ArrowRight className="w-4 h-4 ml-2" />{" "}
-//             </button>{" "}
-//             <button
-//               onClick={() => router.push("/")}
-//               className="cursor-pointer border border-slate-300 text-slate-600 px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors"
-//             >
-//               {" "}
-//               Retour à l'accueil{" "}
-//             </button>{" "}
-//           </div>{" "}
-//         </div>{" "}
-//         {/* Contact simple */}{" "}
-//         <div className="text-center mt-8">
-//           {" "}
-//           <p className="text-slate-600 text-sm">
-//             {" "}
-//             Des questions ? Contactez-nous à{" "}
-//             <a
-//               href="mailto:support@mizan-dz.com"
-//               className="text-teal-600 hover:text-teal-700"
-//             >
-//               {" "}
-//               support@mizan-dz.com{" "}
-//             </a>{" "}
-//           </p>{" "}
-//         </div>{" "}
-//       </div>{" "}
-//     </div>
-//   );
-// }
-
-// "use client";
-
-// import { useRouter } from "next/navigation";
-// import { useEffect, useState } from "react";
-// import { CheckCircle, Clock, Scale, ArrowRight, Loader2 } from "lucide-react";
-// import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-
-// export default function LawyerOnboardingPage() {
-//   const router = useRouter();
-//   const supabase = createClientComponentClient();
-//   const [lawyerName, setLawyerName] = useState("");
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchUserData = async () => {
-//       try {
-//         const {
-//           data: { user },
-//         } = await supabase.auth.getUser();
-
-//         if (user) {
-//           // Récupérer les métadonnées utilisateur
-//           const firstName = user.user_metadata?.firstName || "";
-//           const lastName = user.user_metadata?.lastName || "";
-//           setLawyerName(firstName ? `${firstName} ${lastName}`.trim() : "");
-//         }
-//       } catch (error) {
-//         // Silencieux en cas d'erreur
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchUserData();
-//   }, [supabase]);
-
-//   if (loading) {
-//     return (
-//       <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
-//         <Loader2 className="w-8 h-8 text-teal-600 animate-spin" />
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-//       <div className="max-w-2xl mx-auto px-4 py-16">
-//         {/* Header */}
-//         <div className="text-center mb-12">
-//           <Scale className="h-16 w-16 text-teal-600 mx-auto mb-6" />
-//           <h1 className="text-3xl font-bold text-slate-800 mb-4">
-//             Bienvenue {lawyerName && `Maître ${lawyerName}`} sur Mizan !
-//           </h1>
-//           <p className="text-lg text-slate-600">
-//             Votre compte avocat a été créé avec succès
-//           </p>
-//         </div>
-
-//         {/* Contenu principal */}
-//         <div className="bg-white rounded-2xl shadow-lg p-8">
-//           <div className="text-center mb-8">
-//             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-6">
-//               <CheckCircle className="w-10 h-10 text-green-600" />
-//             </div>
-//             <h2 className="text-2xl font-bold text-slate-800 mb-4">
-//               Compte créé avec succès !
-//             </h2>
-//             <p className="text-slate-600 mb-8">
-//               Nos équipes vont vérifier vos informations professionnelles. Ce
-//               processus prend généralement 24 à 48 heures.
-//             </p>
-//           </div>
-
-//           {/* Statut */}
-//           <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
-//             <div className="flex items-center mb-3">
-//               <Clock className="w-5 h-5 text-amber-600 mr-3" />
-//               <span className="font-medium text-amber-800">
-//                 Vérification en cours
-//               </span>
-//             </div>
-//             <p className="text-amber-700 text-sm">
-//               Vous recevrez un email dès que votre profil sera validé et visible
-//               par les clients.
-//             </p>
-//           </div>
-
-//           {/* Actions */}
-//           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-//             <button
-//               onClick={() => router.push("/")}
-//               className="cursor-pointer border border-slate-300 text-slate-600 px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors"
-//             >
-//               Retour à l'accueil
-//             </button>
-//           </div>
-//         </div>
-
-//         {/* Contact */}
-//         <div className="text-center mt-8">
-//           <p className="text-slate-600 text-sm">
-//             Des questions ? Contactez-nous à{" "}
-//             <a
-//               href="mailto:support@mizan-dz.com"
-//               className="text-teal-600 hover:text-teal-700"
-//             >
-//               support@mizan-dz.com
-//             </a>
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CheckCircle, Clock, Scale, Loader2 } from "lucide-react";
+import { Loader2, Home } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Link from "next/link";
 
 export default function LawyerOnboardingPage() {
   const router = useRouter();
@@ -231,39 +18,82 @@ export default function LawyerOnboardingPage() {
           data: { user },
         } = await supabase.auth.getUser();
 
-        if (user) {
-          // ✅ Vérifier si vérifié
-          const { data: profile } = await supabase
-            .from("users")
-            .select("verified, user_type")
-            .eq("id", user.id)
-            .single();
-
-          // ✅ Si avocat vérifié, rediriger vers dashboard
-          if (profile?.user_type === "lawyer" && profile?.verified) {
-            router.push("/lawyer/dashboard");
-            return;
-          }
-
-          // ✅ Si avocat non vérifié, déconnecter
-          if (profile?.user_type === "lawyer" && !profile?.verified) {
-            await supabase.auth.signOut();
-          }
-
-          // Récupérer le nom
-          const firstName = user.user_metadata?.firstName || "";
-          const lastName = user.user_metadata?.lastName || "";
-          setLawyerName(firstName ? `${firstName} ${lastName}`.trim() : "");
+        if (!user) {
+          // Pas d'utilisateur connecté, rester sur la page
+          setLoading(false);
+          return;
         }
+
+        // ✅ Récupérer le profil avec first_name et last_name
+        const { data: profile } = await supabase
+          .from("users")
+          .select("verified, user_type, first_name, last_name")
+          .eq("id", user.id)
+          .single();
+
+        if (!profile) {
+          setLoading(false);
+          return;
+        }
+
+        // ✅ Si avocat vérifié, rediriger vers dashboard
+        if (profile.user_type === "lawyer" && profile.verified) {
+          router.push("/lawyer/dashboard");
+          return;
+        }
+
+        // ✅ Si avocat non vérifié
+        if (profile.user_type === "lawyer" && !profile.verified) {
+          // Récupérer et formater le nom
+          const firstName =
+            profile.first_name || user.user_metadata?.firstName || "";
+          const lastName =
+            profile.last_name || user.user_metadata?.lastName || "";
+
+          let fullName = "";
+          if (firstName && lastName) {
+            fullName = `${firstName} ${lastName}`.trim();
+          } else if (firstName) {
+            fullName = firstName;
+          } else if (lastName) {
+            fullName = lastName;
+          }
+
+          setLawyerName(fullName);
+
+          // ✅ Déconnecter l'utilisateur
+          await supabase.auth.signOut();
+          setLoading(false);
+          return;
+        }
+
+        // ✅ Si ce n'est pas un avocat, rediriger vers accueil
+        if (profile.user_type !== "lawyer") {
+          router.push("/");
+          return;
+        }
+
+        setLoading(false);
       } catch (error) {
-        console.error("Erreur:", error);
-      } finally {
+        console.error("Erreur dans fetchUserData:", error);
         setLoading(false);
       }
     };
 
     fetchUserData();
-  }, [supabase]);
+  }, [supabase, router]);
+
+  // Afficher un loader pendant la vérification
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-teal-600 animate-spin mx-auto mb-4" />
+          <p className="text-slate-600">Vérification de votre profil...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center p-4">
@@ -286,7 +116,7 @@ export default function LawyerOnboardingPage() {
           </div>
 
           <h1 className="text-3xl font-bold text-slate-800 mb-3">
-            🎉 Inscription réussie !
+            🎉 Inscription réussie{lawyerName ? `, ${lawyerName}` : ""} !
           </h1>
 
           <p className="text-slate-600 text-lg mb-6">
@@ -365,7 +195,21 @@ export default function LawyerOnboardingPage() {
           </div>
         </div>
 
+        {/* ✅ NOUVEAU: Bouton pour retourner à l'accueil */}
         <div className="mt-8 pt-6 border-t border-slate-200">
+          <div className="text-center mb-4">
+            <p className="text-sm text-slate-500 mb-4">
+              Vous avez été déconnecté automatiquement pour des raisons de
+              sécurité.
+            </p>
+            <Link href="/">
+              <button className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg">
+                <Home className="w-4 h-4" />
+                Retour à l'accueil
+              </button>
+            </Link>
+          </div>
+
           <p className="text-sm text-slate-500 text-center">
             Besoin d'aide ? Contactez-nous à{" "}
             <a

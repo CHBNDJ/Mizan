@@ -47,6 +47,7 @@ export interface Profile {
   location?: string;
   user_type: "client" | "lawyer";
   avatar_url?: string;
+  verified?: boolean;
   address?: {
     street: string;
     neighborhood?: string;
