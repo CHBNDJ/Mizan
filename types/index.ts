@@ -42,6 +42,8 @@ export interface Profile {
   email: string;
   first_name: string;
   last_name: string;
+  gender: "homme" | "femme";
+  languages: string[];
   phone?: string;
   mobile?: string;
   location?: string;
@@ -190,6 +192,8 @@ export interface ExtendedLawyerSignupFormData {
   specializations: string[];
   experience: string;
   consultationPrice: string;
+  gender: string;
+  languages: string[];
   address: {
     street: string;
     neighborhood?: string;
@@ -223,6 +227,8 @@ export interface FormErrors {
   specializations?: string;
   experience?: string;
   consultationPrice?: string;
+  gender?: string;
+  languages?: string;
   street?: string;
   neighborhood?: string;
   city?: string;
@@ -244,6 +250,7 @@ export interface CustomSelectProps {
   className?: string;
   label?: string;
   disabled?: boolean;
+  placeholderClassName?: string;
 }
 
 export interface ProfilePageProps {

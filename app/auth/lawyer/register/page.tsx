@@ -6,7 +6,13 @@ import { Eye, EyeOff, Phone, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 import { ExtendedLawyerSignupFormData, FormErrors } from "@/types";
-import { SPECIALITES, WILAYAS, COUNTRIES } from "@/utils/constants";
+import {
+  SPECIALITES,
+  WILAYAS,
+  COUNTRIES,
+  LANGUES,
+  GENRES,
+} from "@/utils/constants";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { useAuth } from "@/hooks/useAuth";
 import { gsap } from "gsap";
@@ -22,6 +28,8 @@ export default function LawyerRegisterPage() {
     email: "",
     password: "",
     confirmPassword: "",
+    gender: "",
+    languages: [],
     phone: "",
     mobile: "",
     barNumber: "",
@@ -83,6 +91,13 @@ export default function LawyerRegisterPage() {
     value: country.code,
     label: `${country.flag} +${country.code}`,
   }));
+
+  const langueOptions = LANGUES.map((langue) => ({
+    value: langue.toLowerCase(),
+    label: langue,
+  }));
+
+  const genreOptions = GENRES;
 
   const inputBaseClass =
     "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700";
@@ -238,6 +253,14 @@ export default function LawyerRegisterPage() {
       }
     }
 
+    if (!formData.gender) {
+      newErrors.gender = "Le genre est requis";
+    }
+
+    if (formData.languages.length === 0) {
+      newErrors.languages = "Sélectionnez au moins une langue";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -252,6 +275,7 @@ export default function LawyerRegisterPage() {
 
     try {
       const userData = {
+        gender: formData.gender,
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
         phone: formData.phone.trim()
@@ -275,6 +299,7 @@ export default function LawyerRegisterPage() {
           city: formData.address.city.trim(),
           postalCode: formData.address.postalCode.trim(),
         },
+        languages: formData.languages,
       };
 
       const result = await signUp(formData.email, formData.password, userData);
@@ -369,6 +394,25 @@ export default function LawyerRegisterPage() {
                   <p className={errorClass}>{errors.lastName}</p>
                 )}
               </div>
+            </div>
+
+            {/* Genre */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Genre *
+              </label>
+              <CustomSelect
+                options={genreOptions}
+                value={formData.gender}
+                onChange={(value) =>
+                  setFormData({ ...formData, gender: value })
+                }
+                placeholder="Sélectionnez votre genre"
+                placeholderClassName="text-slate-400 text-sm font-normal"
+                className="h-12"
+                disabled={isSubmitting}
+              />
+              {errors.gender && <p className={errorClass}>{errors.gender}</p>}
             </div>
 
             {/* Email */}
@@ -536,7 +580,7 @@ export default function LawyerRegisterPage() {
             </div>
 
             {/* Téléphone fixe */}
-            <div>
+            <div className="relative z-40">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
                 <Phone className="w-4 h-4" />
                 Téléphone fixe
@@ -569,7 +613,7 @@ export default function LawyerRegisterPage() {
             </div>
 
             {/* Mobile */}
-            <div>
+            <div className="relative z-30">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
                 <Smartphone className="w-5 h-5" />
                 Mobile *
@@ -685,6 +729,27 @@ export default function LawyerRegisterPage() {
                   <p className={errorClass}>{errors.experience}</p>
                 )}
               </div>
+            </div>
+
+            {/* Langues */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Langues parlées *
+              </label>
+              <MultiSelectWithCheckboxes
+                placeholder="Choisir des langues..."
+                options={langueOptions}
+                value={formData.languages}
+                onChange={(value) =>
+                  setFormData({ ...formData, languages: value })
+                }
+                className="h-12"
+                placeholderClassName="text-slate-400 font-medium text-sm"
+                disabled={isSubmitting}
+              />
+              {errors.languages && (
+                <p className={errorClass}>{errors.languages}</p>
+              )}
             </div>
 
             {/* Prix de consultation */}

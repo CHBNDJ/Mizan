@@ -66,3 +66,16 @@ export const LOCATION = [
   { value: "usa", label: "États-Unis" },
   { value: "autre-etranger", label: "Autre pays" },
 ];
+
+export const LANGUES = [
+  "Arabe",
+  "Français",
+  "Anglais",
+  "Tamazight",
+  "Espagnol",
+];
+
+export const GENRES = [
+  { value: "male", label: "Homme" },
+  { value: "female", label: "Femme" },
+];

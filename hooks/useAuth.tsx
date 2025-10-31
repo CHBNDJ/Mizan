@@ -134,6 +134,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       specializations?: string[];
       wilayas?: string[];
       experience_years?: number;
+      consultationPrice?: string;
+      gender?: string;
+      languages?: string[];
       address?: {
         street: string;
         neighborhood?: string | null;
@@ -150,6 +153,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         mobile: userData.mobile || null,
         user_type: userData.userType,
         location: userData.location || null,
+        gender: userData.gender || null,
+        languages: userData.languages || ["Arabe", "Français"],
       };
 
       if (userData.userType === "lawyer") {

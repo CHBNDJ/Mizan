@@ -201,13 +201,13 @@ export default function HowItWorksPage() {
               </p>
 
               <ul className="space-y-2 flex flex-col items-center">
-                <li className="flex justify-center text-center items-center text-sm text-slate-500 leading-tight tracking-tight gap-2">
-                  <CheckCircle className="w-4 h-4 text-teal-500 shrink-0" />
-                  Plus de 15 spécialités
+                <li className="flex items-center gap-2 text-sm text-slate-500">
+                  <CheckCircle className="w-4 h-4 text-teal-500 flex-shrink-0" />
+                  <span>Plus de 15 spécialités</span>
                 </li>
-                <li className="flex items-center text-sm text-slate-500 leading-tight tracking-tight gap-2">
-                  <CheckCircle className="w-4 h-4 text-teal-500 shrink-0" />
-                  Recherche par région
+                <li className="flex items-center gap-2 text-sm text-slate-500">
+                  <CheckCircle className="w-4 h-4 text-teal-500 flex-shrink-0" />
+                  <span>Recherche par région</span>
                 </li>
               </ul>
             </div>
@@ -230,13 +230,14 @@ export default function HowItWorksPage() {
               </p>
 
               <ul className="space-y-2 flex flex-col items-center">
-                <li className="flex justify-center items-center text-center text-sm text-slate-500 leading-tight tracking-tight sm:tracking-tighter gap-2 sm:gap-1">
-                  <CheckCircle className="w-4 h-4 text-teal-500 shrink-0" />
-                  Profils détaillés et vérifiés
+                {/* ✅ Version standardisée pour TOUS les <li> */}
+                <li className="flex items-center gap-2 text-sm text-slate-500">
+                  <CheckCircle className="w-4 h-4 text-teal-500 flex-shrink-0" />
+                  <span>Profils vérifiés</span>
                 </li>
-                <li className="flex justify-center items-center text-center text-sm text-slate-500 leading-tight tracking-tight gap-2">
-                  <CheckCircle className="w-4 h-4 text-teal-500 shrink-0" />
-                  Avis clients
+                <li className="flex items-center gap-2 text-sm text-slate-500">
+                  <CheckCircle className="w-4 h-4 text-teal-500 flex-shrink-0" />
+                  <span>Avis clients</span>
                 </li>
               </ul>
             </div>
@@ -259,13 +260,13 @@ export default function HowItWorksPage() {
               </p>
 
               <ul className="space-y-2 flex flex-col items-center">
-                <li className="tracking-tight flex justify-center items-center text-center text-sm text-slate-500 leading-tight gap-2">
-                  <CheckCircle className="w-4 h-4 text-teal-500 shrink-0" />
-                  Messagerie sécurisée
+                <li className="flex items-center gap-2 text-sm text-slate-500">
+                  <CheckCircle className="w-4 h-4 text-teal-500 flex-shrink-0" />
+                  <span>Messagerie sécurisée</span>
                 </li>
-                <li className="tracking-tight flex justify-center items-center text-center gap-2 text-sm text-slate-500 leading-tight">
-                  <CheckCircle className="w-4 h-4 text-teal-500 shrink-0" />
-                  Notifications en temps réel
+                <li className="flex items-center gap-2 text-sm text-slate-500">
+                  <CheckCircle className="w-4 h-4 text-teal-500 flex-shrink-0" />
+                  <span>Alertes temps réel</span>
                 </li>
               </ul>
             </div>

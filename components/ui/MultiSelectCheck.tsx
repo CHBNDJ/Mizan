@@ -45,18 +45,23 @@ export function MultiSelectWithCheckboxes({
       )}
 
       <div className={`relative ${className}`}>
-        {/* ✅ Input principal avec style disabled */}
+        {/* ✅ Input principal avec MÊME style que CustomSelect */}
         <div
           className={cn(
-            "w-full px-3 py-2 border-2 border-slate-300 rounded-lg bg-white flex items-center justify-between",
+            "w-full px-3 py-2 border border-slate-300 rounded-lg bg-white flex items-center justify-between",
             "transition-all duration-200 h-12 max-h-12",
+            "outline-none",
             // ✅ Styles conditionnels selon disabled
             disabled
               ? "opacity-50 cursor-not-allowed bg-slate-50 border-slate-200"
-              : "cursor-pointer hover:border-teal-300 focus-within:border-teal-300 focus-within:ring-2 focus-within:ring-teal-500/20",
+              : cn(
+                  "cursor-pointer",
+                  "hover:border-2 hover:border-teal-300", // ✅ MÊME hover
+                  "focus-within:border-2 focus-within:border-teal-300 focus-within:ring-2 focus-within:ring-teal-500/20" // ✅ MÊME focus
+                ),
             !disabled &&
               isOpen &&
-              "border-teal-300 ring-2 ring-teal-500/20 shadow-md"
+              "border-2 border-teal-300 ring-2 ring-teal-500/20 shadow-md" // ✅ MÊME état ouvert
           )}
           onClick={handleMainClick}
         >
@@ -75,7 +80,6 @@ export function MultiSelectWithCheckboxes({
                       className="inline-flex items-center gap-1 bg-teal-100 text-teal-800 px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap"
                     >
                       {option?.label}
-                      {/* ✅ Bouton X désactivé si disabled */}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -116,9 +120,9 @@ export function MultiSelectWithCheckboxes({
           />
         </div>
 
-        {/* ✅ Dropdown ne s'ouvre pas si disabled */}
+        {/* ✅ Dropdown avec z-index plus élevé */}
         {isOpen && !disabled && (
-          <div className="absolute z-50 w-full mt-2 bg-white border-2 border-teal-200 rounded-lg shadow-xl max-h-64 overflow-hidden">
+          <div className="absolute z-[100] w-full mt-2 bg-white border-2 border-teal-200 rounded-lg shadow-2xl max-h-64 overflow-hidden">
             <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-300 scrollbar-track-slate-100">
               {options.map((option) => (
                 <div

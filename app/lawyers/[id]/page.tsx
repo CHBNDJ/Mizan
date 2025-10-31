@@ -585,6 +585,7 @@ import {
   Languages,
   Briefcase,
   MessageCircle,
+  User,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";

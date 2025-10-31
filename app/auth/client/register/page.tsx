@@ -133,9 +133,7 @@ export default function ClientRegisterPage() {
       newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
     }
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Le téléphone est requis";
-    } else if (formData.phone.length < 8) {
+    if (formData.phone.trim() && formData.phone.length < 8) {
       newErrors.phone = "Numéro de téléphone trop court";
     }
 
@@ -350,7 +348,7 @@ export default function ClientRegisterPage() {
             </div>
 
             {/* Téléphone fixe */}
-            <div>
+            <div className="relative z-[70]">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
                 <Phone className="w-4 h-4" />
                 Téléphone fixe
@@ -383,7 +381,7 @@ export default function ClientRegisterPage() {
             </div>
 
             {/* Mobile */}
-            <div>
+            <div className="relative z-[60]">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
                 <Smartphone className="w-5 h-5" />
                 Mobile *
