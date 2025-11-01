@@ -36,22 +36,22 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
   const { user, profile, signOut, isAuthenticated } = useAuth();
-  const [unreadCount, setUnreadCount] = useState(0); // ✅ AJOUTÉ
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  // ✅ Cacher la navigation sur certaines pages
+  // Cacher la navigation sur certaines pages
   const hiddenPaths = ["/auth/verify-email", "/lawyer/onboarding"];
 
   if (hiddenPaths.some((path) => pathname.startsWith(path))) {
     return null;
   }
 
-  // ✅ AJOUTÉ : Compter les messages non lus
   useEffect(() => {
     if (!user) return;
 
     const loadUnreadCount = async () => {
+      console.log("🔄 Rechargement unreadCount navigation");
+
       if (profile?.user_type === "lawyer") {
-        // Récupérer les IDs des consultations de l'avocat
         const { data: consultations } = await supabase
           .from("consultations")
           .select("id")
@@ -67,12 +67,12 @@ export function Navigation() {
             .eq("sender_type", "client")
             .in("consultation_id", consultationIds);
 
+          console.log("📊 Nombre messages non lus (avocat):", count);
           setUnreadCount(count || 0);
         } else {
           setUnreadCount(0);
         }
       } else if (profile?.user_type === "client") {
-        // Récupérer les IDs des consultations du client
         const { data: consultations } = await supabase
           .from("consultations")
           .select("id")
@@ -88,6 +88,7 @@ export function Navigation() {
             .eq("sender_type", "lawyer")
             .in("consultation_id", consultationIds);
 
+          console.log("📊 Nombre messages non lus (client):", count);
           setUnreadCount(count || 0);
         } else {
           setUnreadCount(0);
@@ -97,7 +98,7 @@ export function Navigation() {
 
     loadUnreadCount();
 
-    // REAL-TIME : Mettre à jour quand des messages arrivent
+    // Écouter TOUS les changements
     const channel = supabase
       .channel("navbar-unread")
       .on(
@@ -107,7 +108,8 @@ export function Navigation() {
           schema: "public",
           table: "consultation_messages",
         },
-        () => {
+        (payload) => {
+          console.log("📡 Real-time event:", payload.eventType);
           loadUnreadCount();
         }
       )
@@ -116,7 +118,7 @@ export function Navigation() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, profile]);
+  }, [user, profile, supabase]);
 
   const capitalize = (str: string) => {
     if (!str) return str;
@@ -172,7 +174,8 @@ export function Navigation() {
           {
             href: "/mes-consultations",
             label: "Mes consultations",
-            hasNotification: unreadCount > 0,
+            hasNotification:
+              unreadCount > 0 && pathname !== "/mes-consultations",
             notificationCount: unreadCount,
           },
         ]
@@ -182,7 +185,8 @@ export function Navigation() {
           {
             href: "/lawyer/consultations",
             label: "Consultations",
-            hasNotification: unreadCount > 0,
+            hasNotification:
+              unreadCount > 0 && pathname !== "/lawyer/consultations",
             notificationCount: unreadCount,
           },
         ]

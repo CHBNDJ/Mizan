@@ -207,33 +207,6 @@ export default function LawyerConsultationsPage() {
     };
   }, [selectedConsultation, user, supabase]);
 
-  useEffect(() => {
-    if (!selectedConsultation || !user) return;
-
-    const markAsRead = async () => {
-      const { data: unreadMessages } = await supabase
-        .from("consultation_messages")
-        .select("id")
-        .eq("consultation_id", selectedConsultation.id)
-        .eq("is_read", false)
-        .neq("sender_id", user.id);
-
-      if (unreadMessages && unreadMessages.length > 0) {
-        const messageIds = unreadMessages.map((m) => m.id);
-
-        await supabase
-          .from("consultation_messages")
-          .update({ is_read: true })
-          .in("id", messageIds);
-
-        // ✅ Recharger pour MAJ badge
-        await loadConsultations();
-      }
-    };
-
-    markAsRead();
-  }, [selectedConsultation, user, supabase]);
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -263,7 +236,7 @@ export default function LawyerConsultationsPage() {
 
       if (consultationsError) throw consultationsError;
 
-      // ✅ Compter messages non lus pour chaque consultation
+      // Compter messages non lus pour chaque consultation
       const consultationsWithUnread = await Promise.all(
         (consultationsData || []).map(async (item) => {
           const { count } = await supabase
@@ -462,6 +435,46 @@ export default function LawyerConsultationsPage() {
     });
   };
 
+  const markMessagesAsReadExplicit = async (consultationId: string) => {
+    if (!user) return;
+
+    console.log("🔍 Marquage des messages comme lus pour:", consultationId);
+
+    // Récupérer les messages non lus
+    const { data: unreadMessages, error: selectError } = await supabase
+      .from("consultation_messages")
+      .select("id")
+      .eq("consultation_id", consultationId)
+      .eq("is_read", false)
+      .neq("sender_id", user.id);
+
+    console.log("📬 Messages non lus trouvés:", unreadMessages?.length || 0);
+
+    if (selectError) {
+      console.error("❌ Erreur SELECT:", selectError);
+      return;
+    }
+
+    if (unreadMessages && unreadMessages.length > 0) {
+      const messageIds = unreadMessages.map((m) => m.id);
+
+      // Marquer comme lu
+      const { error: updateError } = await supabase
+        .from("consultation_messages")
+        .update({ is_read: true })
+        .in("id", messageIds);
+
+      if (updateError) {
+        console.error("❌ Erreur UPDATE:", updateError);
+      } else {
+        console.log("✅ Messages marqués comme lus:", messageIds.length);
+
+        // Recharger IMMÉDIATEMENT après la mise à jour
+        await loadConsultations();
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-50 via-white to-teal-50 flex items-center justify-center">
@@ -521,11 +534,18 @@ export default function LawyerConsultationsPage() {
                 <div
                   key={consultation.id}
                   onClick={async () => {
+                    console.log("🖱️ Clic sur consultation:", consultation.id);
+
+                    // 1. Sélectionner la consultation
                     setSelectedConsultation(consultation);
+
+                    // 2. Marquer opened_by_lawyer si nécessaire
                     if (!consultation.opened_by_lawyer) {
                       await markConsultationAsOpened(consultation.id);
-                      await loadConsultations();
                     }
+
+                    // 3. ✅ MARQUER LES MESSAGES COMME LUS IMMÉDIATEMENT
+                    await markMessagesAsReadExplicit(consultation.id);
                   }}
                   className={`cursor-pointer bg-white rounded-xl p-5 border-2 transition-all hover:shadow-lg relative ${
                     selectedConsultation?.id === consultation.id
@@ -533,7 +553,7 @@ export default function LawyerConsultationsPage() {
                       : "border-slate-200 hover:border-teal-300"
                   }`}
                 >
-                  {/* ✅ Badge rouge - Messages non lus */}
+                  {/* Badge */}
                   {(consultation.unread_count ?? 0) > 0 && (
                     <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
                       {consultation.unread_count}
@@ -599,18 +619,11 @@ export default function LawyerConsultationsPage() {
                         </div>
                       </div>
 
-                      {/* ✅ Badge simplifié dans header */}
-                      {(selectedConsultation.unread_count ?? 0) > 0 ? (
-                        <span className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-medium">
-                          {selectedConsultation.unread_count} non lu
-                          {selectedConsultation.unread_count! > 1 ? "s" : ""}
-                        </span>
-                      ) : selectedConsultation.status === "answered" ? (
-                        <span className="flex items-center gap-1 px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">
-                          <CheckCircle className="w-4 h-4" />
-                          Répondu
-                        </span>
-                      ) : null}
+                      {/* ✅ GARDER SEULEMENT le checkmark vert */}
+                      {selectedConsultation.status === "answered" &&
+                        (selectedConsultation.unread_count ?? 0) === 0 && (
+                          <CheckCircle className="w-5 h-5 text-teal-600" />
+                        )}
                     </div>
                   </div>
 
