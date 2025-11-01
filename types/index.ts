@@ -58,6 +58,7 @@ export interface Profile {
   };
   created_at?: string;
   updated_at?: string;
+  role?: "admin";
 }
 
 export interface LawyerProfile {
@@ -66,7 +67,7 @@ export interface LawyerProfile {
   experience_years: number;
   specializations: string[];
   wilayas: string[];
-  consultation_price: number;
+  consultation_price: number | null;
   verified: boolean;
   created_at?: string;
   updated_at?: string;
@@ -74,19 +75,21 @@ export interface LawyerProfile {
 
 export interface Consultation {
   id: string;
-  client_id: string;
-  avocat_id: string;
-  titre: string;
-  description: string;
-  domaine: string;
-  urgence: "normal" | "urgent" | "tres_urgent";
-  statut: "en_attente" | "en_cours" | "terminee";
-  tarif: number;
-  reponse?: string;
-  note_client?: number;
-  commentaire_client?: string;
+  status: "pending" | "answered" | "closed";
   created_at: string;
-  updated_at: string;
+  client_id: string;
+  lawyer_id?: string;
+  question?: string;
+  response?: string;
+  answered_at?: string;
+  opened_by_lawyer?: boolean;
+  unread_count?: number;
+  client: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    location: string;
+  };
 }
 
 export interface User {
@@ -251,6 +254,7 @@ export interface CustomSelectProps {
   label?: string;
   disabled?: boolean;
   placeholderClassName?: string;
+  size?: "default" | "large";
 }
 
 export interface ProfilePageProps {
@@ -315,6 +319,7 @@ export interface ClientConsultation {
     first_name: string;
     last_name: string;
   };
+  unread_count?: number;
 }
 
 // Interfaces pour les composants

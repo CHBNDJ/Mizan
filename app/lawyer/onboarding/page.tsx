@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Loader2, Home } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Link from "next/link";
 
 export default function LawyerOnboardingPage() {
   const router = useRouter();
@@ -19,15 +18,14 @@ export default function LawyerOnboardingPage() {
         } = await supabase.auth.getUser();
 
         if (!user) {
-          // Pas d'utilisateur connecté, rester sur la page
           setLoading(false);
           return;
         }
 
-        // ✅ Récupérer le profil avec first_name et last_name
+        // ✅ Récupérer le profil
         const { data: profile } = await supabase
           .from("users")
-          .select("verified, user_type, first_name, last_name")
+          .select("user_type, first_name, last_name")
           .eq("id", user.id)
           .single();
 
@@ -36,33 +34,41 @@ export default function LawyerOnboardingPage() {
           return;
         }
 
+        // ✅ Vérifier le statut de vérification dans la table lawyers
+        const { data: lawyerData } = await supabase
+          .from("lawyers")
+          .select("is_verified")
+          .eq("id", user.id)
+          .single();
+
         // ✅ Si avocat vérifié, rediriger vers dashboard
-        if (profile.user_type === "lawyer" && profile.verified) {
+        if (profile.user_type === "lawyer" && lawyerData?.is_verified) {
           router.push("/lawyer/dashboard");
           return;
         }
 
-        // ✅ Si avocat non vérifié
-        if (profile.user_type === "lawyer" && !profile.verified) {
-          // Récupérer et formater le nom
-          const firstName =
-            profile.first_name || user.user_metadata?.firstName || "";
-          const lastName =
-            profile.last_name || user.user_metadata?.lastName || "";
+        // ✅ Si avocat non vérifié, afficher la page d'attente
+        if (profile.user_type === "lawyer" && !lawyerData?.is_verified) {
+          const firstName = profile.first_name || "";
+          const lastName = profile.last_name || "";
 
+          // ✅ Formater avec "Maître"
           let fullName = "";
           if (firstName && lastName) {
-            fullName = `${firstName} ${lastName}`.trim();
+            fullName = `Maître ${firstName} ${lastName}`;
           } else if (firstName) {
-            fullName = firstName;
+            fullName = `Maître ${firstName}`;
           } else if (lastName) {
-            fullName = lastName;
+            fullName = `Maître ${lastName}`;
+          } else {
+            fullName = "Maître";
           }
 
           setLawyerName(fullName);
 
           // ✅ Déconnecter l'utilisateur
           await supabase.auth.signOut();
+          await new Promise((resolve) => setTimeout(resolve, 500));
           setLoading(false);
           return;
         }
@@ -83,7 +89,11 @@ export default function LawyerOnboardingPage() {
     fetchUserData();
   }, [supabase, router]);
 
-  // Afficher un loader pendant la vérification
+  const handleReturnHome = async () => {
+    await supabase.auth.signOut();
+    window.location.href = "/";
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
@@ -97,11 +107,12 @@ export default function LawyerOnboardingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl p-8">
+      <div className="max-w-xl w-full bg-white rounded-2xl shadow-xl p-8">
+        {/* ✅ En-tête simplifié */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-20 h-20 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
             <svg
-              className="w-10 h-10 text-teal-600"
+              className="w-10 h-10 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -110,21 +121,22 @@ export default function LawyerOnboardingPage() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
           </div>
 
           <h1 className="text-3xl font-bold text-slate-800 mb-3">
-            🎉 Inscription réussie{lawyerName ? `, ${lawyerName}` : ""} !
+            🎉 Bienvenue {lawyerName} !
           </h1>
 
-          <p className="text-slate-600 text-lg mb-6">
-            Votre profil a bien été créé
+          <p className="text-slate-600 text-lg">
+            Votre inscription a bien été enregistrée
           </p>
         </div>
 
-        <div className="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-lg mb-8">
+        {/* ✅ Message principal simplifié */}
+        <div className="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-lg mb-6">
           <div className="flex items-start gap-3">
             <svg
               className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5"
@@ -141,77 +153,56 @@ export default function LawyerOnboardingPage() {
             </svg>
             <div>
               <h3 className="font-semibold text-amber-900 mb-2">
-                ⏳ En attente de validation
+                Validation en cours
               </h3>
               <p className="text-amber-800 text-sm leading-relaxed">
-                Notre équipe examine actuellement votre profil. Vous recevrez un
-                email de confirmation dès que votre compte sera validé.
+                Notre équipe vérifie vos informations. Vous recevrez un email
+                sous 24-48h pour activer votre compte.
               </p>
             </div>
           </div>
         </div>
 
-        <div className="space-y-4">
-          <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-lg">
+        {/* ✅ Étapes simplifiées */}
+        <div className="space-y-3 mb-8">
+          <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
             <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-teal-600 font-bold">1</span>
+              <span className="text-teal-600 font-bold text-sm">1</span>
             </div>
-            <div>
-              <p className="font-medium text-slate-800">
-                Vérification des informations
-              </p>
-              <p className="text-sm text-slate-500">
-                Contrôle de vos données professionnelles
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-lg">
-            <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-teal-600 font-bold">2</span>
-            </div>
-            <div>
-              <p className="font-medium text-slate-800">
-                Validation par l'équipe
-              </p>
-              <p className="text-sm text-slate-500">
-                Généralement sous 24-48 heures
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-lg">
-            <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-teal-600 font-bold">3</span>
-            </div>
-            <div>
-              <p className="font-medium text-slate-800">
-                Notification par email
-              </p>
-              <p className="text-sm text-slate-500">
-                Vous pourrez ensuite accéder à votre espace
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* ✅ NOUVEAU: Bouton pour retourner à l'accueil */}
-        <div className="mt-8 pt-6 border-t border-slate-200">
-          <div className="text-center mb-4">
-            <p className="text-sm text-slate-500 mb-4">
-              Vous avez été déconnecté automatiquement pour des raisons de
-              sécurité.
+            <p className="text-sm text-slate-700">
+              Vérification de vos informations
             </p>
-            <Link href="/">
-              <button className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg">
-                <Home className="w-4 h-4" />
-                Retour à l'accueil
-              </button>
-            </Link>
           </div>
 
-          <p className="text-sm text-slate-500 text-center">
-            Besoin d'aide ? Contactez-nous à{" "}
+          <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+            <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <span className="text-teal-600 font-bold text-sm">2</span>
+            </div>
+            <p className="text-sm text-slate-700">Validation (24-48h)</p>
+          </div>
+
+          <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+            <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <span className="text-teal-600 font-bold text-sm">3</span>
+            </div>
+            <p className="text-sm text-slate-700">
+              Email de confirmation avec accès
+            </p>
+          </div>
+        </div>
+
+        {/* ✅ Bouton retour simplifié */}
+        <div className="text-center pt-6 border-t border-slate-200">
+          <button
+            onClick={handleReturnHome}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg cursor-pointer mb-4"
+          >
+            <Home className="w-4 h-4" />
+            Retour à l'accueil
+          </button>
+
+          <p className="text-sm text-slate-500">
+            Questions ?{" "}
             <a
               href="mailto:support@mizan-dz.com"
               className="text-teal-600 hover:text-teal-700 font-medium"

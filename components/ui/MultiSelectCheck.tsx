@@ -122,7 +122,7 @@ export function MultiSelectWithCheckboxes({
 
         {/* ✅ Dropdown avec z-index plus élevé */}
         {isOpen && !disabled && (
-          <div className="absolute z-[100] w-full mt-2 bg-white border-2 border-teal-200 rounded-lg shadow-2xl max-h-64 overflow-hidden">
+          <div className="absolute z-[10000] w-full mt-2 bg-white border-2 border-teal-200 rounded-lg shadow-2xl max-h-64 overflow-hidden">
             <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-300 scrollbar-track-slate-100">
               {options.map((option) => (
                 <div

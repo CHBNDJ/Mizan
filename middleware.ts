@@ -35,16 +35,16 @@ export async function middleware(req: NextRequest) {
     path.match(/^\/lawyers\/[^\/]+$/) || // Profils avocats publics
     path.match(/^\/claim-profile\/[^\/]+$/); // Pages de réclamation de profil
 
-  // ✅ Si pas de session et route protégée → rediriger vers login
+  // Si pas de session et route protégée → rediriger vers login
   if (!session && !isPublicPath) {
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
-  // ✅ Si utilisateur connecté
+  // Si utilisateur connecté
   if (session?.user) {
     const { data: profile, error: profileError } = await supabase
       .from("users")
-      .select("user_type, verified")
+      .select("user_type, verified, role")
       .eq("id", session.user.id)
       .single();
 
@@ -54,19 +54,19 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/auth/login", req.url));
     }
 
-    // ✅ GESTION SPÉCIALE: Avocat non vérifié
+    // Avocat non vérifié
     if (profile?.user_type === "lawyer" && !profile?.verified) {
-      // ✅ MODIFICATION: Pages autorisées pour avocat non vérifié
+      // Pages autorisées pour avocat non vérifié
       const allowedPaths = [
         "/lawyer/onboarding",
-        "/", // ✅ NOUVEAU: Autoriser l'accueil
-        "/search", // ✅ NOUVEAU: Autoriser la recherche
-        "/howitworks", // ✅ NOUVEAU: Autoriser "Comment ça marche"
+        "/", // Autoriser l'accueil
+        "/search", // Autoriser la recherche
+        "/howitworks", // Autoriser "Comment ça marche"
       ];
 
       const isAllowedPath =
         allowedPaths.some((p) => path === p) ||
-        path.match(/^\/lawyers\/[^\/]+$/); // ✅ Profils avocats publics aussi autorisés
+        path.match(/^\/lawyers\/[^\/]+$/); // Profils avocats publics aussi autorisés
 
       if (!isAllowedPath) {
         console.log(
@@ -75,11 +75,11 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL("/lawyer/onboarding", req.url));
       }
 
-      // ✅ Si accès autorisé, laisser passer SANS créer de cookie
+      // Si accès autorisé, laisser passer SANS créer de cookie
       return res;
     }
 
-    // ✅ Si avocat vérifié essaie d'accéder à onboarding → rediriger vers dashboard
+    // Si avocat vérifié essaie d'accéder à onboarding → rediriger vers dashboard
     if (
       profile?.user_type === "lawyer" &&
       profile?.verified &&
@@ -88,7 +88,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/lawyer/dashboard", req.url));
     }
 
-    // ✅ Empêcher les clients d'accéder aux routes avocat
+    // Empêcher les clients d'accéder aux routes avocat
     if (profile?.user_type === "client" && path.startsWith("/lawyer/")) {
       console.log(
         `[Middleware] Client tente d'accéder à route avocat: ${path}`
@@ -96,7 +96,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/", req.url));
     }
 
-    // ✅ Empêcher les avocats vérifiés d'accéder aux routes client
+    // Empêcher les avocats vérifiés d'accéder aux routes client
     if (
       profile?.user_type === "lawyer" &&
       profile?.verified &&
@@ -108,7 +108,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/lawyer/dashboard", req.url));
     }
 
-    // ✅ Protection des routes avocats (dashboard, settings, etc.)
+    // Protection des routes avocats (dashboard, settings, etc.)
     const lawyerProtectedPaths = [
       "/lawyer/dashboard",
       "/lawyer/settings",
@@ -126,7 +126,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/", req.url));
     }
 
-    // ✅ Protection supplémentaire: avocat non vérifié ne peut pas accéder au dashboard
+    // Protection supplémentaire: avocat non vérifié ne peut pas accéder au dashboard
     if (
       lawyerProtectedPaths.some((p) => path.startsWith(p)) &&
       profile?.user_type === "lawyer" &&

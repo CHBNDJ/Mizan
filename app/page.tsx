@@ -269,10 +269,12 @@ export default function HomePage() {
             votre localisation. Avec Mizan, c'est simple, rapide et sécurisé.
           </p>
 
-          <div className="hero-form bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto">
+          {/* ✅ AJOUTE relative z-[200] sur le conteneur blanc */}
+          <div className="hero-form bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto relative z-[200]">
             <form onSubmit={handleSearch} className="space-y-6">
               <div className="flex flex-col lg:flex-row gap-4">
-                <div className="flex-1">
+                {/* ✅ MultiSelect - garde juste relative */}
+                <div className="flex-1 relative">
                   <MultiSelectWithCheckboxes
                     placeholder="Choisir des spécialités..."
                     options={specialiteOptions}
@@ -281,13 +283,16 @@ export default function HomePage() {
                     className="h-12"
                   />
                 </div>
-                <div className="lg:w-64">
+
+                {/* ✅ CustomSelect - garde juste relative */}
+                <div className="lg:w-64 relative">
                   <CustomSelect
                     placeholder="Choisir une wilaya"
                     options={wilayaOptions}
                     value={selectedWilaya}
                     onChange={setSelectedWilaya}
                     className="h-12"
+                    size="large"
                   />
                 </div>
               </div>

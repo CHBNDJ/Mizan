@@ -93,7 +93,7 @@ export default function LawyerRegisterPage() {
   }));
 
   const langueOptions = LANGUES.map((langue) => ({
-    value: langue.toLowerCase(),
+    value: langue,
     label: langue,
   }));
 
@@ -290,9 +290,11 @@ export default function LawyerRegisterPage() {
         specializations: formData.specializations,
         wilayas: formData.wilaya,
         experience_years: parseInt(formData.experience) || 0,
-        consultation_price: formData.consultationPrice.trim()
-          ? parseInt(formData.consultationPrice)
-          : null,
+        consultation_price:
+          formData.consultationPrice.trim() &&
+          parseInt(formData.consultationPrice) > 0
+            ? parseInt(formData.consultationPrice)
+            : null,
         address: {
           street: formData.address.street.trim(),
           neighborhood: formData.address.neighborhood?.trim() || null,

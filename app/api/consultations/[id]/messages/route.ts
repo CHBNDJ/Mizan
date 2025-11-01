@@ -95,6 +95,26 @@ export async function POST(
       throw insertError;
     }
 
+    // Si c'est l'avocat qui répond, changer le statut
+    if (senderType === "lawyer") {
+      const { data: consultationStatus } = await supabase
+        .from("consultations")
+        .select("status")
+        .eq("id", consultationId)
+        .single();
+
+      // Changer de "pending" à "answered" si c'est la première réponse
+      if (consultationStatus?.status === "pending") {
+        await supabase
+          .from("consultations")
+          .update({
+            status: "answered",
+            answered_at: new Date().toISOString(),
+          })
+          .eq("id", consultationId);
+      }
+    }
+
     // Envoyer email au destinataire
     try {
       const recipientId =
