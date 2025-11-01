@@ -212,8 +212,8 @@ export function Navigation() {
                 >
                   <span className="relative inline-flex items-center">
                     {link.label}
-                    {/* ✅ Badge rouge - Desktop */}
-                    {link.hasNotification && link.notificationCount ? ( // ✅ CHANGÉ
+                    {/* Badge rouge - Desktop */}
+                    {link.hasNotification && link.notificationCount ? (
                       <span className="absolute -top-2 -right-4 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
                         {link.notificationCount}
                       </span>
@@ -372,7 +372,7 @@ export function Navigation() {
 
       {/* Menu mobile */}
       {isOpen && (
-        <div className="fixed top-16 left-0 right-0 z-40 md:hidden border-t border-slate-200 bg-gradient-to-br from-teal-100 via-white to-teal-100 shadow-2xl backdrop-blur-lg">
+        <div className="fixed top-16 left-0 right-0 z-[9999] md:hidden border-t border-slate-200 bg-gradient-to-br from-teal-100 via-white to-teal-100 shadow-2xl backdrop-blur-lg">
           <div className="py-4 space-y-4">
             {allNavLinks.map((link) => (
               <Link
@@ -388,8 +388,8 @@ export function Navigation() {
               >
                 <span className="relative inline-flex items-center">
                   {link.label}
-                  {/* ✅ Badge rouge - Mobile */}
-                  {link.hasNotification && link.notificationCount ? ( // ✅ CHANGÉ
+                  {/* Badge rouge - Mobile */}
+                  {link.hasNotification && link.notificationCount ? (
                     <span className="ml-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
                       {link.notificationCount}
                     </span>

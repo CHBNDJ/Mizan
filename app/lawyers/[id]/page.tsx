@@ -307,7 +307,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* ✅ Section Contact - UNIQUEMENT pour clients connectés */}
+            {/* Section Contact - UNIQUEMENT pour clients connectés */}
             {user && profile?.user_type === "client" && (
               <Card className="transition-all duration-300">
                 <CardHeader>
@@ -316,133 +316,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {/* Téléphone fixe */}
-                  {avocat.contact?.telephone && (
-                    <div className="flex items-center gap-3">
-                      <Phone className="w-4 h-4 text-slate-500" />
-                      <div className="flex flex-col">
-                        <span className="text-xs text-slate-400">
-                          Téléphone fixe
-                        </span>
-                        {(() => {
-                          const phoneValue: string = avocat.contact.telephone;
-                          const formattedPhones =
-                            formatMultiplePhones(phoneValue);
-                          const phoneNumbers: string[] = phoneValue
-                            .split(",")
-                            .map((num: string) => num.trim())
-                            .filter((num: string) => num.length > 0);
-
-                          if (phoneNumbers.length === 1) {
-                            return (
-                              <a
-                                href={`tel:${phoneNumbers[0]}`}
-                                className="text-slate-700 hover:text-teal-600 transition-colors"
-                              >
-                                {formattedPhones}
-                              </a>
-                            );
-                          }
-
-                          const formattedArray = formattedPhones.split(", ");
-                          return (
-                            <div className="flex flex-wrap items-center gap-1">
-                              {phoneNumbers.map(
-                                (phone: string, index: number) => (
-                                  <React.Fragment key={index}>
-                                    <a
-                                      href={`tel:${phone}`}
-                                      className="text-slate-700 hover:text-teal-600 transition-colors"
-                                    >
-                                      {formattedArray[index] || phone}
-                                    </a>
-                                    {index < phoneNumbers.length - 1 && (
-                                      <span className="text-slate-400">,</span>
-                                    )}
-                                  </React.Fragment>
-                                )
-                              )}
-                            </div>
-                          );
-                        })()}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Mobile */}
-                  {avocat.contact?.mobile &&
-                    avocat.contact.mobile !== avocat.contact?.telephone && (
-                      <div className="flex items-center gap-3">
-                        <Smartphone className="w-4 h-4 text-slate-500" />
-                        <div className="flex flex-col">
-                          <span className="text-xs text-slate-400">Mobile</span>
-                          {(() => {
-                            const mobileValue: string = avocat.contact.mobile!;
-                            const formattedMobiles =
-                              formatMultiplePhones(mobileValue);
-                            const mobileNumbers: string[] = mobileValue
-                              .split(",")
-                              .map((num: string) => num.trim())
-                              .filter((num: string) => num.length > 0);
-
-                            if (mobileNumbers.length === 1) {
-                              return (
-                                <a
-                                  href={`tel:${mobileNumbers[0]}`}
-                                  className="text-slate-700 hover:text-teal-600 transition-colors"
-                                >
-                                  {formattedMobiles}
-                                </a>
-                              );
-                            }
-
-                            const formattedArray = formattedMobiles.split(", ");
-                            return (
-                              <div className="flex flex-wrap items-center gap-1">
-                                {mobileNumbers.map(
-                                  (mobile: string, index: number) => (
-                                    <React.Fragment key={index}>
-                                      <a
-                                        href={`tel:${mobile}`}
-                                        className="text-slate-700 hover:text-teal-600 transition-colors"
-                                      >
-                                        {formattedArray[index] || mobile}
-                                      </a>
-                                      {index < mobileNumbers.length - 1 && (
-                                        <span className="text-slate-400">
-                                          ,
-                                        </span>
-                                      )}
-                                    </React.Fragment>
-                                  )
-                                )}
-                              </div>
-                            );
-                          })()}
-                        </div>
-                      </div>
-                    )}
-
-                  {/* Email */}
-                  {avocat.contact?.email ? (
-                    <div className="flex items-center gap-3">
-                      <Mail className="w-4 h-4 text-slate-500" />
-                      <a
-                        href={`mailto:${avocat.contact.email}`}
-                        className="text-slate-700 hover:text-teal-600 transition-colors truncate tracking-tighter"
-                      >
-                        {avocat.contact.email}
-                      </a>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-3">
-                      <Mail className="w-4 h-4 text-slate-400" />
-                      <span className="text-slate-400">
-                        Email non disponible
-                      </span>
-                    </div>
-                  )}
-
                   {/* Site web */}
                   {avocat.contact?.site_web && (
                     <div className="flex items-center gap-3">
@@ -457,26 +330,10 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       </a>
                     </div>
                   )}
-
-                  {/* LinkedIn */}
-                  {avocat.contact?.linkedin && (
-                    <div className="flex items-center gap-3">
-                      <Linkedin className="w-4 h-4 text-slate-500" />
-                      <a
-                        href={avocat.contact.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-slate-700 hover:text-teal-600 transition-colors"
-                      >
-                        LinkedIn
-                      </a>
-                    </div>
-                  )}
                 </CardContent>
               </Card>
             )}
-
-            {/* ✅ Message si pas client connecté */}
+            {/* Message si pas client connecté */}
             {(!user || profile?.user_type !== "client") && (
               <Card className="bg-white shadow-sm transition-all duration-300">
                 <CardContent className="p-6 text-center">
@@ -516,7 +373,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </Card>
             )}
 
-            {/* ✅ Cartes d'action - UNIQUEMENT si ce n'est PAS son propre profil */}
+            {/* Cartes d'action - UNIQUEMENT si ce n'est PAS son propre profil */}
             {!isOwnProfile && (
               <Card className="transition-all duration-300 shadow-sm hover:shadow-md">
                 <CardContent className="p-4 sm:p-6">
@@ -539,7 +396,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       </div>
                     </button>
 
-                    {/* ✅ Contact Immédiat - Appel direct */}
+                    {/* Contact Immédiat - Appel direct */}
                     <button
                       onClick={() => {
                         if (avocat.contact?.mobile) {

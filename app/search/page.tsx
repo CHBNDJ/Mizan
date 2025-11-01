@@ -260,11 +260,11 @@ function SearchResults() {
         </div>
       </div>
 
-      {/* ✅ Résultats - SANS z-index sur le parent */}
+      {/* Résultats - SANS z-index sur le parent */}
       <div className="max-w-7xl mx-auto px-4 py-8 relative z-[100]">
         <div className="w-full">
           <div className="search-results-header">
-            {/* ✅ Juste relative, PAS de z-index */}
+            {/* Juste relative, PAS de z-index */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 relative z-[150]">
               <div>
                 <h2 className="text-lg font-semibold text-slate-800">
@@ -289,7 +289,7 @@ function SearchResults() {
                 </p>
               </div>
 
-              {/* ✅ Le CustomSelect avec son z-[9999] interne */}
+              {/* Le CustomSelect avec son z-[9999] interne */}
               {totalAvocats > 1 && (
                 <div className="w-full sm:w-48">
                   <CustomSelect
@@ -304,7 +304,7 @@ function SearchResults() {
           </div>
 
           {/* Grille des cartes */}
-          <div className="relative z-50">
+          <div className="relative -z-10">
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {[...Array(6)].map((_, i: number) => (
