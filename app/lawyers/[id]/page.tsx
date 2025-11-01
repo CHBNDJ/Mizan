@@ -5,22 +5,18 @@ import {
   ArrowLeft,
   MapPin,
   Phone,
-  Smartphone,
-  Mail,
   Globe,
-  Linkedin,
   Star,
   CheckCircle,
   Calendar,
   Languages,
   Briefcase,
   MessageCircle,
-  User,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";
 import { getInitials } from "@/lib/utils";
-import { formatMultiplePhones } from "@/lib/phoneFormatter";
+
 import { AvocatData, ProfilePageProps } from "@/types";
 import { createClient } from "@/lib/supabase/client";
 import ConsultationModal from "@/components/consultation/ConsultationModal";
@@ -307,32 +303,32 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Section Contact - UNIQUEMENT pour clients connectés */}
-            {user && profile?.user_type === "client" && (
-              <Card className="transition-all duration-300">
-                <CardHeader>
-                  <div className="text-lg font-semibold text-slate-800">
-                    Contact
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* Site web */}
-                  {avocat.contact?.site_web && (
+            {/* Section Contact - UNIQUEMENT si site web ET client connecté */}
+            {user &&
+              profile?.user_type === "client" &&
+              avocat.contact?.site_web && (
+                <Card className="transition-all duration-300">
+                  <CardHeader>
+                    <div className="text-lg font-semibold text-slate-800">
+                      En savoir plus
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
                     <div className="flex items-center gap-3">
                       <Globe className="w-4 h-4 text-slate-500" />
+
                       <a
                         href={avocat.contact.site_web}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-slate-700 hover:text-teal-600 transition-colors"
                       >
-                        Site web
+                        Voir le site web
                       </a>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
-            )}
+                  </CardContent>
+                </Card>
+              )}
             {/* Message si pas client connecté */}
             {(!user || profile?.user_type !== "client") && (
               <Card className="bg-white shadow-sm transition-all duration-300">
@@ -396,9 +392,17 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       </div>
                     </button>
 
-                    {/* Contact Immédiat - Appel direct */}
+                    {/* Contact Immédiat - Protégé */}
                     <button
                       onClick={() => {
+                        // VÉRIFIER SI CONNECTÉ
+                        if (!user || profile?.user_type !== "client") {
+                          // Rediriger vers inscription
+                          router.push("/auth/client/register");
+                          return;
+                        }
+
+                        // Si connecté, appeler
                         if (avocat.contact?.mobile) {
                           const firstMobile = avocat.contact.mobile
                             .split(",")[0]

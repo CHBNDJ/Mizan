@@ -31,19 +31,18 @@ type NavLink = {
 
 export function Navigation() {
   const pathname = usePathname();
-  const router = useRouter();
-  const supabase = createClient();
-  const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("login");
-  const { user, profile, signOut, isAuthenticated } = useAuth();
-  const [unreadCount, setUnreadCount] = useState(0);
-
   // Cacher la navigation sur certaines pages
   const hiddenPaths = ["/auth/verify-email", "/lawyer/onboarding"];
 
   if (hiddenPaths.some((path) => pathname.startsWith(path))) {
     return null;
   }
+  const router = useRouter();
+  const supabase = createClient();
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("login");
+  const { user, profile, signOut, isAuthenticated } = useAuth();
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     if (!user) return;

@@ -13,6 +13,7 @@ import {
   MapPin,
   Building,
   Camera,
+  Globe,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { createClient } from "@/lib/supabase/client";
@@ -48,6 +49,7 @@ export default function ProfilePage() {
     phone: "",
     mobile: "",
     location: "",
+    website: "",
   });
 
   const [addressData, setAddressData] = useState({
@@ -243,6 +245,7 @@ export default function ProfilePage() {
         phone: profile.phone || "",
         mobile: profile.mobile || "",
         location: profile.location || "",
+        website: profile.website || "",
       });
       setAvatarUrl(profile.avatar_url || "");
 
@@ -261,6 +264,7 @@ export default function ProfilePage() {
         phone: user.user_metadata.phone || "",
         mobile: user.user_metadata.mobile || "",
         location: user.user_metadata.location || "",
+        website: user.user_metadata.website || "",
       });
 
       if (user.user_metadata.address) {
@@ -326,6 +330,7 @@ export default function ProfilePage() {
         last_name: formData.lastName.trim(),
         phone: formData.phone.trim(),
         mobile: formData.mobile.trim(),
+        website: formData.website.trim(),
       } as any;
 
       if (profile?.user_type === "client") {
@@ -395,6 +400,7 @@ export default function ProfilePage() {
         phone: profile.phone || "",
         mobile: profile.mobile || "",
         location: profile.location || "",
+        website: profile.website || "",
       });
 
       if (profile.user_type === "lawyer" && profile.address) {
@@ -778,6 +784,31 @@ export default function ProfilePage() {
                       <Smartphone className="w-5 h-5 text-slate-400" />
                       <span className="text-slate-800">
                         {formData.mobile || profile?.mobile || "Non renseigné"}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Site web (optionnel)
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="url"
+                      name="website"
+                      value={formData.website}
+                      onChange={handleInputChange}
+                      className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
+                      placeholder="https://votre-site.com"
+                    />
+                  ) : (
+                    <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                      <Globe className="w-5 h-5 text-slate-400" />
+                      <span className="text-slate-800">
+                        {formData.website ||
+                          profile?.website ||
+                          "Non renseigné"}
                       </span>
                     </div>
                   )}

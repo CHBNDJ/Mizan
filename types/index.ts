@@ -56,6 +56,7 @@ export interface Profile {
     city: string;
     postalCode: string;
   };
+  website?: string;
   created_at?: string;
   updated_at?: string;
   role?: "admin";
