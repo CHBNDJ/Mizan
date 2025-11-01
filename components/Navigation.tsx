@@ -49,8 +49,6 @@ export function Navigation() {
     if (!user) return;
 
     const loadUnreadCount = async () => {
-      console.log("🔄 Rechargement unreadCount navigation");
-
       if (profile?.user_type === "lawyer") {
         const { data: consultations } = await supabase
           .from("consultations")
@@ -67,7 +65,6 @@ export function Navigation() {
             .eq("sender_type", "client")
             .in("consultation_id", consultationIds);
 
-          console.log("📊 Nombre messages non lus (avocat):", count);
           setUnreadCount(count || 0);
         } else {
           setUnreadCount(0);
@@ -88,7 +85,6 @@ export function Navigation() {
             .eq("sender_type", "lawyer")
             .in("consultation_id", consultationIds);
 
-          console.log("📊 Nombre messages non lus (client):", count);
           setUnreadCount(count || 0);
         } else {
           setUnreadCount(0);
@@ -98,7 +94,6 @@ export function Navigation() {
 
     loadUnreadCount();
 
-    // Écouter TOUS les changements
     const channel = supabase
       .channel("navbar-unread")
       .on(
@@ -108,8 +103,7 @@ export function Navigation() {
           schema: "public",
           table: "consultation_messages",
         },
-        (payload) => {
-          console.log("📡 Real-time event:", payload.eventType);
+        () => {
           loadUnreadCount();
         }
       )
@@ -118,7 +112,7 @@ export function Navigation() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, profile, supabase]);
+  }, [user, profile]);
 
   const capitalize = (str: string) => {
     if (!str) return str;

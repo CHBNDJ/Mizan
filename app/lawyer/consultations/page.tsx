@@ -438,9 +438,6 @@ export default function LawyerConsultationsPage() {
   const markMessagesAsReadExplicit = async (consultationId: string) => {
     if (!user) return;
 
-    console.log("🔍 Marquage des messages comme lus pour:", consultationId);
-
-    // Récupérer les messages non lus
     const { data: unreadMessages, error: selectError } = await supabase
       .from("consultation_messages")
       .select("id")
@@ -448,28 +445,17 @@ export default function LawyerConsultationsPage() {
       .eq("is_read", false)
       .neq("sender_id", user.id);
 
-    console.log("📬 Messages non lus trouvés:", unreadMessages?.length || 0);
-
-    if (selectError) {
-      console.error("❌ Erreur SELECT:", selectError);
-      return;
-    }
+    if (selectError) return;
 
     if (unreadMessages && unreadMessages.length > 0) {
       const messageIds = unreadMessages.map((m) => m.id);
 
-      // Marquer comme lu
       const { error: updateError } = await supabase
         .from("consultation_messages")
         .update({ is_read: true })
         .in("id", messageIds);
 
-      if (updateError) {
-        console.error("❌ Erreur UPDATE:", updateError);
-      } else {
-        console.log("✅ Messages marqués comme lus:", messageIds.length);
-
-        // Recharger IMMÉDIATEMENT après la mise à jour
+      if (!updateError) {
         await loadConsultations();
       }
     }
