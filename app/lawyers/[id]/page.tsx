@@ -110,7 +110,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
   return (
     <div className="min-h-screen pt-24 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      {/* Header */}
       <div>
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="flex items-center mb-4">
@@ -195,12 +194,9 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         </div>
       </div>
 
-      {/* Contenu principal */}
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Colonne principale */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Spécialités */}
             {avocat.specialites && avocat.specialites.length > 0 && (
               <Card className="transition-all duration-300">
                 <CardHeader>
@@ -224,7 +220,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </Card>
             )}
 
-            {/* Expérience */}
             <Card className="transition-all duration-300">
               <CardHeader>
                 <div className="flex items-center gap-2 text-lg font-semibold text-slate-800">
@@ -250,7 +245,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </CardContent>
             </Card>
 
-            {/* Langues */}
             {avocat.langues && avocat.langues.length > 0 && (
               <Card className="transition-all duration-300">
                 <CardHeader>
@@ -274,7 +268,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </Card>
             )}
 
-            {/* Adresse */}
             <Card className="transition-all duration-300">
               <CardHeader>
                 <div className="flex items-center gap-2 text-lg font-semibold text-slate-800">
@@ -301,9 +294,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             </Card>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Section Contact - UNIQUEMENT si site web ET client connecté */}
             {user &&
               profile?.user_type === "client" &&
               avocat.contact?.site_web && (
@@ -329,8 +320,8 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   </CardContent>
                 </Card>
               )}
-            {/* Message si pas client connecté */}
-            {(!user || profile?.user_type !== "client") && (
+
+            {!isOwnProfile && (!user || profile?.user_type !== "client") && (
               <Card className="bg-white shadow-sm transition-all duration-300">
                 <CardContent className="p-6 text-center">
                   <p className="text-slate-700 font-semibold mb-3">
@@ -346,7 +337,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </Card>
             )}
 
-            {/* Bandeau Claim */}
             {!avocat.is_claimed && (
               <Card className="bg-white shadow-sm transition-all duration-300">
                 <CardContent className="p-6">
@@ -369,12 +359,10 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </Card>
             )}
 
-            {/* Cartes d'action - UNIQUEMENT si ce n'est PAS son propre profil */}
             {(!user || profile?.user_type === "client") && !isOwnProfile && (
               <Card className="transition-all duration-300 shadow-sm hover:shadow-md">
                 <CardContent className="p-4 sm:p-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    {/* Consultation Juridique */}
                     <button
                       onClick={() => setIsConsultationModalOpen(true)}
                       className="cursor-pointer bg-teal-50 border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-6 sm:p-8 rounded-lg flex flex-col items-center gap-3 sm:gap-4 text-center group"
@@ -392,7 +380,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       </div>
                     </button>
 
-                    {/* Contact Immédiat - Protégé */}
                     <button
                       onClick={() => {
                         if (!user || profile?.user_type !== "client") {
@@ -433,7 +420,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
         </div>
 
-        {/* Section Avis */}
         <div className="mt-8">
           <ReviewSection lawyerId={avocat.id} />
         </div>

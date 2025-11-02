@@ -13,7 +13,6 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
     avocat.rating
   );
 
-  // Corriger la construction de l'URL
   const getProfileUrl = () => {
     const params = searchParams?.toString();
     return `/lawyers/${avocat.id}${params ? `?${params}` : ""}`;

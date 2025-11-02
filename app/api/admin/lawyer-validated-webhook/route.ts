@@ -13,22 +13,15 @@ export async function POST(request: NextRequest) {
   try {
     const payload = await request.json();
 
-    console.log("🔔 Webhook reçu:", payload);
-
-    // Supabase envoie : { type: "UPDATE", table: "lawyers", record: {...}, old_record: {...} }
     const lawyerId = payload.record?.id;
     const wasVerified = payload.old_record?.is_verified;
     const isNowVerified = payload.record?.is_verified;
 
-    // Vérifier que c'est bien une validation (false → true)
     if (!lawyerId || wasVerified || !isNowVerified) {
       console.log("⏭️ Pas une validation, ignoré");
       return NextResponse.json({ message: "Ignoré" });
     }
 
-    console.log(`✅ Avocat ${lawyerId} validé, envoi email...`);
-
-    // Récupérer les infos de l'avocat
     const { data: user, error } = await supabaseAdmin
       .from("users")
       .select("email, first_name, last_name")
@@ -40,7 +33,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Envoyer l'email
     await resend.emails.send({
       from: "Mizan <noreply@mizan-dz.com>",
       to: user.email,

@@ -1086,7 +1086,6 @@ export default function ProfilePage() {
                       )}
                     </div>
 
-                    {/* ✅ GENRE */}
                     <div className="mb-4">
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Genre
@@ -1119,7 +1118,6 @@ export default function ProfilePage() {
                       )}
                     </div>
 
-                    {/* ✅ LANGUES */}
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Langues parlées

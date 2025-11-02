@@ -107,7 +107,6 @@ export default function LawyerConsultationsPage() {
       );
   }, [loading]);
 
-  // ✅ REAL-TIME : Recharger quand messages ou consultations changent
   useEffect(() => {
     if (!user) return;
 
@@ -121,7 +120,7 @@ export default function LawyerConsultationsPage() {
           table: "consultation_messages",
         },
         () => {
-          loadConsultations(); // Recharger pour MAJ badges
+          loadConsultations();
           if (selectedConsultation) {
             loadMessages(selectedConsultation.id);
           }
@@ -236,7 +235,6 @@ export default function LawyerConsultationsPage() {
 
       if (consultationsError) throw consultationsError;
 
-      // Compter messages non lus pour chaque consultation
       const consultationsWithUnread = await Promise.all(
         (consultationsData || []).map(async (item) => {
           const { count } = await supabase
@@ -481,7 +479,6 @@ export default function LawyerConsultationsPage() {
       `}</style>
 
       <div className="max-w-7xl mx-auto px-4 py-8" ref={containerRef}>
-        {/* Header */}
         <div className="mb-8">
           <h1 className="page-header text-3xl font-bold text-slate-900 mb-2">
             Mes consultations
@@ -491,7 +488,6 @@ export default function LawyerConsultationsPage() {
           </p>
         </div>
 
-        {/* Message d'erreur */}
         {error && (
           <div className="mb-6 bg-red-50 border-l-4 border-red-500 rounded-r-lg p-4 flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
@@ -514,7 +510,6 @@ export default function LawyerConsultationsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Liste */}
             <div className="consultations-list space-y-4">
               {consultations.map((consultation) => (
                 <div
@@ -522,15 +517,11 @@ export default function LawyerConsultationsPage() {
                   onClick={async () => {
                     console.log("🖱️ Clic sur consultation:", consultation.id);
 
-                    // 1. Sélectionner la consultation
                     setSelectedConsultation(consultation);
 
-                    // 2. Marquer opened_by_lawyer si nécessaire
                     if (!consultation.opened_by_lawyer) {
                       await markConsultationAsOpened(consultation.id);
                     }
-
-                    // 3. ✅ MARQUER LES MESSAGES COMME LUS IMMÉDIATEMENT
                     await markMessagesAsReadExplicit(consultation.id);
                   }}
                   className={`cursor-pointer bg-white rounded-xl p-5 border-2 transition-all hover:shadow-lg relative ${
@@ -539,7 +530,6 @@ export default function LawyerConsultationsPage() {
                       : "border-slate-200 hover:border-teal-300"
                   }`}
                 >
-                  {/* Badge */}
                   {(consultation.unread_count ?? 0) > 0 && (
                     <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
                       {consultation.unread_count}
@@ -562,7 +552,6 @@ export default function LawyerConsultationsPage() {
                       </div>
                     </div>
 
-                    {/* ✅ Checkmark vert si répondu ET pas de messages non lus */}
                     {consultation.status === "answered" &&
                       (consultation.unread_count ?? 0) === 0 && (
                         <CheckCircle className="w-5 h-5 text-teal-600" />
@@ -576,11 +565,9 @@ export default function LawyerConsultationsPage() {
               ))}
             </div>
 
-            {/* Chat */}
             <div className="chat-container lg:sticky lg:top-24 lg:self-start">
               {selectedConsultation ? (
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col h-[600px]">
-                  {/* Header */}
                   <div className="p-6 bg-gradient-to-r from-teal-50 to-white border-b border-slate-200">
                     <div className="flex items-start gap-3">
                       <div className="w-12 h-12 bg-teal-600 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -605,7 +592,6 @@ export default function LawyerConsultationsPage() {
                         </div>
                       </div>
 
-                      {/* ✅ GARDER SEULEMENT le checkmark vert */}
                       {selectedConsultation.status === "answered" &&
                         (selectedConsultation.unread_count ?? 0) === 0 && (
                           <CheckCircle className="w-5 h-5 text-teal-600" />
@@ -613,7 +599,6 @@ export default function LawyerConsultationsPage() {
                     </div>
                   </div>
 
-                  {/* Messages */}
                   <div className="flex-1 overflow-y-auto p-6 space-y-4">
                     {messages.map((message) => (
                       <div
@@ -719,7 +704,6 @@ export default function LawyerConsultationsPage() {
                     <div ref={messagesEndRef} />
                   </div>
 
-                  {/* Input */}
                   <div className="p-4 border-t border-slate-200">
                     {selectedFile && (
                       <div className="mb-3 bg-slate-50 rounded-lg p-3 flex items-center justify-between">

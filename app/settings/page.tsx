@@ -413,7 +413,6 @@ export default function SettingsPage() {
             </p>
           </div>
 
-          {/* Notifications */}
           <div className="settings-section bg-white rounded-lg shadow-sm border p-4 sm:p-6 mb-4 sm:mb-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4">
               <h2 className="text-lg sm:text-xl font-semibold text-slate-800 flex items-center gap-2">
@@ -481,7 +480,6 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          {/* Confidentialité */}
           <div className="settings-section bg-white rounded-lg shadow-sm border p-4 sm:p-6 mb-4 sm:mb-6">
             <h2 className="text-lg sm:text-xl font-semibold text-slate-800 mb-4 flex items-center gap-2">
               <Shield className="w-5 h-5 text-green-600" />
@@ -525,7 +523,6 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          {/* Zone de danger */}
           <div className="settings-section bg-white rounded-lg shadow-sm border border-red-200 p-4 sm:p-6">
             <h2 className="text-lg sm:text-xl font-semibold text-red-600 mb-4">
               Zone de danger

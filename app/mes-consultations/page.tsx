@@ -91,7 +91,6 @@ export default function MesConsultationsPage() {
       );
   }, [loading]);
 
-  // Recharger quand messages ou consultations changent
   useEffect(() => {
     if (!user) return;
 
@@ -231,7 +230,6 @@ export default function MesConsultationsPage() {
         lawyersUserData = usersData || [];
       }
 
-      // Compter messages non lus pour chaque consultation
       const consultationsWithUnread = await Promise.all(
         (consultationsData || []).map(async (item) => {
           const { count } = await supabase
@@ -449,7 +447,6 @@ export default function MesConsultationsPage() {
       `}</style>
 
       <div className="max-w-6xl mx-auto px-4 py-8" ref={containerRef}>
-        {/* Header */}
         <div className="mb-8">
           <h1 className="page-header text-3xl font-bold text-slate-900 mb-2">
             Mes consultations
@@ -459,7 +456,6 @@ export default function MesConsultationsPage() {
           </p>
         </div>
 
-        {/* Message d'erreur */}
         {error && (
           <div className="mb-6 bg-red-50 border-l-4 border-red-500 rounded-r-lg p-4 flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
@@ -488,17 +484,13 @@ export default function MesConsultationsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Liste des consultations */}
             <div className="consultations-list space-y-4">
               {consultations.map((consultation) => (
                 <div
                   key={consultation.id}
                   onClick={async () => {
-                    console.log("🖱️ Clic sur consultation:", consultation.id);
-
                     setSelectedConsultation(consultation);
 
-                    // MARQUER LES MESSAGES COMME LUS
                     await markMessagesAsReadExplicit(consultation.id);
                   }}
                   className={`cursor-pointer bg-white rounded-xl p-5 border-2 transition-all hover:shadow-lg relative ${
@@ -507,7 +499,6 @@ export default function MesConsultationsPage() {
                       : "border-slate-200 hover:border-teal-300"
                   }`}
                 >
-                  {/* Badge rouge - Messages non lus */}
                   {(consultation.unread_count ?? 0) > 0 && (
                     <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
                       {consultation.unread_count}
@@ -531,7 +522,6 @@ export default function MesConsultationsPage() {
                       </div>
                     </div>
 
-                    {/* Checkmark vert si répondu ET pas de messages non lus */}
                     {consultation.status === "answered" &&
                       (consultation.unread_count ?? 0) === 0 && (
                         <CheckCircle className="w-5 h-5 text-teal-600" />
@@ -541,11 +531,9 @@ export default function MesConsultationsPage() {
               ))}
             </div>
 
-            {/* Chat - RESTE IDENTIQUE */}
             <div className="chat-container lg:sticky lg:top-24 lg:self-start">
               {selectedConsultation ? (
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col h-[600px]">
-                  {/* Header */}
                   <div className="p-6 bg-gradient-to-r from-teal-50 to-white border-b border-slate-200">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
@@ -570,7 +558,6 @@ export default function MesConsultationsPage() {
                     </div>
                   </div>
 
-                  {/* Messages - RESTE IDENTIQUE */}
                   <div className="flex-1 overflow-y-auto p-6 space-y-4">
                     {messages.length === 0 ? (
                       <div className="flex items-center justify-center h-full">
@@ -696,7 +683,6 @@ export default function MesConsultationsPage() {
                     )}
                   </div>
 
-                  {/* Input - RESTE IDENTIQUE */}
                   <div className="p-4 border-t border-slate-200">
                     {selectedFile && (
                       <div className="mb-3 bg-slate-50 rounded-lg p-3 flex items-center justify-between">

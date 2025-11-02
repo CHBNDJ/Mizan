@@ -103,7 +103,6 @@ export default function LawyerRegisterPage() {
     "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700";
   const errorClass = "text-red-500 text-xs mt-1";
 
-  // Capitaliser les noms
   const capitalizeWords = (str: string) => {
     if (!str) return str;
     return str
@@ -125,7 +124,6 @@ export default function LawyerRegisterPage() {
     }
   };
 
-  // Gérer les champs d'adresse
   const handleAddressInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const fieldName = name.replace("address.", "");
@@ -196,7 +194,6 @@ export default function LawyerRegisterPage() {
       newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
     }
 
-    // Validation téléphone et mobile
     if (!formData.phone.trim() && !formData.mobile.trim()) {
       newErrors.phone = "Au moins un numéro de téléphone est requis";
       newErrors.mobile = "Au moins un numéro de téléphone est requis";
@@ -210,7 +207,6 @@ export default function LawyerRegisterPage() {
       newErrors.mobile = "Numéro mobile trop court";
     }
 
-    // Validation adresse
     if (!formData.address.street.trim()) {
       newErrors.street = "L'adresse est requise";
     }
@@ -243,7 +239,6 @@ export default function LawyerRegisterPage() {
       newErrors.experience = "Expérience maximum 50 ans";
     }
 
-    // Validation prix
     if (formData.consultationPrice.trim()) {
       const price = parseInt(formData.consultationPrice);
       if (price < 5000) {
@@ -358,7 +353,6 @@ export default function LawyerRegisterPage() {
             className="register-form space-y-4"
             noValidate
           >
-            {/* Prénom et Nom */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -398,7 +392,6 @@ export default function LawyerRegisterPage() {
               </div>
             </div>
 
-            {/* Genre */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Genre *
@@ -417,7 +410,6 @@ export default function LawyerRegisterPage() {
               {errors.gender && <p className={errorClass}>{errors.gender}</p>}
             </div>
 
-            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Email *
@@ -435,7 +427,6 @@ export default function LawyerRegisterPage() {
               {errors.email && <p className={errorClass}>{errors.email}</p>}
             </div>
 
-            {/* Mot de passe */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Mot de passe *
@@ -469,7 +460,6 @@ export default function LawyerRegisterPage() {
               )}
             </div>
 
-            {/* Confirmation mot de passe */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Confirmer le mot de passe *
@@ -503,7 +493,6 @@ export default function LawyerRegisterPage() {
               )}
             </div>
 
-            {/* Adresse du cabinet */}
             <div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -581,7 +570,6 @@ export default function LawyerRegisterPage() {
               </div>
             </div>
 
-            {/* Téléphone fixe */}
             <div className="relative z-40">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
                 <Phone className="w-4 h-4" />
@@ -614,7 +602,6 @@ export default function LawyerRegisterPage() {
               {errors.phone && <p className={errorClass}>{errors.phone}</p>}
             </div>
 
-            {/* Mobile */}
             <div className="relative z-30">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
                 <Smartphone className="w-5 h-5" />
@@ -648,7 +635,6 @@ export default function LawyerRegisterPage() {
               {errors.mobile && <p className={errorClass}>{errors.mobile}</p>}
             </div>
 
-            {/* Numéro barreau */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Numéro d'inscription au Barreau *
@@ -668,7 +654,6 @@ export default function LawyerRegisterPage() {
               )}
             </div>
 
-            {/* Wilayas */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Wilaya(s) d'exercice *
@@ -687,7 +672,6 @@ export default function LawyerRegisterPage() {
               {errors.wilaya && <p className={errorClass}>{errors.wilaya}</p>}
             </div>
 
-            {/* Spécialités et Expérience */}
             <div className="grid grid-cols-1 sm:grid-cols-[3fr_1fr] gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -733,7 +717,6 @@ export default function LawyerRegisterPage() {
               </div>
             </div>
 
-            {/* Langues */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Langues parlées *
@@ -754,7 +737,6 @@ export default function LawyerRegisterPage() {
               )}
             </div>
 
-            {/* Prix de consultation */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Tarif de consultation (DZD)
@@ -781,7 +763,6 @@ export default function LawyerRegisterPage() {
               )}
             </div>
 
-            {/* Bouton submit */}
             <button
               type="submit"
               disabled={isSubmitting}

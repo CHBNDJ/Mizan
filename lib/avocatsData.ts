@@ -137,10 +137,6 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     langues = lawyer.languages.map((lang: string) => capitalizeWords(lang));
   }
 
-  console.log(
-    `👤 Avocat ${lawyer.users?.last_name}: genre=${genre}, langues=${langues.join(", ")}, exp=${lawyer.experience_years}`
-  );
-
   return {
     id: lawyer.id,
     nom: lawyer.users?.last_name?.toUpperCase() || "",
@@ -187,7 +183,6 @@ export async function getSupabaseAvocats(): Promise<AvocatData[]> {
     const { data: lawyers, error: lawyersError } = await supabase
       .from("lawyers")
       .select("*");
-    // Temporairement sans .eq("is_verified", true)
 
     console.log("📊 Lawyers récupérés:", lawyers?.length, lawyers);
 
@@ -216,7 +211,6 @@ export async function getSupabaseAvocats(): Promise<AvocatData[]> {
     const verifiedLawyers = lawyers.filter(
       (lawyer) => lawyer.is_verified === true
     );
-    console.log("✅ Avocats vérifiés:", verifiedLawyers.length);
 
     const combinedData = verifiedLawyers
       .map((lawyer) => {
@@ -228,8 +222,6 @@ export async function getSupabaseAvocats(): Promise<AvocatData[]> {
         return null;
       })
       .filter((item) => item !== null);
-
-    console.log("🔗 Données combinées:", combinedData.length);
 
     return combinedData.map(convertSupabaseToAvocatData);
   } catch (error) {
@@ -276,7 +268,6 @@ export async function searchAvocats(
       }
     }
 
-    // Filtre wilaya
     if (filters.wilaya) {
       const matchesWilaya =
         avocat.wilaya === filters.wilaya ||
@@ -290,12 +281,10 @@ export async function searchAvocats(
       }
     }
 
-    // Filtre genre
     if (filters.genre && avocat.genre !== filters.genre) {
       return false;
     }
 
-    // Filtre expérience
     if (filters.experience_min !== undefined && filters.experience_min > 0) {
       const yearsExp = avocat.experience?.annees || 0;
       if (yearsExp < filters.experience_min) {
@@ -303,7 +292,6 @@ export async function searchAvocats(
       }
     }
 
-    // Filtre langues
     if (filters.langues) {
       const hasLanguage = avocat.langues?.some((lang) =>
         lang.toLowerCase().includes(filters.langues!.toLowerCase())
@@ -316,7 +304,6 @@ export async function searchAvocats(
     return true;
   });
 
-  console.log("✅ Résultats après filtrage:", results.length);
   return results;
 }
 

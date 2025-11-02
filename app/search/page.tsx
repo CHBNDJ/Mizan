@@ -79,8 +79,13 @@ function SearchResults() {
 
     gsap.fromTo(
       ".search-filters",
-      { opacity: 0, x: -50 },
-      { opacity: 1, x: 0, duration: 0.8, delay: 0.3, ease: "power3.out" }
+      { y: -20 },
+      {
+        y: 0,
+        duration: 0.6,
+        delay: 0.3,
+        ease: "power2.out",
+      }
     );
 
     gsap.fromTo(
@@ -196,15 +201,16 @@ function SearchResults() {
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`
         .search-header-item,
-        .search-filters,
         .search-results-header,
         .search-avocat-card {
           opacity: 0;
         }
+        .search-filters {
+          transform: translateY(-20px);
+        }
       `}</style>
 
-      {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 py-4 relative z-[300]">
+      <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="search-header-item flex items-center mb-4">
           <Link href="/">
             <button className="flex items-center gap-2 text-teal-600 cursor-pointer hover:text-teal-700 transition-colors">
@@ -248,8 +254,7 @@ function SearchResults() {
         </div>
       </div>
 
-      {/* FilterPanel */}
-      <div className="max-w-7xl mx-auto px-4 py-6 relative z-[200]">
+      <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="search-filters">
           <FilterPanel
             filters={filters}
@@ -260,12 +265,10 @@ function SearchResults() {
         </div>
       </div>
 
-      {/* Résultats - SANS z-index sur le parent */}
-      <div className="max-w-7xl mx-auto px-4 py-8 relative z-[100]">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="w-full">
           <div className="search-results-header">
-            {/* Juste relative, PAS de z-index */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 relative z-[150]">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
               <div>
                 <h2 className="text-lg font-semibold text-slate-800">
                   {totalAvocats === 0
@@ -289,7 +292,6 @@ function SearchResults() {
                 </p>
               </div>
 
-              {/* Le CustomSelect avec son z-[9999] interne */}
               {totalAvocats > 1 && (
                 <div className="w-full sm:w-48">
                   <CustomSelect
@@ -303,8 +305,7 @@ function SearchResults() {
             </div>
           </div>
 
-          {/* Grille des cartes */}
-          <div className="relative -z-10">
+          <div className="relative z-10">
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {[...Array(6)].map((_, i: number) => (
