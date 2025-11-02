@@ -139,28 +139,6 @@ export default function ChangeEmailModal({
             </div>
           </div>
 
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-            <p className="text-amber-800 text-sm font-semibold mb-2 flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4" />
-              Double validation requise (sécurité)
-            </p>
-            <ol className="text-amber-700 text-xs space-y-1.5 list-decimal list-inside ml-1">
-              <li>
-                Vous recevrez un email sur votre <strong>ancien email</strong>
-              </li>
-              <li>
-                Vous recevrez un email sur votre <strong>nouvel email</strong>
-              </li>
-              <li>
-                <strong>Vous devez cliquer sur les 2 liens</strong> pour valider
-                le changement
-              </li>
-            </ol>
-            <p className="text-amber-600 text-xs mt-2 italic">
-              Cette double validation protège votre compte contre le piratage.
-            </p>
-          </div>
-
           <div className="flex gap-3 pt-2">
             <button
               type="submit"

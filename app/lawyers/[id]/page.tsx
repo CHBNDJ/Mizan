@@ -370,7 +370,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             )}
 
             {/* Cartes d'action - UNIQUEMENT si ce n'est PAS son propre profil */}
-            {!isOwnProfile && (
+            {(!user || profile?.user_type === "client") && !isOwnProfile && (
               <Card className="transition-all duration-300 shadow-sm hover:shadow-md">
                 <CardContent className="p-4 sm:p-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -395,14 +395,11 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     {/* Contact Immédiat - Protégé */}
                     <button
                       onClick={() => {
-                        // VÉRIFIER SI CONNECTÉ
                         if (!user || profile?.user_type !== "client") {
-                          // Rediriger vers inscription
                           router.push("/auth/client/register");
                           return;
                         }
 
-                        // Si connecté, appeler
                         if (avocat.contact?.mobile) {
                           const firstMobile = avocat.contact.mobile
                             .split(",")[0]

@@ -124,13 +124,11 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
   const capitalizedLocation = capitalizeWords(location);
   const userAddress = lawyer.users?.address;
 
-  // ✅ CORRECTION CRITIQUE : Récupérer le vrai genre depuis Supabase
   const userGender = lawyer.users?.gender?.toLowerCase();
   const genre: "homme" | "femme" =
     userGender === "female" || userGender === "femme" ? "femme" : "homme";
 
-  // ✅ CORRECTION CRITIQUE : Récupérer les vraies langues depuis Supabase
-  let langues = ["Arabe", "Français"]; // Par défaut
+  let langues = ["Arabe", "Français"];
   if (lawyer.users?.languages && Array.isArray(lawyer.users.languages)) {
     langues = lawyer.users.languages.map((lang: string) =>
       capitalizeWords(lang)
@@ -149,7 +147,7 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     prenom: capitalizeWords(lawyer.users?.first_name || ""),
     avatar_url: lawyer.users?.avatar_url || undefined,
     titre: "Maître",
-    genre: genre, // ✅ Maintenant dynamique
+    genre: genre,
     specialites: capitalizeSpecialites(lawyer.specializations),
     barreau: capitalizedLocation,
     wilaya: lawyer.wilayas?.[0]
@@ -173,7 +171,7 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
         new Date().getFullYear() - (lawyer.experience_years || 0)
       ).toString(),
     },
-    langues: langues, // ✅ Maintenant dynamique
+    langues: langues,
     verified: lawyer.is_verified || false,
     rating: lawyer.average_rating || undefined,
     reviews_count: lawyer.total_reviews || 0,
@@ -186,7 +184,6 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
 export async function getSupabaseAvocats(): Promise<AvocatData[]> {
   const supabase = createClient();
   try {
-    // ✅ CORRECTION : Enlever le filtre is_verified pour debug
     const { data: lawyers, error: lawyersError } = await supabase
       .from("lawyers")
       .select("*");
@@ -216,7 +213,6 @@ export async function getSupabaseAvocats(): Promise<AvocatData[]> {
       return [];
     }
 
-    // ✅ CORRECTION : Filtrer is_verified APRÈS la récupération
     const verifiedLawyers = lawyers.filter(
       (lawyer) => lawyer.is_verified === true
     );
@@ -242,7 +238,6 @@ export async function getSupabaseAvocats(): Promise<AvocatData[]> {
   }
 }
 
-// ✅ AMÉLIORATION : Ajouter plus de logs dans searchAvocats
 export async function searchAvocats(
   filters: SearchFilters
 ): Promise<AvocatData[]> {
@@ -327,7 +322,7 @@ export async function searchAvocats(
 
 export async function getAvocats(): Promise<AvocatData[]> {
   try {
-    return await getSupabaseAvocats(); // ✅ Déjà filtrés
+    return await getSupabaseAvocats();
   } catch (error) {
     console.error("Erreur récupération avocats:", error);
     return [];
@@ -336,7 +331,7 @@ export async function getAvocats(): Promise<AvocatData[]> {
 
 export async function getStatistiques() {
   try {
-    const allAvocats = await getAvocats(); // ✅ Déjà filtrés
+    const allAvocats = await getAvocats();
     const avocatsVerifies = allAvocats.filter(
       (avocat) => avocat.verified
     ).length;
@@ -375,7 +370,7 @@ export async function getTopRatedAvocats(
   limit: number = 10
 ): Promise<AvocatData[]> {
   try {
-    const allAvocats = await getAvocats(); // ✅ Déjà filtrés
+    const allAvocats = await getAvocats();
     return allAvocats
       .filter((a) => a.rating && a.rating > 0)
       .sort((a, b) => (b.rating || 0) - (a.rating || 0))
@@ -467,7 +462,6 @@ export async function getAvocatById(id: string): Promise<AvocatData | null> {
   const supabase = createClient();
 
   try {
-    // ✅ FILTRER LES NON VÉRIFIÉS
     const { data: lawyer, error: lawyerError } = await supabase
       .from("lawyers")
       .select("*, is_claimed, claimed_at")

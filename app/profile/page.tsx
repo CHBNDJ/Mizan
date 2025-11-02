@@ -419,22 +419,11 @@ export default function ProfilePage() {
         experienceYears: lawyerProfile.experience_years || 0,
         specializations: lawyerProfile.specializations || [],
         wilayas: lawyerProfile.wilayas || [],
-        consultationPrice: lawyerProfile.consultation_price ?? 0,
+        consultationPrice: lawyerProfile.consultation_price ?? null,
         gender: profile?.gender || "",
         languages: profile?.languages || [],
       });
-    } else if (user?.user_metadata && profile?.user_type === "lawyer") {
-      setLawyerFormData({
-        barNumber: user.user_metadata.bar_number || "",
-        experienceYears: user.user_metadata.experience_years || 0,
-        specializations: user.user_metadata.specializations || [],
-        wilayas: user.user_metadata.wilayas || [],
-        consultationPrice: user.user_metadata.consultation_price || 0,
-        gender: user.user_metadata.gender || profile?.gender || "",
-        languages: user.user_metadata.languages || profile?.languages || [],
-      });
     }
-
     setIsEditing(false);
   };
 

@@ -522,25 +522,6 @@ export default function SettingsPage() {
                   </div>
                 </div>
               </button>
-
-              {profile?.user_type === "lawyer" && (
-                <button className="cursor-pointer w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 p-3 sm:p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors text-left group">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <Eye className="w-5 h-5 text-slate-500 group-hover:text-teal-600 transition-colors flex-shrink-0" />
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-medium text-slate-700 group-hover:text-teal-700 transition-colors text-sm sm:text-base">
-                        Visibilité du profil
-                      </h3>
-                      <p className="text-xs sm:text-sm text-slate-500">
-                        Gérer qui peut voir votre profil
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-xs sm:text-sm text-slate-400 group-hover:text-teal-600 transition-colors sm:ml-3">
-                    Publique
-                  </span>
-                </button>
-              )}
             </div>
           </div>
 
@@ -627,7 +608,7 @@ export default function SettingsPage() {
 
           <div className="mt-6 sm:mt-8 text-center">
             <p className="text-slate-600 text-xs sm:text-sm px-4">
-              Besoin d'aide avec vos paramètres ?{" "}
+              Besoin d'aide avec vos paramètres ?
               <a
                 href="mailto:support@mizan-dz.com"
                 className="text-teal-600 hover:text-teal-700 hover:underline transition-colors"
