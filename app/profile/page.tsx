@@ -669,6 +669,38 @@ export default function ProfilePage() {
                 )}
               </div>
 
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Civilité
+                </label>
+                {isEditing ? (
+                  <div className="relative z-20">
+                    <CustomSelect
+                      options={genreOptions}
+                      value={lawyerFormData.gender}
+                      onChange={(value) =>
+                        setLawyerFormData((prev) => ({
+                          ...prev,
+                          gender: value,
+                        }))
+                      }
+                      placeholder="Sélectionnez votre genre"
+                      className="h-12"
+                    />
+                  </div>
+                ) : (
+                  <div className="p-3 bg-slate-50 rounded-lg">
+                    <span className="text-slate-800">
+                      {lawyerFormData.gender
+                        ? genreOptions.find(
+                            (g) => g.value === lawyerFormData.gender
+                          )?.label
+                        : "Non renseigné"}
+                    </span>
+                  </div>
+                )}
+              </div>
+
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -778,30 +810,32 @@ export default function ProfilePage() {
                   )}
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Site web (optionnel)
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="url"
-                      name="website"
-                      value={formData.website}
-                      onChange={handleInputChange}
-                      className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
-                      placeholder="https://votre-site.com"
-                    />
-                  ) : (
-                    <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                      <Globe className="w-5 h-5 text-slate-400" />
-                      <span className="text-slate-800">
-                        {formData.website ||
-                          profile?.website ||
-                          "Non renseigné"}
-                      </span>
-                    </div>
-                  )}
-                </div>
+                {profile?.user_type === "lawyer" && (
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Site web (optionnel)
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="url"
+                        name="website"
+                        value={formData.website}
+                        onChange={handleInputChange}
+                        className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
+                        placeholder="https://votre-cabinet.com"
+                      />
+                    ) : (
+                      <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                        <Globe className="w-5 h-5 text-slate-400" />
+                        <span className="text-slate-800">
+                          {formData.website ||
+                            profile?.website ||
+                            "Non renseigné"}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {profile?.user_type === "client" && (
                   <div>
@@ -1082,38 +1116,6 @@ export default function ProfilePage() {
                               Aucune wilaya renseignée
                             </span>
                           )}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Genre
-                      </label>
-                      {isEditing ? (
-                        <div className="relative z-20">
-                          <CustomSelect
-                            options={genreOptions}
-                            value={lawyerFormData.gender}
-                            onChange={(value) =>
-                              setLawyerFormData((prev) => ({
-                                ...prev,
-                                gender: value,
-                              }))
-                            }
-                            placeholder="Sélectionnez votre genre"
-                            className="h-12"
-                          />
-                        </div>
-                      ) : (
-                        <div className="p-3 bg-slate-50 rounded-lg">
-                          <span className="text-slate-800">
-                            {lawyerFormData.gender
-                              ? genreOptions.find(
-                                  (g) => g.value === lawyerFormData.gender
-                                )?.label
-                              : "Non renseigné"}
-                          </span>
                         </div>
                       )}
                     </div>
