@@ -514,7 +514,6 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
   const capitalizedLocation = capitalizeWords(location);
   const userAddress = lawyer.users?.address;
 
-  // ✅ Conversion BDD (male/female) → Frontend (homme/femme)
   const userGender = lawyer.users?.gender;
   const genre = dbToFrontend(userGender);
 
@@ -561,7 +560,6 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     langues: langues,
     verified: lawyer.is_verified || false,
 
-    // ✅ Toutes les colonnes de rating
     rating: lawyer.rating
       ? Number(lawyer.rating)
       : lawyer.average_rating

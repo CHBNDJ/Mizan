@@ -330,7 +330,6 @@ export interface ClientConsultation {
   unread_count?: number;
 }
 
-// Interfaces pour les composants
 export interface AvocatCardProps {
   avocat: AvocatData;
   searchParams?: any;

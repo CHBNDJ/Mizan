@@ -226,6 +226,101 @@ export default function SettingsPage() {
     setDeleteStep(1);
   };
 
+  // const confirmDelete = async () => {
+  //   if (!user) {
+  //     showToast("Utilisateur non connecté", "error");
+  //     return;
+  //   }
+
+  //   setIsDeleting(true);
+
+  //   try {
+  //     showToast("Suppression en cours...", "warning");
+  //     const { data: session, error: sessionError } =
+  //       await supabase.auth.getSession();
+
+  //     if (sessionError || !session?.session) {
+  //       throw new Error("Session invalide");
+  //     }
+
+  //     const userId = user.id;
+
+  //     try {
+  //       const { data, error } = await supabase.functions.invoke(
+  //         "delete-account",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${session.session.access_token}`,
+  //           },
+  //         }
+  //       );
+
+  //       if (!error && data?.success) {
+  //         showToast("Compte supprimé avec succès", "success");
+
+  //         await fetch("/api/admin/notify", {
+  //           method: "POST",
+  //           headers: { "Content-Type": "application/json" },
+  //           body: JSON.stringify({
+  //             subject: "Compte utilisateur supprimé",
+  //             title: "Suppression de compte",
+  //             message: `
+  //             <p><strong>Utilisateur :</strong> ${user.email}</p>
+  //             <p><strong>Type :</strong> ${profile?.user_type}</p>
+  //             <p><strong>ID :</strong> ${user.id}</p>
+  //             <p><strong>Date :</strong> ${new Date().toLocaleString("fr-FR")}</p>
+  //           `,
+  //             priority: "normal",
+  //           }),
+  //         });
+
+  //         setTimeout(() => {
+  //           window.location.href = "/";
+  //         }, 1500);
+  //         return;
+  //       }
+  //     } catch (edgeError) {
+  //       console.warn("Edge Function non disponible:", edgeError);
+  //     }
+
+  //     showToast("Suppression des données en cours...", "warning");
+
+  //     await supabase.from("user_preferences").delete().eq("user_id", userId);
+  //     await supabase.from("notifications").delete().eq("user_id", userId);
+  //     await supabase.from("lawyers").delete().eq("id", userId);
+  //     await supabase.from("users").delete().eq("id", userId);
+
+  //     showToast("Compte supprimé avec succès", "success");
+
+  //     await fetch("/api/admin/notify", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         subject: "Compte utilisateur supprimé",
+  //         title: "Suppression de compte",
+  //         message: `
+  //         <p><strong>Utilisateur :</strong> ${user.email}</p>
+  //         <p><strong>Type :</strong> ${profile?.user_type}</p>
+  //         <p><strong>ID :</strong> ${user.id}</p>
+  //         <p><strong>Date :</strong> ${new Date().toLocaleString("fr-FR")}</p>
+  //       `,
+  //         priority: "normal",
+  //       }),
+  //     });
+
+  //     setTimeout(async () => {
+  //       await signOut();
+  //       window.location.href = "/";
+  //     }, 2000);
+  //   } catch (error: unknown) {
+  //     const errorMessage =
+  //       error instanceof Error ? error.message : "Erreur inconnue";
+  //     showToast(`Erreur: ${errorMessage}`, "error");
+  //     setIsDeleting(false);
+  //     setDeleteStep(0);
+  //   }
+  // };
+
   const confirmDelete = async () => {
     if (!user) {
       showToast("Utilisateur non connecté", "error");
@@ -236,85 +331,105 @@ export default function SettingsPage() {
 
     try {
       showToast("Suppression en cours...", "warning");
-      const { data: session, error: sessionError } =
-        await supabase.auth.getSession();
 
-      if (sessionError || !session?.session) {
+      const { data: session } = await supabase.auth.getSession();
+
+      if (!session?.session) {
         throw new Error("Session invalide");
       }
 
       const userId = user.id;
+      const userEmail = user.email;
 
       try {
-        const { data, error } = await supabase.functions.invoke(
-          "delete-account",
-          {
-            headers: {
-              Authorization: `Bearer ${session.session.access_token}`,
-            },
-          }
-        );
+        await supabase.from("user_preferences").delete().eq("user_id", userId);
+        await supabase.from("notifications").delete().eq("user_id", userId);
+        await supabase.from("profile_views").delete().eq("viewer_id", userId);
+        await supabase.from("profile_views").delete().eq("lawyer_id", userId);
 
-        if (!error && data?.success) {
-          showToast("Compte supprimé avec succès", "success");
+        await supabase.from("consultations").delete().eq("client_id", userId);
+        await supabase.from("consultations").delete().eq("lawyer_id", userId);
 
-          await fetch("/api/admin/notify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              subject: "Compte utilisateur supprimé",
-              title: "Suppression de compte",
-              message: `
-              <p><strong>Utilisateur :</strong> ${user.email}</p>
-              <p><strong>Type :</strong> ${profile?.user_type}</p>
-              <p><strong>ID :</strong> ${user.id}</p>
-              <p><strong>Date :</strong> ${new Date().toLocaleString("fr-FR")}</p>
-            `,
-              priority: "normal",
-            }),
-          });
+        await supabase.from("reviews").delete().eq("client_id", userId);
 
-          setTimeout(() => {
-            window.location.href = "/";
-          }, 1500);
-          return;
-        }
-      } catch (edgeError) {
-        console.warn("Edge Function non disponible:", edgeError);
+        await supabase
+          .from("consultation_messages")
+          .delete()
+          .eq("sender_id", userId);
+      } catch (err) {
+        console.error("Erreur suppression données annexes:", err);
       }
 
-      showToast("Suppression des données en cours...", "warning");
+      if (profile?.user_type === "lawyer") {
+        const { error: lawyerError } = await supabase
+          .from("lawyers")
+          .delete()
+          .eq("id", userId);
 
-      await supabase.from("user_preferences").delete().eq("user_id", userId);
-      await supabase.from("notifications").delete().eq("user_id", userId);
-      await supabase.from("lawyers").delete().eq("id", userId);
-      await supabase.from("users").delete().eq("id", userId);
+        if (lawyerError) {
+          console.error("Erreur suppression lawyer:", lawyerError);
+        }
+      }
+
+      const { error: userError } = await supabase
+        .from("users")
+        .delete()
+        .eq("id", userId);
+
+      if (userError) {
+        console.error("Erreur suppression user:", userError);
+        throw userError;
+      }
+
+      try {
+        const response = await fetch("/api/delete-auth-user", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.session.access_token}`,
+          },
+          body: JSON.stringify({ userId }),
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          console.error("Erreur suppression auth:", data);
+        }
+      } catch (authError) {
+        console.error("Erreur API suppression auth:", authError);
+      }
+
+      await signOut();
 
       showToast("Compte supprimé avec succès", "success");
 
-      await fetch("/api/admin/notify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          subject: "Compte utilisateur supprimé",
-          title: "Suppression de compte",
-          message: `
-          <p><strong>Utilisateur :</strong> ${user.email}</p>
-          <p><strong>Type :</strong> ${profile?.user_type}</p>
-          <p><strong>ID :</strong> ${user.id}</p>
-          <p><strong>Date :</strong> ${new Date().toLocaleString("fr-FR")}</p>
-        `,
-          priority: "normal",
-        }),
-      });
+      try {
+        await fetch("/api/admin/notify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            subject: "Compte utilisateur supprimé",
+            title: "Suppression de compte",
+            message: `
+            <p><strong>Utilisateur :</strong> ${userEmail}</p>
+            <p><strong>Type :</strong> ${profile?.user_type}</p>
+            <p><strong>ID :</strong> ${userId}</p>
+            <p><strong>Date :</strong> ${new Date().toLocaleString("fr-FR")}</p>
+          `,
+            priority: "normal",
+          }),
+        });
+      } catch (notifError) {
+        console.error("Erreur notification:", notifError);
+      }
 
-      setTimeout(async () => {
-        await signOut();
+      setTimeout(() => {
         window.location.href = "/";
-      }, 2000);
+      }, 1500);
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : "Erreur inconnue";
+      console.error("Erreur suppression compte:", error);
       showToast(`Erreur: ${errorMessage}`, "error");
       setIsDeleting(false);
       setDeleteStep(0);
