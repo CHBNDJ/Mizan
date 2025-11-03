@@ -99,6 +99,15 @@ export default function ProfilePage({ params }: ProfilePageProps) {
       .filter((num) => num.length > 0);
   };
 
+  const reloadAvocatData = async () => {
+    try {
+      const avocatData = await getAvocatById(id);
+      setAvocat(avocatData);
+    } catch (error) {
+      console.error("Erreur rechargement avocat:", error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen pt-24 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
@@ -577,7 +586,10 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         </div>
 
         <div className="mt-8">
-          <ReviewSection lawyerId={avocat.id} />
+          <ReviewSection
+            lawyerId={avocat.id}
+            onReviewSubmitted={reloadAvocatData}
+          />
         </div>
       </div>
 

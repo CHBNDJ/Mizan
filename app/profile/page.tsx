@@ -20,6 +20,12 @@ import { createClient } from "@/lib/supabase/client";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import {
+  CIVILITE_OPTIONS,
+  dbToFrontend,
+  frontendToDb,
+} from "@/lib/genderUtils";
+
+import {
   SPECIALITES,
   WILAYAS,
   LOCATION,
@@ -284,7 +290,7 @@ export default function ProfilePage() {
         specializations: lawyerProfile.specializations || [],
         wilayas: lawyerProfile.wilayas || [],
         consultationPrice: lawyerProfile.consultation_price ?? null,
-        gender: profile?.gender || "",
+        gender: dbToFrontend(profile?.gender) || "",
         languages: profile?.languages || [],
       });
     } else if (user?.user_metadata && profile?.user_type === "lawyer") {
@@ -294,7 +300,8 @@ export default function ProfilePage() {
         specializations: user.user_metadata.specializations || [],
         wilayas: user.user_metadata.wilayas || [],
         consultationPrice: user.user_metadata.consultation_price ?? null,
-        gender: user.user_metadata.gender || profile?.gender || "",
+        gender:
+          dbToFrontend(user.user_metadata.gender || profile?.gender) || "",
         languages: user.user_metadata.languages || profile?.languages || [],
       });
     }
@@ -344,7 +351,7 @@ export default function ProfilePage() {
           city: addressData.city.trim(),
           postalCode: addressData.postalCode.trim(),
         };
-        userData.gender = lawyerFormData.gender;
+        userData.gender = frontendToDb(lawyerFormData.gender);
         userData.languages = lawyerFormData.languages;
       }
 
@@ -676,7 +683,7 @@ export default function ProfilePage() {
                 {isEditing ? (
                   <div className="relative z-20">
                     <CustomSelect
-                      options={genreOptions}
+                      options={CIVILITE_OPTIONS}
                       value={lawyerFormData.gender}
                       onChange={(value) =>
                         setLawyerFormData((prev) => ({
@@ -692,7 +699,7 @@ export default function ProfilePage() {
                   <div className="p-3 bg-slate-50 rounded-lg">
                     <span className="text-slate-800">
                       {lawyerFormData.gender
-                        ? genreOptions.find(
+                        ? CIVILITE_OPTIONS.find(
                             (g) => g.value === lawyerFormData.gender
                           )?.label
                         : "Non renseigné"}

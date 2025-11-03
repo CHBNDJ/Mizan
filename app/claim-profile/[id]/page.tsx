@@ -120,6 +120,49 @@ export default function ClaimProfilePage({
     }
   };
 
+  // const handleActivate = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setError("");
+
+  //   if (code !== generatedCode) {
+  //     setError("Code invalide");
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   if (password.length < 8) {
+  //     setError("Le mot de passe doit contenir au moins 8 caractères");
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await fetch("/api/claim-profile", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         lawyerId: id,
+  //         email: email,
+  //         password: password,
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (!response.ok) {
+  //       throw new Error(data.error || "Erreur lors de l'activation");
+  //     }
+
+  //     router.push("/auth/lawyer/login");
+  //   } catch (err: any) {
+  //     console.error("Erreur activation:", err);
+  //     setError(err.message || "Erreur lors de l'activation du compte");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleActivate = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -151,9 +194,17 @@ export default function ClaimProfilePage({
       const data = await response.json();
 
       if (!response.ok) {
+        if (data.alreadyClaimed) {
+          setError(
+            "Ce profil a déjà été réclamé. Veuillez vous connecter directement."
+          );
+          setTimeout(() => {
+            router.push("/auth/lawyer/login");
+          }, 2000);
+          return;
+        }
         throw new Error(data.error || "Erreur lors de l'activation");
       }
-
       router.push("/auth/lawyer/login");
     } catch (err: any) {
       console.error("Erreur activation:", err);

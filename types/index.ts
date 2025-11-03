@@ -347,6 +347,7 @@ export interface ConsultationModalProps {
 
 export interface ReviewSectionProps {
   lawyerId: string;
+  onReviewSubmitted?: () => Promise<void>;
 }
 
 export interface Review {
