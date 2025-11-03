@@ -4,6 +4,7 @@ import { Filter, Languages, User, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { FilterPanelProps } from "@/types";
+import { CIVILITE_OPTIONS, toCivilite } from "@/lib/genderUtils";
 
 export function FilterPanel({
   filters,
@@ -27,10 +28,7 @@ export function FilterPanel({
     { value: "Espagnol", label: "Español" },
   ];
 
-  const genreOptions = [
-    { value: "homme", label: "Avocat (Homme)" },
-    { value: "femme", label: "Avocate (Femme)" },
-  ];
+  const genreOptions = CIVILITE_OPTIONS;
 
   const handleLangueChange = (value: string) => {
     if (filters.langues === value) {
@@ -44,7 +42,7 @@ export function FilterPanel({
     if (filters.genre === value) {
       onFilterChange("genre", null);
     } else {
-      onFilterChange("genre", value);
+      onFilterChange("genre", value as "homme" | "femme");
     }
   };
 
@@ -90,7 +88,7 @@ export function FilterPanel({
   if (filters.genre) {
     activeFilters.push({
       key: "genre",
-      label: filters.genre === "homme" ? "Avocat" : "Avocate",
+      label: toCivilite(filters.genre),
       color: "orange" as const,
     });
   }
@@ -144,7 +142,7 @@ export function FilterPanel({
             <div className="space-y-2 relative z-[55]">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <User className="w-4 h-4" />
-                Genre
+                Civilité
               </label>
               <CustomSelect
                 placeholder="Tous"

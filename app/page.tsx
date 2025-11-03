@@ -269,14 +269,12 @@ export default function HomePage() {
             votre localisation. Avec Mizan, c'est simple, rapide et sécurisé.
           </p>
 
-          {/* ✅ AJOUTE relative z-[200] sur le conteneur blanc */}
           <div className="hero-form bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto relative z-[200]">
             <form onSubmit={handleSearch} className="space-y-6">
               <div className="flex flex-col lg:flex-row gap-4">
-                {/* ✅ MultiSelect - garde juste relative */}
                 <div className="flex-1 relative">
                   <MultiSelectWithCheckboxes
-                    placeholder="Choisir des spécialités..."
+                    placeholder="Choisir les compétences..."
                     options={specialiteOptions}
                     value={selectedSpecialites}
                     onChange={setSelectedSpecialites}
@@ -284,7 +282,6 @@ export default function HomePage() {
                   />
                 </div>
 
-                {/* ✅ CustomSelect - garde juste relative */}
                 <div className="lg:w-64 relative">
                   <CustomSelect
                     placeholder="Choisir une wilaya"

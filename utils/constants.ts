@@ -76,6 +76,6 @@ export const LANGUES = [
 ];
 
 export const GENRES = [
-  { value: "male", label: "Homme" },
-  { value: "female", label: "Femme" },
+  { value: "homme", label: "M." },
+  { value: "femme", label: "Mme" },
 ];

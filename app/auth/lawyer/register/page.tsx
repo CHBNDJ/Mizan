@@ -6,13 +6,8 @@ import { Eye, EyeOff, Phone, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 import { ExtendedLawyerSignupFormData, FormErrors } from "@/types";
-import {
-  SPECIALITES,
-  WILAYAS,
-  COUNTRIES,
-  LANGUES,
-  GENRES,
-} from "@/utils/constants";
+import { CIVILITE_OPTIONS, frontendToDb } from "@/lib/genderUtils";
+import { SPECIALITES, WILAYAS, COUNTRIES, LANGUES } from "@/utils/constants";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { useAuth } from "@/hooks/useAuth";
 import { gsap } from "gsap";
@@ -97,7 +92,7 @@ export default function LawyerRegisterPage() {
     label: langue,
   }));
 
-  const genreOptions = GENRES;
+  const genreOptions = CIVILITE_OPTIONS;
 
   const inputBaseClass =
     "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700";
@@ -166,6 +161,10 @@ export default function LawyerRegisterPage() {
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
+
+    if (!formData.gender) {
+      newErrors.gender = "La civilité est requise";
+    }
 
     if (!formData.firstName.trim()) {
       newErrors.firstName = "Le prénom est requis";
@@ -248,10 +247,6 @@ export default function LawyerRegisterPage() {
       }
     }
 
-    if (!formData.gender) {
-      newErrors.gender = "Le genre est requis";
-    }
-
     if (formData.languages.length === 0) {
       newErrors.languages = "Sélectionnez au moins une langue";
     }
@@ -270,7 +265,7 @@ export default function LawyerRegisterPage() {
 
     try {
       const userData = {
-        gender: formData.gender,
+        gender: frontendToDb(formData.gender),
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
         phone: formData.phone.trim()
@@ -353,6 +348,24 @@ export default function LawyerRegisterPage() {
             className="register-form space-y-4"
             noValidate
           >
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Civilité *
+              </label>
+              <CustomSelect
+                options={genreOptions}
+                value={formData.gender}
+                onChange={(value) =>
+                  setFormData({ ...formData, gender: value })
+                }
+                placeholder="Sélectionnez votre genre"
+                placeholderClassName="text-slate-400 text-sm font-normal"
+                className="h-12"
+                disabled={isSubmitting}
+              />
+              {errors.gender && <p className={errorClass}>{errors.gender}</p>}
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -390,24 +403,6 @@ export default function LawyerRegisterPage() {
                   <p className={errorClass}>{errors.lastName}</p>
                 )}
               </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Genre *
-              </label>
-              <CustomSelect
-                options={genreOptions}
-                value={formData.gender}
-                onChange={(value) =>
-                  setFormData({ ...formData, gender: value })
-                }
-                placeholder="Sélectionnez votre genre"
-                placeholderClassName="text-slate-400 text-sm font-normal"
-                className="h-12"
-                disabled={isSubmitting}
-              />
-              {errors.gender && <p className={errorClass}>{errors.gender}</p>}
             </div>
 
             <div>
@@ -637,7 +632,7 @@ export default function LawyerRegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Numéro d'inscription au Barreau *
+                Numéro Carte Professionnelle *
               </label>
               <input
                 type="text"
@@ -675,7 +670,7 @@ export default function LawyerRegisterPage() {
             <div className="grid grid-cols-1 sm:grid-cols-[3fr_1fr] gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Spécialité(s) *
+                  Domaine(s) d'Expertise *
                 </label>
                 <MultiSelectWithCheckboxes
                   placeholder="Spécialités"

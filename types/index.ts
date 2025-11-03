@@ -161,7 +161,6 @@ export interface AvocatsDatabase {
         setif: number;
         [key: string]: number;
       };
-      // ← AJOUTEZ CETTE SECTION
       repartition_genre?: {
         hommes: number;
         femmes: number;
@@ -191,7 +190,6 @@ export interface MultiSelectWithCheckboxesProps {
   label?: string;
 }
 
-// Extension de votre interface existante pour supporter multi-select
 export interface ExtendedLawyerSignupFormData {
   firstName: string;
   lastName: string;

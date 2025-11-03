@@ -14,11 +14,11 @@ import {
   MessageCircle,
   Mail,
   Smartphone,
+  Scale,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";
 import { getInitials } from "@/lib/utils";
-
 import { AvocatData, ProfilePageProps } from "@/types";
 import { createClient } from "@/lib/supabase/client";
 import ConsultationModal from "@/components/consultation/ConsultationModal";
@@ -28,6 +28,8 @@ import { formatPhoneNumber } from "@/lib/phoneFormatter";
 import FeedbackPopup from "@/components/FeedbackPopup";
 import { useAuth } from "@/hooks/useAuth";
 import { formatPrice, calculateConsultationPrice } from "@/lib/priceUtils";
+import Image from "next/image";
+import { toCivilite } from "@/lib/genderUtils";
 
 export default function ProfilePage({ params }: ProfilePageProps) {
   const { id } = use(params);
@@ -153,7 +155,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2 text-center sm:text-left">
-                    {avocat.prenom} {avocat.nom}
+                    {toCivilite(avocat.genre)} {avocat.prenom} {avocat.nom}
                   </h1>
 
                   <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 text-slate-600 mb-4 text-center sm:text-left">
@@ -186,41 +188,52 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     )}
                   </div>
 
-                  {avocat.rating_google &&
-                    (avocat.reviews_count_google ?? 0) > 0 &&
-                    avocat.rating_mizan &&
-                    (avocat.reviews_count_mizan ?? 0) > 0 && (
-                      <div className="mt-4 bg-gradient-to-br from-slate-50 to-white rounded-xl p-4 border border-slate-200">
-                        <div className="text-sm text-slate-600 mb-3 font-medium">
-                          Détails des avis
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="flex items-center gap-2">
-                            <Globe className="w-4 h-4 text-blue-600" />
-                            <div>
-                              <div className="text-sm font-medium text-blue-700">
-                                {avocat.rating_google.toFixed(1)}/5
-                              </div>
-                              <div className="text-xs text-blue-600">
-                                {avocat.reviews_count_google} Google
-                              </div>
+                  {((avocat.rating_google &&
+                    (avocat.reviews_count_google ?? 0) > 0) ||
+                    (avocat.rating_mizan &&
+                      (avocat.reviews_count_mizan ?? 0) > 0)) && (
+                    <div className="mt-4 pt-4 border-t border-slate-200">
+                      <div className="flex items-center gap-4 text-sm">
+                        {avocat.rating_google &&
+                          (avocat.reviews_count_google ?? 0) > 0 && (
+                            <div className="flex items-center gap-1.5 text-slate-600">
+                              <Image
+                                src="/google.png"
+                                alt="Logo Google"
+                                width={16}
+                                height={16}
+                              />
+                              <span className="font-medium">
+                                {Number(avocat.rating_google).toFixed(1)}
+                              </span>
+                              <span className="text-slate-400">
+                                ({avocat.reviews_count_google})
+                              </span>
                             </div>
-                          </div>
+                          )}
 
-                          <div className="flex items-center gap-2">
-                            <Star className="w-4 h-4 text-teal-600 fill-current" />
-                            <div>
-                              <div className="text-sm font-medium text-teal-700">
-                                {avocat.rating_mizan.toFixed(1)}/5
-                              </div>
-                              <div className="text-xs text-teal-600">
-                                {avocat.reviews_count_mizan} Mizan
-                              </div>
+                        {avocat.rating_google &&
+                          (avocat.reviews_count_google ?? 0) > 0 &&
+                          avocat.rating_mizan &&
+                          (avocat.reviews_count_mizan ?? 0) > 0 && (
+                            <span className="text-slate-300">•</span>
+                          )}
+
+                        {avocat.rating_mizan &&
+                          (avocat.reviews_count_mizan ?? 0) > 0 && (
+                            <div className="flex items-center gap-1.5 text-slate-600">
+                              <Scale className="w-4 h-4 text-teal-600 fill-current" />
+                              <span className="font-medium">
+                                {Number(avocat.rating_mizan).toFixed(1)}
+                              </span>
+                              <span className="text-slate-400">
+                                ({avocat.reviews_count_mizan})
+                              </span>
                             </div>
-                          </div>
-                        </div>
+                          )}
                       </div>
-                    )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="text-center sm:text-right mt-4 sm:mt-0">
