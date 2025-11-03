@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
   Search,
   UserCheck,
-  MessageCircle,
   Shield,
   Star,
   CheckCircle,
@@ -19,7 +18,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function HowItWorksPage() {
   useEffect(() => {
-    // Animation du hero
     const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
     heroTimeline
       .fromTo(
@@ -34,7 +32,6 @@ export default function HowItWorksPage() {
         "-=0.5"
       );
 
-    // Animation des cartes étapes
     gsap
       .timeline({
         defaults: { ease: "power3.out" },
@@ -73,7 +70,6 @@ export default function HowItWorksPage() {
       }
     );
 
-    // Animation des avantages
     gsap
       .timeline({
         defaults: { ease: "power3.out" },
@@ -106,7 +102,6 @@ export default function HowItWorksPage() {
       }
     );
 
-    // Animation CTA
     gsap
       .timeline({
         defaults: { ease: "power3.out" },
@@ -141,7 +136,6 @@ export default function HowItWorksPage() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      {/* Style CSS classique au lieu de style jsx pour Turbopack */}
       <style>{`
         .hero-title,
         .hero-subtitle,
@@ -157,7 +151,6 @@ export default function HowItWorksPage() {
         }
       `}</style>
 
-      {/* Hero Section */}
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="hero-title text-3xl md:text-5xl font-bold text-slate-800 mb-6">
@@ -170,8 +163,6 @@ export default function HowItWorksPage() {
           </p>
         </div>
       </section>
-
-      {/* Pour les clients */}
       <section className="steps-section py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
@@ -184,7 +175,6 @@ export default function HowItWorksPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Étape 1 */}
             <div className="step-card bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-shadow text-center">
               <div className="flex items-center justify-center mb-4">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-teal-100 rounded-lg flex items-center justify-center">
@@ -212,7 +202,6 @@ export default function HowItWorksPage() {
               </ul>
             </div>
 
-            {/* Étape 2 */}
             <div className="step-card bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-shadow text-center">
               <div className="flex items-center justify-center mb-4">
                 <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mr-4">
@@ -230,7 +219,6 @@ export default function HowItWorksPage() {
               </p>
 
               <ul className="space-y-2 flex flex-col items-center">
-                {/* ✅ Version standardisée pour TOUS les <li> */}
                 <li className="flex items-center gap-2 text-sm text-slate-500">
                   <CheckCircle className="w-4 h-4 text-teal-500 flex-shrink-0" />
                   <span>Profils vérifiés</span>
@@ -242,7 +230,6 @@ export default function HowItWorksPage() {
               </ul>
             </div>
 
-            {/* Étape 3 */}
             <div className="step-card bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-shadow text-center">
               <div className="flex items-center justify-center mb-4">
                 <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mr-4">
@@ -273,8 +260,6 @@ export default function HowItWorksPage() {
           </div>
         </div>
       </section>
-
-      {/* Avantages */}
       <section className="benefits-section py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
@@ -334,8 +319,6 @@ export default function HowItWorksPage() {
           </div>
         </div>
       </section>
-
-      {/* CTA Final */}
       <section className="cta-section py-16 bg-teal-500">
         <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="cta-title text-3xl font-bold text-white mb-4">

@@ -160,6 +160,7 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
       telephone: lawyer.users?.phone || "",
       email: lawyer.users?.professional_email || lawyer.users?.email || "",
       mobile: lawyer.users?.mobile || lawyer.users?.phone || "",
+      site_web: lawyer.users?.website || null,
     },
     experience: {
       annees: lawyer.experience_years || 0,
@@ -184,15 +185,12 @@ export async function getSupabaseAvocats(): Promise<AvocatData[]> {
       .from("lawyers")
       .select("*");
 
-    console.log("📊 Lawyers récupérés:", lawyers?.length, lawyers);
-
     if (lawyersError) {
       console.error("❌ Erreur Supabase lawyers:", lawyersError);
       return [];
     }
 
     if (!lawyers || lawyers.length === 0) {
-      console.warn("⚠️ Aucun lawyer trouvé dans Supabase");
       return [];
     }
 
@@ -200,8 +198,6 @@ export async function getSupabaseAvocats(): Promise<AvocatData[]> {
       .from("users")
       .select("*")
       .eq("user_type", "lawyer");
-
-    console.log("👥 Users récupérés:", users?.length);
 
     if (usersError) {
       console.error("❌ Erreur Supabase users:", usersError);
@@ -218,7 +214,6 @@ export async function getSupabaseAvocats(): Promise<AvocatData[]> {
         if (user) {
           return { ...lawyer, users: user };
         }
-        console.warn(`⚠️ User non trouvé pour lawyer ${lawyer.id}`);
         return null;
       })
       .filter((item) => item !== null);
@@ -229,41 +224,25 @@ export async function getSupabaseAvocats(): Promise<AvocatData[]> {
     return [];
   }
 }
-
 export async function searchAvocats(
   filters: SearchFilters
 ): Promise<AvocatData[]> {
   const allAvocats = await getSupabaseAvocats();
 
-  console.log("🔍 Filtres appliqués:", filters);
-  console.log("📋 Total avocats avant filtrage:", allAvocats.length);
-
   const results = allAvocats.filter((avocat) => {
-    // Filtre spécialité
     if (filters.specialite && filters.specialite.length > 0) {
       const hasMatchingSpeciality = avocat.specialites?.some((avocatSpec) => {
         return filters.specialite!.some((filterSpec) => {
-          const match =
+          return (
             avocatSpec === filterSpec ||
             avocatSpec.toLowerCase() === filterSpec.toLowerCase() ||
             avocatSpec.toLowerCase().replace(/\s+/g, "-") ===
-              filterSpec.toLowerCase().replace(/\s+/g, "-");
-
-          if (match) {
-            console.log(
-              `✅ Match spécialité: "${avocatSpec}" = "${filterSpec}"`
-            );
-          }
-          return match;
+              filterSpec.toLowerCase().replace(/\s+/g, "-")
+          );
         });
       });
 
       if (!hasMatchingSpeciality) {
-        console.log(
-          `❌ Avocat ${avocat.nom} exclu (spécialités:`,
-          avocat.specialites,
-          ")"
-        );
         return false;
       }
     }
@@ -274,9 +253,6 @@ export async function searchAvocats(
         avocat.wilaya?.toLowerCase() === filters.wilaya.toLowerCase();
 
       if (!matchesWilaya) {
-        console.log(
-          `❌ Avocat ${avocat.nom} exclu (wilaya: ${avocat.wilaya} ≠ ${filters.wilaya})`
-        );
         return false;
       }
     }
@@ -300,10 +276,8 @@ export async function searchAvocats(
         return false;
       }
     }
-
     return true;
   });
-
   return results;
 }
 

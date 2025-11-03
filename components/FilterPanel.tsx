@@ -1,15 +1,13 @@
 "use client";
 import { useState } from "react";
-import { Filter, X, Languages, User, Briefcase } from "lucide-react";
+import { Filter, Languages, User, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { CustomSelect } from "@/components/ui/CustomSelect";
-import { SearchFilters } from "@/types";
 import { FilterPanelProps } from "@/types";
 
 export function FilterPanel({
   filters,
   onFilterChange,
-  onClearFilters,
   searchParams,
 }: FilterPanelProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -34,44 +32,35 @@ export function FilterPanel({
     { value: "femme", label: "Avocate (Femme)" },
   ];
 
-  // Fonctions de toggle pour désélectionner
   const handleLangueChange = (value: string) => {
     if (filters.langues === value) {
-      // Si la même langue est sélectionnée, on la désélectionne
       onFilterChange("langues", null);
     } else {
-      // Sinon on la sélectionne
       onFilterChange("langues", value);
     }
   };
 
   const handleGenreChange = (value: string) => {
     if (filters.genre === value) {
-      // Si le même genre est sélectionné, on le désélectionne
       onFilterChange("genre", null);
     } else {
-      // Sinon on le sélectionne
       onFilterChange("genre", value);
     }
   };
 
   const handleExperienceChange = (value: string) => {
     const experienceValue = parseInt(value);
-    // Comparaison pour les nombres entiers
     if (
       filters.experience_min !== null &&
       filters.experience_min !== undefined &&
       filters.experience_min === experienceValue
     ) {
-      // Si la même expérience est sélectionnée, on la désélectionne
       onFilterChange("experience_min", null);
     } else {
-      // Sinon on la sélectionne
       onFilterChange("experience_min", experienceValue);
     }
   };
 
-  // Filtres actifs
   const activeFilters = [];
 
   if (searchParams?.getAll("specialite").length) {
@@ -115,8 +104,7 @@ export function FilterPanel({
   }
 
   return (
-    <div className="rounded-lg shadow-sm">
-      {/* Header cliquable */}
+    <div className="relative z-50 rounded-lg shadow-sm bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <div
         className="flex items-center justify-between p-4 cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -137,12 +125,10 @@ export function FilterPanel({
         <Button>{isExpanded ? "Masquer" : "Afficher"}</Button>
       </div>
 
-      {/* Panel de filtres expandable */}
       {isExpanded && (
-        <div className="p-4 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {/* Langue */}
-            <div className="space-y-2">
+        <div className="p-4 space-y-4 relative">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-50">
+            <div className="space-y-2 relative z-[60]">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <Languages className="w-4 h-4" />
                 Langue parlée
@@ -155,8 +141,7 @@ export function FilterPanel({
               />
             </div>
 
-            {/* Genre */}
-            <div className="space-y-2">
+            <div className="space-y-2 relative z-[55]">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <User className="w-4 h-4" />
                 Genre
@@ -169,8 +154,7 @@ export function FilterPanel({
               />
             </div>
 
-            {/* Expérience minimum */}
-            <div className="space-y-2">
+            <div className="space-y-2 relative z-50">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <Briefcase className="w-4 h-4" />
                 Expérience minimum

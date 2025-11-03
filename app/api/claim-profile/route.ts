@@ -6,32 +6,47 @@ export async function POST(request: NextRequest) {
     const { lawyerId, email, password } = await request.json();
     const supabase = await createAdminClient();
 
-    // ✅ Récupérer les données existantes
-    const { data: existingUser } = await supabase
+    const { data: oldUser } = await supabase
       .from("users")
       .select("*")
       .eq("id", lawyerId)
       .single();
 
-    const { data: existingLawyer } = await supabase
+    const { data: oldLawyer } = await supabase
       .from("lawyers")
       .select("*")
       .eq("id", lawyerId)
       .single();
 
-    if (!existingUser || !existingLawyer) {
-      throw new Error("Profil introuvable");
+    if (!oldUser || !oldLawyer) {
+      return NextResponse.json(
+        { error: "Profil introuvable" },
+        { status: 404 }
+      );
     }
 
-    // ✅ Supprimer l'ancien compte auth si existant
-    const { data: allUsers } = await supabase.auth.admin.listUsers();
-    const oldAuthUser = allUsers?.users.find((u) => u.email === email);
-
-    if (oldAuthUser) {
-      await supabase.auth.admin.deleteUser(oldAuthUser.id);
+    if (oldUser.professional_email !== email) {
+      return NextResponse.json(
+        { error: "Email ne correspond pas au profil" },
+        { status: 400 }
+      );
     }
 
-    // ✅ Créer le compte auth
+    const { data: existingAuthData } = await supabase.auth.admin.listUsers();
+    const existingAuthUser = existingAuthData?.users.find(
+      (u) => u.email === email
+    );
+
+    if (existingAuthUser) {
+      return NextResponse.json(
+        {
+          error:
+            "Un compte existe déjà avec cet email. Connectez-vous directement.",
+        },
+        { status: 400 }
+      );
+    }
+
     const { data: authData, error: authError } =
       await supabase.auth.admin.createUser({
         email: email,
@@ -39,71 +54,86 @@ export async function POST(request: NextRequest) {
         email_confirm: true,
       });
 
-    if (authError) throw new Error(authError.message);
+    if (authError) {
+      console.error("Erreur création auth:", authError);
+      return NextResponse.json({ error: authError.message }, { status: 500 });
+    }
 
     const newAuthId = authData.user.id;
 
-    // ✅ Attendre que le trigger se termine
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    // ✅ Supprimer les entrées créées par le trigger
     await supabase.from("lawyers").delete().eq("id", newAuthId);
     await supabase.from("users").delete().eq("id", newAuthId);
 
-    // ✅ Créer users avec le nouvel auth ID
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     const { error: userError } = await supabase.from("users").insert({
       id: newAuthId,
-      email: existingUser.email,
-      first_name: existingUser.first_name,
-      last_name: existingUser.last_name,
-      phone: existingUser.phone,
-      mobile: existingUser.mobile,
-      user_type: existingUser.user_type,
-      location: existingUser.location,
-      address: existingUser.address,
-      avatar_url: existingUser.avatar_url,
-      professional_email: existingUser.professional_email,
-      verified: true, // ✅ VÉRIFIER AUTOMATIQUEMENT
-      created_at: existingUser.created_at,
+      email: email,
+      first_name: oldUser.first_name,
+      last_name: oldUser.last_name,
+      phone: oldUser.phone,
+      mobile: oldUser.mobile,
+      user_type: "lawyer",
+      location: oldUser.location,
+      address: oldUser.address,
+      avatar_url: oldUser.avatar_url,
+      professional_email: email,
+      gender: oldUser.gender,
+      languages: oldUser.languages,
+      website: oldUser.website,
+      verified: true,
+      created_at: oldUser.created_at,
       updated_at: new Date().toISOString(),
     });
 
     if (userError) {
-      throw new Error(userError.message);
+      console.error("Erreur création user:", userError);
+      await supabase.auth.admin.deleteUser(newAuthId);
+      return NextResponse.json({ error: userError.message }, { status: 500 });
     }
 
-    // ✅ Créer lawyers avec le nouvel auth ID ET le vérifier
     const { error: lawyerError } = await supabase.from("lawyers").insert({
       id: newAuthId,
-      bar_number: existingLawyer.bar_number,
-      specializations: existingLawyer.specializations,
-      wilayas: existingLawyer.wilayas,
-      experience_years: existingLawyer.experience_years,
-      hourly_rate: existingLawyer.hourly_rate,
-      consultation_price: existingLawyer.consultation_price,
-      bio: existingLawyer.bio,
-      is_claimed: true, // ✅ Marqué comme réclamé
+      bar_number: oldLawyer.bar_number,
+      specializations: oldLawyer.specializations,
+      wilayas: oldLawyer.wilayas,
+      experience_years: oldLawyer.experience_years,
+      consultation_price: oldLawyer.consultation_price,
+      bio: oldLawyer.bio,
+      is_claimed: true,
       claimed_at: new Date().toISOString(),
-      is_verified: true, // ✅ VÉRIFIER AUTOMATIQUEMENT
-      is_available: existingLawyer.is_available,
-      total_consultations: existingLawyer.total_consultations,
-      average_rating: existingLawyer.average_rating,
-      total_reviews: existingLawyer.total_reviews,
-      created_at: existingLawyer.created_at,
+      is_verified: true,
+      is_available: oldLawyer.is_available,
+      total_consultations: oldLawyer.total_consultations,
+      average_rating: oldLawyer.average_rating,
+      total_reviews: oldLawyer.total_reviews,
+      created_at: oldLawyer.created_at,
       updated_at: new Date().toISOString(),
     });
 
     if (lawyerError) {
-      throw new Error(lawyerError.message);
+      console.error("Erreur création lawyer:", lawyerError);
+      await supabase.from("users").delete().eq("id", newAuthId);
+      await supabase.auth.admin.deleteUser(newAuthId);
+      return NextResponse.json({ error: lawyerError.message }, { status: 500 });
     }
 
-    // ✅ Supprimer les anciennes entrées
     await supabase.from("lawyers").delete().eq("id", lawyerId);
     await supabase.from("users").delete().eq("id", lawyerId);
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      message: "Profil activé avec succès",
+    });
   } catch (error: any) {
-    console.error("Erreur claim profil:", error.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("💥 Erreur claim profil:", error);
+    return NextResponse.json(
+      {
+        error: error.message || "Erreur lors de l'activation du profil",
+      },
+      { status: 500 }
+    );
   }
 }

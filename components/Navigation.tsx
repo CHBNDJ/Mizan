@@ -31,7 +31,6 @@ type NavLink = {
 
 export function Navigation() {
   const pathname = usePathname();
-  // Cacher la navigation sur certaines pages
   const hiddenPaths = ["/auth/verify-email", "/lawyer/onboarding"];
 
   if (hiddenPaths.some((path) => pathname.startsWith(path))) {

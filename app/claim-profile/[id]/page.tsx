@@ -4,7 +4,14 @@ import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { getAvocatById } from "@/lib/avocatsData";
-import { AlertCircle, Mail, Lock, CheckCircle2 } from "lucide-react";
+import {
+  AlertCircle,
+  Mail,
+  Lock,
+  CheckCircle2,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { gsap } from "gsap";
 
 export default function ClaimProfilePage({
@@ -20,6 +27,7 @@ export default function ClaimProfilePage({
   const [code, setCode] = useState("");
   const [generatedCode, setGeneratedCode] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -27,9 +35,6 @@ export default function ClaimProfilePage({
   useEffect(() => {
     getAvocatById(id).then((data) => {
       if (data?.is_claimed) {
-        alert(
-          "⚠️ Ce profil a déjà été réclamé et est géré par son propriétaire."
-        );
         router.push(`/lawyers/${id}`);
         return;
       }
@@ -79,7 +84,8 @@ export default function ClaimProfilePage({
     setLoading(true);
     setError("");
 
-    if (email !== avocat?.contact?.email) {
+    const avocatEmail = avocat?.contact?.email;
+    if (email !== avocatEmail) {
       setError("Cet email ne correspond pas au profil");
       setLoading(false);
       return;
@@ -148,9 +154,6 @@ export default function ClaimProfilePage({
         throw new Error(data.error || "Erreur lors de l'activation");
       }
 
-      alert(
-        "✅ Profil activé avec succès ! Vous pouvez maintenant vous connecter."
-      );
       router.push("/auth/lawyer/login");
     } catch (err: any) {
       console.error("Erreur activation:", err);
@@ -172,7 +175,7 @@ export default function ClaimProfilePage({
   }
 
   return (
-    <div className="min-h-screen pt-24 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+    <div className="min-h-screen pt-24 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
       <style>{`
         .header-icon,
         .page-title,
@@ -183,60 +186,60 @@ export default function ClaimProfilePage({
         }
       `}</style>
 
-      <div className="max-w-md mx-auto px-4 py-8" ref={containerRef}>
-        {/* Header */}
+      <div className="w-full max-w-lg mx-auto px-4 py-8" ref={containerRef}>
         <div className="text-center mb-8">
-          <div className="header-icon inline-flex items-center justify-center w-16 h-16 bg-teal-100 rounded-full mb-4">
-            <CheckCircle2 className="w-8 h-8 text-teal-600" />
+          <div className="header-icon inline-flex items-center justify-center w-20 h-20 bg-teal-100 rounded-full mb-6">
+            <CheckCircle2 className="w-10 h-10 text-teal-600" />
           </div>
-          <h1 className="page-title text-3xl font-bold text-slate-800 mb-2">
+          <h1 className="page-title text-4xl font-bold text-slate-800 mb-3">
             Réclamer votre profil
           </h1>
-          <p className="page-subtitle text-slate-600">
+          <p className="page-subtitle text-lg text-slate-600">
             {avocat.prenom} {avocat.nom}
           </p>
         </div>
 
-        {/* Card principale */}
-        <Card className="main-card shadow-xl border-0">
+        <Card className="main-card shadow-2xl border-0">
           <div className="p-8">
-            {/* ÉTAPE 1 : Entrer l'email */}
             {step === 1 && (
               <form onSubmit={handleSendCode} className="space-y-6">
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-                    <Mail className="w-4 h-4" />
+                  <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-3">
+                    <Mail className="w-5 h-5" />
                     Confirmez votre email professionnel
                   </label>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder={avocat.contact.email}
-                    className="w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700"
+                    placeholder="votre.email@exemple.com"
+                    className="w-full h-14 px-4 text-base border-2 border-slate-300 rounded-lg bg-white focus:border-teal-400 hover:border-teal-300 outline-none transition-all duration-200 text-slate-700"
                     required
                     disabled={loading}
                   />
-                  <p className="text-xs text-slate-500 mt-2">
-                    Entrez : <strong>{avocat.contact.email}</strong>
+                  <p className="text-sm text-slate-500 mt-3 text-center">
+                    Email attendu :{" "}
+                    <strong className="text-teal-600">
+                      {avocat.contact.email}
+                    </strong>
                   </p>
                 </div>
 
                 {error && (
-                  <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-red-50 border-2 border-red-200 rounded-lg">
                     <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                    <p className="text-red-700 text-sm">{error}</p>
+                    <p className="text-red-700 text-sm font-medium">{error}</p>
                   </div>
                 )}
 
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-12 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full h-14 bg-teal-600 hover:bg-teal-700 text-white text-base font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <div className="flex items-center justify-center gap-2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                       Envoi en cours...
                     </div>
                   ) : (
@@ -244,7 +247,7 @@ export default function ClaimProfilePage({
                   )}
                 </Button>
 
-                <div className="bg-teal-50 border border-teal-200 p-4 rounded-lg">
+                <div className="bg-teal-50 border-2 border-teal-200 p-4 rounded-lg">
                   <p className="text-teal-800 text-sm">
                     📧 Un code de vérification sera envoyé à votre adresse
                     email. Vérifiez aussi vos spams !
@@ -253,28 +256,25 @@ export default function ClaimProfilePage({
               </form>
             )}
 
-            {/* ÉTAPE 2 : Entrer le code et créer le mot de passe */}
             {step === 2 && (
               <form onSubmit={handleActivate} className="space-y-6">
-                {/* Message de succès envoi */}
-                <div className="bg-teal-50 border border-teal-200 p-4 rounded-lg">
+                <div className="bg-teal-50 border-2 border-teal-200 p-5 rounded-lg">
                   <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-6 h-6 text-teal-600 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-teal-800 font-medium text-sm">
+                      <p className="text-teal-800 font-semibold text-base">
                         Code envoyé avec succès !
                       </p>
-                      <p className="text-teal-700 text-xs mt-1">
+                      <p className="text-teal-700 text-sm mt-1">
                         Vérifiez votre boîte mail : <strong>{email}</strong>
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Code de vérification */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Code de vérification
+                  <label className="block text-sm font-medium text-slate-700 mb-3">
+                    Code de vérification (6 chiffres)
                   </label>
                   <input
                     type="text"
@@ -283,42 +283,55 @@ export default function ClaimProfilePage({
                       const value = e.target.value.replace(/\D/g, "");
                       if (value.length <= 6) setCode(value);
                     }}
-                    placeholder="123456"
-                    className="w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700"
+                    placeholder="000000"
+                    className="w-full h-16 px-4 text-center text-2xl font-bold tracking-widest border-2 border-slate-300 rounded-lg bg-white focus:border-teal-400 hover:border-teal-300 outline-none transition-all duration-200 text-slate-700 placeholder:text-slate-300"
                     required
                     maxLength={6}
                     disabled={loading}
                   />
                   <p className="text-xs text-slate-500 mt-2 text-center">
-                    Entrez le code reçu par email
+                    Entrez le code à 6 chiffres reçu par email
                   </p>
                 </div>
 
-                {/* Mot de passe */}
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-                    <Lock className="w-4 h-4" />
+                  <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-3">
+                    <Lock className="w-5 h-5" />
                     Créer votre mot de passe
                   </label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700"
-                    required
-                    minLength={8}
-                    disabled={loading}
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Minimum 8 caractères"
+                      className="w-full h-14 px-4 pr-12 text-base border-2 border-slate-300 rounded-lg bg-white focus:border-teal-400 hover:border-teal-300 outline-none transition-all duration-200 text-slate-700"
+                      required
+                      minLength={8}
+                      disabled={loading}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                      disabled={loading}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
                   <p className="text-xs text-slate-500 mt-2">
-                    Minimum 8 caractères
+                    Minimum 8 caractères recommandés
                   </p>
                 </div>
 
                 {error && (
-                  <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-red-50 border-2 border-red-200 rounded-lg">
                     <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                    <p className="text-red-700 text-sm">{error}</p>
+                    <p className="text-red-700 text-sm font-medium">{error}</p>
                   </div>
                 )}
 
@@ -327,18 +340,18 @@ export default function ClaimProfilePage({
                     type="button"
                     onClick={() => setStep(1)}
                     disabled={loading}
-                    className="cursor-pointer flex-1 h-12 bg-slate-200 text-slate-700 font-semibold rounded-lg hover:bg-slate-300 transition-colors"
+                    className="cursor-pointer flex-1 h-14 bg-slate-200 text-slate-700 text-base font-semibold rounded-lg hover:bg-slate-300 transition-colors disabled:opacity-50"
                   >
                     Retour
                   </button>
                   <button
                     type="submit"
                     disabled={loading}
-                    className="cursor-pointer flex-[2] h-12 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="cursor-pointer flex-[2] h-14 bg-teal-600 text-white text-base font-semibold rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? (
                       <div className="flex items-center justify-center gap-2">
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                         Activation...
                       </div>
                     ) : (
@@ -351,8 +364,7 @@ export default function ClaimProfilePage({
           </div>
         </Card>
 
-        {/* Footer */}
-        <p className="footer-text text-center text-xs text-slate-500 mt-6">
+        <p className="footer-text text-center text-sm text-slate-500 mt-6">
           En activant votre compte, vous pourrez gérer votre profil, recevoir
           des consultations et interagir avec vos clients.
         </p>

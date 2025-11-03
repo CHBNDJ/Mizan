@@ -31,10 +31,19 @@ export interface AvocatData {
   consultation_price?: number;
   langues?: string[];
   verified?: boolean;
-  rating?: number;
+  rating?: number | null;
   reviews_count?: number;
+
+  average_rating?: number | null;
+  total_reviews?: number;
+
+  rating_google?: number | null;
+  reviews_count_google?: number;
+  rating_mizan?: number | null;
+  reviews_count_mizan?: number;
+
   is_claimed?: boolean;
-  claimed_at?: string;
+  claimed_at?: string | null;
 }
 
 export interface Profile {

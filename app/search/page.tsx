@@ -78,17 +78,6 @@ function SearchResults() {
     );
 
     gsap.fromTo(
-      ".search-filters",
-      { y: -20 },
-      {
-        y: 0,
-        duration: 0.6,
-        delay: 0.3,
-        ease: "power2.out",
-      }
-    );
-
-    gsap.fromTo(
       ".search-results-header",
       { opacity: 0, x: -50 },
       { opacity: 1, x: 0, duration: 0.8, delay: 0.5, ease: "power3.out" }
@@ -205,8 +194,9 @@ function SearchResults() {
         .search-avocat-card {
           opacity: 0;
         }
-        .search-filters {
-          transform: translateY(-20px);
+        .search-results-header {
+          position: relative;
+          z-index: 100;
         }
       `}</style>
 
@@ -255,21 +245,19 @@ function SearchResults() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="search-filters">
-          <FilterPanel
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            onClearFilters={clearFilters}
-            searchParams={searchParams}
-          />
-        </div>
+        <FilterPanel
+          filters={filters}
+          onFilterChange={handleFilterChange}
+          onClearFilters={clearFilters}
+          searchParams={searchParams}
+        />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="w-full">
+        <div className="w-full relative z-10">
           <div className="search-results-header">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-              <div>
+              <div className="relative z-10">
                 <h2 className="text-lg font-semibold text-slate-800">
                   {totalAvocats === 0
                     ? "Aucun avocat trouvé"
@@ -293,12 +281,13 @@ function SearchResults() {
               </div>
 
               {totalAvocats > 1 && (
-                <div className="w-full sm:w-48">
+                <div className="w-full sm:w-48 relative z-[100]">
                   <CustomSelect
                     options={triOptions}
                     placeholder="Trier par..."
                     value={sortBy}
                     onChange={handleSortChange}
+                    className="relative"
                   />
                 </div>
               )}
