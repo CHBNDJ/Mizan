@@ -78,6 +78,12 @@ function SearchResults() {
     );
 
     gsap.fromTo(
+      ".filter-panel",
+      { opacity: 0, x: -50 },
+      { opacity: 1, x: 0, duration: 0.8, delay: 0.3, ease: "power3.out" }
+    );
+
+    gsap.fromTo(
       ".search-results-header",
       { opacity: 0, x: -50 },
       { opacity: 1, x: 0, duration: 0.8, delay: 0.5, ease: "power3.out" }
@@ -191,7 +197,8 @@ function SearchResults() {
       <style>{`
         .search-header-item,
         .search-results-header,
-        .search-avocat-card {
+        .search-avocat-card,
+        .filter-panel {
           opacity: 0;
         }
         .search-results-header {
@@ -245,12 +252,14 @@ function SearchResults() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-6">
-        <FilterPanel
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          onClearFilters={clearFilters}
-          searchParams={searchParams}
-        />
+        <div className="filter-panel">
+          <FilterPanel
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            onClearFilters={clearFilters}
+            searchParams={searchParams}
+          />
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
