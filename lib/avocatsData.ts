@@ -171,16 +171,6 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     langues: langues,
     verified: lawyer.is_verified || false,
 
-    rating: lawyer.rating
-      ? Number(lawyer.rating)
-      : lawyer.average_rating
-        ? Number(lawyer.average_rating)
-        : undefined,
-    reviews_count: lawyer.reviews_count || lawyer.total_reviews || 0,
-    average_rating: lawyer.average_rating
-      ? Number(lawyer.average_rating)
-      : undefined,
-    total_reviews: lawyer.total_reviews || 0,
     rating_google: lawyer.rating_google ? Number(lawyer.rating_google) : null,
     reviews_count_google: lawyer.reviews_count_google || 0,
     rating_mizan: lawyer.rating_mizan ? Number(lawyer.rating_mizan) : null,
@@ -347,15 +337,35 @@ export async function getTopRatedAvocats(
 ): Promise<AvocatData[]> {
   try {
     const allAvocats = await getAvocats();
+
     return allAvocats
-      .filter((a) => a.rating && a.rating > 0)
-      .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+      .filter((a) => {
+        const hasRating =
+          (a.rating_google && a.rating_google > 0) ||
+          (a.rating_mizan && a.rating_mizan > 0);
+        return hasRating;
+      })
+      .sort((a, b) => {
+        const ratingA = Math.max(a.rating_google || 0, a.rating_mizan || 0);
+        const ratingB = Math.max(b.rating_google || 0, b.rating_mizan || 0);
+        return ratingB - ratingA;
+      })
       .slice(0, limit);
   } catch (error) {
     console.error("Erreur récupération top avocats:", error);
+
     return AVOCATS_DATABASE.avocats
-      .filter((a) => a.rating && a.rating > 0)
-      .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+      .filter((a) => {
+        const hasRating =
+          (a.rating_google && a.rating_google > 0) ||
+          (a.rating_mizan && a.rating_mizan > 0);
+        return hasRating;
+      })
+      .sort((a, b) => {
+        const ratingA = Math.max(a.rating_google || 0, a.rating_mizan || 0);
+        const ratingB = Math.max(b.rating_google || 0, b.rating_mizan || 0);
+        return ratingB - ratingA;
+      })
       .slice(0, limit);
   }
 }
@@ -451,10 +461,6 @@ export async function getAvocatById(id: string): Promise<AvocatData | null> {
         is_verified,
         is_claimed,
         claimed_at,
-        rating,
-        reviews_count,
-        average_rating,
-        total_reviews,
         rating_google,
         reviews_count_google,
         rating_mizan,

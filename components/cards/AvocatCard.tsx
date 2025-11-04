@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Star, MapPin, CheckCircle } from "lucide-react";
+import Image from "next/image";
 import { getInitials } from "@/lib/utils";
 import { AvocatCardProps } from "@/types";
 import { formatPrice, calculateConsultationPrice } from "@/lib/priceUtils";
@@ -9,7 +10,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
   const tarifEstime = calculateConsultationPrice(
     avocat.consultation_price,
     avocat.experience?.annees || 0,
-    avocat.rating
+    avocat.rating_google || avocat.rating_mizan
   );
 
   const getProfileUrl = () => {
@@ -49,31 +50,79 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
           </span>
         </div>
 
-        <div className="flex items-center justify-center gap-2 h-8">
-          {avocat.rating && avocat.reviews_count ? (
+        {/* ✅ AFFICHAGE SÉPARÉ GOOGLE ET MIZAN */}
+        <div className="flex flex-col items-center gap-2 min-h-[60px]">
+          {(avocat.rating_google && (avocat.reviews_count_google ?? 0) > 0) ||
+          (avocat.rating_mizan && (avocat.reviews_count_mizan ?? 0) > 0) ? (
             <>
-              <div className="flex items-center">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`w-4 h-4 ${
-                      i < Math.floor(avocat.rating!)
-                        ? "text-amber-400 fill-current"
-                        : "text-slate-300"
-                    }`}
-                  />
-                ))}
-              </div>
-              <span className="text-sm text-slate-600">
-                ({avocat.reviews_count})
-              </span>
+              {/* Note Google */}
+              {avocat.rating_google &&
+                (avocat.reviews_count_google ?? 0) > 0 && (
+                  <div className="flex items-center gap-1.5">
+                    <div className="flex items-center">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-3.5 h-3.5 ${
+                            i < Math.floor(avocat.rating_google!)
+                              ? "text-yellow-400 fill-current"
+                              : "text-slate-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <Image
+                      src="/google.png"
+                      alt="Google"
+                      width={14}
+                      height={14}
+                      className="ml-0.5"
+                    />
+                    <span className="text-xs text-slate-600 font-medium">
+                      {avocat.rating_google.toFixed(1)}
+                    </span>
+                    <span className="text-xs text-slate-500">
+                      ({avocat.reviews_count_google})
+                    </span>
+                  </div>
+                )}
+
+              {/* Note Mizan */}
+              {avocat.rating_mizan && (avocat.reviews_count_mizan ?? 0) > 0 && (
+                <div className="flex items-center gap-1.5">
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-3.5 h-3.5 ${
+                          i < Math.floor(avocat.rating_mizan!)
+                            ? "text-teal-500 fill-current"
+                            : "text-slate-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <svg
+                    className="w-3.5 h-3.5 text-teal-600 fill-current ml-0.5"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                  </svg>
+                  <span className="text-xs text-slate-600 font-medium">
+                    {avocat.rating_mizan.toFixed(1)}
+                  </span>
+                  <span className="text-xs text-slate-500">
+                    ({avocat.reviews_count_mizan})
+                  </span>
+                </div>
+              )}
             </>
           ) : (
             <span className="text-sm text-slate-400">Pas d'avis</span>
           )}
 
           {avocat.verified && (
-            <div className="flex items-center gap-1 ml-3 px-3 py-1 bg-teal-50 text-teal-700 rounded-full text-xs font-medium">
+            <div className="flex items-center gap-1 px-3 py-1 bg-teal-50 text-teal-700 rounded-full text-xs font-medium">
               <CheckCircle className="w-3 h-3" />
               <span>Vérifié</span>
             </div>

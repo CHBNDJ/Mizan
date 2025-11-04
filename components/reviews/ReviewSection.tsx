@@ -182,17 +182,32 @@ export default function ReviewSection({
 
       if (insertError) throw insertError;
 
-      console.log("✅ Avis inséré, attente du trigger...");
+      console.log("✅ Avis inséré");
 
-      // ✅ ATTENDRE 1 SECONDE POUR LE TRIGGER
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // ✅ FORCER LE RECALCUL VIA API
+      console.log("🔄 Recalcul des stats via API...");
+      const recalcResponse = await fetch("/api/recalculate-ratings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lawyerId }),
+      });
+
+      if (recalcResponse.ok) {
+        const recalcData = await recalcResponse.json();
+        console.log("✅ Stats recalculées:", recalcData.stats);
+      } else {
+        console.error("❌ Erreur recalcul API");
+      }
+
+      // ✅ Attendre un peu
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       console.log("🔄 Rechargement des données...");
 
-      // ✅ RECHARGER LES AVIS
+      // Recharger les avis
       await loadReviews();
 
-      // ✅ RECHARGER LES DONNÉES DE L'AVOCAT (stats)
+      // Recharger les données de l'avocat
       if (onReviewSubmitted) {
         await onReviewSubmitted();
       }
