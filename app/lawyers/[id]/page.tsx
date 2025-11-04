@@ -101,19 +101,28 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
   const reloadAvocatData = async () => {
     try {
+      console.log("🔄 Rechargement des données avocat...");
+
+      // ✅ Attendre un peu (au cas où)
       await new Promise((resolve) => setTimeout(resolve, 500));
 
+      // ✅ Forcer un refetch complet
       const avocatData = await getAvocatById(id);
-      setAvocat(avocatData);
 
-      console.log("✅ Données rechargées:", {
-        rating_mizan: avocatData?.rating_mizan,
-        reviews_count_mizan: avocatData?.reviews_count_mizan,
-        rating: avocatData?.rating,
-        reviews_count: avocatData?.reviews_count,
-      });
+      if (avocatData) {
+        console.log("✅ Nouvelles données reçues:", {
+          rating_mizan: avocatData.rating_mizan,
+          reviews_count_mizan: avocatData.reviews_count_mizan,
+          rating: avocatData.rating,
+          reviews_count: avocatData.reviews_count,
+        });
+
+        setAvocat(avocatData);
+      } else {
+        console.error("❌ Aucune donnée reçue");
+      }
     } catch (error) {
-      console.error("Erreur rechargement avocat:", error);
+      console.error("❌ Erreur rechargement avocat:", error);
     }
   };
 

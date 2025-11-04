@@ -103,6 +103,61 @@ export default function ReviewSection({
     return `Il y a ${Math.floor(diffDays / 365)} ans`;
   };
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   if (!user) {
+  //     alert("Vous devez être connecté pour laisser un avis");
+  //     return;
+  //   }
+
+  //   const commentTrimmed = newReview.comment.trim();
+  //   setSubmitting(true);
+
+  //   try {
+  //     const { error: insertError } = await supabase.from("reviews").insert({
+  //       lawyer_id: lawyerId,
+  //       client_id: user.id,
+  //       rating: newReview.rating,
+  //       comment: commentTrimmed || null,
+  //       source: "mizan",
+  //     });
+
+  //     if (insertError) throw insertError;
+
+  //     await new Promise((resolve) => setTimeout(resolve, 500));
+
+  //     await loadReviews();
+
+  //     if (onReviewSubmitted) {
+  //       await onReviewSubmitted();
+  //     }
+
+  //     try {
+  //       const reviewerName = user.user_metadata?.first_name
+  //         ? `${user.user_metadata.first_name} ${user.user_metadata.last_name || ""}`
+  //         : "Un client";
+
+  //       await supabase.functions.invoke("send-notification", {
+  //         body: {
+  //           userId: lawyerId,
+  //           title: "Nouvel avis reçu sur Mizan",
+  //           message: `${reviewerName} a laissé un avis ${newReview.rating} étoiles sur votre profil.`,
+  //           type: "email",
+  //         },
+  //       });
+  //     } catch (notifError) {
+  //       console.error("Erreur notification:", notifError);
+  //     }
+
+  //     setNewReview({ rating: 5, comment: "" });
+  //   } catch (error: any) {
+  //     console.error("Erreur soumission avis:", error);
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -115,6 +170,8 @@ export default function ReviewSection({
     setSubmitting(true);
 
     try {
+      console.log("📝 Insertion de l'avis...");
+
       const { error: insertError } = await supabase.from("reviews").insert({
         lawyer_id: lawyerId,
         client_id: user.id,
@@ -125,14 +182,24 @@ export default function ReviewSection({
 
       if (insertError) throw insertError;
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      console.log("✅ Avis inséré, attente du trigger...");
 
+      // ✅ ATTENDRE 1 SECONDE POUR LE TRIGGER
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      console.log("🔄 Rechargement des données...");
+
+      // ✅ RECHARGER LES AVIS
       await loadReviews();
 
+      // ✅ RECHARGER LES DONNÉES DE L'AVOCAT (stats)
       if (onReviewSubmitted) {
         await onReviewSubmitted();
       }
 
+      console.log("✅ Rechargement terminé");
+
+      // Notification (optionnelle)
       try {
         const reviewerName = user.user_metadata?.first_name
           ? `${user.user_metadata.first_name} ${user.user_metadata.last_name || ""}`
@@ -152,7 +219,8 @@ export default function ReviewSection({
 
       setNewReview({ rating: 5, comment: "" });
     } catch (error: any) {
-      console.error("Erreur soumission avis:", error);
+      console.error("❌ Erreur soumission avis:", error);
+      alert("Erreur lors de l'envoi de l'avis");
     } finally {
       setSubmitting(false);
     }
