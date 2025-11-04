@@ -101,12 +101,17 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
   const reloadAvocatData = async () => {
     try {
-      // ✅ Attendre un petit délai pour que le trigger se termine
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // ✅ Forcer un refetch sans cache
       const avocatData = await getAvocatById(id);
       setAvocat(avocatData);
+
+      console.log("✅ Données rechargées:", {
+        rating_mizan: avocatData?.rating_mizan,
+        reviews_count_mizan: avocatData?.reviews_count_mizan,
+        rating: avocatData?.rating,
+        reviews_count: avocatData?.reviews_count,
+      });
     } catch (error) {
       console.error("Erreur rechargement avocat:", error);
     }
