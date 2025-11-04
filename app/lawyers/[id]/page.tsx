@@ -629,6 +629,7 @@ import {
   MessageCircle,
   Mail,
   Smartphone,
+  Scale,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";
@@ -846,7 +847,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       {avocat.rating_mizan &&
                         (avocat.reviews_count_mizan ?? 0) > 0 && (
                           <div className="flex items-center justify-center sm:justify-start gap-2 text-teal-600">
-                            <Star className="w-5 h-5 fill-current" />
+                            <Scale className="w-5 h-5 fill-current" />
                             <span className="font-semibold text-lg">
                               {avocat.rating_mizan.toFixed(1)}
                             </span>

@@ -267,10 +267,8 @@ export default function ReviewSection({
 
       console.log("✅ Avis inséré");
 
-      // ✅ ATTENDRE 2 SECONDES POUR LE TRIGGER
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // ✅ FORCER LE RECALCUL VIA API
       console.log("🔄 Recalcul des stats via API...");
       try {
         const recalcResponse = await fetch("/api/recalculate-ratings", {
@@ -290,22 +288,18 @@ export default function ReviewSection({
         console.error("❌ Erreur appel API:", apiError);
       }
 
-      // ✅ ATTENDRE ENCORE 1 SECONDE
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       console.log("🔄 Rechargement des données...");
 
-      // Recharger les avis
       await loadReviews();
 
-      // Recharger les données de l'avocat
       if (onReviewSubmitted) {
         await onReviewSubmitted();
       }
 
       console.log("✅ Rechargement terminé");
 
-      // Notification (optionnelle)
       try {
         const reviewerName = user.user_metadata?.first_name
           ? `${user.user_metadata.first_name} ${user.user_metadata.last_name || ""}`
