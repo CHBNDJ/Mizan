@@ -121,7 +121,6 @@ export async function POST(request: NextRequest) {
       total_consultations: oldLawyer.total_consultations,
       average_rating: oldLawyer.average_rating,
       total_reviews: oldLawyer.total_reviews,
-      rating: oldLawyer.rating,
       reviews_count: oldLawyer.reviews_count,
       rating_google: oldLawyer.rating_google,
       reviews_count_google: oldLawyer.reviews_count_google,

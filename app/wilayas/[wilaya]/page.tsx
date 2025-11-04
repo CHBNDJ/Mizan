@@ -29,12 +29,19 @@ export default async function WilayaPage({ params }: WilayaPageProps) {
   const avocatsVerifies = avocats.filter((a) => a.verified).length;
   const moyenneExperience =
     avocats.reduce((sum, a) => sum + a.experience.annees, 0) / totalAvocats;
-  const avocatsAvecRating = avocats.filter((a) => a.rating && a.rating > 0);
+  const avocatsAvecRating = avocats.filter(
+    (a) =>
+      (a.rating_google && a.rating_google > 0) ||
+      (a.rating_mizan && a.rating_mizan > 0)
+  );
+
   const moyenneRating =
     avocatsAvecRating.length > 0
-      ? avocatsAvecRating.reduce((sum, a) => sum + (a.rating || 0), 0) /
-        avocatsAvecRating.length
-      : null;
+      ? avocatsAvecRating.reduce((sum, a) => {
+          const rating = Math.max(a.rating_google || 0, a.rating_mizan || 0);
+          return sum + rating;
+        }, 0) / avocatsAvecRating.length
+      : 0;
 
   return (
     <WilayaPageClient
