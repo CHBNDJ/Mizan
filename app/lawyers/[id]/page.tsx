@@ -847,16 +847,11 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       {avocat.rating_mizan &&
                         (avocat.reviews_count_mizan ?? 0) > 0 && (
                           <div className="flex items-center justify-center sm:justify-start gap-2 text-teal-600">
-                            <Scale className="w-5 h-5 fill-current" />
+                            <Star className="w-5 h-5 fill-current" />
                             <span className="font-semibold text-lg">
                               {avocat.rating_mizan.toFixed(1)}
                             </span>
-                            <svg
-                              className="w-4 h-4 ml-1 fill-current"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-                            </svg>
+                            <Scale className="w-5 h-5 fill-current" />
                             <span className="text-sm text-slate-500">
                               ({avocat.reviews_count_mizan} avis)
                             </span>
