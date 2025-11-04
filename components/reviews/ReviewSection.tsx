@@ -305,7 +305,7 @@ export default function ReviewSection({
           ? `${user.user_metadata.first_name} ${user.user_metadata.last_name || ""}`
           : "Un client";
 
-        await supabase.functions.invoke("send-notification", {
+        await supabase.functions.invoke("reviews", {
           body: {
             userId: lawyerId,
             title: "Nouvel avis reçu sur Mizan",
