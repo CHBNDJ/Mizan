@@ -101,6 +101,10 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
   const reloadAvocatData = async () => {
     try {
+      // ✅ Attendre un petit délai pour que le trigger se termine
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      // ✅ Forcer un refetch sans cache
       const avocatData = await getAvocatById(id);
       setAvocat(avocatData);
     } catch (error) {
