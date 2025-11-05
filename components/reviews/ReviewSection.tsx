@@ -241,6 +241,91 @@ export default function ReviewSection({
   //   }
   // };
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   if (!user) {
+  //     alert("Vous devez être connecté pour laisser un avis");
+  //     return;
+  //   }
+
+  //   const commentTrimmed = newReview.comment.trim();
+  //   setSubmitting(true);
+
+  //   try {
+  //     console.log("📝 Insertion de l'avis...");
+
+  //     const { error: insertError } = await supabase.from("reviews").insert({
+  //       lawyer_id: lawyerId,
+  //       client_id: user.id,
+  //       rating: newReview.rating,
+  //       comment: commentTrimmed || null,
+  //       source: "mizan",
+  //     });
+
+  //     if (insertError) throw insertError;
+
+  //     console.log("✅ Avis inséré");
+
+  //     await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  //     console.log("🔄 Recalcul des stats via API...");
+  //     try {
+  //       const recalcResponse = await fetch("/api/recalculate-ratings", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ lawyerId }),
+  //       });
+
+  //       if (recalcResponse.ok) {
+  //         const recalcData = await recalcResponse.json();
+  //         console.log("✅ Stats recalculées:", recalcData.stats);
+  //       } else {
+  //         const errorText = await recalcResponse.text();
+  //         console.error("❌ Erreur recalcul API:", errorText);
+  //       }
+  //     } catch (apiError) {
+  //       console.error("❌ Erreur appel API:", apiError);
+  //     }
+
+  //     await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  //     console.log("🔄 Rechargement des données...");
+
+  //     await loadReviews();
+
+  //     if (onReviewSubmitted) {
+  //       await onReviewSubmitted();
+  //     }
+
+  //     console.log("✅ Rechargement terminé");
+
+  // try {
+  //   const reviewerName = user.user_metadata?.first_name
+  //     ? `${user.user_metadata.first_name} ${user.user_metadata.last_name || ""}`
+  //     : "Un client";
+
+  //   await supabase.functions.invoke("send-notification", {
+  //     body: {
+  //       userId: lawyerId,
+  //       title: "Nouvel avis reçu sur Mizan",
+  //       message: `${reviewerName} a laissé un avis ${newReview.rating} étoiles sur votre profil.`,
+  //       type: "email",
+  //     },
+  //   });
+  // } catch (notifError) {
+  //   console.error("Erreur notification:", notifError);
+  // }
+
+  //     setNewReview({ rating: 5, comment: "" });
+  //   } catch (error: any) {
+  //     console.error("❌ Erreur soumission avis:", error);
+  //     alert("Erreur lors de l'envoi de l'avis");
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -267,8 +352,11 @@ export default function ReviewSection({
 
       console.log("✅ Avis inséré");
 
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // ✅ ATTENDRE 3 SECONDES POUR LE TRIGGER
+      console.log("⏳ Attente trigger SQL...");
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
+      // ✅ FORCER LE RECALCUL VIA API
       console.log("🔄 Recalcul des stats via API...");
       try {
         const recalcResponse = await fetch("/api/recalculate-ratings", {
@@ -288,34 +376,21 @@ export default function ReviewSection({
         console.error("❌ Erreur appel API:", apiError);
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // ✅ ATTENDRE 3 SECONDES SUPPLÉMENTAIRES POUR LE CACHE
+      console.log("⏳ Attente propagation cache...");
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
       console.log("🔄 Rechargement des données...");
 
+      // Recharger les avis
       await loadReviews();
 
+      // Recharger les données de l'avocat
       if (onReviewSubmitted) {
         await onReviewSubmitted();
       }
 
       console.log("✅ Rechargement terminé");
-
-      // try {
-      //   const reviewerName = user.user_metadata?.first_name
-      //     ? `${user.user_metadata.first_name} ${user.user_metadata.last_name || ""}`
-      //     : "Un client";
-
-      //   await supabase.functions.invoke("send-notification", {
-      //     body: {
-      //       userId: lawyerId,
-      //       title: "Nouvel avis reçu sur Mizan",
-      //       message: `${reviewerName} a laissé un avis ${newReview.rating} étoiles sur votre profil.`,
-      //       type: "email",
-      //     },
-      //   });
-      // } catch (notifError) {
-      //   console.error("Erreur notification:", notifError);
-      // }
 
       setNewReview({ rating: 5, comment: "" });
     } catch (error: any) {

@@ -714,11 +714,74 @@ export default function ProfilePage({ params }: ProfilePageProps) {
       .filter((num) => num.length > 0);
   };
 
+  // const reloadAvocatData = async () => {
+  //   try {
+  //     console.log("🔄 Rechargement des données avocat...");
+  //     await new Promise((resolve) => setTimeout(resolve, 500));
+
+  //     const avocatData = await getAvocatById(id);
+
+  //     if (avocatData) {
+  //       console.log("✅ Nouvelles données reçues:", {
+  //         rating_mizan: avocatData.rating_mizan,
+  //         reviews_count_mizan: avocatData.reviews_count_mizan,
+  //       });
+
+  //       setAvocat(avocatData);
+  //     } else {
+  //       console.error("❌ Aucune donnée reçue");
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Erreur rechargement avocat:", error);
+  //   }
+  // };
+
   const reloadAvocatData = async () => {
     try {
       console.log("🔄 Rechargement des données avocat...");
-      await new Promise((resolve) => setTimeout(resolve, 500));
 
+      // ✅ ATTENDRE 2 SECONDES
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // ✅ FORCER UN VRAI REFETCH EN CRÉANT UN NOUVEAU CLIENT
+      const freshSupabase = createClient();
+
+      const { data: freshLawyer, error } = await freshSupabase
+        .from("lawyers")
+        .select(
+          `
+        id,
+        bar_number,
+        specializations,
+        wilayas,
+        experience_years,
+        consultation_price,
+        is_verified,
+        is_claimed,
+        claimed_at,
+        rating_google,
+        reviews_count_google,
+        rating_mizan,
+        reviews_count_mizan,
+        updated_at
+      `
+        )
+        .eq("id", id)
+        .eq("is_verified", true)
+        .single();
+
+      if (error || !freshLawyer) {
+        console.error("❌ Erreur rechargement:", error);
+        return;
+      }
+
+      console.log("🔍 Données fraîches récupérées:", {
+        rating_mizan: freshLawyer.rating_mizan,
+        reviews_count_mizan: freshLawyer.reviews_count_mizan,
+        updated_at: freshLawyer.updated_at,
+      });
+
+      // ✅ REFETCH COMPLET VIA getAvocatById
       const avocatData = await getAvocatById(id);
 
       if (avocatData) {
