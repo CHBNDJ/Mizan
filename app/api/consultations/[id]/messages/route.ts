@@ -15,7 +15,6 @@ export async function POST(
     const { message, attachment_url, attachment_type, attachment_name } =
       await request.json();
 
-    // Validation du message ou pièce jointe
     if (!message?.trim() && !attachment_url) {
       return NextResponse.json(
         { error: "Message ou pièce jointe requis" },
@@ -23,7 +22,6 @@ export async function POST(
       );
     }
 
-    // Récupérer l'utilisateur connecté
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -32,7 +30,6 @@ export async function POST(
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
-    // Vérifier le type d'utilisateur
     const { data: userData } = await supabase
       .from("users")
       .select("user_type, first_name, last_name")
@@ -48,7 +45,6 @@ export async function POST(
 
     const senderType = userData.user_type === "lawyer" ? "lawyer" : "client";
 
-    // Vérifier que la consultation existe
     const { data: consultation, error: consultationError } = await supabase
       .from("consultations")
       .select("id, client_id, lawyer_id, question")
@@ -63,7 +59,6 @@ export async function POST(
       );
     }
 
-    // Vérifier que l'utilisateur est autorisé
     const isAuthorized =
       user.id === consultation.client_id || user.id === consultation.lawyer_id;
 
@@ -74,7 +69,6 @@ export async function POST(
       );
     }
 
-    // Créer le message
     const { data: newMessage, error: insertError } = await supabase
       .from("consultation_messages")
       .insert({
@@ -95,7 +89,6 @@ export async function POST(
       throw insertError;
     }
 
-    // Si c'est l'avocat qui répond, changer le statut
     if (senderType === "lawyer") {
       const { data: consultationStatus } = await supabase
         .from("consultations")
@@ -103,7 +96,6 @@ export async function POST(
         .eq("id", consultationId)
         .single();
 
-      // Changer de "pending" à "answered" si c'est la première réponse
       if (consultationStatus?.status === "pending") {
         await supabase
           .from("consultations")
@@ -115,7 +107,6 @@ export async function POST(
       }
     }
 
-    // Envoyer email au destinataire
     try {
       const recipientId =
         senderType === "lawyer"
@@ -129,7 +120,6 @@ export async function POST(
         .single();
 
       if (recipient) {
-        // Vérifier les préférences de notification
         const { data: recipientPrefs } = await supabase
           .from("user_preferences")
           .select("email_notifications")
@@ -208,7 +198,6 @@ export async function POST(
       console.error("Erreur envoi email destinataire:", emailError);
     }
 
-    // Notification admin (toujours envoyée)
     try {
       const { data: clientData } = await supabase
         .from("users")

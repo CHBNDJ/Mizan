@@ -51,8 +51,6 @@ export async function POST(request: NextRequest) {
       throw updateError;
     }
 
-    console.log("✅ Stats Mizan mises à jour");
-
     return NextResponse.json({
       success: true,
       stats: {

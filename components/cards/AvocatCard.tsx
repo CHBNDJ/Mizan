@@ -50,12 +50,10 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
           </span>
         </div>
 
-        {/* ✅ AFFICHAGE SÉPARÉ GOOGLE ET MIZAN */}
         <div className="flex flex-col items-center gap-2 min-h-[60px]">
           {(avocat.rating_google && (avocat.reviews_count_google ?? 0) > 0) ||
           (avocat.rating_mizan && (avocat.reviews_count_mizan ?? 0) > 0) ? (
             <>
-              {/* Note Google */}
               {avocat.rating_google &&
                 (avocat.reviews_count_google ?? 0) > 0 && (
                   <div className="flex items-center gap-1.5">
@@ -87,7 +85,6 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
                   </div>
                 )}
 
-              {/* Note Mizan */}
               {avocat.rating_mizan && (avocat.reviews_count_mizan ?? 0) > 0 && (
                 <div className="flex items-center gap-1.5">
                   <div className="flex items-center">

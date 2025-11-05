@@ -22,7 +22,6 @@ export default function LawyerOnboardingPage() {
           return;
         }
 
-        // ✅ Récupérer le profil
         const { data: profile } = await supabase
           .from("users")
           .select("user_type, first_name, last_name")
@@ -34,25 +33,21 @@ export default function LawyerOnboardingPage() {
           return;
         }
 
-        // ✅ Vérifier le statut de vérification dans la table lawyers
         const { data: lawyerData } = await supabase
           .from("lawyers")
           .select("is_verified")
           .eq("id", user.id)
           .single();
 
-        // ✅ Si avocat vérifié, rediriger vers dashboard
         if (profile.user_type === "lawyer" && lawyerData?.is_verified) {
           router.push("/lawyer/dashboard");
           return;
         }
 
-        // ✅ Si avocat non vérifié, afficher la page d'attente
         if (profile.user_type === "lawyer" && !lawyerData?.is_verified) {
           const firstName = profile.first_name || "";
           const lastName = profile.last_name || "";
 
-          // ✅ Formater avec "Maître"
           let fullName = "";
           if (firstName && lastName) {
             fullName = `Maître ${firstName} ${lastName}`;
@@ -66,14 +61,12 @@ export default function LawyerOnboardingPage() {
 
           setLawyerName(fullName);
 
-          // ✅ Déconnecter l'utilisateur
           await supabase.auth.signOut();
           await new Promise((resolve) => setTimeout(resolve, 500));
           setLoading(false);
           return;
         }
 
-        // ✅ Si ce n'est pas un avocat, rediriger vers accueil
         if (profile.user_type !== "lawyer") {
           router.push("/");
           return;
@@ -108,7 +101,6 @@ export default function LawyerOnboardingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center p-4">
       <div className="max-w-xl w-full bg-white rounded-2xl shadow-xl p-8">
-        {/* ✅ En-tête simplifié */}
         <div className="text-center mb-8">
           <div className="w-20 h-20 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
             <svg
@@ -135,7 +127,6 @@ export default function LawyerOnboardingPage() {
           </p>
         </div>
 
-        {/* ✅ Message principal simplifié */}
         <div className="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-lg mb-6">
           <div className="flex items-start gap-3">
             <svg
@@ -163,7 +154,6 @@ export default function LawyerOnboardingPage() {
           </div>
         </div>
 
-        {/* ✅ Étapes simplifiées */}
         <div className="space-y-3 mb-8">
           <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
             <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -191,7 +181,6 @@ export default function LawyerOnboardingPage() {
           </div>
         </div>
 
-        {/* ✅ Bouton retour simplifié */}
         <div className="text-center pt-6 border-t border-slate-200">
           <button
             onClick={handleReturnHome}

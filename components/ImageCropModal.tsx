@@ -83,7 +83,6 @@ export default function ImageCropModal({
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-md z-50 flex items-center justify-center p-4">
       <div className="bg-white/95 backdrop-blur-3xl rounded-[28px] max-w-md w-full shadow-[0_20px_60px_rgba(0,0,0,0.15)] overflow-hidden">
-        {/* Header iOS-style */}
         <div className="px-5 pt-5 pb-3 flex items-center justify-between border-b border-gray-200/60">
           <h3 className="text-lg font-semibold text-gray-900 tracking-tight">
             Ajuster la photo
@@ -96,7 +95,6 @@ export default function ImageCropModal({
           </button>
         </div>
 
-        {/* Zone de crop iOS */}
         <div className="p-5">
           <div className="relative h-80 rounded-[20px] overflow-hidden bg-gray-100 shadow-inner">
             <Cropper
@@ -113,9 +111,7 @@ export default function ImageCropModal({
           </div>
         </div>
 
-        {/* Contrôles iOS */}
         <div className="px-5 pb-5 space-y-5">
-          {/* Slider iOS-style */}
           <div className="space-y-2">
             <div className="flex items-center justify-between px-1">
               <span className="text-sm font-medium text-gray-600">Zoom</span>
@@ -143,7 +139,6 @@ export default function ImageCropModal({
             />
           </div>
 
-          {/* Boutons iOS */}
           <div className="flex gap-3">
             <button
               onClick={onCancel}

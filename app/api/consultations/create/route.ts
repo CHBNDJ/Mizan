@@ -9,7 +9,6 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient();
     const body = await request.json();
 
-    // Validation des données
     if (!body.lawyer_id || !body.client_id || !body.question) {
       return NextResponse.json(
         { success: false, error: "Données manquantes" },
@@ -17,7 +16,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Vérifier l'utilisateur connecté
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -29,7 +27,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Créer la consultation
     const { data: consultation, error: insertError } = await supabase
       .from("consultations")
       .insert({
@@ -46,7 +43,6 @@ export async function POST(request: NextRequest) {
       throw insertError;
     }
 
-    // Créer le message initial avec la question du client
     const { error: messageError } = await supabase
       .from("consultation_messages")
       .insert({
@@ -61,7 +57,6 @@ export async function POST(request: NextRequest) {
       console.error("Erreur création message:", messageError);
     }
 
-    // Vérifier les préférences de notification de l'avocat
     const { data: lawyerPrefs } = await supabase
       .from("user_preferences")
       .select("email_notifications")
@@ -72,7 +67,6 @@ export async function POST(request: NextRequest) {
       !lawyerPrefs || lawyerPrefs.email_notifications !== false;
 
     if (shouldSendEmail) {
-      // Récupérer les informations de l'avocat et du client
       const { data: lawyer } = await supabase
         .from("users")
         .select("first_name, last_name, email")
@@ -87,7 +81,6 @@ export async function POST(request: NextRequest) {
 
       if (lawyer) {
         try {
-          // Envoyer email de notification à l'avocat
           await resend.emails.send({
             from: "Mizan <noreply@mizan-dz.com>",
             to: lawyer.email,
@@ -145,7 +138,6 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Notification admin (toujours envoyée)
     try {
       const { data: clientData } = await supabase
         .from("users")

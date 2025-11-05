@@ -17,16 +17,13 @@ export async function createClient() {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options)
             );
-          } catch {
-            // Ignore les erreurs de set de cookies en lecture seule (middleware)
-          }
+          } catch {}
         },
       },
     }
   );
 }
 
-// ✅ Fonction admin pour les opérations sensibles
 export async function createAdminClient() {
   const cookieStore = await cookies();
 
@@ -43,9 +40,7 @@ export async function createAdminClient() {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options)
             );
-          } catch {
-            // Ignore les erreurs
-          }
+          } catch {}
         },
       },
     }

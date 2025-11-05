@@ -115,8 +115,6 @@ export default function ReviewSection({
     setSubmitting(true);
 
     try {
-      console.log("📝 Insertion de l'avis...");
-
       const { error: insertError } = await supabase.from("reviews").insert({
         lawyer_id: lawyerId,
         client_id: user.id,
@@ -127,10 +125,6 @@ export default function ReviewSection({
 
       if (insertError) throw insertError;
 
-      console.log("✅ Avis inséré");
-
-      // ✅ FORCER LE RECALCUL VIA API (PUISQUE LE TRIGGER NE MARCHE PAS)
-      console.log("🔄 Recalcul des stats via API...");
       try {
         const recalcResponse = await fetch("/api/recalculate-ratings", {
           method: "POST",
@@ -138,36 +132,23 @@ export default function ReviewSection({
           body: JSON.stringify({ lawyerId }),
         });
 
-        if (recalcResponse.ok) {
-          const recalcData = await recalcResponse.json();
-          console.log("✅ Stats recalculées par l'API:", recalcData.stats);
-        } else {
-          const errorText = await recalcResponse.text();
-          console.error("❌ Erreur recalcul API:", errorText);
+        if (!recalcResponse.ok) {
+          console.error("Erreur recalcul ratings");
         }
       } catch (apiError) {
-        console.error("❌ Erreur appel API:", apiError);
+        console.error("Erreur API:", apiError);
       }
 
-      // ✅ ATTENDRE 2 SECONDES POUR LA PROPAGATION
-      console.log("⏳ Attente propagation...");
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      console.log("🔄 Rechargement des données...");
-
-      // Recharger les avis
       await loadReviews();
-
-      // Recharger les données de l'avocat
       if (onReviewSubmitted) {
         await onReviewSubmitted();
       }
 
-      console.log("✅ Rechargement terminé");
-
       setNewReview({ rating: 5, comment: "" });
     } catch (error: any) {
-      console.error("❌ Erreur soumission avis:", error);
+      console.error("Erreur soumission avis:", error);
       alert("Erreur lors de l'envoi de l'avis");
     } finally {
       setSubmitting(false);

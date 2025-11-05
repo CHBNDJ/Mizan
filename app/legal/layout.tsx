@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     canonical: "https://mizan-dz.com/legal",
   },
   robots: {
-    index: false, // Pas besoin d'indexer les mentions légales
+    index: false,
     follow: true,
   },
 };

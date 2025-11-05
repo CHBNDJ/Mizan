@@ -29,7 +29,6 @@ serve(async (req: Request) => {
       throw new Error("Variables d'environnement manquantes");
     }
 
-    // Vérifier l'authentification
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
       return new Response(
@@ -41,7 +40,6 @@ serve(async (req: Request) => {
       );
     }
 
-    // Client pour vérifier l'utilisateur
     const supabaseUser = createClient(supabaseUrl, anonKey, {
       global: { headers: { Authorization: authHeader } },
     });
@@ -61,14 +59,9 @@ serve(async (req: Request) => {
       );
     }
 
-    // Client admin
     const supabaseAdmin = createClient(supabaseUrl, serviceKey);
     const userId = user.id;
 
-    console.log("🗑️ Début suppression pour userId:", userId);
-
-    // ✅ STRATÉGIE : Supprimer auth.users en premier
-    // Les CASCADE s'occuperont du reste automatiquement
     const { error: authDeleteError } =
       await supabaseAdmin.auth.admin.deleteUser(userId);
 
@@ -79,7 +72,6 @@ serve(async (req: Request) => {
 
     console.log("✅ Compte auth supprimé avec succès");
 
-    // ✅ Vérifier si les tables sont bien vides (optionnel)
     const { data: userCheck } = await supabaseAdmin
       .from("users")
       .select("id")
@@ -95,7 +87,6 @@ serve(async (req: Request) => {
     if (userCheck || lawyerCheck) {
       console.warn("⚠️ Les tables n'ont pas été vidées par CASCADE");
 
-      // Suppression manuelle si CASCADE n'a pas fonctionné
       await supabaseAdmin
         .from("user_preferences")
         .delete()

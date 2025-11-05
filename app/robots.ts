@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/dashboard/", "/api/", "/admin/", "/_next/", "/private/"],
       },
     ],
-    sitemap: "https://mizan-dz.com/sitemap.xml", // ← Changez par votre domaine
+    sitemap: "https://mizan-dz.com/sitemap.xml",
   };
 }

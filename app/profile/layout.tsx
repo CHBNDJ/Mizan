@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Consultez et gérez votre profil personnel sur Mizan. Accédez à vos informations, statistiques et paramètres de compte.",
   robots: {
-    index: false, // ← Page privée, NE PAS indexer
+    index: false,
     follow: false,
   },
 };

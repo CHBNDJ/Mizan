@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Connectez-vous à votre compte Mizan pour accéder à votre espace personnel.",
   robots: {
-    index: false, // ← NE PAS indexer
+    index: false,
     follow: false,
   },
 };

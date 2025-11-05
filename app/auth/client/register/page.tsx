@@ -67,7 +67,6 @@ export default function ClientRegisterPage() {
     "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700";
   const errorClass = "text-red-500 text-xs mt-1";
 
-  // Capitaliser les noms
   const capitalizeWords = (str: string) => {
     if (!str) return str;
     return str
@@ -347,7 +346,6 @@ export default function ClientRegisterPage() {
               )}
             </div>
 
-            {/* Téléphone fixe */}
             <div className="relative z-[70]">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
                 <Phone className="w-4 h-4" />
@@ -380,7 +378,6 @@ export default function ClientRegisterPage() {
               {errors.phone && <p className={errorClass}>{errors.phone}</p>}
             </div>
 
-            {/* Mobile */}
             <div className="relative z-[60]">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
                 <Smartphone className="w-5 h-5" />

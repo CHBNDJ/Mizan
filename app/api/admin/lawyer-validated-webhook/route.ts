@@ -62,7 +62,6 @@ export async function POST(request: NextRequest) {
       `,
     });
 
-    console.log(`📧 Email envoyé à ${user.email}`);
     return NextResponse.json({ success: true, email: user.email });
   } catch (error: any) {
     console.error("❌ Erreur webhook:", error);

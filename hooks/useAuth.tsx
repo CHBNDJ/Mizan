@@ -134,7 +134,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       specializations?: string[];
       wilayas?: string[];
       experience_years?: number;
-      consultation_price?: number; // ✅ CHANGÉ DE STRING À NUMBER
+      consultation_price?: number;
       gender?: string;
       languages?: string[];
       address?: {
@@ -153,7 +153,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         mobile: userData.mobile || null,
         user_type: userData.userType,
         location: userData.location || null,
-        gender: userData.gender || null, // ✅ Déjà converti en male/female
+        gender: userData.gender || null,
         languages: userData.languages || ["Arabe", "Français"],
       };
 
@@ -161,7 +161,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         metaData.address = userData.address || null;
       }
 
-      // ✅ CRÉER LE COMPTE AUTH
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
@@ -181,7 +180,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error("Échec de création d'utilisateur");
       }
 
-      // ✅ CRÉER L'ENTRÉE LAWYER SI NÉCESSAIRE
       if (userData.userType === "lawyer") {
         const { error: lawyerError } = await supabase.from("lawyers").insert({
           id: authData.user.id,
@@ -189,7 +187,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           specializations: userData.specializations || [],
           wilayas: userData.wilayas || [],
           experience_years: userData.experience_years || 0,
-          consultation_price: userData.consultation_price || null, // ✅ IMPORTANT
+          consultation_price: userData.consultation_price || null,
           is_verified: false,
         });
 
@@ -199,7 +197,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      // ✅ ENVOYER LE CODE DE VÉRIFICATION
       try {
         const codeResponse = await fetch("/api/send-verification-code", {
           method: "POST",
@@ -217,8 +214,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           console.error("Erreur envoi code:", codeData);
           throw new Error("Erreur lors de l'envoi du code de vérification");
         }
-
-        console.log("✅ Code envoyé avec succès");
       } catch (codeError) {
         console.error("Exception envoi code:", codeError);
         throw new Error("Impossible d'envoyer le code de vérification");

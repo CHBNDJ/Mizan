@@ -4,11 +4,10 @@ export const siteConfig = {
   name: "Mizan",
   description:
     "Plateforme de mise en relation avec des avocats vérifiés en Algérie. Trouvez l'avocat qui vous convient selon votre besoin juridique.",
-  url: "https://mizan-dz.com", // ← Changez par votre vrai domaine
+  url: "https://mizan-dz.com",
   ogImage: "https://mizan-dz.com/og-image.jpg",
 };
 
-// Homepage
 export const homeMetadata: Metadata = {
   title:
     "Mizan - Trouvez un avocat en Algérie | Consultation juridique en ligne",
@@ -64,7 +63,6 @@ export const homeMetadata: Metadata = {
   },
 };
 
-// Page Avocats
 export const avocatsMetadata: Metadata = {
   title: "Nos Avocats Vérifiés | Mizan Algérie",
   description:
@@ -87,7 +85,6 @@ export const avocatsMetadata: Metadata = {
   },
 };
 
-// Page Contact
 export const contactMetadata: Metadata = {
   title: "Contactez-nous | Mizan",
   description:
@@ -103,7 +100,6 @@ export const contactMetadata: Metadata = {
   },
 };
 
-// Fonction pour générer metadata dynamique pour chaque avocat
 export function generateAvocatMetadata(
   avocat: {
     prenom: string;
@@ -121,7 +117,6 @@ export function generateAvocatMetadata(
     ? `${avocat.bio.substring(0, 150)}...`
     : `Consultez le profil de Maître ${fullName}, avocat spécialisé en ${avocat.specialite} inscrit au barreau de ${avocat.barreau}. Prenez rendez-vous en ligne sur Mizan.`;
 
-  // Construire l'URL avec l'ID si fourni
   const profileUrl = lawyerId
     ? `${siteConfig.url}/lawyers/${lawyerId}`
     : `${siteConfig.url}/lawyers`;

@@ -9,7 +9,6 @@ import React, {
 } from "react";
 import { cn } from "@/lib/utils";
 
-// Context pour gérer l'état du dropdown
 const DropdownContext = createContext<
   | {
       isOpen: boolean;
@@ -26,7 +25,6 @@ const useDropdown = () => {
   return context;
 };
 
-// Composant racine
 export const DropdownMenu = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -37,7 +35,6 @@ export const DropdownMenu = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// Trigger (bouton qui ouvre le dropdown)
 export const DropdownMenuTrigger = ({
   children,
   asChild = false,
@@ -90,7 +87,6 @@ export const DropdownMenuTrigger = ({
   );
 };
 
-// Content (le menu déroulant) - Version améliorée
 export const DropdownMenuContent = ({
   children,
   align = "center",
@@ -179,7 +175,6 @@ export const DropdownMenuContent = ({
   );
 };
 
-// Item (élément du menu) - Version simplifiée
 export const DropdownMenuItem = ({
   children,
   asChild = false,

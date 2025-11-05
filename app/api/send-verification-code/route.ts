@@ -26,14 +26,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Générer code 6 chiffres
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
-    // Supprimer ancien code si existe
     await supabaseAdmin.from("email_verifications").delete().eq("email", email);
 
-    // Insérer nouveau code
     const { error: insertError } = await supabaseAdmin
       .from("email_verifications")
       .insert({
@@ -48,7 +45,6 @@ export async function POST(request: NextRequest) {
       throw insertError;
     }
 
-    // Envoyer email
     const { error: emailError } = await resend.emails.send({
       from: "Mizan <noreply@mizan-dz.com>",
       to: email,

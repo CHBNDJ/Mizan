@@ -6,10 +6,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
-    // ✅ AJOUTER await
     const supabase = await createClient();
 
-    // ✅ VÉRIFICATION AUTHENTIFICATION (OBLIGATOIRE)
     const {
       data: { user },
       error: authError,
@@ -25,7 +23,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { type, message, pageUrl, userId } = body;
 
-    // ✅ VALIDATION
     if (!type || !message?.trim()) {
       return NextResponse.json(
         { error: "Type et message requis" },
@@ -40,7 +37,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // ✅ Récupérer les infos utilisateur
     const { data: userData, error: userError } = await supabase
       .from("users")
       .select("first_name, last_name, email, user_type")
@@ -54,7 +50,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // ✅ Créer le feedback
     const { data: feedback, error: insertError } = await supabase
       .from("platform_feedbacks")
       .insert({
@@ -77,7 +72,6 @@ export async function POST(request: NextRequest) {
       throw new Error("Erreur lors de l'enregistrement");
     }
 
-    // ✅ Envoyer email notification à l'admin
     try {
       const typeEmojis: Record<string, string> = {
         bug: "🐛",
@@ -134,7 +128,6 @@ export async function POST(request: NextRequest) {
       console.log("✅ Email admin envoyé");
     } catch (emailError) {
       console.error("⚠️ Erreur email admin:", emailError);
-      // Ne pas faire échouer la requête si l'email échoue
     }
 
     return NextResponse.json({

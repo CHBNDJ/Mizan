@@ -16,7 +16,6 @@ export default function FeedbackPage() {
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // ✅ Rediriger si non connecté
   useEffect(() => {
     if (!loading && !isAuthenticated) {
       router.push("/auth/client/login?redirect=/feedback");
@@ -116,7 +115,6 @@ export default function FeedbackPage() {
     },
   ];
 
-  // ✅ Loading state
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-100 via-white to-teal-100">
@@ -128,7 +126,6 @@ export default function FeedbackPage() {
     );
   }
 
-  // ✅ Non connecté (normalement redirigé)
   if (!isAuthenticated) {
     return null;
   }
@@ -173,7 +170,6 @@ export default function FeedbackPage() {
           </div>
         ) : (
           <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
-            {/* Header */}
             <div className="p-6 sm:p-8 border-b border-slate-100">
               <h1 className="page-title text-2xl sm:text-3xl font-semibold text-slate-900 mb-2">
                 Votre avis nous intéresse
@@ -185,14 +181,12 @@ export default function FeedbackPage() {
             </div>
 
             <div className="p-6 sm:p-8">
-              {/* Message d'erreur */}
               {error && (
                 <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
                   <p className="text-red-600 text-sm">{error}</p>
                 </div>
               )}
 
-              {/* Type selection */}
               <div className="feedback-options space-y-3 mb-8">
                 {feedbackTypes.map((ft) => {
                   const Icon = ft.icon;
@@ -237,7 +231,7 @@ export default function FeedbackPage() {
                   );
                 })}
               </div>
-              {/* Message input */}
+
               <div className="mb-8">
                 <label className="message-label block text-sm sm:text-base font-medium text-slate-700 mb-3">
                   Votre message *
@@ -260,7 +254,6 @@ export default function FeedbackPage() {
                 </p>
               </div>
 
-              {/* Submit button */}
               <button
                 onClick={handleSubmit}
                 disabled={!message.trim() || sending}

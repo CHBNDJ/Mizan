@@ -30,7 +30,6 @@ export async function GET(request: NextRequest) {
     }
   );
 
-  // ✅ FLUX PKCE (code) - Créer la session d'abord
   if (code) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
@@ -44,14 +43,10 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    console.log("✅ [CALLBACK] Session créée");
-
-    // ✅ PRIORITÉ : Si paramètre "next" existe, rediriger là-bas
     if (next) {
       return NextResponse.redirect(new URL(next, requestUrl.origin));
     }
 
-    // ✅ Sinon, redirection normale selon user_type
     const { data: profile } = await supabase
       .from("users")
       .select("user_type")
@@ -64,11 +59,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL(redirectPath, requestUrl.origin));
   }
 
-  // ✅ FLUX OTP/Recovery avec token
   const tokenToUse = token_hash || token;
 
   if (tokenToUse) {
-    // Type recovery ou pas de type (parfois Supabase n'envoie pas le type)
     if (type === "recovery" || !type) {
       const { error } = await supabase.auth.verifyOtp({
         type: "recovery",
@@ -82,19 +75,15 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      // Si next existe, rediriger là-bas
       if (next) {
-        console.log("✅ [CALLBACK] Redirection recovery vers 'next':", next);
         return NextResponse.redirect(new URL(next, requestUrl.origin));
       }
 
-      // Sinon, rediriger vers reset-password
       const resetUrl = new URL("/auth/reset-password", requestUrl.origin);
 
       return NextResponse.redirect(resetUrl);
     }
 
-    // Autres types d'OTP
     if (type) {
       const { error } = await supabase.auth.verifyOtp({
         type: type as any,
@@ -130,6 +119,5 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Aucun paramètre valide
   return NextResponse.redirect(new URL("/", requestUrl.origin));
 }

@@ -55,7 +55,6 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl max-w-lg w-full shadow-xl relative">
-        {/* Close button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 transition-colors"
@@ -64,7 +63,6 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
         </button>
 
         {success ? (
-          // Success state
           <div className="text-center py-12 px-8">
             <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg
@@ -88,7 +86,6 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
           </div>
         ) : (
           <>
-            {/* Header */}
             <div className="p-6 border-b border-slate-100">
               <h3 className="text-xl font-semibold text-slate-900 mb-1">
                 Votre avis nous intéresse
@@ -99,7 +96,6 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
             </div>
 
             <div className="p-6">
-              {/* Type selection */}
               <div className="space-y-2 mb-6">
                 {feedbackTypes.map((ft) => {
                   const Icon = ft.icon;
@@ -160,7 +156,6 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
                 })}
               </div>
 
-              {/* Message input */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   Votre message
@@ -179,7 +174,6 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
                 />
               </div>
 
-              {/* Action buttons */}
               <div className="flex gap-3">
                 <button
                   onClick={onClose}

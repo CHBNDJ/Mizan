@@ -1195,7 +1195,6 @@ async function migrate() {
       if (existingUser) {
         userId = existingUser.id;
 
-        // ✅ UPDATE avec gender et languages
         const { error: updateErr } = await supabase
           .from("users")
           .update({
@@ -1203,8 +1202,8 @@ async function migrate() {
             mobile: avocat.contact?.mobile || avocat.contact?.telephone || null,
             location: avocat.wilaya?.toLowerCase() || null,
             professional_email: avocat.contact?.email || null,
-            gender: avocat.genre === "femme" ? "female" : "male", // ✅
-            languages: avocat.langues || ["Arabe", "Français"], // ✅
+            gender: avocat.genre === "femme" ? "female" : "male",
+            languages: avocat.langues || ["Arabe", "Français"],
             address: {
               street: avocat.adresse?.rue || "",
               neighborhood: avocat.adresse?.quartier || "",
@@ -1231,7 +1230,6 @@ async function migrate() {
         if (authError) throw new Error("Auth: " + authError.message);
         userId = authUser.user.id;
 
-        // ✅ INSERT avec gender et languages
         const { error: userErr } = await supabase.from("users").insert({
           id: userId,
           email: tempEmail,
@@ -1242,8 +1240,8 @@ async function migrate() {
           mobile: avocat.contact?.mobile || avocat.contact?.telephone || null,
           user_type: "lawyer",
           location: avocat.wilaya?.toLowerCase() || null,
-          gender: avocat.genre === "femme" ? "female" : "male", // ✅
-          languages: avocat.langues || ["Arabe", "Français"], // ✅
+          gender: avocat.genre === "femme" ? "female" : "male",
+          languages: avocat.langues || ["Arabe", "Français"],
           address: {
             street: avocat.adresse?.rue || "",
             neighborhood: avocat.adresse?.quartier || "",
@@ -1287,18 +1285,11 @@ async function migrate() {
 
         if (lawyerErr) throw new Error("Lawyer: " + lawyerErr.message);
       }
-
-      console.log(`✅ ${avocat.nom} migré avec succès`);
     } catch (err) {
       console.error(`❌ Erreur ${avocat.nom}:`, err.message);
       errors++;
     }
   }
-
-  console.log("\n📊 Résultats:");
-  console.log(`✅ ${updated} avocats mis à jour`);
-  console.log(`🆕 ${created} nouveaux avocats`);
-  console.log(`❌ ${errors} erreurs`);
 }
 
 migrate()

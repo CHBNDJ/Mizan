@@ -1,4 +1,3 @@
-// lib/email/client-notifications.ts
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -12,9 +11,6 @@ export async function sendClientResponseNotification(params: {
 }) {
   const { clientEmail, clientName, lawyerName, response, consultationId } =
     params;
-
-  // ❌ PAS de vérification de préférences ici !
-  // La vérification est faite dans l'API route AVANT d'appeler cette fonction
 
   try {
     const { data, error } = await resend.emails.send({
@@ -74,7 +70,6 @@ export async function sendClientResponseNotification(params: {
       throw error;
     }
 
-    console.log("✅ [CLIENT EMAIL] Email envoyé");
     return { success: true, data };
   } catch (error) {
     console.error("❌ [CLIENT EMAIL] Erreur inattendue:", error);

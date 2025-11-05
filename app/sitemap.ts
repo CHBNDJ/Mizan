@@ -9,7 +9,6 @@ const supabase = createClient(
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://mizan-dz.com";
 
-  // Pages statiques importantes
   const staticPages = [
     {
       url: baseUrl,
@@ -49,7 +48,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Récupérer tous les avocats vérifiés
   try {
     const { data: avocats, error } = await supabase
       .from("avocats")
@@ -61,7 +59,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       return staticPages;
     }
 
-    // ✅ URL corrigée : /lawyers/ au lieu de /avocats/
     const avocatPages =
       avocats?.map((avocat) => ({
         url: `${baseUrl}/lawyers/${avocat.id}`,

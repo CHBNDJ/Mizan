@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     canonical: "https://mizan-dz.com/feedback",
   },
   robots: {
-    index: false, // Pas besoin d'indexer le feedback
+    index: false,
     follow: false,
   },
 };

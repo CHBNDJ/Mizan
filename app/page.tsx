@@ -6,6 +6,7 @@ import { Search, MapPin, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { AvocatCard } from "@/components/cards/AvocatCard";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 import {
   getTopRatedAvocats,
   getSpecialites,
@@ -305,7 +306,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="stats-section py-16">
+      {/* <section className="stats-section py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="stat-card text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
@@ -334,6 +335,55 @@ export default function HomePage() {
               <div className="text-3xl font-bold text-teal-600 mb-2">
                 {stats.pourcentage_verification}%
               </div>
+              <div className="text-slate-600 font-medium">
+                Taux de vérification
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> */}
+
+      <section className="stats-section py-16">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="stat-card text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <AnimatedCounter
+                end={stats.total_avocats}
+                duration={2000}
+                className="text-3xl font-bold text-teal-600 mb-2"
+              />
+              <div className="text-slate-600 font-medium">Avocats inscrits</div>
+            </div>
+
+            <div className="stat-card text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <AnimatedCounter
+                end={wilayas.length}
+                duration={2000}
+                className="text-3xl font-bold text-teal-600 mb-2"
+              />
+              <div className="text-slate-600 font-medium">
+                Wilayas couvertes
+              </div>
+            </div>
+
+            <div className="stat-card text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <AnimatedCounter
+                end={specialites.length}
+                duration={2000}
+                className="text-3xl font-bold text-teal-600 mb-2"
+              />
+              <div className="text-slate-600 font-medium">
+                Spécialités juridiques
+              </div>
+            </div>
+
+            <div className="stat-card text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+              <AnimatedCounter
+                end={stats.pourcentage_verification}
+                duration={2000}
+                suffix="%"
+                className="text-3xl font-bold text-teal-600 mb-2"
+              />
               <div className="text-slate-600 font-medium">
                 Taux de vérification
               </div>

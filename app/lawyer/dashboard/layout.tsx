@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Gérez vos consultations, suivez vos statistiques et administrez votre profil professionnel sur Mizan.",
   robots: {
-    index: false, // ← Page privée, NE PAS indexer
+    index: false,
     follow: false,
   },
 };

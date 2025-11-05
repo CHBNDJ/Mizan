@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `https://mizan-dz.com/${wilayaNom.toLowerCase()}`,
     },
     robots: {
-      index: true, // ✅ Page publique - doit être indexée
+      index: true,
       follow: true,
     },
   };

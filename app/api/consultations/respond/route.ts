@@ -1,4 +1,3 @@
-// app/api/consultations/respond/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { sendClientResponseNotification } from "@/lib/email/client-notifications";
@@ -11,7 +10,6 @@ export async function POST(request: NextRequest) {
     const { consultationId, response } = await request.json();
     const supabase = await createClient();
 
-    // Récupérer l'utilisateur connecté (l'avocat)
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -20,7 +18,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    // Mettre à jour la consultation
     const { error: updateError } = await supabase
       .from("consultations")
       .update({
@@ -36,7 +33,6 @@ export async function POST(request: NextRequest) {
       throw updateError;
     }
 
-    // Récupérer les informations de la consultation
     const { data: consultation, error: fetchError } = await supabase
       .from("consultations")
       .select("*")
@@ -48,7 +44,6 @@ export async function POST(request: NextRequest) {
       throw fetchError;
     }
 
-    // Récupérer les informations du client
     const { data: clientData } = await supabase
       .from("users")
       .select("email, first_name, last_name")
@@ -56,7 +51,6 @@ export async function POST(request: NextRequest) {
       .eq("user_type", "client")
       .single();
 
-    // Récupérer les informations de l'avocat
     const { data: lawyerData } = await supabase
       .from("users")
       .select("first_name, last_name")
@@ -64,11 +58,9 @@ export async function POST(request: NextRequest) {
       .eq("user_type", "lawyer")
       .single();
 
-    // Envoyer email au client (si préférences activées)
     let emailSentToClient = false;
 
     if (clientData && lawyerData) {
-      // Vérifier les préférences de notification du client
       const { data: clientPrefs } = await supabase
         .from("user_preferences")
         .select("email_notifications")
@@ -95,9 +87,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Notification admin (toujours envoyée)
     try {
-      // Récupérer les données si manquantes
       let clientInfo = clientData;
       let lawyerInfo = lawyerData;
 

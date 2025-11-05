@@ -7,7 +7,6 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// Metadata dynamique pour chaque avocat
 export async function generateMetadata({
   params,
 }: {
@@ -16,7 +15,6 @@ export async function generateMetadata({
   try {
     const { id } = await params;
 
-    // ✅ Même structure que getAvocatById - récupérer lawyers
     const { data: lawyer } = await supabase
       .from("lawyers")
       .select("*")
@@ -30,7 +28,6 @@ export async function generateMetadata({
       };
     }
 
-    // ✅ Récupérer les infos user séparément
     const { data: user } = await supabase
       .from("users")
       .select("*")
@@ -45,10 +42,8 @@ export async function generateMetadata({
       };
     }
 
-    // ✅ Extraire la première spécialisation du tableau
     const specialite = lawyer.specializations?.[0] || "Droit général";
 
-    // ✅ Extraire la première wilaya du tableau
     const ville = lawyer.wilayas?.[0] || "Algérie";
 
     return generateAvocatMetadata(

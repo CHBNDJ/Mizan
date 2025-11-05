@@ -7,7 +7,6 @@ export async function POST(request: NextRequest) {
   try {
     const { email, code, lawyerName } = await request.json();
 
-    // Envoyer le code de vérification par email
     const { data, error } = await resend.emails.send({
       from: "Mizan <noreply@mizan-dz.com>",
       to: email,

@@ -99,7 +99,6 @@ export default function LawyerDashboardPage() {
       );
   }, [loading, loadingStats]);
 
-  // REAL-TIME pour les stats
   useEffect(() => {
     if (!user) return;
 
@@ -139,7 +138,6 @@ export default function LawyerDashboardPage() {
   const checkVerification = async () => {
     if (!user) return;
 
-    // ✅ Lire depuis la table LAWYERS, pas USERS
     const { data } = await supabase
       .from("lawyers")
       .select("is_verified")
@@ -155,27 +153,23 @@ export default function LawyerDashboardPage() {
     try {
       setLoadingStats(true);
 
-      // Total consultations
       const { count: totalCount } = await supabase
         .from("consultations")
         .select("*", { count: "exact", head: true })
         .eq("lawyer_id", user.id);
 
-      // ✅ CHANGÉ : Consultations NON OUVERTES (vraiment en attente)
       const { count: pendingCount } = await supabase
         .from("consultations")
         .select("*", { count: "exact", head: true })
         .eq("lawyer_id", user.id)
         .eq("opened_by_lawyer", false);
 
-      // Répondues
       const { count: answeredCount } = await supabase
         .from("consultations")
         .select("*", { count: "exact", head: true })
         .eq("lawyer_id", user.id)
         .eq("status", "answered");
 
-      // Vues profil
       const { count: viewsCount } = await supabase
         .from("profile_views")
         .select("*", { count: "exact", head: true })
@@ -251,7 +245,6 @@ export default function LawyerDashboardPage() {
       `}</style>
 
       <div className="max-w-7xl mx-auto px-4 py-8" ref={containerRef}>
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="page-header text-3xl font-bold text-slate-800">
@@ -271,7 +264,6 @@ export default function LawyerDashboardPage() {
           </button>
         </div>
 
-        {/* Bandeau de vérification */}
         {!isVerified && (
           <div className="verification-banner bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
             <div className="flex items-start">
@@ -290,7 +282,6 @@ export default function LawyerDashboardPage() {
           </div>
         )}
 
-        {/* Statistiques */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 mb-8">
           {loadingStats
             ? Array.from({ length: 3 }).map((_, i) => (
@@ -329,7 +320,6 @@ export default function LawyerDashboardPage() {
               ))}
         </div>
 
-        {/* Actions rapides */}
         <div className="actions-section bg-white rounded-lg p-6 shadow-sm border mb-8">
           <h2 className="text-xl font-semibold text-slate-800 mb-6">
             Actions rapides
@@ -391,7 +381,6 @@ export default function LawyerDashboardPage() {
           </div>
         </div>
 
-        {/* Section aide */}
         <div className="help-section bg-teal-50 rounded-lg p-8 text-center">
           <h2 className="text-xl font-semibold text-slate-800 mb-4">
             Besoin d'aide ?
