@@ -300,22 +300,22 @@ export default function ReviewSection({
 
       console.log("✅ Rechargement terminé");
 
-      try {
-        const reviewerName = user.user_metadata?.first_name
-          ? `${user.user_metadata.first_name} ${user.user_metadata.last_name || ""}`
-          : "Un client";
+      // try {
+      //   const reviewerName = user.user_metadata?.first_name
+      //     ? `${user.user_metadata.first_name} ${user.user_metadata.last_name || ""}`
+      //     : "Un client";
 
-        await supabase.functions.invoke("reviews", {
-          body: {
-            userId: lawyerId,
-            title: "Nouvel avis reçu sur Mizan",
-            message: `${reviewerName} a laissé un avis ${newReview.rating} étoiles sur votre profil.`,
-            type: "email",
-          },
-        });
-      } catch (notifError) {
-        console.error("Erreur notification:", notifError);
-      }
+      //   await supabase.functions.invoke("send-notification", {
+      //     body: {
+      //       userId: lawyerId,
+      //       title: "Nouvel avis reçu sur Mizan",
+      //       message: `${reviewerName} a laissé un avis ${newReview.rating} étoiles sur votre profil.`,
+      //       type: "email",
+      //     },
+      //   });
+      // } catch (notifError) {
+      //   console.error("Erreur notification:", notifError);
+      // }
 
       setNewReview({ rating: 5, comment: "" });
     } catch (error: any) {
