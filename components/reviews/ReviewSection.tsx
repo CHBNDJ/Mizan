@@ -129,31 +129,29 @@ export default function ReviewSection({
 
       console.log("✅ Avis inséré");
 
-      // ✅ ATTENDRE QUE LE TRIGGER SQL FASSE SON TRAVAIL
-      console.log("⏳ Attente du trigger SQL (5 secondes)...");
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      // ✅ FORCER LE RECALCUL VIA API (PUISQUE LE TRIGGER NE MARCHE PAS)
+      console.log("🔄 Recalcul des stats via API...");
+      try {
+        const recalcResponse = await fetch("/api/recalculate-ratings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ lawyerId }),
+        });
 
-      // ❌ SUPPRIMER L'APPEL API - LE TRIGGER SUFFIT
-      /*
-    console.log("🔄 Recalcul des stats via API...");
-    try {
-      const recalcResponse = await fetch("/api/recalculate-ratings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lawyerId }),
-      });
-
-      if (recalcResponse.ok) {
-        const recalcData = await recalcResponse.json();
-        console.log("✅ Stats recalculées:", recalcData.stats);
-      } else {
-        const errorText = await recalcResponse.text();
-        console.error("❌ Erreur recalcul API:", errorText);
+        if (recalcResponse.ok) {
+          const recalcData = await recalcResponse.json();
+          console.log("✅ Stats recalculées par l'API:", recalcData.stats);
+        } else {
+          const errorText = await recalcResponse.text();
+          console.error("❌ Erreur recalcul API:", errorText);
+        }
+      } catch (apiError) {
+        console.error("❌ Erreur appel API:", apiError);
       }
-    } catch (apiError) {
-      console.error("❌ Erreur appel API:", apiError);
-    }
-    */
+
+      // ✅ ATTENDRE 2 SECONDES POUR LA PROPAGATION
+      console.log("⏳ Attente propagation...");
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       console.log("🔄 Rechargement des données...");
 
