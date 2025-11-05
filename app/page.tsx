@@ -306,43 +306,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* <section className="stats-section py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="stat-card text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-              <div className="text-3xl font-bold text-teal-600 mb-2">
-                {stats.total_avocats}
-              </div>
-              <div className="text-slate-600 font-medium">Avocats inscrits</div>
-            </div>
-            <div className="stat-card text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-              <div className="text-3xl font-bold text-teal-600 mb-2">
-                {wilayas.length}
-              </div>
-              <div className="text-slate-600 font-medium">
-                Wilayas couvertes
-              </div>
-            </div>
-            <div className="stat-card text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-              <div className="text-3xl font-bold text-teal-600 mb-2">
-                {specialites.length}
-              </div>
-              <div className="text-slate-600 font-medium">
-                Spécialités juridiques
-              </div>
-            </div>
-            <div className="stat-card text-center p-4 bg-white/50 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-              <div className="text-3xl font-bold text-teal-600 mb-2">
-                {stats.pourcentage_verification}%
-              </div>
-              <div className="text-slate-600 font-medium">
-                Taux de vérification
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
-
       <section className="stats-section py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">

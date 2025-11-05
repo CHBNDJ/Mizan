@@ -443,3 +443,67 @@ export function getRandomAvocats(count: number): AvocatData[] {
   );
   return shuffled.slice(0, count);
 }
+
+export async function getAvocatById(id: string): Promise<AvocatData | null> {
+  const supabase = createClient();
+
+  try {
+    const { data: lawyer, error: lawyerError } = await supabase
+      .from("lawyers")
+      .select(
+        `
+        id,
+        bar_number,
+        specializations,
+        wilayas,
+        experience_years,
+        consultation_price,
+        is_verified,
+        is_claimed,
+        claimed_at,
+        rating_google,
+        reviews_count_google,
+        rating_mizan,
+        reviews_count_mizan,
+        updated_at
+      `
+      )
+      .eq("id", id)
+      .eq("is_verified", true)
+      .maybeSingle();
+
+    if (lawyerError) {
+      console.error("❌ Erreur récupération lawyer:", lawyerError);
+      return null;
+    }
+
+    if (!lawyer) {
+      console.error("❌ Aucun lawyer trouvé pour id:", id);
+      return null;
+    }
+
+    const { data: user, error: userError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", id)
+      .eq("user_type", "lawyer")
+      .maybeSingle();
+
+    if (userError || !user) {
+      console.error("❌ Erreur récupération user:", userError);
+      return null;
+    }
+
+    const combinedData = {
+      ...lawyer,
+      users: user,
+      is_claimed: lawyer.is_claimed,
+      claimed_at: lawyer.claimed_at,
+    };
+
+    return convertSupabaseToAvocatData(combinedData);
+  } catch (error) {
+    console.error("❌ Erreur récupération avocat par ID:", error);
+    return null;
+  }
+}
