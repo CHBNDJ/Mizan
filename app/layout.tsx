@@ -7,7 +7,7 @@ import Footer from "@/components/layout/Footer";
 import { homeMetadata, siteConfig } from "./metadata";
 import { OrganizationJsonLd } from "@/components/JsonLd";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -15,6 +15,13 @@ const merriweather = Merriweather({
   subsets: ["latin"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#14b8a6",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   ...homeMetadata,
@@ -55,8 +62,6 @@ export const metadata: Metadata = {
     images: [`${siteConfig.url}/og-image.png`],
   },
 
-  themeColor: "#14b8a6",
-
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -80,12 +85,6 @@ export default function RootLayout({
 
         {/* SEO Canonical */}
         <link rel="canonical" href={siteConfig.url} />
-
-        {/* Viewport */}
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=5"
-        />
 
         {/* Schema.org JSON-LD pour SEO */}
         <OrganizationJsonLd />
