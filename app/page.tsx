@@ -241,7 +241,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden w-full">
       <style jsx>{`
         .hero-title,
         .hero-subtitle,
@@ -275,7 +275,7 @@ export default function HomePage() {
               <div className="flex flex-col lg:flex-row gap-4">
                 <div className="flex-1 relative">
                   <MultiSelectWithCheckboxes
-                    placeholder="Choisir les compétences..."
+                    placeholder="Choisir les spécialités..."
                     options={specialiteOptions}
                     value={selectedSpecialites}
                     onChange={setSelectedSpecialites}

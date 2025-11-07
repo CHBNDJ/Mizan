@@ -90,7 +90,9 @@ export default function RootLayout({
         <OrganizationJsonLd />
       </head>
 
-      <body className={`${merriweather.className} antialiased`}>
+      <body
+        className={`${merriweather.className} antialiased overflow-x-hidden`}
+      >
         {/* Google Analytics */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_ID} />

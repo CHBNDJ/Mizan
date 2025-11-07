@@ -77,18 +77,14 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     loadAvocat();
   }, [id]);
 
-  // ✅ ANIMATIONS GSAP
   useLayoutEffect(() => {
     if (!avocat || loading || hasAnimated.current) return;
 
     hasAnimated.current = true;
 
-    // Nettoyer les anciens ScrollTriggers
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
-    // Animation IMMÉDIATE après le DOM ready
     requestAnimationFrame(() => {
-      // ========== SECTION 1 : HEADER ==========
       gsap.fromTo(
         ".back-button",
         { autoAlpha: 0, x: -30 },
@@ -133,7 +129,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         { autoAlpha: 1, x: 0, duration: 0.8, ease: "power3.out", delay: 0.3 }
       );
 
-      // ========== SECTION 2 : CARDS PRINCIPALES ==========
       const immediateCards = [".card-expertise", ".card-experience"];
 
       immediateCards.forEach((selector, index) => {
@@ -179,7 +174,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         }
       });
 
-      // ========== SECTION 3 : SIDEBAR ==========
       setTimeout(() => {
         const sidebarCards = document.querySelectorAll(".sidebar-card");
 
@@ -221,7 +215,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         }
       }, 100);
 
-      // ========== SECTION 4 : AVIS ==========
       setTimeout(() => {
         const reviewsSection = document.querySelector(".reviews-section");
         if (reviewsSection) {
@@ -317,7 +310,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   );
 
   return (
-    <div className="min-h-screen pt-24 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+    <div className="min-h-screen pt-24 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden w-full">
       <div>
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="flex items-center mb-4">

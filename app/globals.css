@@ -34,3 +34,81 @@ input:-webkit-autofill:active {
   background-color: white !important;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+/* ✅ CORRECTION OVERFLOW MOBILE - GSAP ANIMATIONS */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  position: relative;
+}
+
+/* Conteneur principal */
+#__next,
+main {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Correction spécifique pour les animations GSAP sur mobile */
+@media (max-width: 1024px) {
+  .hero-title,
+  .hero-subtitle,
+  .hero-form,
+  .stat-card,
+  .avocats-title,
+  .avocats-subtitle,
+  .avocat-card,
+  .avocats-btn,
+  .regions-title,
+  .regions-subtitle,
+  .region-card,
+  .cta-title,
+  .cta-subtitle,
+  .back-button,
+  .profile-avatar,
+  .profile-name,
+  .profile-location,
+  .profile-ratings,
+  .profile-verified,
+  .profile-price,
+  .card-expertise,
+  .card-experience,
+  .card-languages,
+  .card-address,
+  .sidebar-card,
+  .reviews-section {
+    max-width: 100%;
+    overflow-x: visible !important;
+  }
+}
+
+/* S'assurer que tous les conteneurs respectent la largeur de l'écran */
+* {
+  max-width: 100%;
+}
+
+/* Exception pour les éléments qui ont besoin d'une largeur spécifique */
+.max-w-6xl,
+.max-w-4xl,
+.max-w-3xl,
+.max-w-2xl {
+  max-width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .max-w-6xl {
+    max-width: 72rem;
+  }
+  .max-w-4xl {
+    max-width: 56rem;
+  }
+  .max-w-3xl {
+    max-width: 48rem;
+  }
+  .max-w-2xl {
+    max-width: 42rem;
+  }
+}
