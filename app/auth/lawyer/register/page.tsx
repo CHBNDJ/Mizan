@@ -11,11 +11,13 @@ import { SPECIALITES, WILAYAS, COUNTRIES, LANGUES } from "@/utils/constants";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { useAuth } from "@/hooks/useAuth";
 import { gsap } from "gsap";
+import { createClient } from "@/lib/supabase/client";
 
 export default function LawyerRegisterPage() {
   const router = useRouter();
   const { signUp } = useAuth();
   const containerRef = useRef<HTMLDivElement>(null);
+  const supabase = createClient();
 
   const [formData, setFormData] = useState<ExtendedLawyerSignupFormData>({
     firstName: "",
@@ -264,6 +266,68 @@ export default function LawyerRegisterPage() {
     setErrors({});
 
     try {
+      const { data: existingByEmail, error: emailCheckError } = await supabase
+        .from("users")
+        .select(
+          "id, email, professional_email, first_name, last_name, is_claimed"
+        )
+        .eq("user_type", "lawyer")
+        .or(
+          `email.eq.${formData.email},professional_email.eq.${formData.email}`
+        );
+
+      if (existingByEmail && existingByEmail.length > 0) {
+        const profile = existingByEmail[0];
+
+        if (profile.is_claimed) {
+          setErrors({
+            general: `Ce profil a déjà été réclamé. Veuillez vous connecter.`,
+          });
+          setIsSubmitting(false);
+
+          setTimeout(() => {
+            router.push("/auth/lawyer/login");
+          }, 2000);
+          return;
+        }
+
+        setErrors({
+          general: `Un profil existe déjà pour ${formData.email}. Vous allez être redirigé pour le réclamer...`,
+        });
+        setIsSubmitting(false);
+
+        setTimeout(() => {
+          router.push(`/claim-profile/${profile.id}`);
+        }, 2000);
+        return;
+      }
+
+      const { data: existingByName, error: nameCheckError } = await supabase
+        .from("users")
+        .select(
+          "id, email, professional_email, first_name, last_name, is_claimed"
+        )
+        .eq("user_type", "lawyer")
+        .ilike("first_name", formData.firstName.trim())
+        .ilike("last_name", formData.lastName.trim());
+
+      if (existingByName && existingByName.length > 0) {
+        const profile = existingByName[0];
+        const profileEmail = profile.professional_email || profile.email;
+
+        setErrors({
+          general: `Un profil existe déjà pour ${profile.first_name} ${profile.last_name} avec l'email ${profileEmail}. Si c'est vous, utilisez cet email ou réclamez votre profil.`,
+        });
+        setIsSubmitting(false);
+
+        setTimeout(() => {
+          if (window.confirm("Voulez-vous réclamer ce profil maintenant ?")) {
+            router.push(`/claim-profile/${profile.id}`);
+          }
+        }, 3000);
+        return;
+      }
+
       const userData = {
         gender: frontendToDb(formData.gender),
         firstName: formData.firstName.trim(),
@@ -295,6 +359,59 @@ export default function LawyerRegisterPage() {
       };
 
       const result = await signUp(formData.email, formData.password, userData);
+
+      try {
+        await fetch("/api/admin/notify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            subject: "🚨 Nouvel avocat inscrit - Action requise",
+            title: "Nouvel avocat inscrit sur Mizan",
+            message: `
+            <div style="background: #fef3c7; padding: 15px; border-left: 4px solid #f59e0b; border-radius: 4px; margin: 20px 0;">
+              <p style="margin: 0; color: #92400e; font-weight: 600;">
+                ⚠️ Action requise : Vérifier et valider ce profil
+              </p>
+            </div>
+
+            <div style="background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <p style="margin: 5px 0;"><strong>👤 Nom :</strong> ${formData.firstName} ${formData.lastName}</p>
+              <p style="margin: 5px 0;"><strong>📧 Email :</strong> ${formData.email}</p>
+              <p style="margin: 5px 0;"><strong>📱 Mobile :</strong> +${selectedMobileCountry}${formData.mobile}</p>
+              ${formData.phone ? `<p style="margin: 5px 0;"><strong>☎️ Fixe :</strong> +${selectedCountry}${formData.phone}</p>` : ""}
+              <p style="margin: 5px 0;"><strong>🔢 N° Carte Pro :</strong> ${formData.barNumber}</p>
+              <p style="margin: 5px 0;"><strong>📍 Wilayas :</strong> ${formData.wilaya.join(", ")}</p>
+              <p style="margin: 5px 0;"><strong>🎓 Spécialités :</strong> ${formData.specializations.slice(0, 3).join(", ")}${formData.specializations.length > 3 ? "..." : ""}</p>
+              <p style="margin: 5px 0;"><strong>⏱️ Expérience :</strong> ${formData.experience} ans</p>
+              ${formData.consultationPrice ? `<p style="margin: 5px 0;"><strong>💰 Tarif :</strong> ${parseInt(formData.consultationPrice).toLocaleString("fr-DZ")} DZD</p>` : ""}
+            </div>
+
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="https://supabase.com/dashboard/project/qkjxbmhrwkwnweepvhum/editor"
+                 style="background: #0891b2; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">
+                Vérifier dans Supabase
+              </a>
+            </div>
+
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+              <p style="color: #64748b; font-size: 14px; margin-bottom: 10px;">
+                📌 <strong>À faire :</strong>
+              </p>
+              <ul style="color: #64748b; font-size: 14px; margin: 0; padding-left: 20px;">
+                <li>Vérifier le numéro de carte professionnelle</li>
+                <li>Valider l'identité de l'avocat</li>
+                <li>Vérifier qu'il n'y a pas de doublon</li>
+                <li>Activer le profil (verified = true dans la table lawyers)</li>
+              </ul>
+            </div>
+          `,
+            priority: "high",
+          }),
+        });
+      } catch (notifError) {
+        console.error("⚠️ Erreur notification admin:", notifError);
+      }
+
       const redirectPath = result.redirectPath || "/lawyer/dashboard";
       router.push(redirectPath);
     } catch (error: any) {
