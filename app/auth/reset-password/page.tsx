@@ -1,15 +1,14 @@
 // "use client";
 
 // import { useState, useEffect, useRef, Suspense } from "react";
-// import { useSearchParams } from "next/navigation";
-// import { Eye, EyeOff, Lock, CheckCircle } from "lucide-react";
+// import { useRouter } from "next/navigation";
+// import { Eye, EyeOff, Lock, CheckCircle, AlertCircle } from "lucide-react";
 // import { createClient } from "@/lib/supabase/client";
 // import { gsap } from "gsap";
 
 // function ResetPasswordForm() {
 //   const supabase = createClient();
-//   const searchParams = useSearchParams();
-//   const userType = searchParams.get("type") || "client";
+//   const router = useRouter();
 //   const containerRef = useRef<HTMLDivElement>(null);
 
 //   const [password, setPassword] = useState("");
@@ -19,9 +18,51 @@
 //   const [error, setError] = useState("");
 //   const [success, setSuccess] = useState(false);
 //   const [isSubmitting, setIsSubmitting] = useState(false);
+//   const [isLoading, setIsLoading] = useState(true);
+//   const [sessionReady, setSessionReady] = useState(false);
 
 //   useEffect(() => {
-//     if (!containerRef.current) return;
+//     const handlePasswordReset = async () => {
+//       try {
+//         const hashParams = new URLSearchParams(
+//           window.location.hash.substring(1)
+//         );
+//         const access_token = hashParams.get("access_token");
+//         const refresh_token = hashParams.get("refresh_token");
+//         const type = hashParams.get("type");
+
+//         if (!access_token || type !== "recovery") {
+//           setError("Lien de réinitialisation invalide ou expiré");
+//           setIsLoading(false);
+//           return;
+//         }
+
+//         const { error: sessionError } = await supabase.auth.setSession({
+//           access_token,
+//           refresh_token: refresh_token || "",
+//         });
+
+//         if (sessionError) {
+//           console.error("Erreur session:", sessionError);
+//           setError("Lien de réinitialisation invalide ou expiré");
+//           setIsLoading(false);
+//           return;
+//         }
+
+//         setSessionReady(true);
+//         setIsLoading(false);
+//       } catch (err) {
+//         console.error("Erreur initialisation:", err);
+//         setError("Une erreur est survenue");
+//         setIsLoading(false);
+//       }
+//     };
+
+//     handlePasswordReset();
+//   }, [supabase]);
+
+//   useEffect(() => {
+//     if (!containerRef.current || isLoading) return;
 
 //     const timeline = gsap.timeline();
 
@@ -43,7 +84,7 @@
 //         { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
 //         "-=0.3"
 //       );
-//   }, []);
+//   }, [isLoading]);
 
 //   const handleSubmit = async (e: React.FormEvent) => {
 //     e.preventDefault();
@@ -77,6 +118,7 @@
 //       });
 
 //       if (updateError) {
+//         console.error("Erreur update:", updateError);
 //         setError("Erreur lors de la modification : " + updateError.message);
 //         setIsSubmitting(false);
 //         return;
@@ -84,19 +126,76 @@
 
 //       setSuccess(true);
 
-//       const redirectPath =
-//         userType === "lawyer" ? "/auth/lawyer/login" : "/auth/client/login";
-
 //       setTimeout(async () => {
 //         await supabase.auth.signOut();
-//         window.location.href = redirectPath;
+//         window.location.href = "/auth/lawyer/login";
 //       }, 2000);
-//     } catch (err) {
+//     } catch (err: any) {
 //       console.error("Erreur reset password:", err);
 //       setError("Une erreur est survenue. Réessayez.");
 //       setIsSubmitting(false);
 //     }
 //   };
+
+//   if (isLoading) {
+//     return (
+//       <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
+//         <div className="flex flex-col items-center gap-4">
+//           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+//           <p className="text-slate-600">Vérification du lien...</p>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   if (!sessionReady) {
+//     return (
+//       <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
+//         <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full mx-4">
+//           <div className="flex flex-col items-center text-center">
+//             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+//               <AlertCircle className="w-8 h-8 text-red-600" />
+//             </div>
+//             <h2 className="text-2xl font-bold text-slate-800 mb-2">
+//               Lien invalide ou expiré
+//             </h2>
+//             <p className="text-slate-600 mb-6">
+//               {error || "Le lien de réinitialisation est invalide ou a expiré."}
+//             </p>
+//             <button
+//               onClick={() => router.push("/auth/forgot-password")}
+//               className="px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium"
+//             >
+//               Demander un nouveau lien
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   if (success) {
+//     return (
+//       <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
+//         <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full mx-4">
+//           <div className="flex flex-col items-center text-center">
+//             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+//               <CheckCircle className="w-8 h-8 text-green-600" />
+//             </div>
+//             <h2 className="text-2xl font-bold text-slate-800 mb-2">
+//               Mot de passe réinitialisé !
+//             </h2>
+//             <p className="text-slate-600 mb-4">
+//               Votre mot de passe a été modifié avec succès.
+//             </p>
+//             <p className="text-sm text-slate-500">
+//               Redirection vers la page de connexion...
+//             </p>
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   }
 
 //   return (
 //     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
@@ -116,25 +215,15 @@
 //           <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
 //             Nouveau mot de passe
 //           </h1>
+//           <p className="text-slate-600 text-sm">
+//             Choisissez un mot de passe sécurisé
+//           </p>
 //         </div>
 
 //         <div className="form-card bg-white rounded-2xl shadow-lg p-6 border border-slate-100">
-//           {success && (
-//             <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
-//               <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
-//               <div>
-//                 <p className="text-green-600 text-sm font-medium">
-//                   Mot de passe modifié avec succès !
-//                 </p>
-//                 <p className="text-green-600 text-xs mt-1">
-//                   Redirection vers la connexion...
-//                 </p>
-//               </div>
-//             </div>
-//           )}
-
 //           {error && (
-//             <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+//             <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+//               <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
 //               <p className="text-red-600 text-sm">{error}</p>
 //             </div>
 //           )}
@@ -152,13 +241,14 @@
 //                   className="text-slate-800 w-full h-12 px-4 text-sm border-2 border-slate-300 rounded-lg bg-white hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all duration-200"
 //                   placeholder="Minimum 8 caractères"
 //                   required
-//                   disabled={isSubmitting || success}
+//                   disabled={isSubmitting}
+//                   minLength={8}
 //                 />
 //                 <button
 //                   type="button"
 //                   onClick={() => setShowPassword(!showPassword)}
-//                   className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"
-//                   disabled={isSubmitting || success}
+//                   className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+//                   disabled={isSubmitting}
 //                 >
 //                   {showPassword ? (
 //                     <EyeOff className="w-5 h-5" />
@@ -167,6 +257,9 @@
 //                   )}
 //                 </button>
 //               </div>
+//               <p className="text-xs text-slate-500 mt-2">
+//                 Minimum 8 caractères avec majuscule, minuscule et chiffre
+//               </p>
 //             </div>
 
 //             <div>
@@ -181,13 +274,13 @@
 //                   className="text-slate-800 w-full h-12 px-4 text-sm border-2 border-slate-300 rounded-lg bg-white hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all duration-200"
 //                   placeholder="Répétez le mot de passe"
 //                   required
-//                   disabled={isSubmitting || success}
+//                   disabled={isSubmitting}
 //                 />
 //                 <button
 //                   type="button"
 //                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-//                   className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"
-//                   disabled={isSubmitting || success}
+//                   className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+//                   disabled={isSubmitting}
 //                 >
 //                   {showConfirmPassword ? (
 //                     <EyeOff className="w-5 h-5" />
@@ -200,13 +293,29 @@
 
 //             <button
 //               type="submit"
-//               disabled={isSubmitting || success}
+//               disabled={isSubmitting}
 //               className="cursor-pointer w-full bg-teal-600 text-white py-3 rounded-lg font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 //             >
-//               {isSubmitting ? "Modification en cours..." : "Réinitialiser"}
+//               {isSubmitting ? (
+//                 <div className="flex items-center justify-center gap-2">
+//                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+//                   Modification en cours...
+//                 </div>
+//               ) : (
+//                 "Réinitialiser mon mot de passe"
+//               )}
 //             </button>
 //           </form>
 //         </div>
+
+//         <p className="text-center text-sm text-slate-500 mt-6">
+//           <a
+//             href="/auth/lawyer/login"
+//             className="text-teal-600 hover:text-teal-700 font-medium"
+//           >
+//             Retour à la connexion
+//           </a>
+//         </p>
 //       </div>
 //     </div>
 //   );
@@ -229,7 +338,7 @@
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Lock, CheckCircle, AlertCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { gsap } from "gsap";
@@ -237,8 +346,10 @@ import { gsap } from "gsap";
 function ResetPasswordForm() {
   const supabase = createClient();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const userType = searchParams.get("type") || "lawyer";
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -356,7 +467,9 @@ function ResetPasswordForm() {
 
       setTimeout(async () => {
         await supabase.auth.signOut();
-        window.location.href = "/auth/lawyer/login";
+        const loginPath =
+          userType === "client" ? "/auth/client/login" : "/auth/lawyer/login";
+        window.location.href = loginPath;
       }, 2000);
     } catch (err: any) {
       console.error("Erreur reset password:", err);
@@ -390,12 +503,21 @@ function ResetPasswordForm() {
             <p className="text-slate-600 mb-6">
               {error || "Le lien de réinitialisation est invalide ou a expiré."}
             </p>
-            <button
-              onClick={() => router.push("/auth/forgot-password")}
-              className="px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium"
-            >
-              Demander un nouveau lien
-            </button>
+
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
+              <button
+                onClick={() => router.push("/auth/lawyer/forgot-password")}
+                className="flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium"
+              >
+                Renvoyer (Avocat)
+              </button>
+              <button
+                onClick={() => router.push("/auth/client/forgot-password")}
+                className="flex-1 px-6 py-3 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors font-medium"
+              >
+                Renvoyer (Client)
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -538,7 +660,11 @@ function ResetPasswordForm() {
 
         <p className="text-center text-sm text-slate-500 mt-6">
           <a
-            href="/auth/lawyer/login"
+            href={
+              userType === "client"
+                ? "/auth/client/login"
+                : "/auth/lawyer/login"
+            }
             className="text-teal-600 hover:text-teal-700 font-medium"
           >
             Retour à la connexion
