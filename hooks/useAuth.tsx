@@ -181,7 +181,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       if (userData.userType === "lawyer") {
-        // ✅ LOGS AVANT L'INSERT
         console.log("🔍 ========================================");
         console.log("🔍 Tentative création profil lawyer");
         console.log("🔍 User ID:", authData.user.id);
@@ -190,19 +189,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.log("🔍 Specializations:", userData.specializations);
         console.log("🔍 Wilayas:", userData.wilayas);
         console.log("🔍 ========================================");
-        const { error: lawyerError } = await supabase.from("lawyers").insert({
-          id: authData.user.id,
-          bar_number: userData.bar_number || "",
-          specializations: userData.specializations || [],
-          wilayas: userData.wilayas || [],
-          experience_years: userData.experience_years || 0,
-          consultation_price: userData.consultation_price || null,
-          bio: null,
-          is_claimed: false,
-          claimed_at: null,
-          is_verified: false,
-          is_available: true,
-        });
+        const { error: lawyerError } = await supabase.from("lawyers").upsert(
+          {
+            id: authData.user.id,
+            bar_number: userData.bar_number || "",
+            specializations: userData.specializations || [],
+            wilayas: userData.wilayas || [],
+            experience_years: userData.experience_years || 0,
+            consultation_price: userData.consultation_price || null,
+            bio: null,
+            is_claimed: false,
+            claimed_at: null,
+            is_verified: false,
+            is_available: true,
+          },
+          {
+            onConflict: "id",
+            ignoreDuplicates: false,
+          }
+        );
 
         if (lawyerError) {
           // ✅ LOGS DÉTAILLÉS
