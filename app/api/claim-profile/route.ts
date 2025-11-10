@@ -140,6 +140,113 @@ export async function POST(request: NextRequest) {
     await supabase.from("lawyers").delete().eq("id", lawyerId);
     await supabase.from("users").delete().eq("id", lawyerId);
 
+    // ✅ LOGS DE DEBUG
+    console.log("🔍 ========================================");
+    console.log("🔍 DÉBUT NOTIFICATION CLAIM");
+    console.log("🔍 Email avocat:", email);
+    console.log("🔍 Nom:", oldUser.first_name, oldUser.last_name);
+    console.log("🔍 ADMIN_EMAIL:", process.env.ADMIN_EMAIL);
+    console.log("🔍 RESEND_FROM_EMAIL:", process.env.RESEND_FROM_EMAIL);
+    console.log(
+      "🔍 RESEND_API_KEY:",
+      process.env.RESEND_API_KEY ? "✅ Présente" : "❌ Manquante"
+    );
+    console.log("🔍 ========================================");
+
+    // ✅ ENVOI DE LA NOTIFICATION (C'EST CE QUI MANQUAIT !)
+    try {
+      const wilayasText = oldLawyer.wilayas?.join(", ") || "Non spécifié";
+      const specializationsText =
+        oldLawyer.specializations?.slice(0, 3).join(", ") || "Non spécifié";
+      const hasMoreSpecs = oldLawyer.specializations?.length > 3;
+
+      console.log("🔍 Tentative d'envoi notification claim...");
+
+      const notifResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_APP_URL || "https://mizan-dz.com"}/api/admin/notify`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            subject: "✅ Profil avocat réclamé avec succès",
+            title: "Un avocat a réclamé son profil",
+            message: `
+            <div style="background: #d1fae5; padding: 15px; border-left: 4px solid #10b981; border-radius: 4px; margin: 20px 0;">
+              <p style="margin: 0; color: #065f46; font-weight: 600;">
+                ✅ Un avocat a activé son compte en réclamant son profil statique
+              </p>
+            </div>
+
+            <div style="background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <p style="margin: 5px 0;"><strong>👤 Nom :</strong> ${oldUser.first_name} ${oldUser.last_name}</p>
+              <p style="margin: 5px 0;"><strong>📧 Email :</strong> ${email}</p>
+              <p style="margin: 5px 0;"><strong>📱 Mobile :</strong> ${oldUser.mobile || "Non spécifié"}</p>
+              ${oldUser.phone ? `<p style="margin: 5px 0;"><strong>☎️ Fixe :</strong> ${oldUser.phone}</p>` : ""}
+              <p style="margin: 5px 0;"><strong>🔢 N° Carte Pro :</strong> ${oldLawyer.bar_number}</p>
+              <p style="margin: 5px 0;"><strong>📍 Wilayas :</strong> ${wilayasText}</p>
+              <p style="margin: 5px 0;"><strong>🎓 Spécialités :</strong> ${specializationsText}${hasMoreSpecs ? "..." : ""}</p>
+              <p style="margin: 5px 0;"><strong>⏱️ Expérience :</strong> ${oldLawyer.experience_years} ans</p>
+              ${oldLawyer.consultation_price ? `<p style="margin: 5px 0;"><strong>💰 Tarif :</strong> ${oldLawyer.consultation_price.toLocaleString("fr-DZ")} DZD</p>` : ""}
+              <p style="margin: 5px 0;"><strong>🆔 Ancien ID :</strong> ${lawyerId}</p>
+              <p style="margin: 5px 0;"><strong>🆔 Nouvel ID :</strong> ${newAuthId}</p>
+              <p style="margin: 5px 0;"><strong>📅 Date réclamation :</strong> ${new Date().toLocaleDateString(
+                "fr-FR",
+                {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }
+              )}</p>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="https://supabase.com/dashboard/project/qkjxbmhrwkwnweepvhum/editor"
+                 style="background: #0891b2; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">
+                Voir dans Supabase
+              </a>
+            </div>
+
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+              <p style="color: #64748b; font-size: 14px; margin-bottom: 10px;">
+                ℹ️ <strong>Actions effectuées automatiquement :</strong>
+              </p>
+              <ul style="color: #64748b; font-size: 14px; margin: 0; padding-left: 20px;">
+                <li>Compte utilisateur créé avec l'email : ${email}</li>
+                <li>Profil avocat marqué comme réclamé (is_claimed = true)</li>
+                <li>Profil vérifié automatiquement (is_verified = true)</li>
+                <li>Ancien profil statique supprimé</li>
+                <li>L'avocat peut maintenant se connecter et gérer son profil</li>
+              </ul>
+            </div>
+
+            <div style="background: #fef3c7; padding: 15px; border-left: 4px solid #f59e0b; border-radius: 4px; margin: 20px 0;">
+              <p style="margin: 0; color: #92400e; font-size: 14px;">
+                ⚠️ <strong>À vérifier :</strong> Confirme que les informations du profil sont correctes et que le numéro de carte professionnelle est valide.
+              </p>
+            </div>
+          `,
+            priority: "normal",
+          }),
+        }
+      );
+
+      console.log("🔍 Réponse notification claim:", notifResponse.status);
+
+      const notifData = await notifResponse.json();
+      console.log("🔍 Data notification claim:", notifData);
+
+      if (notifResponse.ok) {
+        console.log("✅ Admin notifié du claim de profil");
+      } else {
+        console.error("❌ Erreur notification claim:", notifData);
+      }
+    } catch (notifError) {
+      console.error("⚠️ Erreur notification admin claim:", notifError);
+      // Ne pas bloquer le claim si la notification échoue
+    }
+
     return NextResponse.json({
       success: true,
       message: "Profil activé avec succès",

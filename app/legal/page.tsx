@@ -56,56 +56,101 @@ export default function LegalMentionsPage() {
           </p>
 
           <div className="prose prose-slate max-w-none space-y-8">
+            <div className="animate-section bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">⚠️</span>
+                <div>
+                  <p className="text-amber-900 font-semibold mb-1">
+                    Projet en phase de lancement
+                  </p>
+                  <p className="text-amber-800 text-sm">
+                    MIZAN est actuellement exploité par Chabane Nadji en tant
+                    que développeur indépendant. Une structure juridique
+                    formelle (SARL/SPA) sera créée prochainement. Cette page
+                    sera mise à jour avec les informations d'immatriculation
+                    complètes.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                1. Éditeur du site
+                1. Éditeur et exploitant du site
               </h2>
               <div className="bg-slate-50 rounded-lg p-6 border border-slate-200">
                 <p className="text-slate-700 leading-relaxed">
-                  <strong className="text-slate-900">Raison sociale :</strong>{" "}
+                  <strong className="text-slate-900">Nom du projet :</strong>{" "}
                   MIZAN
                 </p>
                 <p className="text-slate-700 leading-relaxed">
-                  <strong className="text-slate-900">Forme juridique :</strong>{" "}
-                  [À compléter - SARL/SPA]
+                  <strong className="text-slate-900">Exploitant :</strong>{" "}
+                  Chabane Nadji
                 </p>
                 <p className="text-slate-700 leading-relaxed">
-                  <strong className="text-slate-900">Capital social :</strong>{" "}
-                  [À compléter]
+                  <strong className="text-slate-900">Statut actuel :</strong>{" "}
+                  Développeur indépendant / Autoentrepreneur
                 </p>
                 <p className="text-slate-700 leading-relaxed">
-                  <strong className="text-slate-900">Siège social :</strong>{" "}
-                  [Votre adresse]
-                </p>
-                <p className="text-slate-700 leading-relaxed">
-                  <strong className="text-slate-900">
-                    Registre du commerce :
-                  </strong>{" "}
-                  [N° RC à compléter]
-                </p>
-                <p className="text-slate-700 leading-relaxed">
-                  <strong className="text-slate-900">NIF :</strong> [Numéro à
-                  compléter]
-                </p>
-                <p className="text-slate-700 leading-relaxed">
-                  <strong className="text-slate-900">Email :</strong>{" "}
+                  <strong className="text-slate-900">Email de contact :</strong>{" "}
                   <span className="text-teal-600">contact@mizan-dz.com</span>
                 </p>
                 <p className="text-slate-700 leading-relaxed">
-                  <strong className="text-slate-900">Téléphone :</strong> [À
-                  compléter]
+                  <strong className="text-slate-900">Email personnel :</strong>{" "}
+                  <span className="text-teal-600">chabane.nadji@gmail.com</span>
+                </p>
+                <p className="text-slate-700 leading-relaxed">
+                  <strong className="text-slate-900">Téléphone :</strong> +33 6
+                  60 25 35 70
+                </p>
+
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                  <p className="text-blue-800 text-xs">
+                    📋 <strong>Immatriculation commerciale en cours :</strong>{" "}
+                    Les informations légales complètes (forme juridique, RC,
+                    NIF, capital social) seront publiées dès la création
+                    officielle de la société.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section className="animate-section">
+              <h2 className="text-xl font-semibold text-slate-900 mb-4">
+                1.5. Nature du site et distinction avec le tableau officiel
+              </h2>
+              <div className="bg-teal-50 border border-teal-200 rounded-lg p-6">
+                <p className="text-teal-900 leading-relaxed font-medium mb-3">
+                  ⚖️ MIZAN est un annuaire en ligne et une plateforme de mise en
+                  relation entre particuliers et avocats exerçant en Algérie.
+                </p>
+                <p className="text-teal-800 leading-relaxed">
+                  <strong>Important :</strong> Ce site n'est pas le tableau
+                  officiel de l'Ordre des avocats tel que prévu par la loi n°
+                  13-07 du 29 juillet 2013 relative à l'exercice de la
+                  profession d'avocat. MIZAN ne prétend pas remplacer ni
+                  reproduire le tableau officiel tenu par l'Ordre des avocats
+                  d'Algérie.
+                </p>
+                <p className="text-teal-800 leading-relaxed mt-2">
+                  Les informations présentées sur ce site constituent un service
+                  complémentaire d'annuaire professionnel et ne sauraient se
+                  substituer aux documents et registres officiels de l'Ordre.
                 </p>
               </div>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                2. Directeur de la publication
+                2. Responsable de la publication
               </h2>
               <p className="text-slate-700 leading-relaxed">
-                [Votre nom et prénom]
+                <strong>Chabane Nadji</strong>
                 <br />
-                En qualité de [Gérant/Directeur]
+                Développeur et fondateur du projet MIZAN
+                <br />
+                Email :{" "}
+                <span className="text-teal-600">chabane.nadji@gmail.com</span>
               </p>
             </section>
 
@@ -151,6 +196,12 @@ export default function LegalMentionsPage() {
                 La reproduction de tout ou partie de ce site sur un support
                 électronique quel qu'il soit est formellement interdite sauf
                 autorisation expresse de MIZAN.
+              </p>
+              <p className="text-slate-700 leading-relaxed mt-3">
+                Les informations professionnelles des avocats (noms,
+                coordonnées, spécialités) restent la propriété de ces derniers
+                et sont publiées dans un but informatif d'annuaire professionnel
+                uniquement.
               </p>
             </section>
 

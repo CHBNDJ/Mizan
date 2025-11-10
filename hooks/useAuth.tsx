@@ -181,6 +181,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       if (userData.userType === "lawyer") {
+        // ✅ LOGS AVANT L'INSERT
+        console.log("🔍 ========================================");
+        console.log("🔍 Tentative création profil lawyer");
+        console.log("🔍 User ID:", authData.user.id);
+        console.log("🔍 Email:", email);
+        console.log("🔍 Bar number:", userData.bar_number);
+        console.log("🔍 Specializations:", userData.specializations);
+        console.log("🔍 Wilayas:", userData.wilayas);
+        console.log("🔍 ========================================");
         const { error: lawyerError } = await supabase.from("lawyers").insert({
           id: authData.user.id,
           bar_number: userData.bar_number || "",
@@ -188,13 +197,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           wilayas: userData.wilayas || [],
           experience_years: userData.experience_years || 0,
           consultation_price: userData.consultation_price || null,
+          bio: null,
+          is_claimed: false,
+          claimed_at: null,
           is_verified: false,
+          is_available: true,
         });
 
         if (lawyerError) {
-          console.error("Erreur création lawyer:", lawyerError);
+          // ✅ LOGS DÉTAILLÉS
+          console.error("🔴 ========================================");
+          console.error("🔴 ERREUR CRÉATION LAWYER");
+          console.error("🔴 Code:", lawyerError.code);
+          console.error("🔴 Message:", lawyerError.message);
+          console.error("🔴 Details:", lawyerError.details);
+          console.error("🔴 Hint:", lawyerError.hint);
+          console.error("🔴 Full error:", JSON.stringify(lawyerError, null, 2));
+          console.error("🔴 ========================================");
           throw lawyerError;
         }
+        console.log("✅ Profil lawyer créé avec succès");
       }
 
       try {

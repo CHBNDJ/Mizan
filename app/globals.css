@@ -35,7 +35,6 @@ input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-/* ✅ CORRECTION OVERFLOW MOBILE - GSAP ANIMATIONS */
 html,
 body {
   overflow-x: hidden;
@@ -43,14 +42,12 @@ body {
   position: relative;
 }
 
-/* Conteneur principal */
 #__next,
 main {
   overflow-x: hidden;
   width: 100%;
 }
 
-/* Correction spécifique pour les animations GSAP sur mobile */
 @media (max-width: 1024px) {
   .hero-title,
   .hero-subtitle,
@@ -83,12 +80,10 @@ main {
   }
 }
 
-/* S'assurer que tous les conteneurs respectent la largeur de l'écran */
 * {
   max-width: 100%;
 }
 
-/* Exception pour les éléments qui ont besoin d'une largeur spécifique */
 .max-w-6xl,
 .max-w-4xl,
 .max-w-3xl,

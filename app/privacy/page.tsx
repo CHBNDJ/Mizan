@@ -65,15 +65,131 @@ export default function PrivacyPolicyPage() {
                 vos données personnelles. Cette politique explique comment nous
                 collectons, utilisons et protégeons vos informations.
               </p>
+              <p className="text-slate-700 leading-relaxed mt-3">
+                MIZAN s'efforce de respecter la législation algérienne en
+                matière de protection des données personnelles, notamment la loi
+                n° 18-07 du 10 juin 2018 relative à la protection des personnes
+                physiques dans le traitement des données à caractère personnel.
+              </p>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                2. Données collectées
+                2. Données publiques des avocats (source externe)
+              </h2>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h3 className="font-semibold text-blue-900 mb-3">
+                  📋 Collecte de données professionnelles publiques
+                </h3>
+                <p className="text-blue-800 leading-relaxed mb-3">
+                  MIZAN collecte et publie des informations professionnelles
+                  concernant des avocats exerçant en Algérie. Ces informations
+                  proviennent exclusivement de{" "}
+                  <strong>sources publiques et accessibles librement</strong>{" "}
+                  sur internet, notamment :
+                </p>
+                <ul className="list-disc list-inside space-y-2 text-blue-800">
+                  <li>Sites web officiels des cabinets d'avocats</li>
+                  <li>
+                    Pages professionnelles publiques (Google My Business,
+                    LinkedIn, etc.)
+                  </li>
+                  <li>Annuaires professionnels publics en ligne</li>
+                  <li>Réseaux sociaux professionnels publics</li>
+                  <li>Publications professionnelles accessibles au public</li>
+                </ul>
+
+                <h3 className="font-semibold text-blue-900 mt-5 mb-3">
+                  🔍 Nature des informations collectées
+                </h3>
+                <ul className="list-disc list-inside space-y-2 text-blue-800">
+                  <li>Nom et prénom de l'avocat</li>
+                  <li>Adresse du cabinet</li>
+                  <li>Numéro de téléphone professionnel</li>
+                  <li>Adresse email professionnelle</li>
+                  <li>Domaines de compétence juridique (si disponibles)</li>
+                  <li>Langues parlées (si disponibles)</li>
+                  <li>Barreau d'inscription (si disponible)</li>
+                </ul>
+
+                <h3 className="font-semibold text-blue-900 mt-5 mb-3">
+                  ✅ Utilisation et finalité
+                </h3>
+                <p className="text-blue-800 leading-relaxed">
+                  Ces données sont utilisées uniquement dans le cadre d'un
+                  service d'annuaire professionnel et de mise en relation entre
+                  clients et avocats. Elles ne font l'objet d'aucune
+                  exploitation commerciale non autorisée.
+                </p>
+
+                <h3 className="font-semibold text-blue-900 mt-5 mb-3">
+                  📧 Information des avocats concernés
+                </h3>
+                <p className="text-blue-800 leading-relaxed">
+                  MIZAN s'engage à informer chaque avocat dont les coordonnées
+                  sont publiées sur le site. Les avocats sont contactés par
+                  email ou téléphone pour les informer de la présence de leurs
+                  informations sur la plateforme.
+                </p>
+
+                <div className="mt-4 p-4 bg-blue-100 border border-blue-300 rounded">
+                  <p className="text-blue-900 font-semibold mb-2">
+                    🛡️ Droits des avocats concernant leurs données
+                  </p>
+                  <p className="text-blue-800 text-sm mb-2">
+                    Tout avocat figurant sur MIZAN dispose des droits suivants,
+                    qu'il peut exercer à tout moment et gratuitement :
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 text-blue-800 text-sm">
+                    <li>
+                      <strong>Droit de rectification :</strong> Corriger toute
+                      information incorrecte ou obsolète
+                    </li>
+                    <li>
+                      <strong>Droit de suppression :</strong> Demander le
+                      retrait complet de son profil du site
+                    </li>
+                    <li>
+                      <strong>Droit d'opposition :</strong> S'opposer à
+                      l'utilisation de ses données pour la mise en relation
+                    </li>
+                    <li>
+                      <strong>Droit d'accès :</strong> Consulter l'ensemble des
+                      données publiées le concernant
+                    </li>
+                  </ul>
+                  <p className="text-blue-800 text-sm mt-3">
+                    <strong>Contact :</strong> Pour exercer ces droits, les
+                    avocats peuvent contacter{" "}
+                    <a
+                      href="mailto:contact@mizan-dz.com"
+                      className="underline font-medium"
+                    >
+                      contact@mizan-dz.com
+                    </a>{" "}
+                    ou appeler le +33 6 60 25 35 70.
+                    <br />
+                    <strong>Délai de traitement :</strong> 15 jours ouvrés
+                    maximum.
+                  </p>
+                </div>
+
+                <p className="text-blue-800 leading-relaxed mt-4 text-sm">
+                  <strong>Note importante :</strong> Les avocats qui créent un
+                  compte sur MIZAN et revendiquent leur profil bénéficient d'un
+                  contrôle total sur leurs informations et peuvent les modifier
+                  directement depuis leur espace personnel.
+                </p>
+              </div>
+            </section>
+
+            <section className="animate-section">
+              <h2 className="text-xl font-semibold text-slate-900 mb-4">
+                3. Données collectées pour les utilisateurs inscrits
               </h2>
               <div className="space-y-3">
                 <h3 className="font-semibold text-slate-800">
-                  Pour tous les utilisateurs :
+                  Pour tous les utilisateurs inscrits :
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-slate-700">
                   <li>Nom et prénom</li>
@@ -92,7 +208,7 @@ export default function PrivacyPolicyPage() {
                 </ul>
 
                 <h3 className="font-semibold text-slate-800 mt-4">
-                  Pour les avocats :
+                  Pour les avocats inscrits (qui créent un compte) :
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-slate-700">
                   <li>Numéro d'inscription au barreau</li>
@@ -108,7 +224,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                3. Utilisation des données
+                4. Utilisation des données
               </h2>
               <p className="text-slate-700 leading-relaxed mb-3">
                 Vos données sont utilisées uniquement pour :
@@ -120,7 +236,9 @@ export default function PrivacyPolicyPage() {
                   Envoyer des notifications importantes (réponses aux
                   consultations)
                 </li>
-                <li>Vérifier l'identité et les qualifications des avocats</li>
+                <li>
+                  Vérifier l'identité et les qualifications des avocats inscrits
+                </li>
                 <li>Améliorer nos services</li>
                 <li>Respecter nos obligations légales</li>
               </ul>
@@ -131,7 +249,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                4. Partage des données
+                5. Partage des données
               </h2>
               <p className="text-slate-700 leading-relaxed mb-3">
                 Vos données peuvent être partagées dans les cas suivants :
@@ -155,7 +273,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                5. Sécurité des données
+                6. Sécurité des données
               </h2>
               <p className="text-slate-700 leading-relaxed mb-3">
                 Nous mettons en œuvre des mesures de sécurité appropriées :
@@ -163,7 +281,7 @@ export default function PrivacyPolicyPage() {
               <ul className="list-disc list-inside space-y-2 text-slate-700">
                 <li>Cryptage des mots de passe</li>
                 <li>Connexion sécurisée HTTPS</li>
-                <li>Hébergement sur serveurs sécurisés</li>
+                <li>Hébergement sur serveurs sécurisés (Supabase)</li>
                 <li>Accès limité aux données personnelles</li>
                 <li>Sauvegardes régulières</li>
               </ul>
@@ -171,7 +289,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                6. Cookies et technologies similaires
+                7. Cookies et technologies similaires
               </h2>
               <p className="text-slate-700 leading-relaxed">
                 Le site MIZAN utilise des cookies essentiels pour son
@@ -182,7 +300,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                7. Vos droits
+                8. Vos droits (utilisateurs inscrits)
               </h2>
               <p className="text-slate-700 leading-relaxed mb-3">
                 Vous disposez des droits suivants :
@@ -207,11 +325,20 @@ export default function PrivacyPolicyPage() {
                   utilisations
                 </li>
               </ul>
+              <p className="text-slate-700 leading-relaxed mt-3">
+                Pour exercer ces droits :{" "}
+                <a
+                  href="mailto:contact@mizan-dz.com"
+                  className="text-teal-600 hover:underline font-medium"
+                >
+                  contact@mizan-dz.com
+                </a>
+              </p>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                8. Conservation des données
+                9. Conservation des données
               </h2>
               <ul className="list-disc list-inside space-y-2 text-slate-700">
                 <li>
@@ -226,12 +353,16 @@ export default function PrivacyPolicyPage() {
                   <strong>Avis publiés :</strong> Conservés de manière
                   anonymisée après suppression du compte
                 </li>
+                <li>
+                  <strong>Données publiques d'avocats non inscrits :</strong>{" "}
+                  Conservées tant que l'avocat n'a pas demandé leur suppression
+                </li>
               </ul>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                9. Modifications de cette politique
+                10. Modifications de cette politique
               </h2>
               <p className="text-slate-700 leading-relaxed">
                 Nous pouvons modifier cette politique de confidentialité. Les
@@ -242,7 +373,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                10. Contact
+                11. Contact
               </h2>
               <p className="text-slate-700 leading-relaxed mb-4">
                 Pour toute question concernant vos données personnelles :
@@ -254,6 +385,9 @@ export default function PrivacyPolicyPage() {
               >
                 contact@mizan-dz.com
               </a>
+              <p className="text-slate-700 leading-relaxed mt-2">
+                Téléphone : +33 6 60 25 35 70
+              </p>
               <p className="text-slate-600 mt-4">
                 Pour d'autres demandes, consultez notre{" "}
                 <Link

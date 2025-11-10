@@ -268,18 +268,26 @@ export default function LawyerRegisterPage() {
     try {
       const { data: existingByEmail, error: emailCheckError } = await supabase
         .from("users")
-        .select(
-          "id, email, professional_email, first_name, last_name, is_claimed"
-        )
+        .select("id, email, professional_email, first_name, last_name")
         .eq("user_type", "lawyer")
         .or(
           `email.eq.${formData.email},professional_email.eq.${formData.email}`
         );
 
+      if (emailCheckError) {
+        console.error("Erreur vérification email:", emailCheckError);
+      }
+
       if (existingByEmail && existingByEmail.length > 0) {
         const profile = existingByEmail[0];
 
-        if (profile.is_claimed) {
+        const { data: lawyerData } = await supabase
+          .from("lawyers")
+          .select("is_claimed")
+          .eq("id", profile.id)
+          .single();
+
+        if (lawyerData?.is_claimed) {
           setErrors({
             general: `Ce profil a déjà été réclamé. Veuillez vous connecter.`,
           });
@@ -299,32 +307,6 @@ export default function LawyerRegisterPage() {
         setTimeout(() => {
           router.push(`/claim-profile/${profile.id}`);
         }, 2000);
-        return;
-      }
-
-      const { data: existingByName, error: nameCheckError } = await supabase
-        .from("users")
-        .select(
-          "id, email, professional_email, first_name, last_name, is_claimed"
-        )
-        .eq("user_type", "lawyer")
-        .ilike("first_name", formData.firstName.trim())
-        .ilike("last_name", formData.lastName.trim());
-
-      if (existingByName && existingByName.length > 0) {
-        const profile = existingByName[0];
-        const profileEmail = profile.professional_email || profile.email;
-
-        setErrors({
-          general: `Un profil existe déjà pour ${profile.first_name} ${profile.last_name} avec l'email ${profileEmail}. Si c'est vous, utilisez cet email ou réclamez votre profil.`,
-        });
-        setIsSubmitting(false);
-
-        setTimeout(() => {
-          if (window.confirm("Voulez-vous réclamer ce profil maintenant ?")) {
-            router.push(`/claim-profile/${profile.id}`);
-          }
-        }, 3000);
         return;
       }
 
@@ -360,8 +342,21 @@ export default function LawyerRegisterPage() {
 
       const result = await signUp(formData.email, formData.password, userData);
 
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+
+      // ✅ AJOUTE CES LOGS ICI (JUSTE AVANT L'ENVOI DE NOTIFICATION)
+      console.log("🔍 ========================================");
+      console.log("🔍 DÉBUT NOTIFICATION INSCRIPTION AVOCAT");
+      console.log("🔍 Email:", formData.email);
+      console.log("🔍 Nom:", formData.firstName, formData.lastName);
+      console.log("🔍 ADMIN_EMAIL:", process.env.NEXT_PUBLIC_APP_URL);
+      console.log("🔍 ========================================");
+
       try {
-        await fetch("/api/admin/notify", {
+        console.log("🔍 Tentative d'envoi notification inscription...");
+        const notifResponse = await fetch("/api/admin/notify", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -408,8 +403,20 @@ export default function LawyerRegisterPage() {
             priority: "high",
           }),
         });
+        console.log(
+          "🔍 Réponse notification inscription:",
+          notifResponse.status
+        );
+        const notifData = await notifResponse.json();
+        console.log("🔍 Data notification inscription:", notifData);
+
+        if (notifResponse.ok) {
+          console.log("✅ Admin notifié de l'inscription");
+        } else {
+          console.error("❌ Erreur notification inscription:", notifData);
+        }
       } catch (notifError) {
-        console.error("⚠️ Erreur notification admin:", notifError);
+        console.error("⚠️ Erreur notification admin inscription:", notifError);
       }
 
       const redirectPath = result.redirectPath || "/lawyer/dashboard";
@@ -425,6 +432,9 @@ export default function LawyerRegisterPage() {
         errorMessage = "Format d'email invalide.";
       } else if (error.message?.includes("weak password")) {
         errorMessage = "Le mot de passe est trop faible.";
+      } else if (error.message?.includes("Database error")) {
+        errorMessage =
+          "Erreur technique. Veuillez réessayer dans quelques instants.";
       }
 
       setErrors({ general: errorMessage });
@@ -432,7 +442,6 @@ export default function LawyerRegisterPage() {
       setIsSubmitting(false);
     }
   };
-
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`
