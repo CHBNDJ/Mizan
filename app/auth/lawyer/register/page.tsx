@@ -342,10 +342,6 @@ export default function LawyerRegisterPage() {
 
       const result = await signUp(formData.email, formData.password, userData);
 
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-
       // ✅ AJOUTE CES LOGS ICI (JUSTE AVANT L'ENVOI DE NOTIFICATION)
       console.log("🔍 ========================================");
       console.log("🔍 DÉBUT NOTIFICATION INSCRIPTION AVOCAT");
