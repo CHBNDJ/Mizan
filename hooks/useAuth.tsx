@@ -52,13 +52,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .eq("id", authUser.id)
         .maybeSingle();
 
-      if (error) {
-        console.error("Erreur vérification intégrité:", error);
-        return null;
-      }
+      if (error) return null;
 
       if (!profile) {
-        console.warn("Compte fantôme détecté, déconnexion forcée");
         await supabase.auth.signOut();
         setState({
           user: null,
@@ -74,7 +70,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       return profile;
     } catch (error) {
-      console.error("Exception vérification intégrité:", error);
       return null;
     }
   };
@@ -97,17 +92,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       let lawyerProfile = null;
       if (profile?.user_type === "lawyer") {
-        const { data: lawyerData, error: lawyerError } = await supabase
+        const { data: lawyerData } = await supabase
           .from("lawyers")
           .select("*")
           .eq("id", state.user.id)
           .maybeSingle();
 
-        if (lawyerError) {
-          console.error("Erreur chargement profil avocat:", lawyerError);
-        } else {
-          lawyerProfile = lawyerData;
-        }
+        lawyerProfile = lawyerData;
       }
 
       setState((prev) => ({
@@ -115,9 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         profile,
         lawyerProfile,
       }));
-    } catch (error) {
-      console.error("Erreur actualisation profil:", error);
-    }
+    } catch (error) {}
   };
 
   const signUp = async (
@@ -171,24 +160,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
 
       if (authError) {
-        console.error("Erreur inscription Supabase:", authError);
         throw new Error(authError.message);
       }
 
       if (!authData.user) {
-        console.error("Aucun utilisateur créé");
         throw new Error("Échec de création d'utilisateur");
       }
 
       if (userData.userType === "lawyer") {
-        console.log("🔍 ========================================");
-        console.log("🔍 Tentative création profil lawyer");
-        console.log("🔍 User ID:", authData.user.id);
-        console.log("🔍 Email:", email);
-        console.log("🔍 Bar number:", userData.bar_number);
-        console.log("🔍 Specializations:", userData.specializations);
-        console.log("🔍 Wilayas:", userData.wilayas);
-        console.log("🔍 ========================================");
         const { error: lawyerError } = await supabase.from("lawyers").upsert(
           {
             id: authData.user.id,
@@ -210,18 +189,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         );
 
         if (lawyerError) {
-          // ✅ LOGS DÉTAILLÉS
-          console.error("🔴 ========================================");
-          console.error("🔴 ERREUR CRÉATION LAWYER");
-          console.error("🔴 Code:", lawyerError.code);
-          console.error("🔴 Message:", lawyerError.message);
-          console.error("🔴 Details:", lawyerError.details);
-          console.error("🔴 Hint:", lawyerError.hint);
-          console.error("🔴 Full error:", JSON.stringify(lawyerError, null, 2));
-          console.error("🔴 ========================================");
           throw lawyerError;
         }
-        console.log("✅ Profil lawyer créé avec succès");
       }
 
       try {
@@ -238,11 +207,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const codeData = await codeResponse.json();
 
         if (!codeResponse.ok) {
-          console.error("Erreur envoi code:", codeData);
           throw new Error("Erreur lors de l'envoi du code de vérification");
         }
       } catch (codeError) {
-        console.error("Exception envoi code:", codeError);
         throw new Error("Impossible d'envoyer le code de vérification");
       }
 
@@ -252,8 +219,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         userType: userData.userType,
       };
     } catch (error: any) {
-      console.error("Erreur inscription:", error);
-
       if (
         error.message?.includes("already registered") ||
         error.message?.includes("User already registered")
@@ -284,12 +249,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
 
       if (authError) {
-        console.error("Erreur connexion:", authError);
         throw new Error(authError.message);
       }
 
       if (!authData.user) {
-        console.error("Aucun utilisateur trouvé");
         throw new Error("Aucun utilisateur trouvé");
       }
 
@@ -341,8 +304,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         userType: profile?.user_type || "client",
       };
     } catch (error: any) {
-      console.error("Erreur connexion:", error);
-
       if (error.message?.includes("Invalid login credentials")) {
         throw new Error("Email ou mot de passe incorrect.");
       } else if (error.message?.includes("Email not confirmed")) {
@@ -371,13 +332,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading: false,
       });
 
-      const { error } = await supabase.auth.signOut();
-
-      if (error) {
-        console.warn("Erreur déconnexion Supabase:", error);
-      }
+      await supabase.auth.signOut();
     } catch (error: any) {
-      console.error("Erreur critique déconnexion:", error);
       setState({
         user: null,
         session: null,
@@ -415,7 +371,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               .single();
 
             if (!profile) {
-              console.warn("Profil introuvable, déconnexion");
               await supabase.auth.signOut();
               setState({
                 user: null,
@@ -445,7 +400,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               }));
             }
           } catch (error) {
-            console.error("Erreur chargement profil:", error);
+            // Error handled silently
           }
         }, 100);
       } else {

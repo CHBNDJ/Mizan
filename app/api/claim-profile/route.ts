@@ -67,7 +67,6 @@ export async function POST(request: NextRequest) {
       });
 
     if (authError) {
-      console.error("Erreur création auth:", authError);
       return NextResponse.json({ error: authError.message }, { status: 500 });
     }
 
@@ -101,7 +100,6 @@ export async function POST(request: NextRequest) {
     });
 
     if (userError) {
-      console.error("Erreur création user:", userError);
       await supabase.auth.admin.deleteUser(newAuthId);
       return NextResponse.json({ error: userError.message }, { status: 500 });
     }
@@ -131,7 +129,6 @@ export async function POST(request: NextRequest) {
     });
 
     if (lawyerError) {
-      console.error("Erreur création lawyer:", lawyerError);
       await supabase.from("users").delete().eq("id", newAuthId);
       await supabase.auth.admin.deleteUser(newAuthId);
       return NextResponse.json({ error: lawyerError.message }, { status: 500 });
@@ -140,29 +137,13 @@ export async function POST(request: NextRequest) {
     await supabase.from("lawyers").delete().eq("id", lawyerId);
     await supabase.from("users").delete().eq("id", lawyerId);
 
-    // ✅ LOGS DE DEBUG
-    console.log("🔍 ========================================");
-    console.log("🔍 DÉBUT NOTIFICATION CLAIM");
-    console.log("🔍 Email avocat:", email);
-    console.log("🔍 Nom:", oldUser.first_name, oldUser.last_name);
-    console.log("🔍 ADMIN_EMAIL:", process.env.ADMIN_EMAIL);
-    console.log("🔍 RESEND_FROM_EMAIL:", process.env.RESEND_FROM_EMAIL);
-    console.log(
-      "🔍 RESEND_API_KEY:",
-      process.env.RESEND_API_KEY ? "✅ Présente" : "❌ Manquante"
-    );
-    console.log("🔍 ========================================");
-
-    // ✅ ENVOI DE LA NOTIFICATION (C'EST CE QUI MANQUAIT !)
     try {
       const wilayasText = oldLawyer.wilayas?.join(", ") || "Non spécifié";
       const specializationsText =
         oldLawyer.specializations?.slice(0, 3).join(", ") || "Non spécifié";
       const hasMoreSpecs = oldLawyer.specializations?.length > 3;
 
-      console.log("🔍 Tentative d'envoi notification claim...");
-
-      const notifResponse = await fetch(
+      await fetch(
         `${process.env.NEXT_PUBLIC_APP_URL || "https://mizan-dz.com"}/api/admin/notify`,
         {
           method: "POST",
@@ -231,28 +212,13 @@ export async function POST(request: NextRequest) {
           }),
         }
       );
-
-      console.log("🔍 Réponse notification claim:", notifResponse.status);
-
-      const notifData = await notifResponse.json();
-      console.log("🔍 Data notification claim:", notifData);
-
-      if (notifResponse.ok) {
-        console.log("✅ Admin notifié du claim de profil");
-      } else {
-        console.error("❌ Erreur notification claim:", notifData);
-      }
-    } catch (notifError) {
-      console.error("⚠️ Erreur notification admin claim:", notifError);
-      // Ne pas bloquer le claim si la notification échoue
-    }
+    } catch (notifError) {}
 
     return NextResponse.json({
       success: true,
       message: "Profil activé avec succès",
     });
   } catch (error: any) {
-    console.error("💥 Erreur claim profil:", error);
     return NextResponse.json(
       {
         error: error.message || "Erreur lors de l'activation du profil",

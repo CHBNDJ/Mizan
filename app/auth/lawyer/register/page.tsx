@@ -274,10 +274,6 @@ export default function LawyerRegisterPage() {
           `email.eq.${formData.email},professional_email.eq.${formData.email}`
         );
 
-      if (emailCheckError) {
-        console.error("Erreur vérification email:", emailCheckError);
-      }
-
       if (existingByEmail && existingByEmail.length > 0) {
         const profile = existingByEmail[0];
 
@@ -342,17 +338,8 @@ export default function LawyerRegisterPage() {
 
       const result = await signUp(formData.email, formData.password, userData);
 
-      // ✅ AJOUTE CES LOGS ICI (JUSTE AVANT L'ENVOI DE NOTIFICATION)
-      console.log("🔍 ========================================");
-      console.log("🔍 DÉBUT NOTIFICATION INSCRIPTION AVOCAT");
-      console.log("🔍 Email:", formData.email);
-      console.log("🔍 Nom:", formData.firstName, formData.lastName);
-      console.log("🔍 ADMIN_EMAIL:", process.env.NEXT_PUBLIC_APP_URL);
-      console.log("🔍 ========================================");
-
       try {
-        console.log("🔍 Tentative d'envoi notification inscription...");
-        const notifResponse = await fetch("/api/admin/notify", {
+        await fetch("/api/admin/notify", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -392,34 +379,18 @@ export default function LawyerRegisterPage() {
                 <li>Vérifier le numéro de carte professionnelle</li>
                 <li>Valider l'identité de l'avocat</li>
                 <li>Vérifier qu'il n'y a pas de doublon</li>
-                <li>Activer le profil (verified = true dans la table lawyers)</li>
+                <li>Activer le profil (is_verified = true dans la table lawyers)</li>
               </ul>
             </div>
           `,
             priority: "high",
           }),
         });
-        console.log(
-          "🔍 Réponse notification inscription:",
-          notifResponse.status
-        );
-        const notifData = await notifResponse.json();
-        console.log("🔍 Data notification inscription:", notifData);
-
-        if (notifResponse.ok) {
-          console.log("✅ Admin notifié de l'inscription");
-        } else {
-          console.error("❌ Erreur notification inscription:", notifData);
-        }
-      } catch (notifError) {
-        console.error("⚠️ Erreur notification admin inscription:", notifError);
-      }
+      } catch (notifError) {}
 
       const redirectPath = result.redirectPath || "/lawyer/dashboard";
       router.push(redirectPath);
     } catch (error: any) {
-      console.error("Erreur inscription avocat:", error);
-
       let errorMessage = "Une erreur est survenue lors de l'inscription.";
 
       if (error.message?.includes("already registered")) {
@@ -438,6 +409,7 @@ export default function LawyerRegisterPage() {
       setIsSubmitting(false);
     }
   };
+
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`
