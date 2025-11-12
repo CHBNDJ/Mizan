@@ -399,9 +399,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 lawyerProfile,
               }));
             }
-          } catch (error) {
-            // Error handled silently
-          }
+          } catch (error) {}
         }, 100);
       } else {
         if (!mounted) return;
