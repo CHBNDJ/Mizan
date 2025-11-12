@@ -5,7 +5,7 @@ export const siteConfig = {
   description:
     "Plateforme de mise en relation avec des avocats vérifiés en Algérie. Trouvez l'avocat qui vous convient selon votre besoin juridique.",
   url: "https://mizan-dz.com",
-  ogImage: "https://mizan-dz.com/og-image.jpg",
+  ogImage: "https://mizan-dz.com/og-image.png",
 };
 
 export const homeMetadata: Metadata = {

@@ -28,10 +28,28 @@ export const metadata: Metadata = {
 
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
       { url: "/favicon.svg", type: "image/svg+xml" },
     ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      {
+        rel: "icon",
+        url: "/favicon-192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        rel: "icon",
+        url: "/favicon-512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
   },
 
   manifest: "/manifest.json",
@@ -46,10 +64,18 @@ export const metadata: Metadata = {
       "Annuaire des meilleurs avocats d'Algérie. Consultations juridiques en ligne, tous domaines de droit.",
     images: [
       {
+        url: `${siteConfig.url}/logo-512.png`,
+        width: 512,
+        height: 512,
+        alt: "Logo Mizan",
+        type: "image/png",
+      },
+      {
         url: `${siteConfig.url}/og-image.png`,
         width: 1200,
         height: 630,
         alt: "Mizan - Annuaire des avocats d'Algérie",
+        type: "image/png",
       },
     ],
   },
@@ -59,7 +85,7 @@ export const metadata: Metadata = {
     site: "@mizan_dz",
     title: "Mizan - Trouvez votre avocat en Algérie",
     description: "Annuaire des meilleurs avocats d'Algérie",
-    images: [`${siteConfig.url}/og-image.png`],
+    images: [`${siteConfig.url}/logo-512.png`],
   },
 
   appleWebApp: {
