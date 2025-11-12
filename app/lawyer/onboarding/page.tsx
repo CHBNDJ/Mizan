@@ -32,6 +32,21 @@ export default function LawyerOnboardingPage() {
           setLoading(false);
           return;
         }
+        const firstName = profile.first_name || "";
+        const lastName = profile.last_name || "";
+
+        let fullName = "";
+        if (firstName && lastName) {
+          fullName = `Maître ${firstName} ${lastName}`;
+        } else if (firstName) {
+          fullName = `Maître ${firstName}`;
+        } else if (lastName) {
+          fullName = `Maître ${lastName}`;
+        } else {
+          fullName = "Maître";
+        }
+
+        setLawyerName(fullName);
 
         const { data: lawyerData } = await supabase
           .from("lawyers")
@@ -45,22 +60,6 @@ export default function LawyerOnboardingPage() {
         }
 
         if (profile.user_type === "lawyer" && !lawyerData?.is_verified) {
-          const firstName = profile.first_name || "";
-          const lastName = profile.last_name || "";
-
-          let fullName = "";
-          if (firstName && lastName) {
-            fullName = `Maître ${firstName} ${lastName}`;
-          } else if (firstName) {
-            fullName = `Maître ${firstName}`;
-          } else if (lastName) {
-            fullName = `Maître ${lastName}`;
-          } else {
-            fullName = "Maître";
-          }
-
-          setLawyerName(fullName);
-
           await supabase.auth.signOut();
           await new Promise((resolve) => setTimeout(resolve, 500));
           setLoading(false);
@@ -119,7 +118,7 @@ export default function LawyerOnboardingPage() {
           </div>
 
           <h1 className="text-3xl font-bold text-slate-800 mb-3">
-            🎉 Bienvenue {lawyerName} !
+            Bienvenue {lawyerName} !
           </h1>
 
           <p className="text-slate-600 text-lg">
