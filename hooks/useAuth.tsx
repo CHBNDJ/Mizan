@@ -167,6 +167,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error("Échec de création d'utilisateur");
       }
 
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      if (userData.gender) {
+        const { error: updateError } = await supabase
+          .from("users")
+          .update({ gender: userData.gender })
+          .eq("id", authData.user.id);
+
+        if (updateError) {
+          console.error("Erreur mise à jour gender:", updateError);
+        }
+      }
+
       if (userData.userType === "lawyer") {
         const { error: lawyerError } = await supabase.from("lawyers").upsert(
           {
