@@ -49,25 +49,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   try {
-    const { data: avocats, error } = await supabase
-      .from("avocats")
+    const { data: lawyers, error } = await supabase
+      .from("lawyers")
       .select("id, updated_at")
-      .eq("est_verifie", true);
+      .eq("is_verified", true);
 
     if (error) {
-      console.error("Erreur récupération avocats pour sitemap:", error);
+      console.error("Erreur récupération lawyers pour sitemap:", error);
       return staticPages;
     }
 
-    const avocatPages =
-      avocats?.map((avocat) => ({
-        url: `${baseUrl}/lawyers/${avocat.id}`,
-        lastModified: new Date(avocat.updated_at),
+    const lawyerPages =
+      lawyers?.map((lawyer) => ({
+        url: `${baseUrl}/lawyers/${lawyer.id}`,
+        lastModified: new Date(lawyer.updated_at || new Date()),
         changeFrequency: "weekly" as const,
         priority: 0.8,
       })) || [];
 
-    return [...staticPages, ...avocatPages];
+    return [...staticPages, ...lawyerPages];
   } catch (error) {
     console.error("Erreur sitemap:", error);
     return staticPages;

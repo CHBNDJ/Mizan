@@ -10,26 +10,54 @@ export const siteConfig = {
 
 export const homeMetadata: Metadata = {
   title:
-    "Mizan - Trouvez un avocat en Algérie | Consultation juridique en ligne",
+    "Mizan - Trouvez votre avocat en Algérie | Consultation juridique en ligne",
   description:
-    "Trouvez rapidement un avocat qualifié en Algérie. Consultation juridique en ligne, avocats vérifiés spécialisés en droit des affaires, divorce, immobilier. Alger, Oran, Constantine.",
+    "Trouvez rapidement un avocat qualifié en Algérie. Consultation juridique en ligne, avocats vérifiés spécialisés en droit des affaires, divorce, immobilier, succession. Alger, Oran, Constantine, Annaba, Sétif.",
   keywords: [
+    // 🇩🇿 Core Algérie
     "avocat algérie",
     "avocat alger",
-    "consultation juridique",
-    "avocat en ligne",
-    "trouver avocat",
     "avocat oran",
     "avocat constantine",
+    "avocat annaba",
+    "consultation juridique algérie",
+    "avocat en ligne algérie",
+    "trouver avocat algérie",
+
+    // 🌍 International (subtil, pas explicite)
+    "avocat algérien",
+    "consultation juridique en ligne",
+    "avocat distance",
+    "cabinet avocat alger",
+
+    // ⚖️ Spécialités
+    "avocat divorce algérie",
+    "avocat immobilier algérie",
+    "avocat succession algérie",
+    "avocat droit affaires algérie",
+
+    // 🔍 Arabe
+    "محامي الجزائر",
+    "محامي عبر الإنترنت",
+    "استشارة قانونية الجزائر",
   ],
   authors: [{ name: "Mizan" }],
   creator: "Mizan",
   publisher: "Mizan",
+
+  // ✅ Géolocalisation multiple (subtile)
+  other: {
+    "geo.region": "DZ",
+    "geo.placename": "Algérie",
+    "geo.position": "36.7538;3.0588", // Alger
+  },
+
   openGraph: {
     type: "website",
     locale: "fr_DZ",
+    alternateLocale: ["fr_FR", "ar_DZ", "en_US"],
     url: siteConfig.url,
-    title: "Mizan - Trouvez un avocat en Algérie",
+    title: "Mizan - Trouvez votre avocat en Algérie",
     description: siteConfig.description,
     siteName: siteConfig.name,
     images: [
@@ -41,12 +69,14 @@ export const homeMetadata: Metadata = {
       },
     ],
   },
+
   twitter: {
     card: "summary_large_image",
-    title: "Mizan - Trouvez un avocat en Algérie",
+    title: "Mizan - Trouvez votre avocat en Algérie",
     description: siteConfig.description,
     images: [siteConfig.ogImage],
   },
+
   robots: {
     index: true,
     follow: true,
@@ -58,6 +88,7 @@ export const homeMetadata: Metadata = {
       "max-snippet": -1,
     },
   },
+
   alternates: {
     canonical: siteConfig.url,
   },
@@ -68,8 +99,8 @@ export const avocatsMetadata: Metadata = {
   description:
     "Consultez notre annuaire d'avocats vérifiés en Algérie. Filtrez par ville (Alger, Oran, Constantine) et spécialité juridique. Profils détaillés et avis clients.",
   keywords: [
-    "annuaire avocat",
-    "avocats algérie",
+    "annuaire avocat algérie",
+    "avocats vérifiés algérie",
     "avocat alger",
     "avocat oran",
     "trouver avocat spécialisé",

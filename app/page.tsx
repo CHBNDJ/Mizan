@@ -263,11 +263,13 @@ export default function HomePage() {
       <section className="hero-section py-16 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 mb-6">
-            Besoin d'un avocat ?
+            Besoin d'un avocat en Algérie ?
           </h1>
           <p className="hero-subtitle text-base sm:text-xl text-slate-600 mb-8 max-w-3xl mx-auto">
-            Trouvez votre avocat en Algérie selon votre besoin juridique et
-            votre localisation. Avec Mizan, c'est simple, rapide et sécurisé.
+            Trouvez l'avocat qui vous convient selon votre besoin juridique et
+            votre localisation.{" "}
+            <strong> Que vous soyez en Algérie ou à l'étranger</strong>, avec
+            Mizan, c'est simple, rapide et sécurisé.
           </p>
 
           <div className="hero-form bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto relative z-[200]">

@@ -1,31 +1,57 @@
 export function OrganizationJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": ["Organization", "LegalService"],
     name: "Mizan",
     alternateName: "Mizan - Annuaire des Avocats d'Algérie",
     url: "https://mizan-dz.com",
     logo: "https://mizan-dz.com/logo-512.png",
     image: "https://mizan-dz.com/og-image.png",
     description:
-      "Plateforme de mise en relation avec des avocats vérifiés en Algérie. Trouvez et contactez les meilleurs avocats selon votre besoin juridique.",
-    foundingDate: "2024",
+      "Plateforme de mise en relation avec des avocats vérifiés en Algérie. Trouvez et contactez les meilleurs avocats selon votre besoin juridique, où que vous soyez.",
+    foundingDate: "2025",
+
     address: {
       "@type": "PostalAddress",
       addressCountry: "DZ",
       addressLocality: "Alger",
       addressRegion: "Alger",
     },
+
+    areaServed: [
+      {
+        "@type": "Country",
+        name: "Algeria",
+      },
+    ],
+
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Services juridiques",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Consultation juridique en ligne",
+            description: "Consultation avec des avocats vérifiés en Algérie",
+          },
+        },
+      ],
+    },
+
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
       availableLanguage: ["fr", "ar", "en"],
       areaServed: "DZ",
     },
+
     sameAs: [
       "https://www.facebook.com/mizan",
       "https://www.linkedin.com/company/mizan",
     ],
+
     potentialAction: {
       "@type": "SearchAction",
       target: "https://mizan-dz.com/search?q={search_term_string}",
