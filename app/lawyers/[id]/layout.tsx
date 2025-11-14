@@ -50,7 +50,7 @@ export async function generateMetadata({
       {
         prenom: user.first_name || "",
         nom: user.last_name || "",
-        specialite: specialite,
+        specialites: specialite,
         ville: ville,
         barreau: ville,
         bio: lawyer.bio,
