@@ -13,10 +13,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Comment fonctionne Mizan ?",
     description: "Guide complet d'utilisation de la plateforme Mizan",
-    url: "https://mizan-dz.com/how-it-works",
+    url: "https://mizan-dz.com/howitworks",
   },
   alternates: {
-    canonical: "https://mizan-dz.com/how-it-works",
+    canonical: "https://mizan-dz.com/howitworks",
   },
 };
 
