@@ -50,6 +50,7 @@ export default function ConsultationModal({
     try {
       const response = await fetch("/api/consultations/create", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           client_id: user.id,
