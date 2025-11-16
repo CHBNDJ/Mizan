@@ -158,11 +158,18 @@ export default function LawyerDashboardPage() {
         .select("*", { count: "exact", head: true })
         .eq("lawyer_id", user.id);
 
+      // const { count: pendingCount } = await supabase
+      //   .from("consultations")
+      //   .select("*", { count: "exact", head: true })
+      //   .eq("lawyer_id", user.id)
+      //   .eq("opened_by_lawyer", false);
+
       const { count: pendingCount } = await supabase
-        .from("consultations")
+        .from("consultation_messages")
         .select("*", { count: "exact", head: true })
-        .eq("lawyer_id", user.id)
-        .eq("opened_by_lawyer", false);
+        .eq("is_read", false)
+        .eq("sender_type", "client")
+        .neq("sender_id", user.id);
 
       const { count: answeredCount } = await supabase
         .from("consultations")

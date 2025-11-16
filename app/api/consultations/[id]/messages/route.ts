@@ -198,75 +198,75 @@ export async function POST(
       console.error("Erreur envoi email destinataire:", emailError);
     }
 
-    try {
-      const { data: clientData } = await supabase
-        .from("users")
-        .select("email, first_name, last_name")
-        .eq("id", consultation.client_id)
-        .single();
+    // try {
+    //   const { data: clientData } = await supabase
+    //     .from("users")
+    //     .select("email, first_name, last_name")
+    //     .eq("id", consultation.client_id)
+    //     .single();
 
-      const { data: lawyerData } = await supabase
-        .from("users")
-        .select("email, first_name, last_name")
-        .eq("id", consultation.lawyer_id)
-        .single();
+    //   const { data: lawyerData } = await supabase
+    //     .from("users")
+    //     .select("email, first_name, last_name")
+    //     .eq("id", consultation.lawyer_id)
+    //     .single();
 
-      const senderName =
-        senderType === "lawyer"
-          ? `Me. ${userData.first_name} ${userData.last_name}`
-          : `${userData.first_name} ${userData.last_name}`;
+    //   const senderName =
+    //     senderType === "lawyer"
+    //       ? `Me. ${userData.first_name} ${userData.last_name}`
+    //       : `${userData.first_name} ${userData.last_name}`;
 
-      await resend.emails.send({
-        from: "Mizan System <noreply@mizan-dz.com>",
-        to: "admin@mizan-dz.com",
-        subject: `💬 Nouveau message dans une consultation`,
-        html: `
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <meta charset="UTF-8">
-            </head>
-            <body style="font-family: Arial, sans-serif; padding: 20px;">
-              <h2 style="color: #0d9488;">💬 Nouveau message dans une consultation</h2>
-              
-              <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <p><strong>Envoyé par :</strong> ${senderName} (${senderType === "lawyer" ? "Avocat" : "Client"})</p>
-                <p><strong>Client :</strong> ${clientData?.first_name || "N/A"} ${clientData?.last_name || "N/A"}</p>
-                <p><strong>Email client :</strong> ${clientData?.email || "N/A"}</p>
-                <p><strong>Avocat :</strong> Me. ${lawyerData?.first_name || "N/A"} ${lawyerData?.last_name || "N/A"}</p>
-                <p><strong>Email avocat :</strong> ${lawyerData?.email || "N/A"}</p>
-                <p><strong>Date :</strong> ${new Date().toLocaleString("fr-FR")}</p>
-              </div>
-              
-              <h3>Question initiale :</h3>
-              <div style="background: #f1f5f9; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                <p style="white-space: pre-wrap;">${consultation.question || "N/A"}</p>
-              </div>
-              
-              <h3>Nouveau message :</h3>
-              <div style="background: #ecfdf5; padding: 15px; border-radius: 5px; border-left: 4px solid #0d9488;">
-                <p style="white-space: pre-wrap;">${message?.trim() || "📎 Fichier joint"}</p>
-              </div>
-              
-              ${
-                attachment_url
-                  ? `<p style="margin-top: 15px; color: #64748b;">📎 <a href="${attachment_url}" style="color: #0d9488;">Voir le fichier joint</a></p>`
-                  : ""
-              }
-              
-              <p style="margin-top: 20px;">
-                <a href="${process.env.NEXT_PUBLIC_APP_URL}/lawyer/consultations" 
-                   style="color: #0d9488;">
-                  Voir la consultation
-                </a>
-              </p>
-            </body>
-          </html>
-        `,
-      });
-    } catch (adminError) {
-      console.error("Erreur notification admin:", adminError);
-    }
+    //   await resend.emails.send({
+    //     from: "Mizan System <noreply@mizan-dz.com>",
+    //     to: "admin@mizan-dz.com",
+    //     subject: `💬 Nouveau message dans une consultation`,
+    //     html: `
+    //       <!DOCTYPE html>
+    //       <html>
+    //         <head>
+    //           <meta charset="UTF-8">
+    //         </head>
+    //         <body style="font-family: Arial, sans-serif; padding: 20px;">
+    //           <h2 style="color: #0d9488;">💬 Nouveau message dans une consultation</h2>
+
+    //           <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+    //             <p><strong>Envoyé par :</strong> ${senderName} (${senderType === "lawyer" ? "Avocat" : "Client"})</p>
+    //             <p><strong>Client :</strong> ${clientData?.first_name || "N/A"} ${clientData?.last_name || "N/A"}</p>
+    //             <p><strong>Email client :</strong> ${clientData?.email || "N/A"}</p>
+    //             <p><strong>Avocat :</strong> Me. ${lawyerData?.first_name || "N/A"} ${lawyerData?.last_name || "N/A"}</p>
+    //             <p><strong>Email avocat :</strong> ${lawyerData?.email || "N/A"}</p>
+    //             <p><strong>Date :</strong> ${new Date().toLocaleString("fr-FR")}</p>
+    //           </div>
+
+    //           <h3>Question initiale :</h3>
+    //           <div style="background: #f1f5f9; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+    //             <p style="white-space: pre-wrap;">${consultation.question || "N/A"}</p>
+    //           </div>
+
+    //           <h3>Nouveau message :</h3>
+    //           <div style="background: #ecfdf5; padding: 15px; border-radius: 5px; border-left: 4px solid #0d9488;">
+    //             <p style="white-space: pre-wrap;">${message?.trim() || "📎 Fichier joint"}</p>
+    //           </div>
+
+    //           ${
+    //             attachment_url
+    //               ? `<p style="margin-top: 15px; color: #64748b;">📎 <a href="${attachment_url}" style="color: #0d9488;">Voir le fichier joint</a></p>`
+    //               : ""
+    //           }
+
+    //           <p style="margin-top: 20px;">
+    //             <a href="${process.env.NEXT_PUBLIC_APP_URL}/lawyer/consultations"
+    //                style="color: #0d9488;">
+    //               Voir la consultation
+    //             </a>
+    //           </p>
+    //         </body>
+    //       </html>
+    //     `,
+    //   });
+    // } catch (adminError) {
+    //   console.error("Erreur notification admin:", adminError);
+    // }
 
     return NextResponse.json({ success: true, message: newMessage });
   } catch (error: any) {

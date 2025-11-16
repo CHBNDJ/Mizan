@@ -138,58 +138,58 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    try {
-      const { data: clientData } = await supabase
-        .from("users")
-        .select("email, first_name, last_name")
-        .eq("id", body.client_id)
-        .single();
+    // try {
+    //   const { data: clientData } = await supabase
+    //     .from("users")
+    //     .select("email, first_name, last_name")
+    //     .eq("id", body.client_id)
+    //     .single();
 
-      const { data: lawyerData } = await supabase
-        .from("users")
-        .select("email, first_name, last_name")
-        .eq("id", body.lawyer_id)
-        .single();
+    //   const { data: lawyerData } = await supabase
+    //     .from("users")
+    //     .select("email, first_name, last_name")
+    //     .eq("id", body.lawyer_id)
+    //     .single();
 
-      await resend.emails.send({
-        from: "Mizan System <noreply@mizan-dz.com>",
-        to: "admin@mizan-dz.com",
-        subject: "🔔 Nouvelle consultation créée",
-        html: `
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <meta charset="UTF-8">
-            </head>
-            <body style="font-family: Arial, sans-serif; padding: 20px;">
-              <h2 style="color: #0d9488;">📩 Nouvelle consultation créée</h2>
-              
-              <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <p><strong>Client :</strong> ${clientData?.first_name} ${clientData?.last_name}</p>
-                <p><strong>Email client :</strong> ${clientData?.email}</p>
-                <p><strong>Avocat :</strong> Me. ${lawyerData?.first_name} ${lawyerData?.last_name}</p>
-                <p><strong>Email avocat :</strong> ${lawyerData?.email}</p>
-                <p><strong>Date :</strong> ${new Date().toLocaleString("fr-FR")}</p>
-              </div>
-              
-              <h3>Question :</h3>
-              <div style="background: #f1f5f9; padding: 15px; border-radius: 5px;">
-                <p style="white-space: pre-wrap;">${body.question}</p>
-              </div>
-              
-              <p style="margin-top: 20px;">
-                <a href="${process.env.NEXT_PUBLIC_APP_URL}/lawyer/consultations" 
-                   style="color: #0d9488;">
-                  Voir la consultation
-                </a>
-              </p>
-            </body>
-          </html>
-        `,
-      });
-    } catch (adminError) {
-      console.error("Erreur notification admin:", adminError);
-    }
+    //   await resend.emails.send({
+    //     from: "Mizan System <noreply@mizan-dz.com>",
+    //     to: "admin@mizan-dz.com",
+    //     subject: "🔔 Nouvelle consultation créée",
+    //     html: `
+    //       <!DOCTYPE html>
+    //       <html>
+    //         <head>
+    //           <meta charset="UTF-8">
+    //         </head>
+    //         <body style="font-family: Arial, sans-serif; padding: 20px;">
+    //           <h2 style="color: #0d9488;">📩 Nouvelle consultation créée</h2>
+
+    //           <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+    //             <p><strong>Client :</strong> ${clientData?.first_name} ${clientData?.last_name}</p>
+    //             <p><strong>Email client :</strong> ${clientData?.email}</p>
+    //             <p><strong>Avocat :</strong> Me. ${lawyerData?.first_name} ${lawyerData?.last_name}</p>
+    //             <p><strong>Email avocat :</strong> ${lawyerData?.email}</p>
+    //             <p><strong>Date :</strong> ${new Date().toLocaleString("fr-FR")}</p>
+    //           </div>
+
+    //           <h3>Question :</h3>
+    //           <div style="background: #f1f5f9; padding: 15px; border-radius: 5px;">
+    //             <p style="white-space: pre-wrap;">${body.question}</p>
+    //           </div>
+
+    //           <p style="margin-top: 20px;">
+    //             <a href="${process.env.NEXT_PUBLIC_APP_URL}/lawyer/consultations"
+    //                style="color: #0d9488;">
+    //               Voir la consultation
+    //             </a>
+    //           </p>
+    //         </body>
+    //       </html>
+    //     `,
+    //   });
+    // } catch (adminError) {
+    //   console.error("Erreur notification admin:", adminError);
+    // }
 
     return NextResponse.json({ success: true, consultation });
   } catch (error: unknown) {
