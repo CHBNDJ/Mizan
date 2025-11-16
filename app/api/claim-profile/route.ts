@@ -161,32 +161,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { error: updateLawyerError } = await supabase
-      .from("lawyers")
-      .update({
-        bar_number: oldUser.lawyers.bar_number,
-        specializations: oldUser.lawyers.specializations,
-        wilayas: oldUser.lawyers.wilayas,
-        experience_years: oldUser.lawyers.experience_years,
-        consultation_price: oldUser.lawyers.consultation_price,
-        bio: oldUser.lawyers.bio,
-        is_claimed: true,
-        claimed_at: new Date().toISOString(),
-        is_verified: true,
-        is_available: oldUser.lawyers.is_available,
-        total_consultations: oldUser.lawyers.total_consultations,
-        average_rating: oldUser.lawyers.average_rating,
-        total_reviews: oldUser.lawyers.total_reviews,
-        reviews_count: oldUser.lawyers.reviews_count,
-        rating_google: oldUser.lawyers.rating_google,
-        reviews_count_google: oldUser.lawyers.reviews_count_google,
-        rating_mizan: oldUser.lawyers.rating_mizan,
-        reviews_count_mizan: oldUser.lawyers.reviews_count_mizan,
-        previous_id: lawyerId,
-        created_at: oldUser.lawyers.created_at,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", newAuthId);
+    const { error: updateLawyerError } = await supabase.from("lawyers").insert({
+      id: newAuthId,
+      bar_number: oldUser.lawyers.bar_number,
+      specializations: oldUser.lawyers.specializations,
+      wilayas: oldUser.lawyers.wilayas,
+      experience_years: oldUser.lawyers.experience_years,
+      consultation_price: oldUser.lawyers.consultation_price,
+      bio: oldUser.lawyers.bio,
+      is_claimed: true,
+      claimed_at: new Date().toISOString(),
+      is_verified: true,
+      is_available: oldUser.lawyers.is_available,
+      total_consultations: oldUser.lawyers.total_consultations,
+      average_rating: oldUser.lawyers.average_rating,
+      total_reviews: oldUser.lawyers.total_reviews,
+      reviews_count: oldUser.lawyers.reviews_count,
+      rating_google: oldUser.lawyers.rating_google,
+      reviews_count_google: oldUser.lawyers.reviews_count_google,
+      rating_mizan: oldUser.lawyers.rating_mizan,
+      reviews_count_mizan: oldUser.lawyers.reviews_count_mizan,
+      previous_id: lawyerId,
+      created_at: oldUser.lawyers.created_at || new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
 
     if (updateLawyerError) {
       console.error("Erreur update lawyer:", updateLawyerError);
