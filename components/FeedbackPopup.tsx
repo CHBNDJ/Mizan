@@ -3,32 +3,48 @@
 import { useState } from "react";
 import { X, MessageCircle, Lightbulb, Bug, Send } from "lucide-react";
 import { FeedbackPopupProps } from "@/types";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
+  const { user } = useAuth();
   const [type, setType] = useState("testimonial");
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async () => {
-    if (!message.trim()) return;
+    if (!message.trim() || !user) return;
 
     setSending(true);
+    setError("");
+
     try {
-      await fetch("/api/platform-feedback/create", {
+      console.log("📤 Envoi feedback avec userId:", user.id);
+
+      const response = await fetch("/api/platform-feedback/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type,
           message: message.trim(),
           pageUrl: window.location.pathname,
+          userId: user.id,
         }),
       });
 
+      const data = await response.json();
+      console.log("📥 Réponse API:", data);
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erreur lors de l'envoi");
+      }
+
       setSuccess(true);
       setTimeout(() => onClose(), 2000);
-    } catch (error) {
-      console.error(error);
+    } catch (err: any) {
+      console.error("❌ Erreur:", err);
+      setError(err.message || "Une erreur est survenue");
     } finally {
       setSending(false);
     }
@@ -53,7 +69,7 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
   ];
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl max-w-lg w-full shadow-xl relative">
         <button
           onClick={onClose}
@@ -96,6 +112,12 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
             </div>
 
             <div className="p-6">
+              {error && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                  {error}
+                </div>
+              )}
+
               <div className="space-y-2 mb-6">
                 {feedbackTypes.map((ft) => {
                   const Icon = ft.icon;
@@ -170,7 +192,7 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
                         ? "Quelle fonctionnalité aimeriez-vous ?"
                         : "Partagez votre expérience..."
                   }
-                  className="w-full text-slate-700 placeholder:text-slate-500 h-32 p-3 border border-slate-300 rounded-lg resize-none focus:ring-teal-400 focus:ring-1 outline-none transition-all"
+                  className="w-full px-4 py-3 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700 resize-none h-32"
                 />
               </div>
 

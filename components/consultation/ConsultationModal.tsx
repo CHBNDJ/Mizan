@@ -100,52 +100,51 @@ export default function ConsultationModal({
   const isValid = characterCount > 0 && characterCount <= maxCharacters;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
-      <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl transform animate-slideUp overflow-hidden">
-        <div className="bg-gradient-to-r from-teal-600 to-teal-500 px-6 py-5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                <MessageSquare className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-white">
-                  Consultation juridique
-                </h3>
-                <p className="text-sm text-teal-50">{lawyerName}</p>
-              </div>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-5 animate-in fade-in duration-200">
+      <div className="bg-white rounded-[20px] max-w-[680px] w-full shadow-2xl animate-in slide-in-from-bottom-4 duration-300 overflow-hidden">
+        <div className="bg-teal-500 px-6 sm:px-8 py-6 relative">
+          <button
+            onClick={handleClose}
+            disabled={isSubmitting}
+            className="absolute top-5 right-5 w-8 h-8 bg-white/15 hover:bg-white/25 rounded-lg flex items-center justify-center text-white transition-all disabled:opacity-50 cursor-pointer"
+          >
+            <X className="w-[18px] h-[18px]" />
+          </button>
+
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <MessageSquare className="w-6 h-6 text-white" />
             </div>
-            <button
-              onClick={handleClose}
-              disabled={isSubmitting}
-              className="cursor-pointer text-white/80 hover:text-white p-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            <div>
+              <h2 className="text-xl font-semibold text-white mb-1">
+                Consultation juridique
+              </h2>
+              <p className="text-[15px] text-white/90">{lawyerName}</p>
+            </div>
           </div>
         </div>
 
-        <div className="p-6">
+        <div className="p-6 sm:p-8">
           {success ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center mb-4 animate-pulse">
-                <CheckCircle className="w-10 h-10 text-teal-600" />
+            <div className="text-center py-12">
+              <div className="w-[72px] h-[72px] bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-5 animate-in zoom-in duration-400">
+                <CheckCircle className="w-9 h-9 text-teal-600" />
               </div>
-              <h4 className="text-xl font-semibold text-slate-800 mb-2">
+              <h3 className="text-[22px] font-semibold text-slate-900 mb-3">
                 Question envoyée avec succès
-              </h4>
-              <p className="text-slate-600 text-center max-w-md">
+              </h3>
+              <p className="text-[15px] text-slate-600 leading-relaxed max-w-[420px] mx-auto mb-4">
                 {lawyerName} a reçu votre question et vous répondra
                 prochainement.
               </p>
-              <p className="text-sm text-slate-500 mt-4">
+              <p className="text-[13px] text-slate-400">
                 Consultez vos demandes dans "Mes consultations"
               </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               {error && (
-                <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg flex items-start gap-3 animate-shake">
+                <div className="p-4 bg-red-50 border-l-[3px] border-red-500 rounded-lg flex items-start gap-3">
                   <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                   <p className="text-red-700 text-sm font-medium">{error}</p>
                 </div>
@@ -158,19 +157,14 @@ export default function ConsultationModal({
                 <textarea
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
-                  className="w-full px-4 py-3 text-slate-900 border-2 border-slate-200 rounded-xl focus:border-slate-300 outline-none transition-all resize-none hover:border-slate-300"
-                  rows={10}
+                  className="w-full px-4 py-3 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700 resize-none min-h-[180px]"
                   placeholder="Exemple : Je souhaite créer une SARL et j'ai besoin de conseils sur les démarches administratives et les statuts à prévoir. Mon associé et moi avons des apports différents..."
                   required
                   disabled={isSubmitting}
                 />
-                <div className="flex items-center justify-between mt-2">
-                  <p className="text-xs text-slate-500">
-                    Soyez le plus précis possible pour obtenir une réponse
-                    adaptée
-                  </p>
-                  <p
-                    className={`text-xs font-medium transition-colors ${
+                <div className="flex items-center justify-end mt-2">
+                  <span
+                    className={`text-[13px] font-medium transition-colors ${
                       characterCount > maxCharacters
                         ? "text-red-600"
                         : characterCount > 0
@@ -179,7 +173,7 @@ export default function ConsultationModal({
                     }`}
                   >
                     {characterCount} / {maxCharacters} caractères
-                  </p>
+                  </span>
                 </div>
               </div>
 
@@ -188,14 +182,14 @@ export default function ConsultationModal({
                   type="button"
                   onClick={handleClose}
                   disabled={isSubmitting}
-                  className="cursor-pointer flex-1 border-2 border-slate-200 text-slate-600 py-3 px-4 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all font-medium disabled:opacity-50"
+                  className="cursor-pointer flex-1 bg-slate-100 text-slate-700 py-3.5 px-5 rounded-xl hover:bg-slate-200 transition-all font-semibold text-[15px] disabled:opacity-50"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting || !isValid}
-                  className="cursor-pointer flex-1 bg-teal-600 text-white py-3 px-4 rounded-xl hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-all hover:shadow-lg flex items-center justify-center gap-2"
+                  className="cursor-pointer flex-1 bg-teal-500 text-white py-3.5 px-5 rounded-xl hover:shadow-[0_6px_16px_rgba(13,148,136,0.3)] hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none font-semibold text-[15px] transition-all flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>
@@ -204,8 +198,8 @@ export default function ConsultationModal({
                     </>
                   ) : (
                     <>
-                      <Send className="w-4 h-4" />
                       <span>Envoyer ma question</span>
+                      <Send className="w-4 h-4" />
                     </>
                   )}
                 </button>

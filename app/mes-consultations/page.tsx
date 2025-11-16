@@ -429,14 +429,14 @@ export default function MesConsultationsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-50 via-white to-teal-50 flex items-center justify-center">
+      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-50 via-white to-teal-50">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`
         .page-header,
         .page-subtitle,
