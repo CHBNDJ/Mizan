@@ -268,8 +268,11 @@ export default function HomePage() {
           <p className="hero-subtitle text-base sm:text-xl text-slate-600 mb-8 max-w-3xl mx-auto">
             Trouvez l'avocat qui vous convient selon votre besoin juridique et
             votre localisation.{" "}
-            <strong> Que vous soyez en Algérie ou à l'étranger</strong>, avec
-            Mizan, c'est simple, rapide et sécurisé.
+            <strong className="font-bold text-teal-600">
+              {" "}
+              Que vous soyez en Algérie ou à l'étranger
+            </strong>
+            , avec Mizan, c'est simple, rapide et sécurisé.
           </p>
 
           <div className="hero-form bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto relative z-[200]">
