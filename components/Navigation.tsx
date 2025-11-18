@@ -10,6 +10,7 @@ import {
   UserPlus,
   LogOut,
   Settings,
+  LayoutDashboard,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -231,7 +232,7 @@ export function Navigation() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md">
+      <nav className="fixed top-0 left-0 right-0 z-[999] backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex md:grid md:grid-cols-[auto_1fr_auto] items-center justify-between md:justify-normal h-16 w-full">
             <Link href="/" className="flex items-center gap-3 group">
@@ -296,7 +297,7 @@ export function Navigation() {
                           href="/lawyer/dashboard"
                           className="w-full hover:bg-teal-50"
                         >
-                          <Scale className="w-4 h-4 mr-2" />
+                          <LayoutDashboard className="w-4 h-4 mr-2" />
                           Tableau de bord
                         </Link>
                       </DropdownMenuItem>

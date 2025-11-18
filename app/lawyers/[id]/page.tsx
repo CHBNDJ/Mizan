@@ -324,8 +324,8 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             </button>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-start sm:gap-6">
-            <div className="profile-avatar opacity-0 invisible w-24 h-24 mb-4 flex-shrink-0 mx-auto sm:mx-0">
+          <div className="flex flex-col sm:flex-row items-center sm:gap-6">
+            <div className="profile-avatar opacity-0 invisible w-40 h-40 mb-4 flex-shrink-0 mx-auto sm:mx-0">
               {avocat.avatar_url ? (
                 <img
                   src={avocat.avatar_url}
@@ -340,7 +340,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             </div>
 
             <div className="flex-1">
-              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex flex-col sm:flex-row sm:justify-between ">
                 <div className="flex-1">
                   <h1 className="profile-name opacity-0 invisible text-2xl sm:text-3xl font-bold text-slate-800 mb-2 text-center sm:text-left">
                     {toCivilite(avocat.genre)} {avocat.prenom} {avocat.nom}
