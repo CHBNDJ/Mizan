@@ -435,6 +435,28 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             {avocat.specialites && avocat.specialites.length > 0 && (
+              // <Card className="card-expertise opacity-0 invisible transition-all duration-300">
+              //   <CardHeader>
+              //     <div className="flex items-center gap-2 text-lg font-semibold text-slate-800">
+              //       <Briefcase className="w-5 h-5" />
+              //       Domaines d'expertise
+              //     </div>
+              //   </CardHeader>
+              //   <CardContent>
+              //     <div className="flex flex-wrap gap-2.5">
+              //       {avocat.specialites.map((spec: string, index: number) => (
+              //         <span
+              //           key={index}
+              //           className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 text-teal-700 rounded-full text-sm font-medium border border-teal-100 hover:bg-teal-100 hover:border-teal-200 transition-all shadow-sm"
+              //         >
+              //           <span className="w-1.5 h-1.5 bg-teal-600 rounded-full"></span>
+              //           {spec}
+              //         </span>
+              //       ))}
+              //     </div>
+              //   </CardContent>
+              // </Card>
+
               <Card className="card-expertise opacity-0 invisible transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center gap-2 text-lg font-semibold text-slate-800">
@@ -443,12 +465,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-3">
                     {avocat.specialites.map((spec: string, index: number) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium cursor-default"
+                        className="inline-flex items-center gap-2 px-3 py-2.5 bg-teal-50 text-teal-700 rounded-full text-[15px] font-medium border border-teal-100 hover:bg-teal-100 hover:border-teal-200 transition-all shadow-sm"
                       >
+                        <span className="w-2 h-2 bg-teal-600 rounded-full"></span>
                         {spec}
                       </span>
                     ))}
