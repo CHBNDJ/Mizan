@@ -19,6 +19,7 @@ export async function generateMetadata({
       .from("lawyers")
       .select("*")
       .eq("id", id)
+      .eq("is_verified", true)
       .single();
 
     if (!lawyer) {

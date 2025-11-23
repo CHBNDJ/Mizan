@@ -109,9 +109,6 @@ export default function RootLayout({
           content="W7PDaGtQ4F7JD8rOf8RDI1wmwSrgdMt0ivpebaRSeww"
         />
 
-        {/* SEO Canonical */}
-        <link rel="canonical" href={siteConfig.url} />
-
         {/* Schema.org JSON-LD pour SEO */}
         <OrganizationJsonLd />
       </head>
