@@ -79,7 +79,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
       })) || [];
 
-    // Pages par wilaya
     const { data: wilayasData, error: wilayasError } = await supabase
       .from("lawyers")
       .select("wilayas")

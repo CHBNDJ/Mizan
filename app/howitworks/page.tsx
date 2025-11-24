@@ -364,88 +364,89 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function HowItWorksPage() {
   useEffect(() => {
-    gsap.set(
-      [
-        ".hero-title",
-        ".hero-subtitle",
-        ".section-title",
-        ".section-subtitle",
-        ".step-card",
-        ".benefits-title",
-        ".benefit-card",
-        ".cta-title",
-        ".cta-subtitle",
-        ".cta-button",
-      ],
-      { autoAlpha: 0 }
-    );
+    gsap.set(".hero-title", { autoAlpha: 0, x: -50 });
+    gsap.set(".hero-subtitle", { autoAlpha: 0, x: -50 });
+    gsap.set(".section-title", { autoAlpha: 0, x: -50 });
+    gsap.set(".section-subtitle", { autoAlpha: 0, x: -50 });
+    gsap.set(".step-card", { autoAlpha: 0, x: -50 });
+    gsap.set(".benefits-title", { autoAlpha: 0, x: -50 });
+    gsap.set(".benefit-card", { autoAlpha: 0, x: -50 });
+    gsap.set(".cta-title", { autoAlpha: 0, x: -50 });
+    gsap.set(".cta-subtitle", { autoAlpha: 0, x: -50 });
+    gsap.set(".cta-button", { autoAlpha: 0, x: -50 });
 
-    const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
-    heroTimeline
-      .to(".hero-title", { autoAlpha: 1, x: 0, duration: 0.8 })
-      .to(".hero-subtitle", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5");
+    requestAnimationFrame(() => {
+      const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
+      heroTimeline
+        .to(".hero-title", { autoAlpha: 1, x: 0, duration: 0.8 })
+        .to(".hero-subtitle", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5");
 
-    gsap
-      .timeline({
-        defaults: { ease: "power3.out" },
+      gsap
+        .timeline({
+          defaults: { ease: "power3.out" },
+          scrollTrigger: {
+            trigger: ".steps-section",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        })
+        .to(".section-title", { autoAlpha: 1, x: 0, duration: 0.8 })
+        .to(
+          ".section-subtitle",
+          { autoAlpha: 1, x: 0, duration: 0.8 },
+          "-=0.5"
+        );
+
+      gsap.to(".step-card", {
+        autoAlpha: 1,
+        x: 0,
+        duration: 1,
+        stagger: 0.08,
+        ease: "power2.out",
         scrollTrigger: {
           trigger: ".steps-section",
-          start: "top 80%",
+          start: "top 60%",
           toggleActions: "play none none none",
         },
-      })
-      .to(".section-title", { autoAlpha: 1, x: 0, duration: 0.8 })
-      .to(".section-subtitle", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5");
+      });
 
-    gsap.to(".step-card", {
-      autoAlpha: 1,
-      x: 0,
-      duration: 1,
-      stagger: 0.08,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".steps-section",
-        start: "top 60%",
-        toggleActions: "play none none none",
-      },
-    });
+      gsap
+        .timeline({
+          defaults: { ease: "power3.out" },
+          scrollTrigger: {
+            trigger: ".benefits-section",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        })
+        .to(".benefits-title", { autoAlpha: 1, x: 0, duration: 0.8 });
 
-    gsap
-      .timeline({
-        defaults: { ease: "power3.out" },
+      gsap.to(".benefit-card", {
+        autoAlpha: 1,
+        x: 0,
+        duration: 1,
+        stagger: 0.08,
+        ease: "power2.out",
         scrollTrigger: {
           trigger: ".benefits-section",
-          start: "top 80%",
+          start: "top 60%",
           toggleActions: "play none none none",
         },
-      })
-      .to(".benefits-title", { autoAlpha: 1, x: 0, duration: 0.8 });
+      });
 
-    gsap.to(".benefit-card", {
-      autoAlpha: 1,
-      x: 0,
-      duration: 1,
-      stagger: 0.08,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".benefits-section",
-        start: "top 60%",
-        toggleActions: "play none none none",
-      },
+      gsap
+        .timeline({
+          defaults: { ease: "power3.out" },
+          scrollTrigger: {
+            trigger: ".cta-section",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        })
+        .to(".cta-title", { autoAlpha: 1, x: 0, duration: 0.8 })
+        .to(".cta-subtitle", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5")
+        .to(".cta-button", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5");
     });
-
-    gsap
-      .timeline({
-        defaults: { ease: "power3.out" },
-        scrollTrigger: {
-          trigger: ".cta-section",
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      })
-      .to(".cta-title", { autoAlpha: 1, x: 0, duration: 0.8 })
-      .to(".cta-subtitle", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5")
-      .to(".cta-button", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5");
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());

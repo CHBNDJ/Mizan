@@ -493,89 +493,94 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    gsap.set(
-      [
-        ".hero-title",
-        ".hero-subtitle",
-        ".hero-form",
-        ".stat-card",
-        ".avocats-title",
-        ".avocats-subtitle",
-        ".avocats-btn",
-        ".regions-title",
-        ".regions-subtitle",
-        ".cta-title",
-        ".cta-subtitle",
-      ],
-      { autoAlpha: 0 }
-    );
+    gsap.set(".hero-title", { autoAlpha: 0, x: -50 });
+    gsap.set(".hero-subtitle", { autoAlpha: 0, x: -50 });
+    gsap.set(".hero-form", { autoAlpha: 0, x: -50 });
+    gsap.set(".stat-card", { autoAlpha: 0, x: 100 });
+    gsap.set(".avocats-title", { autoAlpha: 0, x: -50 });
+    gsap.set(".avocats-subtitle", { autoAlpha: 0, x: -50 });
+    gsap.set(".avocats-btn", { autoAlpha: 0, y: 30 });
+    gsap.set(".regions-title", { autoAlpha: 0, x: 100 });
+    gsap.set(".regions-subtitle", { autoAlpha: 0, x: 100 });
+    gsap.set(".cta-title", { autoAlpha: 0, y: 30 });
+    gsap.set(".cta-subtitle", { autoAlpha: 0, y: 30 });
 
-    const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
-    heroTimeline
-      .to(".hero-title", { autoAlpha: 1, x: 0, duration: 0.8 })
-      .to(".hero-subtitle", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5")
-      .to(".hero-form", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5");
+    requestAnimationFrame(() => {
+      const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
+      heroTimeline
+        .to(".hero-title", { autoAlpha: 1, x: 0, duration: 0.8 })
+        .to(".hero-subtitle", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5")
+        .to(".hero-form", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5");
 
-    gsap.to(".stat-card", {
-      autoAlpha: 1,
-      x: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".stats-section",
-        start: "top 80%",
-        toggleActions: "play none none none",
-      },
+      gsap.to(".stat-card", {
+        autoAlpha: 1,
+        x: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".stats-section",
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      gsap
+        .timeline({
+          defaults: { ease: "power3.out" },
+          scrollTrigger: {
+            trigger: ".avocats-section",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        })
+        .to(".avocats-title", { autoAlpha: 1, x: 0, duration: 0.8 })
+        .to(
+          ".avocats-subtitle",
+          { autoAlpha: 1, x: 0, duration: 0.8 },
+          "-=0.5"
+        );
+
+      gsap.to(".avocats-btn", {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".avocats-btn",
+          start: "top 90%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      gsap
+        .timeline({
+          defaults: { ease: "power3.out" },
+          scrollTrigger: {
+            trigger: ".regions-section",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        })
+        .to(".regions-title", { autoAlpha: 1, x: 0, duration: 0.8 })
+        .to(
+          ".regions-subtitle",
+          { autoAlpha: 1, x: 0, duration: 0.8 },
+          "-=0.5"
+        );
+
+      gsap
+        .timeline({
+          defaults: { ease: "power3.out" },
+          scrollTrigger: {
+            trigger: ".cta-section",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        })
+        .to(".cta-title", { autoAlpha: 1, y: 0, duration: 0.8 })
+        .to(".cta-subtitle", { autoAlpha: 1, y: 0, duration: 0.8 }, "-=0.5");
     });
-
-    gsap
-      .timeline({
-        defaults: { ease: "power3.out" },
-        scrollTrigger: {
-          trigger: ".avocats-section",
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      })
-      .to(".avocats-title", { autoAlpha: 1, x: 0, duration: 0.8 })
-      .to(".avocats-subtitle", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5");
-
-    gsap.to(".avocats-btn", {
-      autoAlpha: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".avocats-btn",
-        start: "top 90%",
-        toggleActions: "play none none none",
-      },
-    });
-
-    gsap
-      .timeline({
-        defaults: { ease: "power3.out" },
-        scrollTrigger: {
-          trigger: ".regions-section",
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      })
-      .to(".regions-title", { autoAlpha: 1, x: 0, duration: 0.8 })
-      .to(".regions-subtitle", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5");
-
-    gsap
-      .timeline({
-        defaults: { ease: "power3.out" },
-        scrollTrigger: {
-          trigger: ".cta-section",
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      })
-      .to(".cta-title", { autoAlpha: 1, y: 0, duration: 0.8 })
-      .to(".cta-subtitle", { autoAlpha: 1, y: 0, duration: 0.8 }, "-=0.5");
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -585,32 +590,35 @@ export default function HomePage() {
   useEffect(() => {
     if (topAvocats.length === 0 && wilayas.length === 0) return;
 
-    gsap.set([".avocat-card", ".region-card"], { autoAlpha: 0 });
+    gsap.set(".avocat-card", { autoAlpha: 0, x: -30 });
+    gsap.set(".region-card", { autoAlpha: 0, x: 100 });
 
-    gsap.to(".avocat-card", {
-      autoAlpha: 1,
-      x: 0,
-      duration: 1,
-      stagger: 0.08,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".avocats-section",
-        start: "top 60%",
-        toggleActions: "play none none none",
-      },
-    });
+    requestAnimationFrame(() => {
+      gsap.to(".avocat-card", {
+        autoAlpha: 1,
+        x: 0,
+        duration: 1,
+        stagger: 0.08,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".avocats-section",
+          start: "top 60%",
+          toggleActions: "play none none none",
+        },
+      });
 
-    gsap.to(".region-card", {
-      autoAlpha: 1,
-      x: 0,
-      duration: 1,
-      stagger: 0.08,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".regions-section",
-        start: "top 60%",
-        toggleActions: "play none none none",
-      },
+      gsap.to(".region-card", {
+        autoAlpha: 1,
+        x: 0,
+        duration: 1,
+        stagger: 0.08,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".regions-section",
+          start: "top 60%",
+          toggleActions: "play none none none",
+        },
+      });
     });
   }, [topAvocats, wilayas]);
 

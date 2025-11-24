@@ -467,51 +467,47 @@ function SearchResults() {
 
   useEffect(() => {
     if (loading) return;
+    gsap.set(".search-header-item", { autoAlpha: 0, x: -50 });
+    gsap.set(".filter-panel", { autoAlpha: 0, x: -50 });
+    gsap.set(".search-results-header", { autoAlpha: 0, x: -50 });
+    gsap.set(".search-avocat-card", { autoAlpha: 0, x: -30 });
 
-    gsap.set(
-      [
-        ".search-header-item",
-        ".filter-panel",
-        ".search-results-header",
-        ".search-avocat-card",
-      ],
-      { autoAlpha: 0 }
-    );
-
-    gsap.to(".search-header-item", {
-      autoAlpha: 1,
-      x: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power3.out",
-    });
-
-    gsap.to(".filter-panel", {
-      autoAlpha: 1,
-      x: 0,
-      duration: 0.8,
-      delay: 0.3,
-      ease: "power3.out",
-    });
-
-    gsap.to(".search-results-header", {
-      autoAlpha: 1,
-      x: 0,
-      duration: 0.8,
-      delay: 0.5,
-      ease: "power3.out",
-    });
-
-    if (avocats.length > 0) {
-      gsap.to(".search-avocat-card", {
+    requestAnimationFrame(() => {
+      gsap.to(".search-header-item", {
         autoAlpha: 1,
         x: 0,
-        duration: 1,
-        stagger: 0.08,
-        ease: "power2.out",
-        delay: 0.7,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
       });
-    }
+
+      gsap.to(".filter-panel", {
+        autoAlpha: 1,
+        x: 0,
+        duration: 0.8,
+        delay: 0.3,
+        ease: "power3.out",
+      });
+
+      gsap.to(".search-results-header", {
+        autoAlpha: 1,
+        x: 0,
+        duration: 0.8,
+        delay: 0.5,
+        ease: "power3.out",
+      });
+
+      if (avocats.length > 0) {
+        gsap.to(".search-avocat-card", {
+          autoAlpha: 1,
+          x: 0,
+          duration: 1,
+          stagger: 0.08,
+          ease: "power2.out",
+          delay: 0.7,
+        });
+      }
+    });
   }, [loading, avocats.length]);
 
   const updateURL = (newFilters: SearchFilters) => {

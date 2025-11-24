@@ -866,145 +866,155 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
     requestAnimationFrame(() => {
-      gsap.set(
-        [
-          ".back-button",
-          ".profile-avatar",
-          ".profile-name",
-          ".profile-location",
-          ".profile-ratings",
-          ".profile-verified",
-          ".profile-price",
-          ".card-expertise",
-          ".card-experience",
-          ".card-languages",
-          ".card-address",
-          ".sidebar-card",
-          ".reviews-section",
-        ],
-        { autoAlpha: 0 }
-      );
+      gsap.set(".back-button", { autoAlpha: 0, x: -30 });
+      gsap.set(".profile-avatar", { autoAlpha: 0, scale: 0.8, x: -50 });
+      gsap.set(".profile-name", { autoAlpha: 0, x: -50 });
+      gsap.set(".profile-location", { autoAlpha: 0, x: -30 });
+      gsap.set(".profile-ratings", { autoAlpha: 0, x: -30 });
+      gsap.set(".profile-verified", { autoAlpha: 0, scale: 0.8 });
+      gsap.set(".profile-price", { autoAlpha: 0, x: 50 });
+      gsap.set(".card-expertise", { autoAlpha: 0, x: -50, y: 20 });
+      gsap.set(".card-experience", { autoAlpha: 0, x: 50, y: 20 });
+      gsap.set(".card-languages", { autoAlpha: 0, y: 30 });
+      gsap.set(".card-address", { autoAlpha: 0, y: 30 });
+      gsap.set(".sidebar-card", { autoAlpha: 0, x: 50, scale: 0.95 });
+      gsap.set(".reviews-section", { autoAlpha: 0, y: 50 });
 
-      gsap.to(".back-button", {
-        autoAlpha: 1,
-        x: 0,
-        duration: 0.6,
-        ease: "power3.out",
-      });
+      requestAnimationFrame(() => {
+        gsap.to(".back-button", {
+          autoAlpha: 1,
+          x: 0,
+          duration: 0.6,
+          ease: "power3.out",
+        });
 
-      const headerTL = gsap.timeline({ defaults: { ease: "power3.out" } });
-      headerTL
-        .to(".profile-avatar", { autoAlpha: 1, scale: 1, x: 0, duration: 0.8 })
-        .to(".profile-name", { autoAlpha: 1, x: 0, duration: 0.7 }, "-=0.5")
-        .to(".profile-location", { autoAlpha: 1, x: 0, duration: 0.6 }, "-=0.4")
-        .to(".profile-ratings", { autoAlpha: 1, x: 0, duration: 0.6 }, "-=0.3")
-        .to(
-          ".profile-verified",
-          { autoAlpha: 1, scale: 1, duration: 0.5 },
-          "-=0.2"
-        );
-
-      gsap.to(".profile-price", {
-        autoAlpha: 1,
-        x: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 0.3,
-      });
-
-      const immediateCards = [".card-expertise", ".card-experience"];
-
-      immediateCards.forEach((selector, index) => {
-        const element = document.querySelector(selector);
-        if (element) {
-          const fromX = index === 0 ? -50 : 50;
-          gsap.to(selector, {
+        const headerTL = gsap.timeline({ defaults: { ease: "power3.out" } });
+        headerTL
+          .to(".profile-avatar", {
             autoAlpha: 1,
+            scale: 1,
             x: 0,
-            y: 0,
             duration: 0.8,
-            delay: 0.4 + index * 0.15,
-            ease: "power3.out",
-          });
-        }
-      });
+          })
+          .to(".profile-name", { autoAlpha: 1, x: 0, duration: 0.7 }, "-=0.5")
+          .to(
+            ".profile-location",
+            { autoAlpha: 1, x: 0, duration: 0.6 },
+            "-=0.4"
+          )
+          .to(
+            ".profile-ratings",
+            { autoAlpha: 1, x: 0, duration: 0.6 },
+            "-=0.3"
+          )
+          .to(
+            ".profile-verified",
+            { autoAlpha: 1, scale: 1, duration: 0.5 },
+            "-=0.2"
+          );
 
-      const scrollCards = [".card-languages", ".card-address"];
+        gsap.to(".profile-price", {
+          autoAlpha: 1,
+          x: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          delay: 0.3,
+        });
 
-      scrollCards.forEach((selector) => {
-        const element = document.querySelector(selector);
-        if (element) {
-          gsap.to(selector, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: selector,
-              start: "top 90%",
-              end: "top 70%",
-              toggleActions: "play none none none",
-            },
-          });
-        }
-      });
+        gsap.to(".card-expertise", {
+          autoAlpha: 1,
+          x: 0,
+          y: 0,
+          duration: 0.8,
+          delay: 0.4,
+          ease: "power3.out",
+        });
 
-      setTimeout(() => {
-        const sidebarCards = document.querySelectorAll(".sidebar-card");
+        gsap.to(".card-experience", {
+          autoAlpha: 1,
+          x: 0,
+          y: 0,
+          duration: 0.8,
+          delay: 0.55,
+          ease: "power3.out",
+        });
 
-        if (sidebarCards.length > 0) {
-          const isMobile = window.innerWidth < 1024;
+        const scrollCards = [".card-languages", ".card-address"];
 
-          if (isMobile) {
-            gsap.to(".sidebar-card", {
+        scrollCards.forEach((selector) => {
+          const element = document.querySelector(selector);
+          if (element) {
+            gsap.to(selector, {
               autoAlpha: 1,
               y: 0,
-              duration: 0.6,
-              stagger: 0.12,
+              duration: 0.8,
               ease: "power3.out",
               scrollTrigger: {
-                trigger: ".sidebar-container",
+                trigger: selector,
                 start: "top 90%",
+                end: "top 70%",
                 toggleActions: "play none none none",
               },
             });
-          } else {
-            gsap.to(".sidebar-card", {
+          }
+        });
+
+        setTimeout(() => {
+          const sidebarCards = document.querySelectorAll(".sidebar-card");
+
+          if (sidebarCards.length > 0) {
+            const isMobile = window.innerWidth < 1024;
+
+            if (isMobile) {
+              gsap.to(".sidebar-card", {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.12,
+                ease: "power3.out",
+                scrollTrigger: {
+                  trigger: ".sidebar-container",
+                  start: "top 90%",
+                  toggleActions: "play none none none",
+                },
+              });
+            } else {
+              gsap.to(".sidebar-card", {
+                autoAlpha: 1,
+                x: 0,
+                scale: 1,
+                duration: 0.7,
+                stagger: 0.12,
+                delay: 0.6,
+                ease: "power3.out",
+              });
+            }
+          }
+        }, 100);
+
+        setTimeout(() => {
+          const reviewsSection = document.querySelector(".reviews-section");
+          if (reviewsSection) {
+            gsap.to(".reviews-section", {
               autoAlpha: 1,
-              x: 0,
-              scale: 1,
-              duration: 0.7,
-              stagger: 0.12,
-              delay: 0.6,
+              y: 0,
+              duration: 1,
               ease: "power3.out",
+              scrollTrigger: {
+                trigger: ".reviews-section",
+                start: "top 85%",
+                toggleActions: "play none none none",
+              },
             });
           }
-        }
-      }, 100);
-
-      setTimeout(() => {
-        const reviewsSection = document.querySelector(".reviews-section");
-        if (reviewsSection) {
-          gsap.to(".reviews-section", {
-            autoAlpha: 1,
-            y: 0,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: ".reviews-section",
-              start: "top 85%",
-              toggleActions: "play none none none",
-            },
-          });
-        }
-      }, 100);
+        }, 100);
+      });
     });
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [avocat, loading, user, profile]);
-
   useEffect(() => {
     if (!avocat?.id) return;
 
