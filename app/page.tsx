@@ -493,15 +493,32 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    gsap.set(
+      [
+        ".hero-title",
+        ".hero-subtitle",
+        ".hero-form",
+        ".stat-card",
+        ".avocats-title",
+        ".avocats-subtitle",
+        ".avocats-btn",
+        ".regions-title",
+        ".regions-subtitle",
+        ".cta-title",
+        ".cta-subtitle",
+      ],
+      { autoAlpha: 0 }
+    );
+
     const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
     heroTimeline
-      .from(".hero-title", { opacity: 0, x: -50, duration: 0.8 })
-      .from(".hero-subtitle", { opacity: 0, x: -50, duration: 0.8 }, "-=0.5")
-      .from(".hero-form", { opacity: 0, x: -50, duration: 0.8 }, "-=0.5");
+      .to(".hero-title", { autoAlpha: 1, x: 0, duration: 0.8 })
+      .to(".hero-subtitle", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5")
+      .to(".hero-form", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5");
 
-    gsap.from(".stat-card", {
-      opacity: 0,
-      x: 100,
+    gsap.to(".stat-card", {
+      autoAlpha: 1,
+      x: 0,
       duration: 0.8,
       stagger: 0.15,
       ease: "power3.out",
@@ -521,16 +538,12 @@ export default function HomePage() {
           toggleActions: "play none none none",
         },
       })
-      .from(".avocats-title", { opacity: 0, x: -50, duration: 0.8 })
-      .from(
-        ".avocats-subtitle",
-        { opacity: 0, x: -50, duration: 0.8 },
-        "-=0.5"
-      );
+      .to(".avocats-title", { autoAlpha: 1, x: 0, duration: 0.8 })
+      .to(".avocats-subtitle", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5");
 
-    gsap.from(".avocats-btn", {
-      opacity: 0,
-      y: 30,
+    gsap.to(".avocats-btn", {
+      autoAlpha: 1,
+      y: 0,
       duration: 0.8,
       ease: "power3.out",
       scrollTrigger: {
@@ -549,12 +562,8 @@ export default function HomePage() {
           toggleActions: "play none none none",
         },
       })
-      .from(".regions-title", { opacity: 0, x: 100, duration: 0.8 })
-      .from(
-        ".regions-subtitle",
-        { opacity: 0, x: 100, duration: 0.8 },
-        "-=0.5"
-      );
+      .to(".regions-title", { autoAlpha: 1, x: 0, duration: 0.8 })
+      .to(".regions-subtitle", { autoAlpha: 1, x: 0, duration: 0.8 }, "-=0.5");
 
     gsap
       .timeline({
@@ -565,8 +574,8 @@ export default function HomePage() {
           toggleActions: "play none none none",
         },
       })
-      .from(".cta-title", { opacity: 0, y: 30, duration: 0.8 })
-      .from(".cta-subtitle", { opacity: 0, y: 30, duration: 0.8 }, "-=0.5");
+      .to(".cta-title", { autoAlpha: 1, y: 0, duration: 0.8 })
+      .to(".cta-subtitle", { autoAlpha: 1, y: 0, duration: 0.8 }, "-=0.5");
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -576,9 +585,11 @@ export default function HomePage() {
   useEffect(() => {
     if (topAvocats.length === 0 && wilayas.length === 0) return;
 
-    gsap.from(".avocat-card", {
-      opacity: 0,
-      x: -30,
+    gsap.set([".avocat-card", ".region-card"], { autoAlpha: 0 });
+
+    gsap.to(".avocat-card", {
+      autoAlpha: 1,
+      x: 0,
       duration: 1,
       stagger: 0.08,
       ease: "power2.out",
@@ -589,9 +600,9 @@ export default function HomePage() {
       },
     });
 
-    gsap.from(".region-card", {
-      opacity: 0,
-      x: 100,
+    gsap.to(".region-card", {
+      autoAlpha: 1,
+      x: 0,
       duration: 1,
       stagger: 0.08,
       ease: "power2.out",
