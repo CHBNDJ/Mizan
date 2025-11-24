@@ -28,31 +28,31 @@ export const metadata: Metadata = {
 
   icons: {
     icon: [
-      { url: "/favicon-16x16.png?v=2", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png?v=2", sizes: "32x32", type: "image/png" },
-      { url: "/favicon.ico?v=2", sizes: "any" },
-      { url: "/favicon.svg?v=2", type: "image/svg+xml" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
     ],
     apple: [
-      { url: "/apple-touch-icon.png?v=2", sizes: "180x180", type: "image/png" },
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
     other: [
       {
         rel: "icon",
-        url: "/favicon-192.png?v=2",
+        url: "/favicon-192.png",
         sizes: "192x192",
         type: "image/png",
       },
       {
         rel: "icon",
-        url: "/favicon-512.png?v=2",
+        url: "/favicon-512.png",
         sizes: "512x512",
         type: "image/png",
       },
     ],
   },
 
-  manifest: "/manifest.json?v=2",
+  manifest: "/manifest.json",
 
   openGraph: {
     type: "website",
