@@ -679,7 +679,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     <div className="pt-2">
                       <Link
                         href={`/claim-profile/${avocat.id}`}
-                        className="inline-flex items-center gap-2 px-6 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-base rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-100"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-base rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-100"
                       >
                         Réclamer ce profil
                       </Link>
