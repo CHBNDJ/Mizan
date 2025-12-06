@@ -48,41 +48,41 @@ main {
   width: 100%;
 }
 
-@media (max-width: 1024px) {
-  .hero-title,
-  .hero-subtitle,
-  .hero-form,
-  .stat-card,
-  .avocats-title,
-  .avocats-subtitle,
-  .avocat-card,
-  .avocats-btn,
-  .regions-title,
-  .regions-subtitle,
-  .region-card,
-  .cta-title,
-  .cta-subtitle,
-  .back-button,
-  .profile-avatar,
-  .profile-name,
-  .profile-location,
-  .profile-ratings,
-  .profile-verified,
-  .profile-price,
-  .card-expertise,
-  .card-experience,
-  .card-languages,
-  .card-address,
-  .sidebar-card,
-  .reviews-section {
-    max-width: 100%;
-    overflow-x: visible !important;
-  }
+.hero-title,
+.hero-subtitle,
+.hero-form,
+.stat-card,
+.avocats-title,
+.avocats-subtitle,
+.avocat-card,
+.avocats-btn,
+.regions-title,
+.regions-subtitle,
+.region-card,
+.cta-title,
+.cta-subtitle,
+.search-header-item,
+.search-results-header,
+.search-avocat-card,
+.filter-panel {
+  opacity: 0.01;
+  will-change: transform, opacity;
 }
 
-/* * {
-  max-width: 100%;
-} */
+.filter-panel {
+  position: relative;
+  z-index: 50;
+}
+
+.search-results-header {
+  position: relative;
+  z-index: 40;
+}
+
+.search-avocat-card {
+  position: relative;
+  z-index: 10;
+}
 
 .max-w-6xl,
 .max-w-4xl,

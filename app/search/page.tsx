@@ -198,27 +198,6 @@ function SearchResults() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <style>{`
-        .search-header-item,
-        .search-results-header,
-        .search-avocat-card,
-        .filter-panel {
-          opacity: 0;
-        }
-        .filter-panel {
-          position: relative;
-          z-index: 50;
-        }
-        .search-results-header {
-          position: relative;
-          z-index: 40;
-        }
-        .search-avocat-card {
-          position: relative;
-          z-index: 10;
-        }
-      `}</style>
-
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="search-header-item flex items-center mb-4">
           <Link href="/">
