@@ -64,7 +64,7 @@ export const metadata: Metadata = {
       "Annuaire des meilleurs avocats d'Algérie. Consultations juridiques en ligne, tous domaines de droit.",
     images: [
       {
-        url: `${siteConfig.url}/logo-512.png`,
+        url: `${siteConfig.url}/og-image.png`,
         width: 512,
         height: 512,
         alt: "Logo Mizan",
