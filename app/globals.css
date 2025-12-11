@@ -64,7 +64,10 @@ main {
 .search-header-item,
 .search-results-header,
 .search-avocat-card,
-.filter-panel {
+.filter-panel,
+.page-title,
+.page-subtitle,
+.register-form {
   opacity: 0.01;
   will-change: transform, opacity;
 }
