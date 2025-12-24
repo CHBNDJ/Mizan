@@ -27,18 +27,20 @@ export default function HomePage() {
   const [topAvocats, setTopAvocats] = useState<any[]>([]);
   const [wilayas, setWilayas] = useState<string[]>([]);
   const [stats, setStats] = useState<any>({
-    total_avocats: 32,
+    total_avocats: 0,
     pourcentage_verification: 100,
   });
+  const [loading, setLoading] = useState(true);
 
   const specialites = getSpecialites();
 
   useLayoutEffect(() => {
     const loadData = async () => {
       try {
+        setLoading(true);
         const [topAvocatsData, wilayasData, statsData] = await Promise.all([
           getTopRatedAvocats(6),
-          getWilayas(),
+          getWilayas(), // ✅ Wilayas dynamiques
           getStatistiques(),
         ]);
         setTopAvocats(topAvocatsData);
@@ -46,6 +48,8 @@ export default function HomePage() {
         setStats(statsData);
       } catch (error) {
         console.error("Erreur chargement données:", error);
+      } finally {
+        setLoading(false);
       }
     };
     loadData();
@@ -271,19 +275,25 @@ export default function HomePage() {
                 </div>
 
                 <div className="lg:w-64 relative">
-                  <CustomSelect
-                    placeholder="Choisir une wilaya"
-                    options={wilayaOptions}
-                    value={selectedWilaya}
-                    onChange={setSelectedWilaya}
-                    className="h-12"
-                    size="large"
-                  />
+                  {loading ? (
+                    <div className="h-12 bg-slate-100 rounded-lg animate-pulse"></div>
+                  ) : (
+                    <CustomSelect
+                      placeholder="Choisir une wilaya"
+                      options={wilayaOptions}
+                      value={selectedWilaya}
+                      onChange={setSelectedWilaya}
+                      className="h-12"
+                      size="large"
+                      disabled={wilayaOptions.length === 0}
+                    />
+                  )}
                 </div>
               </div>
               <Button
                 type="submit"
                 className="w-full h-12 px-8 bg-teal-500 hover:bg-teal-500 md:text-lg font-semibold whitespace-nowrap"
+                disabled={loading}
               >
                 <Search className="w-5 h-5 mr-2" />
                 Rechercher des avocats
@@ -342,65 +352,38 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="avocats-section py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="avocats-title text-3xl font-bold text-slate-800 mb-4">
-              Avocats les mieux notés
-            </h2>
-            <p className="avocats-subtitle text-lg text-slate-600">
-              Découvrez les avocats recommandés par notre communauté
-            </p>
-          </div>
+      {topAvocats.length > 0 && (
+        <section className="avocats-section py-16">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="avocats-title text-3xl font-bold text-slate-800 mb-4">
+                Avocats les mieux notés
+              </h2>
+              <p className="avocats-subtitle text-lg text-slate-600">
+                Découvrez les avocats recommandés par notre communauté
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {topAvocats.map((avocat) => (
-              <div key={avocat.id} className="avocat-card">
-                <AvocatCard avocat={avocat} />
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center avocats-btn">
-            <button
-              className="text-teal-600 cursor-pointer items-center justify-center inline-flex hover:text-teal-700 transition-colors"
-              onClick={() => router.push("/search")}
-            >
-              Voir tous les avocats
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section className="regions-section py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="regions-title text-3xl font-bold text-slate-800 mb-4">
-              Rechercher par région
-            </h2>
-            <p className="regions-subtitle text-lg text-slate-600">
-              Trouvez des avocats près de chez vous
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {wilayas.map((wilaya) => (
-              <Link
-                key={wilaya}
-                href={`/search?wilaya=${wilaya}`}
-                className="group region-card"
-              >
-                <div className="bg-gradient-to-br bg-teal-500 text-white rounded-xl p-6 text-center hover:shadow-lg transition-all duration-300 hover:scale-105">
-                  <MapPin className="w-8 h-8 mx-auto mb-3 opacity-80" />
-                  <h3 className="font-bold text-lg">{wilaya}</h3>
-                  <p className="text-teal-100 text-sm mt-1">Voir les avocats</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {topAvocats.map((avocat) => (
+                <div key={avocat.id} className="avocat-card">
+                  <AvocatCard avocat={avocat} />
                 </div>
-              </Link>
-            ))}
+              ))}
+            </div>
+
+            <div className="text-center avocats-btn">
+              <button
+                className="text-teal-600 cursor-pointer items-center justify-center inline-flex hover:text-teal-700 transition-colors"
+                onClick={() => router.push("/search")}
+              >
+                Voir tous les avocats
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="cta-section py-12 bg-teal-500">
         <div className="max-w-4xl mx-auto text-center px-4">
