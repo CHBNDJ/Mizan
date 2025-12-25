@@ -18,7 +18,7 @@ export default async function WilayaPage({ params }: WilayaPageProps) {
   const wilayaCapitalized =
     wilayaNom.charAt(0).toUpperCase() + wilayaNom.slice(1);
 
-  const avocats = getAvocatsByWilaya(wilayaCapitalized);
+  const avocats = await getAvocatsByWilaya(wilayaCapitalized);
   const villes = getVillesByWilaya(wilayaCapitalized);
 
   if (avocats.length === 0) {
