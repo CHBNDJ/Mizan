@@ -377,6 +377,7 @@ function ResetPasswordForm() {
   const [isLoading, setIsLoading] = useState(true);
   const [sessionReady, setSessionReady] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [debugInfo, setDebugInfo] = useState<string>("");
 
   useEffect(() => {
     setIsMounted(true);
@@ -387,26 +388,46 @@ function ResetPasswordForm() {
 
     const handlePasswordReset = async () => {
       try {
+        let debugLog = "DEBUG INFO:\n";
+
         const access_token = searchParams.get("access_token");
         const refresh_token = searchParams.get("refresh_token");
         const type = searchParams.get("type");
+
+        debugLog += `Query Params - access_token: ${access_token ? "EXISTS" : "NULL"}\n`;
+        debugLog += `Query Params - refresh_token: ${refresh_token ? "EXISTS" : "NULL"}\n`;
+        debugLog += `Query Params - type: ${type}\n`;
 
         let tokenFromHash = null;
         let refreshFromHash = null;
         let typeFromHash = null;
 
         if (typeof window !== "undefined" && window.location.hash) {
+          debugLog += `Hash exists: ${window.location.hash}\n`;
           const hashParams = new URLSearchParams(
             window.location.hash.substring(1)
           );
           tokenFromHash = hashParams.get("access_token");
           refreshFromHash = hashParams.get("refresh_token");
           typeFromHash = hashParams.get("type");
+
+          debugLog += `Hash Params - access_token: ${tokenFromHash ? "EXISTS" : "NULL"}\n`;
+          debugLog += `Hash Params - refresh_token: ${refreshFromHash ? "EXISTS" : "NULL"}\n`;
+          debugLog += `Hash Params - type: ${typeFromHash}\n`;
+        } else {
+          debugLog += "No hash in URL\n";
         }
 
         const finalAccessToken = access_token || tokenFromHash;
         const finalRefreshToken = refresh_token || refreshFromHash;
         const finalType = type || typeFromHash;
+
+        debugLog += `\nFinal - access_token: ${finalAccessToken ? "EXISTS" : "NULL"}\n`;
+        debugLog += `Final - refresh_token: ${finalRefreshToken ? "EXISTS" : "NULL"}\n`;
+        debugLog += `Final - type: ${finalType}\n`;
+
+        setDebugInfo(debugLog);
+        console.log(debugLog);
 
         if (!finalAccessToken || finalType !== "recovery") {
           setError("Lien de réinitialisation invalide ou expiré");
@@ -422,6 +443,8 @@ function ResetPasswordForm() {
 
         if (sessionError) {
           console.error("Erreur session:", sessionError);
+          debugLog += `\nSession Error: ${sessionError.message}\n`;
+          setDebugInfo(debugLog);
           setError("Lien de réinitialisation invalide ou expiré");
           setIsLoading(false);
           setSessionReady(false);
@@ -544,6 +567,14 @@ function ResetPasswordForm() {
             <p className="text-slate-600 mb-6">
               {error || "Le lien de réinitialisation est invalide ou a expiré."}
             </p>
+
+            {debugInfo && (
+              <div className="mb-6 p-4 bg-slate-50 rounded-lg text-left w-full">
+                <p className="text-xs font-mono text-slate-600 whitespace-pre-wrap">
+                  {debugInfo}
+                </p>
+              </div>
+            )}
 
             <div className="flex flex-col sm:flex-row gap-3 w-full">
               <button
