@@ -10,7 +10,6 @@ export async function GET(request: NextRequest) {
   const token = requestUrl.searchParams.get("token");
   const type = requestUrl.searchParams.get("type");
   const next = requestUrl.searchParams.get("next");
-  const action = requestUrl.searchParams.get("action");
 
   const cookieStore = await cookies();
   const supabase = createServerClient(
@@ -44,7 +43,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    if (action === "reset") {
+    // CRITIQUE: Vérifie si c'est un password reset via AMR (Authentication Method Reference)
+    const amr = (data.session as any)?.amr;
+    const isPasswordReset = amr?.some(
+      (method: { method: string; timestamp: number }) =>
+        method.method === "recovery" || method.method === "otp"
+    );
+
+    if (isPasswordReset) {
+      console.log("✅ [CALLBACK] Password reset détecté via AMR");
       return NextResponse.redirect(
         new URL("/auth/reset-password", requestUrl.origin)
       );
