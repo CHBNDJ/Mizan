@@ -78,7 +78,6 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // FLOW OTP (ancien) - utilisé si pas de code
   const tokenToUse = token_hash || token;
 
   if (tokenToUse) {
