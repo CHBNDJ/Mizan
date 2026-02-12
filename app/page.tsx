@@ -40,7 +40,7 @@ export default function HomePage() {
         setLoading(true);
         const [topAvocatsData, wilayasData, statsData] = await Promise.all([
           getTopRatedAvocats(6),
-          getWilayas(), // ✅ Wilayas dynamiques
+          getWilayas(),
           getStatistiques(),
         ]);
         setTopAvocats(topAvocatsData);
@@ -353,7 +353,7 @@ export default function HomePage() {
       </section>
 
       {topAvocats.length > 0 && (
-        <section className="avocats-section py-16">
+        <section className="avocats-section pb-16">
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="avocats-title text-3xl font-bold text-slate-800 mb-4">
