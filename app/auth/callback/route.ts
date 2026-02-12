@@ -43,22 +43,42 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // CRITIQUE: Vérifie si c'est un password reset AVANT de rediriger
+    if (type === "recovery") {
+      return NextResponse.redirect(
+        new URL("/auth/reset-password", requestUrl.origin)
+      );
+    }
+
     if (next) {
       return NextResponse.redirect(new URL(next, requestUrl.origin));
     }
 
-    const { data: profile } = await supabase
-      .from("users")
-      .select("user_type")
-      .eq("id", data.user.id)
-      .single();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    const redirectPath =
-      profile?.user_type === "lawyer" ? "/lawyer/dashboard" : "/";
+    if (user) {
+      const { data: profile } = await supabase
+        .from("users")
+        .select("user_type")
+        .eq("id", user.id)
+        .single();
 
-    return NextResponse.redirect(new URL(redirectPath, requestUrl.origin));
+      const redirectPath =
+        profile?.user_type === "lawyer"
+          ? "/lawyer/dashboard"
+          : "/client/dashboard";
+
+      return NextResponse.redirect(new URL(redirectPath, requestUrl.origin));
+    }
+
+    return NextResponse.redirect(
+      new URL("/auth/client/login", requestUrl.origin)
+    );
   }
 
+  // FLOW OTP (ancien) - utilisé si pas de code
   const tokenToUse = token_hash || token;
 
   if (tokenToUse) {
@@ -79,9 +99,9 @@ export async function GET(request: NextRequest) {
         return NextResponse.redirect(new URL(next, requestUrl.origin));
       }
 
-      const resetUrl = new URL("/auth/reset-password", requestUrl.origin);
-
-      return NextResponse.redirect(resetUrl);
+      return NextResponse.redirect(
+        new URL("/auth/reset-password", requestUrl.origin)
+      );
     }
 
     if (type) {
@@ -112,7 +132,9 @@ export async function GET(request: NextRequest) {
           .single();
 
         const redirectPath =
-          profile?.user_type === "lawyer" ? "/lawyer/dashboard" : "/";
+          profile?.user_type === "lawyer"
+            ? "/lawyer/dashboard"
+            : "/client/dashboard";
 
         return NextResponse.redirect(new URL(redirectPath, requestUrl.origin));
       }
