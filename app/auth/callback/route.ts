@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
   const token = requestUrl.searchParams.get("token");
   const type = requestUrl.searchParams.get("type");
   const next = requestUrl.searchParams.get("next");
+  const action = requestUrl.searchParams.get("action");
 
   const cookieStore = await cookies();
   const supabase = createServerClient(
@@ -43,8 +44,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // CRITIQUE: Vérifie si c'est un password reset AVANT de rediriger
-    if (type === "recovery") {
+    if (action === "reset") {
       return NextResponse.redirect(
         new URL("/auth/reset-password", requestUrl.origin)
       );
