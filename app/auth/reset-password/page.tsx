@@ -32,14 +32,10 @@ function ResetPasswordForm() {
 
     const handlePasswordReset = async () => {
       try {
-        // Vérifie si on a un token_hash (flow OTP)
         const tokenHash = searchParams.get("token_hash");
         const type = searchParams.get("type");
 
         if (tokenHash && type === "recovery") {
-          console.log("🔍 Token OTP détecté, vérification...");
-
-          // Vérifie le token OTP
           const { error: verifyError } = await supabase.auth.verifyOtp({
             token_hash: tokenHash,
             type: "recovery",
@@ -53,28 +49,23 @@ function ResetPasswordForm() {
             return;
           }
 
-          console.log("✅ Session établie via OTP");
           setSessionReady(true);
           setIsLoading(false);
           return;
         }
 
-        // Sinon, vérifie si on a déjà une session active
-        console.log("🔍 Vérification session existante...");
         const {
           data: { session },
           error: sessionError,
         } = await supabase.auth.getSession();
 
         if (sessionError || !session) {
-          console.log("❌ Pas de session");
           setError("Lien de réinitialisation invalide ou expiré");
           setIsLoading(false);
           setSessionReady(false);
           return;
         }
 
-        console.log("✅ Session active détectée");
         setSessionReady(true);
         setIsLoading(false);
       } catch (err) {
