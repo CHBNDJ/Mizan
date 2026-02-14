@@ -53,7 +53,9 @@ export default function LawyerForgotPasswordPage() {
     setStatus("idle");
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/callback?next=/auth/reset-password`,
+      });
 
       if (error) throw error;
 

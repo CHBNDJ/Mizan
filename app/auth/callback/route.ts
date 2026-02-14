@@ -6,9 +6,6 @@ export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
 
   const code = requestUrl.searchParams.get("code");
-  const token_hash = requestUrl.searchParams.get("token_hash");
-  const token = requestUrl.searchParams.get("token");
-  const type = requestUrl.searchParams.get("type");
   const next = requestUrl.searchParams.get("next");
 
   const cookieStore = await cookies();
@@ -31,10 +28,12 @@ export async function GET(request: NextRequest) {
   );
 
   if (code) {
+    console.log("🔍 [CALLBACK] Received code, exchanging for session...");
+
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
-      console.error("❌ [CALLBACK] Erreur échange code:", error);
+      console.error("❌ [CALLBACK] Exchange error:", error);
       return NextResponse.redirect(
         new URL(
           "/auth/client/login?error=confirmation_failed",
@@ -43,24 +42,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // CRITIQUE: Vérifie si c'est un password reset via AMR (Authentication Method Reference)
-    const amr = (data.session as any)?.amr;
-    const isPasswordReset = amr?.some(
-      (method: { method: string; timestamp: number }) =>
-        method.method === "recovery" || method.method === "otp"
-    );
+    console.log("✅ [CALLBACK] Code exchanged successfully");
 
-    if (isPasswordReset) {
-      console.log("✅ [CALLBACK] Password reset détecté via AMR");
-      return NextResponse.redirect(
-        new URL("/auth/reset-password", requestUrl.origin)
-      );
-    }
-
+    // Si on a un paramètre 'next', on redirige là
     if (next) {
+      console.log(`➡️  [CALLBACK] Redirecting to: ${next}`);
       return NextResponse.redirect(new URL(next, requestUrl.origin));
     }
 
+    // Sinon, on redirige vers le dashboard selon le type d'utilisateur
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -78,72 +68,6 @@ export async function GET(request: NextRequest) {
           : "/client/dashboard";
 
       return NextResponse.redirect(new URL(redirectPath, requestUrl.origin));
-    }
-
-    return NextResponse.redirect(
-      new URL("/auth/client/login", requestUrl.origin)
-    );
-  }
-
-  const tokenToUse = token_hash || token;
-
-  if (tokenToUse) {
-    if (type === "recovery" || !type) {
-      const { error } = await supabase.auth.verifyOtp({
-        type: "recovery",
-        token_hash: tokenToUse,
-      });
-
-      if (error) {
-        console.error("❌ [CALLBACK] Erreur recovery:", error);
-        return NextResponse.redirect(
-          new URL("/auth/client/login?error=recovery_failed", requestUrl.origin)
-        );
-      }
-
-      if (next) {
-        return NextResponse.redirect(new URL(next, requestUrl.origin));
-      }
-
-      return NextResponse.redirect(
-        new URL("/auth/reset-password", requestUrl.origin)
-      );
-    }
-
-    if (type) {
-      const { error } = await supabase.auth.verifyOtp({
-        type: type as any,
-        token_hash: tokenToUse,
-      });
-
-      if (error) {
-        console.error("❌ [CALLBACK] Erreur OTP:", error);
-        return NextResponse.redirect(
-          new URL(
-            "/auth/client/login?error=verification_failed",
-            requestUrl.origin
-          )
-        );
-      }
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (user) {
-        const { data: profile } = await supabase
-          .from("users")
-          .select("user_type")
-          .eq("id", user.id)
-          .single();
-
-        const redirectPath =
-          profile?.user_type === "lawyer"
-            ? "/lawyer/dashboard"
-            : "/client/dashboard";
-
-        return NextResponse.redirect(new URL(redirectPath, requestUrl.origin));
-      }
     }
   }
 
