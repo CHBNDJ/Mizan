@@ -12,7 +12,6 @@ function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const userType = searchParams.get("type") || "client";
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -33,19 +32,21 @@ function ResetPasswordForm() {
 
     const checkSession = async () => {
       try {
+        console.log("🔍 Checking session...");
         const {
           data: { session },
           error: sessionError,
         } = await supabase.auth.getSession();
 
         if (sessionError || !session) {
+          console.log("❌ No session found");
           setError("Lien de réinitialisation invalide ou expiré");
           setIsLoading(false);
           setSessionReady(false);
           return;
         }
 
-        console.log("✅ Session active détectée");
+        console.log("✅ Session active:", session.user.email);
         setSessionReady(true);
         setIsLoading(false);
       } catch (err) {
@@ -126,9 +127,7 @@ function ResetPasswordForm() {
 
       setTimeout(async () => {
         await supabase.auth.signOut();
-        const loginPath =
-          userType === "client" ? "/auth/client/login" : "/auth/lawyer/login";
-        router.push(loginPath);
+        router.push("/auth/client/login");
       }, 2000);
     } catch (err: any) {
       console.error("Erreur reset password:", err);
@@ -166,13 +165,13 @@ function ResetPasswordForm() {
             <div className="flex flex-col sm:flex-row gap-3 w-full">
               <button
                 onClick={() => router.push("/auth/lawyer/forgot-password")}
-                className="flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium"
+                className="cursor-pointer flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium"
               >
                 Renvoyer (Avocat)
               </button>
               <button
                 onClick={() => router.push("/auth/client/forgot-password")}
-                className="flex-1 px-6 py-3 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors font-medium"
+                className="cursor-pointer flex-1 px-6 py-3 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors font-medium"
               >
                 Renvoyer (Client)
               </button>
@@ -311,13 +310,7 @@ function ResetPasswordForm() {
 
         <p className="text-center text-sm text-slate-500 mt-6">
           <button
-            onClick={() =>
-              router.push(
-                userType === "client"
-                  ? "/auth/client/login"
-                  : "/auth/lawyer/login"
-              )
-            }
+            onClick={() => router.push("/auth/client/login")}
             className="text-teal-600 hover:text-teal-700 font-medium"
           >
             Retour à la connexion

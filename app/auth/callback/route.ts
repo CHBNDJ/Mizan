@@ -5,15 +5,12 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
 
-  const code = requestUrl.searchParams.get("code");
+  const token_hash =
+    requestUrl.searchParams.get("token_hash") ||
+    requestUrl.searchParams.get("token");
   const type = requestUrl.searchParams.get("type");
+  const code = requestUrl.searchParams.get("code");
   const next = requestUrl.searchParams.get("next");
-
-  console.log("🔍 [CALLBACK] Params:", {
-    code: code?.substring(0, 10),
-    type,
-    next,
-  });
 
   const cookieStore = await cookies();
   const supabase = createServerClient(
@@ -34,8 +31,40 @@ export async function GET(request: NextRequest) {
     }
   );
 
+  console.log("🔍 [CALLBACK] Received:", {
+    token_hash: !!token_hash,
+    type,
+    code: !!code,
+    next,
+  });
+
+  // RECOVERY FLOW (password reset) - utilise verifyOtp
+  if (token_hash && type === "recovery") {
+    console.log("🔐 [CALLBACK] Recovery flow detected, using verifyOtp...");
+
+    const { error } = await supabase.auth.verifyOtp({
+      type: "recovery",
+      token_hash: token_hash,
+    });
+
+    if (error) {
+      console.error("❌ [CALLBACK] Recovery error:", error);
+      return NextResponse.redirect(
+        new URL("/auth/client/login?error=recovery_failed", requestUrl.origin)
+      );
+    }
+
+    console.log(
+      "✅ [CALLBACK] Recovery successful, redirecting to reset-password"
+    );
+    return NextResponse.redirect(
+      new URL("/auth/reset-password", requestUrl.origin)
+    );
+  }
+
+  // PKCE FLOW (normal auth) - utilise exchangeCodeForSession
   if (code) {
-    console.log("🔄 [CALLBACK] Exchanging code for session...");
+    console.log("🔍 [CALLBACK] PKCE code detected, exchanging...");
 
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
@@ -51,23 +80,10 @@ export async function GET(request: NextRequest) {
 
     console.log("✅ [CALLBACK] Code exchanged successfully");
 
-    // Si type=recovery, c'est un password reset
-    if (type === "recovery") {
-      console.log(
-        "🔐 [CALLBACK] Password reset detected, redirecting to /auth/reset-password"
-      );
-      return NextResponse.redirect(
-        new URL("/auth/reset-password", requestUrl.origin)
-      );
-    }
-
-    // Si on a un paramètre 'next', on redirige là
     if (next) {
-      console.log(`➡️  [CALLBACK] Redirecting to: ${next}`);
       return NextResponse.redirect(new URL(next, requestUrl.origin));
     }
 
-    // Sinon, on redirige vers le dashboard selon le type d'utilisateur
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -84,11 +100,10 @@ export async function GET(request: NextRequest) {
           ? "/lawyer/dashboard"
           : "/client/dashboard";
 
-      console.log(`➡️  [CALLBACK] Redirecting to dashboard: ${redirectPath}`);
       return NextResponse.redirect(new URL(redirectPath, requestUrl.origin));
     }
   }
 
-  console.log("⚠️  [CALLBACK] No code found, redirecting to home");
+  console.log("⚠️  [CALLBACK] No valid params, redirecting to home");
   return NextResponse.redirect(new URL("/", requestUrl.origin));
 }
