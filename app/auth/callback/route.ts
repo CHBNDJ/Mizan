@@ -31,45 +31,27 @@ export async function GET(request: NextRequest) {
     }
   );
 
-  console.log("🔍 [CALLBACK] Received:", {
-    token_hash: !!token_hash,
-    type,
-    code: !!code,
-    next,
-  });
-
-  // RECOVERY FLOW (password reset) - utilise verifyOtp
   if (token_hash && type === "recovery") {
-    console.log("🔐 [CALLBACK] Recovery flow detected, using verifyOtp...");
-
     const { error } = await supabase.auth.verifyOtp({
       type: "recovery",
       token_hash: token_hash,
     });
 
     if (error) {
-      console.error("❌ [CALLBACK] Recovery error:", error);
       return NextResponse.redirect(
         new URL("/auth/client/login?error=recovery_failed", requestUrl.origin)
       );
     }
 
-    console.log(
-      "✅ [CALLBACK] Recovery successful, redirecting to reset-password"
-    );
     return NextResponse.redirect(
       new URL("/auth/reset-password", requestUrl.origin)
     );
   }
 
-  // PKCE FLOW (normal auth) - utilise exchangeCodeForSession
   if (code) {
-    console.log("🔍 [CALLBACK] PKCE code detected, exchanging...");
-
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
-      console.error("❌ [CALLBACK] Exchange error:", error);
       return NextResponse.redirect(
         new URL(
           "/auth/client/login?error=confirmation_failed",
@@ -77,8 +59,6 @@ export async function GET(request: NextRequest) {
         )
       );
     }
-
-    console.log("✅ [CALLBACK] Code exchanged successfully");
 
     if (next) {
       return NextResponse.redirect(new URL(next, requestUrl.origin));
@@ -104,6 +84,5 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  console.log("⚠️  [CALLBACK] No valid params, redirecting to home");
   return NextResponse.redirect(new URL("/", requestUrl.origin));
 }
