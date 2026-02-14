@@ -32,25 +32,28 @@ function ResetPasswordForm() {
 
     const handlePasswordReset = async () => {
       try {
-        // Vérifie si on a un code dans l'URL
-        const code = searchParams.get("code");
+        // Vérifie si on a un token_hash (flow OTP)
+        const tokenHash = searchParams.get("token_hash");
+        const type = searchParams.get("type");
 
-        if (code) {
-          console.log("🔍 Code détecté, échange pour session...");
+        if (tokenHash && type === "recovery") {
+          console.log("🔍 Token OTP détecté, vérification...");
 
-          // Échange le code pour une session
-          const { data, error: exchangeError } =
-            await supabase.auth.exchangeCodeForSession(code);
+          // Vérifie le token OTP
+          const { error: verifyError } = await supabase.auth.verifyOtp({
+            token_hash: tokenHash,
+            type: "recovery",
+          });
 
-          if (exchangeError) {
-            console.error("❌ Erreur échange:", exchangeError);
+          if (verifyError) {
+            console.error("❌ Erreur vérification OTP:", verifyError);
             setError("Lien de réinitialisation invalide ou expiré");
             setIsLoading(false);
             setSessionReady(false);
             return;
           }
 
-          console.log("✅ Session établie via code exchange");
+          console.log("✅ Session établie via OTP");
           setSessionReady(true);
           setIsLoading(false);
           return;
