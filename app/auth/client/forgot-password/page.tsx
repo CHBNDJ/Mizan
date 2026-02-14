@@ -53,9 +53,7 @@ export default function ClientForgotPasswordPage() {
     setStatus("idle");
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/callback?next=/auth/reset-password`,
-      });
+      const { error } = await supabase.auth.resetPasswordForEmail(email);
 
       if (error) throw error;
 

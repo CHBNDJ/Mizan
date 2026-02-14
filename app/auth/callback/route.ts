@@ -6,7 +6,14 @@ export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
 
   const code = requestUrl.searchParams.get("code");
+  const type = requestUrl.searchParams.get("type");
   const next = requestUrl.searchParams.get("next");
+
+  console.log("🔍 [CALLBACK] Params:", {
+    code: code?.substring(0, 10),
+    type,
+    next,
+  });
 
   const cookieStore = await cookies();
   const supabase = createServerClient(
@@ -28,7 +35,7 @@ export async function GET(request: NextRequest) {
   );
 
   if (code) {
-    console.log("🔍 [CALLBACK] Received code, exchanging for session...");
+    console.log("🔄 [CALLBACK] Exchanging code for session...");
 
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
@@ -43,6 +50,16 @@ export async function GET(request: NextRequest) {
     }
 
     console.log("✅ [CALLBACK] Code exchanged successfully");
+
+    // Si type=recovery, c'est un password reset
+    if (type === "recovery") {
+      console.log(
+        "🔐 [CALLBACK] Password reset detected, redirecting to /auth/reset-password"
+      );
+      return NextResponse.redirect(
+        new URL("/auth/reset-password", requestUrl.origin)
+      );
+    }
 
     // Si on a un paramètre 'next', on redirige là
     if (next) {
@@ -67,9 +84,11 @@ export async function GET(request: NextRequest) {
           ? "/lawyer/dashboard"
           : "/client/dashboard";
 
+      console.log(`➡️  [CALLBACK] Redirecting to dashboard: ${redirectPath}`);
       return NextResponse.redirect(new URL(redirectPath, requestUrl.origin));
     }
   }
 
+  console.log("⚠️  [CALLBACK] No code found, redirecting to home");
   return NextResponse.redirect(new URL("/", requestUrl.origin));
 }
