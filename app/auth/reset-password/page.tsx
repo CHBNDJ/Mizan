@@ -390,6 +390,37 @@ function ResetPasswordForm() {
       try {
         let debugLog = "DEBUG INFO:\n";
 
+        // NOUVEAU: Vérifie d'abord si on a un code PKCE
+        const code = searchParams.get("code");
+
+        if (code) {
+          debugLog += `PKCE code detected: ${code.substring(0, 10)}...\n`;
+          debugLog += `Exchanging code for session...\n`;
+
+          // Échange le code PKCE pour une session
+          const { data, error: exchangeError } =
+            await supabase.auth.exchangeCodeForSession(code);
+
+          if (exchangeError) {
+            debugLog += `Exchange error: ${exchangeError.message}\n`;
+            setDebugInfo(debugLog);
+            setError("Lien de réinitialisation invalide ou expiré");
+            setIsLoading(false);
+            setSessionReady(false);
+            return;
+          }
+
+          debugLog += `Code exchanged successfully!\n`;
+          debugLog += `Session established\n`;
+          setDebugInfo(debugLog);
+          console.log(debugLog);
+
+          setSessionReady(true);
+          setIsLoading(false);
+          return;
+        }
+
+        // ANCIEN CODE: Vérifie les tokens dans query params ou hash
         const access_token = searchParams.get("access_token");
         const refresh_token = searchParams.get("refresh_token");
         const type = searchParams.get("type");
@@ -429,7 +460,7 @@ function ResetPasswordForm() {
         setDebugInfo(debugLog);
         console.log(debugLog);
 
-        if (!finalAccessToken || finalType !== "recovery") {
+        if (!finalAccessToken) {
           setError("Lien de réinitialisation invalide ou expiré");
           setIsLoading(false);
           setSessionReady(false);
