@@ -30,35 +30,60 @@ function ResetPasswordForm() {
   useEffect(() => {
     if (!isMounted) return;
 
-    const checkSession = async () => {
+    const handlePasswordReset = async () => {
       try {
-        console.log("🔍 Checking session...");
+        // Vérifie si on a un code dans l'URL
+        const code = searchParams.get("code");
+
+        if (code) {
+          console.log("🔍 Code détecté, échange pour session...");
+
+          // Échange le code pour une session
+          const { data, error: exchangeError } =
+            await supabase.auth.exchangeCodeForSession(code);
+
+          if (exchangeError) {
+            console.error("❌ Erreur échange:", exchangeError);
+            setError("Lien de réinitialisation invalide ou expiré");
+            setIsLoading(false);
+            setSessionReady(false);
+            return;
+          }
+
+          console.log("✅ Session établie via code exchange");
+          setSessionReady(true);
+          setIsLoading(false);
+          return;
+        }
+
+        // Sinon, vérifie si on a déjà une session active
+        console.log("🔍 Vérification session existante...");
         const {
           data: { session },
           error: sessionError,
         } = await supabase.auth.getSession();
 
         if (sessionError || !session) {
-          console.log("❌ No session found");
+          console.log("❌ Pas de session");
           setError("Lien de réinitialisation invalide ou expiré");
           setIsLoading(false);
           setSessionReady(false);
           return;
         }
 
-        console.log("✅ Session active:", session.user.email);
+        console.log("✅ Session active détectée");
         setSessionReady(true);
         setIsLoading(false);
       } catch (err) {
-        console.error("Erreur vérification session:", err);
+        console.error("Erreur initialisation:", err);
         setError("Une erreur est survenue");
         setIsLoading(false);
         setSessionReady(false);
       }
     };
 
-    checkSession();
-  }, [supabase, isMounted]);
+    handlePasswordReset();
+  }, [supabase, searchParams, isMounted]);
 
   useEffect(() => {
     if (!containerRef.current || isLoading || !isMounted) return;
