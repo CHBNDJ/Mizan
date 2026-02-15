@@ -97,43 +97,6 @@ export default function HomePage() {
       .timeline({
         defaults: { ease: "power3.out" },
         scrollTrigger: {
-          trigger: ".avocats-section",
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      })
-      .fromTo(
-        ".avocats-title",
-        { opacity: 0, x: -50 },
-        { opacity: 1, x: 0, duration: 0.8 }
-      )
-      .fromTo(
-        ".avocats-subtitle",
-        { opacity: 0, x: -50 },
-        { opacity: 1, x: 0, duration: 0.8 },
-        "-=0.5"
-      );
-
-    gsap.fromTo(
-      ".avocats-btn",
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".avocats-btn",
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-      }
-    );
-
-    gsap
-      .timeline({
-        defaults: { ease: "power3.out" },
-        scrollTrigger: {
           trigger: ".regions-section",
           start: "top 80%",
           toggleActions: "play none none none",
@@ -180,6 +143,27 @@ export default function HomePage() {
   useLayoutEffect(() => {
     if (topAvocats.length === 0 && wilayas.length === 0) return;
 
+    gsap
+      .timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: {
+          trigger: ".avocats-section",
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      })
+      .fromTo(
+        ".avocats-title",
+        { opacity: 0, x: -50 },
+        { opacity: 1, x: 0, duration: 0.8 }
+      )
+      .fromTo(
+        ".avocats-subtitle",
+        { opacity: 0, x: -50 },
+        { opacity: 1, x: 0, duration: 0.8 },
+        "-=0.5"
+      );
+
     gsap.fromTo(
       ".avocat-card",
       { opacity: 0, x: -30 },
@@ -192,6 +176,22 @@ export default function HomePage() {
         scrollTrigger: {
           trigger: ".avocats-section",
           start: "top 60%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
+
+    gsap.fromTo(
+      ".avocats-btn",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".avocats-btn",
+          start: "top 90%",
           toggleActions: "play none none none",
         },
       }
