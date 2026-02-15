@@ -91,12 +91,15 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     if (!specialites || !Array.isArray(specialites)) return [];
     return specialites.map((spec) => capitalizeWords(spec.trim()));
   };
-  const location = lawyer.wilayas?.[0]
-    ? capitalizeWords(lawyer.wilayas[0])
-    : capitalizeWords(lawyer.users?.location || "Alger");
+
   const userAddress = lawyer.users?.address;
   const userGender = lawyer.users?.gender;
   const genre = dbToFrontend(userGender);
+
+  const location = userAddress?.city
+    ? capitalizeWords(userAddress.city)
+    : capitalizeWords(lawyer.users?.location || "Alger");
+
   let langues = ["Arabe", "Français"];
   if (lawyer.users?.languages && Array.isArray(lawyer.users.languages)) {
     langues = lawyer.users.languages.map((lang: string) =>
@@ -115,11 +118,11 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     specialites: capitalizeSpecialites(lawyer.specializations),
     barreau: location,
     wilaya: location,
-    ville: userAddress?.city ? capitalizeWords(userAddress.city) : location,
+    ville: location,
     adresse: {
       rue: userAddress?.street || "Non spécifié",
       quartier: userAddress?.neighborhood || "",
-      ville: userAddress?.city ? capitalizeWords(userAddress.city) : location,
+      ville: location,
       code_postal: userAddress?.postalCode || "",
     },
     contact: {

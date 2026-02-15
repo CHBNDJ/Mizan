@@ -71,7 +71,6 @@ export interface LawyerProfile {
   bar_number: string;
   experience_years: number;
   specializations: string[];
-  wilayas: string[];
   consultation_price: number | null;
   verified: boolean;
   created_at?: string;
@@ -194,7 +193,6 @@ export interface ExtendedLawyerSignupFormData {
   phone: string;
   mobile: string;
   barNumber: string;
-  wilaya: string[];
   specializations: string[];
   experience: string;
   consultationPrice: string;

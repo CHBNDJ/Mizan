@@ -30,7 +30,6 @@ export default function LawyerRegisterPage() {
     phone: "",
     mobile: "",
     barNumber: "",
-    wilaya: [],
     specializations: [],
     experience: "",
     consultationPrice: "",
@@ -226,10 +225,6 @@ export default function LawyerRegisterPage() {
       newErrors.barNumber = "Le numéro de barreau est requis";
     }
 
-    if (formData.wilaya.length === 0) {
-      newErrors.wilaya = "Sélectionnez au moins une wilaya";
-    }
-
     if (formData.specializations.length === 0) {
       newErrors.specializations = "Sélectionnez au moins une spécialité";
     }
@@ -317,10 +312,9 @@ export default function LawyerRegisterPage() {
           ? `+${selectedMobileCountry}${formData.mobile.trim()}`
           : undefined,
         userType: "lawyer" as const,
-        location: formData.wilaya[0] || undefined,
+        location: formData.address.city.trim(),
         bar_number: formData.barNumber.trim(),
         specializations: formData.specializations,
-        wilayas: formData.wilaya,
         experience_years: parseInt(formData.experience) || 0,
         consultation_price:
           formData.consultationPrice.trim() &&
@@ -358,7 +352,7 @@ export default function LawyerRegisterPage() {
               <p style="margin: 5px 0;"><strong>📱 Mobile :</strong> +${selectedMobileCountry}${formData.mobile}</p>
               ${formData.phone ? `<p style="margin: 5px 0;"><strong>☎️ Fixe :</strong> +${selectedCountry}${formData.phone}</p>` : ""}
               <p style="margin: 5px 0;"><strong>🔢 N° Carte Pro :</strong> ${formData.barNumber}</p>
-              <p style="margin: 5px 0;"><strong>📍 Wilayas :</strong> ${formData.wilaya.join(", ")}</p>
+              <p style="margin: 5px 0;"><strong>📍 Ville :</strong> ${formData.address.city}</p>
               <p style="margin: 5px 0;"><strong>🎓 Spécialités :</strong> ${formData.specializations.slice(0, 3).join(", ")}${formData.specializations.length > 3 ? "..." : ""}</p>
               <p style="margin: 5px 0;"><strong>⏱️ Expérience :</strong> ${formData.experience} ans</p>
               ${formData.consultationPrice ? `<p style="margin: 5px 0;"><strong>💰 Tarif :</strong> ${parseInt(formData.consultationPrice).toLocaleString("fr-DZ")} DZD</p>` : ""}
@@ -733,24 +727,6 @@ export default function LawyerRegisterPage() {
               {errors.barNumber && (
                 <p className={errorClass}>{errors.barNumber}</p>
               )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Wilaya(s) d'exercice *
-              </label>
-              <MultiSelectWithCheckboxes
-                placeholder="Choisir des wilayas..."
-                options={wilayaOptions}
-                value={formData.wilaya}
-                onChange={(value) =>
-                  setFormData({ ...formData, wilaya: value })
-                }
-                className="h-12"
-                placeholderClassName="text-slate-400 font-medium text-sm"
-                disabled={isSubmitting}
-              />
-              {errors.wilaya && <p className={errorClass}>{errors.wilaya}</p>}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-[3fr_1fr] gap-4">

@@ -69,7 +69,6 @@ export default function ProfilePage() {
     barNumber: "",
     experienceYears: 0,
     specializations: [] as string[],
-    wilayas: [] as string[],
     consultationPrice: null as number | null,
     gender: "",
     languages: [] as string[],
@@ -288,7 +287,6 @@ export default function ProfilePage() {
         barNumber: lawyerProfile.bar_number || "",
         experienceYears: lawyerProfile.experience_years || 0,
         specializations: lawyerProfile.specializations || [],
-        wilayas: lawyerProfile.wilayas || [],
         consultationPrice: lawyerProfile.consultation_price ?? null,
         gender: dbToFrontend(profile?.gender) || "",
         languages: profile?.languages || [],
@@ -298,7 +296,6 @@ export default function ProfilePage() {
         barNumber: user.user_metadata.bar_number || "",
         experienceYears: user.user_metadata.experience_years || 0,
         specializations: user.user_metadata.specializations || [],
-        wilayas: user.user_metadata.wilayas || [],
         consultationPrice: user.user_metadata.consultation_price ?? null,
         gender:
           dbToFrontend(user.user_metadata.gender || profile?.gender) || "",
@@ -373,7 +370,6 @@ export default function ProfilePage() {
             experience_years:
               parseInt(lawyerFormData.experienceYears.toString()) || 0,
             specializations: lawyerFormData.specializations,
-            wilayas: lawyerFormData.wilayas,
             consultation_price:
               lawyerFormData.consultationPrice !== null &&
               lawyerFormData.consultationPrice !== undefined &&
@@ -425,7 +421,6 @@ export default function ProfilePage() {
         barNumber: lawyerProfile.bar_number || "",
         experienceYears: lawyerProfile.experience_years || 0,
         specializations: lawyerProfile.specializations || [],
-        wilayas: lawyerProfile.wilayas || [],
         consultationPrice: lawyerProfile.consultation_price ?? null,
         gender: profile?.gender || "",
         languages: profile?.languages || [],
@@ -1078,49 +1073,6 @@ export default function ProfilePage() {
                           ) : (
                             <span className="text-slate-600">
                               Aucune spécialité renseignée
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Wilayas d'exercice
-                      </label>
-                      {isEditing ? (
-                        <MultiSelectWithCheckboxes
-                          placeholder="Sélectionner des wilayas..."
-                          options={wilayaOptions}
-                          value={lawyerFormData.wilayas}
-                          onChange={(value) =>
-                            setLawyerFormData((prev) => ({
-                              ...prev,
-                              wilayas: value,
-                            }))
-                          }
-                          className="h-12"
-                          placeholderClassName="text-slate-400 font-medium text-sm"
-                        />
-                      ) : (
-                        <div className="p-3 bg-slate-50 rounded-lg">
-                          {lawyerFormData.wilayas &&
-                          lawyerFormData.wilayas.length > 0 ? (
-                            <div className="flex flex-wrap gap-2">
-                              {lawyerFormData.wilayas.map(
-                                (wilaya: string, index: number) => (
-                                  <span
-                                    key={index}
-                                    className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
-                                  >
-                                    {capitalizeWords(wilaya)}
-                                  </span>
-                                )
-                              )}
-                            </div>
-                          ) : (
-                            <span className="text-slate-600">
-                              Aucune wilaya renseignée
                             </span>
                           )}
                         </div>

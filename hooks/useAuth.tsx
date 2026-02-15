@@ -149,7 +149,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (userData.userType === "lawyer") {
         metaData.bar_number = userData.bar_number || "";
         metaData.specializations = userData.specializations || [];
-        metaData.wilayas = userData.wilayas || [];
         metaData.experience_years = userData.experience_years || 0;
         metaData.consultation_price = userData.consultation_price || null;
         metaData.address = userData.address || null;
