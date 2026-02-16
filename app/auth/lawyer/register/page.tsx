@@ -1479,7 +1479,7 @@ export default function LawyerRegisterPage() {
                 {errors.street && <p className={errorClass}>{errors.street}</p>}
               </div>
 
-              <div className="mt-4">
+              <div className="mt-4 relative z-50">
                 <label className="block text-sm font-medium text-slate-700 mb-1">
                   Wilaya *
                 </label>
@@ -1489,17 +1489,18 @@ export default function LawyerRegisterPage() {
                   onChange={(value) =>
                     setFormData({
                       ...formData,
-                      address: { ...formData.address, wilaya: value },
+                      address: { ...formData.address, wilaya: value, city: "" },
                     })
                   }
                   placeholder="Sélectionnez la wilaya"
+                  placeholderClassName="text-slate-400 text-sm font-normal"
                   className="h-12"
                   disabled={isSubmitting}
                 />
                 {errors.wilaya && <p className={errorClass}>{errors.wilaya}</p>}
               </div>
 
-              <div className="mt-4">
+              <div className="mt-4 relative z-40">
                 <label className="block text-sm font-medium text-slate-700 mb-1">
                   Commune *
                 </label>
@@ -1517,6 +1518,7 @@ export default function LawyerRegisterPage() {
                       ? "Sélectionnez la commune"
                       : "Sélectionnez d'abord une wilaya"
                   }
+                  placeholderClassName="text-slate-400 text-sm font-normal"
                   className="h-12"
                   disabled={isSubmitting || !formData.address.wilaya}
                 />
