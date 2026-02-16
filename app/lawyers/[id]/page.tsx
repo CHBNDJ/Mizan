@@ -518,14 +518,10 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   <div className="font-medium">
                     {avocat.adresse?.rue || "Adresse non spécifiée"}
                   </div>
-                  {avocat.adresse?.quartier && (
-                    <div className="text-slate-600">
-                      {avocat.adresse.quartier}
-                    </div>
-                  )}
                   <div className="text-slate-600">
                     {avocat.adresse?.code_postal || ""}{" "}
                     {avocat.adresse?.ville || avocat.ville}
+                    {avocat.adresse?.wilaya && <>, {avocat.adresse.wilaya}</>}
                   </div>
                 </div>
               </CardContent>

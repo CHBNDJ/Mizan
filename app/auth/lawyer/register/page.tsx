@@ -35,7 +35,7 @@ export default function LawyerRegisterPage() {
     consultationPrice: "",
     address: {
       street: "",
-      neighborhood: "",
+      wilaya: "",
       city: "",
       postalCode: "",
     },
@@ -214,6 +214,9 @@ export default function LawyerRegisterPage() {
     if (!formData.address.city.trim()) {
       newErrors.city = "La ville est requise";
     }
+    if (!formData.address.wilaya) {
+      newErrors.wilaya = "La wilaya est requise";
+    }
 
     if (!formData.address.postalCode.trim()) {
       newErrors.postalCode = "Le code postal est requis";
@@ -323,8 +326,8 @@ export default function LawyerRegisterPage() {
             : null,
         address: {
           street: formData.address.street.trim(),
-          neighborhood: formData.address.neighborhood?.trim() || null,
           city: formData.address.city.trim(),
+          wilaya: formData.address.wilaya?.trim(),
           postalCode: formData.address.postalCode.trim(),
         },
         languages: formData.languages,
@@ -586,50 +589,9 @@ export default function LawyerRegisterPage() {
                 {errors.street && <p className={errorClass}>{errors.street}</p>}
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Quartier
-                  </label>
-                  <input
-                    type="text"
-                    name="address.neighborhood"
-                    value={formData.address.neighborhood}
-                    onChange={handleAddressInput}
-                    className={`${inputBaseClass} placeholder:text-slate-400`}
-                    placeholder="Centre-ville"
-                    disabled={isSubmitting}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Code postal *
-                  </label>
-                  <input
-                    type="text"
-                    name="address.postalCode"
-                    value={formData.address.postalCode}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (/^\d*$/.test(value) && value.length <= 5) {
-                        handleAddressInput(e);
-                      }
-                    }}
-                    className={`${inputBaseClass} placeholder:text-slate-400`}
-                    placeholder="16000"
-                    maxLength={5}
-                    required
-                    disabled={isSubmitting}
-                  />
-                  {errors.postalCode && (
-                    <p className={errorClass}>{errors.postalCode}</p>
-                  )}
-                </div>
-              </div>
-
               <div className="mt-4">
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Ville *
+                  Commune *
                 </label>
                 <input
                   type="text"
@@ -637,11 +599,55 @@ export default function LawyerRegisterPage() {
                   value={formData.address.city}
                   onChange={handleAddressInput}
                   className={`${inputBaseClass} placeholder:text-slate-400`}
-                  placeholder="Alger"
+                  placeholder="Boufarik"
                   required
                   disabled={isSubmitting}
                 />
                 {errors.city && <p className={errorClass}>{errors.city}</p>}
+              </div>
+
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Wilaya *
+                </label>
+                <CustomSelect
+                  options={wilayaOptions}
+                  value={formData.address.wilaya || ""}
+                  onChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      address: { ...formData.address, wilaya: value },
+                    })
+                  }
+                  placeholder="Sélectionnez la wilaya"
+                  className="h-12"
+                  disabled={isSubmitting}
+                />
+                {errors.wilaya && <p className={errorClass}>{errors.wilaya}</p>}
+              </div>
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Code postal *
+                </label>
+                <input
+                  type="text"
+                  name="address.postalCode"
+                  value={formData.address.postalCode}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\d*$/.test(value) && value.length <= 5) {
+                      handleAddressInput(e);
+                    }
+                  }}
+                  className={`${inputBaseClass} placeholder:text-slate-400`}
+                  placeholder="16000"
+                  maxLength={5}
+                  required
+                  disabled={isSubmitting}
+                />
+                {errors.postalCode && (
+                  <p className={errorClass}>{errors.postalCode}</p>
+                )}
               </div>
             </div>
 

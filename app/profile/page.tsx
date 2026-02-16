@@ -60,8 +60,8 @@ export default function ProfilePage() {
 
   const [addressData, setAddressData] = useState({
     street: "",
-    neighborhood: "",
     city: "",
+    wilaya: "",
     postalCode: "",
   });
 
@@ -257,8 +257,8 @@ export default function ProfilePage() {
       if (profile.user_type === "lawyer" && profile.address) {
         setAddressData({
           street: profile.address.street || "",
-          neighborhood: profile.address.neighborhood || "",
           city: profile.address.city || "",
+          wilaya: profile.address.wilaya || "",
           postalCode: profile.address.postalCode || "",
         });
       }
@@ -275,8 +275,8 @@ export default function ProfilePage() {
       if (user.user_metadata.address) {
         setAddressData({
           street: user.user_metadata.address.street || "",
-          neighborhood: user.user_metadata.address.neighborhood || "",
           city: user.user_metadata.address.city || "",
+          wilaya: user.user_metadata.address.wilaya || "",
           postalCode: user.user_metadata.address.postalCode || "",
         });
       }
@@ -344,8 +344,8 @@ export default function ProfilePage() {
       if (profile?.user_type === "lawyer") {
         userData.address = {
           street: addressData.street.trim(),
-          neighborhood: addressData.neighborhood?.trim() || null,
           city: addressData.city.trim(),
+          wilaya: addressData.wilaya?.trim(),
           postalCode: addressData.postalCode.trim(),
         };
         userData.gender = frontendToDb(lawyerFormData.gender);
@@ -409,8 +409,8 @@ export default function ProfilePage() {
       if (profile.user_type === "lawyer" && profile.address) {
         setAddressData({
           street: profile.address.street || "",
-          neighborhood: profile.address.neighborhood || "",
           city: profile.address.city || "",
+          wilaya: profile.address.wilaya || "",
           postalCode: profile.address.postalCode || "",
         });
       }
@@ -432,8 +432,8 @@ export default function ProfilePage() {
   const getFullAddress = () => {
     const parts = [
       addressData.street,
-      addressData.neighborhood,
       addressData.city,
+      addressData.wilaya,
       addressData.postalCode,
     ].filter(Boolean);
     return parts.length > 0 ? parts.join(", ") : "Non renseignée";
@@ -884,37 +884,36 @@ export default function ProfilePage() {
                           className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
                           placeholder="Adresse (rue)"
                         />
-                        <div className="grid grid-cols-2 gap-3">
-                          <input
-                            type="text"
-                            name="address.neighborhood"
-                            value={addressData.neighborhood}
-                            onChange={handleAddressInput}
-                            className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
-                            placeholder="Quartier"
-                          />
-                          <input
-                            type="text"
-                            name="address.postalCode"
-                            value={addressData.postalCode}
-                            onChange={(e) => {
-                              const value = e.target.value;
-                              if (/^\d*$/.test(value) && value.length <= 5) {
-                                handleAddressInput(e);
-                              }
-                            }}
-                            className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
-                            placeholder="Code postal"
-                            maxLength={5}
-                          />
-                        </div>
+                        <input
+                          type="text"
+                          name="address.postalCode"
+                          value={addressData.postalCode}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (/^\d*$/.test(value) && value.length <= 5) {
+                              handleAddressInput(e);
+                            }
+                          }}
+                          className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
+                          placeholder="Code postal"
+                          maxLength={5}
+                        />
                         <input
                           type="text"
                           name="address.city"
                           value={addressData.city}
                           onChange={handleAddressInput}
                           className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
-                          placeholder="Ville"
+                          placeholder="Commune"
+                        />
+                        <CustomSelect
+                          options={wilayaOptions}
+                          value={addressData.wilaya || ""}
+                          onChange={(value) =>
+                            setAddressData({ ...addressData, wilaya: value })
+                          }
+                          placeholder="Sélectionnez la wilaya"
+                          className="h-12"
                         />
                       </div>
                     ) : (
