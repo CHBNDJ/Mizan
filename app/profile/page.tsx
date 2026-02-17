@@ -1536,7 +1536,10 @@ export default function ProfilePage() {
             bar_number: lawyerFormData.barNumber.trim(),
             experience_years:
               parseInt(lawyerFormData.experienceYears.toString()) || 0,
-            specializations: lawyerFormData.specializations,
+            specializations: lawyerFormData.specializations.map((slug) => {
+              const found = specialiteOptions.find((opt) => opt.value === slug);
+              return found ? found.label : slug;
+            }),
             consultation_price:
               lawyerFormData.consultationPrice !== null &&
               lawyerFormData.consultationPrice !== undefined &&

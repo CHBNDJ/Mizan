@@ -82,8 +82,6 @@ export const SPECIALITES = [
   "Droit routier",
 ] as const;
 
-export const BARREAUX = ["Alger", "Oran", "Sétif", "Annaba", "Batna"] as const;
-
 export const URGENCE_OPTIONS = [
   { value: "normal", label: "Normal (48h)", multiplicateur: 1 },
   { value: "urgent", label: "Urgent (24h)", multiplicateur: 1.3 },

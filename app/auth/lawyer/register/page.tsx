@@ -1207,7 +1207,10 @@ export default function LawyerRegisterPage() {
         userType: "lawyer" as const,
         location: formData.address.city.trim(),
         bar_number: formData.barNumber.trim(),
-        specializations: formData.specializations,
+        specializations: formData.specializations.map((slug) => {
+          const found = specialiteOptions.find((opt) => opt.value === slug);
+          return found ? found.label : slug;
+        }),
         experience_years: parseInt(formData.experience) || 0,
         consultation_price:
           formData.consultationPrice.trim() &&
@@ -1461,7 +1464,7 @@ export default function LawyerRegisterPage() {
               )}
             </div>
 
-            <div>
+            <div className="relative z-50">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
                   Adresse du cabinet *
@@ -1479,7 +1482,7 @@ export default function LawyerRegisterPage() {
                 {errors.street && <p className={errorClass}>{errors.street}</p>}
               </div>
 
-              <div className="mt-4 relative z-50">
+              <div className="mt-4">
                 <label className="block text-sm font-medium text-slate-700 mb-1">
                   Wilaya *
                 </label>
@@ -1500,7 +1503,7 @@ export default function LawyerRegisterPage() {
                 {errors.wilaya && <p className={errorClass}>{errors.wilaya}</p>}
               </div>
 
-              <div className="mt-4 relative z-40">
+              <div className="mt-4">
                 <label className="block text-sm font-medium text-slate-700 mb-1">
                   Commune *
                 </label>
