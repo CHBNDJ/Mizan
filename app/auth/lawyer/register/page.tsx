@@ -616,7 +616,7 @@ export default function LawyerRegisterPage() {
                 {errors.street && <p className={errorClass}>{errors.street}</p>}
               </div>
 
-              <div className="mt-4 relative z-20">
+              <div className="mt-4 relative z-40">
                 <label className="block text-sm font-medium text-slate-700 mb-1">
                   Wilaya *
                 </label>
@@ -637,7 +637,7 @@ export default function LawyerRegisterPage() {
                 {errors.wilaya && <p className={errorClass}>{errors.wilaya}</p>}
               </div>
 
-              <div className="mt-4 relative z-10">
+              <div className="mt-4 relative z-30">
                 <label className="block text-sm font-medium text-slate-700 mb-1">
                   Commune *
                 </label>
@@ -688,7 +688,7 @@ export default function LawyerRegisterPage() {
               </div>
             </div>
 
-            <div className="relative z-40">
+            <div className="relative z-20">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
                 <Phone className="w-4 h-4" />
                 Téléphone fixe
@@ -720,7 +720,7 @@ export default function LawyerRegisterPage() {
               {errors.phone && <p className={errorClass}>{errors.phone}</p>}
             </div>
 
-            <div className="relative z-30">
+            <div className="relative z-10">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
                 <Smartphone className="w-5 h-5" />
                 Mobile *
