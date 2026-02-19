@@ -805,7 +805,7 @@ import { getInitials } from "@/lib/utils";
 import { AvocatData, ProfilePageProps } from "@/types";
 import { createClient } from "@/lib/supabase/client";
 import ConsultationModal from "@/components/consultation/ConsultationModal";
-import { ContactDropdown } from "@/components/ContactDropdown";
+import { ContactCard } from "@/components/ContactCard";
 import ReviewSection from "@/components/reviews/ReviewSection";
 import Link from "next/link";
 import { formatPhoneNumber } from "@/lib/phoneFormatter";
@@ -1465,55 +1465,41 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             {(!user || profile?.user_type === "client") && !isOwnProfile && (
               <Card className="sidebar-card opacity-0 invisible transition-all duration-300 shadow-sm hover:shadow-md">
                 <CardContent className="p-4 sm:p-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <button
-                      onClick={() => setIsConsultationModalOpen(true)}
-                      className="cursor-pointer bg-teal-50 border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-6 sm:p-8 rounded-lg flex flex-col items-center gap-3 sm:gap-4 text-center group"
-                    >
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-lg flex items-center justify-center transition-colors duration-200">
-                        <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600" />
+                  <button
+                    onClick={() => {
+                      if (!user || profile?.user_type !== "client") {
+                        router.push("/auth/client/register");
+                        return;
+                      }
+                      setIsConsultationModalOpen(true);
+                    }}
+                    className="cursor-pointer w-full bg-teal-50 border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-6 sm:p-8 rounded-lg flex flex-col items-center gap-3 sm:gap-4 text-center group mb-4"
+                  >
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-lg flex items-center justify-center transition-colors duration-200">
+                      <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600" />
+                    </div>
+                    <div>
+                      <div className="font-medium text-sm text-slate-700 group-hover:text-teal-700 transition-colors duration-200">
+                        Consultation
                       </div>
-                      <div>
-                        <div className="font-medium text-sm text-slate-700 group-hover:text-teal-700 transition-colors duration-200">
-                          Consultation
-                        </div>
-                        <div className="text-xs text-slate-500 group-hover:text-teal-600 transition-colors duration-200">
-                          Juridique
-                        </div>
+                      <div className="text-xs text-slate-500 group-hover:text-teal-600 transition-colors duration-200">
+                        Juridique
                       </div>
-                    </button>
+                    </div>
+                  </button>
 
-                    {!user || profile?.user_type !== "client" ? (
-                      <button
-                        onClick={() => router.push("/auth/client/register")}
-                        className="cursor-pointer bg-teal-50 border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-6 sm:p-8 rounded-lg flex flex-col items-center gap-3 sm:gap-4 text-center group"
-                      >
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-lg flex items-center justify-center transition-colors duration-200">
-                          <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600" />
-                        </div>
-                        <div>
-                          <div className="font-medium text-sm text-slate-700 group-hover:text-teal-700 transition-colors duration-200">
-                            Contact
-                          </div>
-                          <div className="text-xs text-slate-500 group-hover:text-teal-600 transition-colors duration-200">
-                            Immédiat
-                          </div>
-                        </div>
-                      </button>
-                    ) : (
-                      <ContactDropdown
-                        lawyerName={`${toCivilite(avocat.genre)} ${avocat.prenom} ${avocat.nom}`}
-                        allPhoneNumbers={[
-                          ...(avocat.contact?.telephone
-                            ?.split(",")
-                            .map((n) => n.trim()) || []),
-                          ...(avocat.contact?.mobile
-                            ?.split(",")
-                            .map((n) => n.trim()) || []),
-                        ].filter(Boolean)}
-                      />
-                    )}
-                  </div>
+                  {user && profile?.user_type === "client" && (
+                    <ContactCard
+                      allPhoneNumbers={[
+                        ...(avocat.contact?.telephone
+                          ?.split(",")
+                          .map((n) => n.trim()) || []),
+                        ...(avocat.contact?.mobile
+                          ?.split(",")
+                          .map((n) => n.trim()) || []),
+                      ].filter(Boolean)}
+                    />
+                  )}
                 </CardContent>
               </Card>
             )}
