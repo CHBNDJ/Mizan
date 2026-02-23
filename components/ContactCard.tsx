@@ -1,7 +1,7 @@
 "use client";
 
 import { Phone, Smartphone } from "lucide-react";
-import Image from "next/image";
+import { FaWhatsapp } from "react-icons/fa";
 
 interface ContactCardProps {
   allPhoneNumbers: string[];
@@ -11,36 +11,28 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
   const detectPhoneType = (number: string): "fixe" | "mobile" => {
     const cleaned = number.replace(/[\s\-\(\)]/g, "");
 
-    // FRANCE (+33)
     if (cleaned.startsWith("+33") || cleaned.startsWith("33")) {
       const withoutPrefix = cleaned.replace(/^\+?33/, "");
       const firstDigit = withoutPrefix[0];
-      // Mobile français : 06, 07
+
       if (["6", "7"].includes(firstDigit)) return "mobile";
-      // Fixe français : 01, 02, 03, 04, 05, 09
+
       return "fixe";
     }
 
-    // ALGÉRIE (+213)
     if (cleaned.startsWith("+213") || cleaned.startsWith("213")) {
       const withoutPrefix = cleaned.replace(/^\+?213/, "");
       const firstDigit = withoutPrefix[0];
-      // Mobile algérien : 05, 06, 07 (commence par 5, 6, 7)
       if (["5", "6", "7"].includes(firstDigit)) return "mobile";
-      // Fixe algérien
       return "fixe";
     }
 
-    // Sans indicatif pays (numéros locaux)
     if (cleaned.startsWith("0")) {
       const secondDigit = cleaned[1];
-      // Mobile : 05, 06, 07 (Algérie) ou 06, 07 (France si 10 chiffres)
       if (["5", "6", "7"].includes(secondDigit)) return "mobile";
-      // Fixe : 021, 023, 025, etc.
       return "fixe";
     }
 
-    // Par défaut : mobile
     return "mobile";
   };
 
@@ -91,6 +83,31 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
     return cleaned;
   };
 
+  const formatPhoneForDisplay = (phone: string) => {
+    const cleaned = phone.replace(/[\s\-\(\)]/g, "");
+
+    if (cleaned.startsWith("+33") || cleaned.startsWith("33")) {
+      const withoutPrefix = cleaned.replace(/^\+?33/, "");
+      const formatted =
+        withoutPrefix.match(/.{1,2}/g)?.join(" ") || withoutPrefix;
+      return `+33 ${formatted}`;
+    }
+
+    if (cleaned.startsWith("+213") || cleaned.startsWith("213")) {
+      const withoutPrefix = cleaned.replace(/^\+?213/, "");
+      const formatted =
+        withoutPrefix.match(/.{1,2}/g)?.join(" ") || withoutPrefix;
+      return `+213 ${formatted}`;
+    }
+
+    if (cleaned.startsWith("0")) {
+      const formatted = cleaned.match(/.{1,2}/g)?.join(" ") || cleaned;
+      return formatted;
+    }
+
+    return phone;
+  };
+
   return (
     <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200 space-y-4">
       <h3 className="font-semibold text-slate-900">Contact</h3>
@@ -106,7 +123,7 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
               href={`tel:${cleanPhoneForCall(fixe)}`}
               className="text-sm font-medium text-slate-900 hover:text-teal-600 transition-colors"
             >
-              {fixe}
+              {formatPhoneForDisplay(fixe)}
             </a>
           </div>
         </div>
@@ -123,7 +140,7 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
               href={`tel:${cleanPhoneForCall(mobile)}`}
               className="text-sm font-medium text-slate-900 hover:text-teal-600 transition-colors"
             >
-              {mobile}
+              {formatPhoneForDisplay(mobile)}
             </a>
           </div>
         </div>
@@ -137,14 +154,8 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm"
           >
-            <Image
-              src="/whatsapp.png"
-              alt="WhatsApp"
-              width={16}
-              height={16}
-              className="w-5 h-5"
-            />
-            <span className="font-bold">WhatsApp</span>
+            <FaWhatsapp className="w-5 h-5" />
+            <span>WhatsApp</span>
           </a>
         </div>
       )}
