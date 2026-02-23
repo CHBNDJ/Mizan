@@ -1,6 +1,7 @@
 "use client";
 
-import { Phone, Smartphone, MessageCircle } from "lucide-react";
+import { Phone, Smartphone } from "lucide-react";
+import Image from "next/image";
 
 interface ContactCardProps {
   allPhoneNumbers: string[];
@@ -136,8 +137,14 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm"
           >
-            <MessageCircle className="w-4 h-4" />
-            <span>Contacter sur WhatsApp</span>
+            <Image
+              src="/public/whatsapp.png"
+              alt="WhatsApp"
+              width={16}
+              height={16}
+              className="w-4 h-4"
+            />
+            <span>WhatsApp</span>
           </a>
         </div>
       )}
