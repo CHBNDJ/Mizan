@@ -138,7 +138,7 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
             className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm"
           >
             <Image
-              src="/public/whatsapp.png"
+              src="/whatsapp.png"
               alt="WhatsApp"
               width={16}
               height={16}
