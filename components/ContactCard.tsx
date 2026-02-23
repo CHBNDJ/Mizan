@@ -8,30 +8,39 @@ interface ContactCardProps {
 
 export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
   const detectPhoneType = (number: string): "fixe" | "mobile" => {
-    const cleaned = number.replace(/[\s\-\(\)+]/g, "");
+    const cleaned = number.replace(/[\s\-\(\)]/g, "");
 
-    const mobilePrefixes = [
-      "21305",
-      "21306",
-      "21307",
-      "2135",
-      "2136",
-      "2137",
-      "05",
-      "06",
-      "07",
-    ];
-
-    for (const prefix of mobilePrefixes) {
-      if (cleaned.startsWith(prefix)) return "mobile";
+    // FRANCE (+33)
+    if (cleaned.startsWith("+33") || cleaned.startsWith("33")) {
+      const withoutPrefix = cleaned.replace(/^\+?33/, "");
+      const firstDigit = withoutPrefix[0];
+      // Mobile français : 06, 07
+      if (["6", "7"].includes(firstDigit)) return "mobile";
+      // Fixe français : 01, 02, 03, 04, 05, 09
+      return "fixe";
     }
 
-    if (cleaned.length === 10 && cleaned.startsWith("0")) {
+    // ALGÉRIE (+213)
+    if (cleaned.startsWith("+213") || cleaned.startsWith("213")) {
+      const withoutPrefix = cleaned.replace(/^\+?213/, "");
+      const firstDigit = withoutPrefix[0];
+      // Mobile algérien : 05, 06, 07 (commence par 5, 6, 7)
+      if (["5", "6", "7"].includes(firstDigit)) return "mobile";
+      // Fixe algérien
+      return "fixe";
+    }
+
+    // Sans indicatif pays (numéros locaux)
+    if (cleaned.startsWith("0")) {
       const secondDigit = cleaned[1];
+      // Mobile : 05, 06, 07 (Algérie) ou 06, 07 (France si 10 chiffres)
       if (["5", "6", "7"].includes(secondDigit)) return "mobile";
+      // Fixe : 021, 023, 025, etc.
+      return "fixe";
     }
 
-    return "fixe";
+    // Par défaut : mobile
+    return "mobile";
   };
 
   const categorizeNumbers = () => {
