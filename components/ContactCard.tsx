@@ -142,7 +142,7 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
               alt="WhatsApp"
               width={16}
               height={16}
-              className="w-4 h-4"
+              className="w-6 h-6"
             />
             <span>WhatsApp</span>
           </a>
