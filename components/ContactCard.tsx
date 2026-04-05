@@ -1,41 +1,179 @@
+// "use client";
+
+// import { Phone, Smartphone } from "lucide-react";
+// import { FaWhatsapp } from "react-icons/fa";
+
+// interface ContactCardProps {
+//   allPhoneNumbers: string[];
+// }
+
+// export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
+//   const detectPhoneType = (number: string): "fixe" | "mobile" => {
+//     const cleaned = number.replace(/[\s\-\(\)]/g, "");
+
+//     if (cleaned.startsWith("+33") || cleaned.startsWith("33")) {
+//       const withoutPrefix = cleaned.replace(/^\+?33/, "");
+//       const firstDigit = withoutPrefix[0];
+
+//       if (["6", "7"].includes(firstDigit)) return "mobile";
+
+//       return "fixe";
+//     }
+
+//     if (cleaned.startsWith("+213") || cleaned.startsWith("213")) {
+//       const withoutPrefix = cleaned.replace(/^\+?213/, "");
+//       const firstDigit = withoutPrefix[0];
+//       if (["5", "6", "7"].includes(firstDigit)) return "mobile";
+//       return "fixe";
+//     }
+
+//     if (cleaned.startsWith("0")) {
+//       const secondDigit = cleaned[1];
+//       if (["5", "6", "7"].includes(secondDigit)) return "mobile";
+//       return "fixe";
+//     }
+
+//     return "mobile";
+//   };
+
+//   const categorizeNumbers = () => {
+//     let fixe: string | null = null;
+//     let mobile: string | null = null;
+
+//     for (const num of allPhoneNumbers) {
+//       if (!num || num.trim() === "") continue;
+//       const trimmed = num.trim();
+//       const type = detectPhoneType(trimmed);
+
+//       if (type === "fixe" && !fixe) {
+//         fixe = trimmed;
+//       } else if (type === "mobile" && !mobile) {
+//         mobile = trimmed;
+//       }
+
+//       if (fixe && mobile) break;
+//     }
+
+//     return { fixe, mobile };
+//   };
+
+//   const { fixe, mobile } = categorizeNumbers();
+
+//   const hasNumbers = fixe || mobile;
+
+//   if (!hasNumbers) {
+//     return null;
+//   }
+
+//   const cleanPhoneForCall = (phone: string) => {
+//     return phone.replace(/[\s\-\(\)]/g, "");
+//   };
+
+//   const cleanPhoneForWhatsApp = (phone: string) => {
+//     let cleaned = phone.replace(/[\s\-\(\)]/g, "");
+//     if (!cleaned.startsWith("+")) {
+//       if (cleaned.startsWith("213")) {
+//         cleaned = "+" + cleaned;
+//       } else if (cleaned.startsWith("0")) {
+//         cleaned = "+213" + cleaned.substring(1);
+//       } else {
+//         cleaned = "+213" + cleaned;
+//       }
+//     }
+//     return cleaned;
+//   };
+
+//   const formatPhoneForDisplay = (phone: string) => {
+//     const cleaned = phone.replace(/[\s\-\(\)]/g, "");
+
+//     if (cleaned.startsWith("+33") || cleaned.startsWith("33")) {
+//       const withoutPrefix = cleaned.replace(/^\+?33/, "");
+//       const formatted =
+//         withoutPrefix.match(/.{1,2}/g)?.join(" ") || withoutPrefix;
+//       return `+33 ${formatted}`;
+//     }
+
+//     if (cleaned.startsWith("+213") || cleaned.startsWith("213")) {
+//       const withoutPrefix = cleaned.replace(/^\+?213/, "");
+//       const formatted =
+//         withoutPrefix.match(/.{1,2}/g)?.join(" ") || withoutPrefix;
+//       return `+213 ${formatted}`;
+//     }
+
+//     if (cleaned.startsWith("0")) {
+//       const formatted = cleaned.match(/.{1,2}/g)?.join(" ") || cleaned;
+//       return formatted;
+//     }
+
+//     return phone;
+//   };
+
+//   return (
+//     <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200 space-y-4">
+//       <h3 className="font-semibold text-slate-900">Contact</h3>
+
+//       {fixe && (
+//         <div className="flex items-start gap-3">
+//           <div className="w-9 h-9 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+//             <Phone className="w-4 h-4 text-teal-600" />
+//           </div>
+//           <div className="flex-1 min-w-0">
+//             <div className="text-xs text-slate-500 mb-1">Téléphone fixe</div>
+//             <a
+//               href={`tel:${cleanPhoneForCall(fixe)}`}
+//               className="text-sm font-medium text-slate-900 hover:text-teal-600 transition-colors"
+//             >
+//               {formatPhoneForDisplay(fixe)}
+//             </a>
+//           </div>
+//         </div>
+//       )}
+
+//       {mobile && (
+//         <div className="flex items-start gap-3">
+//           <div className="w-9 h-9 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+//             <Smartphone className="w-4 h-4 text-teal-600" />
+//           </div>
+//           <div className="flex-1 min-w-0">
+//             <div className="text-xs text-slate-500 mb-1">Mobile</div>
+//             <a
+//               href={`tel:${cleanPhoneForCall(mobile)}`}
+//               className="text-sm font-medium text-slate-900 hover:text-teal-600 transition-colors"
+//             >
+//               {formatPhoneForDisplay(mobile)}
+//             </a>
+//           </div>
+//         </div>
+//       )}
+
+//       {mobile && (
+//         <div className="pt-2 border-t border-slate-100">
+//           <a
+//             href={`https://wa.me/${cleanPhoneForWhatsApp(mobile)}`}
+//             target="_blank"
+//             rel="noopener noreferrer"
+//             className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm"
+//           >
+//             <FaWhatsapp className="w-5 h-5" />
+//             <span>WhatsApp</span>
+//           </a>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
 "use client";
 
 import { Phone, Smartphone } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
+import { detectPhoneType } from "@/lib/phoneFormatter";
 
 interface ContactCardProps {
   allPhoneNumbers: string[];
 }
 
 export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
-  const detectPhoneType = (number: string): "fixe" | "mobile" => {
-    const cleaned = number.replace(/[\s\-\(\)]/g, "");
-
-    if (cleaned.startsWith("+33") || cleaned.startsWith("33")) {
-      const withoutPrefix = cleaned.replace(/^\+?33/, "");
-      const firstDigit = withoutPrefix[0];
-
-      if (["6", "7"].includes(firstDigit)) return "mobile";
-
-      return "fixe";
-    }
-
-    if (cleaned.startsWith("+213") || cleaned.startsWith("213")) {
-      const withoutPrefix = cleaned.replace(/^\+?213/, "");
-      const firstDigit = withoutPrefix[0];
-      if (["5", "6", "7"].includes(firstDigit)) return "mobile";
-      return "fixe";
-    }
-
-    if (cleaned.startsWith("0")) {
-      const secondDigit = cleaned[1];
-      if (["5", "6", "7"].includes(secondDigit)) return "mobile";
-      return "fixe";
-    }
-
-    return "mobile";
-  };
-
   const categorizeNumbers = () => {
     let fixe: string | null = null;
     let mobile: string | null = null;
@@ -59,26 +197,16 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
 
   const { fixe, mobile } = categorizeNumbers();
 
-  const hasNumbers = fixe || mobile;
+  if (!fixe && !mobile) return null;
 
-  if (!hasNumbers) {
-    return null;
-  }
-
-  const cleanPhoneForCall = (phone: string) => {
-    return phone.replace(/[\s\-\(\)]/g, "");
-  };
+  const cleanPhoneForCall = (phone: string) => phone.replace(/[\s\-\(\)]/g, "");
 
   const cleanPhoneForWhatsApp = (phone: string) => {
     let cleaned = phone.replace(/[\s\-\(\)]/g, "");
     if (!cleaned.startsWith("+")) {
-      if (cleaned.startsWith("213")) {
-        cleaned = "+" + cleaned;
-      } else if (cleaned.startsWith("0")) {
-        cleaned = "+213" + cleaned.substring(1);
-      } else {
-        cleaned = "+213" + cleaned;
-      }
+      if (cleaned.startsWith("213")) cleaned = "+" + cleaned;
+      else if (cleaned.startsWith("0")) cleaned = "+213" + cleaned.substring(1);
+      else cleaned = "+213" + cleaned;
     }
     return cleaned;
   };
@@ -101,63 +229,58 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
     }
 
     if (cleaned.startsWith("0")) {
-      const formatted = cleaned.match(/.{1,2}/g)?.join(" ") || cleaned;
-      return formatted;
+      return cleaned.match(/.{1,2}/g)?.join(" ") || cleaned;
     }
 
     return phone;
   };
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200 space-y-4">
-      <h3 className="font-semibold text-slate-900">Contact</h3>
-
+    <div className="space-y-2">
       {fixe && (
-        <div className="flex items-start gap-3">
-          <div className="w-9 h-9 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-            <Phone className="w-4 h-4 text-teal-600" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="text-xs text-slate-500 mb-1">Téléphone fixe</div>
-            <a
-              href={`tel:${cleanPhoneForCall(fixe)}`}
-              className="text-sm font-medium text-slate-900 hover:text-teal-600 transition-colors"
-            >
+        <a
+          href={`tel:${cleanPhoneForCall(fixe)}`}
+          className="group flex items-center gap-3 p-4 bg-white border-2 border-slate-200 hover:border-teal-500 rounded-xl transition-all duration-200"
+        >
+          <Phone className="w-5 h-5 text-slate-400 group-hover:text-teal-600 transition-colors flex-shrink-0" />
+          <div className="flex-1">
+            <div className="text-xs text-slate-500 font-medium mb-0.5">
+              Fixe
+            </div>
+            <div className="text-base font-bold text-slate-900">
               {formatPhoneForDisplay(fixe)}
-            </a>
+            </div>
           </div>
-        </div>
+        </a>
       )}
 
       {mobile && (
-        <div className="flex items-start gap-3">
-          <div className="w-9 h-9 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-            <Smartphone className="w-4 h-4 text-teal-600" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="text-xs text-slate-500 mb-1">Mobile</div>
-            <a
-              href={`tel:${cleanPhoneForCall(mobile)}`}
-              className="text-sm font-medium text-slate-900 hover:text-teal-600 transition-colors"
-            >
+        <a
+          href={`tel:${cleanPhoneForCall(mobile)}`}
+          className="group flex items-center gap-3 p-4 bg-white border-2 border-slate-200 hover:border-teal-500 rounded-xl transition-all duration-200"
+        >
+          <Smartphone className="w-5 h-5 text-slate-400 group-hover:text-teal-600 transition-colors flex-shrink-0" />
+          <div className="flex-1">
+            <div className="text-xs text-slate-500 font-medium mb-0.5">
+              Mobile
+            </div>
+            <div className="text-base font-bold text-slate-900">
               {formatPhoneForDisplay(mobile)}
-            </a>
+            </div>
           </div>
-        </div>
+        </a>
       )}
 
       {mobile && (
-        <div className="pt-2 border-t border-slate-100">
-          <a
-            href={`https://wa.me/${cleanPhoneForWhatsApp(mobile)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm"
-          >
-            <FaWhatsapp className="w-5 h-5" />
-            <span>WhatsApp</span>
-          </a>
-        </div>
+        <a
+          href={`https://wa.me/${cleanPhoneForWhatsApp(mobile)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#20BA5A] text-white py-3.5 px-4 rounded-xl transition-all duration-200 font-semibold shadow-sm hover:shadow-md"
+        >
+          <FaWhatsapp className="w-5 h-5" />
+          <span>WhatsApp</span>
+        </a>
       )}
     </div>
   );
