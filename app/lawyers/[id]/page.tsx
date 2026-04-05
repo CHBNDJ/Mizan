@@ -31,7 +31,7 @@ import ConsultationModal from "@/components/consultation/ConsultationModal";
 import { ContactCard } from "@/components/ContactCard";
 import ReviewSection from "@/components/reviews/ReviewSection";
 import Link from "next/link";
-import { formatPhoneNumber } from "@/lib/phoneFormatter";
+import { formatPhoneNumber, detectPhoneType } from "@/lib/phoneFormatter";
 import FeedbackPopup from "@/components/FeedbackPopup";
 import { useAuth } from "@/hooks/useAuth";
 import { formatPrice, calculateConsultationPrice } from "@/lib/priceUtils";
@@ -555,25 +555,29 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   {avocat.contact?.telephone &&
                     parsePhoneNumbers(avocat.contact.telephone).length > 0 && (
                       <div className="space-y-2">
-                        <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">
-                          Téléphone fixe
-                        </div>
                         {parsePhoneNumbers(avocat.contact.telephone).map(
-                          (phone, index) => (
-                            <div
-                              key={index}
-                              className="flex items-center gap-3"
-                            >
-                              <Phone className="w-4 h-4 text-slate-500 flex-shrink-0" />
-
-                              <a
-                                href={`tel:${phone.replace(/\s/g, "")}`}
-                                className="text-slate-700 hover:text-teal-600 transition-colors"
+                          (phone, index) => {
+                            const phoneType = detectPhoneType(phone);
+                            return (
+                              <div
+                                key={index}
+                                className="flex items-center gap-3"
                               >
-                                {formatPhoneNumber(phone)}
-                              </a>
-                            </div>
-                          )
+                                {phoneType === "mobile" ? (
+                                  <Smartphone className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                                ) : (
+                                  <Phone className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                                )}
+
+                                <a
+                                  href={`tel:${phone.replace(/\s/g, "")}`}
+                                  className="text-slate-700 hover:text-teal-600 transition-colors"
+                                >
+                                  {formatPhoneNumber(phone)}
+                                </a>
+                              </div>
+                            );
+                          }
                         )}
                       </div>
                     )}
@@ -581,25 +585,29 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   {avocat.contact?.mobile &&
                     parsePhoneNumbers(avocat.contact.mobile).length > 0 && (
                       <div className="space-y-2">
-                        <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">
-                          Mobile
-                        </div>
                         {parsePhoneNumbers(avocat.contact.mobile).map(
-                          (mobile, index) => (
-                            <div
-                              key={index}
-                              className="flex items-center gap-3"
-                            >
-                              <Smartphone className="w-4 h-4 text-slate-500 flex-shrink-0" />
-
-                              <a
-                                href={`tel:${mobile.replace(/\s/g, "")}`}
-                                className="text-slate-700 hover:text-teal-600 transition-colors"
+                          (mobile, index) => {
+                            const phoneType = detectPhoneType(mobile);
+                            return (
+                              <div
+                                key={index}
+                                className="flex items-center gap-3"
                               >
-                                {formatPhoneNumber(mobile)}
-                              </a>
-                            </div>
-                          )
+                                {phoneType === "mobile" ? (
+                                  <Smartphone className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                                ) : (
+                                  <Phone className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                                )}
+
+                                <a
+                                  href={`tel:${mobile.replace(/\s/g, "")}`}
+                                  className="text-slate-700 hover:text-teal-600 transition-colors"
+                                >
+                                  {formatPhoneNumber(mobile)}
+                                </a>
+                              </div>
+                            );
+                          }
                         )}
                       </div>
                     )}

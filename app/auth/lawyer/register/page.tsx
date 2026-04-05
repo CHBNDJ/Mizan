@@ -10,6 +10,7 @@ import { CIVILITE_OPTIONS, frontendToDb } from "@/lib/genderUtils";
 import { SPECIALITES, WILAYAS, COUNTRIES, LANGUES } from "@/utils/constants";
 import { COMMUNES_PAR_WILAYA } from "@/utils/communes";
 import { CustomSelect } from "@/components/ui/CustomSelect";
+import { separatePhoneTypes } from "@/lib/phoneFormatter";
 import { useAuth } from "@/hooks/useAuth";
 import { gsap } from "gsap";
 import { createClient } from "@/lib/supabase/client";
@@ -328,16 +329,27 @@ export default function LawyerRegisterPage() {
         return;
       }
 
+      const phoneFixe = formData.phone.trim()
+        ? `+${selectedCountry}${formData.phone.trim()}`
+        : "";
+      const phoneMobile = formData.mobile.trim()
+        ? `+${selectedMobileCountry}${formData.mobile.trim()}`
+        : "";
+
+      const { mobile: detectedMobile1, fixe: detectedFixe1 } =
+        separatePhoneTypes(phoneFixe);
+      const { mobile: detectedMobile2, fixe: detectedFixe2 } =
+        separatePhoneTypes(phoneMobile);
+
+      const finalMobile = detectedMobile1 || detectedMobile2 || undefined;
+      const finalFixe = detectedFixe1 || detectedFixe2 || undefined;
+
       const userData = {
         gender: frontendToDb(formData.gender),
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
-        phone: formData.phone.trim()
-          ? `+${selectedCountry}${formData.phone.trim()}`
-          : undefined,
-        mobile: formData.mobile.trim()
-          ? `+${selectedMobileCountry}${formData.mobile.trim()}`
-          : undefined,
+        phone: finalFixe,
+        mobile: finalMobile,
         userType: "lawyer" as const,
         location: formData.address.city.trim(),
         bar_number: formData.barNumber.trim(),

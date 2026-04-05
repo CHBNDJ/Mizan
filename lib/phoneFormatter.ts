@@ -302,3 +302,119 @@ export const toInternationalFormat = (
 
   return `+${defaultCountryCode}${cleanNumber}`;
 };
+
+export const detectPhoneType = (
+  phone: string
+): "mobile" | "fixe" | "unknown" => {
+  if (!phone) return "unknown";
+
+  const cleanNumber = phone.replace(/[\s\-\.\(\)]/g, "");
+
+  if (cleanNumber.startsWith("+213") || cleanNumber.startsWith("213")) {
+    const national = cleanNumber.replace(/^(\+213|00213|213|0)/, "");
+    if (!national) return "unknown";
+    const firstDigit = national[0];
+    if (["5", "6", "7"].includes(firstDigit)) return "mobile";
+    if (["2", "3", "4"].includes(firstDigit)) return "fixe";
+    return "unknown";
+  }
+
+  if (cleanNumber.startsWith("+33") || cleanNumber.startsWith("33")) {
+    const national = cleanNumber.replace(/^(\+33|0033|33|0)/, "");
+    if (!national) return "unknown";
+    const firstDigit = national[0];
+    if (["6", "7"].includes(firstDigit)) return "mobile";
+    if (["1", "2", "3", "4", "5", "8", "9"].includes(firstDigit)) return "fixe";
+    return "unknown";
+  }
+
+  if (cleanNumber.startsWith("+41") || cleanNumber.startsWith("41")) {
+    const national = cleanNumber.replace(/^(\+41|0041|41|0)/, "");
+    if (!national) return "unknown";
+    const firstDigit = national[0];
+    if (firstDigit === "7") return "mobile";
+    if (["2", "3", "4", "5", "6", "8", "9"].includes(firstDigit)) return "fixe";
+    return "unknown";
+  }
+
+  if (cleanNumber.startsWith("+49") || cleanNumber.startsWith("49")) {
+    const national = cleanNumber.replace(/^(\+49|0049|49|0)/, "");
+    if (!national || national.length < 2) return "unknown";
+    const firstTwo = national.substring(0, 2);
+    if (["15", "16", "17"].includes(firstTwo)) return "mobile";
+    return "fixe";
+  }
+
+  if (cleanNumber.startsWith("+39") || cleanNumber.startsWith("39")) {
+    const national = cleanNumber.replace(/^(\+39|0039|39|0)/, "");
+    if (!national) return "unknown";
+    const firstDigit = national[0];
+    if (firstDigit === "3") return "mobile";
+    return "fixe";
+  }
+
+  if (cleanNumber.startsWith("+32") || cleanNumber.startsWith("32")) {
+    const national = cleanNumber.replace(/^(\+32|0032|32|0)/, "");
+    if (!national) return "unknown";
+    const firstDigit = national[0];
+    if (firstDigit === "4") return "mobile";
+    return "fixe";
+  }
+
+  if (cleanNumber.startsWith("+34") || cleanNumber.startsWith("34")) {
+    const national = cleanNumber.replace(/^(\+34|0034|34)/, "");
+    if (!national) return "unknown";
+    const firstDigit = national[0];
+    if (["6", "7"].includes(firstDigit)) return "mobile";
+    return "fixe";
+  }
+
+  if (cleanNumber.startsWith("+212") || cleanNumber.startsWith("212")) {
+    const national = cleanNumber.replace(/^(\+212|00212|212|0)/, "");
+    if (!national) return "unknown";
+    const firstDigit = national[0];
+    if (["6", "7"].includes(firstDigit)) return "mobile";
+    if (firstDigit === "5") return "fixe";
+    return "unknown";
+  }
+
+  if (cleanNumber.startsWith("+216") || cleanNumber.startsWith("216")) {
+    const national = cleanNumber.replace(/^(\+216|00216|216)/, "");
+    if (!national) return "unknown";
+    const firstDigit = national[0];
+    if (["2", "4", "5", "9"].includes(firstDigit)) return "mobile";
+    if (firstDigit === "7") return "fixe";
+    return "unknown";
+  }
+
+  if (cleanNumber.startsWith("+44") || cleanNumber.startsWith("44")) {
+    const national = cleanNumber.replace(/^(\+44|0044|44|0)/, "");
+    if (!national) return "unknown";
+    const firstDigit = national[0];
+    if (firstDigit === "7") return "mobile";
+    return "fixe";
+  }
+
+  if (cleanNumber.startsWith("+1") || cleanNumber.startsWith("1")) {
+    return "unknown";
+  }
+
+  return "unknown";
+};
+
+export const separatePhoneTypes = (
+  phone: string
+): { mobile: string | null; fixe: string | null } => {
+  if (!phone) return { mobile: null, fixe: null };
+
+  const normalized = normalizePhoneForStorage(phone);
+  const type = detectPhoneType(normalized);
+
+  if (type === "mobile") {
+    return { mobile: normalized, fixe: null };
+  } else if (type === "fixe") {
+    return { mobile: null, fixe: normalized };
+  }
+
+  return { mobile: normalized, fixe: null };
+};
