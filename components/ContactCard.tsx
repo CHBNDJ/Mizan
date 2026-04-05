@@ -246,10 +246,10 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
             <Phone className="w-5 h-5 text-teal-600 group-hover:text-white transition-colors" />
           </div>
           <div className="flex-1">
-            <div className="text-xs font-medium text-slate-500 group-hover:text-teal-600 transition-colors uppercase tracking-wide">
+            <div className="text-xs font-medium text-slate-500 group-hover:text-teal-600 transition-colors tracking-wide">
               Fixe
             </div>
-            <div className="text-base font-semibold text-slate-900 mt-0.5">
+            <div className="text-sm font-semibold text-slate-900 mt-0.5">
               {formatPhoneForDisplay(fixe)}
             </div>
           </div>
@@ -265,10 +265,10 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
             <Smartphone className="w-5 h-5 text-teal-600 group-hover:text-white transition-colors" />
           </div>
           <div className="flex-1">
-            <div className="text-xs font-medium text-slate-500 group-hover:text-teal-600 transition-colors uppercase tracking-wide">
+            <div className="text-xs font-medium text-slate-500 group-hover:text-teal-600 transition-colors tracking-wide">
               Mobile
             </div>
-            <div className="text-base font-semibold text-slate-900 mt-0.5">
+            <div className="text-sm font-semibold text-slate-900 mt-0.5">
               {formatPhoneForDisplay(mobile)}
             </div>
           </div>
