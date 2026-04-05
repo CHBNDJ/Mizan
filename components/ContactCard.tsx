@@ -236,18 +236,20 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       {fixe && (
         <a
           href={`tel:${cleanPhoneForCall(fixe)}`}
-          className="group flex items-center gap-3 p-4 bg-white border-2 border-slate-200 hover:border-teal-500 rounded-xl transition-all duration-200"
+          className="group flex items-center gap-3 p-4 bg-white border border-slate-200 hover:border-teal-500 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5"
         >
-          <Phone className="w-5 h-5 text-slate-400 group-hover:text-teal-600 transition-colors flex-shrink-0" />
+          <div className="w-11 h-11 bg-teal-50 group-hover:bg-teal-600 rounded-xl flex items-center justify-center transition-colors shadow-sm flex-shrink-0">
+            <Phone className="w-5 h-5 text-teal-600 group-hover:text-white transition-colors" />
+          </div>
           <div className="flex-1">
-            <div className="text-xs text-slate-500 font-medium mb-0.5">
+            <div className="text-xs font-medium text-slate-500 group-hover:text-teal-600 transition-colors uppercase tracking-wide">
               Fixe
             </div>
-            <div className="text-base font-bold text-slate-900">
+            <div className="text-base font-semibold text-slate-900 mt-0.5">
               {formatPhoneForDisplay(fixe)}
             </div>
           </div>
@@ -257,14 +259,16 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
       {mobile && (
         <a
           href={`tel:${cleanPhoneForCall(mobile)}`}
-          className="group flex items-center gap-3 p-4 bg-white border-2 border-slate-200 hover:border-teal-500 rounded-xl transition-all duration-200"
+          className="group flex items-center gap-3 p-4 bg-white border border-slate-200 hover:border-teal-500 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5"
         >
-          <Smartphone className="w-5 h-5 text-slate-400 group-hover:text-teal-600 transition-colors flex-shrink-0" />
+          <div className="w-11 h-11 bg-teal-50 group-hover:bg-teal-600 rounded-xl flex items-center justify-center transition-colors shadow-sm flex-shrink-0">
+            <Smartphone className="w-5 h-5 text-teal-600 group-hover:text-white transition-colors" />
+          </div>
           <div className="flex-1">
-            <div className="text-xs text-slate-500 font-medium mb-0.5">
+            <div className="text-xs font-medium text-slate-500 group-hover:text-teal-600 transition-colors uppercase tracking-wide">
               Mobile
             </div>
-            <div className="text-base font-bold text-slate-900">
+            <div className="text-base font-semibold text-slate-900 mt-0.5">
               {formatPhoneForDisplay(mobile)}
             </div>
           </div>
@@ -276,10 +280,10 @@ export function ContactCard({ allPhoneNumbers }: ContactCardProps) {
           href={`https://wa.me/${cleanPhoneForWhatsApp(mobile)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#20BA5A] text-white py-3.5 px-4 rounded-xl transition-all duration-200 font-semibold shadow-sm hover:shadow-md"
+          className="flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#20BA5A] text-white py-4 px-4 rounded-xl transition-all duration-200 font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5"
         >
           <FaWhatsapp className="w-5 h-5" />
-          <span>WhatsApp</span>
+          <span>Contacter sur WhatsApp</span>
         </a>
       )}
     </div>
