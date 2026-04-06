@@ -62,44 +62,19 @@ serve(async (req: Request) => {
     const supabaseAdmin = createClient(supabaseUrl, serviceKey);
     const userId = user.id;
 
-    const { error: authDeleteError } =
-      await supabaseAdmin.auth.admin.deleteUser(userId);
-
-    if (authDeleteError) {
-      console.error("❌ Erreur suppression auth:", authDeleteError);
-      throw new Error(`Erreur suppression compte: ${authDeleteError.message}`);
-    }
-
-    console.log("✅ Compte auth supprimé avec succès");
-
-    const { data: userCheck } = await supabaseAdmin
+    const { error: softDeleteError } = await supabaseAdmin
       .from("users")
-      .select("id")
-      .eq("id", userId)
-      .maybeSingle();
+      .update({ deleted_at: new Date().toISOString() })
+      .eq("id", userId);
 
-    const { data: lawyerCheck } = await supabaseAdmin
-      .from("lawyers")
-      .select("id")
-      .eq("id", userId)
-      .maybeSingle();
-
-    if (userCheck || lawyerCheck) {
-      console.warn("⚠️ Les tables n'ont pas été vidées par CASCADE");
-
-      await supabaseAdmin
-        .from("user_preferences")
-        .delete()
-        .eq("user_id", userId);
-      await supabaseAdmin.from("notifications").delete().eq("user_id", userId);
-      await supabaseAdmin.from("lawyers").delete().eq("id", userId);
-      await supabaseAdmin.from("users").delete().eq("id", userId);
+    if (softDeleteError) {
+      throw new Error(`Erreur suppression compte: ${softDeleteError.message}`);
     }
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: "Compte supprimé définitivement",
+        message: "Compte supprimé avec succès",
         userId: userId,
       }),
       {
@@ -107,8 +82,6 @@ serve(async (req: Request) => {
       }
     );
   } catch (error: any) {
-    console.error("💥 Erreur:", error.message);
-
     return new Response(
       JSON.stringify({
         success: false,
