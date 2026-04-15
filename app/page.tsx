@@ -204,18 +204,18 @@ export default function HomePage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden w-full">
       <style>{`
-        .hero-title,
-        .hero-subtitle,
-        .hero-form,
-        .stat-card,
-        .avocats-title,
-        .avocats-subtitle,
-        .avocat-card,
-        .avocats-btn,
-        .cta-section {
-          opacity: 0;
-        }
-      `}</style>
+  .hero-title,
+  .hero-subtitle,
+  .hero-form,
+  .stat-card,
+  .avocats-title,
+  .avocats-subtitle,
+  .avocat-card,
+  .avocats-btn,
+  .cta-section {
+    opacity: 0;
+  }
+`}</style>
 
       <section className="hero-section py-16 px-4">
         <div className="max-w-6xl mx-auto text-center">
