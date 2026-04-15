@@ -584,8 +584,7 @@ export default function HomePage() {
         .avocats-subtitle,
         .avocat-card,
         .avocats-btn,
-        .cta-title,
-        .cta-subtitle {
+        .cta-section {
           opacity: 0;
         }
       `}</style>
