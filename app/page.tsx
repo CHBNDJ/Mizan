@@ -93,21 +93,32 @@ export default function HomePage() {
       }
     );
 
-    gsap.fromTo(
-      ".cta-section",
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
+    gsap
+      .timeline({
+        defaults: { ease: "power3.out" },
         scrollTrigger: {
           trigger: ".cta-section",
           start: "top 80%",
           toggleActions: "play none none none",
         },
-      }
-    );
+      })
+      .fromTo(
+        ".cta-section",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8 }
+      )
+      .fromTo(
+        ".cta-title",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8 },
+        "-=0.4"
+      )
+      .fromTo(
+        ".cta-subtitle",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8 },
+        "-=0.5"
+      );
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -212,7 +223,9 @@ export default function HomePage() {
         .avocats-subtitle,
         .avocat-card,
         .avocats-btn,
-        .cta-section {
+        .cta-section,
+        .cta-title,
+        .cta-subtitle {
           opacity: 0;
         }
       `}</style>
@@ -357,10 +370,10 @@ export default function HomePage() {
 
       <section className="cta-section py-12 bg-teal-500">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+          <h2 className="cta-title text-2xl sm:text-3xl font-bold text-white mb-4">
             Vous êtes avocat ?
           </h2>
-          <p className="text-lg sm:text-xl text-teal-100 mb-8">
+          <p className="cta-subtitle text-lg sm:text-xl text-teal-100 mb-8">
             Rejoignez notre plateforme et développez votre clientèle
           </p>
           <Link href="/auth/lawyer/register">
