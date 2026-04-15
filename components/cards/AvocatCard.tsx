@@ -190,43 +190,71 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
   const router = useRouter();
 
   const handleClick = () => {
-    const params = new URLSearchParams(searchParams);
-    router.push(`/avocat/${avocat.id}?${params.toString()}`);
+    router.push(`/avocat/${avocat.id}`);
   };
 
   const getInitiales = () => {
-    const nom = avocat.nom || "";
     const prenom = avocat.prenom || "";
+    const nom = avocat.nom || "";
     return `${prenom.charAt(0)}${nom.charAt(0)}`.toUpperCase();
   };
 
   const rating = avocat.rating_google || avocat.rating_mizan || 0;
+  const specialites = avocat.specialites || [];
+  const autresSpecialites = specialites.length > 1 ? specialites.length - 1 : 0;
 
   return (
     <div
       onClick={handleClick}
       className="bg-white border border-slate-200 rounded-xl p-4 cursor-pointer transition-all duration-200 hover:border-slate-300 hover:-translate-y-1 hover:shadow-md"
     >
-      <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center font-medium text-base text-teal-700 mb-3">
-        {getInitiales()}
+      <div className="relative w-12 h-12 mb-3">
+        {avocat.avatar_url ? (
+          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-teal-100">
+            <img
+              src={avocat.avatar_url}
+              alt={`${avocat.prenom} ${avocat.nom}`}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = "none";
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.innerHTML = `<div class="w-full h-full bg-teal-100 flex items-center justify-center font-medium text-base text-teal-700">${getInitiales()}</div>`;
+                }
+              }}
+            />
+          </div>
+        ) : (
+          <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center font-medium text-base text-teal-700">
+            {getInitiales()}
+          </div>
+        )}
       </div>
 
       <div className="text-[15px] font-medium text-slate-800 mb-1 truncate">
         {avocat.prenom} {avocat.nom}
       </div>
 
-      <div className="text-xs text-slate-600 mb-2 truncate">
-        {avocat.specialites?.[0] || "Avocat"}
+      <div className="flex items-center gap-1.5 mb-2 min-h-[20px]">
+        <div className="text-xs text-slate-600 truncate flex-1">
+          {specialites[0] || "Avocat"}
+        </div>
+        {autresSpecialites > 0 && (
+          <div className="flex-shrink-0 bg-teal-100 text-teal-700 text-[10px] font-medium px-1.5 py-0.5 rounded">
+            +{autresSpecialites}
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-1 text-xs text-slate-500 mb-2">
-        <MapPin className="w-3 h-3" />
-        <span>{avocat.wilaya}</span>
+        <MapPin className="w-3 h-3 flex-shrink-0" />
+        <span className="truncate">{avocat.wilaya}</span>
       </div>
 
       {rating > 0 && (
         <div className="flex items-center gap-1 text-[13px] font-medium text-slate-800">
-          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 flex-shrink-0" />
           <span>{rating.toFixed(1)}</span>
         </div>
       )}
