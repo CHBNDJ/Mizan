@@ -98,7 +98,7 @@ export default function HomePage() {
         defaults: { ease: "power3.out" },
         scrollTrigger: {
           trigger: ".cta-section",
-          start: "top 80%",
+          start: "top 95%",
           toggleActions: "play none none none",
         },
       })
