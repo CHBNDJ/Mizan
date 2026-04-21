@@ -476,7 +476,7 @@ export default function ClientRegisterPage() {
             </button>
           </form>
 
-          <div className="text-center mt-6 pt-6 border-t border-slate-100">
+          <div className="flex items-center justify-between mt-6">
             <div className="flex flex-col gap-2 sm:block">
               <span className="text-sm text-slate-600">
                 Vous avez déjà un compte ?
