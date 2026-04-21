@@ -228,6 +228,7 @@ export function Navigation() {
         ]
       : []),
     { href: "/howitworks", label: "Comment ça marche" },
+    { href: "/faq", label: "FAQ" },
   ];
 
   return (
