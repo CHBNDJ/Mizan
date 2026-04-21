@@ -445,7 +445,7 @@ export default function ClientRegisterPage() {
               >
                 J'accepte les{" "}
                 <Link
-                  href="/terms"
+                  href="/cgu"
                   className="text-teal-600 hover:text-teal-700 underline"
                 >
                   conditions d'utilisation

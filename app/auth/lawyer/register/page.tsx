@@ -1032,7 +1032,7 @@ export default function LawyerRegisterPage() {
 
           {renderStep()}
 
-          <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-100">
+          <div className="flex items-center justify-between mt-6">
             <button
               type="button"
               onClick={handleBack}
