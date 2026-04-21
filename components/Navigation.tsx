@@ -235,7 +235,7 @@ export function Navigation() {
     <>
       <nav className="fixed top-0 left-0 right-0 z-[999] backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex md:grid md:grid-cols-[auto_1fr_auto] items-center justify-between md:justify-normal h-16 w-full">
+          <div className="flex md:grid md:grid-cols-[1fr_auto_1fr] items-center justify-between md:justify-normal h-16 w-full">
             <Link href="/" className="flex items-center gap-3 group">
               <Scale className="h-8 w-8 text-teal-600 transition-transform group-hover:rotate-12" />
               <span className="text-xl font-bold text-slate-800">MIZAN</span>
