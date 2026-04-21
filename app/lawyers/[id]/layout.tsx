@@ -43,15 +43,23 @@ export async function generateMetadata({
       };
     }
 
-    const specialite = lawyer.specializations?.[0] || "Droit général";
+    const specialisationsArray: string[] = Array.isArray(lawyer.specializations)
+      ? lawyer.specializations
+      : [];
 
-    const ville = lawyer.wilayas?.[0] || "Algérie";
+    const specialite = specialisationsArray[0] || "Droit général";
+
+    const wilayasArray: string[] = Array.isArray(lawyer.wilayas)
+      ? lawyer.wilayas
+      : [];
+
+    const ville = wilayasArray[0] || user.location || "Algérie";
 
     return generateAvocatMetadata(
       {
         prenom: user.first_name || "",
         nom: user.last_name || "",
-        specialites: specialite,
+        specialites: [specialite],
         ville: ville,
         barreau: ville,
         bio: lawyer.bio,
