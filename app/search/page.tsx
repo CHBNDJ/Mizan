@@ -658,9 +658,9 @@ function SearchResults() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6">
           <aside className="sidebar lg:sticky lg:top-36 lg:self-start">
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-5">
+            <div className="bg-white shadow-sm rounded-xl p-4 space-y-5">
               <div>
-                <p className="text-xs font-semibold text-slate-300 uppercase tracking-wide mb-2">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                   Expérience minimum
                 </p>
                 <div className="relative z-30">
@@ -674,13 +674,13 @@ function SearchResults() {
                         value ? parseInt(value) : undefined
                       )
                     }
-                    className="h-9 text-sm bg-white"
+                    className="h-9 text-sm"
                   />
                 </div>
               </div>
 
-              <div className="border-t border-slate-700 pt-4">
-                <p className="text-xs font-semibold text-slate-300 uppercase tracking-wide mb-2">
+              <div className="border-t border-slate-100 pt-4">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                   Genre
                 </p>
                 <div className="relative z-20">
@@ -691,13 +691,13 @@ function SearchResults() {
                     onChange={(value) =>
                       handleFilterChange("genre", value || undefined)
                     }
-                    className="h-9 text-sm bg-white"
+                    className="h-9 text-sm"
                   />
                 </div>
               </div>
 
-              <div className="border-t border-slate-700 pt-4">
-                <p className="text-xs font-semibold text-slate-300 uppercase tracking-wide mb-2">
+              <div className="border-t border-slate-100 pt-4">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                   Langue
                 </p>
                 <div className="relative z-10">
@@ -708,16 +708,16 @@ function SearchResults() {
                     onChange={(value) =>
                       handleFilterChange("langues", value || undefined)
                     }
-                    className="h-9 text-sm bg-white"
+                    className="h-9 text-sm"
                   />
                 </div>
               </div>
 
               {hasAdditionalFilters && (
-                <div className="border-t border-slate-700 pt-4">
+                <div className="border-t border-slate-100 pt-4">
                   <button
                     onClick={clearFilters}
-                    className="w-full text-xs text-slate-300 hover:text-white py-2 px-3 border border-slate-600 rounded-lg bg-slate-700 hover:bg-slate-600 transition-all cursor-pointer font-medium"
+                    className="w-full text-xs text-slate-500 hover:text-slate-700 py-2 px-3 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 transition-all cursor-pointer font-medium"
                   >
                     Réinitialiser les filtres
                   </button>
