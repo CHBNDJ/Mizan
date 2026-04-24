@@ -635,46 +635,48 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center flex flex-col items-center justify-center">
-                <AnimatedCounter
-                  end={stats.total_avocats}
-                  duration={2000}
-                  className="text-3xl font-bold text-teal-600 mb-2"
-                />
-                <div className="text-slate-600 font-medium text-sm">
-                  Avocats inscrits
+            <div className="flex justify-center items-center h-full">
+              <div className="grid grid-cols-2 gap-4 w-full max-w-sm lg:max-w-md">
+                <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
+                  <AnimatedCounter
+                    end={stats.total_avocats}
+                    duration={2000}
+                    className="text-3xl font-bold text-teal-600 mb-2"
+                  />
+                  <div className="text-slate-600 font-medium text-sm">
+                    Avocats inscrits
+                  </div>
                 </div>
-              </div>
-              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center flex flex-col items-center justify-center">
-                <AnimatedCounter
-                  end={wilayas.length}
-                  duration={2000}
-                  className="text-3xl font-bold text-teal-600 mb-2"
-                />
-                <div className="text-slate-600 font-medium text-sm">
-                  Wilayas couvertes
+                <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
+                  <AnimatedCounter
+                    end={wilayas.length}
+                    duration={2000}
+                    className="text-3xl font-bold text-teal-600 mb-2"
+                  />
+                  <div className="text-slate-600 font-medium text-sm">
+                    Wilayas couvertes
+                  </div>
                 </div>
-              </div>
-              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center flex flex-col items-center justify-center">
-                <AnimatedCounter
-                  end={specialites.length}
-                  duration={2000}
-                  className="text-3xl font-bold text-teal-600 mb-2"
-                />
-                <div className="text-slate-600 font-medium text-sm">
-                  Spécialités juridiques
+                <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
+                  <AnimatedCounter
+                    end={specialites.length}
+                    duration={2000}
+                    className="text-3xl font-bold text-teal-600 mb-2"
+                  />
+                  <div className="text-slate-600 font-medium text-sm">
+                    Spécialités juridiques
+                  </div>
                 </div>
-              </div>
-              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center flex flex-col items-center justify-center">
-                <AnimatedCounter
-                  end={stats.pourcentage_verification}
-                  duration={2000}
-                  suffix="%"
-                  className="text-3xl font-bold text-teal-600 mb-2"
-                />
-                <div className="text-slate-600 font-medium text-sm">
-                  Taux de vérification
+                <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
+                  <AnimatedCounter
+                    end={stats.pourcentage_verification}
+                    duration={2000}
+                    suffix="%"
+                    className="text-3xl font-bold text-teal-600 mb-2"
+                  />
+                  <div className="text-slate-600 font-medium text-sm">
+                    Taux de vérification
+                  </div>
                 </div>
               </div>
             </div>
