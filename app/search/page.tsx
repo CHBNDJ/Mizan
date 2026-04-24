@@ -594,6 +594,13 @@ function SearchResults() {
 
   const hasAdditionalFilters = activeFilters.length > 0;
 
+  const specialitesLabel =
+    specialitesURL.length > 1
+      ? `${specialitesURL.length} spécialités sélectionnées`
+      : specialitesURL.length === 1
+        ? specialitesURL[0]
+        : "Tous les avocats";
+
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`.search-header, .sidebar, .search-avocat-card { opacity: 0; }`}</style>
@@ -611,9 +618,7 @@ function SearchResults() {
 
           <div className="flex items-center gap-2 flex-wrap flex-1">
             <span className="text-sm font-semibold text-slate-800">
-              {specialitesURL.length > 0
-                ? specialitesURL.join(", ")
-                : "Tous les avocats"}
+              {specialitesLabel}
             </span>
             {wilayaURL && (
               <span className="text-sm text-slate-400">· {wilayaURL}</span>
@@ -658,12 +663,29 @@ function SearchResults() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6">
           <aside className="sidebar lg:sticky lg:top-36 lg:self-start">
-            <div className="bg-white shadow-sm rounded-xl p-4 space-y-5">
+            <div className="bg-white shadow-sm rounded-xl p-4 space-y-4">
+              <div>
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                  Genre
+                </p>
+                <div className="relative z-30">
+                  <CustomSelect
+                    options={genreOptions}
+                    placeholder="Tous"
+                    value={filters.genre || ""}
+                    onChange={(value) =>
+                      handleFilterChange("genre", value || undefined)
+                    }
+                    className="h-9 text-sm"
+                  />
+                </div>
+              </div>
+
               <div>
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                   Expérience minimum
                 </p>
-                <div className="relative z-30">
+                <div className="relative z-20">
                   <CustomSelect
                     options={experienceOptions}
                     placeholder="Tous niveaux"
@@ -679,24 +701,7 @@ function SearchResults() {
                 </div>
               </div>
 
-              <div className="border-t border-slate-100 pt-4">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
-                  Genre
-                </p>
-                <div className="relative z-20">
-                  <CustomSelect
-                    options={genreOptions}
-                    placeholder="Tous"
-                    value={filters.genre || ""}
-                    onChange={(value) =>
-                      handleFilterChange("genre", value || undefined)
-                    }
-                    className="h-9 text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="border-t border-slate-100 pt-4">
+              <div>
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                   Langue
                 </p>
@@ -714,7 +719,7 @@ function SearchResults() {
               </div>
 
               {hasAdditionalFilters && (
-                <div className="border-t border-slate-100 pt-4">
+                <div className="pt-2">
                   <button
                     onClick={clearFilters}
                     className="w-full text-xs text-slate-500 hover:text-slate-700 py-2 px-3 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 transition-all cursor-pointer font-medium"
