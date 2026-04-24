@@ -466,9 +466,9 @@ export default function HomePage() {
       )
       .fromTo(
         ".hero-stats",
-        { opacity: 0, x: 50 },
-        { opacity: 1, x: 0, duration: 0.8, stagger: 0.1 },
-        "-=0.6"
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
+        "-=0.3"
       );
 
     gsap.fromTo(
@@ -583,7 +583,7 @@ export default function HomePage() {
 
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
             <div>
               <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 mb-6 leading-tight text-center lg:text-left">
                 Besoin d'un avocat en Algérie ?
@@ -634,49 +634,48 @@ export default function HomePage() {
                 </form>
               </div>
             </div>
-            <div className="flex justify-center items-center h-full">
-              <div className="grid grid-cols-2 gap-4 w-full">
-                <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
-                  <AnimatedCounter
-                    end={stats.total_avocats}
-                    duration={2000}
-                    className="text-3xl font-bold text-teal-600 mb-2"
-                  />
-                  <div className="text-slate-600 font-medium text-sm">
-                    Avocats inscrits
-                  </div>
-                </div>
-                <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
-                  <AnimatedCounter
-                    end={wilayas.length}
-                    duration={2000}
-                    className="text-3xl font-bold text-teal-600 mb-2"
-                  />
-                  <div className="text-slate-600 font-medium text-sm">
-                    Wilayas couvertes
-                  </div>
-                </div>
-                <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
-                  <AnimatedCounter
-                    end={specialites.length}
-                    duration={2000}
-                    className="text-3xl font-bold text-teal-600 mb-2"
-                  />
-                  <div className="text-slate-600 font-medium text-sm">
-                    Spécialités juridiques
-                  </div>
-                </div>
-                <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
-                  <AnimatedCounter
-                    end={stats.pourcentage_verification}
-                    duration={2000}
-                    suffix="%"
-                    className="text-3xl font-bold text-teal-600 mb-2"
-                  />
-                  <div className="text-slate-600 font-medium text-sm">
-                    Taux de vérification
-                  </div>
-                </div>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
+              <AnimatedCounter
+                end={stats.total_avocats}
+                duration={2000}
+                className="text-3xl font-bold text-teal-600 mb-2"
+              />
+              <div className="text-slate-600 font-medium text-sm">
+                Avocats inscrits
+              </div>
+            </div>
+            <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
+              <AnimatedCounter
+                end={wilayas.length}
+                duration={2000}
+                className="text-3xl font-bold text-teal-600 mb-2"
+              />
+              <div className="text-slate-600 font-medium text-sm">
+                Wilayas couvertes
+              </div>
+            </div>
+            <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
+              <AnimatedCounter
+                end={specialites.length}
+                duration={2000}
+                className="text-3xl font-bold text-teal-600 mb-2"
+              />
+              <div className="text-slate-600 font-medium text-sm">
+                Spécialités juridiques
+              </div>
+            </div>
+            <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
+              <AnimatedCounter
+                end={stats.pourcentage_verification}
+                duration={2000}
+                suffix="%"
+                className="text-3xl font-bold text-teal-600 mb-2"
+              />
+              <div className="text-slate-600 font-medium text-sm">
+                Taux de vérification
               </div>
             </div>
           </div>
