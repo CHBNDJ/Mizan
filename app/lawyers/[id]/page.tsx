@@ -198,6 +198,22 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     avocat.rating_google || avocat.rating_mizan
   );
 
+  const consultationButton = (
+    <button
+      onClick={() => {
+        if (!user || profile?.user_type !== "client") {
+          router.push("/auth/client/register");
+          return;
+        }
+        setIsConsultationModalOpen(true);
+      }}
+      className="cursor-pointer w-full bg-teal-600 hover:bg-teal-700 text-white transition-all duration-200 py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 font-semibold text-sm shadow-sm"
+    >
+      <MessageCircle className="w-4 h-4" />
+      Demander une consultation
+    </button>
+  );
+
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden w-full">
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -211,7 +227,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 items-start">
-          <div className="flex flex-col gap-3">
+          <div className="order-1 lg:order-none flex flex-col gap-3">
             <div className="profile-photo-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
               <div className="relative w-full aspect-[3/4] bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center">
                 {avocat.avatar_url ? (
@@ -431,21 +447,8 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             )}
 
             {(!user || profile?.user_type === "client") && !isOwnProfile && (
-              <div className="profile-action-cards opacity-0 invisible">
-                <button
-                  onClick={() => {
-                    if (!user || profile?.user_type !== "client") {
-                      router.push("/auth/client/register");
-                      return;
-                    }
-                    setIsConsultationModalOpen(true);
-                  }}
-                  className="cursor-pointer w-full bg-teal-600 hover:bg-teal-700 text-white transition-all duration-200 py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 font-semibold text-sm shadow-sm"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  Demander une consultation
-                </button>
-
+              <div className="profile-action-cards opacity-0 invisible hidden lg:block">
+                {consultationButton}
                 {user && profile?.user_type === "client" && (
                   <div className="mt-3">
                     <ContactCard
@@ -464,7 +467,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             )}
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="order-2 lg:order-none flex flex-col gap-4">
             {avocat.specialites && avocat.specialites.length > 0 && (
               <Card className="profile-content-cards opacity-0 invisible shadow-sm">
                 <CardHeader>
@@ -557,6 +560,24 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 </div>
               </CardContent>
             </Card>
+
+            {(!user || profile?.user_type === "client") && !isOwnProfile && (
+              <div className="profile-content-cards opacity-0 invisible lg:hidden flex flex-col gap-3">
+                {consultationButton}
+                {user && profile?.user_type === "client" && (
+                  <ContactCard
+                    allPhoneNumbers={[
+                      ...(avocat.contact?.telephone
+                        ?.split(",")
+                        .map((n) => n.trim()) || []),
+                      ...(avocat.contact?.mobile
+                        ?.split(",")
+                        .map((n) => n.trim()) || []),
+                    ].filter(Boolean)}
+                  />
+                )}
+              </div>
+            )}
           </div>
         </div>
 
