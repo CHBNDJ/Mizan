@@ -585,10 +585,10 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 mb-6 leading-tight">
+              <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 mb-6 leading-tight text-center lg:text-left">
                 Besoin d'un avocat en Algérie ?
               </h1>
-              <p className="hero-sub text-base sm:text-xl text-slate-600 mb-8 leading-relaxed">
+              <p className="hero-sub text-base sm:text-xl text-slate-600 mb-8 leading-relaxed text-center lg:text-left">
                 Trouvez l'avocat qui vous convient selon votre besoin juridique
                 et votre localisation.{" "}
                 <strong className="font-bold text-teal-600">
@@ -636,7 +636,7 @@ export default function HomePage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center">
+              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center flex flex-col items-center justify-center">
                 <AnimatedCounter
                   end={stats.total_avocats}
                   duration={2000}
@@ -646,7 +646,7 @@ export default function HomePage() {
                   Avocats inscrits
                 </div>
               </div>
-              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center">
+              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center flex flex-col items-center justify-center">
                 <AnimatedCounter
                   end={wilayas.length}
                   duration={2000}
@@ -656,7 +656,7 @@ export default function HomePage() {
                   Wilayas couvertes
                 </div>
               </div>
-              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center">
+              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center flex flex-col items-center justify-center">
                 <AnimatedCounter
                   end={specialites.length}
                   duration={2000}
@@ -666,7 +666,7 @@ export default function HomePage() {
                   Spécialités juridiques
                 </div>
               </div>
-              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center">
+              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center flex flex-col items-center justify-center">
                 <AnimatedCounter
                   end={stats.pourcentage_verification}
                   duration={2000}
