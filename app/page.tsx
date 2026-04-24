@@ -449,26 +449,26 @@ export default function HomePage() {
     heroTL
       .fromTo(
         ".hero-title",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.7 }
+        { opacity: 0, x: -50 },
+        { opacity: 1, x: 0, duration: 0.8 }
       )
       .fromTo(
         ".hero-sub",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6 },
-        "-=0.4"
+        { opacity: 0, x: -50 },
+        { opacity: 1, x: 0, duration: 0.8 },
+        "-=0.5"
       )
       .fromTo(
         ".hero-form",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6 },
-        "-=0.4"
+        { opacity: 0, x: -50 },
+        { opacity: 1, x: 0, duration: 0.8 },
+        "-=0.5"
       )
       .fromTo(
         ".hero-stats",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.5 },
-        "-=0.2"
+        { opacity: 0, x: 50 },
+        { opacity: 1, x: 0, duration: 0.8, stagger: 0.1 },
+        "-=0.6"
       );
 
     gsap.fromTo(
@@ -482,23 +482,6 @@ export default function HomePage() {
         scrollTrigger: {
           trigger: ".steps-section",
           start: "top 85%",
-          toggleActions: "play none none none",
-        },
-      }
-    );
-
-    gsap.fromTo(
-      ".avocat-card",
-      { opacity: 0, y: 20 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".avocats-section",
-          start: "top 75%",
           toggleActions: "play none none none",
         },
       }
@@ -524,24 +507,57 @@ export default function HomePage() {
   }, []);
 
   useLayoutEffect(() => {
-    if (topAvocats.length === 0) return;
+    if (topAvocats.length === 0 && wilayas.length === 0) return;
+
     gsap.fromTo(
-      ".avocat-card",
-      { opacity: 0, y: 20 },
+      ".avocats-title",
+      { opacity: 0, x: -50 },
       {
         opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: "power2.out",
+        x: 0,
+        duration: 0.8,
+        ease: "power3.out",
         scrollTrigger: {
           trigger: ".avocats-section",
-          start: "top 75%",
+          start: "top 80%",
           toggleActions: "play none none none",
         },
       }
     );
-  }, [topAvocats]);
+
+    gsap.fromTo(
+      ".avocat-card",
+      { opacity: 0, x: -30 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 1,
+        stagger: 0.08,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".avocats-section",
+          start: "top 60%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
+
+    gsap.fromTo(
+      ".avocats-btn",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".avocats-btn",
+          start: "top 90%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
+  }, [topAvocats, wilayas]);
 
   const specialiteOptions = specialites.map((s) => ({ value: s, label: s }));
   const wilayaOptions = wilayas.map((w) => ({ value: w, label: w }));
@@ -561,178 +577,167 @@ export default function HomePage() {
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden w-full">
       <style>{`
         .hero-title, .hero-sub, .hero-form, .hero-stats,
-        .steps-section, .cta-cards { opacity: 0; }
+        .steps-section, .avocats-title, .avocat-card,
+        .avocats-btn, .cta-cards { opacity: 0; }
       `}</style>
 
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="hero-title text-3xl sm:text-4xl font-bold text-slate-800 mb-5 leading-tight">
+              <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 mb-6 leading-tight">
                 Besoin d'un avocat en Algérie ?
               </h1>
-              <p className="hero-sub text-base sm:text-lg text-slate-600 mb-8 leading-relaxed">
+              <p className="hero-sub text-base sm:text-xl text-slate-600 mb-8 leading-relaxed">
                 Trouvez l'avocat qui vous convient selon votre besoin juridique
                 et votre localisation.{" "}
-                <strong className="text-teal-600 font-semibold">
+                <strong className="font-bold text-teal-600">
                   Que vous soyez en Algérie ou à l'étranger
                 </strong>
                 , avec Mizan, c'est simple, rapide et sécurisé.
               </p>
 
-              <div className="hero-form bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
-                <p className="text-xs text-slate-500 mb-3 font-medium uppercase tracking-wide">
-                  Rechercher un avocat
-                </p>
-                <form onSubmit={handleSearch} className="space-y-3">
+              <div className="hero-form bg-white rounded-2xl shadow-lg p-6">
+                <form onSubmit={handleSearch} className="space-y-4">
                   <div className="relative z-30">
                     <MultiSelectWithCheckboxes
-                      placeholder="Spécialité juridique..."
+                      placeholder="Choisir les spécialités..."
                       options={specialiteOptions}
                       value={selectedSpecialites}
                       onChange={setSelectedSpecialites}
-                      className="h-11"
+                      className="h-12"
                     />
                   </div>
                   <div className="relative z-20">
                     {loading ? (
-                      <div className="h-11 bg-slate-100 rounded-lg animate-pulse" />
+                      <div className="h-12 bg-slate-100 rounded-lg animate-pulse" />
                     ) : (
                       <CustomSelect
-                        placeholder="Wilaya..."
+                        placeholder="Choisir une wilaya"
                         options={wilayaOptions}
                         value={selectedWilaya}
                         onChange={setSelectedWilaya}
-                        className="h-11"
+                        className="h-12"
+                        size="large"
                         disabled={wilayaOptions.length === 0}
                       />
                     )}
                   </div>
                   <Button
                     type="submit"
-                    className="w-full h-11 bg-teal-600 hover:bg-teal-700 font-semibold"
+                    className="w-full h-12 px-8 bg-teal-600 hover:bg-teal-700 md:text-lg font-semibold whitespace-nowrap"
                     disabled={loading}
                   >
-                    <Search className="w-4 h-4 mr-2" />
+                    <Search className="w-5 h-5 mr-2" />
                     Rechercher des avocats
                   </Button>
                 </form>
               </div>
             </div>
 
-            <div className="hero-stats grid grid-cols-2 gap-3">
-              <div className="bg-white rounded-xl border border-slate-100 p-5 text-center">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center">
                 <AnimatedCounter
                   end={stats.total_avocats}
                   duration={2000}
-                  className="text-3xl font-bold text-teal-600 mb-1"
+                  className="text-3xl font-bold text-teal-600 mb-2"
                 />
-                <div className="text-sm text-slate-500">Avocats inscrits</div>
+                <div className="text-slate-600 font-medium text-sm">
+                  Avocats inscrits
+                </div>
               </div>
-              <div className="bg-white rounded-xl border border-slate-100 p-5 text-center">
+              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center">
                 <AnimatedCounter
                   end={wilayas.length}
                   duration={2000}
-                  className="text-3xl font-bold text-teal-600 mb-1"
+                  className="text-3xl font-bold text-teal-600 mb-2"
                 />
-                <div className="text-sm text-slate-500">Wilayas couvertes</div>
+                <div className="text-slate-600 font-medium text-sm">
+                  Wilayas couvertes
+                </div>
               </div>
-              <div className="bg-white rounded-xl border border-slate-100 p-5 text-center">
+              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center">
                 <AnimatedCounter
                   end={specialites.length}
                   duration={2000}
-                  className="text-3xl font-bold text-teal-600 mb-1"
+                  className="text-3xl font-bold text-teal-600 mb-2"
                 />
-                <div className="text-sm text-slate-500">
+                <div className="text-slate-600 font-medium text-sm">
                   Spécialités juridiques
                 </div>
               </div>
-              <div className="bg-white rounded-xl border border-slate-100 p-5 text-center">
+              <div className="hero-stats bg-white rounded-xl shadow-sm p-5 text-center">
                 <AnimatedCounter
                   end={stats.pourcentage_verification}
                   duration={2000}
                   suffix="%"
-                  className="text-3xl font-bold text-teal-600 mb-1"
+                  className="text-3xl font-bold text-teal-600 mb-2"
                 />
-                <div className="text-sm text-slate-500">
+                <div className="text-slate-600 font-medium text-sm">
                   Taux de vérification
                 </div>
-              </div>
-              <div className="col-span-2 bg-teal-50 border border-teal-100 rounded-xl p-4">
-                <p className="text-sm text-teal-700 leading-relaxed">
-                  Vous ne connaissez pas d'avocat dans la wilaya dont vous avez
-                  besoin ? Mizan vous connecte aux bons spécialistes partout en
-                  Algérie — sans réseau, sans intermédiaire.
-                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="steps-section py-12 px-4 border-t border-slate-200/60">
+      <section className="steps-section py-12 px-4">
         <div className="max-w-6xl mx-auto">
-          <p className="text-xs font-semibold text-teal-600 uppercase tracking-widest mb-6 text-center">
-            Comment ça marche
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {[
-              {
-                n: "1",
-                title: "Cherchez",
-                desc: "Filtrez par spécialité et wilaya pour trouver le profil qui correspond à votre situation.",
-              },
-              {
-                n: "2",
-                title: "Comparez",
-                desc: "Consultez les avis, les spécialités et l'expérience de chaque avocat.",
-              },
-              {
-                n: "3",
-                title: "Contactez",
-                desc: "Envoyez une demande de consultation directement depuis le profil de l'avocat.",
-              },
-            ].map((step) => (
-              <div key={step.n} className="flex gap-4">
-                <div className="w-8 h-8 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-sm font-semibold text-teal-700 flex-shrink-0 mt-0.5">
-                  {step.n}
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-slate-800 mb-1">
-                    {step.title}
+          <div className="bg-white rounded-2xl shadow-sm p-8">
+            <h2 className="text-xl font-bold text-slate-800 mb-8 text-center">
+              Comment ça marche
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+              {[
+                {
+                  n: "1",
+                  title: "Cherchez",
+                  desc: "Filtrez par spécialité et wilaya pour trouver le profil qui correspond à votre situation.",
+                },
+                {
+                  n: "2",
+                  title: "Comparez",
+                  desc: "Consultez les avis, les spécialités et l'expérience de chaque avocat.",
+                },
+                {
+                  n: "3",
+                  title: "Contactez",
+                  desc: "Envoyez une demande de consultation directement depuis le profil de l'avocat.",
+                },
+              ].map((step) => (
+                <div key={step.n} className="flex gap-4">
+                  <div className="w-9 h-9 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-sm font-bold text-teal-700 flex-shrink-0 mt-0.5">
+                    {step.n}
                   </div>
-                  <div className="text-sm text-slate-500 leading-relaxed">
-                    {step.desc}
+                  <div>
+                    <div className="text-sm font-semibold text-slate-800 mb-1">
+                      {step.title}
+                    </div>
+                    <div className="text-sm text-slate-500 leading-relaxed">
+                      {step.desc}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {topAvocats.length > 0 && (
-        <section className="avocats-section py-12 px-4 border-t border-slate-200/60">
+        <section className="avocats-section pb-16 px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="flex items-baseline justify-between mb-6">
-              <div>
-                <p className="text-xs font-semibold text-teal-600 uppercase tracking-widest mb-1">
-                  Avocats les mieux notés
-                </p>
-                <p className="text-sm text-slate-500">
-                  Découvrez les avocats recommandés par notre communauté
-                </p>
-              </div>
-              <button
-                onClick={() => router.push("/search")}
-                className="hidden sm:inline-flex items-center gap-1 text-sm text-teal-600 hover:text-teal-700 transition-colors cursor-pointer"
-              >
-                Voir tous
-                <ArrowRight className="w-4 h-4" />
-              </button>
+            <div className="text-center mb-10">
+              <h2 className="avocats-title text-3xl font-bold text-slate-800 mb-3">
+                Avocats les mieux notés
+              </h2>
+              <p className="text-lg text-slate-600">
+                Découvrez les avocats recommandés par notre communauté
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
               {topAvocats.map((avocat) => (
                 <div key={avocat.id} className="avocat-card">
                   <AvocatCard avocat={avocat} />
@@ -740,56 +745,55 @@ export default function HomePage() {
               ))}
             </div>
 
-            <div className="text-center sm:hidden">
+            <div className="text-center avocats-btn">
               <button
+                className="text-teal-600 cursor-pointer items-center justify-center inline-flex hover:text-teal-700 transition-colors"
                 onClick={() => router.push("/search")}
-                className="inline-flex items-center gap-1 text-sm text-teal-600 hover:text-teal-700 transition-colors cursor-pointer"
               >
                 Voir tous les avocats
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 ml-2" />
               </button>
             </div>
           </div>
         </section>
       )}
 
-      <section className="py-12 px-4 border-t border-slate-200/60">
+      <section className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="cta-cards grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-white border border-slate-200 rounded-2xl p-6">
-              <span className="inline-block px-2.5 py-1 bg-teal-50 text-teal-700 text-xs font-medium rounded-full border border-teal-100 mb-4">
-                Algérie + diaspora
-              </span>
-              <h3 className="text-base font-semibold text-slate-800 mb-2">
-                Vous ne savez pas par où commencer ?
-              </h3>
-              <p className="text-sm text-slate-500 leading-relaxed mb-4">
-                À Alger, à Oran, ou depuis l'étranger — Mizan vous aide à
-                trouver le bon avocat sans réseau, sans recommandation, sans
-                intermédiaire.
-              </p>
+          <div className="cta-cards grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="bg-white rounded-2xl shadow-sm p-8 flex flex-col justify-between">
+              <div>
+                <h3 className="text-xl font-bold text-slate-800 mb-3">
+                  Vous cherchez un avocat ?
+                </h3>
+                <p className="text-slate-500 leading-relaxed mb-6">
+                  Que vous soyez en Algérie ou à l'étranger, parcourez les
+                  profils d'avocats vérifiés, comparez leurs spécialités et
+                  contactez-les directement.
+                </p>
+              </div>
               <button
                 onClick={() => router.push("/search")}
-                className="inline-flex items-center gap-1.5 text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-all cursor-pointer w-fit"
               >
                 Trouver un avocat
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="bg-teal-600 rounded-2xl p-6">
-              <span className="inline-block px-2.5 py-1 bg-teal-500 text-teal-50 text-xs font-medium rounded-full border border-teal-400 mb-4">
-                Avocats
-              </span>
-              <h3 className="text-base font-semibold text-white mb-2">
-                Vous êtes avocat ?
-              </h3>
-              <p className="text-sm text-teal-100 leading-relaxed mb-4">
-                Rejoignez la plateforme et soyez visible par des clients de
-                toute l'Algérie et de la diaspora. Inscription gratuite.
-              </p>
+            <div className="bg-teal-600 rounded-2xl p-8 flex flex-col justify-between">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3">
+                  Vous êtes avocat ?
+                </h3>
+                <p className="text-teal-100 leading-relaxed mb-6">
+                  Rejoignez notre plateforme, créez votre profil et soyez
+                  visible par des clients de toute l'Algérie et de la diaspora.
+                  Inscription gratuite.
+                </p>
+              </div>
               <Link href="/auth/lawyer/register">
-                <button className="inline-flex items-center gap-1.5 text-sm text-white hover:text-teal-100 font-medium transition-colors cursor-pointer">
+                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl transition-all cursor-pointer w-fit">
                   S'inscrire sur Mizan
                   <ChevronRight className="w-4 h-4" />
                 </button>
