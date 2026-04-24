@@ -581,61 +581,63 @@ export default function HomePage() {
         .avocats-btn, .cta-cards { opacity: 0; }
       `}</style>
 
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
-            <div>
-              <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 mb-6 leading-tight text-center lg:text-left">
-                Besoin d'un avocat en Algérie ?
-              </h1>
-              <p className="hero-sub text-base sm:text-xl text-slate-600 mb-8 leading-relaxed text-center lg:text-left">
-                Trouvez l'avocat qui vous convient selon votre besoin juridique
-                et votre localisation.{" "}
-                <strong className="font-bold text-teal-600">
-                  Que vous soyez en Algérie ou à l'étranger
-                </strong>
-                , avec Mizan, c'est simple, rapide et sécurisé.
-              </p>
+      <section className="relative z-10 py-16 px-4 overflow-visible">
+        <div className="max-w-3xl mx-auto text-center">
+          <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 mb-6 leading-tight">
+            Besoin d'un avocat en Algérie ?
+          </h1>
+          <p className="hero-sub text-base sm:text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
+            Trouvez l'avocat qui vous convient selon votre besoin juridique et
+            votre localisation.{" "}
+            <strong className="font-bold text-teal-600">
+              Que vous soyez en Algérie ou à l'étranger
+            </strong>
+            , avec Mizan, c'est simple, rapide et sécurisé.
+          </p>
 
-              <div className="hero-form bg-white rounded-2xl shadow-lg p-6">
-                <form onSubmit={handleSearch} className="space-y-4">
-                  <div className="relative z-30">
-                    <MultiSelectWithCheckboxes
-                      placeholder="Choisir les spécialités..."
-                      options={specialiteOptions}
-                      value={selectedSpecialites}
-                      onChange={setSelectedSpecialites}
+          <div className="hero-form bg-white rounded-2xl shadow-lg p-6 max-w-2xl mx-auto relative z-[200]">
+            <form onSubmit={handleSearch} className="space-y-4">
+              <div className="flex flex-col lg:flex-row gap-4">
+                <div className="flex-1 relative z-30">
+                  <MultiSelectWithCheckboxes
+                    placeholder="Choisir les spécialités..."
+                    options={specialiteOptions}
+                    value={selectedSpecialites}
+                    onChange={setSelectedSpecialites}
+                    className="h-12"
+                  />
+                </div>
+                <div className="lg:w-56 relative z-20">
+                  {loading ? (
+                    <div className="h-12 bg-slate-100 rounded-lg animate-pulse" />
+                  ) : (
+                    <CustomSelect
+                      placeholder="Choisir une wilaya"
+                      options={wilayaOptions}
+                      value={selectedWilaya}
+                      onChange={setSelectedWilaya}
                       className="h-12"
+                      size="large"
+                      disabled={wilayaOptions.length === 0}
                     />
-                  </div>
-                  <div className="relative z-20">
-                    {loading ? (
-                      <div className="h-12 bg-slate-100 rounded-lg animate-pulse" />
-                    ) : (
-                      <CustomSelect
-                        placeholder="Choisir une wilaya"
-                        options={wilayaOptions}
-                        value={selectedWilaya}
-                        onChange={setSelectedWilaya}
-                        className="h-12"
-                        size="large"
-                        disabled={wilayaOptions.length === 0}
-                      />
-                    )}
-                  </div>
-                  <Button
-                    type="submit"
-                    className="w-full h-12 px-8 bg-teal-600 hover:bg-teal-700 md:text-lg font-semibold whitespace-nowrap"
-                    disabled={loading}
-                  >
-                    <Search className="w-5 h-5 mr-2" />
-                    Rechercher des avocats
-                  </Button>
-                </form>
+                  )}
+                </div>
               </div>
-            </div>
+              <Button
+                type="submit"
+                className="w-full h-12 px-8 bg-teal-600 hover:bg-teal-700 md:text-lg font-semibold whitespace-nowrap"
+                disabled={loading}
+              >
+                <Search className="w-5 h-5 mr-2" />
+                Rechercher des avocats
+              </Button>
+            </form>
           </div>
+        </div>
+      </section>
 
+      <section className="relative z-0 px-4 pb-16">
+        <div className="max-w-3xl mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
               <AnimatedCounter
