@@ -566,13 +566,19 @@ function SearchResults() {
     { value: "femme", label: "Femme" },
   ];
 
+  const langueOptions = [
+    { value: "", label: "Toutes les langues" },
+    { value: "arabe", label: "Arabe" },
+    { value: "francais", label: "Français" },
+    { value: "anglais", label: "Anglais" },
+    { value: "tamazight", label: "Tamazight" },
+  ];
+
   const totalAvocats = avocats.length;
   const specialitesURL = searchParams.getAll("specialite");
   const wilayaURL = searchParams.get("wilaya");
 
   const activeFilters: { key: keyof SearchFilters; label: string }[] = [];
-  if (filters.wilaya)
-    activeFilters.push({ key: "wilaya", label: filters.wilaya });
   if (filters.genre)
     activeFilters.push({
       key: "genre",
@@ -586,11 +592,13 @@ function SearchResults() {
   if (filters.langues)
     activeFilters.push({ key: "langues", label: filters.langues });
 
+  const hasAdditionalFilters = activeFilters.length > 0;
+
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`.search-header, .sidebar, .search-avocat-card { opacity: 0; }`}</style>
 
-      <div className="search-header border-b border-slate-200/60 bg-white/60 backdrop-blur-sm">
+      <div className="search-header sticky top-16 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3">
           <Link href="/">
             <button className="flex items-center gap-1.5 text-teal-600 hover:text-teal-700 transition-colors cursor-pointer text-sm font-medium">
@@ -601,37 +609,40 @@ function SearchResults() {
 
           <div className="h-4 w-px bg-slate-200 hidden sm:block" />
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap flex-1">
             <span className="text-sm font-semibold text-slate-800">
               {specialitesURL.length > 0
-                ? `Avocats — ${specialitesURL.join(", ")}`
+                ? specialitesURL.join(", ")
                 : "Tous les avocats"}
             </span>
+            {wilayaURL && (
+              <span className="text-sm text-slate-400">· {wilayaURL}</span>
+            )}
             <span className="text-sm text-slate-400">
-              {totalAvocats} résultat{totalAvocats > 1 ? "s" : ""}
+              — {totalAvocats} résultat{totalAvocats > 1 ? "s" : ""}
             </span>
+
+            {activeFilters.map((f) => (
+              <span
+                key={f.key}
+                className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-50 text-teal-700 border border-teal-100 rounded-full text-xs font-medium"
+              >
+                {f.label}
+                <button
+                  onClick={() => removeFilter(f.key)}
+                  className="hover:text-teal-900 transition-colors cursor-pointer"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            ))}
           </div>
 
-          {activeFilters.map((f) => (
-            <span
-              key={f.key}
-              className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-50 text-teal-700 border border-teal-100 rounded-full text-xs font-medium"
-            >
-              {f.label}
-              <button
-                onClick={() => removeFilter(f.key)}
-                className="hover:text-teal-900 transition-colors cursor-pointer"
-              >
-                <X className="w-3 h-3" />
-              </button>
-            </span>
-          ))}
-
-          <div className="ml-auto flex items-center gap-2">
+          <div className="flex items-center gap-2 relative z-[999]">
             <span className="text-sm text-slate-500 hidden sm:inline">
               Trier par
             </span>
-            <div className="w-44 relative z-50">
+            <div className="w-44">
               <CustomSelect
                 options={triOptions}
                 placeholder="Par défaut"
@@ -645,55 +656,11 @@ function SearchResults() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-6">
-          <aside className="sidebar lg:sticky lg:top-24 lg:self-start space-y-5">
-            <div className="bg-white rounded-xl border border-slate-200/60 p-4 shadow-sm">
-              <div className="mb-4">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
-                  Spécialités
-                </p>
-                {specialitesURL.length > 0 ? (
-                  <div className="flex flex-wrap gap-1.5">
-                    {specialitesURL.map((spec) => (
-                      <span
-                        key={spec}
-                        className="px-2.5 py-1 bg-teal-50 text-teal-700 border border-teal-100 rounded-full text-xs font-medium"
-                      >
-                        {spec}
-                      </span>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-sm text-slate-400">
-                    Toutes les spécialités
-                  </p>
-                )}
-              </div>
-
-              <div className="border-t border-slate-100 pt-4 mb-4">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
-                  Wilaya
-                </p>
-                <div className="relative z-40">
-                  <CustomSelect
-                    options={[
-                      { value: "", label: "Toutes les wilayas" },
-                      ...(wilayaURL
-                        ? [{ value: wilayaURL, label: wilayaURL }]
-                        : []),
-                    ]}
-                    placeholder="Toutes les wilayas"
-                    value={filters.wilaya || ""}
-                    onChange={(value) =>
-                      handleFilterChange("wilaya", value || undefined)
-                    }
-                    className="h-9 text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="border-t border-slate-100 pt-4 mb-4">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
+        <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6">
+          <aside className="sidebar lg:sticky lg:top-36 lg:self-start">
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-5">
+              <div>
+                <p className="text-xs font-semibold text-slate-300 uppercase tracking-wide mb-2">
                   Expérience minimum
                 </p>
                 <div className="relative z-30">
@@ -707,13 +674,13 @@ function SearchResults() {
                         value ? parseInt(value) : undefined
                       )
                     }
-                    className="h-9 text-sm"
+                    className="h-9 text-sm bg-white"
                   />
                 </div>
               </div>
 
-              <div className="border-t border-slate-100 pt-4 mb-4">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
+              <div className="border-t border-slate-700 pt-4">
+                <p className="text-xs font-semibold text-slate-300 uppercase tracking-wide mb-2">
                   Genre
                 </p>
                 <div className="relative z-20">
@@ -724,41 +691,39 @@ function SearchResults() {
                     onChange={(value) =>
                       handleFilterChange("genre", value || undefined)
                     }
-                    className="h-9 text-sm"
+                    className="h-9 text-sm bg-white"
                   />
                 </div>
               </div>
 
-              <div className="border-t border-slate-100 pt-4">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
+              <div className="border-t border-slate-700 pt-4">
+                <p className="text-xs font-semibold text-slate-300 uppercase tracking-wide mb-2">
                   Langue
                 </p>
                 <div className="relative z-10">
                   <CustomSelect
-                    options={[
-                      { value: "", label: "Toutes les langues" },
-                      { value: "arabe", label: "Arabe" },
-                      { value: "francais", label: "Français" },
-                      { value: "anglais", label: "Anglais" },
-                      { value: "tamazight", label: "Tamazight" },
-                    ]}
+                    options={langueOptions}
                     placeholder="Toutes les langues"
                     value={filters.langues || ""}
                     onChange={(value) =>
                       handleFilterChange("langues", value || undefined)
                     }
-                    className="h-9 text-sm"
+                    className="h-9 text-sm bg-white"
                   />
                 </div>
               </div>
-            </div>
 
-            <button
-              onClick={clearFilters}
-              className="w-full text-sm text-slate-500 hover:text-slate-700 py-2 px-4 border border-slate-200 rounded-xl bg-white hover:bg-slate-50 transition-all cursor-pointer"
-            >
-              Réinitialiser les filtres
-            </button>
+              {hasAdditionalFilters && (
+                <div className="border-t border-slate-700 pt-4">
+                  <button
+                    onClick={clearFilters}
+                    className="w-full text-xs text-slate-300 hover:text-white py-2 px-3 border border-slate-600 rounded-lg bg-slate-700 hover:bg-slate-600 transition-all cursor-pointer font-medium"
+                  >
+                    Réinitialiser les filtres
+                  </button>
+                </div>
+              )}
+            </div>
           </aside>
 
           <div>
