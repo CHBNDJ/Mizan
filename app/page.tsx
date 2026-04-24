@@ -634,9 +634,8 @@ export default function HomePage() {
                 </form>
               </div>
             </div>
-
             <div className="flex justify-center items-center h-full">
-              <div className="grid grid-cols-2 gap-4 w-full max-w-sm lg:max-w-md">
+              <div className="grid grid-cols-2 gap-4 w-full">
                 <div className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center justify-center text-center">
                   <AnimatedCounter
                     end={stats.total_avocats}
