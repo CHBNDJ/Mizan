@@ -25,9 +25,9 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
     avocat.rating_mizan && (avocat.reviews_count_mizan ?? 0) > 0;
 
   return (
-    <Link href={getProfileUrl()}>
-      <div className="bg-white border border-slate-200 rounded-xl p-4 cursor-pointer transition-all duration-200 hover:border-slate-300 hover:-translate-y-1 hover:shadow-md">
-        <div className="relative w-12 h-12 mb-3">
+    <Link href={getProfileUrl()} className="h-full">
+      <div className="h-full bg-white border border-slate-200 rounded-xl p-4 cursor-pointer transition-all duration-200 hover:border-slate-300 hover:-translate-y-1 hover:shadow-md flex flex-col">
+        <div className="relative w-12 h-12 mb-3 flex-shrink-0">
           {avocat.avatar_url ? (
             <img
               src={avocat.avatar_url}
@@ -41,11 +41,11 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
           )}
         </div>
 
-        <div className="text-[15px] font-medium text-slate-800 mb-1 truncate">
+        <div className="text-[15px] font-medium text-slate-800 mb-1 truncate flex-shrink-0">
           {avocat.prenom} {avocat.nom}
         </div>
 
-        <div className="flex items-center gap-1.5 mb-2 min-h-[20px]">
+        <div className="flex items-center gap-1.5 mb-2 min-h-[20px] flex-shrink-0">
           <div className="text-xs text-slate-600 truncate flex-1">
             {specialites[0] || "Avocat"}
           </div>
@@ -56,46 +56,44 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
           )}
         </div>
 
-        <div className="flex items-center gap-1 text-xs text-slate-500 mb-2">
+        <div className="flex items-center gap-1 text-xs text-slate-500 mb-2 flex-shrink-0">
           <MapPin className="w-3 h-3 flex-shrink-0" />
           <span className="truncate">{avocat.wilaya}</span>
         </div>
 
-        {(hasGoogleRating || hasMizanRating) && (
-          <div className="space-y-1">
-            {hasGoogleRating && (
-              <div className="flex items-center gap-1 text-[12px]">
-                <Star className="w-3 h-3 fill-amber-400 text-amber-400 flex-shrink-0" />
-                <span className="font-medium text-slate-800">
-                  {avocat.rating_google!.toFixed(1)}
-                </span>
-                <Image
-                  src="/google.png"
-                  alt="Google"
-                  width={12}
-                  height={12}
-                  className="flex-shrink-0"
-                />
-                <span className="text-slate-500">
-                  ({avocat.reviews_count_google})
-                </span>
-              </div>
-            )}
+        <div className="mt-auto space-y-1 min-h-[44px]">
+          {hasGoogleRating && (
+            <div className="flex items-center gap-1 text-[12px]">
+              <Star className="w-3 h-3 fill-amber-400 text-amber-400 flex-shrink-0" />
+              <span className="font-medium text-slate-800">
+                {avocat.rating_google!.toFixed(1)}
+              </span>
+              <Image
+                src="/google.png"
+                alt="Google"
+                width={12}
+                height={12}
+                className="flex-shrink-0"
+              />
+              <span className="text-slate-500">
+                ({avocat.reviews_count_google})
+              </span>
+            </div>
+          )}
 
-            {hasMizanRating && (
-              <div className="flex items-center gap-1 text-[12px]">
-                <Star className="w-3 h-3 fill-teal-500 text-teal-500 flex-shrink-0" />
-                <span className="font-medium text-slate-800">
-                  {avocat.rating_mizan!.toFixed(1)}
-                </span>
-                <Scale className="w-3 h-3 text-teal-600 flex-shrink-0" />
-                <span className="text-slate-500">
-                  ({avocat.reviews_count_mizan})
-                </span>
-              </div>
-            )}
-          </div>
-        )}
+          {hasMizanRating && (
+            <div className="flex items-center gap-1 text-[12px]">
+              <Star className="w-3 h-3 fill-teal-500 text-teal-500 flex-shrink-0" />
+              <span className="font-medium text-slate-800">
+                {avocat.rating_mizan!.toFixed(1)}
+              </span>
+              <Scale className="w-3 h-3 text-teal-600 flex-shrink-0" />
+              <span className="text-slate-500">
+                ({avocat.reviews_count_mizan})
+              </span>
+            </div>
+          )}
+        </div>
       </div>
     </Link>
   );
