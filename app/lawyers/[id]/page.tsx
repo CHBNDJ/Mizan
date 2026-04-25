@@ -190,6 +190,11 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     avocat.rating_google || avocat.rating_mizan
   );
 
+  const allPhones = [
+    ...(avocat.contact?.telephone?.split(",").map((n) => n.trim()) || []),
+    ...(avocat.contact?.mobile?.split(",").map((n) => n.trim()) || []),
+  ].filter(Boolean);
+
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden w-full">
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -202,7 +207,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           <span className="sm:hidden">Retour</span>
         </button>
 
-        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-5">
+        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-4">
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[360px]">
             <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
               <div>
@@ -217,11 +222,11 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 </h2>
                 <div className="w-10 h-0.5 bg-teal-600 mb-5" />
 
-                <div className="space-y-2 text-xs text-slate-500 mb-5">
+                <div className="space-y-2 text-xs mb-5">
                   <div className="flex items-center gap-2">
                     <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
                     <Calendar className="w-3 h-3 flex-shrink-0 text-teal-600" />
-                    <span className="text-slate-600 font-medium">
+                    <span className="text-slate-700 font-medium">
                       {experienceAnnees} ans d'expérience
                     </span>
                     <span className="text-slate-400">
@@ -233,7 +238,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     <div className="flex items-center gap-2">
                       <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
                       <Languages className="w-3 h-3 flex-shrink-0 text-teal-600" />
-                      <span className="text-slate-600 font-medium">
+                      <span className="text-slate-700 font-medium">
                         {avocat.langues.join(" · ")}
                       </span>
                     </div>
@@ -307,7 +312,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                         Consulter
                       </button>
                     )}
-                  {!isOwnProfile && !user && (
+                  {!user && !isOwnProfile && (
                     <Link href="/auth/client/register">
                       <button className="cursor-pointer bg-teal-600 hover:bg-teal-700 text-white py-2.5 px-5 rounded-xl font-semibold text-sm transition-all shadow-sm">
                         Créez un compte
@@ -340,20 +345,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
         </div>
 
-        {!avocat.is_claimed && (
-          <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-xl p-4 text-center shadow-sm mb-4">
-            <p className="text-xs font-semibold text-slate-600 mb-2">
-              Vous êtes cet avocat ?
-            </p>
-            <Link
-              href={`/claim-profile/${avocat.id}`}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 hover:bg-teal-100 text-teal-700 font-semibold text-xs rounded-xl border border-teal-100 transition-all"
-            >
-              Réclamer ce profil
-            </Link>
-          </div>
-        )}
-
         {avocat.specialites && avocat.specialites.length > 0 && (
           <Card className="content-card opacity-0 invisible shadow-sm mb-4">
             <CardHeader>
@@ -367,7 +358,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 {avocat.specialites.map((spec: string, index: number) => (
                   <span
                     key={index}
-                    className="inline-flex items-center gap-1.5 px-3 py-2 bg-teal-50 text-teal-700 rounded-full text-xs font-medium border border-teal-100 hover:bg-teal-100 transition-all"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 text-teal-700 rounded-full text-xs font-medium border border-teal-100 hover:bg-teal-100 transition-all"
                   >
                     <span className="w-1.5 h-1.5 bg-teal-600 rounded-full" />
                     {spec}
@@ -378,134 +369,83 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </Card>
         )}
 
-        <Card className="content-card opacity-0 invisible shadow-sm mb-4">
-          <CardHeader>
-            <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-              <MapPin className="w-4 h-4 text-teal-600" />
-              Adresse du cabinet
+        <div className="content-card opacity-0 invisible grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+          {(avocat.adresse?.rue || avocat.ville) && (
+            <div className="flex items-center gap-2 px-3 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm">
+              <MapPin className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
+              <span className="text-xs text-slate-700 truncate">
+                {avocat.adresse?.ville || avocat.ville}, {avocat.wilaya}
+              </span>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="font-medium text-slate-700 text-sm">
-              {avocat.adresse?.rue || "Adresse non spécifiée"}
-            </div>
-            <div className="text-xs text-slate-500 mt-0.5">
-              {avocat.adresse?.code_postal || ""}{" "}
-              {avocat.adresse?.ville || avocat.ville}
-              {avocat.adresse?.wilaya && `, ${avocat.adresse.wilaya}`}
-            </div>
-          </CardContent>
-        </Card>
-
-        {user && profile?.user_type === "client" && !isOwnProfile && (
-          <Card className="content-card opacity-0 invisible shadow-sm mb-4">
-            <CardContent className="pt-4">
-              <ContactCard
-                allPhoneNumbers={[
-                  ...(avocat.contact?.telephone
-                    ?.split(",")
-                    .map((n) => n.trim()) || []),
-                  ...(avocat.contact?.mobile?.split(",").map((n) => n.trim()) ||
-                    []),
-                ].filter(Boolean)}
-              />
-            </CardContent>
-          </Card>
-        )}
-
-        {user && profile?.id === avocat.id && (
-          <Card className="content-card opacity-0 invisible shadow-sm mb-4">
-            <CardHeader>
-              <h3 className="text-sm font-semibold text-slate-800">
-                Mes coordonnées
-              </h3>
-            </CardHeader>
-            <CardContent className="space-y-2.5">
-              {avocat.contact?.email && (
-                <div className="flex items-center gap-2">
-                  <Mail className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                  <a
-                    href={`mailto:${avocat.contact.email}`}
-                    className="text-xs text-slate-700 hover:text-teal-600 transition-colors break-all"
-                  >
-                    {avocat.contact.email}
-                  </a>
-                </div>
-              )}
-              {avocat.contact?.telephone &&
-                parsePhoneNumbers(avocat.contact.telephone).map((phone, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    {detectPhoneType(phone) === "mobile" ? (
-                      <Smartphone className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                    ) : (
-                      <Phone className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                    )}
-                    <a
-                      href={`tel:${phone.replace(/\s/g, "")}`}
-                      className="text-xs text-slate-700 hover:text-teal-600 transition-colors"
-                    >
-                      {formatPhoneNumber(phone)}
-                    </a>
-                  </div>
-                ))}
-              {avocat.contact?.mobile &&
-                parsePhoneNumbers(avocat.contact.mobile).map((mobile, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    {detectPhoneType(mobile) === "mobile" ? (
-                      <Smartphone className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                    ) : (
-                      <Phone className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                    )}
-                    <a
-                      href={`tel:${mobile.replace(/\s/g, "")}`}
-                      className="text-xs text-slate-700 hover:text-teal-600 transition-colors"
-                    >
-                      {formatPhoneNumber(mobile)}
-                    </a>
-                  </div>
-                ))}
-              {avocat.contact?.site_web && (
-                <div className="flex items-center gap-2">
-                  <Globe className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                  <a
-                    href={avocat.contact.site_web}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-slate-700 hover:text-teal-600 transition-colors break-all"
-                  >
-                    {avocat.contact.site_web}
-                  </a>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
-
-        {user &&
-          profile?.user_type === "client" &&
-          profile?.id !== avocat.id &&
-          avocat.contact?.site_web && (
-            <Card className="content-card opacity-0 invisible shadow-sm mb-4">
-              <CardHeader>
-                <div className="text-sm font-semibold text-slate-800">
-                  En savoir plus
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-2">
-                  <Globe className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                  <a
-                    href={avocat.contact.site_web}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-slate-700 hover:text-teal-600 transition-colors break-all"
-                  >
-                    {avocat.contact.site_web}
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
           )}
+
+          {user &&
+            (profile?.id === avocat.id || profile?.user_type === "client") &&
+            allPhones.map((phone, i) => (
+              <a
+                key={i}
+                href={`tel:${phone.replace(/\s/g, "")}`}
+                className="flex items-center gap-2 px-3 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-teal-200 transition-all"
+              >
+                {detectPhoneType(phone) === "mobile" ? (
+                  <Smartphone className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
+                ) : (
+                  <Phone className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
+                )}
+                <span className="text-xs text-slate-700 truncate font-medium">
+                  {formatPhoneNumber(phone)}
+                </span>
+              </a>
+            ))}
+
+          {!user && !isOwnProfile && (
+            <Link
+              href="/auth/client/register"
+              className="flex items-center gap-2 px-3 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-teal-200 transition-all"
+            >
+              <Phone className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" />
+              <span className="text-xs text-teal-600 font-medium truncate">
+                Voir les coordonnées
+              </span>
+            </Link>
+          )}
+
+          {user && profile?.id === avocat.id && avocat.contact?.email && (
+            <a
+              href={`mailto:${avocat.contact.email}`}
+              className="flex items-center gap-2 px-3 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-teal-200 transition-all"
+            >
+              <Mail className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
+              <span className="text-xs text-slate-700 truncate">
+                {avocat.contact.email}
+              </span>
+            </a>
+          )}
+
+          {avocat.contact?.site_web && (
+            <a
+              href={avocat.contact.site_web}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-3 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-teal-200 transition-all"
+            >
+              <Globe className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
+              <span className="text-xs text-slate-700 truncate">Site web</span>
+            </a>
+          )}
+
+          {!avocat.is_claimed && (
+            <Link
+              href={`/claim-profile/${avocat.id}`}
+              className="flex items-center gap-2 px-3 py-2.5 bg-teal-50 border border-teal-100 rounded-xl shadow-sm hover:bg-teal-100 transition-all"
+            >
+              <CheckCircle className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
+              <span className="text-xs text-teal-700 font-medium truncate">
+                Réclamer ce profil
+              </span>
+            </Link>
+          )}
+        </div>
 
         {(!user || profile?.user_type === "client") && !isOwnProfile && (
           <div className="content-card opacity-0 invisible lg:hidden mb-4">
