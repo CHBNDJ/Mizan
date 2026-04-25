@@ -678,13 +678,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </div>
               <div className="px-5 py-4 flex flex-col gap-2.5">
                 <Link href="/auth/client/register" className="block">
-                  <button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2">
+                  <button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
                     <MessageCircle className="w-4 h-4" />
                     Créer un compte gratuit
                   </button>
                 </Link>
                 <Link href="/auth/client/login" className="block">
-                  <button className="w-full bg-white hover:bg-slate-50 text-slate-700 py-3 rounded-xl font-medium text-sm transition-all border border-slate-200 flex items-center justify-center gap-2">
+                  <button className="w-full bg-white hover:bg-slate-50 text-slate-700 py-3 rounded-xl font-medium text-sm transition-all border border-slate-200 flex items-center justify-center gap-2 cursor-pointer">
                     J'ai déjà un compte — Me connecter
                   </button>
                 </Link>
