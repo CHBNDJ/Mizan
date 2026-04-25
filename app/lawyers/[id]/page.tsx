@@ -21,6 +21,8 @@ import {
   Mail,
   Smartphone,
   Scale,
+  ChevronRight,
+  Linkedin,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";
@@ -28,7 +30,6 @@ import { getInitials } from "@/lib/utils";
 import { AvocatData, ProfilePageProps } from "@/types";
 import { createClient } from "@/lib/supabase/client";
 import ConsultationModal from "@/components/consultation/ConsultationModal";
-import { ContactCard } from "@/components/ContactCard";
 import ReviewSection from "@/components/reviews/ReviewSection";
 import Link from "next/link";
 import { formatPhoneNumber, detectPhoneType } from "@/lib/phoneFormatter";
@@ -41,6 +42,142 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const getSiteLabel = (url: string): { label: string; sublabel: string } => {
+  if (url.includes("linkedin.com"))
+    return { label: "LinkedIn", sublabel: "Voir le profil" };
+  if (url.includes("facebook.com"))
+    return { label: "Facebook", sublabel: "Voir la page" };
+  if (url.includes("instagram.com"))
+    return { label: "Instagram", sublabel: "Voir le profil" };
+  return { label: "Site web", sublabel: "Visiter le site" };
+};
+
+const getPhoneLabel = (type: string): string => {
+  if (type === "mobile") return "Mobile";
+  return "Fixe";
+};
+
+interface InfoItem {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  sublabel?: string;
+  href?: string;
+  teal?: boolean;
+}
+
+const InfoCardMobile = ({
+  icon,
+  label,
+  value,
+  href,
+  teal = false,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  href?: string;
+  teal?: boolean;
+}) => {
+  const content = (
+    <div
+      className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border shadow-sm ${teal ? "bg-teal-50 border-teal-100" : "bg-white border-slate-200"}`}
+    >
+      <div
+        className={`w-9 h-9 flex items-center justify-center flex-shrink-0 rounded-lg ${teal ? "bg-white border border-teal-100" : "bg-teal-50 border border-teal-100"}`}
+      >
+        {icon}
+      </div>
+      <div className="flex-1 min-w-0">
+        <div
+          className={`text-xs mb-0.5 ${teal ? "text-teal-600" : "text-slate-400"}`}
+        >
+          {label}
+        </div>
+        <div
+          className={`text-sm font-medium truncate ${teal ? "text-teal-800" : "text-slate-800"}`}
+        >
+          {value}
+        </div>
+      </div>
+      <ChevronRight
+        className={`w-4 h-4 flex-shrink-0 ${teal ? "text-teal-400" : "text-slate-300"}`}
+      />
+    </div>
+  );
+  if (href) {
+    return (
+      <a
+        href={href}
+        target={href.startsWith("http") ? "_blank" : undefined}
+        rel="noopener noreferrer"
+        className="block"
+      >
+        {content}
+      </a>
+    );
+  }
+  return <div>{content}</div>;
+};
+
+const InfoCardDesktop = ({
+  icon,
+  label,
+  value,
+  sublabel,
+  href,
+  teal = false,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  sublabel?: string;
+  href?: string;
+  teal?: boolean;
+}) => {
+  const content = (
+    <div
+      className={`rounded-xl border shadow-sm p-4 flex flex-col gap-2 h-full ${teal ? "bg-teal-50 border-teal-100" : "bg-white border-slate-200"}`}
+    >
+      <div className="flex items-center gap-2">
+        <div
+          className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${teal ? "bg-white border border-teal-100" : "bg-teal-50 border border-teal-100"}`}
+        >
+          {icon}
+        </div>
+        <span
+          className={`text-xs font-semibold uppercase tracking-wide ${teal ? "text-teal-600" : "text-slate-400"}`}
+        >
+          {label}
+        </span>
+      </div>
+      <div
+        className={`text-sm font-medium ${teal ? "text-teal-800" : "text-slate-800"}`}
+      >
+        {value}
+      </div>
+      {sublabel && (
+        <div className={`text-xs ${teal ? "text-teal-500" : "text-teal-600"}`}>
+          {sublabel}
+        </div>
+      )}
+    </div>
+  );
+  if (href) {
+    return (
+      <a
+        href={href}
+        target={href.startsWith("http") ? "_blank" : undefined}
+        rel="noopener noreferrer"
+        className="block h-full"
+      >
+        {content}
+      </a>
+    );
+  }
+  return <div className="h-full">{content}</div>;
+};
 
 export default function ProfilePage({ params }: ProfilePageProps) {
   const { id } = use(params);
@@ -190,10 +327,83 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     avocat.rating_google || avocat.rating_mizan
   );
 
+  const telephones = parsePhoneNumbers(avocat.contact?.telephone || "");
+  const mobiles = parsePhoneNumbers(avocat.contact?.mobile || "");
   const allPhones = [
-    ...(avocat.contact?.telephone?.split(",").map((n) => n.trim()) || []),
-    ...(avocat.contact?.mobile?.split(",").map((n) => n.trim()) || []),
-  ].filter(Boolean);
+    ...telephones.map((p) => ({ number: p, type: detectPhoneType(p) })),
+    ...mobiles.map((p) => ({ number: p, type: detectPhoneType(p) })),
+  ];
+
+  const showContact =
+    user && (profile?.id === avocat.id || profile?.user_type === "client");
+  const siteUrl = avocat.contact?.site_web ?? undefined;
+  const siteInfo = siteUrl ? getSiteLabel(siteUrl) : null;
+
+  const infoItems: InfoItem[] = [
+    ...(avocat.adresse?.rue || avocat.ville
+      ? [
+          {
+            icon: <MapPin className="w-3.5 h-3.5 text-teal-600" />,
+            label: "Cabinet",
+            value: `${avocat.adresse?.ville || avocat.ville}, ${avocat.wilaya}`,
+            sublabel: avocat.adresse?.rue || undefined,
+          },
+        ]
+      : []),
+    ...(showContact
+      ? allPhones.map((p) => ({
+          icon:
+            p.type === "mobile" ? (
+              <Smartphone className="w-3.5 h-3.5 text-teal-600" />
+            ) : (
+              <Phone className="w-3.5 h-3.5 text-teal-600" />
+            ),
+          label: getPhoneLabel(p.type),
+          value: formatPhoneNumber(p.number),
+          sublabel: p.type === "mobile" ? "Appeler · WhatsApp" : "Appeler",
+          href: `tel:${p.number.replace(/\s/g, "")}`,
+        }))
+      : []),
+    ...(showContact && avocat.contact?.email
+      ? [
+          {
+            icon: <Mail className="w-3.5 h-3.5 text-teal-600" />,
+            label: "Email",
+            value: avocat.contact.email,
+            sublabel: "Envoyer un email",
+            href: `mailto:${avocat.contact.email}`,
+          },
+        ]
+      : []),
+    ...(siteUrl && siteInfo
+      ? [
+          {
+            icon:
+              siteInfo.label === "LinkedIn" ? (
+                <Linkedin className="w-3.5 h-3.5 text-teal-600" />
+              ) : (
+                <Globe className="w-3.5 h-3.5 text-teal-600" />
+              ),
+            label: siteInfo.label,
+            value: siteInfo.sublabel,
+            sublabel: siteUrl.replace(/^https?:\/\/(www\.)?/, "").split("/")[0],
+            href: siteUrl,
+          },
+        ]
+      : []),
+  ];
+
+  const claimItem: InfoItem | null = !avocat.is_claimed
+    ? {
+        icon: <CheckCircle className="w-3.5 h-3.5 text-teal-600" />,
+        label: "Vous êtes cet avocat ?",
+        value: "Réclamer ce profil",
+        href: `/claim-profile/${avocat.id}`,
+        teal: true,
+      }
+    : null;
+
+  const allInfoItems = claimItem ? [...infoItems, claimItem] : infoItems;
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden w-full">
@@ -369,83 +579,51 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </Card>
         )}
 
-        <div className="content-card opacity-0 invisible grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
-          {(avocat.adresse?.rue || avocat.ville) && (
-            <div className="flex items-center gap-2 px-3 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm">
-              <MapPin className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
-              <span className="text-xs text-slate-700 truncate">
-                {avocat.adresse?.ville || avocat.ville}, {avocat.wilaya}
-              </span>
+        {!user && !isOwnProfile && (
+          <div className="content-card opacity-0 invisible flex items-center justify-between bg-white border border-slate-200 rounded-xl px-4 py-3.5 shadow-sm mb-4">
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <Phone className="w-3.5 h-3.5 text-slate-300" />
+              Connectez-vous pour voir les coordonnées
             </div>
-          )}
-
-          {user &&
-            (profile?.id === avocat.id || profile?.user_type === "client") &&
-            allPhones.map((phone, i) => (
-              <a
-                key={i}
-                href={`tel:${phone.replace(/\s/g, "")}`}
-                className="flex items-center gap-2 px-3 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-teal-200 transition-all"
-              >
-                {detectPhoneType(phone) === "mobile" ? (
-                  <Smartphone className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
-                ) : (
-                  <Phone className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
-                )}
-                <span className="text-xs text-slate-700 truncate font-medium">
-                  {formatPhoneNumber(phone)}
-                </span>
-              </a>
-            ))}
-
-          {!user && !isOwnProfile && (
             <Link
               href="/auth/client/register"
-              className="flex items-center gap-2 px-3 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-teal-200 transition-all"
+              className="text-xs text-teal-600 font-semibold hover:text-teal-700 transition-colors"
             >
-              <Phone className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" />
-              <span className="text-xs text-teal-600 font-medium truncate">
-                Voir les coordonnées
-              </span>
+              Créer un compte →
             </Link>
-          )}
+          </div>
+        )}
 
-          {user && profile?.id === avocat.id && avocat.contact?.email && (
-            <a
-              href={`mailto:${avocat.contact.email}`}
-              className="flex items-center gap-2 px-3 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-teal-200 transition-all"
-            >
-              <Mail className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
-              <span className="text-xs text-slate-700 truncate">
-                {avocat.contact.email}
-              </span>
-            </a>
-          )}
+        {allInfoItems.length > 0 && (
+          <>
+            <div className="content-card opacity-0 invisible sm:hidden flex flex-col gap-2.5 mb-4">
+              {allInfoItems.map((item, i) => (
+                <InfoCardMobile
+                  key={i}
+                  icon={item.icon}
+                  label={item.label}
+                  value={item.value}
+                  href={item.href ?? undefined}
+                  teal={item.teal}
+                />
+              ))}
+            </div>
 
-          {avocat.contact?.site_web && (
-            <a
-              href={avocat.contact.site_web}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-3 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-teal-200 transition-all"
-            >
-              <Globe className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
-              <span className="text-xs text-slate-700 truncate">Site web</span>
-            </a>
-          )}
-
-          {!avocat.is_claimed && (
-            <Link
-              href={`/claim-profile/${avocat.id}`}
-              className="flex items-center gap-2 px-3 py-2.5 bg-teal-50 border border-teal-100 rounded-xl shadow-sm hover:bg-teal-100 transition-all"
-            >
-              <CheckCircle className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
-              <span className="text-xs text-teal-700 font-medium truncate">
-                Réclamer ce profil
-              </span>
-            </Link>
-          )}
-        </div>
+            <div className="content-card opacity-0 invisible hidden sm:grid grid-cols-3 gap-3 mb-4">
+              {allInfoItems.map((item, i) => (
+                <InfoCardDesktop
+                  key={i}
+                  icon={item.icon}
+                  label={item.label}
+                  value={item.value}
+                  sublabel={item.sublabel}
+                  href={item.href ?? undefined}
+                  teal={item.teal}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
         {(!user || profile?.user_type === "client") && !isOwnProfile && (
           <div className="content-card opacity-0 invisible lg:hidden mb-4">
