@@ -42,7 +42,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ProfilePageDesign3({ params }: ProfilePageProps) {
+export default function ProfilePage({ params }: ProfilePageProps) {
   const { id } = use(params);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -175,6 +175,7 @@ export default function ProfilePageDesign3({ params }: ProfilePageProps) {
         <div className="max-w-4xl mx-auto px-4 py-8 space-y-4">
           <div className="h-80 bg-slate-200 rounded-2xl animate-pulse" />
           <div className="h-32 bg-slate-200 rounded-xl animate-pulse" />
+          <div className="h-24 bg-slate-200 rounded-xl animate-pulse" />
         </div>
       </div>
     );
@@ -216,41 +217,25 @@ export default function ProfilePageDesign3({ params }: ProfilePageProps) {
                 </h2>
                 <div className="w-10 h-0.5 bg-teal-600 mb-5" />
 
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {avocat.specialites
-                    ?.slice(0, 4)
-                    .map((spec: string, i: number) => (
-                      <span
-                        key={i}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-50 text-teal-700 rounded-full text-xs font-medium border border-teal-100"
-                      >
-                        {spec}
-                      </span>
-                    ))}
-                  {(avocat.specialites?.length ?? 0) > 4 && (
-                    <span className="px-2.5 py-1 bg-slate-100 text-slate-500 rounded-full text-xs">
-                      +{(avocat.specialites?.length ?? 0) - 4}
+                <div className="space-y-2 text-xs text-slate-500 mb-5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
+                    <Calendar className="w-3 h-3 flex-shrink-0 text-teal-600" />
+                    <span className="text-slate-600 font-medium">
+                      {experienceAnnees} ans d'expérience
                     </span>
-                  )}
-                </div>
-
-                <div className="space-y-2 text-xs text-slate-500">
-                  <div className="flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
-                    <MapPin className="w-3 h-3 flex-shrink-0" />
-                    {avocat.ville}, {avocat.wilaya}
+                    <span className="text-slate-400">
+                      · inscrit en{" "}
+                      {avocat.experience?.date_inscription || "N/A"}
+                    </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
-                    <Calendar className="w-3 h-3 flex-shrink-0" />
-                    {experienceAnnees} ans d'expérience · inscrit en{" "}
-                    {avocat.experience?.date_inscription || "N/A"}
-                  </div>
-                  {avocat.langues && (
+                  {avocat.langues && avocat.langues.length > 0 && (
                     <div className="flex items-center gap-2">
                       <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
-                      <Languages className="w-3 h-3 flex-shrink-0" />
-                      {avocat.langues.join(" · ")}
+                      <Languages className="w-3 h-3 flex-shrink-0 text-teal-600" />
+                      <span className="text-slate-600 font-medium">
+                        {avocat.langues.join(" · ")}
+                      </span>
                     </div>
                   )}
                   {((avocat.rating_google &&
@@ -271,7 +256,9 @@ export default function ProfilePageDesign3({ params }: ProfilePageProps) {
                               width={11}
                               height={11}
                             />
-                            <span>({avocat.reviews_count_google})</span>
+                            <span className="text-slate-400">
+                              ({avocat.reviews_count_google})
+                            </span>
                           </div>
                         )}
                       {avocat.rating_mizan &&
@@ -282,7 +269,9 @@ export default function ProfilePageDesign3({ params }: ProfilePageProps) {
                               {avocat.rating_mizan.toFixed(1)}
                             </span>
                             <Scale className="w-3 h-3 text-teal-600" />
-                            <span>({avocat.reviews_count_mizan})</span>
+                            <span className="text-slate-400">
+                              ({avocat.reviews_count_mizan})
+                            </span>
                           </div>
                         )}
                     </div>
@@ -290,7 +279,7 @@ export default function ProfilePageDesign3({ params }: ProfilePageProps) {
                 </div>
               </div>
 
-              <div className="mt-6">
+              <div className="mt-4">
                 <div className="flex items-center justify-between gap-4">
                   <div>
                     <div className="text-xl font-bold text-teal-600">
@@ -318,14 +307,13 @@ export default function ProfilePageDesign3({ params }: ProfilePageProps) {
                         Consulter
                       </button>
                     )}
-                  {!isOwnProfile &&
-                    (!user || profile?.user_type !== "client") && (
-                      <Link href="/auth/client/register">
-                        <button className="cursor-pointer bg-teal-600 hover:bg-teal-700 text-white py-2.5 px-5 rounded-xl font-semibold text-sm transition-all shadow-sm">
-                          Créez un compte
-                        </button>
-                      </Link>
-                    )}
+                  {!isOwnProfile && !user && (
+                    <Link href="/auth/client/register">
+                      <button className="cursor-pointer bg-teal-600 hover:bg-teal-700 text-white py-2.5 px-5 rounded-xl font-semibold text-sm transition-all shadow-sm">
+                        Créez un compte
+                      </button>
+                    </Link>
+                  )}
                 </div>
                 {avocat.verified && (
                   <div className="flex items-center gap-1.5 mt-3 text-xs text-teal-600 font-medium">
@@ -335,6 +323,7 @@ export default function ProfilePageDesign3({ params }: ProfilePageProps) {
                 )}
               </div>
             </div>
+
             <div className="hero-right opacity-0 invisible bg-gradient-to-b from-teal-500 to-teal-800 flex items-center justify-center relative order-first sm:order-last min-h-[320px] sm:min-h-0 aspect-[3/4] sm:aspect-auto">
               {avocat.avatar_url ? (
                 <img
@@ -365,12 +354,12 @@ export default function ProfilePageDesign3({ params }: ProfilePageProps) {
           </div>
         )}
 
-        {avocat.specialites && avocat.specialites.length > 4 && (
+        {avocat.specialites && avocat.specialites.length > 0 && (
           <Card className="content-card opacity-0 invisible shadow-sm mb-4">
             <CardHeader>
               <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
                 <Briefcase className="w-4 h-4 text-teal-600" />
-                Tous les domaines d'expertise
+                Domaines d'expertise
               </div>
             </CardHeader>
             <CardContent>
@@ -393,7 +382,7 @@ export default function ProfilePageDesign3({ params }: ProfilePageProps) {
           <CardHeader>
             <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
               <MapPin className="w-4 h-4 text-teal-600" />
-              Cabinet
+              Adresse du cabinet
             </div>
           </CardHeader>
           <CardContent>
@@ -424,25 +413,116 @@ export default function ProfilePageDesign3({ params }: ProfilePageProps) {
           </Card>
         )}
 
-        {user && profile?.id === avocat.id && avocat.contact?.site_web && (
+        {user && profile?.id === avocat.id && (
           <Card className="content-card opacity-0 invisible shadow-sm mb-4">
             <CardHeader>
-              <h3 className="text-sm font-semibold text-slate-800">Site web</h3>
+              <h3 className="text-sm font-semibold text-slate-800">
+                Mes coordonnées
+              </h3>
             </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-2">
-                <Globe className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                <a
-                  href={avocat.contact.site_web}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-slate-700 hover:text-teal-600 transition-colors break-all"
-                >
-                  {avocat.contact.site_web}
-                </a>
-              </div>
+            <CardContent className="space-y-2.5">
+              {avocat.contact?.email && (
+                <div className="flex items-center gap-2">
+                  <Mail className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                  <a
+                    href={`mailto:${avocat.contact.email}`}
+                    className="text-xs text-slate-700 hover:text-teal-600 transition-colors break-all"
+                  >
+                    {avocat.contact.email}
+                  </a>
+                </div>
+              )}
+              {avocat.contact?.telephone &&
+                parsePhoneNumbers(avocat.contact.telephone).map((phone, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    {detectPhoneType(phone) === "mobile" ? (
+                      <Smartphone className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                    ) : (
+                      <Phone className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                    )}
+                    <a
+                      href={`tel:${phone.replace(/\s/g, "")}`}
+                      className="text-xs text-slate-700 hover:text-teal-600 transition-colors"
+                    >
+                      {formatPhoneNumber(phone)}
+                    </a>
+                  </div>
+                ))}
+              {avocat.contact?.mobile &&
+                parsePhoneNumbers(avocat.contact.mobile).map((mobile, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    {detectPhoneType(mobile) === "mobile" ? (
+                      <Smartphone className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                    ) : (
+                      <Phone className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                    )}
+                    <a
+                      href={`tel:${mobile.replace(/\s/g, "")}`}
+                      className="text-xs text-slate-700 hover:text-teal-600 transition-colors"
+                    >
+                      {formatPhoneNumber(mobile)}
+                    </a>
+                  </div>
+                ))}
+              {avocat.contact?.site_web && (
+                <div className="flex items-center gap-2">
+                  <Globe className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                  <a
+                    href={avocat.contact.site_web}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-slate-700 hover:text-teal-600 transition-colors break-all"
+                  >
+                    {avocat.contact.site_web}
+                  </a>
+                </div>
+              )}
             </CardContent>
           </Card>
+        )}
+
+        {user &&
+          profile?.user_type === "client" &&
+          profile?.id !== avocat.id &&
+          avocat.contact?.site_web && (
+            <Card className="content-card opacity-0 invisible shadow-sm mb-4">
+              <CardHeader>
+                <div className="text-sm font-semibold text-slate-800">
+                  En savoir plus
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-2">
+                  <Globe className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                  <a
+                    href={avocat.contact.site_web}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-slate-700 hover:text-teal-600 transition-colors break-all"
+                  >
+                    {avocat.contact.site_web}
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+        {(!user || profile?.user_type === "client") && !isOwnProfile && (
+          <div className="content-card opacity-0 invisible lg:hidden mb-4">
+            <button
+              onClick={() => {
+                if (!user || profile?.user_type !== "client") {
+                  router.push("/auth/client/register");
+                  return;
+                }
+                setIsConsultationModalOpen(true);
+              }}
+              className="cursor-pointer w-full bg-teal-600 hover:bg-teal-700 text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 font-semibold text-sm transition-all shadow-sm"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Demander une consultation
+            </button>
+          </div>
         )}
 
         <div className="reviews-section opacity-0 invisible mt-4">
@@ -460,6 +540,7 @@ export default function ProfilePageDesign3({ params }: ProfilePageProps) {
         lawyerName={`${avocat.prenom} ${avocat.nom}`}
         onSuccess={handleConsultationSuccess}
       />
+
       {showFeedbackPopup && (
         <FeedbackPopup onClose={() => setShowFeedbackPopup(false)} />
       )}
