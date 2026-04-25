@@ -11,9 +11,9 @@ export const calculateConsultationPrice = (
     return customPrice;
   }
 
-  const BASE_PRICE = 10000;
-  const EXPERIENCE_BONUS = 500;
-  const RATING_BONUS = 1000;
+  const BASE_PRICE = 5000;
+  const EXPERIENCE_BONUS = 100;
+  const RATING_BONUS = 200;
 
   const experienceBonus = experience * EXPERIENCE_BONUS;
   const ratingBonus = rating ? rating * RATING_BONUS : 0;
