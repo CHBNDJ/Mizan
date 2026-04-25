@@ -606,13 +606,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                         Consulter
                       </button>
                     )}
-                  {!user && !isOwnProfile && (
-                    <Link href="/auth/client/register">
-                      <button className="cursor-pointer bg-teal-600 hover:bg-teal-700 text-white py-2.5 px-5 rounded-xl font-semibold text-sm transition-all shadow-sm">
-                        Créez un compte
-                      </button>
-                    </Link>
-                  )}
                 </div>
                 {avocat.verified && (
                   <div className="flex items-center gap-1.5 mt-3 text-xs text-teal-600 font-medium">
@@ -664,17 +657,37 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         )}
 
         {!user && !isOwnProfile && (
-          <div className="content-card opacity-0 invisible flex items-center justify-between bg-white border border-slate-200 rounded-xl px-4 py-3.5 shadow-sm mb-4">
-            <div className="flex items-center gap-2 text-xs text-slate-500">
-              <Phone className="w-3.5 h-3.5 text-slate-300" />
-              Connectez-vous pour voir les coordonnées
+          <div className="content-card opacity-0 invisible mb-4">
+            <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+              <div className="px-5 py-4 border-b border-slate-100">
+                <div className="flex items-center gap-3 mb-1">
+                  <div className="w-8 h-8 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-3.5 h-3.5 text-teal-600" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-slate-800">
+                      Coordonnées disponibles
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      Téléphone · WhatsApp · Adresse complète
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="px-5 py-4 flex flex-col gap-2.5">
+                <Link href="/auth/client/register" className="block">
+                  <button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2">
+                    <MessageCircle className="w-4 h-4" />
+                    Créer un compte gratuit
+                  </button>
+                </Link>
+                <Link href="/auth/client/login" className="block">
+                  <button className="w-full bg-white hover:bg-slate-50 text-slate-700 py-3 rounded-xl font-medium text-sm transition-all border border-slate-200 flex items-center justify-center gap-2">
+                    J'ai déjà un compte — Me connecter
+                  </button>
+                </Link>
+              </div>
             </div>
-            <Link
-              href="/auth/client/register"
-              className="text-xs text-teal-600 font-semibold hover:text-teal-700 transition-colors"
-            >
-              Créer un compte →
-            </Link>
           </div>
         )}
 
@@ -706,16 +719,10 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </>
         )}
 
-        {(!user || profile?.user_type === "client") && !isOwnProfile && (
+        {user && profile?.user_type === "client" && !isOwnProfile && (
           <div className="content-card opacity-0 invisible lg:hidden mb-4">
             <button
-              onClick={() => {
-                if (!user || profile?.user_type !== "client") {
-                  router.push("/auth/client/register");
-                  return;
-                }
-                setIsConsultationModalOpen(true);
-              }}
+              onClick={() => setIsConsultationModalOpen(true)}
               className="cursor-pointer w-full bg-teal-600 hover:bg-teal-700 text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 font-semibold text-sm transition-all shadow-sm"
             >
               <MessageCircle className="w-4 h-4" />
