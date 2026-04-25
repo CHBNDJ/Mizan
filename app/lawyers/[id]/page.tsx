@@ -18,7 +18,6 @@ import {
   Languages,
   Briefcase,
   MessageCircle,
-  Mail,
   Smartphone,
   Scale,
   ChevronRight,
@@ -53,9 +52,35 @@ const getSiteLabel = (url: string): { label: string; sublabel: string } => {
   return { label: "Site web", sublabel: "Visiter le site" };
 };
 
-const getPhoneLabel = (type: string): string => {
-  if (type === "mobile") return "Mobile";
-  return "Fixe";
+const getCountryFlag = (phone: string): string => {
+  const cleaned = phone.replace(/\s/g, "");
+  if (cleaned.startsWith("+213")) return "🇩🇿";
+  if (cleaned.startsWith("+33")) return "🇫🇷";
+  if (cleaned.startsWith("+32")) return "🇧🇪";
+  if (cleaned.startsWith("+41")) return "🇨🇭";
+  if (cleaned.startsWith("+44")) return "🇬🇧";
+  if (cleaned.startsWith("+1")) return "🇺🇸";
+  if (cleaned.startsWith("+212")) return "🇲🇦";
+  if (cleaned.startsWith("+216")) return "🇹🇳";
+  if (cleaned.startsWith("+49")) return "🇩🇪";
+  if (cleaned.startsWith("+34")) return "🇪🇸";
+  if (cleaned.startsWith("+39")) return "🇮🇹";
+  return "🌍";
+};
+
+const getWhatsAppUrl = (phone: string): string => {
+  const cleaned = phone.replace(/[\s\-\(\)]/g, "").replace("+", "");
+  return `https://wa.me/${cleaned}`;
+};
+
+const getGoogleMapsUrl = (avocat: AvocatData): string => {
+  const parts = [
+    avocat.adresse?.rue,
+    avocat.adresse?.ville || avocat.ville,
+    avocat.wilaya,
+    "Algérie",
+  ].filter(Boolean);
+  return `https://maps.google.com/?q=${encodeURIComponent(parts.join(", "))}`;
 };
 
 interface InfoItem {
@@ -64,26 +89,32 @@ interface InfoItem {
   value: string;
   sublabel?: string;
   href?: string;
+  whatsappHref?: string;
   teal?: boolean;
+  isMobile?: boolean;
 }
 
 const InfoCardMobile = ({
   icon,
   label,
   value,
+  sublabel,
   href,
+  whatsappHref,
   teal = false,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
+  sublabel?: string;
   href?: string;
+  whatsappHref?: string;
   teal?: boolean;
-}) => {
-  const content = (
-    <div
-      className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border shadow-sm ${teal ? "bg-teal-50 border-teal-100" : "bg-white border-slate-200"}`}
-    >
+}) => (
+  <div
+    className={`rounded-xl border shadow-sm overflow-hidden ${teal ? "bg-teal-50 border-teal-100" : "bg-white border-slate-200"}`}
+  >
+    <div className="flex items-center gap-3 px-4 py-3.5">
       <div
         className={`w-9 h-9 flex items-center justify-center flex-shrink-0 rounded-lg ${teal ? "bg-white border border-teal-100" : "bg-teal-50 border border-teal-100"}`}
       >
@@ -101,25 +132,50 @@ const InfoCardMobile = ({
           {value}
         </div>
       </div>
-      <ChevronRight
-        className={`w-4 h-4 flex-shrink-0 ${teal ? "text-teal-400" : "text-slate-300"}`}
-      />
+      {href && !whatsappHref && (
+        <a
+          href={href}
+          target={href.startsWith("http") ? "_blank" : undefined}
+          rel="noopener noreferrer"
+        >
+          <ChevronRight
+            className={`w-4 h-4 flex-shrink-0 ${teal ? "text-teal-400" : "text-slate-300"}`}
+          />
+        </a>
+      )}
     </div>
-  );
-  if (href) {
-    return (
+    {whatsappHref && href && (
+      <div className="flex border-t border-slate-100">
+        <a
+          href={href}
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors border-r border-slate-100"
+        >
+          <Phone className="w-3.5 h-3.5" />
+          Appeler
+        </a>
+        <a
+          href={whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-emerald-600 hover:bg-emerald-50 transition-colors"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+          </svg>
+          WhatsApp
+        </a>
+      </div>
+    )}
+    {href && !whatsappHref && !teal && (
       <a
         href={href}
         target={href.startsWith("http") ? "_blank" : undefined}
         rel="noopener noreferrer"
         className="block"
-      >
-        {content}
-      </a>
-    );
-  }
-  return <div>{content}</div>;
-};
+      />
+    )}
+  </div>
+);
 
 const InfoCardDesktop = ({
   icon,
@@ -127,6 +183,7 @@ const InfoCardDesktop = ({
   value,
   sublabel,
   href,
+  whatsappHref,
   teal = false,
 }: {
   icon: React.ReactNode;
@@ -134,50 +191,73 @@ const InfoCardDesktop = ({
   value: string;
   sublabel?: string;
   href?: string;
+  whatsappHref?: string;
   teal?: boolean;
-}) => {
-  const content = (
-    <div
-      className={`rounded-xl border shadow-sm p-4 flex flex-col gap-2 h-full ${teal ? "bg-teal-50 border-teal-100" : "bg-white border-slate-200"}`}
-    >
-      <div className="flex items-center gap-2">
+}) => (
+  <div
+    className={`rounded-xl border shadow-sm overflow-hidden flex flex-col h-full ${teal ? "bg-teal-50 border-teal-100" : "bg-white border-slate-200"}`}
+  >
+    <div className="flex items-start gap-3 p-4 flex-1">
+      <div
+        className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${teal ? "bg-white border border-teal-100" : "bg-teal-50 border border-teal-100"}`}
+      >
+        {icon}
+      </div>
+      <div className="flex-1 min-w-0">
         <div
-          className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${teal ? "bg-white border border-teal-100" : "bg-teal-50 border border-teal-100"}`}
-        >
-          {icon}
-        </div>
-        <span
-          className={`text-xs font-semibold uppercase tracking-wide ${teal ? "text-teal-600" : "text-slate-400"}`}
+          className={`text-xs font-semibold uppercase tracking-wide mb-1 ${teal ? "text-teal-600" : "text-slate-400"}`}
         >
           {label}
-        </span>
-      </div>
-      <div
-        className={`text-sm font-medium ${teal ? "text-teal-800" : "text-slate-800"}`}
-      >
-        {value}
-      </div>
-      {sublabel && (
-        <div className={`text-xs ${teal ? "text-teal-500" : "text-teal-600"}`}>
-          {sublabel}
         </div>
+        <div
+          className={`text-sm font-medium ${teal ? "text-teal-800" : "text-slate-800"}`}
+        >
+          {value}
+        </div>
+        {sublabel && (
+          <div
+            className={`text-xs mt-0.5 ${teal ? "text-teal-500" : "text-slate-400"}`}
+          >
+            {sublabel}
+          </div>
+        )}
+      </div>
+      {href && !whatsappHref && (
+        <a
+          href={href}
+          target={href.startsWith("http") ? "_blank" : undefined}
+          rel="noopener noreferrer"
+        >
+          <ChevronRight
+            className={`w-4 h-4 flex-shrink-0 ${teal ? "text-teal-400" : "text-slate-300"}`}
+          />
+        </a>
       )}
     </div>
-  );
-  if (href) {
-    return (
-      <a
-        href={href}
-        target={href.startsWith("http") ? "_blank" : undefined}
-        rel="noopener noreferrer"
-        className="block h-full"
-      >
-        {content}
-      </a>
-    );
-  }
-  return <div className="h-full">{content}</div>;
-};
+    {whatsappHref && href && (
+      <div className="flex border-t border-slate-100 mt-auto">
+        <a
+          href={href}
+          className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors border-r border-slate-100"
+        >
+          <Phone className="w-3 h-3" />
+          Appeler
+        </a>
+        <a
+          href={whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-emerald-600 hover:bg-emerald-50 transition-colors"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+          </svg>
+          WhatsApp
+        </a>
+      </div>
+    )}
+  </div>
+);
 
 export default function ProfilePage({ params }: ProfilePageProps) {
   const { id } = use(params);
@@ -334,10 +414,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     ...mobiles.map((p) => ({ number: p, type: detectPhoneType(p) })),
   ];
 
-  const showContact =
-    user && (profile?.id === avocat.id || profile?.user_type === "client");
+  const showContact = !!(
+    user &&
+    (profile?.id === avocat.id || profile?.user_type === "client")
+  );
   const siteUrl = avocat.contact?.site_web ?? undefined;
   const siteInfo = siteUrl ? getSiteLabel(siteUrl) : null;
+  const mapsUrl = getGoogleMapsUrl(avocat);
 
   const infoItems: InfoItem[] = [
     ...(avocat.adresse?.rue || avocat.ville
@@ -347,33 +430,25 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             label: "Cabinet",
             value: `${avocat.adresse?.ville || avocat.ville}, ${avocat.wilaya}`,
             sublabel: avocat.adresse?.rue || undefined,
+            href: mapsUrl,
           },
         ]
       : []),
     ...(showContact
       ? allPhones.map((p) => ({
-          icon:
-            p.type === "mobile" ? (
-              <Smartphone className="w-3.5 h-3.5 text-teal-600" />
-            ) : (
-              <Phone className="w-3.5 h-3.5 text-teal-600" />
-            ),
-          label: getPhoneLabel(p.type),
+          icon: (
+            <span className="text-base leading-none">
+              {getCountryFlag(p.number)}
+            </span>
+          ),
+          label: p.type === "mobile" ? "Mobile" : "Fixe",
           value: formatPhoneNumber(p.number),
           sublabel: p.type === "mobile" ? "Appeler · WhatsApp" : "Appeler",
           href: `tel:${p.number.replace(/\s/g, "")}`,
+          whatsappHref:
+            p.type === "mobile" ? getWhatsAppUrl(p.number) : undefined,
+          isMobile: p.type === "mobile",
         }))
-      : []),
-    ...(showContact && avocat.contact?.email
-      ? [
-          {
-            icon: <Mail className="w-3.5 h-3.5 text-teal-600" />,
-            label: "Email",
-            value: avocat.contact.email,
-            sublabel: "Envoyer un email",
-            href: `mailto:${avocat.contact.email}`,
-          },
-        ]
       : []),
     ...(siteUrl && siteInfo
       ? [
@@ -603,7 +678,9 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   icon={item.icon}
                   label={item.label}
                   value={item.value}
+                  sublabel={item.sublabel}
                   href={item.href ?? undefined}
+                  whatsappHref={item.whatsappHref ?? undefined}
                   teal={item.teal}
                 />
               ))}
@@ -618,6 +695,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   value={item.value}
                   sublabel={item.sublabel}
                   href={item.href ?? undefined}
+                  whatsappHref={item.whatsappHref ?? undefined}
                   teal={item.teal}
                 />
               ))}
