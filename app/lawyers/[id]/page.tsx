@@ -436,8 +436,10 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             icon: <MapPin className="w-3.5 h-3.5 text-teal-600" />,
             label: "Cabinet",
             value: `${avocat.adresse?.ville || avocat.ville}, ${avocat.wilaya}`,
-            sublabel: avocat.adresse?.rue || undefined,
-            href: mapsUrl,
+            sublabel: showContact
+              ? avocat.adresse?.rue || undefined
+              : undefined,
+            href: showContact ? mapsUrl : undefined,
           },
         ]
       : []),
@@ -456,7 +458,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             p.type === "mobile" ? getWhatsAppUrl(p.number) : undefined,
         }))
       : []),
-    ...(validSiteUrl && siteInfo
+    ...(showContact && validSiteUrl && siteInfo
       ? [
           {
             icon:
