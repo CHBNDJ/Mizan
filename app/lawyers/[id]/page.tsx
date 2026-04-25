@@ -335,8 +335,7 @@ export default function ProfilePageDesign3({ params }: ProfilePageProps) {
                 )}
               </div>
             </div>
-
-            <div className="hero-right opacity-0 invisible bg-gradient-to-b from-teal-500 to-teal-800 flex items-center justify-center relative order-first sm:order-last min-h-[200px]">
+            <div className="hero-right opacity-0 invisible bg-gradient-to-b from-teal-500 to-teal-800 flex items-center justify-center relative order-first sm:order-last min-h-[320px] sm:min-h-0 aspect-[3/4] sm:aspect-auto">
               {avocat.avatar_url ? (
                 <img
                   src={avocat.avatar_url}
