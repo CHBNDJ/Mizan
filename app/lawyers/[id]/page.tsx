@@ -521,11 +521,11 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 <div className="space-y-1.5 mb-4">
                   <div className="flex items-center gap-1.5">
                     <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
-                    <Calendar className="w-2.5 h-2.5 flex-shrink-0 text-teal-600" />
-                    <span className="text-[11px] text-slate-600 font-medium">
+                    <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-teal-600" />
+                    <span className="text-sm text-slate-600 font-medium">
                       {experienceAnnees} ans d'expérience
                     </span>
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-sm text-slate-400">
                       · inscrit en{" "}
                       {avocat.experience?.date_inscription || "N/A"}
                     </span>
@@ -533,8 +533,8 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                   {avocat.langues && avocat.langues.length > 0 && (
                     <div className="flex items-center gap-1.5">
                       <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
-                      <Languages className="w-2.5 h-2.5 flex-shrink-0 text-teal-600" />
-                      <span className="text-[11px] text-slate-600 font-medium">
+                      <Languages className="w-3.5 h-3.5 flex-shrink-0 text-teal-600" />
+                      <span className="text-sm text-slate-600 font-medium">
                         {avocat.langues.join(" · ")}
                       </span>
                     </div>
@@ -547,8 +547,8 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       {avocat.rating_google &&
                         (avocat.reviews_count_google ?? 0) > 0 && (
                           <div className="flex items-center gap-1">
-                            <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400" />
-                            <span className="text-[11px] font-semibold text-slate-700">
+                            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                            <span className="text-sm font-semibold text-slate-700">
                               {avocat.rating_google.toFixed(1)}
                             </span>
                             <Image
@@ -557,7 +557,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                               width={10}
                               height={10}
                             />
-                            <span className="text-[11px] text-slate-400">
+                            <span className="text-sm text-slate-400">
                               ({avocat.reviews_count_google})
                             </span>
                           </div>
@@ -565,12 +565,12 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       {avocat.rating_mizan &&
                         (avocat.reviews_count_mizan ?? 0) > 0 && (
                           <div className="flex items-center gap-1">
-                            <Star className="w-2.5 h-2.5 fill-teal-500 text-teal-500" />
-                            <span className="text-[11px] font-semibold text-slate-700">
+                            <Star className="w-3.5 h-3.5 fill-teal-500 text-teal-500" />
+                            <span className="text-sm font-semibold text-slate-700">
                               {avocat.rating_mizan.toFixed(1)}
                             </span>
-                            <Scale className="w-2.5 h-2.5 text-teal-600" />
-                            <span className="text-[11px] text-slate-400">
+                            <Scale className="w-3.5 h-3.5 text-teal-600" />
+                            <span className="text-sm text-slate-400">
                               ({avocat.reviews_count_mizan})
                             </span>
                           </div>
