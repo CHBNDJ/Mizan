@@ -172,7 +172,7 @@ const InfoCardMobile = ({
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-emerald-600 hover:bg-emerald-50 transition-colors"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-white bg-[#25D366] hover:bg-[#20bd5a] transition-colors"
           >
             <WhatsAppIcon />
             WhatsApp
@@ -240,7 +240,7 @@ const InfoCardDesktop = ({
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-emerald-600 hover:bg-emerald-50 transition-colors"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-white bg-[#25D366] hover:bg-[#20bd5a] transition-colors"
           >
             <WhatsAppIcon />
             WhatsApp
@@ -507,7 +507,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[360px]">
             <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
               <div>
-                <p className="text-xs font-semibold text-teal-600 uppercase tracking-widest mb-3">
+                <p className="text-[10px] font-semibold text-teal-600 uppercase tracking-widest mb-3">
                   Avocat · Barreau de {avocat.barreau}
                 </p>
                 <h1 className="text-2xl sm:text-3xl font-light text-slate-800 leading-tight mb-1">
@@ -516,25 +516,25 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 leading-tight mb-4">
                   {avocat.nom}
                 </h2>
-                <div className="w-10 h-0.5 bg-teal-600 mb-5" />
+                <div className="w-10 h-0.5 bg-teal-600 mb-4" />
 
-                <div className="space-y-2 text-xs mb-5">
-                  <div className="flex items-center gap-2">
+                <div className="space-y-1.5 mb-4">
+                  <div className="flex items-center gap-1.5">
                     <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
-                    <Calendar className="w-3 h-3 flex-shrink-0 text-teal-600" />
-                    <span className="text-slate-700 font-medium">
+                    <Calendar className="w-2.5 h-2.5 flex-shrink-0 text-teal-600" />
+                    <span className="text-[11px] text-slate-600 font-medium">
                       {experienceAnnees} ans d'expérience
                     </span>
-                    <span className="text-slate-400">
+                    <span className="text-[11px] text-slate-400">
                       · inscrit en{" "}
                       {avocat.experience?.date_inscription || "N/A"}
                     </span>
                   </div>
                   {avocat.langues && avocat.langues.length > 0 && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
                       <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
-                      <Languages className="w-3 h-3 flex-shrink-0 text-teal-600" />
-                      <span className="text-slate-700 font-medium">
+                      <Languages className="w-2.5 h-2.5 flex-shrink-0 text-teal-600" />
+                      <span className="text-[11px] text-slate-600 font-medium">
                         {avocat.langues.join(" · ")}
                       </span>
                     </div>
@@ -543,21 +543,21 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     (avocat.reviews_count_google ?? 0) > 0) ||
                     (avocat.rating_mizan &&
                       (avocat.reviews_count_mizan ?? 0) > 0)) && (
-                    <div className="flex items-center gap-3 pt-1">
+                    <div className="flex items-center gap-3 pt-0.5">
                       {avocat.rating_google &&
                         (avocat.reviews_count_google ?? 0) > 0 && (
                           <div className="flex items-center gap-1">
-                            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                            <span className="font-semibold text-slate-700">
+                            <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400" />
+                            <span className="text-[11px] font-semibold text-slate-700">
                               {avocat.rating_google.toFixed(1)}
                             </span>
                             <Image
                               src="/google.png"
                               alt="Google"
-                              width={11}
-                              height={11}
+                              width={10}
+                              height={10}
                             />
-                            <span className="text-slate-400">
+                            <span className="text-[11px] text-slate-400">
                               ({avocat.reviews_count_google})
                             </span>
                           </div>
@@ -565,12 +565,12 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       {avocat.rating_mizan &&
                         (avocat.reviews_count_mizan ?? 0) > 0 && (
                           <div className="flex items-center gap-1">
-                            <Star className="w-3 h-3 fill-teal-500 text-teal-500" />
-                            <span className="font-semibold text-slate-700">
+                            <Star className="w-2.5 h-2.5 fill-teal-500 text-teal-500" />
+                            <span className="text-[11px] font-semibold text-slate-700">
                               {avocat.rating_mizan.toFixed(1)}
                             </span>
-                            <Scale className="w-3 h-3 text-teal-600" />
-                            <span className="text-slate-400">
+                            <Scale className="w-2.5 h-2.5 text-teal-600" />
+                            <span className="text-[11px] text-slate-400">
                               ({avocat.reviews_count_mizan})
                             </span>
                           </div>
@@ -586,7 +586,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     <div className="text-xl font-bold text-teal-600">
                       {formatPrice(tarifEstime)}
                     </div>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-[11px] text-slate-400">
                       {avocat.consultation_price
                         ? "Tarif consultation"
                         : "Tarif estimé"}
@@ -610,8 +610,8 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     )}
                 </div>
                 {avocat.verified && (
-                  <div className="flex items-center gap-1.5 mt-3 text-xs text-teal-600 font-medium">
-                    <CheckCircle className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-1.5 mt-3 text-[11px] text-teal-600 font-medium">
+                    <CheckCircle className="w-3 h-3" />
                     Vérifié par Mizan
                   </div>
                 )}
@@ -662,7 +662,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           <div className="content-card opacity-0 invisible mb-4">
             <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
               <div className="px-5 py-4 border-b border-slate-100">
-                <div className="flex items-center gap-3 mb-1">
+                <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center flex-shrink-0">
                     <Phone className="w-3.5 h-3.5 text-teal-600" />
                   </div>
@@ -705,7 +705,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 />
               ))}
             </div>
-
             <div
               className={`content-card opacity-0 invisible hidden sm:grid ${desktopGridClass} gap-3 mb-4`}
             >
