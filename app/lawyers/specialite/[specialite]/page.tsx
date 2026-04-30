@@ -92,11 +92,12 @@ const SPECIALITES_MAP: Record<
 };
 
 type Props = {
-  params: { specialite: string };
+  params: Promise<{ specialite: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const specData = SPECIALITES_MAP[params.specialite.toLowerCase()];
+  const { specialite } = await params;
+  const specData = SPECIALITES_MAP[specialite?.toLowerCase() ?? ""];
   if (!specData) return { title: "Avocats | Mizan" };
 
   return {
@@ -105,10 +106,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `Avocat ${specData.label} en Algérie | Mizan`,
       description: specData.description,
-      url: `https://mizan-dz.com/lawyers/specialite/${params.specialite}`,
+      url: `https://mizan-dz.com/lawyers/specialite/${specialite}`,
     },
     alternates: {
-      canonical: `https://mizan-dz.com/lawyers/specialite/${params.specialite}`,
+      canonical: `https://mizan-dz.com/lawyers/specialite/${specialite}`,
     },
   };
 }
@@ -118,7 +119,8 @@ export async function generateStaticParams() {
 }
 
 export default async function SpecialitePage({ params }: Props) {
-  const specData = SPECIALITES_MAP[params.specialite.toLowerCase()];
+  const { specialite } = await params;
+  const specData = SPECIALITES_MAP[specialite?.toLowerCase() ?? ""];
   if (!specData) notFound();
 
   const avocats = await searchAvocats({ specialite: [specData.label] });
