@@ -29,7 +29,6 @@ const BLOG_SLUGS = [
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://mizan-dz.com";
 
-  // Pages statiques principales
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -87,7 +86,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Pages spécialités — haute valeur SEO
   const specialitePages: MetadataRoute.Sitemap = SPECIALITES_SLUGS.map(
     (slug) => ({
       url: `${baseUrl}/lawyers/specialite/${slug}`,
@@ -97,7 +95,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   );
 
-  // Articles de blog
   const blogPages: MetadataRoute.Sitemap = BLOG_SLUGS.map((slug) => ({
     url: `${baseUrl}/blog/${slug}`,
     lastModified: new Date(),
@@ -106,7 +103,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   try {
-    // Profils avocats vérifiés — dynamique depuis Supabase
     const { data: lawyers, error: lawyersError } = await supabase
       .from("lawyers")
       .select("id, updated_at, users!inner(id, user_type)")
@@ -125,7 +121,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
       })) || [];
 
-    // Pages wilaya — dynamique depuis Supabase
     const { data: wilayasData, error: wilayasError } = await supabase
       .from("lawyers")
       .select("wilayas")
