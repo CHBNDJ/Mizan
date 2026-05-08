@@ -31,6 +31,7 @@ export default function HomePage() {
     pourcentage_verification: 100,
   });
   const [loading, setLoading] = useState(true);
+  const [loadingWilayas, setLoadingWilayas] = useState(true);
 
   const specialites = getSpecialites();
 
@@ -38,13 +39,18 @@ export default function HomePage() {
     const loadData = async () => {
       try {
         setLoading(true);
-        const [topAvocatsData, wilayasData, statsData] = await Promise.all([
+        setLoadingWilayas(true);
+
+        getWilayas().then((data) => {
+          setWilayas(data);
+          setLoadingWilayas(false);
+        });
+
+        const [topAvocatsData, statsData] = await Promise.all([
           getTopRatedAvocats(8),
-          getWilayas(),
           getStatistiques(),
         ]);
         setTopAvocats(topAvocatsData);
-        setWilayas(wilayasData);
         setStats(statsData);
       } catch (error) {
         console.error("Erreur chargement données:", error);
@@ -219,7 +225,7 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="lg:w-56 relative z-20">
-                  {loading ? (
+                  {loadingWilayas ? (
                     <div className="h-12 bg-slate-100 rounded-lg animate-pulse" />
                   ) : (
                     <CustomSelect
@@ -229,7 +235,6 @@ export default function HomePage() {
                       onChange={setSelectedWilaya}
                       className="h-12"
                       size="large"
-                      disabled={wilayaOptions.length === 0}
                     />
                   )}
                 </div>
