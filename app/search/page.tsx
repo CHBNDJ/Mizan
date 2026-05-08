@@ -361,7 +361,7 @@ function SearchResults() {
 
           <div>
             {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {[...Array(8)].map((_, i) => (
                   <div
                     key={i}
@@ -375,7 +375,7 @@ function SearchResults() {
                 ))}
               </div>
             ) : totalAvocats > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {avocatsTries.map((avocat: AvocatData) => (
                   <div key={avocat.id} className="search-avocat-card">
                     <AvocatCard avocat={avocat} searchParams={searchParams} />
