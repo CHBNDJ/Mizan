@@ -336,11 +336,7 @@ export function Navigation() {
                         <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      align="center"
-                      sameWidth={true}
-                      className="w-44"
-                    >
+                    <DropdownMenuContent align="center" className="w-44">
                       <DropdownMenuItem asChild>
                         <Link
                           href="/auth/client/login"
