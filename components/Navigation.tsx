@@ -339,7 +339,7 @@ export function Navigation() {
                     <DropdownMenuContent
                       align="center"
                       sameWidth={true}
-                      className="w-36"
+                      className="w-44"
                     >
                       <DropdownMenuItem asChild>
                         <Link
@@ -370,7 +370,7 @@ export function Navigation() {
                     <DropdownMenuContent
                       align="center"
                       sameWidth={true}
-                      className="w-36"
+                      className="w-44"
                     >
                       <DropdownMenuItem asChild>
                         <Link
