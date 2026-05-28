@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Calendar, ArrowLeft, ArrowRight } from "lucide-react";
+import { Calendar, ArrowRight } from "lucide-react";
 import React from "react";
 
 const ARTICLES: Record<
@@ -60,7 +60,7 @@ Une procédure de divorce, même par consentement mutuel, est plus sécurisée a
     `,
   },
   "creer-sarl-algerie": {
-    titre: "Créer une SARL en Algérie : guide complet 2025",
+    titre: "Créer une SARL en Algérie : guide complet 2026",
     resume:
       "Capital social, statuts, inscription au registre du commerce — tout ce qu'il faut savoir pour créer votre société à responsabilité limitée en Algérie.",
     categorie: "Droit commercial",
@@ -70,28 +70,36 @@ Une procédure de divorce, même par consentement mutuel, est plus sécurisée a
     contenu: `
 ## Qu'est-ce qu'une SARL en Algérie ?
 
-La Société à Responsabilité Limitée (SARL) est la forme juridique la plus répandue pour les PME en Algérie. Les associés ne sont responsables des dettes sociales qu'à hauteur de leurs apports.
+La Société à Responsabilité Limitée (SARL) est la forme juridique la plus répandue pour les PME en Algérie. Elle regroupe de 2 à 50 associés. Les associés ne sont responsables des dettes sociales qu'à hauteur de leurs apports.
 
 ## Capital social minimum
 
-Depuis les réformes récentes, le capital social minimum d'une SARL en Algérie est de **100 000 DA**. Il peut être libéré en totalité lors de la constitution ou de manière échelonnée.
+Le capital social minimum recommandé est de 100 000 DZD. Bien que l'obligation légale de capital minimum ait été supprimée par la loi 15-20 de 2015, ce montant reste exigé en pratique par les banques et les partenaires commerciaux.
 
 ## Les étapes de création
 
-1. **Rédaction des statuts** — document fondateur qui définit l'objet social, le capital, la répartition des parts et les règles de fonctionnement.
-2. **Dépôt du capital** sur un compte bancaire bloqué au nom de la société en formation.
-3. **Publication dans un journal d'annonces légales** (JAL) — obligatoire pour informer les tiers.
-4. **Inscription au Centre National du Registre du Commerce (CNRC)** — obtention du numéro de registre du commerce.
-5. **Immatriculation fiscale** auprès de la Direction des Impôts.
-6. **Affiliation à la CNAS** (Caisse Nationale des Assurances Sociales) si vous employez du personnel.
+1. **Réservation de la dénomination** auprès du CNRC via la plateforme Sijilcom — prévoyez 3 à 4 noms alternatifs en cas d'indisponibilité.
+2. **Rédaction et authentification des statuts** chez un notaire — coût entre 15 000 et 50 000 DZD selon la complexité.
+3. **Dépôt du capital** sur un compte bancaire bloqué au nom de la société en formation — obtention de l'attestation de blocage.
+4. **Publication au BOAL** (Bulletin Officiel des Annonces Légales) — coût entre 3 000 et 6 000 DZD.
+5. **Immatriculation au CNRC** — délai de 7 à 15 jours ouvrables. L'extrait RC (équivalent du K-bis) est remis en plusieurs exemplaires.
+6. **Obtention du NIF** (Numéro d'Identification Fiscale) à la Direction des Impôts — délivré en 48 à 72h. Le compte bancaire bloqué est alors débloqué.
+7. **Obtention du NIS** (Numéro d'Identification Statistique) auprès de l'ONS — délai 2 à 4 jours.
 
 ## Documents requis
 
-- Copie de la carte nationale d'identité des associés
-- Justificatif de domicile du siège social
-- Attestation de dépôt du capital
-- Statuts signés et légalisés
-- Certificat de résidence du gérant
+- Copie de la carte nationale d'identité de tous les associés
+- Justificatif de domicile du siège social (bail commercial, acte de propriété ou contrat de domiciliation)
+- Statuts authentifiés par le notaire
+- Attestation de dépôt du capital bancaire
+
+## La domiciliation du siège social
+
+Le siège social doit obligatoirement avoir une adresse physique en Algérie. Trois options sont possibles : un local commercial loué ou acheté, le domicile personnel du gérant (autorisé pour les activités sans accueil de clientèle), ou une société de domiciliation commerciale. Les sociétés de domiciliation à Alger pratiquent des tarifs entre 2 000 et 8 000 DZD par mois.
+
+## Coût total de création
+
+Comptez entre 150 000 et 300 000 DZD au total (environ 1 000 à 2 000€), incluant les honoraires du notaire, le capital social, les frais CNRC, et la publication au BOAL.
 
 ## Faire appel à un avocat
 
@@ -113,29 +121,27 @@ La gestion d'une succession en Algérie depuis l'étranger est l'un des cas d'us
 
 ## La loi applicable
 
-Pour les ressortissants algériens, c'est le droit algérien qui s'applique pour les successions concernant des biens situés en Algérie, quel que soit le lieu de résidence du défunt ou des héritiers.
-
-En Algérie, la succession est régie par le **Code de la famille algérien**, qui s'inspire du droit islamique (fiqh malékite). Les parts héréditaires sont fixes et déterminées par la loi.
+Pour les biens immobiliers situés en Algérie, c'est toujours le droit algérien qui s'applique (principe de la lex situs), quel que soit le lieu de résidence du défunt ou des héritiers. En Algérie, la succession est régie par le Code de la famille algérien. Les parts héréditaires sont fixes et déterminées par la loi.
 
 ## Les étapes principales
 
 1. **Déclaration du décès** auprès de l'état civil algérien si le décès a eu lieu à l'étranger.
 2. **Obtention d'un acte de décès algérien** traduit et légalisé.
-3. **Établissement du tableau des héritiers** par le notaire ou le tribunal.
+3. **Établissement de la Fredha** — c'est l'acte de succession algérien, équivalent de l'acte de notoriété français. Il est délivré par le notaire algérien du lieu de résidence ou du lieu d'inhumation du défunt. Il désigne les héritiers et les parts de chacun. Document indispensable pour toute la suite.
 4. **Inventaire des biens** (immobilier, comptes bancaires, véhicules).
 5. **Partage et actes notariés** pour les biens immobiliers.
-6. **Transfert des fonds** si des liquidités sont à rapatrier.
+6. **Mutation du titre de propriété** à la Conservation foncière au nom des nouveaux propriétaires.
 
 ## Documents à préparer depuis l'étranger
 
-- Acte de décès traduit en arabe et apostillé
+- Acte de décès traduit en arabe et légalisé
 - Actes de naissance des héritiers
 - Livret de famille du défunt
 - Procuration légalisée si vous mandatez un représentant en Algérie
 
 ## Pourquoi faire appel à un avocat algérien ?
 
-Un avocat basé en Algérie peut représenter vos intérêts sur place, coordonner avec le notaire, et s'assurer que vos droits d'héritier sont respectés. C'est particulièrement utile quand les héritiers sont dispersés entre plusieurs pays.
+Un avocat basé en Algérie peut représenter vos intérêts sur place, coordonner avec le notaire, et s'assurer que vos droits d'héritier sont respectés. C'est particulièrement utile quand les héritiers sont dispersés entre plusieurs pays ou en cas de désaccord entre héritiers.
     `,
   },
   "droits-locataire-algerie": {
@@ -228,24 +234,25 @@ Vérifiez également l'absence de :
 - Hypothèques ou saisies
 - Servitudes non déclarées
 - Litiges en cours
+- Partie du prix payée "au noir" — exigez toujours un prix 100% déclaré au notaire
 
 ## Les étapes de la transaction
 
 1. **Compromis de vente** (promesse synallagmatique) — engage les deux parties.
 2. **Versement d'un acompte** (généralement 10-20% du prix).
-3. **Acte de vente définitif** devant notaire.
-4. **Enregistrement** auprès de la Conservation foncière pour opposabilité aux tiers.
+3. **Acte de vente définitif** devant notaire algérien.
+4. **Enregistrement et publication foncière** auprès de la Conservation foncière — délai 1 à 3 mois.
 
 ## Les taxes et frais
 
 Prévoyez en plus du prix d'achat :
-- Frais de notaire : environ 2-3% du prix
+- Frais de notaire : environ 2 à 5% du prix
 - Droits d'enregistrement et taxes diverses
 - Frais de conservation foncière
 
 ## L'achat depuis l'étranger
 
-Les Algériens résidant à l'étranger peuvent acheter un bien en Algérie. Ils peuvent mandater un représentant via procuration légalisée et apostillée. Les fonds peuvent être transférés depuis l'étranger sous certaines conditions réglementaires.
+Les Algériens résidant à l'étranger peuvent acheter un bien en Algérie. Ils peuvent mandater un représentant via procuration établie au consulat algérien dans leur pays de résidence, légalisée pour être reconnue en Algérie. Les non-résidents bénéficient d'exonérations fiscales sur certaines transactions immobilières.
 
 ## Pourquoi consulter un avocat ?
 
@@ -265,72 +272,66 @@ Un avocat spécialisé en droit immobilier peut vérifier tous les documents, d�
       "vendre-appartement-algerie-etranger",
     ],
     contenu: `
-## Pourquoi créer une entreprise en Algérie depuis l'étranger est une bonne idée
+## Pourquoi créer une entreprise en Algérie depuis l'étranger
 
-L'Algérie traverse une période de transformation économique importante. Le gouvernement multiplie les réformes pour attirer les investissements de la diaspora — simplification des procédures, guichet unique, statut auto-entrepreneur, zones franches. Le marché intérieur de 45 millions de consommateurs reste largement sous-exploité dans de nombreux secteurs : tech, tourisme, agriculture, services, commerce.
+L'Algérie traverse une période de transformation économique importante. Le gouvernement multiplie les réformes pour attirer les investissements de la diaspora — simplification des procédures, guichet unique, statut auto-entrepreneur via l'ANAE. Le marché intérieur de 45 millions de consommateurs reste largement sous-exploité dans de nombreux secteurs : tech, tourisme, agriculture, services, commerce.
 
-Pour la diaspora, l'avantage est double : vous connaissez le pays, sa culture et ses besoins, et vous avez accès à des financements et des compétences que les entrepreneurs locaux n'ont pas toujours.
+## Les deux formes juridiques principales
 
-## Les formes juridiques disponibles
+**Le statut auto-entrepreneur via l'ANAE**
 
-Avant de commencer, il faut choisir la structure juridique adaptée à votre projet.
+Créé par la loi 22-23 du 18 décembre 2022, le statut auto-entrepreneur en Algérie s'obtient exclusivement en ligne sur le portail anae.dz. Il ne nécessite pas de registre du commerce. Documents requis : carte nationale d'identité recto/verso, justificatif de domicile de moins de 3 mois, photo d'identité fond blanc. Aucun casier judiciaire n'est demandé.
 
-**L'auto-entrepreneur** est la forme la plus simple et la plus rapide à créer — 48 à 72 heures au CNRC. Idéal pour les activités de services, le freelance, et les petits commerces. Pas de capital minimum requis, fiscalité allégée. La limite principale est le plafond de chiffre d'affaires.
+Le plafond de chiffre d'affaires est de 5 millions de DZD pour les services et 10 millions de DZD pour le commerce. Le taux d'imposition est l'IFU à 0,5% libératoire. L'affiliation à la CASNOS est obligatoire sous 10 jours (cotisations environ 32 000 DZD/an). Délai d'obtention de la carte : 7 à 15 jours ouvrables. La carte est retirée physiquement dans un bureau de poste sur notification SMS. Coût : 1 200 DZD.
 
-**La SARL (Société à Responsabilité Limitée)** est la forme la plus courante pour les projets structurés. Capital minimum de 100 000 DZD (environ 70€), entre 1 et 50 associés, délai de création de 4 à 6 semaines. C'est la structure recommandée si vous avez des investissements importants ou des associés.
+Ce statut ne permet pas d'embaucher des salariés. Il est idéal pour les freelances, consultants, et petits commerces.
 
-**La SPA (Société Par Actions)** est réservée aux grands projets nécessitant des investissements lourds. Capital minimum de 1 000 000 DZD.
+**La SARL (Société à Responsabilité Limitée)**
 
-## Les étapes concrètes pour créer votre entreprise
+La SARL nécessite au minimum 2 associés (maximum 50). Capital minimum recommandé : 100 000 DZD. Délai de création : 4 à 6 semaines. Elle est soumise à l'IBS (Impôt sur les Bénéfices des Sociétés) entre 19 et 26% selon le secteur. Voir notre article dédié à la création de SARL en Algérie pour le détail complet des étapes.
 
-**Étape 1 — Préparez votre dossier depuis l'étranger**
+## La domiciliation — adresse obligatoire en Algérie
 
-Avant même de mettre les pieds en Algérie, vous pouvez préparer votre dossier. Il vous faut une copie certifiée conforme de votre passeport algérien ou carte d'identité, un casier judiciaire de moins de 3 mois, et une description précise de votre activité avec les codes APE correspondants.
+Toute entreprise en Algérie doit avoir une adresse en Algérie, qu'il s'agisse d'une domiciliation physique ou virtuelle. Trois options existent.
 
-**Étape 2 — La domiciliation de votre société**
+**Domiciliation physique** : local commercial loué ou acheté — solution idéale pour les activités avec accueil de clientèle ou stockage de marchandises.
 
-Votre entreprise doit avoir une adresse en Algérie. Si vous n'avez pas de logement au pays, trois options s'offrent à vous : utiliser l'adresse d'un proche avec une attestation d'hébergement, recourir à une société de domiciliation (2 000 à 5 000 DZD par mois à Alger), ou vous installer dans une pépinière d'entreprises gérée par l'ANADE.
+**Domiciliation au domicile** : pour l'auto-entrepreneur ou la SARL sans accueil de clientèle, l'adresse personnelle du gérant en Algérie est acceptée. Il faut fournir un justificatif de domicile (facture d'électricité, de gaz, ou attestation de résidence).
 
-**Étape 3 — Le CNRC (Centre National du Registre du Commerce)**
+**Domiciliation commerciale virtuelle** : des sociétés spécialisées à Alger proposent une adresse professionnelle sans bureau physique. Tarifs entre 2 000 et 8 000 DZD par mois. Vous recevez votre courrier officiel à cette adresse. Solution idéale pour les activités 100% en ligne ou les porteurs de projet qui ne résident pas encore en Algérie.
 
-C'est ici que naît officiellement votre entreprise. Vous déposez votre dossier, choisissez votre nom commercial, et obtenez votre registre de commerce. Pour un auto-entrepreneur, la procédure peut se faire en une seule journée.
+## Les étapes concrètes pour l'auto-entrepreneur (ANAE)
 
-**Étape 4 — Les impôts et la sécurité sociale**
-
-Une fois le registre de commerce obtenu, vous devez vous enregistrer auprès de la Direction des Impôts pour obtenir votre Numéro d'Identification Fiscale (NIF) et vous affilier à la CASNOS.
-
-**Étape 5 — L'ouverture d'un compte bancaire professionnel**
-
-Toute entreprise algérienne doit avoir un compte bancaire professionnel. Si votre activité implique des transactions avec l'étranger, la BEA ou la BDL sont les mieux adaptées.
+1. **Vérifier l'éligibilité de l'activité** sur la liste ANAE (plus de 1 300 activités éligibles).
+2. **Créer un compte** sur anae.dz avec une adresse email valide et un numéro de téléphone algérien.
+3. **Remplir le formulaire** en ligne avec vos informations personnelles et votre activité.
+4. **Soumettre les documents** : CNI recto/verso, justificatif de domicile, photo d'identité.
+5. **Validation par l'ANAE** sous 2 à 5 jours.
+6. **Retrait de la carte** au bureau de poste sur notification SMS (coût 1 200 DZD).
+7. **Affiliation à la CASNOS** obligatoire sous 10 jours.
 
 ## Les aides disponibles pour la diaspora
 
-L'Algérie a mis en place plusieurs dispositifs spécifiques pour accompagner les investisseurs de la diaspora.
+**L'ANADE** (Agence Nationale d'Appui et de Développement de l'Entrepreneuriat) propose des financements sans intérêt, des formations, et un accompagnement pour les nouveaux entrepreneurs.
 
-**L'ANADE** propose des financements sans intérêt, des formations, et un accompagnement pour les nouveaux entrepreneurs.
+**Sofinance** est un fonds d'investissement qui peut cofinancer votre projet à hauteur de 49%, sans intérêt, dans le respect des principes de la finance islamique.
 
-**Sofinance** est un fonds d'investissement algérien qui peut cofinancer votre projet à hauteur de 49% sous forme de participation au capital, sans intérêt et dans le respect des principes de la finance islamique.
-
-**L'ANDI** offre des avantages fiscaux et douaniers pour les projets dans certains secteurs prioritaires.
+**L'ANDI** (Agence Nationale de Développement de l'Investissement) offre des avantages fiscaux et douaniers pour les projets dans certains secteurs prioritaires.
 
 ## Les erreurs à éviter
 
-La première erreur est de vouloir tout gérer à distance — certaines étapes nécessitent obligatoirement votre présence physique en Algérie. La deuxième est de sous-estimer les délais administratifs — prévoyez toujours le double de ce qu'on vous annonce. La troisième est de créer une structure juridique inadaptée à votre activité.
-
-## Pourquoi consulter un avocat algérien avant de vous lancer
-
-Un avocat spécialisé en droit des sociétés peut vous aider à choisir la meilleure structure, rédiger vos statuts, sécuriser vos contrats avec vos partenaires algériens, et vous éviter des erreurs coûteuses.
+Ne sous-estimez pas les délais administratifs — prévoyez toujours plus de temps que ce qu'on vous annonce. Ne créez pas une SARL si l'auto-entrepreneur ANAE suffit pour votre activité — c'est plus rapide et moins coûteux. Et ne commencez pas à facturer avant d'avoir votre carte ANAE ou votre registre de commerce.
 
 ## Questions fréquentes
 
-**Un Algérien de la diaspora peut-il créer une entreprise en Algérie sans revenir au pays ?**
-Certaines démarches peuvent être préparées à distance, mais la création officielle nécessite une présence physique. Vous pouvez également mandater un avocat pour vous représenter sur place.
+**Peut-on créer une entreprise en Algérie depuis la France sans se déplacer ?**
+Pour l'auto-entrepreneur ANAE, l'inscription est 100% en ligne sur anae.dz, mais la carte doit être retirée physiquement en bureau de poste en Algérie. Pour une SARL, certaines démarches nécessitent une présence physique ou un mandataire sur place.
 
-**Faut-il avoir la nationalité algérienne pour créer une entreprise en Algérie ?**
-Non. Les étrangers peuvent créer une entreprise en Algérie mais sous des conditions spécifiques. Les binationaux sont traités comme des nationaux algériens.
+**Faut-il un casier judiciaire pour créer une entreprise en Algérie ?**
+Non — le statut auto-entrepreneur ANAE ne demande pas de casier judiciaire. Pour une SARL, les exigences varient selon les activités. Consultez un avocat pour votre situation spécifique.
 
-**Combien coûte la création d'une SARL en Algérie ?**
-Entre 50 000 et 150 000 DZD en frais de notaire, CNRC, et frais divers, hors capital social minimum de 100 000 DZD.
+**Quelle est la différence entre l'auto-entrepreneur ANAE et le registre de commerce CNRC ?**
+L'auto-entrepreneur ANAE est un statut simplifié sans registre de commerce, plafonné en CA, sans possibilité d'employer des salariés. Le registre de commerce CNRC est requis pour les SARL et les activités commerciales qui dépassent ce cadre.
     `,
   },
   "heriter-bien-immobilier-algerie-france": {
@@ -346,71 +347,71 @@ Entre 50 000 et 150 000 DZD en frais de notaire, CNRC, et frais divers, hors cap
       "succession-algerie-depuis-etranger",
     ],
     contenu: `
-## Comprendre le droit successoral algérien
+## La loi applicable : toujours le droit algérien pour les biens en Algérie
 
-En Algérie, les successions sont régies par le Code de la famille algérien, qui s'inspire du droit islamique (fiqh malékite). La règle fondamentale à retenir est que les héritiers et leurs parts sont déterminés par la loi algérienne, indépendamment de votre lieu de résidence ou de votre nationalité française.
+Pour tout bien immobilier situé en Algérie, c'est le droit algérien qui s'applique obligatoirement (principe de la lex situs), même si le défunt vivait en France et même si les héritiers ont la nationalité française. C'est confirmé par le Consulat de France à Alger et le droit international privé algérien.
 
-Les héritiers réservataires en droit algérien sont le conjoint survivant, les enfants (les fils héritent du double des filles dans le partage), les parents du défunt, et dans certains cas les frères et sœurs. Un testament ne peut pas déroger à ces règles pour les héritiers réservataires.
+La succession immobilière algérienne est régie par les articles 126 à 201 du Code de la famille algérien, qui s'inspire du droit islamique malékite. Les parts héréditaires sont fixes et déterminées par la loi — un testament rédigé en France ne peut pas modifier ces parts pour les biens situés en Algérie.
 
-## Les étapes concrètes pour hériter depuis la France
+## La Fredha — document central de toute succession algérienne
+
+La Fredha est l'acte de succession algérien, équivalent de l'acte de notoriété français. Elle est délivrée par le notaire algérien du lieu de résidence ou du lieu d'inhumation du défunt. Elle désigne tous les héritiers et les parts que chacun détient. Ce document est indispensable — sans la Fredha, aucune démarche sur le bien immobilier n'est possible.
+
+## Les étapes concrètes depuis la France
 
 **Étape 1 — Obtenir l'acte de décès algérien**
 
-Si le décès a eu lieu en Algérie, l'acte de décès est établi par l'état civil de la commune du décès. Si vous êtes en France, le consulat algérien peut vous aider à obtenir une copie.
+Si le décès a eu lieu en Algérie, l'acte est établi par l'état civil de la commune du décès. Depuis la France, le consulat algérien compétent (celui dont dépendait le lieu de résidence du défunt) peut vous aider à obtenir une copie ou à effectuer les démarches de déclaration si le défunt est décédé en France.
 
-**Étape 2 — La déclaration de succession**
+**Étape 2 — Contacter un notaire algérien pour établir la Fredha**
 
-Dans les 6 mois suivant le décès, vous devez déposer une déclaration de succession auprès de la Direction des Impôts de la wilaya où se situe le bien. Un avocat ou un notaire algérien peut vous aider à la préparer si vous ne pouvez pas vous déplacer.
+Le notaire algérien établit la Fredha sur la base des actes d'état civil de tous les héritiers. Si vous ne pouvez pas vous déplacer, vous pouvez donner une procuration à un proche ou à un avocat en Algérie pour vous représenter.
 
-**Étape 3 — L'acte de notoriété successorale**
+**Étape 3 — La déclaration fiscale de succession**
 
-Il s'agit du document officiel qui établit la liste des héritiers légaux et leurs parts respectives. En Algérie, cet acte est établi par un notaire sur la base des actes d'état civil de tous les héritiers.
+Il n'existe pas de droits de succession au sens strict en Algérie. En revanche, des frais de mutation s'appliquent lors du transfert de propriété des biens immobiliers. En France, si le défunt était résident français, une déclaration de succession doit être déposée auprès des impôts français dans les 6 mois (12 mois si le décès a eu lieu à l'étranger). La convention franco-algérienne de 1999 vise à éviter la double imposition.
 
 **Étape 4 — Le partage du bien**
 
-Si tous les héritiers sont d'accord, un acte notarié de partage est rédigé. Si les héritiers ne sont pas d'accord, ou si certains sont introuvables ou refusent de signer, le partage peut être demandé en justice.
+Si tous les héritiers s'accordent, un acte notarié de partage est rédigé par le notaire algérien. Si un héritier bloque ou est introuvable, un partage judiciaire peut être demandé au tribunal. Un avocat devient indispensable dans cette situation.
 
-**Étape 5 — La mise à jour du titre de propriété**
+**Étape 5 — La mutation du titre de propriété**
 
-Le notaire procède à la mutation du titre de propriété au nom des nouveaux propriétaires auprès de la Conservation foncière.
+Une fois le partage acté, le notaire procède à la mutation du titre de propriété à la Conservation foncière au nom des nouveaux propriétaires.
 
-## Les documents dont vous avez besoin
+## Documents nécessaires
 
-- Acte de décès du défunt
-- Votre acte de naissance algérien et livret de famille
-- Actes de naissance de tous les autres héritiers
-- Procuration notariée si vous mandatez quelqu'un pour vous représenter en Algérie
-- Titre de propriété du bien immobilier
+- Acte de décès du défunt (traduit en arabe si établi en France)
+- Actes de naissance de tous les héritiers
+- Livret de famille du défunt
+- Titre de propriété du bien si disponible
+- Procuration légalisée si vous mandatez un représentant en Algérie
 
-## Les situations compliquées
+## Les situations difficiles
 
-**Plusieurs héritiers en désaccord** — C'est la situation la plus fréquente. Un héritier bloque le partage, refuse de signer, ou est introuvable. La solution passe par la justice algérienne. Un avocat peut saisir le tribunal pour forcer le partage judiciaire.
+**Héritiers en désaccord** — Un héritier peut bloquer le partage pendant des années. L'action en partage judiciaire (da'wa al-qisma) devant le tribunal algérien est la solution. Un avocat est indispensable.
 
-**Des héritiers à l'étranger** — Ils peuvent donner une procuration à un avocat algérien pour les représenter dans toutes les démarches.
+**Bien non titré** — De nombreux biens algériens n'ont pas d'acte notarié authentique. Il faut d'abord régulariser le titre auprès de la Conservation foncière avant toute succession.
 
-**Un bien non titré** — Beaucoup de biens immobiliers algériens n'ont pas de titre de propriété formel. Il faut d'abord régulariser le titre avant de procéder à la succession.
-
-## Pourquoi il est indispensable de consulter un avocat
-
-La succession immobilière en Algérie depuis l'étranger est l'un des domaines juridiques les plus complexes. Un avocat algérien peut vous accompagner à chaque étape depuis votre domicile en France, en visioconférence, avec des déplacements limités en Algérie.
+**Ne rien faire** — C'est la pire option. La succession reste en indivision, aucun héritier ne peut vendre seul, et le nombre d'héritiers se multiplie à chaque génération, rendant la situation de plus en plus complexe.
 
 ## Questions fréquentes
 
-**Peut-on hériter en Algérie si on a la nationalité française ?**
-Oui. La nationalité française n'empêche pas d'hériter en Algérie. Si vous avez aussi la nationalité algérienne, vous êtes traité comme un héritier algérien à part entière.
+**Peut-on hériter en Algérie avec la nationalité française uniquement ?**
+Oui. Si le bien est en Algérie, le droit algérien s'applique quelle que soit votre nationalité.
 
-**Que se passe-t-il si je ne fais rien pendant des années ?**
-La succession reste en indivision entre les héritiers. Plus on attend, plus la situation se complique car les héritiers se multiplient avec les générations.
+**Faut-il se déplacer en Algérie ?**
+Pas obligatoirement — une procuration donnée à un avocat ou un proche en Algérie suffit pour la plupart des démarches.
 
-**Faut-il se déplacer en Algérie pour la succession ?**
-Pas nécessairement si vous donnez une procuration à un avocat algérien. Mais un déplacement est souvent utile pour accélérer les démarches.
+**Y a-t-il des droits de succession à payer en Algérie ?**
+Il n'y a pas de droits de succession au sens strict en Algérie. Des frais de mutation s'appliquent lors du transfert de propriété, mais ils sont modestes par rapport aux droits français.
     `,
   },
   "vendre-appartement-algerie-etranger": {
     titre:
-      "Comment vendre un appartement en Algérie quand on habite à l'étranger : guide complet 2026",
+      "Comment vendre un appartement en Algérie depuis l'étranger : guide complet 2026",
     resume:
-      "Vous avez un appartement ou une maison en Algérie et vous souhaitez le vendre depuis la France, la Belgique ou le Canada ? C'est tout à fait possible. Voici le guide complet.",
+      "Vous avez un appartement ou une maison en Algérie et souhaitez le vendre depuis la France, la Belgique ou le Canada ? Voici le guide complet, étape par étape.",
     categorie: "Droit immobilier",
     date: "2026-05-28",
     specialiteSlug: "droit-de-l-immobilier",
@@ -419,71 +420,68 @@ Pas nécessairement si vous donnez une procuration à un avocat algérien. Mais 
       "acheter-bien-immobilier-algerie",
     ],
     contenu: `
-## Est-ce possible de vendre sans se déplacer en Algérie ?
+## Peut-on vendre sans se déplacer en Algérie ?
 
-Oui, c'est possible grâce à la procuration notariée. Vous pouvez mandater une personne de confiance — un proche ou un avocat — pour vous représenter dans toutes les démarches de vente en Algérie. Cette procuration doit être établie devant un notaire dans votre pays de résidence, puis légalisée et apostillée pour être reconnue en Algérie.
+Oui, c'est possible grâce à la procuration. Vous mandatez une personne de confiance — un proche ou un avocat en Algérie — pour signer l'acte de vente en votre nom. Cette procuration doit être établie auprès du consulat algérien dans votre pays de résidence. L'original de la procuration est généralement exigé par le notaire algérien pour les transactions immobilières.
 
 ## Les conditions pour pouvoir vendre
 
-Avant de mettre votre bien en vente, vérifiez que vous remplissez ces conditions essentielles.
+Avant de mettre votre bien en vente, vérifiez les points suivants.
 
-**Vous avez un titre de propriété valide** — un acte notarié authentique enregistré à la Conservation foncière. Si votre bien n'est pas titré, vous devez d'abord régulariser la situation avant de pouvoir vendre.
+**Titre de propriété valide** : vous devez disposer d'un acte notarié authentique enregistré à la Conservation foncière. Si votre bien n'est pas titré (acte sous seing privé, acte de vente informel), régularisez d'abord la situation — sans titre authentique, aucune vente légale n'est possible.
 
-**Il n'y a pas d'indivision bloquante** — si le bien est en indivision entre plusieurs héritiers ou copropriétaires, tous doivent donner leur accord pour vendre.
+**Absence d'indivision bloquante** : si le bien est en indivision entre plusieurs héritiers ou copropriétaires, tous doivent consentir à la vente. Un seul héritier ne peut pas vendre sans l'accord des autres.
 
-**Il n'y a pas d'hypothèque ou de saisie** — vérifiez qu'aucune charge ne pèse sur le bien auprès de la Conservation foncière.
+**Absence de charges** : vérifiez à la Conservation foncière l'absence d'hypothèque, de saisie ou de servitude non déclarée.
 
 ## Les étapes de la vente
 
-**Étape 1 — Rassemblez vos documents**
+**Étape 1 — La procuration consulaire**
 
-Depuis l'étranger, commencez par rassembler le titre de propriété, votre pièce d'identité algérienne, l'acte de naissance, et les quittances de taxes foncières à jour.
+Rendez-vous au consulat algérien de votre ville de résidence avec votre pièce d'identité algérienne. Le consulat établit la procuration qui autorise votre mandataire à signer tous les actes de vente en votre nom. Ce document est légalisé par le consulat et reconnu directement par les notaires algériens — pas besoin d'apostille supplémentaire pour une procuration consulaire algérienne.
 
-**Étape 2 — Estimez la valeur de votre bien**
+**Étape 2 — Estimation du bien**
 
-Mandatez un agent immobilier ou un avocat en Algérie pour estimer la valeur marchande actuelle de votre bien. Le marché immobilier algérien a beaucoup évolué ces dernières années.
+Mandatez un agent immobilier ou un avocat en Algérie pour évaluer la valeur marchande actuelle de votre bien. Le marché immobilier algérien a beaucoup évolué. Méfiez-vous des offres avec une partie du prix payée "au noir" — exigez toujours un prix 100% déclaré au notaire.
 
-**Étape 3 — Trouvez un acheteur**
+**Étape 3 — Trouver un acheteur**
 
-Vous pouvez passer par des agences immobilières algériennes, des plateformes comme Ouedkniss, ou le bouche à oreille dans votre réseau familial.
+Votre mandataire peut gérer les visites sur place. Les plateformes algériennes comme Ouedkniss sont efficaces pour trouver des acheteurs.
 
 **Étape 4 — Le compromis de vente**
 
-Une fois l'acheteur trouvé, un compromis de vente est signé. Il fixe le prix, les conditions, et le délai de réalisation. Un avocat peut vous aider à rédiger et sécuriser ce compromis.
+Une promesse de vente (ou acte sous seing privé) est signée entre vendeur (via le mandataire) et acheteur. Elle fixe le prix, les conditions et le délai. Un avocat peut sécuriser cette étape.
 
-**Étape 5 — L'acte notarié de vente**
+**Étape 5 — L'acte notarié définitif**
 
-L'acte de vente est rédigé par un notaire algérien et signé par le vendeur ou son mandataire et l'acheteur. Le notaire procède ensuite à l'enregistrement et à la mutation du titre de propriété.
+L'acte de vente est rédigé et signé chez le notaire algérien par votre mandataire (grâce à la procuration) et l'acheteur. Le notaire procède ensuite à l'enregistrement et à la publication foncière. Délai entre compromis et acte définitif : 1 à 6 mois selon la complexité.
 
-**Étape 6 — Le paiement et le rapatriement des fonds**
+**Étape 6 — Les frais et taxes**
 
-Le paiement se fait en dinars algériens. Si vous souhaitez rapatrier l'argent à l'étranger, sachez que les transferts de devises depuis l'Algérie sont strictement réglementés par la Banque d'Algérie. Un avocat fiscaliste peut vous aider à optimiser légalement le rapatriement de vos fonds.
+Les frais de notaire représentent environ 2 à 5% du prix de vente. Les droits d'enregistrement sont partagés entre vendeur et acheteur selon les conventions. Une taxe sur la plus-value peut s'appliquer si vous avez vendu plus cher que le prix d'acquisition déclaré.
 
-## La procuration — comment ça marche depuis la France
+## Le rapatriement des fonds depuis l'Algérie
 
-Vous vous rendez chez un notaire français avec votre pièce d'identité. Le notaire rédige l'acte de procuration en précisant exactement les pouvoirs accordés. L'acte est ensuite apostillé par le tribunal compétent pour être reconnu en Algérie. Vous envoyez ensuite l'original apostillé à votre mandataire en Algérie.
+C'est la question la plus délicate. Les transferts de fonds depuis l'Algérie vers l'étranger sont strictement réglementés par la Banque d'Algérie. Les non-résidents qui ont acquis leur bien en devises (transfert légal depuis l'étranger) ont droit au rapatriement des fonds dans les mêmes devises. Pour les biens acquis en dinars ou hérités, les conditions sont différentes. Consultez impérativement un avocat algérien spécialisé pour anticiper cette question avant de vendre.
 
 ## Les risques à éviter
 
-**La vente sans notaire** — certains acheteurs proposent des transactions informelles pour éviter les frais. C'est extrêmement risqué pour le vendeur.
+**La vente sans notaire** : toute transaction immobilière doit obligatoirement passer par un notaire algérien. Les actes sous seing privé non enregistrés ne sont pas opposables aux tiers et exposent le vendeur à des risques importants.
 
-**Le mandataire non fiable** — une procuration donne des pouvoirs importants, ne la confiez pas à la légère.
+**Le mandataire non fiable** : la procuration donne des pouvoirs étendus — signez-la uniquement en faveur d'une personne de confiance absolue ou d'un avocat professionnel.
 
-**Vendre en dessous du prix du marché** — obtenez plusieurs estimations avant de fixer votre prix.
+**Les parties informelles** : certains acheteurs proposent de payer une partie du prix en espèces "hors acte". C'est illégal et risqué — refusez systématiquement.
 
 ## Questions fréquentes
 
-**Peut-on vendre un bien hérité en Algérie ?**
-Oui, une fois la succession réglée et le bien en votre nom ou en indivision avec les autres héritiers.
+**Peut-on vendre un bien hérité sans se déplacer ?**
+Oui, avec une procuration consulaire donnant pouvoir à un mandataire de signer tous les actes. Tous les cohéritiers doivent cependant donner leur accord.
 
-**Faut-il être présent en Algérie pour signer l'acte de vente ?**
-Non, si vous avez une procuration notariée valide donnée à un mandataire en Algérie.
-
-**Combien de temps prend une vente immobilière en Algérie ?**
+**Combien de temps prend une vente ?**
 Entre 1 et 6 mois selon la complexité du dossier, la disponibilité du notaire, et la rapidité des administrations.
 
-**Peut-on vendre en euros à un acheteur étranger ?**
-C'est possible dans certains cas précis — notamment pour les non-résidents vendant à des non-résidents. Consultez un avocat pour connaître votre situation exacte.
+**Faut-il payer des impôts en France sur la vente ?**
+Potentiellement oui — une plus-value immobilière réalisée à l'étranger peut être imposable en France si vous êtes résident fiscal français. Consultez un fiscaliste avant de vendre.
     `,
   },
 };
@@ -640,15 +638,22 @@ export default async function BlogArticlePage({ params }: Props) {
               {articlesLies.map(
                 (a) =>
                   a && (
-                    <Link key={a.slug} href={`/blog/${a.slug}`}>
-                      <div className="bg-white border border-slate-200 rounded-xl p-4 hover:border-teal-200 hover:shadow-sm transition-all">
+                    <Link
+                      key={a.slug}
+                      href={`/blog/${a.slug}`}
+                      className="h-full"
+                    >
+                      <div className="h-full bg-white border border-slate-200 rounded-xl p-4 hover:border-teal-200 hover:shadow-sm transition-all flex flex-col">
                         <span className="text-xs font-medium text-teal-600">
                           {a.categorie}
                         </span>
-                        <h3 className="font-semibold text-slate-800 text-sm mt-1 mb-2 leading-snug">
+                        <h3 className="font-semibold text-slate-800 text-sm mt-1 mb-auto leading-snug">
                           {a.titre}
                         </h3>
-                        <div className="flex items-center gap-1 text-xs text-teal-600 font-medium">
+                        <p className="text-xs text-slate-500 mt-2 mb-3 line-clamp-2">
+                          {a.resume}
+                        </p>
+                        <div className="flex items-center gap-1 text-xs text-teal-600 font-medium mt-auto pt-3 border-t border-slate-100">
                           Lire <ArrowRight className="w-3 h-3" />
                         </div>
                       </div>
