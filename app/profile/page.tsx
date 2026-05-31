@@ -1039,7 +1039,7 @@ export default function ProfilePage() {
                       </label>
                       <div className="p-3 bg-slate-50 rounded-lg">
                         <span className="text-slate-500 text-sm italic">
-                          Tarif sur demande — négocié directement avec le client
+                          Tarif sur demande
                         </span>
                       </div>
                     </div>

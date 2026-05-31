@@ -1335,9 +1335,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     <div className="text-sm font-medium text-slate-500 italic">
                       Tarif sur demande
                     </div>
-                    <div className="text-[11px] text-slate-400">
-                      Négocié directement avec l'avocat
-                    </div>
                   </div>
                   {(!user || profile?.user_type === "client") &&
                     !isOwnProfile && (
