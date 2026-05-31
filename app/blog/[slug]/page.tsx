@@ -86,12 +86,17 @@ Le capital minimum recommandé est de 100 000 DZD. Bien que l'obligation légale
 
 La SARL ou l'EURL doit avoir une adresse physique en Algérie. Trois options : local commercial, domicile du gérant (pour les activités sans accueil de clientèle), ou société de domiciliation commerciale (2 000 à 8 000 DZD/mois à Alger).
 
-## Documents requis
+## Documents requis pour l'immatriculation au CNRC
 
-- CNI de tous les associés
-- Justificatif de domicile du siège social
-- Statuts authentifiés
-- Attestation de dépôt du capital
+- Demande signée sur formulaire fourni par le CNRC
+- Justificatif du local : titre de propriété, bail de location, concession de terrain, ou acte d'affectation délivré par un organisme public
+- Un exemplaire des statuts authentifiés par le notaire
+- Copie de l'avis d'insertion des statuts au BOAL
+- Quittance de timbre fiscal (4 000 DA)
+- Reçu de versement des droits d'immatriculation au registre du commerce
+- Copie de l'autorisation ou agrément provisoire — uniquement pour les activités réglementées
+
+Après immatriculation au CNRC : obtenir le NIF à la Direction des Impôts (48-72h) et le NIS auprès de l'ONS (2-4 jours).
 
 ## Coût total
 
@@ -301,9 +306,6 @@ Seul, CA < 5M DZD, pas de salariés → auto-entrepreneur ANAE. Seul, CA > 5M DZ
 
 **Peut-on tout faire à distance ?**
 Pour l'ANAE : inscription 100% en ligne, mais la carte se retire physiquement en bureau de poste en Algérie. Pour l'EURL/SARL : certaines étapes nécessitent une présence physique ou un mandataire sur place via procuration consulaire.
-
-**Faut-il un casier judiciaire ?**
-Non pour l'ANAE. Pour l'EURL/SARL, les exigences varient selon l'activité — consultez un avocat.
     `,
   },
   "heriter-bien-immobilier-algerie-france": {
