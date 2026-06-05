@@ -1,252 +1,645 @@
 "use client";
 import { useState } from "react";
-import {
-  CheckCircle,
-  Zap,
-  Shield,
-  Star,
-  ArrowRight,
-  MessageCircle,
-} from "lucide-react";
+import { Check, ArrowRight, Bell } from "lucide-react";
 
 const PLANS = [
   {
     id: "3mois",
-    label: "3 mois",
-    price: 15000,
-    pricePerMonth: 5000,
-    discount: null,
+    duration: "3 mois",
+    price: 18000,
+    monthly: 6000,
     badge: null,
-    description: "Pour découvrir la plateforme",
-    features: [
-      "Profil visible sur Mizan",
-      "Accès aux demandes clients",
-      "Messagerie intégrée",
-      "Avis clients Mizan",
-      "Support email",
-    ],
+    popular: false,
+    savings: null,
   },
   {
     id: "6mois",
-    label: "6 mois",
-    price: 27000,
-    pricePerMonth: 4500,
-    discount: "Économisez 3 000 DZD",
-    badge: "Populaire",
-    description: "L'équilibre idéal",
-    features: [
-      "Profil visible sur Mizan",
-      "Accès aux demandes clients",
-      "Messagerie intégrée",
-      "Avis clients Mizan",
-      "Support email prioritaire",
-      "Badge profil mis en avant",
-    ],
+    duration: "6 mois",
+    price: 33000,
+    monthly: 5500,
+    badge: "Le plus choisi",
+    popular: true,
+    savings: "Économisez 3 000 DZD",
   },
   {
     id: "12mois",
-    label: "12 mois",
-    price: 48000,
-    pricePerMonth: 4000,
-    discount: "Économisez 12 000 DZD",
+    duration: "12 mois",
+    price: 60000,
+    monthly: 5000,
     badge: "Meilleure offre",
-    description: "Le plus avantageux",
-    features: [
-      "Profil visible sur Mizan",
-      "Accès aux demandes clients",
-      "Messagerie intégrée",
-      "Avis clients Mizan",
-      "Support email prioritaire",
-      "Badge profil mis en avant",
-      "Apparition en tête de recherche",
-      "Statistiques de visibilité",
-    ],
+    popular: false,
+    savings: "Économisez 12 000 DZD",
   },
 ];
 
-const formatDZD = (amount: number) => amount.toLocaleString("fr-DZ") + " DZD";
+const FEATURES_BASE = [
+  "Profil visible sur Mizan",
+  "Accès aux demandes clients",
+  "Messagerie intégrée",
+  "Avis clients vérifiés",
+  "Support prioritaire",
+];
+
+const FEATURES_EXTRA: Record<string, string[]> = {
+  "6mois": ["Badge profil mis en avant"],
+  "12mois": [
+    "Badge profil mis en avant",
+    "Tête de liste dans la recherche",
+    "Statistiques de visibilité",
+  ],
+};
+
+const fmt = (n: number) => n.toLocaleString("fr-DZ") + " DZD";
 
 export default function AbonnementsPage() {
   const [selected, setSelected] = useState("6mois");
-  const selectedPlan = PLANS.find((p) => p.id === selected)!;
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const plan = PLANS.find((p) => p.id === selected)!;
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <div className="max-w-5xl mx-auto px-4 py-16">
-        <div className="text-center mb-14">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 border border-teal-200 rounded-full text-xs font-semibold text-teal-700 mb-4">
-            <Zap className="w-3 h-3" />
-            Tarification simple et transparente
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#F8F7F5",
+        fontFamily: "'Syne', 'Helvetica Neue', system-ui, sans-serif",
+      }}
+    >
+      <style>{`
+        @import url('https:
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        .card { transition: transform 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s; cursor: pointer; }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.08); }
+        .card.on { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.12); }
+
+        .pill { display: inline-flex; align-items: center; gap: 6px; background: white; border: 1px solid #E2E2E0; border-radius: 100px; padding: 6px 16px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+
+        .soon-badge {
+          display: inline-flex; align-items: center; gap: 6px;
+          background: linear-gradient(135deg, #FFF7ED 0%, #FEF3C7 100%);
+          border: 1px solid #FDE68A;
+          color: #92400E;
+          padding: 8px 18px; border-radius: 100px;
+          font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+        }
+
+        .notify-input { border: 1.5px solid #E2E2E0; border-radius: 10px; padding: 13px 16px; font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; background: white; width: 100%; }
+        .notify-input:focus { border-color: #0D9488; }
+
+        .notify-btn { background: #0C1116; color: white; border: none; padding: 13px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 8px; white-space: nowrap; transition: all .2s; }
+        .notify-btn:hover { background: #0D9488; transform: translateY(-1px); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .fade { animation: fadeIn .5s ease both; }
+        .fade-1 { animation-delay: .05s; }
+        .fade-2 { animation-delay: .1s; }
+        .fade-3 { animation-delay: .15s; }
+        .fade-4 { animation-delay: .2s; }
+        .fade-5 { animation-delay: .25s; }
+      `}</style>
+
+      <div
+        style={{ maxWidth: 860, margin: "0 auto", padding: "80px 24px 80px" }}
+      >
+        {/* Badge coming soon */}
+        <div
+          className="fade"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: 32,
+          }}
+        >
+          <span className="soon-badge">
+            <span style={{ fontSize: 14 }}>⏳</span>
+            Paiement en ligne bientôt disponible
           </span>
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 mb-4 leading-tight">
-            Rejoignez les avocats <br className="hidden sm:block" />
-            visibles sur Mizan
+        </div>
+
+        {/* Header */}
+        <div
+          className="fade fade-1"
+          style={{ textAlign: "center", marginBottom: 56 }}
+        >
+          <h1
+            style={{
+              fontSize: "clamp(38px, 6vw, 60px)",
+              fontWeight: 800,
+              color: "#0C1116",
+              letterSpacing: "-0.04em",
+              lineHeight: 1.04,
+              marginBottom: 18,
+            }}
+          >
+            Votre cabinet,
+            <br />
+            <span style={{ color: "#0D9488" }}>visible partout.</span>
           </h1>
-          <p className="text-slate-500 text-lg max-w-xl mx-auto">
-            Un abonnement fixe, sans commission sur vos honoraires.
+          <p
+            style={{
+              fontSize: 16,
+              color: "#71717A",
+              maxWidth: 400,
+              margin: "0 auto",
+              lineHeight: 1.75,
+            }}
+          >
+            Un abonnement fixe. Zéro commission sur vos honoraires. Annulable à
+            tout moment.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-          {PLANS.map((plan) => {
-            const isSelected = selected === plan.id;
+        {/* Plans */}
+        <div
+          className="fade fade-2"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3,1fr)",
+            gap: 14,
+            marginBottom: 20,
+          }}
+        >
+          {PLANS.map((p) => {
+            const on = selected === p.id;
+            const extras = FEATURES_EXTRA[p.id] || [];
             return (
-              <button
-                key={plan.id}
-                onClick={() => setSelected(plan.id)}
-                className={`relative text-left rounded-2xl border-2 p-6 transition-all duration-200 cursor-pointer ${
-                  isSelected
-                    ? "border-teal-600 bg-white shadow-lg shadow-teal-100"
-                    : "border-slate-200 bg-white hover:border-teal-300 hover:shadow-sm"
-                }`}
+              <div
+                key={p.id}
+                className={`card${on ? " on" : ""}`}
+                onClick={() => setSelected(p.id)}
+                style={{
+                  background: on ? "#0C1116" : "white",
+                  border: `1.5px solid ${on ? "#0C1116" : "#E2E2E0"}`,
+                  borderRadius: 18,
+                  padding: "26px 22px",
+                  position: "relative",
+                  overflow: "visible",
+                }}
               >
-                {plan.badge && (
+                {/* Badge */}
+                {p.badge && (
                   <div
-                    className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-bold whitespace-nowrap ${plan.badge === "Meilleure offre" ? "bg-teal-600 text-white" : "bg-amber-400 text-amber-900"}`}
+                    style={{
+                      position: "absolute",
+                      top: -11,
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      background: p.popular ? "#0D9488" : "#F59E0B",
+                      color: "white",
+                      padding: "3px 13px",
+                      borderRadius: 100,
+                      fontSize: 10,
+                      fontWeight: 800,
+                      whiteSpace: "nowrap",
+                      letterSpacing: ".05em",
+                      textTransform: "uppercase",
+                    }}
                   >
-                    {plan.badge}
+                    {p.badge}
                   </div>
                 )}
-                <div className="mb-4">
-                  <div className="text-sm font-semibold text-slate-500 mb-1">
-                    {plan.label}
-                  </div>
-                  <div className="text-3xl font-bold text-slate-800">
-                    {formatDZD(plan.price)}
-                  </div>
-                  <div className="text-sm text-slate-400 mt-0.5">
-                    {formatDZD(plan.pricePerMonth)} / mois
-                  </div>
-                  {plan.discount && (
-                    <div className="inline-flex items-center gap-1 mt-2 px-2 py-0.5 bg-green-50 border border-green-200 rounded-full text-xs font-medium text-green-700">
-                      {plan.discount}
-                    </div>
-                  )}
+
+                {/* Duration */}
+                <div
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: on ? "rgba(255,255,255,.4)" : "#A1A1AA",
+                    letterSpacing: ".1em",
+                    textTransform: "uppercase",
+                    marginBottom: 14,
+                  }}
+                >
+                  {p.duration}
                 </div>
-                <p className="text-sm text-slate-500 mb-4">
-                  {plan.description}
-                </p>
-                <ul className="space-y-2">
-                  {plan.features.map((f, i) => (
+
+                {/* Price */}
+                <div style={{ marginBottom: 4 }}>
+                  <span
+                    style={{
+                      fontSize: 44,
+                      fontWeight: 800,
+                      color: on ? "white" : "#0C1116",
+                      letterSpacing: "-0.04em",
+                      lineHeight: 1,
+                    }}
+                  >
+                    {p.monthly.toLocaleString("fr-DZ")}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      color: on ? "rgba(255,255,255,.35)" : "#A1A1AA",
+                      marginLeft: 4,
+                    }}
+                  >
+                    DZD/mois
+                  </span>
+                </div>
+
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: on ? "rgba(255,255,255,.3)" : "#A1A1AA",
+                    marginBottom: p.savings ? 6 : 20,
+                  }}
+                >
+                  {fmt(p.price)} total
+                </div>
+
+                {p.savings && (
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: on ? "#4ADE80" : "#059669",
+                      background: on ? "rgba(74,222,128,.12)" : "#F0FDF4",
+                      padding: "3px 10px",
+                      borderRadius: 100,
+                      marginBottom: 20,
+                    }}
+                  >
+                    {p.savings}
+                  </div>
+                )}
+
+                {/* Divider */}
+                <div
+                  style={{
+                    height: 1,
+                    background: on ? "rgba(255,255,255,.08)" : "#F4F4F5",
+                    marginBottom: 18,
+                  }}
+                />
+
+                {/* Features */}
+                <ul
+                  style={{
+                    listStyle: "none",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 9,
+                  }}
+                >
+                  {[...FEATURES_BASE, ...extras].map((f) => (
                     <li
-                      key={i}
-                      className="flex items-start gap-2 text-sm text-slate-600"
+                      key={f}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 9,
+                        fontSize: 12,
+                        color: on ? "rgba(255,255,255,.7)" : "#3F3F46",
+                      }}
                     >
-                      <CheckCircle
-                        className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isSelected ? "text-teal-600" : "text-slate-300"}`}
-                      />
+                      <div
+                        style={{
+                          width: 16,
+                          height: 16,
+                          borderRadius: "50%",
+                          background: on ? "rgba(13,148,136,.25)" : "#F0FDFA",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        <Check
+                          size={9}
+                          color={on ? "#4ADE80" : "#0D9488"}
+                          strokeWidth={3}
+                        />
+                      </div>
                       {f}
                     </li>
                   ))}
                 </ul>
-                {isSelected && (
-                  <div className="absolute top-4 right-4 w-5 h-5 rounded-full bg-teal-600 flex items-center justify-center">
-                    <CheckCircle className="w-3 h-3 text-white" />
+
+                {/* Selected indicator */}
+                {on && (
+                  <div
+                    style={{
+                      marginTop: 22,
+                      paddingTop: 16,
+                      borderTop: "1px solid rgba(255,255,255,.08)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 7,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: "50%",
+                        background: "#4ADE80",
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontSize: 11,
+                        color: "rgba(255,255,255,.5)",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Plan sélectionné
+                    </span>
                   </div>
                 )}
-              </button>
+              </div>
             );
           })}
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+        {/* Summary bar */}
+        <div
+          className="fade fade-3"
+          style={{
+            background: "white",
+            border: "1px solid #E2E2E0",
+            borderRadius: 14,
+            padding: "18px 22px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 16,
+            flexWrap: "wrap",
+            marginBottom: 48,
+          }}
+        >
           <div>
-            <div className="text-sm text-slate-500 mb-1">Plan sélectionné</div>
-            <div className="text-xl font-bold text-slate-800">
-              {selectedPlan.label} — {formatDZD(selectedPlan.price)}
+            <div
+              style={{
+                fontSize: 11,
+                color: "#A1A1AA",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: ".07em",
+                marginBottom: 4,
+              }}
+            >
+              Récapitulatif
             </div>
-            <div className="text-sm text-slate-400 mt-0.5">
-              Soit {formatDZD(selectedPlan.pricePerMonth)} par mois · Paiement
-              unique
+            <div
+              style={{
+                fontSize: 18,
+                fontWeight: 800,
+                color: "#0C1116",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              {plan.duration} ·{" "}
+              <span style={{ color: "#0D9488" }}>{fmt(plan.price)}</span>
+            </div>
+            <div style={{ fontSize: 12, color: "#A1A1AA", marginTop: 2 }}>
+              {fmt(plan.monthly)}/mois · Sans engagement · Sans commission
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            <a href="mailto:contact@mizan-dz.com">
-              <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-8 py-3.5 rounded-xl font-semibold text-sm transition-all cursor-pointer">
-                S'abonner maintenant
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </a>
-            <a href="mailto:contact@mizan-dz.com">
-              <button className="w-full sm:w-auto flex items-center justify-center gap-2 border border-slate-200 text-slate-600 hover:bg-slate-50 px-6 py-3.5 rounded-xl font-medium text-sm transition-all cursor-pointer">
-                <MessageCircle className="w-4 h-4" />
-                Nous contacter
-              </button>
-            </a>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              background: "#FFF7ED",
+              border: "1px solid #FDE68A",
+              borderRadius: 10,
+              padding: "10px 16px",
+            }}
+          >
+            <span style={{ fontSize: 16 }}>⏳</span>
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "#92400E" }}>
+                Paiement bientôt disponible
+              </div>
+              <div style={{ fontSize: 11, color: "#B45309" }}>
+                Notifiez-moi ci-dessous
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-          {[
-            {
-              icon: Shield,
-              title: "Sans engagement",
-              desc: "Pas de renouvellement automatique. Vous choisissez votre durée.",
-            },
-            {
-              icon: Star,
-              title: "Sans commission",
-              desc: "Vos honoraires vous appartiennent. Mizan ne touche rien sur vos consultations.",
-            },
-            {
-              icon: CheckCircle,
-              title: "Profil vérifié",
-              desc: "Votre profil affiche le badge Mizan pour rassurer vos clients.",
-            },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="bg-white border border-slate-200 rounded-xl p-5"
+        {/* Notify section */}
+        <div
+          className="fade fade-4"
+          style={{
+            background: "#0C1116",
+            borderRadius: 20,
+            padding: "40px 36px",
+            textAlign: "center",
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: -60,
+              right: -60,
+              width: 200,
+              height: 200,
+              background:
+                "radial-gradient(circle, rgba(13,148,136,.15) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              bottom: -40,
+              left: -40,
+              width: 160,
+              height: 160,
+              background:
+                "radial-gradient(circle, rgba(245,158,11,.08) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }}
+          />
+
+          <div style={{ position: "relative" }}>
+            <div style={{ fontSize: 28, marginBottom: 12 }}>🔔</div>
+            <h2
+              style={{
+                fontSize: 24,
+                fontWeight: 800,
+                color: "white",
+                letterSpacing: "-0.03em",
+                marginBottom: 8,
+              }}
             >
-              <div className="w-9 h-9 rounded-lg bg-teal-50 border border-teal-100 flex items-center justify-center mb-3">
-                <item.icon className="w-4 h-4 text-teal-600" />
+              Soyez le premier informé
+            </h2>
+            <p
+              style={{
+                fontSize: 14,
+                color: "rgba(255,255,255,.45)",
+                marginBottom: 28,
+                maxWidth: 380,
+                margin: "0 auto 28px",
+              }}
+            >
+              Le paiement en ligne via CIB et Edahabia arrive bientôt. Laissez
+              votre email pour être notifié dès l'ouverture.
+            </p>
+
+            {!submitted ? (
+              <div
+                style={{
+                  display: "flex",
+                  gap: 10,
+                  maxWidth: 420,
+                  margin: "0 auto",
+                }}
+              >
+                <input
+                  className="notify-input"
+                  type="email"
+                  placeholder="votre@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && email) setSubmitted(true);
+                  }}
+                  style={{
+                    background: "rgba(255,255,255,.06)",
+                    border: "1.5px solid rgba(255,255,255,.1)",
+                    color: "white",
+                    borderRadius: 10,
+                    padding: "13px 16px",
+                    fontSize: 14,
+                    fontFamily: "inherit",
+                    outline: "none",
+                    flex: 1,
+                  }}
+                />
+                <button
+                  className="notify-btn"
+                  onClick={() => {
+                    if (email) setSubmitted(true);
+                  }}
+                  style={{
+                    background: "#0D9488",
+                    color: "white",
+                    border: "none",
+                    padding: "13px 22px",
+                    borderRadius: 10,
+                    fontSize: 14,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 7,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  <Bell size={15} />
+                  Me notifier
+                </button>
               </div>
-              <div className="font-semibold text-slate-800 text-sm mb-1">
-                {item.title}
+            ) : (
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 10,
+                  background: "rgba(74,222,128,.12)",
+                  border: "1px solid rgba(74,222,128,.3)",
+                  padding: "14px 24px",
+                  borderRadius: 12,
+                }}
+              >
+                <Check size={18} color="#4ADE80" strokeWidth={2.5} />
+                <span
+                  style={{ fontSize: 14, color: "#4ADE80", fontWeight: 600 }}
+                >
+                  Parfait — vous serez notifié dès l'ouverture !
+                </span>
               </div>
-              <div className="text-xs text-slate-500 leading-relaxed">
-                {item.desc}
+            )}
+
+            <div
+              style={{
+                marginTop: 20,
+                fontSize: 12,
+                color: "rgba(255,255,255,.2)",
+              }}
+            >
+              En attendant, contactez-nous à{" "}
+              <a
+                href="mailto:contact@mizan-dz.com"
+                style={{
+                  color: "rgba(255,255,255,.4)",
+                  textDecoration: "none",
+                }}
+              >
+                contact@mizan-dz.com
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Garanties */}
+        <div
+          className="fade fade-5"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3,1fr)",
+            gap: 10,
+            marginTop: 14,
+          }}
+        >
+          {[
+            [
+              "🔒",
+              "Sans engagement",
+              "Résiliable à l'expiration de votre plan.",
+            ],
+            [
+              "💯",
+              "Zéro commission",
+              "Vos honoraires vous appartiennent entièrement.",
+            ],
+            [
+              "✅",
+              "Profil vérifié",
+              "Badge Mizan visible sur votre profil public.",
+            ],
+          ].map(([icon, title, desc]) => (
+            <div
+              key={title}
+              style={{
+                background: "white",
+                border: "1px solid #E2E2E0",
+                borderRadius: 12,
+                padding: "16px 16px",
+                display: "flex",
+                gap: 12,
+                alignItems: "flex-start",
+              }}
+            >
+              <span style={{ fontSize: 18 }}>{icon}</span>
+              <div>
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: "#0C1116",
+                    marginBottom: 3,
+                  }}
+                >
+                  {title}
+                </div>
+                <div
+                  style={{ fontSize: 11, color: "#A1A1AA", lineHeight: 1.5 }}
+                >
+                  {desc}
+                </div>
               </div>
             </div>
           ))}
-        </div>
-
-        <div className="mt-12">
-          <h2 className="text-lg font-bold text-slate-800 mb-6 text-center">
-            Questions fréquentes
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              {
-                q: "Comment se fait le paiement ?",
-                r: "Par virement CIB, Edahabia via Chargily, ou par tout autre moyen disponible. Vous recevez une confirmation par email dès réception.",
-              },
-              {
-                q: "Puis-je changer de plan ?",
-                r: "Oui — à l'expiration de votre abonnement en cours vous pouvez choisir un nouveau plan.",
-              },
-              {
-                q: "Mes honoraires sont-ils impactés ?",
-                r: "Non. Mizan ne prend aucune commission sur vos consultations. Vos tarifs sont sur demande.",
-              },
-              {
-                q: "Comment activer mon profil ?",
-                r: "Après inscription et paiement, votre profil est examiné sous 24 à 48h puis mis en ligne automatiquement.",
-              },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="bg-white border border-slate-200 rounded-xl p-5"
-              >
-                <div className="font-semibold text-slate-800 text-sm mb-2">
-                  {item.q}
-                </div>
-                <div className="text-sm text-slate-500 leading-relaxed">
-                  {item.r}
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>
