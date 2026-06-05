@@ -69,10 +69,55 @@ export default function AbonnementsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 pt-16">
+      <style>{`
+        .plan-card {
+          transition: all 0.22s cubic-bezier(.4,0,.2,1);
+          cursor: pointer;
+        }
+        .plan-card:not(.selected):hover {
+          background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%) !important;
+          border-color: #0D9488 !important;
+          box-shadow: 0 8px 28px rgba(13,148,136,0.25) !important;
+          transform: translateY(-4px);
+        }
+        .plan-card:not(.selected):hover .card-duration,
+        .plan-card:not(.selected):hover .card-total,
+        .plan-card:not(.selected):hover .card-desc {
+          color: rgba(255,255,255,0.55) !important;
+        }
+        .plan-card:not(.selected):hover .card-price {
+          color: white !important;
+        }
+        .plan-card:not(.selected):hover .card-unit {
+          color: rgba(255,255,255,0.45) !important;
+        }
+        .plan-card:not(.selected):hover .card-divider {
+          background: rgba(255,255,255,0.15) !important;
+        }
+        .plan-card:not(.selected):hover .feature-text {
+          color: rgba(255,255,255,0.8) !important;
+        }
+        .plan-card:not(.selected):hover .feature-off {
+          color: rgba(255,255,255,0.25) !important;
+        }
+        .plan-card:not(.selected):hover .feature-icon {
+          background: rgba(255,255,255,0.15) !important;
+        }
+        .plan-card:not(.selected):hover .savings-pill {
+          background: rgba(255,255,255,0.15) !important;
+          color: #ccfbf1 !important;
+        }
+        .plan-card.selected {
+          background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%) !important;
+          border-color: #0D9488 !important;
+          box-shadow: 0 12px 36px rgba(13,148,136,0.3) !important;
+          transform: translateY(-6px);
+        }
+      `}</style>
+
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
-        {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6 sm:mb-8">
+          <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
             <span>⏳</span>
             Paiement en ligne bientôt disponible
           </div>
@@ -86,21 +131,99 @@ export default function AbonnementsPage() {
           </p>
         </div>
 
-        {/* Plans — 1 col mobile, 1 col tablet scrollable, 3 col desktop */}
-        <div className="flex flex-col sm:flex-col lg:grid lg:grid-cols-3 gap-4 mb-8">
-          {PLANS.map((p) => {
-            const on = selected === p.id;
-            return (
+        {/* Mobile/tablet : tabs + 1 card */}
+        <div className="lg:hidden mb-8">
+          <div className="flex gap-2 bg-white/60 backdrop-blur-sm border border-slate-200 rounded-2xl p-1.5 mb-6">
+            {PLANS.map((p) => (
               <button
                 key={p.id}
                 onClick={() => setSelected(p.id)}
-                className={`relative text-left rounded-2xl sm:rounded-3xl p-6 sm:p-8 transition-all duration-200 flex flex-col cursor-pointer w-full ${
-                  on
-                    ? "bg-slate-900 shadow-2xl shadow-slate-900/25 lg:-translate-y-2 ring-2 ring-teal-500"
-                    : "bg-white border border-slate-200 hover:border-teal-400 hover:shadow-lg hover:shadow-teal-100 lg:hover:-translate-y-1"
+                className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                  selected === p.id
+                    ? "bg-teal-600 text-white shadow-md"
+                    : "text-slate-500 hover:text-teal-600"
                 }`}
               >
-                {/* Badge */}
+                {p.duration}
+              </button>
+            ))}
+          </div>
+
+          {PLANS.filter((p) => p.id === selected).map((p) => (
+            <div
+              key={p.id}
+              className="rounded-3xl p-7 border-2 border-teal-500"
+              style={{
+                background: "linear-gradient(135deg, #0D9488 0%, #0F766E 100%)",
+                boxShadow: "0 12px 36px rgba(13,148,136,0.3)",
+              }}
+            >
+              {p.badge && (
+                <div
+                  className={`inline-flex mb-4 px-3 py-1 rounded-full text-xs font-bold ${
+                    p.id === "6mois"
+                      ? "bg-white/20 text-white"
+                      : "bg-amber-400 text-amber-900"
+                  }`}
+                >
+                  {p.badge}
+                </div>
+              )}
+              <div className="mb-1">
+                <span className="text-5xl font-bold tracking-tight text-white leading-none">
+                  {p.monthly.toLocaleString("fr-DZ")}
+                </span>
+                <span className="text-sm ml-2 text-white/50">DZD/mois</span>
+              </div>
+              <div className="text-sm text-white/40 mb-2">
+                {fmt(p.price)} total · paiement unique
+              </div>
+              {p.savings && (
+                <div className="inline-flex text-xs font-bold px-3 py-1.5 rounded-full mb-4 bg-white/15 text-teal-100">
+                  ✓ {p.savings}
+                </div>
+              )}
+              <p className="text-sm text-white/60 mb-5">{p.desc}</p>
+              <div className="h-px bg-white/15 mb-5" />
+              <ul className="space-y-3">
+                {p.features.map((f) => (
+                  <li
+                    key={f.label}
+                    className={`flex items-center gap-3 text-sm ${f.included ? "text-white/80" : "text-white/25 line-through"}`}
+                  >
+                    <div
+                      className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${f.included ? "bg-white/15" : "bg-transparent"}`}
+                    >
+                      {f.included ? (
+                        <Check
+                          size={11}
+                          className="text-teal-100"
+                          strokeWidth={3}
+                        />
+                      ) : (
+                        <span className="text-xs text-white/25">–</span>
+                      )}
+                    </div>
+                    {f.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop : 3 colonnes */}
+        <div className="hidden lg:grid lg:grid-cols-3 gap-5 mb-8 items-start">
+          {PLANS.map((p) => {
+            const on = selected === p.id;
+            return (
+              <div
+                key={p.id}
+                className={`plan-card relative rounded-3xl p-8 flex flex-col border-2 ${
+                  on ? "selected" : "bg-teal-50 border-teal-300"
+                }`}
+                onClick={() => setSelected(p.id)}
+              >
                 {p.badge && (
                   <div
                     className={`absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap ${
@@ -113,196 +236,106 @@ export default function AbonnementsPage() {
                   </div>
                 )}
 
-                {/* Mobile/tablet : layout horizontal condensé */}
-                <div className="flex items-start justify-between gap-4 lg:block">
-                  <div className="lg:hidden">
-                    <div
-                      className={`text-xs font-bold uppercase tracking-widest mb-2 ${on ? "text-slate-500" : "text-slate-400"}`}
-                    >
-                      {p.duration}
-                    </div>
-                    <div className="flex items-baseline gap-2">
-                      <span
-                        className={`text-3xl sm:text-4xl font-bold tracking-tight ${on ? "text-white" : "text-slate-900"}`}
-                      >
-                        {p.monthly.toLocaleString("fr-DZ")}
-                      </span>
-                      <span
-                        className={`text-sm ${on ? "text-slate-500" : "text-slate-400"}`}
-                      >
-                        DZD/mois
-                      </span>
-                    </div>
-                    <div
-                      className={`text-xs mt-1 ${on ? "text-slate-500" : "text-slate-400"}`}
-                    >
-                      {fmt(p.price)} total
-                    </div>
-                    {p.savings && (
-                      <div
-                        className={`inline-flex mt-2 text-xs font-bold px-2 py-1 rounded-full ${
-                          on
-                            ? "bg-teal-900/40 text-teal-400"
-                            : "bg-teal-50 text-teal-700"
-                        }`}
-                      >
-                        ✓ {p.savings}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Features liste à droite sur mobile */}
-                  <ul className="flex flex-col gap-2 lg:hidden flex-1 min-w-0">
-                    {p.features
-                      .filter((f) => f.included)
-                      .map((f) => (
-                        <li
-                          key={f.label}
-                          className={`flex items-center gap-2 text-xs ${on ? "text-slate-300" : "text-slate-600"}`}
-                        >
-                          <div
-                            className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${on ? "bg-teal-900/50" : "bg-teal-50"}`}
-                          >
-                            <Check
-                              size={9}
-                              className={on ? "text-teal-400" : "text-teal-600"}
-                              strokeWidth={3}
-                            />
-                          </div>
-                          {f.label}
-                        </li>
-                      ))}
-                    {p.features
-                      .filter((f) => !f.included)
-                      .map((f) => (
-                        <li
-                          key={f.label}
-                          className={`flex items-center gap-2 text-xs ${on ? "text-slate-700" : "text-slate-300"}`}
-                        >
-                          <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
-                            <span className="text-xs">–</span>
-                          </div>
-                          <span className="line-through">{f.label}</span>
-                        </li>
-                      ))}
-                  </ul>
+                <div
+                  className={`card-duration text-xs font-bold uppercase tracking-widest mb-5 ${on ? "text-white/50" : "text-teal-700"}`}
+                >
+                  {p.duration}
                 </div>
 
-                {/* Desktop : layout vertical complet */}
-                <div className="hidden lg:block">
-                  <div
-                    className={`text-xs font-bold uppercase tracking-widest mb-5 ${on ? "text-slate-500" : "text-slate-400"}`}
+                <div className="mb-2">
+                  <span
+                    className={`card-price text-5xl font-bold tracking-tight leading-none ${on ? "text-white" : "text-slate-900"}`}
                   >
-                    {p.duration}
-                  </div>
-
-                  <div className="mb-2">
-                    <span
-                      className={`text-5xl font-bold tracking-tight leading-none ${on ? "text-white" : "text-slate-900"}`}
-                    >
-                      {p.monthly.toLocaleString("fr-DZ")}
-                    </span>
-                    <span
-                      className={`text-sm ml-2 ${on ? "text-slate-500" : "text-slate-400"}`}
-                    >
-                      DZD/mois
-                    </span>
-                  </div>
-
-                  <div
-                    className={`text-sm mb-2 ${on ? "text-slate-500" : "text-slate-400"}`}
+                    {p.monthly.toLocaleString("fr-DZ")}
+                  </span>
+                  <span
+                    className={`card-unit text-sm ml-2 ${on ? "text-white/45" : "text-slate-400"}`}
                   >
-                    {fmt(p.price)} total · paiement unique
-                  </div>
+                    DZD/mois
+                  </span>
+                </div>
 
-                  {p.savings ? (
-                    <div
-                      className={`inline-flex self-start text-xs font-bold px-3 py-1.5 rounded-full mb-5 ${
-                        on
-                          ? "bg-teal-900/40 text-teal-400"
-                          : "bg-teal-50 text-teal-700"
+                <div
+                  className={`card-total text-sm mb-2 ${on ? "text-white/40" : "text-slate-400"}`}
+                >
+                  {fmt(p.price)} total · paiement unique
+                </div>
+
+                {p.savings ? (
+                  <div
+                    className={`savings-pill inline-flex self-start text-xs font-bold px-3 py-1.5 rounded-full mb-5 ${
+                      on
+                        ? "bg-white/15 text-teal-100"
+                        : "bg-teal-100 text-teal-700"
+                    }`}
+                  >
+                    ✓ {p.savings}
+                  </div>
+                ) : (
+                  <div className="mb-5 h-7" />
+                )}
+
+                <p
+                  className={`card-desc text-sm leading-relaxed mb-6 ${on ? "text-white/55" : "text-teal-800/70"}`}
+                >
+                  {p.desc}
+                </p>
+
+                <div
+                  className={`card-divider h-px mb-6 ${on ? "bg-white/15" : "bg-teal-200"}`}
+                />
+
+                <ul className="space-y-3 flex-1">
+                  {p.features.map((f) => (
+                    <li
+                      key={f.label}
+                      className={`flex items-center gap-3 text-sm ${
+                        f.included
+                          ? on
+                            ? "feature-text text-white/80"
+                            : "feature-text text-slate-700"
+                          : on
+                            ? "feature-off text-white/25 line-through"
+                            : "feature-off text-slate-300 line-through"
                       }`}
                     >
-                      ✓ {p.savings}
-                    </div>
-                  ) : (
-                    <div className="mb-5 h-7" />
-                  )}
-
-                  <p
-                    className={`text-sm leading-relaxed mb-6 ${on ? "text-slate-400" : "text-slate-500"}`}
-                  >
-                    {p.desc}
-                  </p>
-
-                  <div
-                    className={`h-px mb-6 ${on ? "bg-white/10" : "bg-slate-100"}`}
-                  />
-
-                  <ul className="space-y-3 flex-1">
-                    {p.features.map((f) => (
-                      <li
-                        key={f.label}
-                        className={`flex items-center gap-3 text-sm ${
+                      <div
+                        className={`feature-icon w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
                           f.included
                             ? on
-                              ? "text-slate-300"
-                              : "text-slate-700"
-                            : on
-                              ? "text-slate-700"
-                              : "text-slate-300"
+                              ? "bg-white/15"
+                              : "bg-teal-100"
+                            : "bg-transparent"
                         }`}
                       >
-                        <div
-                          className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
-                            f.included
-                              ? on
-                                ? "bg-teal-900/50"
-                                : "bg-teal-50"
-                              : "bg-transparent"
-                          }`}
-                        >
-                          {f.included ? (
-                            <Check
-                              size={11}
-                              className={on ? "text-teal-400" : "text-teal-600"}
-                              strokeWidth={3}
-                            />
-                          ) : (
-                            <span
-                              className={`text-xs ${on ? "text-slate-700" : "text-slate-300"}`}
-                            >
-                              –
-                            </span>
-                          )}
-                        </div>
-                        <span className={!f.included ? "line-through" : ""}>
-                          {f.label}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                        {f.included ? (
+                          <Check
+                            size={11}
+                            className={on ? "text-teal-100" : "text-teal-600"}
+                            strokeWidth={3}
+                          />
+                        ) : (
+                          <span
+                            className={`text-xs ${on ? "text-white/25" : "text-slate-300"}`}
+                          >
+                            –
+                          </span>
+                        )}
+                      </div>
+                      {f.label}
+                    </li>
+                  ))}
+                </ul>
 
-                  {on && (
-                    <div className="mt-6 pt-5 border-t border-white/10 flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-teal-400" />
-                      <span className="text-xs text-slate-500 font-semibold">
-                        Plan sélectionné
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Selected mobile indicator */}
                 {on && (
-                  <div className="lg:hidden mt-4 pt-4 border-t border-white/10 flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-teal-400" />
-                    <span className="text-xs text-slate-500 font-semibold">
+                  <div className="mt-6 pt-5 border-t border-white/15 flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-teal-200" />
+                    <span className="text-xs text-white/40 font-semibold">
                       Plan sélectionné
                     </span>
                   </div>
                 )}
-              </button>
+              </div>
             );
           })}
         </div>
@@ -310,29 +343,17 @@ export default function AbonnementsPage() {
         {/* Garanties */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
-            [
-              "🔒",
-              "Sans engagement",
-              "Pas de renouvellement automatique. Vous choisissez votre durée.",
-            ],
-            [
-              "💯",
-              "Zéro commission",
-              "Vos honoraires vous appartiennent. Mizan ne touche rien.",
-            ],
-            [
-              "✅",
-              "Profil vérifié",
-              "Badge Mizan affiché publiquement pour rassurer vos clients.",
-            ],
+            ["🔒", "Sans engagement", "Pas de renouvellement automatique."],
+            ["💯", "Zéro commission", "Vos honoraires vous appartiennent."],
+            ["✅", "Profil vérifié", "Badge Mizan affiché sur votre profil."],
           ].map(([icon, title, desc]) => (
             <div
-              key={title}
-              className="bg-white/70 backdrop-blur-sm border border-slate-200 rounded-xl p-5 flex gap-3 items-start"
+              key={title as string}
+              className="bg-white/70 backdrop-blur-sm border border-slate-200 rounded-2xl p-5 flex gap-4 items-center"
             >
-              <span className="text-xl">{icon}</span>
+              <span className="text-2xl flex-shrink-0">{icon}</span>
               <div>
-                <div className="text-sm font-semibold text-slate-800 mb-1">
+                <div className="text-sm font-bold text-slate-800 mb-0.5">
                   {title}
                 </div>
                 <div className="text-xs text-slate-400 leading-relaxed">
