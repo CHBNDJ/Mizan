@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Check, ArrowRight, MessageCircle } from "lucide-react";
+import { Check } from "lucide-react";
 
 const PLANS = [
   {
@@ -77,14 +77,14 @@ export default function AbonnementsPage() {
             <span>⏳</span>
             Paiement en ligne bientôt disponible
           </div>
-          <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 tracking-tight leading-none mb-5">
+          <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 tracking-tight leading-tight mb-8">
             Rejoignez Mizan.
+            <br />
             <br />
             <span className="text-teal-600">Visibilité garantie.</span>
           </h1>
-          <p className="text-slate-500 text-lg max-w-md mx-auto leading-relaxed">
-            Un abonnement fixe. Vos honoraires restent les vôtres. Annulable à
-            tout moment.
+          <p className="text-slate-500 text-lg max-w-xs mx-auto leading-relaxed">
+            Abonnement fixe. Zéro commission.
           </p>
         </div>
 
@@ -225,36 +225,6 @@ export default function AbonnementsPage() {
               </button>
             );
           })}
-        </div>
-
-        {/* CTA bar */}
-        <div className="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl px-8 py-5 flex items-center justify-between gap-6 flex-wrap mb-6">
-          <div>
-            <div className="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1.5">
-              Récapitulatif
-            </div>
-            <div className="text-xl font-bold text-slate-900">
-              {plan.duration} ·{" "}
-              <span className="text-teal-600">{fmt(plan.price)}</span>
-            </div>
-            <div className="text-sm text-slate-400 mt-1">
-              {fmt(plan.monthly)}/mois · Sans engagement · Zéro commission
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <a href="mailto:contact@mizan-dz.com">
-              <button className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-8 py-3.5 rounded-xl font-semibold text-sm transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-teal-600/25">
-                S'abonner maintenant
-                <ArrowRight size={16} />
-              </button>
-            </a>
-            <a href="mailto:contact@mizan-dz.com">
-              <button className="flex items-center gap-2 border border-slate-200 text-slate-600 hover:bg-slate-50 px-6 py-3.5 rounded-xl font-medium text-sm transition-colors">
-                <MessageCircle size={15} />
-                Nous contacter
-              </button>
-            </a>
-          </div>
         </div>
 
         {/* Garanties */}
