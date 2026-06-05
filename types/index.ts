@@ -107,6 +107,31 @@ export interface User {
   created_at: string;
 }
 
+export interface LawyerSearchResult {
+  id: string;
+  first_name: string;
+  last_name: string;
+  gender: string | null;
+  avatar_url: string | null;
+  location: string | null;
+  languages: string[];
+  bar_number: string | null;
+  specializations: string[];
+  wilayas: string[];
+  experience_years: number | null;
+  consultation_price: number | null;
+  rating: number | null;
+  rating_google: string | null;
+  rating_mizan: string | null;
+  reviews_count: number;
+  reviews_count_google: number;
+  reviews_count_mizan: number;
+  is_verified: boolean;
+  subscription_status: string | null;
+  subscription_plan: string | null;
+  ranking_score: number;
+}
+
 export interface SearchFilters {
   wilaya?: string;
   barreau?: string;
@@ -116,6 +141,11 @@ export interface SearchFilters {
   verified?: boolean;
   langues?: string;
   genre?: "homme" | "femme";
+  query?: string;
+  specialization?: string;
+  language?: string;
+  minRating?: number;
+  sortBy?: "ranking" | "rating" | "experience" | "recent";
 }
 
 export interface AvocatsDatabase {
