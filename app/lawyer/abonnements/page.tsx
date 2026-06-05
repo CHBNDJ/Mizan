@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Check, ArrowRight, Bell } from "lucide-react";
+import { Check, Bell } from "lucide-react";
 
 const PLANS = [
   {
@@ -9,7 +9,6 @@ const PLANS = [
     price: 18000,
     monthly: 6000,
     badge: null,
-    popular: false,
     savings: null,
   },
   {
@@ -18,7 +17,6 @@ const PLANS = [
     price: 33000,
     monthly: 5500,
     badge: "Le plus choisi",
-    popular: true,
     savings: "Économisez 3 000 DZD",
   },
   {
@@ -27,12 +25,11 @@ const PLANS = [
     price: 60000,
     monthly: 5000,
     badge: "Meilleure offre",
-    popular: false,
     savings: "Économisez 12 000 DZD",
   },
 ];
 
-const FEATURES_BASE = [
+const BASE = [
   "Profil visible sur Mizan",
   "Accès aux demandes clients",
   "Messagerie intégrée",
@@ -40,13 +37,9 @@ const FEATURES_BASE = [
   "Support prioritaire",
 ];
 
-const FEATURES_EXTRA: Record<string, string[]> = {
-  "6mois": ["Badge profil mis en avant"],
-  "12mois": [
-    "Badge profil mis en avant",
-    "Tête de liste dans la recherche",
-    "Statistiques de visibilité",
-  ],
+const EXTRA: Record<string, string[]> = {
+  "6mois": ["Badge mis en avant"],
+  "12mois": ["Badge mis en avant", "Tête de recherche", "Statistiques"],
 };
 
 const fmt = (n: number) => n.toLocaleString("fr-DZ") + " DZD";
@@ -58,258 +51,104 @@ export default function AbonnementsPage() {
   const plan = PLANS.find((p) => p.id === selected)!;
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#F8F7F5",
-        fontFamily: "'Syne', 'Helvetica Neue', system-ui, sans-serif",
-      }}
-    >
-      <style>{`
-        @import url('https:
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        .card { transition: transform 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s; cursor: pointer; }
-        .card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.08); }
-        .card.on { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.12); }
-
-        .pill { display: inline-flex; align-items: center; gap: 6px; background: white; border: 1px solid #E2E2E0; border-radius: 100px; padding: 6px 16px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
-
-        .soon-badge {
-          display: inline-flex; align-items: center; gap: 6px;
-          background: linear-gradient(135deg, #FFF7ED 0%, #FEF3C7 100%);
-          border: 1px solid #FDE68A;
-          color: #92400E;
-          padding: 8px 18px; border-radius: 100px;
-          font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
-        }
-
-        .notify-input { border: 1.5px solid #E2E2E0; border-radius: 10px; padding: 13px 16px; font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; background: white; width: 100%; }
-        .notify-input:focus { border-color: #0D9488; }
-
-        .notify-btn { background: #0C1116; color: white; border: none; padding: 13px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 8px; white-space: nowrap; transition: all .2s; }
-        .notify-btn:hover { background: #0D9488; transform: translateY(-1px); }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-        .fade { animation: fadeIn .5s ease both; }
-        .fade-1 { animation-delay: .05s; }
-        .fade-2 { animation-delay: .1s; }
-        .fade-3 { animation-delay: .15s; }
-        .fade-4 { animation-delay: .2s; }
-        .fade-5 { animation-delay: .25s; }
-      `}</style>
-
-      <div
-        style={{ maxWidth: 860, margin: "0 auto", padding: "80px 24px 80px" }}
-      >
-        {/* Badge coming soon */}
-        <div
-          className="fade"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: 32,
-          }}
-        >
-          <span className="soon-badge">
-            <span style={{ fontSize: 14 }}>⏳</span>
+    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 pt-16">
+      <div className="max-w-4xl mx-auto px-4 py-20">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold uppercase tracking-widest px-4 py-2 rounded-full mb-8">
+            <span>⏳</span>
             Paiement en ligne bientôt disponible
-          </span>
-        </div>
-
-        {/* Header */}
-        <div
-          className="fade fade-1"
-          style={{ textAlign: "center", marginBottom: 56 }}
-        >
-          <h1
-            style={{
-              fontSize: "clamp(38px, 6vw, 60px)",
-              fontWeight: 800,
-              color: "#0C1116",
-              letterSpacing: "-0.04em",
-              lineHeight: 1.04,
-              marginBottom: 18,
-            }}
-          >
+          </div>
+          <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 tracking-tight leading-none mb-5">
             Votre cabinet,
             <br />
-            <span style={{ color: "#0D9488" }}>visible partout.</span>
+            <span className="text-teal-600">visible partout.</span>
           </h1>
-          <p
-            style={{
-              fontSize: 16,
-              color: "#71717A",
-              maxWidth: 400,
-              margin: "0 auto",
-              lineHeight: 1.75,
-            }}
-          >
-            Un abonnement fixe. Zéro commission sur vos honoraires. Annulable à
-            tout moment.
+          <p className="text-slate-500 text-lg max-w-sm mx-auto leading-relaxed">
+            Un abonnement fixe. Zéro commission sur vos honoraires.
           </p>
         </div>
 
-        {/* Plans */}
-        <div
-          className="fade fade-2"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3,1fr)",
-            gap: 14,
-            marginBottom: 20,
-          }}
-        >
+        <div className="grid grid-cols-3 gap-3 mb-4">
           {PLANS.map((p) => {
             const on = selected === p.id;
-            const extras = FEATURES_EXTRA[p.id] || [];
+            const extras = EXTRA[p.id] || [];
             return (
-              <div
+              <button
                 key={p.id}
-                className={`card${on ? " on" : ""}`}
                 onClick={() => setSelected(p.id)}
-                style={{
-                  background: on ? "#0C1116" : "white",
-                  border: `1.5px solid ${on ? "#0C1116" : "#E2E2E0"}`,
-                  borderRadius: 18,
-                  padding: "26px 22px",
-                  position: "relative",
-                  overflow: "visible",
-                }}
+                className={`relative text-left rounded-2xl p-6 transition-all duration-200 ${
+                  on
+                    ? "bg-slate-900 shadow-xl shadow-slate-900/20 -translate-y-1"
+                    : "bg-white border border-slate-200 hover:-translate-y-1 hover:shadow-lg"
+                }`}
               >
-                {/* Badge */}
                 {p.badge && (
                   <div
-                    style={{
-                      position: "absolute",
-                      top: -11,
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      background: p.popular ? "#0D9488" : "#F59E0B",
-                      color: "white",
-                      padding: "3px 13px",
-                      borderRadius: 100,
-                      fontSize: 10,
-                      fontWeight: 800,
-                      whiteSpace: "nowrap",
-                      letterSpacing: ".05em",
-                      textTransform: "uppercase",
-                    }}
+                    className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
+                      p.id === "6mois"
+                        ? "bg-teal-600 text-white"
+                        : "bg-amber-400 text-amber-900"
+                    }`}
                   >
                     {p.badge}
                   </div>
                 )}
 
-                {/* Duration */}
                 <div
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    color: on ? "rgba(255,255,255,.4)" : "#A1A1AA",
-                    letterSpacing: ".1em",
-                    textTransform: "uppercase",
-                    marginBottom: 14,
-                  }}
+                  className={`text-xs font-semibold uppercase tracking-widest mb-4 ${on ? "text-slate-500" : "text-slate-400"}`}
                 >
                   {p.duration}
                 </div>
 
-                {/* Price */}
-                <div style={{ marginBottom: 4 }}>
+                <div className="mb-1">
                   <span
-                    style={{
-                      fontSize: 44,
-                      fontWeight: 800,
-                      color: on ? "white" : "#0C1116",
-                      letterSpacing: "-0.04em",
-                      lineHeight: 1,
-                    }}
+                    className={`text-4xl font-bold tracking-tight ${on ? "text-white" : "text-slate-900"}`}
                   >
                     {p.monthly.toLocaleString("fr-DZ")}
                   </span>
                   <span
-                    style={{
-                      fontSize: 12,
-                      color: on ? "rgba(255,255,255,.35)" : "#A1A1AA",
-                      marginLeft: 4,
-                    }}
+                    className={`text-sm ml-1 ${on ? "text-slate-500" : "text-slate-400"}`}
                   >
                     DZD/mois
                   </span>
                 </div>
 
                 <div
-                  style={{
-                    fontSize: 12,
-                    color: on ? "rgba(255,255,255,.3)" : "#A1A1AA",
-                    marginBottom: p.savings ? 6 : 20,
-                  }}
+                  className={`text-xs mb-3 ${on ? "text-slate-600" : "text-slate-400"}`}
                 >
                   {fmt(p.price)} total
                 </div>
 
                 {p.savings && (
                   <div
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: on ? "#4ADE80" : "#059669",
-                      background: on ? "rgba(74,222,128,.12)" : "#F0FDF4",
-                      padding: "3px 10px",
-                      borderRadius: 100,
-                      marginBottom: 20,
-                    }}
+                    className={`inline-flex text-xs font-semibold px-2 py-1 rounded-full mb-4 ${
+                      on
+                        ? "bg-teal-900/40 text-teal-400"
+                        : "bg-teal-50 text-teal-700"
+                    }`}
                   >
                     {p.savings}
                   </div>
                 )}
 
-                {/* Divider */}
                 <div
-                  style={{
-                    height: 1,
-                    background: on ? "rgba(255,255,255,.08)" : "#F4F4F5",
-                    marginBottom: 18,
-                  }}
+                  className={`h-px mb-4 ${on ? "bg-white/10" : "bg-slate-100"}`}
                 />
 
-                {/* Features */}
-                <ul
-                  style={{
-                    listStyle: "none",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 9,
-                  }}
-                >
-                  {[...FEATURES_BASE, ...extras].map((f) => (
+                <ul className="space-y-2">
+                  {[...BASE, ...extras].map((f) => (
                     <li
                       key={f}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 9,
-                        fontSize: 12,
-                        color: on ? "rgba(255,255,255,.7)" : "#3F3F46",
-                      }}
+                      className={`flex items-center gap-2 text-xs ${on ? "text-slate-400" : "text-slate-600"}`}
                     >
                       <div
-                        style={{
-                          width: 16,
-                          height: 16,
-                          borderRadius: "50%",
-                          background: on ? "rgba(13,148,136,.25)" : "#F0FDFA",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                        }}
+                        className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          on ? "bg-teal-900/50" : "bg-teal-50"
+                        }`}
                       >
                         <Check
                           size={9}
-                          color={on ? "#4ADE80" : "#0D9488"}
+                          className={on ? "text-teal-400" : "text-teal-600"}
                           strokeWidth={3}
                         />
                       </div>
@@ -317,184 +156,53 @@ export default function AbonnementsPage() {
                     </li>
                   ))}
                 </ul>
-
-                {/* Selected indicator */}
-                {on && (
-                  <div
-                    style={{
-                      marginTop: 22,
-                      paddingTop: 16,
-                      borderTop: "1px solid rgba(255,255,255,.08)",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 7,
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: "50%",
-                        background: "#4ADE80",
-                      }}
-                    />
-                    <span
-                      style={{
-                        fontSize: 11,
-                        color: "rgba(255,255,255,.5)",
-                        fontWeight: 600,
-                      }}
-                    >
-                      Plan sélectionné
-                    </span>
-                  </div>
-                )}
-              </div>
+              </button>
             );
           })}
         </div>
 
-        {/* Summary bar */}
-        <div
-          className="fade fade-3"
-          style={{
-            background: "white",
-            border: "1px solid #E2E2E0",
-            borderRadius: 14,
-            padding: "18px 22px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 16,
-            flexWrap: "wrap",
-            marginBottom: 48,
-          }}
-        >
+        <div className="bg-white/70 backdrop-blur-sm border border-slate-200 rounded-2xl px-6 py-4 flex items-center justify-between gap-4 mb-12 flex-wrap">
           <div>
-            <div
-              style={{
-                fontSize: 11,
-                color: "#A1A1AA",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: ".07em",
-                marginBottom: 4,
-              }}
-            >
-              Récapitulatif
+            <div className="text-xs text-slate-400 font-semibold uppercase tracking-widest mb-1">
+              Sélectionné
             </div>
-            <div
-              style={{
-                fontSize: 18,
-                fontWeight: 800,
-                color: "#0C1116",
-                letterSpacing: "-0.02em",
-              }}
-            >
+            <div className="text-lg font-bold text-slate-900">
               {plan.duration} ·{" "}
-              <span style={{ color: "#0D9488" }}>{fmt(plan.price)}</span>
+              <span className="text-teal-600">{fmt(plan.price)}</span>
             </div>
-            <div style={{ fontSize: 12, color: "#A1A1AA", marginTop: 2 }}>
+            <div className="text-xs text-slate-400 mt-0.5">
               {fmt(plan.monthly)}/mois · Sans engagement · Sans commission
             </div>
           </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              background: "#FFF7ED",
-              border: "1px solid #FDE68A",
-              borderRadius: 10,
-              padding: "10px 16px",
-            }}
-          >
-            <span style={{ fontSize: 16 }}>⏳</span>
+          <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+            <span className="text-base">⏳</span>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: "#92400E" }}>
-                Paiement bientôt disponible
+              <div className="text-xs font-bold text-amber-800">
+                Bientôt disponible
               </div>
-              <div style={{ fontSize: 11, color: "#B45309" }}>
+              <div className="text-xs text-amber-600">
                 Notifiez-moi ci-dessous
               </div>
             </div>
           </div>
         </div>
 
-        {/* Notify section */}
-        <div
-          className="fade fade-4"
-          style={{
-            background: "#0C1116",
-            borderRadius: 20,
-            padding: "40px 36px",
-            textAlign: "center",
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              top: -60,
-              right: -60,
-              width: 200,
-              height: 200,
-              background:
-                "radial-gradient(circle, rgba(13,148,136,.15) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              bottom: -40,
-              left: -40,
-              width: 160,
-              height: 160,
-              background:
-                "radial-gradient(circle, rgba(245,158,11,.08) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
-
-          <div style={{ position: "relative" }}>
-            <div style={{ fontSize: 28, marginBottom: 12 }}>🔔</div>
-            <h2
-              style={{
-                fontSize: 24,
-                fontWeight: 800,
-                color: "white",
-                letterSpacing: "-0.03em",
-                marginBottom: 8,
-              }}
-            >
-              Soyez le premier informé
+        <div className="bg-slate-900 rounded-3xl p-10 text-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(13,148,136,0.15),transparent_60%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(245,158,11,0.08),transparent_60%)]" />
+          <div className="relative">
+            <div className="text-3xl mb-4">🔔</div>
+            <h2 className="text-2xl font-bold text-white tracking-tight mb-3">
+              Soyez le premier notifié
             </h2>
-            <p
-              style={{
-                fontSize: 14,
-                color: "rgba(255,255,255,.45)",
-                marginBottom: 28,
-                maxWidth: 380,
-                margin: "0 auto 28px",
-              }}
-            >
-              Le paiement en ligne via CIB et Edahabia arrive bientôt. Laissez
-              votre email pour être notifié dès l'ouverture.
+            <p className="text-slate-500 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
+              Le paiement CIB et Edahabia arrive très bientôt. Laissez votre
+              email.
             </p>
 
             {!submitted ? (
-              <div
-                style={{
-                  display: "flex",
-                  gap: 10,
-                  maxWidth: 420,
-                  margin: "0 auto",
-                }}
-              >
+              <div className="flex gap-2 max-w-sm mx-auto">
                 <input
-                  className="notify-input"
                   type="email"
                   placeholder="votre@email.com"
                   value={email}
@@ -502,139 +210,56 @@ export default function AbonnementsPage() {
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && email) setSubmitted(true);
                   }}
-                  style={{
-                    background: "rgba(255,255,255,.06)",
-                    border: "1.5px solid rgba(255,255,255,.1)",
-                    color: "white",
-                    borderRadius: 10,
-                    padding: "13px 16px",
-                    fontSize: 14,
-                    fontFamily: "inherit",
-                    outline: "none",
-                    flex: 1,
-                  }}
+                  className="flex-1 bg-white/8 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm outline-none focus:border-teal-500 transition-colors"
+                  style={{ background: "rgba(255,255,255,0.06)" }}
                 />
                 <button
-                  className="notify-btn"
                   onClick={() => {
                     if (email) setSubmitted(true);
                   }}
-                  style={{
-                    background: "#0D9488",
-                    color: "white",
-                    border: "none",
-                    padding: "13px 22px",
-                    borderRadius: 10,
-                    fontSize: 14,
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 7,
-                    whiteSpace: "nowrap",
-                  }}
+                  className="bg-teal-600 hover:bg-teal-500 text-white px-5 py-3 rounded-xl text-sm font-semibold flex items-center gap-2 transition-colors whitespace-nowrap"
                 >
-                  <Bell size={15} />
+                  <Bell size={14} />
                   Me notifier
                 </button>
               </div>
             ) : (
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 10,
-                  background: "rgba(74,222,128,.12)",
-                  border: "1px solid rgba(74,222,128,.3)",
-                  padding: "14px 24px",
-                  borderRadius: 12,
-                }}
-              >
-                <Check size={18} color="#4ADE80" strokeWidth={2.5} />
-                <span
-                  style={{ fontSize: 14, color: "#4ADE80", fontWeight: 600 }}
-                >
-                  Parfait — vous serez notifié dès l'ouverture !
+              <div className="inline-flex items-center gap-3 bg-teal-900/40 border border-teal-700/50 px-5 py-3 rounded-xl">
+                <Check size={16} className="text-teal-400" strokeWidth={2.5} />
+                <span className="text-sm text-teal-400 font-semibold">
+                  Vous serez notifié dès l'ouverture !
                 </span>
               </div>
             )}
 
-            <div
-              style={{
-                marginTop: 20,
-                fontSize: 12,
-                color: "rgba(255,255,255,.2)",
-              }}
-            >
-              En attendant, contactez-nous à{" "}
+            <p className="text-slate-600 text-xs mt-6">
+              En attendant :{" "}
               <a
                 href="mailto:contact@mizan-dz.com"
-                style={{
-                  color: "rgba(255,255,255,.4)",
-                  textDecoration: "none",
-                }}
+                className="text-slate-500 hover:text-teal-400 transition-colors"
               >
                 contact@mizan-dz.com
               </a>
-            </div>
+            </p>
           </div>
         </div>
 
-        {/* Garanties */}
-        <div
-          className="fade fade-5"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3,1fr)",
-            gap: 10,
-            marginTop: 14,
-          }}
-        >
+        <div className="grid grid-cols-3 gap-3 mt-4">
           {[
-            [
-              "🔒",
-              "Sans engagement",
-              "Résiliable à l'expiration de votre plan.",
-            ],
-            [
-              "💯",
-              "Zéro commission",
-              "Vos honoraires vous appartiennent entièrement.",
-            ],
-            [
-              "✅",
-              "Profil vérifié",
-              "Badge Mizan visible sur votre profil public.",
-            ],
+            ["🔒", "Sans engagement", "Résiliable à l'expiration."],
+            ["💯", "Zéro commission", "Vos honoraires vous appartiennent."],
+            ["✅", "Profil vérifié", "Badge Mizan sur votre profil."],
           ].map(([icon, title, desc]) => (
             <div
               key={title}
-              style={{
-                background: "white",
-                border: "1px solid #E2E2E0",
-                borderRadius: 12,
-                padding: "16px 16px",
-                display: "flex",
-                gap: 12,
-                alignItems: "flex-start",
-              }}
+              className="bg-white/70 backdrop-blur-sm border border-slate-200 rounded-xl p-4 flex gap-3 items-start"
             >
-              <span style={{ fontSize: 18 }}>{icon}</span>
+              <span className="text-lg">{icon}</span>
               <div>
-                <div
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 700,
-                    color: "#0C1116",
-                    marginBottom: 3,
-                  }}
-                >
+                <div className="text-sm font-semibold text-slate-800 mb-0.5">
                   {title}
                 </div>
-                <div
-                  style={{ fontSize: 11, color: "#A1A1AA", lineHeight: 1.5 }}
-                >
+                <div className="text-xs text-slate-400 leading-relaxed">
                   {desc}
                 </div>
               </div>
