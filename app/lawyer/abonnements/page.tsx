@@ -10,7 +10,7 @@ const PLANS = [
     monthly: 6000,
     badge: null,
     savings: null,
-    desc: "Pour découvrir Mizan et tester votre visibilité.",
+
     features: [
       { label: "Profil public visible", included: true },
       { label: "Accès aux demandes clients", included: true },
@@ -29,7 +29,7 @@ const PLANS = [
     monthly: 5500,
     badge: "Le plus choisi",
     savings: "Économisez 3 000 DZD",
-    desc: "L'essentiel pour développer votre clientèle.",
+
     features: [
       { label: "Profil public visible", included: true },
       { label: "Accès aux demandes clients", included: true },
@@ -48,7 +48,7 @@ const PLANS = [
     monthly: 5000,
     badge: "Meilleure offre",
     savings: "Économisez 12 000 DZD",
-    desc: "Visibilité maximale et position dominante.",
+
     features: [
       { label: "Profil public visible", included: true },
       { label: "Accès aux demandes clients", included: true },
@@ -75,9 +75,8 @@ export default function AbonnementsPage() {
           cursor: pointer;
         }
         .plan-card:not(.selected):hover {
-          background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%) !important;
-          border-color: #0D9488 !important;
-          box-shadow: 0 8px 28px rgba(13,148,136,0.25) !important;
+          background: #0D9488 !important;
+          box-shadow: 0 8px 28px rgba(13,148,136,0.2) !important;
           transform: translateY(-4px);
         }
         .plan-card:not(.selected):hover .card-duration,
@@ -108,10 +107,9 @@ export default function AbonnementsPage() {
           color: #ccfbf1 !important;
         }
         .plan-card.selected {
-          background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%) !important;
-          border-color: #0D9488 !important;
-          box-shadow: 0 12px 36px rgba(13,148,136,0.3) !important;
-          transform: translateY(-6px);
+          background: #0D9488 !important;
+          box-shadow: 0 12px 36px rgba(13,148,136,0.25) !important;
+          transform: translateY(-4px);
         }
       `}</style>
 
@@ -183,7 +181,7 @@ export default function AbonnementsPage() {
                   ✓ {p.savings}
                 </div>
               )}
-              <p className="text-sm text-white/60 mb-5">{p.desc}</p>
+
               <div className="h-px bg-white/15 mb-5" />
               <ul className="space-y-3">
                 {p.features.map((f) => (
@@ -220,7 +218,9 @@ export default function AbonnementsPage() {
               <div
                 key={p.id}
                 className={`plan-card relative rounded-3xl p-8 flex flex-col border-2 ${
-                  on ? "selected" : "bg-teal-50 border-teal-300"
+                  on
+                    ? "selected shadow-lg shadow-teal-500/20"
+                    : "bg-white shadow-md shadow-slate-200/80"
                 }`}
                 onClick={() => setSelected(p.id)}
               >
@@ -237,7 +237,7 @@ export default function AbonnementsPage() {
                 )}
 
                 <div
-                  className={`card-duration text-xs font-bold uppercase tracking-widest mb-5 ${on ? "text-white/50" : "text-teal-700"}`}
+                  className={`card-duration text-xs font-bold uppercase tracking-widest mb-5 ${on ? "text-white/50" : "text-slate-500"}`}
                 >
                   {p.duration}
                 </div>
@@ -266,7 +266,7 @@ export default function AbonnementsPage() {
                     className={`savings-pill inline-flex self-start text-xs font-bold px-3 py-1.5 rounded-full mb-5 ${
                       on
                         ? "bg-white/15 text-teal-100"
-                        : "bg-teal-100 text-teal-700"
+                        : "bg-teal-50 text-teal-700"
                     }`}
                   >
                     ✓ {p.savings}
@@ -275,14 +275,8 @@ export default function AbonnementsPage() {
                   <div className="mb-5 h-7" />
                 )}
 
-                <p
-                  className={`card-desc text-sm leading-relaxed mb-6 ${on ? "text-white/55" : "text-teal-800/70"}`}
-                >
-                  {p.desc}
-                </p>
-
                 <div
-                  className={`card-divider h-px mb-6 ${on ? "bg-white/15" : "bg-teal-200"}`}
+                  className={`card-divider h-px mb-6 ${on ? "bg-white/15" : "bg-slate-100"}`}
                 />
 
                 <ul className="space-y-3 flex-1">
@@ -304,7 +298,7 @@ export default function AbonnementsPage() {
                           f.included
                             ? on
                               ? "bg-white/15"
-                              : "bg-teal-100"
+                              : "bg-teal-50"
                             : "bg-transparent"
                         }`}
                       >
@@ -326,22 +320,13 @@ export default function AbonnementsPage() {
                     </li>
                   ))}
                 </ul>
-
-                {on && (
-                  <div className="mt-6 pt-5 border-t border-white/15 flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-teal-200" />
-                    <span className="text-xs text-white/40 font-semibold">
-                      Plan sélectionné
-                    </span>
-                  </div>
-                )}
               </div>
             );
           })}
         </div>
 
         {/* Garanties */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           {[
             ["🔒", "Sans engagement", "Pas de renouvellement automatique."],
             ["💯", "Zéro commission", "Vos honoraires vous appartiennent."],
@@ -349,16 +334,12 @@ export default function AbonnementsPage() {
           ].map(([icon, title, desc]) => (
             <div
               key={title as string}
-              className="bg-white/70 backdrop-blur-sm border border-slate-200 rounded-2xl p-5 flex gap-4 items-center"
+              className="flex-1 bg-white/70 backdrop-blur-sm border border-slate-200 rounded-2xl p-5 flex flex-col items-center text-center gap-2"
             >
-              <span className="text-2xl flex-shrink-0">{icon}</span>
-              <div>
-                <div className="text-sm font-bold text-slate-800 mb-0.5">
-                  {title}
-                </div>
-                <div className="text-xs text-slate-400 leading-relaxed">
-                  {desc}
-                </div>
+              <span className="text-2xl">{icon}</span>
+              <div className="text-sm font-bold text-slate-800">{title}</div>
+              <div className="text-xs text-slate-400 leading-relaxed">
+                {desc}
               </div>
             </div>
           ))}
