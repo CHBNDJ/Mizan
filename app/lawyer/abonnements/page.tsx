@@ -75,36 +75,9 @@ export default function AbonnementsPage() {
           cursor: pointer;
         }
         .plan-card:not(.selected):hover {
-          background: #0D9488 !important;
-          box-shadow: 0 8px 28px rgba(13,148,136,0.2) !important;
-          transform: translateY(-4px);
-        }
-        .plan-card:not(.selected):hover .card-duration,
-        .plan-card:not(.selected):hover .card-total,
-        .plan-card:not(.selected):hover .card-desc {
-          color: rgba(255,255,255,0.55) !important;
-        }
-        .plan-card:not(.selected):hover .card-price {
-          color: white !important;
-        }
-        .plan-card:not(.selected):hover .card-unit {
-          color: rgba(255,255,255,0.45) !important;
-        }
-        .plan-card:not(.selected):hover .card-divider {
-          background: rgba(255,255,255,0.15) !important;
-        }
-        .plan-card:not(.selected):hover .feature-text {
-          color: rgba(255,255,255,0.8) !important;
-        }
-        .plan-card:not(.selected):hover .feature-off {
-          color: rgba(255,255,255,0.25) !important;
-        }
-        .plan-card:not(.selected):hover .feature-icon {
-          background: rgba(255,255,255,0.15) !important;
-        }
-        .plan-card:not(.selected):hover .savings-pill {
-          background: rgba(255,255,255,0.15) !important;
-          color: #ccfbf1 !important;
+          box-shadow: 0 12px 32px rgba(13,148,136,0.12) !important;
+          border-color: rgba(13,148,136,0.3) !important;
+          transform: translateY(-6px);
         }
         .plan-card.selected {
           background: #0D9488 !important;
