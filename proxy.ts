@@ -12,20 +12,6 @@ export async function proxy(req: NextRequest) {
 
   const path = req.nextUrl.pathname;
 
-  // ── Protection ADMIN ──────────────────────────────────────
-  // Seul l'email défini dans ADMIN_EMAIL peut accéder à /admin
-  if (path.startsWith("/admin")) {
-    if (!session) {
-      return NextResponse.redirect(new URL("/auth/login", req.url));
-    }
-    const adminEmail = process.env.ADMIN_EMAIL;
-    if (!adminEmail || session.user.email !== adminEmail) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-    return res;
-  }
-
-  // ── Routes publiques ──────────────────────────────────────
   const publicPaths = [
     "/",
     "/search",
@@ -47,9 +33,9 @@ export async function proxy(req: NextRequest) {
     publicPaths.some((p) => path.startsWith(p)) ||
     path.match(/^\/lawyers\/[^\/]+$/) ||
     path.match(/^\/claim-profile\/[^\/]+$/) ||
-    path.match(/^\/blog\/[^\/]+$/) ||
+    path === "/lawyer/abonnements" ||
     path === "/blog" ||
-    path === "/lawyer/abonnements";
+    path.match(/^\/blog\/[^\/]+$/);
 
   if (!session && !isPublicPath) {
     return NextResponse.redirect(new URL("/auth/login", req.url));
@@ -79,6 +65,7 @@ export async function proxy(req: NextRequest) {
       const isAllowedPath =
         allowedPaths.some((p) => path === p) ||
         path.match(/^\/lawyers\/[^\/]+$/);
+
       if (!isAllowedPath) {
         return NextResponse.redirect(new URL("/lawyer/onboarding", req.url));
       }
