@@ -297,26 +297,6 @@ export default function AbonnementsPage() {
             );
           })}
         </div>
-
-        {/* Garanties */}
-        <div className="flex flex-col sm:flex-row gap-3">
-          {[
-            ["🔒", "Sans engagement", "Pas de renouvellement automatique."],
-            ["💯", "Zéro commission", "Vos honoraires vous appartiennent."],
-            ["✅", "Profil vérifié", "Badge Mizan affiché sur votre profil."],
-          ].map(([icon, title, desc]) => (
-            <div
-              key={title as string}
-              className="flex-1 bg-white/70 backdrop-blur-sm border border-slate-200 rounded-2xl p-5 flex flex-col items-center text-center gap-2"
-            >
-              <span className="text-2xl">{icon}</span>
-              <div className="text-sm font-bold text-slate-800">{title}</div>
-              <div className="text-xs text-slate-400 leading-relaxed">
-                {desc}
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );
