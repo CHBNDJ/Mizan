@@ -7,10 +7,10 @@ import {
   X,
   ChevronDown,
   User,
-  UserPlus,
   LogOut,
   Settings,
   LayoutDashboard,
+  CreditCard,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -293,17 +293,27 @@ export function Navigation() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
                     {profile?.user_type === "lawyer" && (
-                      <DropdownMenuItem asChild>
-                        <Link
-                          href="/lawyer/dashboard"
-                          className="w-full hover:bg-teal-50"
-                        >
-                          <LayoutDashboard className="w-4 h-4 mr-2" />
-                          Tableau de bord
-                        </Link>
-                      </DropdownMenuItem>
+                      <>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/lawyer/dashboard"
+                            className="w-full hover:bg-teal-50"
+                          >
+                            <LayoutDashboard className="w-4 h-4 mr-2" />
+                            Tableau de bord
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/lawyer/abonnements"
+                            className="w-full hover:bg-teal-50"
+                          >
+                            <CreditCard className="w-4 h-4 mr-2" />
+                            Mon abonnement
+                          </Link>
+                        </DropdownMenuItem>
+                      </>
                     )}
-
                     <DropdownMenuItem
                       onClick={handleProfileClick}
                       className="w-full hover:bg-teal-50 cursor-pointer"
@@ -453,18 +463,32 @@ export function Navigation() {
 
                   <div className="space-y-2">
                     {profile?.user_type === "lawyer" && (
-                      <button
-                        onClick={() => {
-                          router.push("/lawyer/dashboard");
-                          setIsOpen(false);
-                        }}
-                        className="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-white/60 rounded-lg transition-colors"
-                      >
-                        <Scale className="w-4 h-4 text-slate-600" />
-                        <span className="cursor-pointer text-sm font-medium text-slate-900">
-                          Tableau de bord
-                        </span>
-                      </button>
+                      <>
+                        <button
+                          onClick={() => {
+                            router.push("/lawyer/dashboard");
+                            setIsOpen(false);
+                          }}
+                          className="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-white/60 rounded-lg transition-colors"
+                        >
+                          <Scale className="w-4 h-4 text-slate-600" />
+                          <span className="cursor-pointer text-sm font-medium text-slate-900">
+                            Tableau de bord
+                          </span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            router.push("/lawyer/abonnements");
+                            setIsOpen(false);
+                          }}
+                          className="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-white/60 rounded-lg transition-colors"
+                        >
+                          <CreditCard className="w-4 h-4 text-slate-600" />
+                          <span className="cursor-pointer text-sm font-medium text-slate-900">
+                            Mon abonnement
+                          </span>
+                        </button>
+                      </>
                     )}
 
                     <button
