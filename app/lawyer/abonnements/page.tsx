@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Check, Bell } from "lucide-react";
+import { Check, ArrowRight, MessageCircle } from "lucide-react";
 
 const PLANS = [
   {
@@ -10,6 +10,17 @@ const PLANS = [
     monthly: 6000,
     badge: null,
     savings: null,
+    desc: "Pour découvrir Mizan et tester votre visibilité.",
+    features: [
+      { label: "Profil public visible", included: true },
+      { label: "Accès aux demandes clients", included: true },
+      { label: "Messagerie intégrée", included: true },
+      { label: "Avis clients vérifiés", included: true },
+      { label: "Support prioritaire", included: true },
+      { label: "Badge « Mis en avant »", included: false },
+      { label: "Priorité dans la recherche", included: false },
+      { label: "Statistiques de visibilité", included: false },
+    ],
   },
   {
     id: "6mois",
@@ -18,6 +29,17 @@ const PLANS = [
     monthly: 5500,
     badge: "Le plus choisi",
     savings: "Économisez 3 000 DZD",
+    desc: "L'essentiel pour développer votre clientèle.",
+    features: [
+      { label: "Profil public visible", included: true },
+      { label: "Accès aux demandes clients", included: true },
+      { label: "Messagerie intégrée", included: true },
+      { label: "Avis clients vérifiés", included: true },
+      { label: "Support prioritaire", included: true },
+      { label: "Badge « Mis en avant »", included: true },
+      { label: "Priorité dans la recherche", included: false },
+      { label: "Statistiques de visibilité", included: false },
+    ],
   },
   {
     id: "12mois",
@@ -26,65 +48,64 @@ const PLANS = [
     monthly: 5000,
     badge: "Meilleure offre",
     savings: "Économisez 12 000 DZD",
+    desc: "Visibilité maximale et position dominante.",
+    features: [
+      { label: "Profil public visible", included: true },
+      { label: "Accès aux demandes clients", included: true },
+      { label: "Messagerie intégrée", included: true },
+      { label: "Avis clients vérifiés", included: true },
+      { label: "Support prioritaire", included: true },
+      { label: "Badge « Mis en avant »", included: true },
+      { label: "Priorité dans la recherche", included: true },
+      { label: "Statistiques de visibilité", included: true },
+    ],
   },
 ];
-
-const BASE = [
-  "Profil visible sur Mizan",
-  "Accès aux demandes clients",
-  "Messagerie intégrée",
-  "Avis clients vérifiés",
-  "Support prioritaire",
-];
-
-const EXTRA: Record<string, string[]> = {
-  "6mois": ["Badge mis en avant"],
-  "12mois": ["Badge mis en avant", "Tête de recherche", "Statistiques"],
-};
 
 const fmt = (n: number) => n.toLocaleString("fr-DZ") + " DZD";
 
 export default function AbonnementsPage() {
   const [selected, setSelected] = useState("6mois");
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   const plan = PLANS.find((p) => p.id === selected)!;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 pt-16">
-      <div className="max-w-4xl mx-auto px-4 py-20">
+      <div className="max-w-5xl mx-auto px-4 py-20">
+        {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold uppercase tracking-widest px-4 py-2 rounded-full mb-8">
+          <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-8">
             <span>⏳</span>
             Paiement en ligne bientôt disponible
           </div>
           <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 tracking-tight leading-none mb-5">
-            Votre cabinet,
+            Rejoignez Mizan.
             <br />
-            <span className="text-teal-600">visible partout.</span>
+            <span className="text-teal-600">Visibilité garantie.</span>
           </h1>
-          <p className="text-slate-500 text-lg max-w-sm mx-auto leading-relaxed">
-            Un abonnement fixe. Zéro commission sur vos honoraires.
+          <p className="text-slate-500 text-lg max-w-md mx-auto leading-relaxed">
+            Un abonnement fixe. Vos honoraires restent les vôtres. Annulable à
+            tout moment.
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 mb-4">
+        {/* Plans */}
+        <div className="grid grid-cols-3 gap-4 mb-8 items-stretch">
           {PLANS.map((p) => {
             const on = selected === p.id;
-            const extras = EXTRA[p.id] || [];
             return (
               <button
                 key={p.id}
                 onClick={() => setSelected(p.id)}
-                className={`relative text-left rounded-2xl p-6 transition-all duration-200 ${
+                className={`relative text-left rounded-3xl p-8 transition-all duration-200 flex flex-col ${
                   on
-                    ? "bg-slate-900 shadow-xl shadow-slate-900/20 -translate-y-1"
-                    : "bg-white border border-slate-200 hover:-translate-y-1 hover:shadow-lg"
+                    ? "bg-slate-900 shadow-2xl shadow-slate-900/25 -translate-y-2 ring-2 ring-teal-500"
+                    : "bg-white border border-slate-200 hover:-translate-y-1 hover:shadow-xl hover:border-teal-200"
                 }`}
               >
+                {/* Badge */}
                 {p.badge && (
                   <div
-                    className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
+                    className={`absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap ${
                       p.id === "6mois"
                         ? "bg-teal-600 text-white"
                         : "bg-amber-400 text-amber-900"
@@ -94,169 +115,174 @@ export default function AbonnementsPage() {
                   </div>
                 )}
 
+                {/* Duration */}
                 <div
-                  className={`text-xs font-semibold uppercase tracking-widest mb-4 ${on ? "text-slate-500" : "text-slate-400"}`}
+                  className={`text-xs font-bold uppercase tracking-widest mb-5 ${on ? "text-slate-500" : "text-slate-400"}`}
                 >
                   {p.duration}
                 </div>
 
-                <div className="mb-1">
+                {/* Price */}
+                <div className="mb-2">
                   <span
-                    className={`text-4xl font-bold tracking-tight ${on ? "text-white" : "text-slate-900"}`}
+                    className={`text-5xl font-bold tracking-tight leading-none ${on ? "text-white" : "text-slate-900"}`}
                   >
                     {p.monthly.toLocaleString("fr-DZ")}
                   </span>
                   <span
-                    className={`text-sm ml-1 ${on ? "text-slate-500" : "text-slate-400"}`}
+                    className={`text-sm ml-2 ${on ? "text-slate-500" : "text-slate-400"}`}
                   >
                     DZD/mois
                   </span>
                 </div>
 
                 <div
-                  className={`text-xs mb-3 ${on ? "text-slate-600" : "text-slate-400"}`}
+                  className={`text-sm mb-2 ${on ? "text-slate-500" : "text-slate-400"}`}
                 >
-                  {fmt(p.price)} total
+                  {fmt(p.price)} total · paiement unique
                 </div>
 
-                {p.savings && (
+                {p.savings ? (
                   <div
-                    className={`inline-flex text-xs font-semibold px-2 py-1 rounded-full mb-4 ${
+                    className={`inline-flex self-start text-xs font-bold px-3 py-1.5 rounded-full mb-5 ${
                       on
                         ? "bg-teal-900/40 text-teal-400"
                         : "bg-teal-50 text-teal-700"
                     }`}
                   >
-                    {p.savings}
+                    ✓ {p.savings}
                   </div>
+                ) : (
+                  <div className="mb-5 h-7" />
                 )}
 
+                {/* Description */}
+                <p
+                  className={`text-sm leading-relaxed mb-6 ${on ? "text-slate-400" : "text-slate-500"}`}
+                >
+                  {p.desc}
+                </p>
+
+                {/* Divider */}
                 <div
-                  className={`h-px mb-4 ${on ? "bg-white/10" : "bg-slate-100"}`}
+                  className={`h-px mb-6 ${on ? "bg-white/10" : "bg-slate-100"}`}
                 />
 
-                <ul className="space-y-2">
-                  {[...BASE, ...extras].map((f) => (
+                {/* Features */}
+                <ul className="space-y-3 flex-1">
+                  {p.features.map((f) => (
                     <li
-                      key={f}
-                      className={`flex items-center gap-2 text-xs ${on ? "text-slate-400" : "text-slate-600"}`}
+                      key={f.label}
+                      className={`flex items-center gap-3 text-sm ${
+                        f.included
+                          ? on
+                            ? "text-slate-300"
+                            : "text-slate-700"
+                          : on
+                            ? "text-slate-700"
+                            : "text-slate-300"
+                      }`}
                     >
                       <div
-                        className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          on ? "bg-teal-900/50" : "bg-teal-50"
+                        className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          f.included
+                            ? on
+                              ? "bg-teal-900/50"
+                              : "bg-teal-50"
+                            : "bg-transparent"
                         }`}
                       >
-                        <Check
-                          size={9}
-                          className={on ? "text-teal-400" : "text-teal-600"}
-                          strokeWidth={3}
-                        />
+                        {f.included ? (
+                          <Check
+                            size={11}
+                            className={on ? "text-teal-400" : "text-teal-600"}
+                            strokeWidth={3}
+                          />
+                        ) : (
+                          <span
+                            className={`text-xs ${on ? "text-slate-700" : "text-slate-300"}`}
+                          >
+                            –
+                          </span>
+                        )}
                       </div>
-                      {f}
+                      <span className={!f.included ? "line-through" : ""}>
+                        {f.label}
+                      </span>
                     </li>
                   ))}
                 </ul>
+
+                {/* Selected indicator */}
+                {on && (
+                  <div className="mt-6 pt-5 border-t border-white/10 flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-teal-400" />
+                    <span className="text-xs text-slate-500 font-semibold">
+                      Plan sélectionné
+                    </span>
+                  </div>
+                )}
               </button>
             );
           })}
         </div>
 
-        <div className="bg-white/70 backdrop-blur-sm border border-slate-200 rounded-2xl px-6 py-4 flex items-center justify-between gap-4 mb-12 flex-wrap">
+        {/* CTA bar */}
+        <div className="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl px-8 py-5 flex items-center justify-between gap-6 flex-wrap mb-6">
           <div>
-            <div className="text-xs text-slate-400 font-semibold uppercase tracking-widest mb-1">
-              Sélectionné
+            <div className="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1.5">
+              Récapitulatif
             </div>
-            <div className="text-lg font-bold text-slate-900">
+            <div className="text-xl font-bold text-slate-900">
               {plan.duration} ·{" "}
               <span className="text-teal-600">{fmt(plan.price)}</span>
             </div>
-            <div className="text-xs text-slate-400 mt-0.5">
-              {fmt(plan.monthly)}/mois · Sans engagement · Sans commission
+            <div className="text-sm text-slate-400 mt-1">
+              {fmt(plan.monthly)}/mois · Sans engagement · Zéro commission
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
-            <span className="text-base">⏳</span>
-            <div>
-              <div className="text-xs font-bold text-amber-800">
-                Bientôt disponible
-              </div>
-              <div className="text-xs text-amber-600">
-                Notifiez-moi ci-dessous
-              </div>
-            </div>
+          <div className="flex gap-3">
+            <a href="mailto:contact@mizan-dz.com">
+              <button className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-8 py-3.5 rounded-xl font-semibold text-sm transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-teal-600/25">
+                S'abonner maintenant
+                <ArrowRight size={16} />
+              </button>
+            </a>
+            <a href="mailto:contact@mizan-dz.com">
+              <button className="flex items-center gap-2 border border-slate-200 text-slate-600 hover:bg-slate-50 px-6 py-3.5 rounded-xl font-medium text-sm transition-colors">
+                <MessageCircle size={15} />
+                Nous contacter
+              </button>
+            </a>
           </div>
         </div>
 
-        <div className="bg-slate-900 rounded-3xl p-10 text-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(13,148,136,0.15),transparent_60%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(245,158,11,0.08),transparent_60%)]" />
-          <div className="relative">
-            <div className="text-3xl mb-4">🔔</div>
-            <h2 className="text-2xl font-bold text-white tracking-tight mb-3">
-              Soyez le premier notifié
-            </h2>
-            <p className="text-slate-500 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
-              Le paiement CIB et Edahabia arrive très bientôt. Laissez votre
-              email.
-            </p>
-
-            {!submitted ? (
-              <div className="flex gap-2 max-w-sm mx-auto">
-                <input
-                  type="email"
-                  placeholder="votre@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && email) setSubmitted(true);
-                  }}
-                  className="flex-1 bg-white/8 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm outline-none focus:border-teal-500 transition-colors"
-                  style={{ background: "rgba(255,255,255,0.06)" }}
-                />
-                <button
-                  onClick={() => {
-                    if (email) setSubmitted(true);
-                  }}
-                  className="bg-teal-600 hover:bg-teal-500 text-white px-5 py-3 rounded-xl text-sm font-semibold flex items-center gap-2 transition-colors whitespace-nowrap"
-                >
-                  <Bell size={14} />
-                  Me notifier
-                </button>
-              </div>
-            ) : (
-              <div className="inline-flex items-center gap-3 bg-teal-900/40 border border-teal-700/50 px-5 py-3 rounded-xl">
-                <Check size={16} className="text-teal-400" strokeWidth={2.5} />
-                <span className="text-sm text-teal-400 font-semibold">
-                  Vous serez notifié dès l'ouverture !
-                </span>
-              </div>
-            )}
-
-            <p className="text-slate-600 text-xs mt-6">
-              En attendant :{" "}
-              <a
-                href="mailto:contact@mizan-dz.com"
-                className="text-slate-500 hover:text-teal-400 transition-colors"
-              >
-                contact@mizan-dz.com
-              </a>
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-3 mt-4">
+        {/* Garanties */}
+        <div className="grid grid-cols-3 gap-3">
           {[
-            ["🔒", "Sans engagement", "Résiliable à l'expiration."],
-            ["💯", "Zéro commission", "Vos honoraires vous appartiennent."],
-            ["✅", "Profil vérifié", "Badge Mizan sur votre profil."],
+            [
+              "🔒",
+              "Sans engagement",
+              "Pas de renouvellement automatique. Vous choisissez votre durée.",
+            ],
+            [
+              "💯",
+              "Zéro commission",
+              "Vos honoraires vous appartiennent. Mizan ne touche rien.",
+            ],
+            [
+              "✅",
+              "Profil vérifié",
+              "Badge Mizan affiché publiquement pour rassurer vos clients.",
+            ],
           ].map(([icon, title, desc]) => (
             <div
               key={title}
-              className="bg-white/70 backdrop-blur-sm border border-slate-200 rounded-xl p-4 flex gap-3 items-start"
+              className="bg-white/70 backdrop-blur-sm border border-slate-200 rounded-xl p-5 flex gap-3 items-start"
             >
-              <span className="text-lg">{icon}</span>
+              <span className="text-xl">{icon}</span>
               <div>
-                <div className="text-sm font-semibold text-slate-800 mb-0.5">
+                <div className="text-sm font-semibold text-slate-800 mb-1">
                   {title}
                 </div>
                 <div className="text-xs text-slate-400 leading-relaxed">
