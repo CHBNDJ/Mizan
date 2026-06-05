@@ -12,6 +12,20 @@ export async function proxy(req: NextRequest) {
 
   const path = req.nextUrl.pathname;
 
+  // ── Protection ADMIN ──────────────────────────────────────
+  // Seul l'email défini dans ADMIN_EMAIL peut accéder à /admin
+  if (path.startsWith("/admin")) {
+    if (!session) {
+      return NextResponse.redirect(new URL("/auth/login", req.url));
+    }
+    const adminEmail = process.env.ADMIN_EMAIL;
+    if (!adminEmail || session.user.email !== adminEmail) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+    return res;
+  }
+
+  // ── Routes publiques ──────────────────────────────────────
   const publicPaths = [
     "/",
     "/search",
@@ -32,7 +46,11 @@ export async function proxy(req: NextRequest) {
   const isPublicPath =
     publicPaths.some((p) => path.startsWith(p)) ||
     path.match(/^\/lawyers\/[^\/]+$/) ||
-    path.match(/^\/claim-profile\/[^\/]+$/);
+    path.match(/^\/claim-profile\/[^\/]+$/) ||
+    path.match(/^\/blog\/[^\/]+$/) ||
+    path === "/blog" ||
+    path === "/lawyer/abonnements";
+
   if (!session && !isPublicPath) {
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
@@ -52,6 +70,7 @@ export async function proxy(req: NextRequest) {
     if (profile?.user_type === "lawyer" && !profile?.verified) {
       const allowedPaths = [
         "/lawyer/onboarding",
+        "/lawyer/abonnements",
         "/",
         "/search",
         "/howitworks",
@@ -94,6 +113,7 @@ export async function proxy(req: NextRequest) {
       "/lawyer/clients",
       "/lawyer/calendar",
       "/lawyer/profile",
+      "/lawyer/abonnements",
     ];
 
     if (
@@ -116,14 +136,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - api (API routes)
-     */
-    "/((?!_next/static|_next/image|favicon.ico|api).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api).*)"],
 };
