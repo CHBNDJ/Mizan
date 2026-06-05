@@ -77,7 +77,7 @@ export default function AbonnementsPage() {
             <span>⏳</span>
             Paiement en ligne bientôt disponible
           </div>
-          <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 tracking-tight leading-tight mb-8">
+          <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 tracking-tight leading-tight mb-5">
             Rejoignez Mizan.
             <br />
             <br />
