@@ -134,7 +134,8 @@ export async function getSupabaseAvocats(): Promise<AvocatData[]> {
     const { data: lawyers, error: lawyersError } = await supabase
       .from("lawyers")
       .select("*")
-      .eq("is_verified", true);
+      .eq("is_verified", true)
+      .order("ranking_score", { ascending: false, nullsFirst: false });
 
     if (lawyersError || !lawyers || lawyers.length === 0) return [];
 
