@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 import { AvocatCard } from "@/components/cards/AvocatCard";
-import { AlgeriaMapV2 } from "@/components/AlgeriaMap";
+import { AlgeriaMap } from "@/components/AlgeriaMap";
 import {
   getWilayas,
   getTopRatedAvocats,
@@ -347,7 +347,7 @@ export default function ProfessionPage() {
 
             {/* Colonne droite — Carte Algérie (desktop/tablette uniquement) */}
             <div className="ph-map hidden lg:block sticky top-24">
-              <AlgeriaMapV2
+              <AlgeriaMap
                 selectedWilaya={selectedWilaya}
                 onSelect={setSelectedWilaya}
               />

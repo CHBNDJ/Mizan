@@ -89,7 +89,7 @@ interface Props {
   onSelect: (w: string) => void;
 }
 
-export function AlgeriaMapV2({ selectedWilaya, onSelect }: Props) {
+export function AlgeriaMap({ selectedWilaya, onSelect }: Props) {
   const [hovered, setHovered] = useState<string | null>(null);
 
   return (
