@@ -444,10 +444,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const PROFESSIONS = [
-  { id: "avocat", label: "Avocat", labelAr: "محامي", icon: "⚖️" },
-  { id: "notaire", label: "Notaire", labelAr: "موثق", icon: "📜" },
-  { id: "huissier", label: "Huissier", labelAr: "محضر", icon: "🔏" },
-  { id: "comptable", label: "Comptable", labelAr: "محاسب", icon: "📊" },
+  { id: "avocat", label: "Avocat", icon: "⚖️" },
+  { id: "notaire", label: "Notaire", icon: "📜" },
+  { id: "huissier", label: "Huissier", icon: "🔏" },
+  { id: "comptable", label: "Comptable", icon: "📊" },
 ];
 
 export default function HomePage() {
@@ -465,27 +465,27 @@ export default function HomePage() {
   const [loadingWilayas, setLoadingWilayas] = useState(true);
 
   useLayoutEffect(() => {
-    const loadData = async () => {
+    const load = async () => {
       try {
         setLoading(true);
         setLoadingWilayas(true);
-        getWilayas().then((data) => {
-          setWilayas(data);
+        getWilayas().then((d) => {
+          setWilayas(d);
           setLoadingWilayas(false);
         });
-        const [topAvocatsData, statsData] = await Promise.all([
+        const [top, st] = await Promise.all([
           getTopRatedAvocats(8),
           getStatistiques(),
         ]);
-        setTopAvocats(topAvocatsData);
-        setStats(statsData);
-      } catch (error) {
-        console.error("Erreur chargement données:", error);
+        setTopAvocats(top);
+        setStats(st);
+      } catch (e) {
+        console.error(e);
       } finally {
         setLoading(false);
       }
     };
-    loadData();
+    load();
   }, []);
 
   useLayoutEffect(() => {
@@ -502,22 +502,22 @@ export default function HomePage() {
         "-=0.5"
       )
       .fromTo(
-        ".hero-form",
-        { opacity: 0, x: -50 },
-        { opacity: 1, x: 0, duration: 0.8 },
-        "-=0.5"
-      )
-      .fromTo(
         ".hero-prof",
         { opacity: 0, y: 16 },
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 },
         "-=0.3"
       )
       .fromTo(
+        ".hero-form",
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.6 },
+        "-=0.2"
+      )
+      .fromTo(
         ".hero-stats",
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
-        "-=0.3"
+        "-=0.2"
       );
 
     gsap.fromTo(
@@ -550,12 +550,11 @@ export default function HomePage() {
         },
       }
     );
-
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
 
   useLayoutEffect(() => {
-    if (topAvocats.length === 0 && wilayas.length === 0) return;
+    if (!topAvocats.length && !wilayas.length) return;
     gsap.fromTo(
       ".avocats-title",
       { opacity: 0, x: -50 },
@@ -604,14 +603,6 @@ export default function HomePage() {
     );
   }, [topAvocats, wilayas]);
 
-  const professionOptions = [
-    { value: "", label: "Choisir une profession..." },
-    ...PROFESSIONS.map((p) => ({
-      value: p.id,
-      label: `${p.icon}  ${p.label}`,
-    })),
-  ];
-
   const wilayaOptions = wilayas.map((w) => ({ value: w, label: w }));
 
   const handleSearch = (e: React.FormEvent) => {
@@ -625,18 +616,18 @@ export default function HomePage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden w-full">
       <style>{`
-        .hero-title, .hero-sub, .hero-form, .hero-prof, .hero-stats,
+        .hero-title, .hero-sub, .hero-prof, .hero-form, .hero-stats,
         .steps-section, .avocats-title, .avocat-card, .avocats-btn, .cta-cards { opacity: 0; }
-        .prof-pill { transition: all 0.18s ease; cursor: pointer; }
-        .prof-pill:hover { transform: translateY(-2px); }
+        .prof-card { transition: all 0.18s ease; cursor: pointer; }
+        .prof-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(13,148,136,0.12); }
       `}</style>
 
-      {/* Hero */}
-      <section className="relative z-10 py-16 px-4 overflow-visible">
+      {/* ── Hero ─────────────────────────────────────── */}
+      <section className="relative z-10 py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 mb-6 leading-tight">
-            Trouvez le bon expert
-            <br className="hidden sm:block" /> juridique en Algérie
+            Besoin d'un expert
+            <br className="hidden sm:block" /> juridique en Algérie ?
           </h1>
 
           <p className="hero-sub text-base sm:text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
@@ -648,20 +639,37 @@ export default function HomePage() {
             , Mizan vous connecte au bon professionnel.
           </p>
 
-          {/* Formulaire */}
-          <div className="hero-form bg-white rounded-2xl shadow-lg p-6 max-w-xl mx-auto relative z-[200]">
-            <form onSubmit={handleSearch} className="space-y-4">
-              <div className="relative z-30">
-                <CustomSelect
-                  placeholder="Choisir une profession..."
-                  options={professionOptions}
-                  value={selectedProfession}
-                  onChange={setSelectedProfession}
-                  className="h-12"
-                  size="large"
-                />
-              </div>
-              <div className="relative z-20">
+          {/* Profession cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto mb-6">
+            {PROFESSIONS.map((p) => (
+              <button
+                key={p.id}
+                className={`hero-prof prof-card rounded-xl border-2 p-4 flex flex-col items-center gap-2 transition-all ${
+                  selectedProfession === p.id
+                    ? "border-teal-600 bg-teal-50 shadow-md shadow-teal-100"
+                    : "border-slate-200 bg-white hover:border-teal-300"
+                }`}
+                onClick={() =>
+                  setSelectedProfession(selectedProfession === p.id ? "" : p.id)
+                }
+              >
+                <span className="text-2xl">{p.icon}</span>
+                <span
+                  className={`text-sm font-semibold ${selectedProfession === p.id ? "text-teal-700" : "text-slate-700"}`}
+                >
+                  {p.label}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* Wilaya + search */}
+          <div className="hero-form bg-white rounded-2xl shadow-lg p-5 max-w-xl mx-auto relative z-[200]">
+            <form
+              onSubmit={handleSearch}
+              className="flex flex-col sm:flex-row gap-3"
+            >
+              <div className="flex-1 relative z-20">
                 {loadingWilayas ? (
                   <div className="h-12 bg-slate-100 rounded-lg animate-pulse" />
                 ) : (
@@ -677,7 +685,7 @@ export default function HomePage() {
               </div>
               <Button
                 type="submit"
-                className="w-full h-12 px-8 bg-teal-600 hover:bg-teal-700 md:text-lg font-semibold"
+                className="h-12 px-6 bg-teal-600 hover:bg-teal-700 font-semibold whitespace-nowrap"
                 disabled={loading}
               >
                 <Search className="w-5 h-5 mr-2" />
@@ -685,27 +693,10 @@ export default function HomePage() {
               </Button>
             </form>
           </div>
-
-          {/* Profession pills */}
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            {PROFESSIONS.map((p) => (
-              <button
-                key={p.id}
-                className="hero-prof prof-pill flex items-center gap-2 px-4 py-2 bg-white border border-teal-200 hover:border-teal-500 hover:bg-teal-50 rounded-full text-sm font-semibold text-teal-700"
-                onClick={() => router.push(`/search?profession=${p.id}`)}
-              >
-                <span>{p.icon}</span>
-                {p.label}
-                <span className="text-xs text-slate-400 font-normal">
-                  {p.labelAr}
-                </span>
-              </button>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* Stats */}
+      {/* ── Stats ────────────────────────────────────── */}
       <section className="relative z-0 px-4 pb-16">
         <div className="max-w-3xl mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -738,7 +729,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Comment ça marche */}
+      {/* ── Comment ça marche ────────────────────────── */}
       <section className="steps-section py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-2xl shadow-sm p-8">
@@ -749,13 +740,13 @@ export default function HomePage() {
               {[
                 {
                   n: "1",
-                  title: "Cherchez",
-                  desc: "Choisissez votre type d'expert et filtrez par wilaya.",
+                  title: "Choisissez",
+                  desc: "Sélectionnez votre type d'expert et filtrez par wilaya.",
                 },
                 {
                   n: "2",
                   title: "Comparez",
-                  desc: "Consultez les avis, les spécialités et l'expérience de chaque professionnel.",
+                  desc: "Consultez les avis, spécialités et l'expérience de chaque professionnel.",
                 },
                 {
                   n: "3",
@@ -782,7 +773,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Top professionnels */}
+      {/* ── Top professionnels ───────────────────────── */}
       {topAvocats.length > 0 && (
         <section className="avocats-section pb-16 px-4">
           <div className="max-w-6xl mx-auto">
@@ -806,7 +797,7 @@ export default function HomePage() {
                 className="text-teal-600 cursor-pointer items-center justify-center inline-flex hover:text-teal-700 transition-colors"
                 onClick={() => router.push("/search")}
               >
-                Voir tous les professionnels
+                Voir tous les professionnels{" "}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </button>
             </div>
@@ -814,7 +805,7 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* CTA */}
+      {/* ── CTA ──────────────────────────────────────── */}
       <section className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="cta-cards grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -833,8 +824,7 @@ export default function HomePage() {
                 onClick={() => router.push("/search")}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-all cursor-pointer w-fit"
               >
-                Rechercher un expert
-                <ChevronRight className="w-4 h-4" />
+                Rechercher un expert <ChevronRight className="w-4 h-4" />
               </button>
             </div>
 
@@ -861,7 +851,7 @@ export default function HomePage() {
               </div>
               <Link href="/auth/lawyer/register">
                 <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl transition-all cursor-pointer w-fit">
-                  Créer mon profil professionnel
+                  Créer mon profil professionnel{" "}
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </Link>
