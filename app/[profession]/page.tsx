@@ -1,6 +1,3 @@
-// app/[profession]/page.tsx
-// Route dynamique : /avocat, /notaire, /huissier, /comptable
-
 "use client";
 import { useState, useLayoutEffect, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
