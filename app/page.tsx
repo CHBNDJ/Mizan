@@ -428,7 +428,14 @@
 import { useLayoutEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronRight,
+  Scale,
+  FileText,
+  Briefcase,
+  Calculator,
+} from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import {
@@ -445,25 +452,25 @@ const PROFESSIONS = [
   {
     id: "avocat",
     label: "Avocat",
-    icon: "⚖️",
+    icon: Scale,
     desc: "Droit civil, pénal, famille, affaires...",
   },
   {
     id: "notaire",
     label: "Notaire",
-    icon: "📜",
+    icon: FileText,
     desc: "Successions, immobilier, mariages...",
   },
   {
     id: "huissier",
     label: "Huissier",
-    icon: "🔏",
+    icon: Briefcase,
     desc: "Constats, exécutions, recouvrements...",
   },
   {
     id: "comptable",
     label: "Comptable",
-    icon: "📊",
+    icon: Calculator,
     desc: "Bilans, fiscalité, création société...",
   },
 ];
@@ -521,7 +528,6 @@ export default function HomePage() {
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
         "-=0.2"
       );
-
     gsap.fromTo(
       ".steps-section",
       { opacity: 0, y: 30 },
@@ -586,46 +592,29 @@ export default function HomePage() {
         },
       }
     );
-    gsap.fromTo(
-      ".avocats-btn",
-      { opacity: 0, y: 20 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".avocats-btn",
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-      }
-    );
   }, [topAvocats]);
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden">
       <style>{`
-        .hero-badge, .hero-title, .hero-sub, .prof-card, .hero-stats,
-        .steps-section, .avocats-title, .avocat-card, .avocats-btn, .cta-cards { opacity:0; }
+        .hero-badge,.hero-title,.hero-sub,.prof-card,.hero-stats,
+        .steps-section,.avocats-title,.avocat-card,.cta-cards { opacity:0; }
         .prof-card-btn { transition: all 0.2s ease; }
-        .prof-card-btn:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(13,148,136,0.15); border-color: #0D9488 !important; }
+        .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
       `}</style>
 
-      {/* ── Hero ──────────────────────────────────────── */}
+      {/* Hero */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="hero-badge inline-flex items-center gap-2 bg-white border border-teal-200 text-teal-700 text-xs font-semibold px-4 py-2 rounded-full mb-6 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
             La plateforme juridique de référence en Algérie
           </div>
-
           <h1 className="hero-title text-3xl sm:text-5xl lg:text-6xl font-bold text-slate-800 mb-6 leading-tight tracking-tight">
             Trouvez le bon expert
             <br className="hidden sm:block" />
             <span className="text-teal-600"> juridique en Algérie</span>
           </h1>
-
           <p className="hero-sub text-base sm:text-xl text-slate-600 mb-12 leading-relaxed max-w-2xl mx-auto">
             Avocats, notaires, huissiers, comptables — tous vérifiés, avec avis
             clients.{" "}
@@ -635,12 +624,14 @@ export default function HomePage() {
             , Mizan vous connecte au bon professionnel.
           </p>
 
-          {/* 4 profession cards → chacune pointe vers sa page */}
+          {/* 4 Profession cards — sans emojis, avec icônes Lucide */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-3xl mx-auto">
             {PROFESSIONS.map((p) => (
               <Link key={p.id} href={`/${p.id}`}>
                 <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 p-5 flex flex-col items-center gap-3 cursor-pointer text-center h-full">
-                  <span className="text-4xl">{p.icon}</span>
+                  <div className="w-11 h-11 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
+                    <p.icon className="w-5 h-5 text-teal-600" />
+                  </div>
                   <div>
                     <div className="font-bold text-slate-800 text-sm sm:text-base">
                       {p.label}
@@ -659,7 +650,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Stats ─────────────────────────────────────── */}
+      {/* Stats */}
       <section className="px-4 pb-16">
         <div className="max-w-3xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
@@ -690,7 +681,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Comment ça marche ─────────────────────────── */}
+      {/* Comment ça marche */}
       <section className="steps-section py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-2xl shadow-sm p-8">
@@ -702,17 +693,17 @@ export default function HomePage() {
                 {
                   n: "1",
                   title: "Choisissez votre expert",
-                  desc: "Cliquez sur la catégorie dont vous avez besoin.",
+                  desc: "Cliquez sur la catégorie dont vous avez besoin parmi avocat, notaire, huissier ou comptable.",
                 },
                 {
                   n: "2",
                   title: "Filtrez sur la carte",
-                  desc: "Sélectionnez votre wilaya sur la carte et votre domaine.",
+                  desc: "Sélectionnez votre wilaya directement sur la carte de l'Algérie et précisez votre domaine.",
                 },
                 {
                   n: "3",
                   title: "Contactez directement",
-                  desc: "Envoyez votre demande depuis le profil. Réponse par messagerie.",
+                  desc: "Envoyez votre demande depuis le profil. Le professionnel vous répond par messagerie sécurisée.",
                 },
               ].map((step) => (
                 <div key={step.n} className="flex gap-4">
@@ -734,7 +725,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Top professionnels ────────────────────────── */}
+      {/* Top professionnels */}
       {topAvocats.length > 0 && (
         <section className="avocats-section pb-16 px-4">
           <div className="max-w-6xl mx-auto">
@@ -753,7 +744,7 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-            <div className="text-center avocats-btn">
+            <div className="text-center">
               <button
                 className="text-teal-600 cursor-pointer items-center justify-center inline-flex hover:text-teal-700 transition-colors"
                 onClick={() => router.push("/search")}
@@ -766,7 +757,7 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ── CTA ───────────────────────────────────────── */}
+      {/* CTA */}
       <section className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="cta-cards grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -777,14 +768,13 @@ export default function HomePage() {
                 </h3>
                 <p className="text-slate-500 leading-relaxed mb-6">
                   Parcourez les profils d'avocats, notaires, huissiers et
-                  comptables vérifiés. Contactez-les directement, depuis
-                  n'importe où.
+                  comptables vérifiés.
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {PROFESSIONS.map((p) => (
                     <Link key={p.id} href={`/${p.id}`}>
                       <span className="flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 border border-teal-200 text-teal-700 rounded-full text-xs font-semibold hover:bg-teal-100 transition-colors cursor-pointer">
-                        {p.icon} {p.label}
+                        <p.icon className="w-3 h-3" /> {p.label}
                       </span>
                     </Link>
                   ))}
@@ -813,7 +803,7 @@ export default function HomePage() {
                       key={p.id}
                       className="flex items-center gap-1 px-3 py-1 bg-white/20 text-white rounded-full text-xs font-semibold"
                     >
-                      {p.icon} {p.label}
+                      <p.icon className="w-3 h-3" /> {p.label}
                     </span>
                   ))}
                 </div>
