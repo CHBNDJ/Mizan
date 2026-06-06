@@ -5,6 +5,7 @@ export interface AvocatData {
   avatar_url?: string;
   bio?: string;
   titre: string;
+  profession?: string;
   genre?: "homme" | "femme";
   specialites?: string[];
   barreau: string;
@@ -140,6 +141,7 @@ export interface SearchFilters {
   experience_min?: number;
   verified?: boolean;
   langues?: string;
+  profession?: string;
   genre?: "homme" | "femme";
   query?: string;
   specialization?: string;

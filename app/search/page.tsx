@@ -501,7 +501,7 @@ function SearchResults() {
     const load = async () => {
       setLoading(true);
       try {
-        const results = await searchAvocats(filters);
+        const results = await searchAvocats(filters, professionParam);
         setAvocats(results);
       } catch (e) {
         console.error(e);
