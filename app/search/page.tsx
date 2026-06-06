@@ -144,13 +144,21 @@ function SearchResults() {
     const sorted = [...avocats];
     switch (sortType) {
       case "rating":
-        return sorted.sort(
-          (a, b) =>
-            (b.rating_google || b.rating_mizan || 0) -
-            (a.rating_google || a.rating_mizan || 0)
-        );
+        return sorted.sort((a, b) => {
+          const ratingA =
+            a.rating_google !== null && a.rating_google !== undefined
+              ? a.rating_google
+              : (a.rating_mizan ?? 0);
+          const ratingB =
+            b.rating_google !== null && b.rating_google !== undefined
+              ? b.rating_google
+              : (b.rating_mizan ?? 0);
+          return ratingB - ratingA;
+        });
       case "experience":
-        return sorted.sort((a, b) => b.experience.annees - a.experience.annees);
+        return sorted.sort(
+          (a, b) => (b.experience?.annees ?? 0) - (a.experience?.annees ?? 0)
+        );
       case "nom":
         return sorted.sort((a, b) =>
           `${a.nom} ${a.prenom || ""}`
