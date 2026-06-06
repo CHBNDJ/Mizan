@@ -446,13 +446,13 @@ const PROFESSIONS = [
     id: "avocat",
     label: "Avocat",
     icon: "⚖️",
-    desc: "Droit civil, pénal, famille, immobilier...",
+    desc: "Droit civil, pénal, famille, affaires...",
   },
   {
     id: "notaire",
     label: "Notaire",
     icon: "📜",
-    desc: "Successions, actes immobiliers, mariages...",
+    desc: "Successions, immobilier, mariages...",
   },
   {
     id: "huissier",
@@ -464,7 +464,7 @@ const PROFESSIONS = [
     id: "comptable",
     label: "Comptable",
     icon: "📊",
-    desc: "Création entreprise, bilans, fiscalité...",
+    desc: "Bilans, fiscalité, création société...",
   },
 ];
 
@@ -493,13 +493,19 @@ export default function HomePage() {
   useLayoutEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
     tl.fromTo(
-      ".hero-title",
-      { opacity: 0, y: -30 },
-      { opacity: 1, y: 0, duration: 0.8 }
+      ".hero-badge",
+      { opacity: 0, y: -10 },
+      { opacity: 1, y: 0, duration: 0.5 }
     )
       .fromTo(
+        ".hero-title",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8 },
+        "-=0.3"
+      )
+      .fromTo(
         ".hero-sub",
-        { opacity: 0, y: -20 },
+        { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.7 },
         "-=0.5"
       )
@@ -507,7 +513,7 @@ export default function HomePage() {
         ".prof-card",
         { opacity: 0, y: 24 },
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
-        "-=0.4"
+        "-=0.3"
       )
       .fromTo(
         ".hero-stats",
@@ -600,19 +606,26 @@ export default function HomePage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden">
       <style>{`
-        .hero-title, .hero-sub, .prof-card, .hero-stats,
-        .steps-section, .avocats-title, .avocat-card, .avocats-btn, .cta-cards { opacity: 0; }
+        .hero-badge, .hero-title, .hero-sub, .prof-card, .hero-stats,
+        .steps-section, .avocats-title, .avocat-card, .avocats-btn, .cta-cards { opacity:0; }
         .prof-card-btn { transition: all 0.2s ease; }
-        .prof-card-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(13,148,136,0.15); }
+        .prof-card-btn:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(13,148,136,0.15); border-color: #0D9488 !important; }
       `}</style>
 
-      {/* ── Hero ───────────────────────────────────── */}
+      {/* ── Hero ──────────────────────────────────────── */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 mb-5 leading-tight">
+          <div className="hero-badge inline-flex items-center gap-2 bg-white border border-teal-200 text-teal-700 text-xs font-semibold px-4 py-2 rounded-full mb-6 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
+            La plateforme juridique de référence en Algérie
+          </div>
+
+          <h1 className="hero-title text-3xl sm:text-5xl lg:text-6xl font-bold text-slate-800 mb-6 leading-tight tracking-tight">
             Trouvez le bon expert
-            <br className="hidden sm:block" /> juridique en Algérie
+            <br className="hidden sm:block" />
+            <span className="text-teal-600"> juridique en Algérie</span>
           </h1>
+
           <p className="hero-sub text-base sm:text-xl text-slate-600 mb-12 leading-relaxed max-w-2xl mx-auto">
             Avocats, notaires, huissiers, comptables — tous vérifiés, avec avis
             clients.{" "}
@@ -622,33 +635,31 @@ export default function HomePage() {
             , Mizan vous connecte au bon professionnel.
           </p>
 
-          {/* 4 Profession cards */}
+          {/* 4 profession cards → chacune pointe vers sa page */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-3xl mx-auto">
             {PROFESSIONS.map((p) => (
-              <button
-                key={p.id}
-                className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 hover:border-teal-400 p-5 flex flex-col items-center gap-3 cursor-pointer text-left"
-                onClick={() => router.push(`/search?profession=${p.id}`)}
-              >
-                <span className="text-4xl">{p.icon}</span>
-                <div>
-                  <div className="font-bold text-slate-800 text-sm sm:text-base text-center">
-                    {p.label}
+              <Link key={p.id} href={`/${p.id}`}>
+                <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 p-5 flex flex-col items-center gap-3 cursor-pointer text-center h-full">
+                  <span className="text-4xl">{p.icon}</span>
+                  <div>
+                    <div className="font-bold text-slate-800 text-sm sm:text-base">
+                      {p.label}
+                    </div>
+                    <div className="text-xs text-slate-400 mt-1 leading-relaxed hidden sm:block">
+                      {p.desc}
+                    </div>
                   </div>
-                  <div className="text-xs text-slate-500 text-center mt-1 leading-relaxed hidden sm:block">
-                    {p.desc}
+                  <div className="flex items-center gap-1 text-xs font-semibold text-teal-600 mt-auto">
+                    Rechercher <ChevronRight className="w-3 h-3" />
                   </div>
                 </div>
-                <div className="flex items-center gap-1 text-xs font-semibold text-teal-600">
-                  Rechercher <ChevronRight className="w-3 h-3" />
-                </div>
-              </button>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Stats ──────────────────────────────────── */}
+      {/* ── Stats ─────────────────────────────────────── */}
       <section className="px-4 pb-16">
         <div className="max-w-3xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
@@ -679,7 +690,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Comment ça marche ──────────────────────── */}
+      {/* ── Comment ça marche ─────────────────────────── */}
       <section className="steps-section py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-2xl shadow-sm p-8">
@@ -691,17 +702,17 @@ export default function HomePage() {
                 {
                   n: "1",
                   title: "Choisissez votre expert",
-                  desc: "Cliquez sur la catégorie dont vous avez besoin — avocat, notaire, huissier ou comptable.",
+                  desc: "Cliquez sur la catégorie dont vous avez besoin.",
                 },
                 {
                   n: "2",
-                  title: "Filtrez et comparez",
-                  desc: "Sélectionnez votre wilaya et domaine. Consultez les avis, l'expérience et les spécialités.",
+                  title: "Filtrez sur la carte",
+                  desc: "Sélectionnez votre wilaya sur la carte et votre domaine.",
                 },
                 {
                   n: "3",
                   title: "Contactez directement",
-                  desc: "Envoyez une demande depuis le profil. Le professionnel vous répond par messagerie sécurisée.",
+                  desc: "Envoyez votre demande depuis le profil. Réponse par messagerie.",
                 },
               ].map((step) => (
                 <div key={step.n} className="flex gap-4">
@@ -723,7 +734,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Top professionnels ─────────────────────── */}
+      {/* ── Top professionnels ────────────────────────── */}
       {topAvocats.length > 0 && (
         <section className="avocats-section pb-16 px-4">
           <div className="max-w-6xl mx-auto">
@@ -732,7 +743,7 @@ export default function HomePage() {
                 Professionnels les mieux notés
               </h2>
               <p className="text-lg text-slate-600">
-                Découvrez les experts recommandés par notre communauté
+                Recommandés par notre communauté · Vérifiés par Mizan
               </p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-8">
@@ -755,7 +766,7 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ── CTA ────────────────────────────────────── */}
+      {/* ── CTA ───────────────────────────────────────── */}
       <section className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="cta-cards grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -769,6 +780,15 @@ export default function HomePage() {
                   comptables vérifiés. Contactez-les directement, depuis
                   n'importe où.
                 </p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {PROFESSIONS.map((p) => (
+                    <Link key={p.id} href={`/${p.id}`}>
+                      <span className="flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 border border-teal-200 text-teal-700 rounded-full text-xs font-semibold hover:bg-teal-100 transition-colors cursor-pointer">
+                        {p.icon} {p.label}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
               </div>
               <button
                 onClick={() => router.push("/search")}
