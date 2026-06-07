@@ -413,13 +413,11 @@ import {
   MessageSquare,
   Eye,
   Edit,
-  CheckCircle,
   Camera,
+  CheckCircle,
   Clock,
-  LayoutDashboard,
-  ArrowRight,
   ChevronRight,
-  Star,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 import { gsap } from "gsap";
@@ -435,8 +433,7 @@ export default function LawyerDashboardPage() {
   const supabase = createClient();
   const { profile, user, isAuthenticated, loading } = useAuth();
   const router = useRouter();
-  const mainRef = useRef<HTMLDivElement>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   const [stats, setStats] = useState({
     total: 0,
@@ -467,11 +464,11 @@ export default function LawyerDashboardPage() {
   }, [user, profile]);
 
   useEffect(() => {
-    if (loading || loadingStats || !mainRef.current) return;
+    if (loading || loadingStats || !ref.current) return;
     gsap.fromTo(
-      ".dash-fade",
-      { opacity: 0, y: 12 },
-      { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power2.out" }
+      ".d-fade",
+      { opacity: 0, y: 14 },
+      { opacity: 1, y: 0, duration: 0.5, stagger: 0.07, ease: "power2.out" }
     );
   }, [loading, loadingStats]);
 
@@ -582,322 +579,253 @@ export default function LawyerDashboardPage() {
 
   if (loading)
     return (
-      <div className="min-h-screen pt-16 flex items-center justify-center bg-gradient-to-br from-teal-50 via-white to-teal-50">
+      <div className="min-h-screen pt-16 bg-teal-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-7 w-7 border-2 border-teal-600 border-t-transparent" />
       </div>
     );
   if (!isAuthenticated) return null;
 
-  // ── Navigation sidebar ─────────────────────────────────────────────────────
-  const NAV = [
-    {
-      icon: LayoutDashboard,
-      label: "Tableau de bord",
-      href: "/lawyer/dashboard",
-      active: true,
-    },
+  const ACTIONS = [
     {
       icon: MessageSquare,
       label: "Consultations",
+      sub:
+        stats.pending > 0
+          ? `${stats.pending} message${stats.pending > 1 ? "s" : ""} non lu${stats.pending > 1 ? "s" : ""}`
+          : "Aucun message en attente",
       href: "/lawyer/consultations",
-      badge: stats.pending || 0,
+      badge: stats.pending,
     },
-    { icon: Edit, label: "Mon profil", href: "/profile" },
-    { icon: Eye, label: "Profil public", href: `/lawyer/${user?.id}` },
+    {
+      icon: Edit,
+      label: "Modifier mon profil",
+      sub: "Spécialités · Langues · Adresse",
+      href: "/profile",
+    },
+    {
+      icon: Eye,
+      label: "Profil public",
+      sub: "Tel que les clients vous voient",
+      href: `/lawyer/${user?.id}`,
+    },
   ];
 
-  const SidebarContent = () => (
-    <div className="flex flex-col h-full">
-      {/* Profil */}
-      <div className="px-4 py-5 border-b border-white/10">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 overflow-hidden">
-            {profile?.avatar_url ? (
-              <img
-                src={profile.avatar_url}
-                className="w-full h-full object-cover"
-                alt=""
-              />
-            ) : (
-              initials
+  return (
+    <div className="min-h-screen pt-16 bg-teal-50" ref={ref}>
+      <style>{`.d-fade{opacity:0;}`}</style>
+
+      <div className="max-w-3xl mx-auto px-4 py-8">
+        {/* ── Header profil ── */}
+        <div className="d-fade flex items-center justify-between mb-7">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-2xl bg-teal-700 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 overflow-hidden">
+              {profile?.avatar_url ? (
+                <img
+                  src={profile.avatar_url}
+                  className="w-full h-full object-cover"
+                  alt=""
+                />
+              ) : (
+                initials
+              )}
+            </div>
+            <div>
+              <p className="text-base font-bold text-teal-900 leading-tight">
+                {profile?.first_name} {profile?.last_name}
+              </p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-xs text-teal-600 font-medium">
+                  {profLabel}
+                </span>
+                {isVerified ? (
+                  <span className="inline-flex items-center gap-1 text-xs text-teal-600 font-medium">
+                    <CheckCircle className="w-3 h-3" />
+                    Vérifiée
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 text-xs text-amber-600 font-medium">
+                    <Clock className="w-3 h-3" />
+                    En cours
+                  </span>
+                )}
+                <span className="text-teal-300">·</span>
+                <span className="text-xs text-teal-500">
+                  {subStatus === "active"
+                    ? `Plan ${planLabel(subPlan)}`
+                    : "Lancement gratuit"}
+                </span>
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => router.push("/settings")}
+            className="w-9 h-9 rounded-xl bg-white border border-teal-100 flex items-center justify-center text-teal-600 hover:bg-teal-50 transition-colors cursor-pointer"
+          >
+            <Settings className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* ── Banner photo manquante ── */}
+        {!profile?.avatar_url && (
+          <div className="d-fade mb-5 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3">
+            <Camera className="w-4 h-4 text-amber-500 flex-shrink-0" />
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-amber-800">
+                Ajoutez votre photo
+              </p>
+              <p className="text-xs text-amber-600 mt-0.5">
+                3× plus de demandes avec une photo professionnelle
+              </p>
+            </div>
+            <Link href="/profile">
+              <button className="text-xs font-semibold text-amber-700 hover:text-amber-900 cursor-pointer whitespace-nowrap">
+                Ajouter →
+              </button>
+            </Link>
+          </div>
+        )}
+
+        {/* ── Banners vérification ── */}
+        {!isVerified && (
+          <div className="d-fade mb-5 flex items-center gap-3 bg-white border border-teal-100 rounded-2xl px-4 py-3">
+            <Clock className="w-4 h-4 text-teal-500 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-teal-800">
+                Vérification en cours · 24-48h
+              </p>
+              <p className="text-xs text-teal-600 mt-0.5">
+                Email de confirmation à venir.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* ── Stats — 4 cards ── */}
+        <div className="d-fade grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+          {/* Demandes */}
+          <div className="bg-white border border-teal-100 rounded-2xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <Users className="w-4 h-4 text-teal-400" />
+              {stats.pending > 0 && (
+                <span className="bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">
+                  {stats.pending}
+                </span>
+              )}
+            </div>
+            <p className="text-[11px] text-teal-500 font-semibold uppercase tracking-wide mb-1">
+              Demandes
+            </p>
+            <p className="text-3xl font-bold text-teal-900 leading-none">
+              {loadingStats ? (
+                <span className="text-teal-200">—</span>
+              ) : (
+                stats.total
+              )}
+            </p>
+          </div>
+
+          {/* Répondues */}
+          <div className="bg-white border border-teal-100 rounded-2xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <CheckCircle className="w-4 h-4 text-teal-400" />
+            </div>
+            <p className="text-[11px] text-teal-500 font-semibold uppercase tracking-wide mb-1">
+              Répondues
+            </p>
+            <p className="text-3xl font-bold text-teal-900 leading-none">
+              {loadingStats ? (
+                <span className="text-teal-200">—</span>
+              ) : (
+                stats.answered
+              )}
+            </p>
+            {stats.total > 0 && (
+              <p className="text-[11px] text-teal-400 mt-1.5">
+                {Math.round((stats.answered / stats.total) * 100)}%
+              </p>
             )}
           </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-white truncate leading-tight">
-              {profile?.first_name} {profile?.last_name}
-            </p>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="text-xs text-teal-300">{profLabel}</span>
-              {isVerified && <CheckCircle className="w-3 h-3 text-teal-400" />}
+
+          {/* Vues */}
+          <div className="bg-white border border-teal-100 rounded-2xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <Eye className="w-4 h-4 text-teal-400" />
             </div>
+            <p className="text-[11px] text-teal-500 font-semibold uppercase tracking-wide mb-1">
+              Vues profil
+            </p>
+            <p className="text-3xl font-bold text-teal-900 leading-none">
+              {loadingStats ? (
+                <span className="text-teal-200">—</span>
+              ) : (
+                stats.views
+              )}
+            </p>
+          </div>
+
+          {/* Abonnement */}
+          <div className="bg-teal-700 border border-teal-600 rounded-2xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <Settings className="w-4 h-4 text-teal-300" />
+            </div>
+            <p className="text-[11px] text-teal-300 font-semibold uppercase tracking-wide mb-1">
+              Abonnement
+            </p>
+            <p className="text-sm font-bold text-white leading-tight">
+              {subStatus === "active"
+                ? `Plan ${planLabel(subPlan)}`
+                : "Lancement gratuit"}
+            </p>
+            {subStatus === "active" && subEnd && (
+              <p className="text-[10px] text-teal-300 mt-1">
+                jusqu'au {fmtDate(subEnd)}
+              </p>
+            )}
+            {subStatus !== "active" && (
+              <p className="text-[10px] text-teal-400 mt-1">Paiement bientôt</p>
+            )}
           </div>
         </div>
-      </div>
 
-      {/* Nav */}
-      <nav className="flex-1 px-3 py-4 space-y-0.5">
-        {NAV.map((item) => (
-          <Link key={item.href} href={item.href}>
-            <div
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all relative ${
-                item.active
-                  ? "bg-white/15 text-white"
-                  : "text-teal-200/70 hover:bg-white/10 hover:text-white"
-              }`}
-            >
-              <item.icon className="w-4 h-4 flex-shrink-0" />
-              <span className="text-sm font-medium">{item.label}</span>
-              {(item.badge || 0) > 0 && (
-                <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                  {(item.badge || 0) > 9 ? "9+" : item.badge}
-                </span>
-              )}
-            </div>
-          </Link>
-        ))}
-      </nav>
-
-      {/* Abonnement + Settings */}
-      <div className="px-4 pb-5 space-y-3 border-t border-white/10 pt-4">
-        <div>
-          <p className="text-[10px] text-teal-400 uppercase tracking-widest font-medium mb-0.5">
-            Abonnement
-          </p>
-          <p className="text-xs text-white font-medium">
-            {subStatus === "active"
-              ? `Plan ${planLabel(subPlan)}`
-              : "Lancement gratuit"}
-          </p>
-          <p className="text-[10px] text-teal-300/60 mt-0.5">
-            {subStatus === "active" && subEnd
-              ? `Expire le ${fmtDate(subEnd)}`
-              : "Paiement disponible bientôt"}
-          </p>
-        </div>
-        <button
-          onClick={() => router.push("/settings")}
-          className="flex items-center gap-2 text-teal-300/70 hover:text-white transition-colors cursor-pointer"
-        >
-          <Settings className="w-4 h-4" />
-          <span className="text-xs">Paramètres</span>
-        </button>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-50 via-white to-teal-50 flex">
-      <style>{`.dash-fade{opacity:0;}`}</style>
-
-      {/* ── Sidebar desktop ── */}
-      <div className="hidden lg:block w-[200px] fixed top-16 left-0 bottom-0 z-30 bg-teal-800">
-        <SidebarContent />
-      </div>
-
-      {/* ── Sidebar mobile overlay ── */}
-      {sidebarOpen && (
-        <>
-          <div
-            className="fixed inset-0 bg-black/40 z-40 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <div className="fixed top-16 left-0 bottom-0 w-[200px] z-50 bg-teal-800 lg:hidden">
-            <SidebarContent />
-          </div>
-        </>
-      )}
-
-      {/* ── Contenu ── */}
-      <div className="flex-1 lg:ml-[200px]" ref={mainRef}>
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
-          {/* Burger mobile */}
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="lg:hidden mb-6 p-2 rounded-lg bg-white border border-slate-200 text-slate-600 cursor-pointer"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-
-          {/* Titre */}
-          <div className="dash-fade mb-7">
-            <h1 className="text-xl font-bold text-slate-900">
-              Tableau de bord
-            </h1>
-            <p className="text-sm text-slate-400 mt-0.5">
-              {new Date().toLocaleDateString("fr-DZ", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-              })}
-            </p>
-          </div>
-
-          {/* Banner vérification */}
-          {!isVerified && (
-            <div className="dash-fade mb-4 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
-              <Clock className="w-4 h-4 text-amber-500 flex-shrink-0" />
-              <div>
-                <p className="text-sm font-semibold text-amber-800">
-                  Vérification en cours · 24-48h
-                </p>
-                <p className="text-xs text-amber-600 mt-0.5">
-                  Email de confirmation à venir.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Banner photo */}
-          {!profile?.avatar_url && (
-            <div className="dash-fade mb-5 flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-3">
-              <Camera className="w-4 h-4 text-teal-600 flex-shrink-0" />
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-slate-800">
-                  Ajoutez votre photo
-                </p>
-                <p className="text-xs text-slate-400">3× plus de demandes</p>
-              </div>
-              <Link href="/profile">
-                <button className="flex items-center gap-1 text-xs font-semibold text-teal-600 hover:text-teal-700 cursor-pointer whitespace-nowrap">
-                  Ajouter <ArrowRight className="w-3 h-3" />
-                </button>
-              </Link>
-            </div>
-          )}
-
-          {/* Stats */}
-          <div className="dash-fade grid grid-cols-3 gap-3 mb-6">
-            <div className="bg-white rounded-xl p-4 border border-slate-200">
-              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-2">
-                Demandes
-              </p>
-              <p className="text-3xl font-bold text-slate-800 leading-none">
-                {loadingStats ? (
-                  <span className="text-slate-200">—</span>
-                ) : (
-                  stats.total
-                )}
-              </p>
-              {stats.pending > 0 && (
-                <span className="inline-flex items-center gap-1 mt-2 text-[11px] text-red-600 font-semibold">
-                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full" />{" "}
-                  {stats.pending} non lu{stats.pending > 1 ? "s" : ""}
-                </span>
-              )}
-            </div>
-
-            <div className="bg-white rounded-xl p-4 border border-slate-200">
-              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-2">
-                Répondues
-              </p>
-              <p className="text-3xl font-bold text-slate-800 leading-none">
-                {loadingStats ? (
-                  <span className="text-slate-200">—</span>
-                ) : (
-                  stats.answered
-                )}
-              </p>
-              {stats.total > 0 && (
-                <p className="text-[11px] text-slate-400 mt-2">
-                  {Math.round((stats.answered / stats.total) * 100)}%
-                </p>
-              )}
-            </div>
-
-            <div className="bg-white rounded-xl p-4 border border-slate-200">
-              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-2">
-                Vues
-              </p>
-              <p className="text-3xl font-bold text-slate-800 leading-none">
-                {loadingStats ? (
-                  <span className="text-slate-200">—</span>
-                ) : (
-                  stats.views
-                )}
-              </p>
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="dash-fade bg-white border border-slate-200 rounded-xl overflow-hidden mb-4">
-            <p className="px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wide border-b border-slate-100">
-              Actions
-            </p>
-            {[
-              {
-                icon: MessageSquare,
-                label: "Consultations",
-                sub:
-                  stats.pending > 0
-                    ? `${stats.pending} non lu${stats.pending > 1 ? "s" : ""}`
-                    : "Tout est à jour",
-                href: "/lawyer/consultations",
-                badge: stats.pending,
-              },
-              {
-                icon: Edit,
-                label: "Modifier mon profil",
-                sub: "Spécialités · Langues · Adresse",
-                href: "/profile",
-              },
-              {
-                icon: Eye,
-                label: "Profil public",
-                sub: "Vue client",
-                href: `/lawyer/${user?.id}`,
-              },
-            ].map((item, i) => (
-              <Link key={i} href={item.href}>
-                <div className="flex items-center gap-4 px-5 py-4 hover:bg-slate-50 cursor-pointer border-b border-slate-100 last:border-0 group transition-colors">
-                  <div className="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-teal-50 flex items-center justify-center flex-shrink-0 transition-colors">
-                    <item.icon className="w-4 h-4 text-slate-500 group-hover:text-teal-600 transition-colors" />
+        {/* ── Actions — 3 cards ── */}
+        <div className="d-fade grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+          {ACTIONS.map((item, i) => (
+            <Link key={i} href={item.href}>
+              <div className="group bg-white border border-teal-100 rounded-2xl p-4 hover:border-teal-300 hover:bg-teal-50 transition-all cursor-pointer h-full">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-8 h-8 rounded-xl bg-teal-50 group-hover:bg-white flex items-center justify-center transition-colors">
+                    <item.icon className="w-4 h-4 text-teal-600" />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-semibold text-slate-800">
-                      {item.label}
-                    </p>
-                    <p className="text-xs text-slate-400 mt-0.5">{item.sub}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {(item.badge || 0) > 0 && (
-                      <span className="bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                        {(item.badge || 0) > 9 ? "9+" : item.badge}
-                      </span>
-                    )}
-                    <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-teal-500 transition-colors" />
-                  </div>
+                  {(item.badge || 0) > 0 && (
+                    <span className="bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">
+                      {(item.badge || 0) > 9 ? "9+" : item.badge}
+                    </span>
+                  )}
+                  {!(item.badge || 0) && (
+                    <ChevronRight className="w-4 h-4 text-teal-200 group-hover:text-teal-400 transition-colors" />
+                  )}
                 </div>
-              </Link>
-            ))}
-          </div>
+                <p className="text-sm font-bold text-teal-900">{item.label}</p>
+                <p className="text-xs text-teal-500 mt-0.5">{item.sub}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
 
-          {/* Aide */}
-          <div className="dash-fade flex items-center justify-between px-5 py-4 bg-white border border-slate-200 rounded-xl">
-            <div>
-              <p className="text-sm font-semibold text-slate-800">
-                Besoin d'aide ?
-              </p>
-              <p className="text-xs text-slate-400">support@mizan-dz.com</p>
-            </div>
-            <a
-              href="mailto:support@mizan-dz.com"
-              className="text-xs font-semibold text-teal-600 hover:text-teal-700 cursor-pointer"
-            >
-              Contacter →
-            </a>
+        {/* ── Aide ── */}
+        <div className="d-fade flex items-center justify-between bg-white border border-teal-100 rounded-2xl px-5 py-4">
+          <div>
+            <p className="text-sm font-bold text-teal-900">Besoin d'aide ?</p>
+            <p className="text-xs text-teal-500 mt-0.5">
+              support@mizan-dz.com · Réponse sous 24h
+            </p>
           </div>
+          <a
+            href="mailto:support@mizan-dz.com"
+            className="text-xs font-semibold text-teal-600 hover:text-teal-800 cursor-pointer transition-colors"
+          >
+            Contacter →
+          </a>
         </div>
       </div>
     </div>
