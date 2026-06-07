@@ -765,6 +765,7 @@ import {
   ChevronRight,
   Linkedin,
   Video,
+  ExternalLink,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";
@@ -794,9 +795,27 @@ const PROF_LABELS: Record<string, { label: string; numLabel: string }> = {
 const getProfLabel = (profession?: string) =>
   PROF_LABELS[profession || "avocat"] || PROF_LABELS.avocat;
 
-// ── Jitsi Meet — salle permanente par professionnel ───────────────────────────
+// ── Jitsi Meet ────────────────────────────────────────────────────────────────
 const getJitsiUrl = (lawyerId: string) =>
   `https://meet.jit.si/mizan-${lawyerId.slice(0, 10)}`;
+
+// ── Google Maps ───────────────────────────────────────────────────────────────
+const getGoogleMapsQuery = (avocat: AvocatData): string => {
+  const parts = [
+    avocat.adresse?.rue,
+    avocat.adresse?.ville || avocat.ville,
+    avocat.wilaya,
+    "Algérie",
+  ].filter(Boolean);
+  return parts.join(", ");
+};
+
+const getGoogleMapsUrl = (avocat: AvocatData) =>
+  `https://maps.google.com/?q=${encodeURIComponent(getGoogleMapsQuery(avocat))}`;
+
+// Embed sans API key — fonctionne avec une simple adresse texte
+const getGoogleMapsEmbedUrl = (avocat: AvocatData) =>
+  `https://maps.google.com/maps?q=${encodeURIComponent(getGoogleMapsQuery(avocat))}&output=embed&hl=fr&z=15`;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const getSiteLabel = (url: string) => {
@@ -822,15 +841,6 @@ const getCountryFlag = (phone: string) => {
 };
 const getWhatsAppUrl = (phone: string) =>
   `https://wa.me/${phone.replace(/[\s\-\(\)]/g, "").replace("+", "")}`;
-const getGoogleMapsUrl = (avocat: AvocatData) => {
-  const parts = [
-    avocat.adresse?.rue,
-    avocat.adresse?.ville || avocat.ville,
-    avocat.wilaya,
-    "Algérie",
-  ].filter(Boolean);
-  return `https://maps.google.com/?q=${encodeURIComponent(parts.join(", "))}`;
-};
 const getGridClass = (count: number) => {
   if (count === 1) return "grid-cols-1";
   if (count === 2) return "grid-cols-2";
@@ -854,6 +864,7 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
+// ── InfoCard Mobile ───────────────────────────────────────────────────────────
 const InfoCardMobile = ({
   icon,
   label,
@@ -930,6 +941,7 @@ const InfoCardMobile = ({
   );
 };
 
+// ── InfoCard Desktop ──────────────────────────────────────────────────────────
 const InfoCardDesktop = ({
   icon,
   label,
@@ -1010,6 +1022,73 @@ const InfoCardDesktop = ({
   return <div className="h-full">{body}</div>;
 };
 
+// ── Google Maps Card ──────────────────────────────────────────────────────────
+const GoogleMapsCard = ({ avocat }: { avocat: AvocatData }) => {
+  const hasAddress = !!(
+    avocat.adresse?.rue ||
+    avocat.adresse?.ville ||
+    avocat.ville
+  );
+  if (!hasAddress) return null;
+
+  const embedUrl = getGoogleMapsEmbedUrl(avocat);
+  const mapsUrl = getGoogleMapsUrl(avocat);
+  const adresseStr = [
+    avocat.adresse?.rue,
+    avocat.adresse?.ville || avocat.ville,
+    avocat.wilaya,
+  ]
+    .filter(Boolean)
+    .join(", ");
+
+  return (
+    <Card className="content-card opacity-0 invisible shadow-sm mb-4 overflow-hidden">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+            <MapPin className="w-4 h-4 text-teal-600" />
+            Localisation du cabinet
+          </div>
+          <a
+            href={mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-xs text-teal-600 hover:text-teal-700 font-medium transition-colors"
+          >
+            <ExternalLink className="w-3 h-3" />
+            Ouvrir dans Maps
+          </a>
+        </div>
+        <p className="text-xs text-slate-500 mt-1">{adresseStr}</p>
+      </CardHeader>
+      <CardContent className="p-0">
+        {/* Carte embed Google Maps — sans API key */}
+        <div className="relative w-full h-52 sm:h-64 bg-slate-100">
+          <iframe
+            src={embedUrl}
+            className="w-full h-full border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title={`Cabinet de ${avocat.prenom} ${avocat.nom}`}
+            sandbox="allow-scripts allow-same-origin allow-popups"
+          />
+        </div>
+        {/* Bouton itinéraire */}
+        <a
+          href={`https://maps.google.com/maps/dir/?api=1&destination=${encodeURIComponent(getGoogleMapsQuery(avocat))}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 py-3 text-sm font-medium text-teal-700 hover:bg-teal-50 transition-colors border-t border-slate-100"
+        >
+          <MapPin className="w-4 h-4" />
+          Obtenir l'itinéraire
+        </a>
+      </CardContent>
+    </Card>
+  );
+};
+
+// ── Page principale ───────────────────────────────────────────────────────────
 export default function ProfilePage({ params }: ProfilePageProps) {
   const { id } = use(params);
   const router = useRouter();
@@ -1215,6 +1294,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     : null;
   const allInfoItems = claimItem ? [...infoItems, claimItem] : infoItems;
 
+  // Afficher la carte uniquement si l'adresse est disponible
+  const hasAddress = !!(
+    avocat.adresse?.rue ||
+    avocat.adresse?.ville ||
+    avocat.ville
+  );
+
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden w-full">
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -1232,7 +1318,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[360px]">
             <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
               <div>
-                {/* Label dynamique selon la profession */}
                 <p className="text-[10px] font-semibold text-teal-600 uppercase tracking-widest mb-3">
                   {profInfo.label} · {profInfo.numLabel} {avocat.barreau}
                 </p>
@@ -1264,7 +1349,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       </span>
                     </div>
                   )}
-                  {/* Indication consultation vidéo */}
                   <div className="flex items-center gap-1.5">
                     <div className="w-1 h-1 rounded-full bg-blue-400 flex-shrink-0" />
                     <Video className="w-3.5 h-3.5 flex-shrink-0 text-blue-500" />
@@ -1332,7 +1416,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                         <MessageCircle className="w-4 h-4" />
                         Consulter
                       </button>
-                      {/* ── Bouton Jitsi Meet ── */}
                       <button
                         onClick={handleVideoCall}
                         className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-xl flex items-center gap-2 font-semibold text-sm transition-all shadow-sm"
@@ -1367,7 +1450,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
         </div>
 
-        {/* Spécialités */}
+        {/* ── Spécialités ── */}
         {avocat.specialites && avocat.specialites.length > 0 && (
           <Card className="content-card opacity-0 invisible shadow-sm mb-4">
             <CardHeader>
@@ -1392,7 +1475,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </Card>
         )}
 
-        {/* CTA non connecté */}
+        {/* ── CTA non connecté ── */}
         {!user && !isOwnProfile && (
           <div className="content-card opacity-0 invisible mb-4">
             <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
@@ -1428,7 +1511,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
         )}
 
-        {/* Info cards */}
+        {/* ── Info cards ── */}
         {allInfoItems.length > 0 && (
           <>
             <div className="content-card opacity-0 invisible sm:hidden flex flex-col gap-2.5 mb-4">
@@ -1456,7 +1539,10 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </>
         )}
 
-        {/* Boutons mobile */}
+        {/* ── Google Maps embed ── */}
+        {hasAddress && <GoogleMapsCard avocat={avocat} />}
+
+        {/* ── Boutons mobile ── */}
         {isClient && !isOwnProfile && (
           <div className="content-card opacity-0 invisible lg:hidden mb-4 grid grid-cols-2 gap-3">
             <button

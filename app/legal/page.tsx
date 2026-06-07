@@ -152,22 +152,7 @@ export default function LegalMentionsPage() {
               <div className="bg-slate-50 rounded-lg p-6 border border-slate-200">
                 <p className="text-slate-700">
                   <strong className="text-slate-900">Hébergeur :</strong>{" "}
-                  Supabase Inc.
-                </p>
-                <p className="text-slate-700">
-                  <strong className="text-slate-900">Adresse :</strong> 970 Toa
-                  Payoh North, #07-04, Singapore 318992
-                </p>
-                <p className="text-slate-700">
-                  <strong className="text-slate-900">Site web :</strong>{" "}
-                  <a
-                    href="https://supabase.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-teal-600 hover:underline"
-                  >
-                    supabase.com
-                  </a>
+                  Prestataire d'hébergement cloud certifié, serveurs sécurisés.
                 </p>
               </div>
             </section>

@@ -252,8 +252,9 @@ export default function PrivacyPolicyPage() {
                   contactent.
                 </li>
                 <li>
-                  <strong>Prestataires techniques :</strong> Nous utilisons
-                  Supabase pour l'hébergement sécurisé des données.
+                  <strong>Prestataires techniques :</strong> Nous utilisons des
+                  prestataires d'hébergement certifiés pour le stockage sécurisé
+                  des données.
                 </li>
                 <li>
                   <strong>Obligations légales :</strong> En cas de demande
@@ -269,7 +270,7 @@ export default function PrivacyPolicyPage() {
               <ul className="list-disc list-inside space-y-2 text-slate-700">
                 <li>Cryptage des mots de passe</li>
                 <li>Connexion sécurisée HTTPS</li>
-                <li>Hébergement sur serveurs sécurisés (Supabase)</li>
+                <li>Hébergement sur serveurs sécurisés certifiés</li>
                 <li>Accès limité aux données personnelles</li>
                 <li>Sauvegardes régulières</li>
               </ul>
