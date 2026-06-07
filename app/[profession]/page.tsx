@@ -153,10 +153,7 @@ export default function ProfessionPage() {
     value: d,
     label: d,
   }));
-  const wilayaOptions = [
-    { value: "", label: "Toutes les wilayas" },
-    ...wilayas.map((w) => ({ value: w, label: w })),
-  ];
+  const wilayaOptions = wilayas.map((w) => ({ value: w, label: w }));
 
   useEffect(() => {
     getWilayas().then((w) => {
@@ -215,26 +212,13 @@ export default function ProfessionPage() {
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`
         .ph-title,.ph-sub,.ph-form,.ph-map,.ph-step { opacity:0; }
-        .wilaya-select-wrapper button,
-        .wilaya-select-wrapper button span,
-        .wilaya-select-wrapper button div {
-          color: rgb(148 163 184) !important;
-          font-weight: 500 !important;
-          font-size: 0.875rem !important;
-        }
-        .wilaya-select-wrapper.has-value button,
-        .wilaya-select-wrapper.has-value button span,
-        .wilaya-select-wrapper.has-value button div {
-          color: rgb(15 23 42) !important;
-          font-weight: 400 !important;
-        }
       `}</style>
       {/* ── Hero ── */}
       <section className="px-4 py-10 sm:py-14">
         <div className="max-w-6xl mx-auto">
           <Link href="/">
             <button className="inline-flex items-center gap-1.5 text-teal-600 hover:text-teal-700 text-sm font-medium mb-6 sm:mb-8 cursor-pointer transition-colors">
-              <ArrowLeft className="w-4 h-4" /> Accueil
+              <ArrowLeft className="w-4 h-4" />
             </button>
           </Link>
 
@@ -276,9 +260,7 @@ export default function ProfessionPage() {
                   {loadingWilayas ? (
                     <div className="h-12 bg-slate-100 rounded-lg animate-pulse" />
                   ) : (
-                    <div
-                      className={`wilaya-select-wrapper${selectedWilaya ? " has-value" : ""}`}
-                    >
+                    <div>
                       <CustomSelect
                         placeholder="Toutes les wilayas"
                         options={wilayaOptions}

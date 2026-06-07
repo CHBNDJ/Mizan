@@ -610,7 +610,7 @@ export default function HomePage() {
                     <div className="font-bold text-slate-800 text-sm sm:text-base">
                       {label}
                     </div>
-                    <div className="text-xs text-slate-400 mt-1 leading-relaxed hidden sm:block">
+                    <div className="text-xs text-slate-400 mt-1 leading-relaxed">
                       {desc}
                     </div>
                   </div>
@@ -625,7 +625,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Stats ── */}
-      <section className="px-4 pb-16 sm:pb-20">
+      <section className="px-4 pb-14 sm:pb-20 pt-2">
         <div className="max-w-4xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {[
             { end: stats.total_avocats, label: "Professionnels inscrits" },
@@ -639,15 +639,15 @@ export default function HomePage() {
           ].map((s) => (
             <div
               key={s.label}
-              className="stat-card bg-white rounded-2xl shadow-sm border border-slate-100 p-5 sm:p-7 flex flex-col items-center text-center"
+              className="stat-card bg-white rounded-xl shadow-sm border border-slate-100 p-4 sm:p-6 flex flex-col items-center text-center"
             >
               <AnimatedCounter
                 end={s.end}
                 duration={2000}
                 suffix={s.suffix}
-                className="text-3xl sm:text-4xl font-bold text-teal-600 mb-2"
+                className="text-2xl sm:text-4xl font-bold text-teal-600 mb-1"
               />
-              <div className="text-slate-600 font-medium text-xs sm:text-sm leading-snug">
+              <div className="text-slate-500 text-xs sm:text-sm leading-snug">
                 {s.label}
               </div>
             </div>
