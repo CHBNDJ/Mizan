@@ -475,6 +475,23 @@ const PROFESSIONS = [
   },
 ];
 
+// ─── CHOISIR LE HERO ──────────────────────────────────────────────────────────
+// Option A : "Des experts juridiques vérifiés, partout en Algérie"
+// Option B : "Votre réseau d'experts juridiques en Algérie"
+// Option C : "Avocat, notaire, huissier, comptable — trouvez le bon expert"
+// Option D : "Droit, actes, chiffres — tous vos experts en un seul endroit"
+// Option E : "L'annuaire de confiance des experts juridiques algériens"
+// ─── ACTUELLEMENT : Option B ─────────────────────────────────────────────────
+const HERO_TITLE = (
+  <>
+    Votre réseau d'experts
+    <br className="hidden sm:block" />
+    <span className="text-teal-600"> juridiques en Algérie</span>
+  </>
+);
+const HERO_SUB =
+  "Avocats, notaires, huissiers, comptables — vérifiés et recommandés. Accessible depuis l'Algérie et la diaspora.";
+
 export default function HomePage() {
   const router = useRouter();
   const [topAvocats, setTopAvocats] = useState<any[]>([]);
@@ -514,7 +531,7 @@ export default function HomePage() {
         "-=0.4"
       )
       .fromTo(
-        ".hero-stats",
+        ".stat-card",
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
         "-=0.2"
@@ -534,14 +551,14 @@ export default function HomePage() {
       }
     );
     gsap.fromTo(
-      ".cta-cards",
+      ".cta-section",
       { opacity: 0, y: 30 },
       {
         opacity: 1,
         y: 0,
         duration: 0.7,
         scrollTrigger: {
-          trigger: ".cta-cards",
+          trigger: ".cta-section",
           start: "top 85%",
           toggleActions: "play none none none",
         },
@@ -573,32 +590,28 @@ export default function HomePage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden">
       <style>{`
-        .hero-title,.hero-sub,.prof-card,.hero-stats,.steps-section,.avocat-card,.cta-cards { opacity:0; }
+        .hero-title,.hero-sub,.prof-card,.stat-card,.steps-section,.avocat-card,.cta-section { opacity:0; }
         .prof-card-btn { transition:all 0.2s ease; }
         .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
       `}</style>
 
-      {/* Hero */}
+      {/* ── Hero ── */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Titre — plus concis, sans badge */}
-          <h1 className="hero-title text-3xl sm:text-5xl lg:text-6xl font-bold text-slate-800 mb-5 leading-tight tracking-tight">
-            L'annuaire des experts
-            <br className="hidden sm:block" />
-            <span className="text-teal-600"> juridiques d'Algérie</span>
+          <h1 className="hero-title text-3xl sm:text-5xl lg:text-6xl font-bold text-slate-800 mb-6 leading-tight tracking-tight">
+            {HERO_TITLE}
           </h1>
-          <p className="hero-sub text-base sm:text-xl text-slate-500 mb-12 leading-relaxed max-w-xl mx-auto">
-            Avocats, notaires, huissiers, comptables — vérifiés et recommandés.
-            Accessible depuis l'Algérie et la diaspora.
+          <p className="hero-sub text-base sm:text-xl text-slate-500 mb-14 max-w-xl mx-auto leading-relaxed">
+            {HERO_SUB}
           </p>
 
-          {/* 4 cards */}
+          {/* 4 profession cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-3xl mx-auto">
             {PROFESSIONS.map(({ id, label, Icon, desc }) => (
               <Link key={id} href={`/${id}`}>
                 <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 p-5 flex flex-col items-center gap-3 cursor-pointer text-center h-full">
-                  <div className="w-11 h-11 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-teal-600" />
+                  <div className="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
+                    <Icon className="w-6 h-6 text-teal-600" />
                   </div>
                   <div>
                     <div className="font-bold text-slate-800 text-sm sm:text-base">
@@ -618,66 +631,68 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="px-4 pb-16">
-        <div className="max-w-3xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* ── Stats — version spacieuse ── */}
+      <section className="px-4 pb-20">
+        <div className="max-w-4xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-5">
           {[
-            { end: stats.total_avocats, label: "Professionnels" },
-            { end: wilayas.length, label: "Wilayas" },
-            { end: 4, label: "Catégories" },
+            { end: stats.total_avocats, label: "Professionnels inscrits" },
+            { end: wilayas.length, label: "Wilayas couvertes" },
+            { end: 4, label: "Catégories d'experts" },
             {
               end: stats.pourcentage_verification,
-              label: "Vérifiés",
+              label: "Taux de vérification",
               suffix: "%",
             },
           ].map((s) => (
             <div
               key={s.label}
-              className="hero-stats bg-white rounded-xl shadow-sm p-5 flex flex-col items-center text-center"
+              className="stat-card bg-white rounded-2xl shadow-sm border border-slate-100 p-7 flex flex-col items-center text-center"
             >
               <AnimatedCounter
                 end={s.end}
                 duration={2000}
                 suffix={s.suffix}
-                className="text-3xl font-bold text-teal-600 mb-1"
+                className="text-4xl font-bold text-teal-600 mb-2"
               />
-              <div className="text-slate-500 text-sm">{s.label}</div>
+              <div className="text-slate-600 font-medium text-sm leading-snug">
+                {s.label}
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Comment ça marche */}
-      <section className="steps-section py-12 px-4">
+      {/* ── Comment ça marche ── */}
+      <section className="steps-section py-14 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-sm p-8">
-            <h2 className="text-xl font-bold text-slate-800 mb-8 text-center">
+          <div className="bg-white rounded-2xl shadow-sm p-10">
+            <h2 className="text-2xl font-bold text-slate-800 mb-10 text-center">
               Comment ça marche
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
               {[
                 {
                   n: "1",
                   title: "Choisissez votre expert",
-                  desc: "Sélectionnez la catégorie adaptée à votre besoin.",
+                  desc: "Sélectionnez la catégorie adaptée à votre besoin parmi les 4 professions disponibles.",
                 },
                 {
                   n: "2",
-                  title: "Filtrez sur la carte",
-                  desc: "Wilaya et domaine d'intervention en quelques clics.",
+                  title: "Filtrez par wilaya",
+                  desc: "Choisissez votre wilaya directement sur la carte interactive ou via le sélecteur.",
                 },
                 {
                   n: "3",
                   title: "Contactez directement",
-                  desc: "Messagerie sécurisée, depuis l'Algérie ou l'étranger.",
+                  desc: "Messagerie sécurisée, accès depuis l'Algérie ou l'étranger. Inscription gratuite.",
                 },
               ].map((s) => (
                 <div key={s.n} className="flex gap-4">
-                  <div className="w-9 h-9 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-sm font-bold text-teal-700 flex-shrink-0 mt-0.5">
+                  <div className="w-10 h-10 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-sm font-bold text-teal-700 flex-shrink-0 mt-0.5">
                     {s.n}
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-slate-800 mb-1">
+                    <div className="text-base font-semibold text-slate-800 mb-1.5">
                       {s.title}
                     </div>
                     <div className="text-sm text-slate-500 leading-relaxed">
@@ -691,9 +706,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Top professionnels */}
+      {/* ── Top professionnels ── */}
       {topAvocats.length > 0 && (
-        <section className="avocats-section pb-16 px-4">
+        <section className="avocats-section pb-20 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold text-slate-800 mb-3">
@@ -722,63 +737,44 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* CTA double */}
-      <section className="py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="cta-cards grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl shadow-sm p-8 flex flex-col justify-between">
-              <div>
-                <h3 className="text-xl font-bold text-slate-800 mb-3">
-                  Vous cherchez un expert ?
-                </h3>
-                <p className="text-slate-500 leading-relaxed mb-6">
-                  Parcourez les profils vérifiés, consultez les avis et
-                  contactez directement depuis n'importe où.
-                </p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {PROFESSIONS.map(({ id, label, Icon }) => (
-                    <Link key={id} href={`/${id}`}>
-                      <span className="flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 border border-teal-200 text-teal-700 rounded-full text-xs font-semibold hover:bg-teal-100 transition-colors cursor-pointer">
-                        <Icon className="w-3 h-3" /> {label}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-              <button
-                onClick={() => router.push("/search")}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-all cursor-pointer w-fit"
-              >
-                Rechercher <ChevronRight className="w-4 h-4" />
+      {/* ── CTA double — sans bulles de professions ── */}
+      <section className="cta-section py-14 px-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="bg-white rounded-2xl shadow-sm p-10 flex flex-col justify-between">
+            <div>
+              <h3 className="text-2xl font-bold text-slate-800 mb-3">
+                Vous cherchez un expert juridique ?
+              </h3>
+              <p className="text-slate-500 leading-relaxed mb-8">
+                Parcourez les profils vérifiés d'avocats, notaires, huissiers et
+                comptables. Consultez les avis clients et contactez directement
+                depuis n'importe où.
+              </p>
+            </div>
+            <button
+              onClick={() => router.push("/search")}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-all cursor-pointer w-fit"
+            >
+              Trouver un expert <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="bg-teal-600 rounded-2xl p-10 flex flex-col justify-between">
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-3">
+                Vous êtes professionnel du droit ?
+              </h3>
+              <p className="text-teal-100 leading-relaxed mb-8">
+                Avocat, notaire, huissier ou comptable — rejoignez Mizan et
+                soyez visible par des clients de toute l'Algérie et de la
+                diaspora. Inscription gratuite, vérification sous 24-48h.
+              </p>
+            </div>
+            <Link href="/auth/lawyer/register">
+              <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl transition-all cursor-pointer w-fit">
+                Créer mon profil <ChevronRight className="w-4 h-4" />
               </button>
-            </div>
-            <div className="bg-teal-600 rounded-2xl p-8 flex flex-col justify-between">
-              <div>
-                <h3 className="text-xl font-bold text-white mb-3">
-                  Vous êtes professionnel du droit ?
-                </h3>
-                <p className="text-teal-100 leading-relaxed mb-4">
-                  Rejoignez Mizan et soyez visible par des clients de toute
-                  l'Algérie et de la diaspora. Inscription gratuite,
-                  vérification sous 24-48h.
-                </p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {PROFESSIONS.map(({ id, label, Icon }) => (
-                    <span
-                      key={id}
-                      className="flex items-center gap-1 px-3 py-1 bg-white/20 text-white rounded-full text-xs font-semibold"
-                    >
-                      <Icon className="w-3 h-3" /> {label}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <Link href="/auth/lawyer/register">
-                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl transition-all cursor-pointer w-fit">
-                  Créer mon profil <ChevronRight className="w-4 h-4" />
-                </button>
-              </Link>
-            </div>
+            </Link>
           </div>
         </div>
       </section>

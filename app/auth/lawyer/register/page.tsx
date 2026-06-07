@@ -917,6 +917,10 @@ import {
   ChevronRight,
   ChevronLeft,
   CheckCircle,
+  Scale,
+  FileText,
+  Briefcase,
+  Calculator,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
@@ -937,28 +941,28 @@ const PROFESSIONS = [
   {
     id: "avocat" as Profession,
     label: "Avocat",
-    icon: "⚖️",
+    Icon: Scale,
     numLabel: "N° de barreau",
     numPlaceholder: "ALG2024-001",
   },
   {
     id: "notaire" as Profession,
     label: "Notaire",
-    icon: "📜",
+    Icon: FileText,
     numLabel: "N° chambre des notaires",
     numPlaceholder: "NOT2024-001",
   },
   {
     id: "huissier" as Profession,
     label: "Huissier",
-    icon: "🔏",
+    Icon: Briefcase,
     numLabel: "N° d'huissier",
     numPlaceholder: "HUI2024-001",
   },
   {
     id: "comptable" as Profession,
     label: "Comptable",
-    icon: "📊",
+    Icon: Calculator,
     numLabel: "N° ONEC / ONCA",
     numPlaceholder: "CMP2024-001",
   },
@@ -1308,7 +1312,9 @@ export default function LawyerRegisterPage() {
                 onClick={() => setProfession(p.id)}
                 className={`p-4 border-2 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer ${profession === p.id ? "border-teal-600 bg-teal-50" : "border-slate-200 bg-white hover:border-teal-300"}`}
               >
-                <span className="text-3xl">{p.icon}</span>
+                <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
+                  <p.Icon className="w-5 h-5 text-teal-600" />
+                </div>
                 <span
                   className={`text-sm font-semibold ${profession === p.id ? "text-teal-700" : "text-slate-700"}`}
                 >
@@ -1715,7 +1721,8 @@ export default function LawyerRegisterPage() {
                   Étape {currentStep} sur 4
                 </span>
                 <span className="text-xs text-slate-400">
-                  · {currentProf?.icon} {currentProf?.label}
+                  · {currentProf && <currentProf.Icon className="w-3 h-3" />}{" "}
+                  {currentProf?.label}
                 </span>
               </div>
               <h2 className="text-lg font-bold text-slate-900">

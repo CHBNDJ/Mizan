@@ -965,16 +965,16 @@ export function Navigation() {
                           href="/auth/client/login"
                           className="w-full hover:bg-teal-50"
                         >
-                          Je suis un client
+                          Client
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         {/* ← CHANGÉ */}
                         <Link
                           href="/auth/lawyer/login"
-                          className="w-full hover:bg-teal-50 whitespace-nowrap"
+                          className="w-full hover:bg-teal-50"
                         >
-                          Je suis un professionnel
+                          Professionnel
                         </Link>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -997,16 +997,16 @@ export function Navigation() {
                           href="/auth/client/register"
                           className="w-full hover:bg-teal-50"
                         >
-                          Je suis un client
+                          Client
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         {/* ← CHANGÉ */}
                         <Link
                           href="/auth/lawyer/register"
-                          className="w-full hover:bg-teal-50 whitespace-nowrap"
+                          className="w-full hover:bg-teal-50"
                         >
-                          Je suis un professionnel
+                          Professionnel
                         </Link>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -1164,7 +1164,7 @@ export function Navigation() {
                           activeTab === "login"
                             ? "/auth/client/login"
                             : "/auth/client/register",
-                        label: "Je suis un client",
+                        label: "Client",
                         sub:
                           activeTab === "login"
                             ? "Accéder à mon compte"
@@ -1177,7 +1177,7 @@ export function Navigation() {
                             ? "/auth/lawyer/login"
                             : "/auth/lawyer/register",
                         // ← CHANGÉ
-                        label: "Je suis un professionnel",
+                        label: "Professionnel",
                         sub:
                           activeTab === "login"
                             ? "Espace professionnel"

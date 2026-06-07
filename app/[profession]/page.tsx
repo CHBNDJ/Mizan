@@ -12,7 +12,13 @@ import {
 } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { AlgeriaMap } from "@/components/AlgeriaMap";
-import { getTopRatedAvocats } from "@/lib/avocatsData";
+import { CustomSelect } from "@/components/ui/CustomSelect";
+import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
+import {
+  getWilayas,
+  getTopRatedAvocats,
+  DOMAINES_PAR_PROFESSION,
+} from "@/lib/avocatsData";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
@@ -36,46 +42,46 @@ const PROFESSIONS: Record<
     hero: string;
     sub: string;
     searchLabel: string;
-    badge: string;
+    domainLabel: string;
     steps: { title: string; desc: string }[];
   }
 > = {
   avocat: {
     label: "Avocat",
     labelPlural: "avocats",
-    badge: "Vérifié au barreau",
     hero: "Trouvez votre avocat en Algérie",
-    sub: "Filtrez par spécialité et wilaya. Avis, expérience, contact direct — depuis l'Algérie ou la diaspora.",
+    sub: "Filtrez par spécialité et wilaya. Avis clients, expérience, contact direct — depuis l'Algérie ou la diaspora.",
     searchLabel: "Rechercher un avocat",
+    domainLabel: "Spécialité",
     steps: [
       {
         title: "Choisissez votre wilaya",
-        desc: "Filtrez par wilaya depuis la page de recherche.",
+        desc: "Cliquez sur la carte ou sélectionnez via le menu — les deux se synchronisent.",
       },
       {
-        title: "Comparez les profils",
-        desc: "Avis, expérience, spécialités — tout est visible.",
+        title: "Affinez par spécialité",
+        desc: "Droit civil, pénal, famille, affaires — précisez votre besoin.",
       },
       {
         title: "Contactez directement",
-        desc: "Messagerie sécurisée, inscription gratuite.",
+        desc: "Messagerie sécurisée. Inscription client gratuite.",
       },
     ],
   },
   notaire: {
     label: "Notaire",
     labelPlural: "notaires",
-    badge: "Inscrit à la chambre",
     hero: "Trouvez un notaire en Algérie",
     sub: "Actes immobiliers, successions, mariages, donations — nos notaires vérifiés depuis n'importe où.",
     searchLabel: "Rechercher un notaire",
+    domainLabel: "Domaine",
     steps: [
       {
         title: "Choisissez la wilaya",
-        desc: "Le notaire doit être compétent dans la wilaya du bien.",
+        desc: "Le notaire doit être compétent dans la wilaya du bien ou de l'acte.",
       },
       {
-        title: "Votre domaine",
+        title: "Précisez votre besoin",
         desc: "Succession, immobilier, mariage — chaque notaire a ses spécialités.",
       },
       {
@@ -87,44 +93,44 @@ const PROFESSIONS: Record<
   huissier: {
     label: "Huissier",
     labelPlural: "huissiers",
-    badge: "Assermenté",
     hero: "Trouvez un huissier en Algérie",
     sub: "Constats officiels, exécution de jugements, recouvrement de créances — partout en Algérie.",
     searchLabel: "Rechercher un huissier",
+    domainLabel: "Type d'intervention",
     steps: [
       {
         title: "Identifiez la wilaya",
-        desc: "L'huissier intervient dans sa zone de compétence.",
+        desc: "L'huissier intervient dans sa zone de compétence territoriale.",
       },
       {
         title: "Type d'acte",
-        desc: "Constat, signification, recouvrement — chacun a sa procédure.",
+        desc: "Constat, signification, recouvrement — précisez votre besoin.",
       },
       {
         title: "Contact rapide",
-        desc: "Certaines interventions sont urgentes. Contactez directement.",
+        desc: "Certaines interventions sont urgentes. Décrivez votre situation.",
       },
     ],
   },
   comptable: {
     label: "Comptable",
     labelPlural: "comptables",
-    badge: "Agréé ONEC/ONCA",
     hero: "Trouvez un comptable en Algérie",
-    sub: "Création d'entreprise, bilans, déclarations fiscales — pour entrepreneurs et diaspora.",
+    sub: "Création d'entreprise, bilans, déclarations fiscales — pour entrepreneurs résidents et diaspora.",
     searchLabel: "Rechercher un comptable",
+    domainLabel: "Domaine",
     steps: [
       {
         title: "Choisissez la wilaya",
-        desc: "Un comptable algérien connaît les exigences locales.",
+        desc: "Un comptable local connaît les exigences de l'administration algérienne.",
       },
       {
-        title: "Votre besoin",
-        desc: "Bilan, déclarations, création EURL — chacun sa spécialité.",
+        title: "Précisez votre besoin",
+        desc: "Bilan, déclarations IFU/G50, création EURL — chacun sa spécialité.",
       },
       {
         title: "Consultation à distance",
-        desc: "La plupart des missions se font par messagerie.",
+        desc: "La plupart des missions se font par messagerie et documents.",
       },
     ],
   },
@@ -137,25 +143,37 @@ export default function ProfessionPage() {
   const prof = PROFESSIONS[profId] || PROFESSIONS.avocat;
   const ProfIcon = PROF_ICONS[profId] || Scale;
 
+  // ── État partagé carte ↔ CustomSelect ─────────────────────────────────────
+  const [selectedWilaya, setSelectedWilaya] = useState("");
+  const [selectedDomaines, setSelectedDomaines] = useState<string[]>([]);
+  const [wilayas, setWilayas] = useState<string[]>([]);
   const [topPros, setTopPros] = useState<any[]>([]);
+  const [loadingWilayas, setLoadingWilayas] = useState(true);
+
+  const domaineOptions = (DOMAINES_PAR_PROFESSION[profId] || []).map((d) => ({
+    value: d,
+    label: d,
+  }));
+  const wilayaOptions = [
+    { value: "", label: "Toutes les wilayas" },
+    ...wilayas.map((w) => ({ value: w, label: w })),
+  ];
 
   useEffect(() => {
+    getWilayas().then((w) => {
+      setWilayas(w);
+      setLoadingWilayas(false);
+    });
     getTopRatedAvocats(6, profId).then(setTopPros);
   }, [profId]);
 
   useLayoutEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
     tl.fromTo(
-      ".ph-badge",
-      { opacity: 0, y: -10 },
-      { opacity: 1, y: 0, duration: 0.5 }
+      ".ph-title",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.8 }
     )
-      .fromTo(
-        ".ph-title",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8 },
-        "-=0.3"
-      )
       .fromTo(
         ".ph-sub",
         { opacity: 0, y: 20 },
@@ -163,7 +181,7 @@ export default function ProfessionPage() {
         "-=0.5"
       )
       .fromTo(
-        ".ph-cta",
+        ".ph-form",
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.6 },
         "-=0.4"
@@ -197,41 +215,97 @@ export default function ProfessionPage() {
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, [profId]);
 
-  const handleSearch = () => router.push(`/search?profession=${profId}`);
+  // Synchronisation : map → select via selectedWilaya (state partagé)
+  // select → map via selectedWilaya (même state)
+  const handleWilayaChange = (wilaya: string) => setSelectedWilaya(wilaya);
+
+  const handleSearch = () => {
+    const p = new URLSearchParams();
+    p.set("profession", profId);
+    if (selectedWilaya) p.set("wilaya", selectedWilaya);
+    selectedDomaines.forEach((d) => p.append("specialite", d));
+    router.push(`/search?${p.toString()}`);
+  };
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <style>{`.ph-badge,.ph-title,.ph-sub,.ph-cta,.ph-map,.ph-steps,.ph-pros{opacity:0;}`}</style>
+      <style>{`.ph-title,.ph-sub,.ph-form,.ph-map,.ph-steps,.ph-pros{opacity:0;}`}</style>
 
-      {/* Hero */}
+      {/* ── Hero ── */}
       <section className="px-4 py-12">
         <div className="max-w-6xl mx-auto">
           <Link href="/">
-            <button className="ph-badge inline-flex items-center gap-1.5 text-teal-600 hover:text-teal-700 text-sm font-medium mb-8 cursor-pointer transition-colors">
+            <button className="inline-flex items-center gap-1.5 text-teal-600 hover:text-teal-700 text-sm font-medium mb-8 cursor-pointer transition-colors">
               <ArrowLeft className="w-4 h-4" /> Accueil
             </button>
           </Link>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Gauche — hero + bouton */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            {/* Gauche — hero + formulaire complet */}
             <div>
-              <div className="ph-badge inline-flex items-center gap-2 bg-teal-50 border border-teal-200 text-teal-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-5">
-                <ProfIcon className="w-3.5 h-3.5" /> {prof.badge}
-              </div>
-
               <h1 className="ph-title text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 mb-5 leading-tight">
                 {prof.hero}
               </h1>
-
               <p className="ph-sub text-base sm:text-lg text-slate-600 mb-8 leading-relaxed">
                 {prof.sub}
               </p>
 
-              {/* Bouton unique — pas de selects ici */}
-              <div className="ph-cta">
+              {/* Formulaire avec wilaya + domaines + bouton */}
+              <div className="ph-form bg-white rounded-2xl shadow-md p-6 space-y-4">
+                {/* Wilaya — CustomSelect synchronisé avec la carte */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                    Wilaya
+                  </label>
+                  {loadingWilayas ? (
+                    <div className="h-12 bg-slate-100 rounded-lg animate-pulse" />
+                  ) : (
+                    <CustomSelect
+                      placeholder="Toutes les wilayas"
+                      options={wilayaOptions}
+                      value={selectedWilaya}
+                      onChange={handleWilayaChange} // ← synchronisé avec la carte
+                      className="h-12"
+                    />
+                  )}
+                </div>
+
+                {/* Domaines / Spécialités */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                    {prof.domainLabel}
+                  </label>
+                  <MultiSelectWithCheckboxes
+                    placeholder={`Choisir ${profId === "avocat" ? "des spécialités" : "des domaines"}...`}
+                    options={domaineOptions}
+                    value={selectedDomaines}
+                    onChange={setSelectedDomaines}
+                    className="h-12"
+                    placeholderClassName="text-slate-400 font-medium text-sm"
+                  />
+                </div>
+
+                {/* Wilaya sélectionnée visible */}
+                {selectedWilaya && (
+                  <div className="flex items-center justify-between bg-teal-50 border border-teal-200 rounded-xl px-4 py-2.5">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-teal-500" />
+                      <span className="text-sm font-semibold text-teal-700">
+                        {selectedWilaya}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => setSelectedWilaya("")}
+                      className="text-xs text-teal-400 hover:text-teal-600 cursor-pointer font-medium"
+                    >
+                      Effacer ✕
+                    </button>
+                  </div>
+                )}
+
                 <button
                   onClick={handleSearch}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl text-base transition-all cursor-pointer shadow-sm"
+                  className="w-full h-12 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   <Search className="w-5 h-5" />
                   {prof.searchLabel}
@@ -239,7 +313,7 @@ export default function ProfessionPage() {
               </div>
 
               {/* Steps */}
-              <div className="mt-10 space-y-4">
+              <div className="mt-8 space-y-4">
                 {prof.steps.map((step, i) => (
                   <div key={i} className="ph-steps flex gap-3">
                     <div className="w-7 h-7 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-xs font-bold text-teal-700 flex-shrink-0 mt-0.5">
@@ -258,26 +332,18 @@ export default function ProfessionPage() {
               </div>
             </div>
 
-            {/* Droite — carte seule, pas de selects */}
-            <div className="ph-map hidden lg:block">
+            {/* Droite — carte synchronisée avec le CustomSelect */}
+            <div className="ph-map hidden lg:block sticky top-24">
               <AlgeriaMap
-                selectedWilaya={undefined}
-                onSelect={() => {
-                  // Sur la landing, un clic wilaya redirige vers la search avec la wilaya
-                  // On passe par un handler local
-                }}
-                onSelectAndSearch={(wilaya: string) => {
-                  router.push(
-                    `/search?profession=${profId}&wilaya=${encodeURIComponent(wilaya)}`
-                  );
-                }}
+                selectedWilaya={selectedWilaya} // ← lit le même état
+                onSelect={handleWilayaChange} // ← écrit le même état
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Top professionnels */}
+      {/* Top pros */}
       {topPros.length > 0 && (
         <section className="ph-pros-section pb-16 px-4">
           <div className="max-w-6xl mx-auto">
@@ -318,12 +384,11 @@ export default function ProfessionPage() {
             Vous êtes {prof.label.toLowerCase()} en Algérie ?
           </h2>
           <p className="text-teal-100 mb-6 leading-relaxed">
-            Rejoignez Mizan — inscription gratuite, vérification sous 24-48h.
+            Inscription gratuite, vérification sous 24-48h.
           </p>
           <Link href="/auth/lawyer/register">
             <button className="inline-flex items-center gap-2 px-8 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl cursor-pointer shadow-sm">
-              Créer mon profil {prof.label.toLowerCase()}{" "}
-              <ChevronRight className="w-4 h-4" />
+              Créer mon profil <ChevronRight className="w-4 h-4" />
             </button>
           </Link>
         </div>
