@@ -505,49 +505,55 @@ export default function HomePage() {
   }, []);
 
   useLayoutEffect(() => {
-    gsap.set([".hero-title", ".hero-sub", ".prof-card", ".stat-card"], {
-      autoAlpha: 0,
-      y: 20,
-    });
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.to(".hero-title", { autoAlpha: 1, y: 0, duration: 0.8 })
-      .to(".hero-sub", { autoAlpha: 1, y: 0, duration: 0.7 }, "-=0.5")
-      .to(
+    tl.fromTo(
+      ".hero-title",
+      { opacity: 0, y: -30 },
+      { opacity: 1, y: 0, duration: 0.8 }
+    )
+      .fromTo(
+        ".hero-sub",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.7 },
+        "-=0.5"
+      )
+      .fromTo(
         ".prof-card",
-        { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.1 },
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
         "-=0.4"
       )
-      .to(
+      .fromTo(
         ".stat-card",
-        { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.08 },
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 },
         "-=0.2"
       );
-
     gsap.fromTo(
       ".steps-section",
-      { autoAlpha: 0, y: 30 },
+      { opacity: 0, y: 30 },
       {
-        autoAlpha: 1,
+        opacity: 1,
         y: 0,
         duration: 0.7,
         scrollTrigger: {
           trigger: ".steps-section",
-          start: "top 90%",
-          once: true,
+          start: "top 85%",
+          toggleActions: "play none none none",
         },
       }
     );
     gsap.fromTo(
       ".cta-section",
-      { autoAlpha: 0, y: 30 },
+      { opacity: 0, y: 30 },
       {
-        autoAlpha: 1,
+        opacity: 1,
         y: 0,
         duration: 0.7,
         scrollTrigger: {
           trigger: ".cta-section",
-          start: "top 90%",
-          once: true,
+          start: "top 85%",
+          toggleActions: "play none none none",
         },
       }
     );
@@ -558,17 +564,17 @@ export default function HomePage() {
     if (!topAvocats.length) return;
     gsap.fromTo(
       ".avocat-card",
-      { autoAlpha: 0, x: -20 },
+      { opacity: 0, x: -30 },
       {
-        autoAlpha: 1,
+        opacity: 1,
         x: 0,
-        duration: 0.7,
-        stagger: 0.07,
+        duration: 0.8,
+        stagger: 0.08,
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".avocats-section",
-          start: "top 90%",
-          once: true,
+          start: "top 60%",
+          toggleActions: "play none none none",
         },
       }
     );
@@ -577,6 +583,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden">
       <style>{`
+        .hero-title,.hero-sub,.prof-card,.stat-card,.steps-section,.avocat-card,.cta-section { opacity:0; }
         .prof-card-btn { transition:all 0.2s ease; }
         .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
       `}</style>

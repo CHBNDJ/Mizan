@@ -170,40 +170,53 @@ export default function ProfessionPage() {
   }, [profId]);
 
   useLayoutEffect(() => {
-    // autoAlpha pour éviter le flash opacity:0
-    gsap.set([".ph-title", ".ph-sub", ".ph-form", ".ph-map", ".ph-step"], {
-      autoAlpha: 0,
-    });
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.to(".ph-title", { autoAlpha: 1, y: 0, duration: 0.8, from: { y: 30 } })
-      .to(".ph-sub", { autoAlpha: 1, y: 0, duration: 0.7 }, "-=0.5")
-      .to(".ph-form", { autoAlpha: 1, y: 0, duration: 0.6 }, "-=0.4")
-      .to(".ph-map", { autoAlpha: 1, x: 0, duration: 0.7 }, "-=0.3")
-      .to(
+    tl.fromTo(
+      ".ph-title",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.8 }
+    )
+      .fromTo(
+        ".ph-sub",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.7 },
+        "-=0.5"
+      )
+      .fromTo(
+        ".ph-form",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6 },
+        "-=0.4"
+      )
+      .fromTo(
+        ".ph-map",
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.7 },
+        "-=0.3"
+      )
+      .fromTo(
         ".ph-step",
-        { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.1 },
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
         "-=0.2"
       );
-
-    if (topPros.length > 0) {
-      gsap.fromTo(
-        ".ph-pro",
-        { autoAlpha: 0, y: 20 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.08,
-          scrollTrigger: {
-            trigger: ".ph-pros-section",
-            start: "top 90%",
-            once: true,
-          },
-        }
-      );
-    }
+    gsap.fromTo(
+      ".ph-pro",
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.08,
+        scrollTrigger: {
+          trigger: ".ph-pros-section",
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
-  }, [profId, topPros.length]);
+  }, [profId]);
 
   const handleSearch = () => {
     const p = new URLSearchParams();
@@ -215,6 +228,19 @@ export default function ProfessionPage() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+      <style>{`
+        .ph-title,.ph-sub,.ph-form,.ph-map,.ph-step,.ph-pro { opacity:0; }
+        .wilaya-select-wrapper span,
+        .wilaya-select-wrapper button > span:first-child,
+        .wilaya-select-wrapper [data-placeholder] {
+          color: rgb(148 163 184) !important;
+          font-weight: 500 !important;
+          font-size: 0.875rem !important;
+        }
+        .wilaya-select-wrapper button[aria-expanded] span:not([class*="sr"]) {
+          color: rgb(148 163 184) !important;
+        }
+      `}</style>
       {/* ── Hero ── */}
       <section className="px-4 py-10 sm:py-14">
         <div className="max-w-6xl mx-auto">
@@ -227,17 +253,20 @@ export default function ProfessionPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             {/* Gauche */}
             <div>
-              <h1 className="ph-title text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 sm:mb-5 leading-tight">
+              <h1 className="ph-title text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 sm:mb-5 leading-tight text-center lg:text-left">
                 {prof.hero}
               </h1>
-              <p className="ph-sub text-sm sm:text-lg text-slate-600 mb-6 sm:mb-8 leading-relaxed">
+              <p className="ph-sub text-sm sm:text-lg text-slate-600 mb-6 sm:mb-8 leading-relaxed text-center lg:text-left">
                 {prof.sub}
               </p>
 
               {/* Formulaire — domaine PUIS wilaya */}
-              <div className="ph-form bg-white rounded-2xl shadow-md p-5 sm:p-6 space-y-4">
+              <div
+                className="ph-form bg-white rounded-2xl shadow-md p-5 sm:p-6 space-y-4 relative"
+                style={{ zIndex: 50 }}
+              >
                 {/* 1. Domaines / Spécialités EN PREMIER */}
-                <div>
+                <div className="relative" style={{ zIndex: 20 }}>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                     {prof.domainLabel}
                   </label>
@@ -251,22 +280,23 @@ export default function ProfessionPage() {
                   />
                 </div>
 
-                {/* 2. Wilaya EN SECOND — valeur visible dans le select lui-même */}
-                <div>
+                {/* 2. Wilaya EN SECOND */}
+                <div className="relative" style={{ zIndex: 10 }}>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                     Wilaya
                   </label>
                   {loadingWilayas ? (
                     <div className="h-12 bg-slate-100 rounded-lg animate-pulse" />
                   ) : (
-                    <CustomSelect
-                      placeholder="Toutes les wilayas"
-                      options={wilayaOptions}
-                      value={selectedWilaya}
-                      onChange={setSelectedWilaya}
-                      className="h-12"
-                      placeholderClassName="text-slate-400 font-medium text-sm"
-                    />
+                    <div className="wilaya-select-wrapper">
+                      <CustomSelect
+                        placeholder="Toutes les wilayas"
+                        options={wilayaOptions}
+                        value={selectedWilaya}
+                        onChange={setSelectedWilaya}
+                        className="h-12"
+                      />
+                    </div>
                   )}
                   {/* Pas de badge vert — la valeur sélectionnée apparaît directement dans le CustomSelect */}
                 </div>
@@ -275,15 +305,20 @@ export default function ProfessionPage() {
                   onClick={handleSearch}
                   className="w-full h-12 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer text-sm sm:text-base"
                 >
-                  <Search className="w-5 h-5" />
-                  {prof.searchLabel}
+                  {`Trouver des ${prof.labelPlural}`}
                 </button>
               </div>
 
               {/* Steps */}
-              <div className="mt-8 space-y-4">
+              <div
+                className="mt-8 space-y-4 text-center lg:text-left relative"
+                style={{ zIndex: 1 }}
+              >
                 {prof.steps.map((step, i) => (
-                  <div key={i} className="ph-step flex gap-3">
+                  <div
+                    key={i}
+                    className="ph-step flex gap-3 justify-center lg:justify-start"
+                  >
                     <div className="w-7 h-7 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-xs font-bold text-teal-700 flex-shrink-0 mt-0.5">
                       {i + 1}
                     </div>
