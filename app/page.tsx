@@ -479,7 +479,9 @@ const HERO_TITLE = (
   <>
     L'expertise juridique
     <br className="hidden sm:block" />{" "}
-    <span className="text-teal-600">algérienne à portée de clic</span>
+    <span className="text-teal-600">
+      juridique algérienne, enfin accessible
+    </span>
   </>
 );
 const HERO_SUB =
