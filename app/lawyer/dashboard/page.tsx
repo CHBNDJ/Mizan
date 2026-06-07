@@ -606,7 +606,7 @@ export default function LawyerDashboardPage() {
       icon: Eye,
       label: "Profil public",
       sub: "Tel que les clients vous voient",
-      href: `/lawyer/${user?.id}`,
+      href: `/lawyers/${user?.id}`,
     },
   ];
 
