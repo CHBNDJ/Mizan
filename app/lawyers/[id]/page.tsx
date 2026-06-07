@@ -1022,8 +1022,19 @@ const InfoCardDesktop = ({
   return <div className="h-full">{body}</div>;
 };
 
-// ── Google Maps Card ──────────────────────────────────────────────────────────
-const GoogleMapsCard = ({ avocat }: { avocat: AvocatData }) => {
+// ── Google Maps Card ─────────────────────────────────────────────────────────
+const GoogleMapsCard = ({
+  avocat,
+  showContact,
+  onLockedClick,
+}: {
+  avocat: AvocatData;
+  showContact: boolean;
+  onLockedClick: () => void;
+}) => {
+  const [mapType, setMapType] = React.useState<"m" | "k">("m"); // m=plan k=satellite
+  const mapContainerRef = React.useRef<HTMLDivElement>(null);
+
   const hasAddress = !!(
     avocat.adresse?.rue ||
     avocat.adresse?.ville ||
@@ -1031,15 +1042,22 @@ const GoogleMapsCard = ({ avocat }: { avocat: AvocatData }) => {
   );
   if (!hasAddress) return null;
 
-  const embedUrl = getGoogleMapsEmbedUrl(avocat);
   const mapsUrl = getGoogleMapsUrl(avocat);
-  const adresseStr = [
-    avocat.adresse?.rue,
-    avocat.adresse?.ville || avocat.ville,
-    avocat.wilaya,
-  ]
+  const embedUrl = `${getGoogleMapsEmbedUrl(avocat)}&t=${mapType}`;
+  const villeStr = [avocat.adresse?.ville || avocat.ville, avocat.wilaya]
     .filter(Boolean)
     .join(", ");
+  const rueStr = avocat.adresse?.rue || "";
+
+  const handleFullscreen = () => {
+    if (mapContainerRef.current) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        mapContainerRef.current.requestFullscreen?.();
+      }
+    }
+  };
 
   return (
     <Card className="content-card opacity-0 invisible shadow-sm mb-4 overflow-hidden">
@@ -1049,22 +1067,49 @@ const GoogleMapsCard = ({ avocat }: { avocat: AvocatData }) => {
             <MapPin className="w-4 h-4 text-teal-600" />
             Localisation du cabinet
           </div>
-          <a
-            href={mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-xs text-teal-600 hover:text-teal-700 font-medium transition-colors"
-          >
-            <ExternalLink className="w-3 h-3" />
-            Ouvrir dans Maps
-          </a>
+          {/* Ouvrir dans Maps — uniquement connecté */}
+          {showContact ? (
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-xs text-teal-600 hover:text-teal-700 font-medium transition-colors"
+            >
+              <ExternalLink className="w-3 h-3" />
+              Ouvrir dans Maps
+            </a>
+          ) : (
+            <button
+              onClick={onLockedClick}
+              className="flex items-center gap-1 text-xs text-slate-400 cursor-pointer hover:text-slate-600 transition-colors"
+            >
+              <ExternalLink className="w-3 h-3" />
+              Ouvrir dans Maps
+            </button>
+          )}
         </div>
-        <p className="text-xs text-slate-500 mt-1">{adresseStr}</p>
+        {/* Adresse */}
+        {showContact && (rueStr || villeStr) && (
+          <p className="text-xs text-slate-500 mt-1">
+            {rueStr ? `${rueStr}, ` : ""}
+            {villeStr}
+          </p>
+        )}
+        {!showContact && (
+          <p className="text-xs text-slate-400 mt-1 italic">
+            Connectez-vous pour voir l'adresse complète
+          </p>
+        )}
       </CardHeader>
+
       <CardContent className="p-0">
-        {/* Carte embed Google Maps — sans API key */}
-        <div className="relative w-full h-52 sm:h-64 bg-slate-100">
+        {/* Carte + contrôles */}
+        <div
+          ref={mapContainerRef}
+          className="relative w-full h-52 sm:h-64 bg-slate-100"
+        >
           <iframe
+            key={mapType}
             src={embedUrl}
             className="w-full h-full border-0"
             loading="lazy"
@@ -1072,17 +1117,55 @@ const GoogleMapsCard = ({ avocat }: { avocat: AvocatData }) => {
             title={`Cabinet de ${avocat.prenom} ${avocat.nom}`}
             sandbox="allow-scripts allow-same-origin allow-popups"
           />
+
+          {/* Overlay cliquable si non connecté */}
+          {!showContact && (
+            <button
+              onClick={onLockedClick}
+              className="absolute inset-0 w-full h-full cursor-pointer bg-transparent"
+              aria-label="Connectez-vous pour accéder"
+            />
+          )}
+
+          {/* Toggle Plan / Satellite */}
+          <div className="absolute top-2 left-2 flex rounded-lg overflow-hidden border border-slate-300 shadow-sm text-xs font-semibold z-10">
+            <button
+              onClick={() => setMapType("m")}
+              className={`px-2.5 py-1.5 transition-colors cursor-pointer ${mapType === "m" ? "bg-white text-slate-800" : "bg-white/70 text-slate-500 hover:bg-white"}`}
+            >
+              Plan
+            </button>
+            <button
+              onClick={() => setMapType("k")}
+              className={`px-2.5 py-1.5 transition-colors cursor-pointer border-l border-slate-300 ${mapType === "k" ? "bg-white text-slate-800" : "bg-white/70 text-slate-500 hover:bg-white"}`}
+            >
+              Satellite
+            </button>
+          </div>
+
+          {/* Bouton plein écran */}
+          <button
+            onClick={handleFullscreen}
+            className="absolute top-2 right-2 w-8 h-8 bg-white/90 hover:bg-white border border-slate-300 rounded-lg shadow-sm flex items-center justify-center z-10 cursor-pointer transition-colors"
+            title="Plein écran"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="15 3 21 3 21 9" />
+              <polyline points="9 21 3 21 3 15" />
+              <line x1="21" y1="3" x2="14" y2="10" />
+              <line x1="3" y1="21" x2="10" y2="14" />
+            </svg>
+          </button>
         </div>
-        {/* Bouton itinéraire */}
-        <a
-          href={`https://maps.google.com/maps/dir/?api=1&destination=${encodeURIComponent(getGoogleMapsQuery(avocat))}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 py-3 text-sm font-medium text-teal-700 hover:bg-teal-50 transition-colors border-t border-slate-100"
-        >
-          <MapPin className="w-4 h-4" />
-          Obtenir l'itinéraire
-        </a>
       </CardContent>
     </Card>
   );
@@ -1236,19 +1319,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   const siteInfo = validSiteUrl ? getSiteLabel(validSiteUrl) : null;
 
   const infoItems: InfoItem[] = [
-    ...(avocat.adresse?.rue || avocat.ville
-      ? [
-          {
-            icon: <MapPin className="w-3.5 h-3.5 text-teal-600" />,
-            label: "Cabinet",
-            value: `${avocat.adresse?.ville || avocat.ville}, ${avocat.wilaya}`,
-            sublabel: showContact
-              ? avocat.adresse?.rue || undefined
-              : undefined,
-            href: showContact ? getGoogleMapsUrl(avocat) : undefined,
-          },
-        ]
-      : []),
     ...(showContact
       ? allPhones.map((p) => ({
           icon: (
@@ -1540,7 +1610,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         )}
 
         {/* ── Google Maps embed ── */}
-        {hasAddress && <GoogleMapsCard avocat={avocat} />}
+        {hasAddress && (
+          <GoogleMapsCard
+            avocat={avocat}
+            showContact={showContact}
+            onLockedClick={() => router.push("/auth/client/register")}
+          />
+        )}
 
         {/* ── Boutons mobile ── */}
         {isClient && !isOwnProfile && (

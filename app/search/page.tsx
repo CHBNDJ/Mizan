@@ -463,6 +463,13 @@ const PROFESSIONS = [
   },
 ];
 
+// Formate le slug wilaya en label lisible : "el-khroub" → "El Khroub"
+const formatWilaya = (slug: string) =>
+  slug
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+
 function SearchResults() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -533,19 +540,14 @@ function SearchResults() {
     updateURL(nf);
   };
 
-  // Clic sur un tab profession :
-  // - Pas de spécialité sélectionnée → garde la wilaya, va direct en search
-  // - Spécialité sélectionnée → retour vers landing pour re-sélectionner
   const handleProfessionSwitch = (newProf: string) => {
     if (newProf === professionParam) return;
     if (!filters.specialite?.length) {
-      // Pas de spécialité — switch direct en gardant la wilaya
       const p = new URLSearchParams();
       p.set("profession", newProf);
       if (filters.wilaya) p.set("wilaya", filters.wilaya);
       router.push(`/search?${p.toString()}`);
     } else {
-      // Spécialité sélectionnée — retour landing pour rechoisir
       router.push(`/${newProf}`);
     }
   };
@@ -662,6 +664,7 @@ function SearchResults() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`.search-header { opacity:0; } .search-avocat-card { opacity:0; }`}</style>
+
       {/* Barre sticky */}
       <div className="search-header sticky top-16 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
@@ -695,11 +698,23 @@ function SearchResults() {
                 {avocats.length} {currentProf.plural} trouvé
                 {avocats.length > 1 ? "s" : ""}
               </span>
+
+              {/* Badge wilaya — slug formaté en label lisible */}
               {filters.wilaya && (
-                <span className="px-2 py-0.5 bg-teal-50 text-teal-700 border border-teal-100 rounded-full text-xs font-medium">
-                  📍 {filters.wilaya}
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-600 text-white rounded-full text-xs font-semibold">
+                  <MapPinSmall />
+                  {formatWilaya(filters.wilaya)}
+                  <button
+                    onClick={() => handleFilter("wilaya", "")}
+                    className="ml-0.5 text-teal-200 hover:text-white cursor-pointer leading-none"
+                    title="Retirer ce filtre"
+                  >
+                    ×
+                  </button>
                 </span>
               )}
+
+              {/* Badges spécialités */}
               {filters.specialite?.map((s) => (
                 <span
                   key={s}
@@ -744,7 +759,6 @@ function SearchResults() {
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-5 sm:py-6">
         <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-5 sm:gap-6">
-          {/* Sidebar desktop */}
           <aside className="hidden lg:block lg:sticky lg:top-40 lg:self-start">
             <div className="bg-white shadow-sm rounded-xl p-4">
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-4">
@@ -753,8 +767,6 @@ function SearchResults() {
               <LightFilters />
             </div>
           </aside>
-
-          {/* Résultats */}
           <div>
             {loading ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3">
@@ -808,6 +820,23 @@ function SearchResults() {
     </div>
   );
 }
+
+// Petit icône MapPin inline (évite l'import Lucide dans le JSX inline)
+const MapPinSmall = () => (
+  <svg
+    width="10"
+    height="10"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+    <circle cx="12" cy="10" r="3" />
+  </svg>
+);
 
 export default function SearchPage() {
   return (
