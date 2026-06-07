@@ -417,13 +417,9 @@ import {
   Camera,
   Clock,
   LayoutDashboard,
-  Scale,
   ArrowRight,
   ChevronRight,
   Star,
-  CreditCard,
-  Users,
-  X,
 } from "lucide-react";
 import Link from "next/link";
 import { gsap } from "gsap";
@@ -473,33 +469,9 @@ export default function LawyerDashboardPage() {
   useEffect(() => {
     if (loading || loadingStats || !mainRef.current) return;
     gsap.fromTo(
-      ".dash-content",
-      { opacity: 0, y: 16 },
-      { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
-    );
-    gsap.fromTo(
-      ".stat-card",
+      ".dash-fade",
       { opacity: 0, y: 12 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.4,
-        stagger: 0.07,
-        ease: "power2.out",
-        delay: 0.15,
-      }
-    );
-    gsap.fromTo(
-      ".action-row",
-      { opacity: 0, x: -8 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 0.4,
-        stagger: 0.06,
-        ease: "power2.out",
-        delay: 0.35,
-      }
+      { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power2.out" }
     );
   }, [loading, loadingStats]);
 
@@ -610,13 +582,13 @@ export default function LawyerDashboardPage() {
 
   if (loading)
     return (
-      <div className="min-h-screen pt-16 bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen pt-16 flex items-center justify-center bg-gradient-to-br from-teal-50 via-white to-teal-50">
         <div className="animate-spin rounded-full h-7 w-7 border-2 border-teal-600 border-t-transparent" />
       </div>
     );
   if (!isAuthenticated) return null;
 
-  // ── Sidebar items ──────────────────────────────────────────────────────────
+  // ── Navigation sidebar ─────────────────────────────────────────────────────
   const NAV = [
     {
       icon: LayoutDashboard,
@@ -634,32 +606,12 @@ export default function LawyerDashboardPage() {
     { icon: Eye, label: "Profil public", href: `/lawyer/${user?.id}` },
   ];
 
-  const Sidebar = ({ mobile = false }) => (
-    <div
-      className={`${mobile ? "flex" : "hidden lg:flex"} flex-col h-full bg-white border-r border-slate-200`}
-    >
-      {/* Logo */}
-      <div className="flex items-center gap-2.5 px-5 py-5 border-b border-slate-100">
-        <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center flex-shrink-0">
-          <Scale className="w-4 h-4 text-white" />
-        </div>
-        <span className="text-base font-bold text-slate-800 tracking-tight">
-          Mizan
-        </span>
-        {mobile && (
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="ml-auto text-slate-400 hover:text-slate-600 cursor-pointer"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        )}
-      </div>
-
-      {/* Profile pill */}
-      <div className="px-4 py-4 border-b border-slate-100">
-        <div className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50">
-          <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 overflow-hidden">
+  const SidebarContent = () => (
+    <div className="flex flex-col h-full">
+      {/* Profil */}
+      <div className="px-4 py-5 border-b border-white/10">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 overflow-hidden">
             {profile?.avatar_url ? (
               <img
                 src={profile.avatar_url}
@@ -671,30 +623,32 @@ export default function LawyerDashboardPage() {
             )}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold text-slate-800 truncate">
+            <p className="text-sm font-semibold text-white truncate leading-tight">
               {profile?.first_name} {profile?.last_name}
             </p>
-            <p className="text-[10px] text-slate-400 truncate">{profLabel}</p>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <span className="text-xs text-teal-300">{profLabel}</span>
+              {isVerified && <CheckCircle className="w-3 h-3 text-teal-400" />}
+            </div>
           </div>
-          {isVerified && (
-            <CheckCircle className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
-          )}
         </div>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-3 space-y-0.5">
+      <nav className="flex-1 px-3 py-4 space-y-0.5">
         {NAV.map((item) => (
           <Link key={item.href} href={item.href}>
             <div
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all group relative ${item.active ? "bg-teal-50 text-teal-700" : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"}`}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all relative ${
+                item.active
+                  ? "bg-white/15 text-white"
+                  : "text-teal-200/70 hover:bg-white/10 hover:text-white"
+              }`}
             >
-              <item.icon
-                className={`w-4 h-4 flex-shrink-0 ${item.active ? "text-teal-600" : "text-slate-400 group-hover:text-slate-600"}`}
-              />
+              <item.icon className="w-4 h-4 flex-shrink-0" />
               <span className="text-sm font-medium">{item.label}</span>
               {(item.badge || 0) > 0 && (
-                <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center flex-shrink-0">
+                <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
                   {(item.badge || 0) > 9 ? "9+" : item.badge}
                 </span>
               )}
@@ -703,36 +657,29 @@ export default function LawyerDashboardPage() {
         ))}
       </nav>
 
-      {/* Abonnement */}
-      <div className="px-4 py-4 border-t border-slate-100">
-        <div className="bg-slate-800 rounded-xl p-3">
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <Star className="w-3 h-3 text-amber-400" />
-            <p className="text-[10px] font-semibold text-slate-300 uppercase tracking-wide">
-              Abonnement
-            </p>
-          </div>
-          <p className="text-xs font-semibold text-white mb-0.5">
+      {/* Abonnement + Settings */}
+      <div className="px-4 pb-5 space-y-3 border-t border-white/10 pt-4">
+        <div>
+          <p className="text-[10px] text-teal-400 uppercase tracking-widest font-medium mb-0.5">
+            Abonnement
+          </p>
+          <p className="text-xs text-white font-medium">
             {subStatus === "active"
               ? `Plan ${planLabel(subPlan)}`
               : "Lancement gratuit"}
           </p>
-          <p className="text-[10px] text-slate-400">
+          <p className="text-[10px] text-teal-300/60 mt-0.5">
             {subStatus === "active" && subEnd
               ? `Expire le ${fmtDate(subEnd)}`
               : "Paiement disponible bientôt"}
           </p>
         </div>
-      </div>
-
-      {/* Settings */}
-      <div className="px-3 pb-4">
         <button
           onClick={() => router.push("/settings")}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-all cursor-pointer"
+          className="flex items-center gap-2 text-teal-300/70 hover:text-white transition-colors cursor-pointer"
         >
           <Settings className="w-4 h-4" />
-          <span className="text-sm">Paramètres</span>
+          <span className="text-xs">Paramètres</span>
         </button>
       </div>
     </div>
@@ -740,61 +687,55 @@ export default function LawyerDashboardPage() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-50 via-white to-teal-50 flex">
-      <style>{`.dash-content,.stat-card,.action-row{opacity:0;}`}</style>
+      <style>{`.dash-fade{opacity:0;}`}</style>
 
-      {/* ── Sidebar desktop (fixe, largeur 220px) ── */}
-      <div className="hidden lg:block w-[220px] fixed top-16 left-0 bottom-0 z-30">
-        <Sidebar />
+      {/* ── Sidebar desktop ── */}
+      <div className="hidden lg:block w-[200px] fixed top-16 left-0 bottom-0 z-30 bg-teal-800">
+        <SidebarContent />
       </div>
 
-      {/* ── Sidebar mobile (overlay) ── */}
+      {/* ── Sidebar mobile overlay ── */}
       {sidebarOpen && (
         <>
           <div
             className="fixed inset-0 bg-black/40 z-40 lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
-          <div className="fixed top-16 left-0 bottom-0 w-[220px] z-50 lg:hidden">
-            <Sidebar mobile />
+          <div className="fixed top-16 left-0 bottom-0 w-[200px] z-50 bg-teal-800 lg:hidden">
+            <SidebarContent />
           </div>
         </>
       )}
 
-      {/* ── Contenu principal ── */}
-      <div className="flex-1 lg:ml-[220px] min-h-screen" ref={mainRef}>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-          {/* Header mobile */}
-          <div className="flex items-center justify-between mb-8 lg:hidden">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="p-2 rounded-lg bg-white border border-slate-200 text-slate-600 cursor-pointer"
+      {/* ── Contenu ── */}
+      <div className="flex-1 lg:ml-[200px]" ref={mainRef}>
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+          {/* Burger mobile */}
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="lg:hidden mb-6 p-2 rounded-lg bg-white border border-slate-200 text-slate-600 cursor-pointer"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-            <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
-              <Scale className="w-4 h-4 text-white" />
-            </div>
-          </div>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
 
           {/* Titre */}
-          <div className="dash-content mb-8">
-            <h1 className="text-2xl font-bold text-slate-900">
+          <div className="dash-fade mb-7">
+            <h1 className="text-xl font-bold text-slate-900">
               Tableau de bord
             </h1>
-            <p className="text-sm text-slate-500 mt-1">
-              Bonjour {profile?.first_name} —{" "}
+            <p className="text-sm text-slate-400 mt-0.5">
               {new Date().toLocaleDateString("fr-DZ", {
                 weekday: "long",
                 day: "numeric",
@@ -803,31 +744,30 @@ export default function LawyerDashboardPage() {
             </p>
           </div>
 
-          {/* ── Banners ── */}
+          {/* Banner vérification */}
           {!isVerified && (
-            <div className="dash-content mb-4 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+            <div className="dash-fade mb-4 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
               <Clock className="w-4 h-4 text-amber-500 flex-shrink-0" />
-              <div className="flex-1">
+              <div>
                 <p className="text-sm font-semibold text-amber-800">
                   Vérification en cours · 24-48h
                 </p>
-                <p className="text-xs text-amber-600">
-                  Un email vous sera envoyé dès validation.
+                <p className="text-xs text-amber-600 mt-0.5">
+                  Email de confirmation à venir.
                 </p>
               </div>
             </div>
           )}
 
+          {/* Banner photo */}
           {!profile?.avatar_url && (
-            <div className="dash-content mb-4 flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-3">
+            <div className="dash-fade mb-5 flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-3">
               <Camera className="w-4 h-4 text-teal-600 flex-shrink-0" />
               <div className="flex-1">
                 <p className="text-sm font-semibold text-slate-800">
                   Ajoutez votre photo
                 </p>
-                <p className="text-xs text-slate-500">
-                  3× plus de demandes avec une photo professionnelle
-                </p>
+                <p className="text-xs text-slate-400">3× plus de demandes</p>
               </div>
               <Link href="/profile">
                 <button className="flex items-center gap-1 text-xs font-semibold text-teal-600 hover:text-teal-700 cursor-pointer whitespace-nowrap">
@@ -837,87 +777,72 @@ export default function LawyerDashboardPage() {
             </div>
           )}
 
-          {/* ── Stats ── */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
-            <div className="stat-card bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
-                  Demandes
-                </p>
-                <Users className="w-4 h-4 text-slate-300" />
-              </div>
-              <p className="text-3xl font-bold text-teal-700 leading-none">
+          {/* Stats */}
+          <div className="dash-fade grid grid-cols-3 gap-3 mb-6">
+            <div className="bg-white rounded-xl p-4 border border-slate-200">
+              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-2">
+                Demandes
+              </p>
+              <p className="text-3xl font-bold text-slate-800 leading-none">
                 {loadingStats ? (
-                  <span className="text-teal-200">—</span>
+                  <span className="text-slate-200">—</span>
                 ) : (
                   stats.total
                 )}
               </p>
               {stats.pending > 0 && (
-                <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-red-50 border border-red-100 rounded-full">
-                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full" />
-                  <span className="text-[11px] text-red-600 font-semibold">
-                    {stats.pending} non lu{stats.pending > 1 ? "s" : ""}
-                  </span>
-                </div>
+                <span className="inline-flex items-center gap-1 mt-2 text-[11px] text-red-600 font-semibold">
+                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full" />{" "}
+                  {stats.pending} non lu{stats.pending > 1 ? "s" : ""}
+                </span>
               )}
             </div>
 
-            <div className="stat-card bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
-                  Répondues
-                </p>
-                <CheckCircle className="w-4 h-4 text-slate-300" />
-              </div>
-              <p className="text-3xl font-bold text-green-700 leading-none">
+            <div className="bg-white rounded-xl p-4 border border-slate-200">
+              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-2">
+                Répondues
+              </p>
+              <p className="text-3xl font-bold text-slate-800 leading-none">
                 {loadingStats ? (
-                  <span className="text-green-200">—</span>
+                  <span className="text-slate-200">—</span>
                 ) : (
                   stats.answered
                 )}
               </p>
               {stats.total > 0 && (
                 <p className="text-[11px] text-slate-400 mt-2">
-                  {Math.round((stats.answered / stats.total) * 100)}% de taux
+                  {Math.round((stats.answered / stats.total) * 100)}%
                 </p>
               )}
             </div>
 
-            <div className="stat-card col-span-2 sm:col-span-1 bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
-                  Vues profil
-                </p>
-                <Eye className="w-4 h-4 text-slate-300" />
-              </div>
-              <p className="text-3xl font-bold text-blue-700 leading-none">
+            <div className="bg-white rounded-xl p-4 border border-slate-200">
+              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-2">
+                Vues
+              </p>
+              <p className="text-3xl font-bold text-slate-800 leading-none">
                 {loadingStats ? (
-                  <span className="text-blue-200">—</span>
+                  <span className="text-slate-200">—</span>
                 ) : (
                   stats.views
                 )}
               </p>
-              <p className="text-[11px] text-blue-400 mt-2">total</p>
             </div>
           </div>
 
-          {/* ── Actions ── */}
-          <div className="bg-white border border-slate-200 rounded-xl overflow-hidden mb-4">
-            <div className="px-5 py-3 border-b border-slate-100">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
-                Actions rapides
-              </p>
-            </div>
-
+          {/* Actions */}
+          <div className="dash-fade bg-white border border-slate-200 rounded-xl overflow-hidden mb-4">
+            <p className="px-5 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wide border-b border-slate-100">
+              Actions
+            </p>
             {[
               {
                 icon: MessageSquare,
-                label: "Mes consultations",
+                label: "Consultations",
                 sub:
                   stats.pending > 0
-                    ? `${stats.pending} message${stats.pending > 1 ? "s" : ""} non lu${stats.pending > 1 ? "s" : ""}`
-                    : "Aucun message en attente",
+                    ? `${stats.pending} non lu${stats.pending > 1 ? "s" : ""}`
+                    : "Tout est à jour",
                 href: "/lawyer/consultations",
                 badge: stats.pending,
               },
@@ -929,17 +854,17 @@ export default function LawyerDashboardPage() {
               },
               {
                 icon: Eye,
-                label: "Mon profil public",
-                sub: "Tel que les clients vous voient",
+                label: "Profil public",
+                sub: "Vue client",
                 href: `/lawyer/${user?.id}`,
               },
             ].map((item, i) => (
               <Link key={i} href={item.href}>
-                <div className="action-row flex items-center gap-4 px-5 py-4 hover:bg-slate-50 transition-colors cursor-pointer border-b border-slate-100 last:border-0 group">
-                  <div className="w-9 h-9 rounded-lg bg-slate-100 group-hover:bg-teal-50 flex items-center justify-center flex-shrink-0 transition-colors">
+                <div className="flex items-center gap-4 px-5 py-4 hover:bg-slate-50 cursor-pointer border-b border-slate-100 last:border-0 group transition-colors">
+                  <div className="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-teal-50 flex items-center justify-center flex-shrink-0 transition-colors">
                     <item.icon className="w-4 h-4 text-slate-500 group-hover:text-teal-600 transition-colors" />
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1">
                     <p className="text-sm font-semibold text-slate-800">
                       {item.label}
                     </p>
@@ -959,18 +884,18 @@ export default function LawyerDashboardPage() {
           </div>
 
           {/* Aide */}
-          <div className="flex items-center justify-between gap-4 px-5 py-4 bg-white border border-slate-200 rounded-xl">
+          <div className="dash-fade flex items-center justify-between px-5 py-4 bg-white border border-slate-200 rounded-xl">
             <div>
               <p className="text-sm font-semibold text-slate-800">
                 Besoin d'aide ?
               </p>
-              <p className="text-xs text-slate-400">Réponse sous 24h</p>
+              <p className="text-xs text-slate-400">support@mizan-dz.com</p>
             </div>
             <a
               href="mailto:support@mizan-dz.com"
-              className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-teal-600 transition-colors cursor-pointer whitespace-nowrap"
+              className="text-xs font-semibold text-teal-600 hover:text-teal-700 cursor-pointer"
             >
-              Nous contacter <ArrowRight className="w-3 h-3" />
+              Contacter →
             </a>
           </div>
         </div>
