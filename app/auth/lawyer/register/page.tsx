@@ -1288,7 +1288,8 @@ export default function LawyerRegisterPage() {
     },
     2: { title: "Informations du cabinet", sub: "Localisation et coordonnées" },
     3: {
-      title: "Domaines d'intervention",
+      title:
+        profession === "avocat" ? "Spécialités" : "Domaines d'intervention",
       sub: "Vos spécialités et domaines d'expertise",
     },
     4: { title: "Création de compte", sub: "Vos identifiants de connexion" },
@@ -1556,10 +1557,17 @@ export default function LawyerRegisterPage() {
           <div className="grid grid-cols-1 sm:grid-cols-[3fr_1fr] gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Domaine(s) d'intervention *
+                {profession === "avocat"
+                  ? "Spécialités"
+                  : "Domaine(s) d'intervention"}{" "}
+                *
               </label>
               <MultiSelectWithCheckboxes
-                placeholder="Choisir des domaines..."
+                placeholder={
+                  profession === "avocat"
+                    ? "Choisir des spécialités..."
+                    : "Choisir des domaines..."
+                }
                 options={domaineOptions}
                 value={formData.specializations}
                 onChange={(v) =>
@@ -1574,8 +1582,8 @@ export default function LawyerRegisterPage() {
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Expérience *
+              <label className="block text-sm font-medium text-slate-700 mb-1 whitespace-nowrap">
+                Expérience (années) *
               </label>
               <input
                 type="text"
@@ -1706,7 +1714,7 @@ export default function LawyerRegisterPage() {
           </h1>
           <p className="page-subtitle text-slate-600">
             {profession
-              ? `Créez votre profil de ${currentProf?.label?.toLowerCase()} vérifié`
+              ? `Créez votre profil de ${currentProf?.label ? (currentProf.label[0].match(/[aeiouAEIOU]/) ? "d'" : "de ") + currentProf.label.toLowerCase() : "professionnel"} vérifié`
               : "Choisissez votre profession pour commencer"}
           </p>
         </div>

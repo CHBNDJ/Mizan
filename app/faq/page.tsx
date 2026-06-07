@@ -297,7 +297,7 @@ export default function FAQPage() {
       questions: [
         {
           q: "Qu'est-ce que Mizan ?",
-          a: "Mizan est une plateforme en ligne qui met en relation des clients avec des professionnels du droit et du chiffre vérifiés en Algérie : avocats, notaires, huissiers et comptables. Simple, direct, sans intermédiaire.",
+          a: "Mizan est une plateforme en ligne qui met en relation des clients avec des professionnels du droit et du chiffre vérifiés en Algérie : avocats, notaires, huissiers de justice et comptables. Simple, direct, sans intermédiaire.",
         },
         {
           q: "L'utilisation de Mizan est-elle gratuite ?",
@@ -305,11 +305,15 @@ export default function FAQPage() {
         },
         {
           q: "Quels professionnels puis-je trouver ?",
-          a: "Avocats inscrits au barreau, notaires agréés par la chambre des notaires, huissiers de justice assermentés, et comptables agréés ONEC/ONCA.",
+          a: "Avocats inscrits au barreau, notaires agréés par la chambre des notaires, huissiers de justice assermentés, et comptables agréés ONEC ou ONCA.",
+        },
+        {
+          q: "Les professionnels sont-ils vérifiés ?",
+          a: "Oui. Chaque professionnel est vérifié par notre équipe avant activation. Nous contrôlons leur inscription officielle (barreau, chambre des notaires, numéro d'huissier, agrément ONEC/ONCA).",
         },
         {
           q: "Comment contacter le support ?",
-          a: "Vous pouvez nous contacter à support@mizan-dz.com pour toute question technique.",
+          a: "Vous pouvez nous contacter à support@mizan-dz.com pour toute question technique, ou professionnel@mizan-dz.com pour les questions liées aux profils professionnels.",
         },
       ],
     },
@@ -318,7 +322,7 @@ export default function FAQPage() {
       questions: [
         {
           q: "Comment trouver un professionnel ?",
-          a: "Choisissez la catégorie d'expert depuis la page d'accueil, puis filtrez par wilaya et domaine d'intervention sur la page de recherche.",
+          a: "Choisissez la catégorie d'expert depuis la page d'accueil (avocat, notaire, huissier ou comptable), puis filtrez par wilaya et domaine d'intervention sur la page de recherche.",
         },
         {
           q: "Puis-je consulter depuis l'étranger ?",
@@ -330,11 +334,19 @@ export default function FAQPage() {
         },
         {
           q: "À quoi sert un huissier ?",
-          a: "Le huissier intervient pour les constats officiels, l'exécution des jugements, le recouvrement de créances et les significations.",
+          a: "Le huissier intervient pour les constats officiels, l'exécution des jugements, le recouvrement de créances et les significations d'actes.",
+        },
+        {
+          q: "Quand faire appel à un comptable ?",
+          a: "Pour la création d'entreprise (EURL, SARL), les bilans annuels, les déclarations fiscales (IFU, G50, IBS), ou tout conseil en gestion d'entreprise en Algérie.",
         },
         {
           q: "Les avis sont-ils fiables ?",
-          a: "Tous les avis Mizan sont soumis à modération. Les avis Google proviennent de Google Business et sont affichés tels quels.",
+          a: "Tous les avis Mizan sont soumis à modération avant publication. Les avis Google proviennent de Google Business et sont affichés tels quels.",
+        },
+        {
+          q: "Puis-je contacter plusieurs professionnels ?",
+          a: "Oui, vous pouvez envoyer des demandes à plusieurs professionnels en parallèle. Chaque conversation est indépendante et privée.",
         },
       ],
     },
@@ -343,40 +355,130 @@ export default function FAQPage() {
       questions: [
         {
           q: "Comment réclamer mon profil ?",
-          a: "Si vous trouvez votre profil sur Mizan, cliquez sur 'Réclamer ce profil'. Vous recevrez un code de vérification sur votre email professionnel.",
+          a: "Si vous trouvez votre profil sur Mizan, cliquez sur 'Réclamer ce profil'. Vous recevrez un code de vérification sur votre email professionnel inscrit au barreau.",
         },
         {
           q: "L'inscription est-elle payante ?",
-          a: "L'inscription est gratuite. Un abonnement optionnel (3, 6 ou 12 mois) améliore votre visibilité. Le paiement en ligne sera disponible prochainement.",
+          a: "L'inscription est gratuite. Un abonnement optionnel (3, 6 ou 12 mois) améliore votre visibilité dans les résultats de recherche. Le paiement en ligne sera disponible prochainement.",
         },
         {
           q: "Comment modifier mon profil ?",
-          a: "Depuis votre espace personnel, vous pouvez modifier vos informations, spécialités et coordonnées à tout moment.",
+          a: "Depuis votre espace personnel, vous pouvez modifier vos informations, spécialités, langues et coordonnées à tout moment.",
         },
         {
           q: "Comment recevoir des demandes ?",
-          a: "Les clients vous contactent via la messagerie. Vous recevez une notification email à chaque nouvelle demande.",
+          a: "Les clients vous contactent via la messagerie intégrée. Vous recevez une notification email à chaque nouvelle demande.",
+        },
+        {
+          q: "La publicité est-elle autorisée ?",
+          a: "Figurer dans un annuaire numérique vérifié est légalement autorisé et conforme à la déontologie du barreau algérien — il ne s'agit pas de publicité personnelle au sens de l'article 47 de la loi 13-07.",
+        },
+        {
+          q: "Quelles spécialités puis-je afficher ?",
+          a: "Toutes les branches du droit : civil, pénal, commercial, famille, immobilier, travail, administratif, international... Vous choisissez jusqu'à 10 spécialités.",
+        },
+        {
+          q: "Mon profil est-il visible à l'étranger ?",
+          a: "Oui. Mizan est accessible depuis la France, le Canada, et toute la diaspora. Votre profil est visible pour tous les clients connectés, où qu'ils soient.",
         },
       ],
     },
     {
-      category: "Notaires, huissiers, comptables",
+      category: "Notaires",
       questions: [
         {
           q: "Puis-je m'inscrire en tant que notaire ?",
-          a: "Oui. Votre numéro de chambre des notaires sera requis. Votre profil apparaît après validation sous 24-48h.",
+          a: "Oui. Votre numéro de chambre des notaires sera requis pour vérification. Votre profil apparaît dans les résultats après validation sous 24-48h.",
         },
         {
-          q: "Les huissiers peuvent-ils s'inscrire ?",
-          a: "Oui. Votre numéro officiel d'huissier de justice sera requis. Constats, exécutions, significations et recouvrements.",
+          q: "Quels actes puis-je proposer sur Mizan ?",
+          a: "Actes immobiliers (vente, hypothèque), successions et héritages, contrats de mariage, donations, procurations, création d'entreprise, légalisations.",
         },
         {
-          q: "Quel numéro pour les comptables ?",
-          a: "Votre numéro d'agrément ONEC (expert-comptable) ou ONCA (comptable agréé) sera requis.",
+          q: "La diaspora peut-elle me contacter ?",
+          a: "Oui, c'est l'un des cas d'usage les plus fréquents. La diaspora a besoin de notaires pour successions, actes immobiliers en Algérie, procurations. Mizan vous rend visible depuis l'étranger.",
         },
         {
-          q: "La publicité est-elle autorisée ?",
-          a: "Figurer dans un annuaire numérique vérifié est légalement autorisé en Algérie pour toutes ces professions.",
+          q: "La publicité est-elle autorisée pour les notaires ?",
+          a: "Figurer dans un annuaire numérique vérifié est autorisé et conforme à la déontologie notariale. Il ne s'agit pas d'une publicité personnelle mais d'un référencement professionnel.",
+        },
+        {
+          q: "Les clients peuvent-ils envoyer des documents ?",
+          a: "Oui, via la messagerie Mizan. Les clients peuvent joindre des titres de propriété, actes de naissance ou autres documents à leurs demandes.",
+        },
+        {
+          q: "Comment les clients me trouvent-ils ?",
+          a: "Via la recherche par wilaya et domaine. Un client qui cherche 'Notaire — Successions — Alger' verra votre profil si vous êtes inscrit et vérifié.",
+        },
+        {
+          q: "Mon numéro de chambre est-il affiché publiquement ?",
+          a: "Oui, il apparaît sur votre profil public comme preuve de votre inscription officielle. Cela renforce la confiance des clients.",
+        },
+      ],
+    },
+    {
+      category: "Huissiers",
+      questions: [
+        {
+          q: "Puis-je m'inscrire en tant que huissier de justice ?",
+          a: "Oui. Votre numéro officiel d'huissier de justice sera requis. Votre profil apparaît après validation sous 24-48h.",
+        },
+        {
+          q: "Quels services puis-je proposer ?",
+          a: "Constats officiels (état des lieux, constat d'affichage, constat internet), exécution de jugements, significations d'actes, recouvrement de créances, saisies, procès-verbaux.",
+        },
+        {
+          q: "Des demandes d'urgence sont-elles possibles ?",
+          a: "Oui. La messagerie Mizan permet aux clients d'indiquer l'urgence de leur demande. Vous gérez ensuite les priorités depuis votre tableau de bord.",
+        },
+        {
+          q: "Quelle est ma zone de compétence sur Mizan ?",
+          a: "Vous définissez votre wilaya de compétence dans votre profil. Les clients filtrent par wilaya, donc vous apparaissez uniquement pour votre zone d'intervention.",
+        },
+        {
+          q: "La publicité est-elle autorisée pour les huissiers ?",
+          a: "Figurer dans un annuaire numérique vérifié est conforme aux règles déontologiques de la profession d'huissier de justice en Algérie.",
+        },
+        {
+          q: "Des entreprises peuvent-elles me contacter ?",
+          a: "Oui. Particuliers et entreprises utilisent Mizan. Les entreprises recherchent notamment des huissiers pour le recouvrement de créances et les constats commerciaux.",
+        },
+        {
+          q: "L'inscription est-elle payante ?",
+          a: "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité dans les résultats de recherche.",
+        },
+      ],
+    },
+    {
+      category: "Comptables",
+      questions: [
+        {
+          q: "Expert-comptable ou comptable agréé — quelle différence ?",
+          a: "L'expert-comptable (ONEC) peut signer des bilans officiels et faire de la commissariat aux comptes. Le comptable agréé (ONCA) gère la comptabilité courante, les déclarations et les bulletins de paie. Les deux peuvent s'inscrire sur Mizan.",
+        },
+        {
+          q: "Quel numéro est requis pour l'inscription ?",
+          a: "Votre numéro d'agrément ONEC (Ordre National des Experts-Comptables) ou ONCA (Ordre National des Comptables Agréés) selon votre statut.",
+        },
+        {
+          q: "Quels services puis-je proposer ?",
+          a: "Création d'entreprise (EURL, SARL, SPA), déclarations IFU/G50/IBS, bilan annuel et comptes de résultat, paie et cotisations sociales, conseil fiscal, comptabilité générale.",
+        },
+        {
+          q: "La diaspora est-elle une cible pertinente ?",
+          a: "Absolument. Les Algériens de l'étranger qui créent une EURL ou SARL en Algérie ont besoin d'un comptable local. Mizan vous rend visible depuis la France, le Canada ou ailleurs.",
+        },
+        {
+          q: "Les missions peuvent-elles se faire à distance ?",
+          a: "Oui. La plupart des missions comptables (bilans, déclarations, conseil) se font par échange de documents et messagerie. Mizan facilite ce flux dès le premier contact.",
+        },
+        {
+          q: "La publicité est-elle autorisée pour les comptables ?",
+          a: "Figurer dans un annuaire vérifié est autorisé et conforme à la déontologie ONEC/ONCA. Ce n'est pas une publicité personnelle mais un référencement professionnel.",
+        },
+        {
+          q: "L'inscription est-elle payante ?",
+          a: "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité dans les résultats de recherche.",
         },
       ],
     },
@@ -385,19 +487,23 @@ export default function FAQPage() {
       questions: [
         {
           q: "Mes données sont-elles sécurisées ?",
-          a: "Oui, nous utilisons des protocoles de sécurité avancés (HTTPS, cryptage) et hébergeons vos données sur des serveurs Supabase sécurisés.",
+          a: "Oui, nous utilisons des protocoles de sécurité avancés (HTTPS, cryptage) et hébergeons vos données sur des serveurs Supabase sécurisés en Singapour.",
         },
         {
           q: "Qui a accès à mes informations ?",
-          a: "Vos données personnelles ne sont jamais vendues. Seules les informations publiques de votre profil sont visibles.",
+          a: "Vos données personnelles ne sont jamais vendues. Seules les informations publiques de votre profil sont visibles par les autres utilisateurs.",
         },
         {
           q: "Comment exercer mes droits ?",
-          a: "Vous pouvez exercer vos droits d'accès, rectification ou suppression en nous contactant à contact@mizan-dz.com.",
+          a: "Vous pouvez exercer vos droits d'accès, rectification ou suppression en nous contactant à contact@mizan-dz.com. Délai de traitement : 15 jours ouvrés.",
         },
         {
           q: "Les avis sont-ils modérés ?",
-          a: "Oui, tous les avis Mizan sont soumis à modération avant publication.",
+          a: "Oui, tous les avis Mizan sont soumis à modération avant publication. Les avis frauduleux ou diffamatoires sont supprimés.",
+        },
+        {
+          q: "Puis-je supprimer mon compte ?",
+          a: "Oui, depuis les paramètres de votre espace personnel. Vos données sont effacées sous 30 jours, sauf obligations légales de conservation.",
         },
       ],
     },
@@ -460,14 +566,15 @@ export default function FAQPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <style>{`.back-btn, .main-title, .subtitle, .tabs-wrapper, .faq-item, .cta-block { opacity:0; }`}</style>
+      <style>{`.back-btn,.main-title,.subtitle,.tabs-wrapper,.faq-item,.cta-block{opacity:0;}`}</style>
       <div className="max-w-4xl mx-auto px-5 py-16" ref={containerRef}>
         <button
           onClick={() => router.back()}
-          className="back-btn cursor-pointer inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 transition-all mb-8 text-sm font-medium"
+          className="back-btn cursor-pointer inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 mb-8 text-sm font-medium"
         >
           <ArrowLeft size={18} /> Retour
         </button>
+
         <div className="text-center mb-10">
           <h1 className="main-title text-4xl font-bold text-slate-900 mb-3">
             Questions Fréquentes
@@ -476,19 +583,21 @@ export default function FAQPage() {
             Trouvez rapidement les réponses à vos questions
           </p>
         </div>
+
         <div className="tabs-wrapper mb-8">
           <div className="flex flex-wrap justify-center gap-2 bg-white p-1.5 rounded-xl border border-slate-200">
             {tabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition-all cursor-pointer ${activeTab === tab ? "bg-teal-600 text-white shadow-sm" : "text-slate-600 hover:bg-slate-50"}`}
+                className={`px-3 sm:px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition-all cursor-pointer ${activeTab === tab ? "bg-teal-600 text-white shadow-sm" : "text-slate-600 hover:bg-slate-50"}`}
               >
                 {tab}
               </button>
             ))}
           </div>
         </div>
+
         <div className="space-y-3">
           {filteredFaqs.map((cat) =>
             cat.questions.map((faq, i) => {
@@ -521,6 +630,7 @@ export default function FAQPage() {
             })
           )}
         </div>
+
         <div className="cta-block mt-12 bg-white rounded-xl border border-slate-200 p-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">

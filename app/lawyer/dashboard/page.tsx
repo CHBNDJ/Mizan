@@ -436,7 +436,6 @@ export default function LawyerDashboardPage() {
     consultationsAnswered: 0,
     profileViews: 0,
   });
-
   const [loadingStats, setLoadingStats] = useState(true);
   const [isVerified, setIsVerified] = useState(false);
   const [subscriptionStatus, setSubscriptionStatus] = useState<string | null>(
@@ -445,18 +444,21 @@ export default function LawyerDashboardPage() {
   const [subscriptionPlan, setSubscriptionPlan] = useState<string | null>(null);
   const [subscriptionEnd, setSubscriptionEnd] = useState<string | null>(null);
 
-  // Quand Chargily sera actif, remplace `true` par :
-  // subscriptionStatus === "active"
   const hasActiveSubscription = true;
-
-  // Quand Chargily sera actif, remplace `true` par :
-  // subscriptionStatus === "active" && subscriptionPlan === "12mois"
   const canSeeProfileViews = true;
+
+  const profession = (profile as any)?.profession || "avocat";
+  const PROF_LABELS: Record<string, string> = {
+    avocat: "Avocat",
+    notaire: "Notaire",
+    huissier: "Huissier",
+    comptable: "Comptable",
+  };
+  const profLabel = PROF_LABELS[profession] || "Professionnel";
 
   useEffect(() => {
     if (!loading && !isAuthenticated) router.push("/auth/lawyer/login");
   }, [loading, isAuthenticated, router]);
-
   useEffect(() => {
     if (user && profile?.user_type === "lawyer") {
       loadStats();
@@ -467,8 +469,8 @@ export default function LawyerDashboardPage() {
 
   useEffect(() => {
     if (!containerRef.current || loading || loadingStats) return;
-    const timeline = gsap.timeline();
-    timeline
+    gsap
+      .timeline()
       .fromTo(
         ".page-header",
         { opacity: 0, y: -30 },
@@ -551,12 +553,11 @@ export default function LawyerDashboardPage() {
       .single();
     setIsVerified(data?.is_verified || false);
   };
-
   const loadSubscription = async () => {
     if (!user) return;
     const { data } = await supabase
       .from("lawyers")
-      .select("subscription_status, subscription_plan, subscription_end")
+      .select("subscription_status,subscription_plan,subscription_end")
       .eq("id", user.id)
       .single();
     if (data) {
@@ -565,62 +566,61 @@ export default function LawyerDashboardPage() {
       setSubscriptionEnd(data.subscription_end);
     }
   };
-
   const loadStats = async () => {
     if (!user) return;
     try {
       setLoadingStats(true);
-      const { count: totalCount } = await supabase
-        .from("consultations")
-        .select("*", { count: "exact", head: true })
-        .eq("lawyer_id", user.id);
-      const { count: pendingCount } = await supabase
-        .from("consultation_messages")
-        .select("*", { count: "exact", head: true })
-        .eq("is_read", false)
-        .eq("sender_type", "client")
-        .neq("sender_id", user.id);
-      const { count: answeredCount } = await supabase
-        .from("consultations")
-        .select("*", { count: "exact", head: true })
-        .eq("lawyer_id", user.id)
-        .eq("status", "answered");
-      const { count: viewsCount } = await supabase
-        .from("profile_views")
-        .select("*", { count: "exact", head: true })
-        .eq("lawyer_id", user.id);
+      const [
+        { count: totalCount },
+        { count: pendingCount },
+        { count: answeredCount },
+        { count: viewsCount },
+      ] = await Promise.all([
+        supabase
+          .from("consultations")
+          .select("*", { count: "exact", head: true })
+          .eq("lawyer_id", user.id),
+        supabase
+          .from("consultation_messages")
+          .select("*", { count: "exact", head: true })
+          .eq("is_read", false)
+          .eq("sender_type", "client")
+          .neq("sender_id", user.id),
+        supabase
+          .from("consultations")
+          .select("*", { count: "exact", head: true })
+          .eq("lawyer_id", user.id)
+          .eq("status", "answered"),
+        supabase
+          .from("profile_views")
+          .select("*", { count: "exact", head: true })
+          .eq("lawyer_id", user.id),
+      ]);
       setStats({
         totalConsultations: totalCount || 0,
         consultationsPending: pendingCount || 0,
         consultationsAnswered: answeredCount || 0,
         profileViews: viewsCount || 0,
       });
-    } catch (error) {
-      console.error("Erreur chargement stats:", error);
+    } catch {
     } finally {
       setLoadingStats(false);
     }
   };
 
-  const formatSubscriptionEnd = (date: string | null) => {
-    if (!date) return null;
-    return new Date(date).toLocaleDateString("fr-DZ", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  };
+  const fmtDate = (d: string | null) =>
+    d
+      ? new Date(d).toLocaleDateString("fr-DZ", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })
+      : null;
+  const planLabel = (p: string | null) =>
+    ({ "3mois": "3 mois", "6mois": "6 mois", "12mois": "12 mois" })[p || ""] ||
+    p;
 
-  const getPlanLabel = (plan: string | null) => {
-    const labels: Record<string, string> = {
-      "3mois": "3 mois",
-      "6mois": "6 mois",
-      "12mois": "12 mois",
-    };
-    return plan ? labels[plan] || plan : null;
-  };
-
-  if (loading) {
+  if (loading)
     return (
       <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
         <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
@@ -641,28 +641,23 @@ export default function LawyerDashboardPage() {
               </div>
             ))}
           </div>
-          <div className="h-40 bg-slate-200 rounded-xl animate-pulse" />
         </div>
       </div>
     );
-  }
-
   if (!isAuthenticated) return null;
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <style>{`.page-header, .page-subtitle, .settings-button, .verification-banner, .stats-card, .actions-section, .help-section { opacity: 0; }`}</style>
-
+      <style>{`.page-header,.page-subtitle,.settings-button,.verification-banner,.stats-card,.actions-section,.help-section{opacity:0;}`}</style>
       <div className="max-w-7xl mx-auto px-4 py-8" ref={containerRef}>
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="page-header text-2xl sm:text-3xl font-bold text-slate-800">
               Tableau de bord
             </h1>
             <p className="page-subtitle text-slate-600 mt-1 text-sm sm:text-base">
-              Bonjour {profile?.first_name}, bienvenue sur votre espace
-              professionnel
+              Bonjour {profile?.first_name}, bienvenue sur votre espace{" "}
+              {profLabel.toLowerCase()}
             </p>
           </div>
           <button
@@ -673,7 +668,6 @@ export default function LawyerDashboardPage() {
           </button>
         </div>
 
-        {/* Bannière vérification en cours */}
         {!isVerified && (
           <div className="verification-banner bg-amber-50 border border-amber-200 rounded-xl p-5 mb-4">
             <div className="flex items-start gap-3">
@@ -692,7 +686,6 @@ export default function LawyerDashboardPage() {
           </div>
         )}
 
-        {/* Bannière abonnement — disparaît automatiquement quand hasActiveSubscription = true */}
         {isVerified && !hasActiveSubscription && (
           <div className="verification-banner bg-teal-900 rounded-xl p-5 mb-4">
             <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -706,12 +699,12 @@ export default function LawyerDashboardPage() {
                   </h3>
                   <p className="text-teal-300 text-sm">
                     Activez votre abonnement pour apparaître dans les résultats
-                    de recherche et recevoir des demandes de clients.
+                    de recherche et recevoir des demandes clients.
                   </p>
                 </div>
               </div>
               <Link href="/lawyer/abonnements" className="flex-shrink-0">
-                <button className="bg-teal-500 hover:bg-teal-400 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer whitespace-nowrap">
+                <button className="bg-teal-500 hover:bg-teal-400 text-white px-5 py-2.5 rounded-xl text-sm font-semibold cursor-pointer whitespace-nowrap">
                   Choisir mon abonnement →
                 </button>
               </Link>
@@ -719,7 +712,6 @@ export default function LawyerDashboardPage() {
           </div>
         )}
 
-        {/* Bannière photo manquante */}
         {!profile?.avatar_url && (
           <div className="verification-banner bg-teal-50 border border-teal-200 rounded-xl p-5 mb-4">
             <div className="flex items-start justify-between gap-4">
@@ -731,13 +723,15 @@ export default function LawyerDashboardPage() {
                   <h3 className="font-semibold text-teal-800 mb-1">
                     Votre profil est incomplet
                   </h3>
+
                   <p className="text-teal-700 text-sm">
-                    Les avocats avec une photo reçoivent 3x plus de demandes.
+                    Les professionnels avec une photo reçoivent 3x plus de
+                    demandes.
                   </p>
                 </div>
               </div>
               <Link href="/profile" className="flex-shrink-0">
-                <button className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap">
+                <button className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer whitespace-nowrap">
                   Ajouter ma photo
                 </button>
               </Link>
@@ -745,7 +739,6 @@ export default function LawyerDashboardPage() {
           </div>
         )}
 
-        {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {loadingStats ? (
             [...Array(4)].map((_, i) => (
@@ -779,7 +772,6 @@ export default function LawyerDashboardPage() {
                   </div>
                 </div>
               </div>
-
               <div className="stats-card bg-white rounded-xl p-5 shadow-sm border hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
                   <div className="p-2.5 rounded-lg bg-green-100 flex-shrink-0">
@@ -793,8 +785,6 @@ export default function LawyerDashboardPage() {
                   </div>
                 </div>
               </div>
-
-              {/* Vues du profil — plan 12 mois uniquement (actuellement visible pour tous) */}
               {canSeeProfileViews ? (
                 <div className="stats-card bg-white rounded-xl p-5 shadow-sm border hover:shadow-md transition-shadow">
                   <div className="flex items-center gap-3">
@@ -828,8 +818,6 @@ export default function LawyerDashboardPage() {
                   </div>
                 </div>
               )}
-
-              {/* Stat abonnement */}
               <div className="stats-card bg-white rounded-xl p-5 shadow-sm border hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
                   <div
@@ -846,11 +834,11 @@ export default function LawyerDashboardPage() {
                     {subscriptionStatus === "active" ? (
                       <>
                         <p className="text-sm font-bold text-teal-600">
-                          {getPlanLabel(subscriptionPlan)}
+                          {planLabel(subscriptionPlan)}
                         </p>
                         {subscriptionEnd && (
                           <p className="text-xs text-slate-400">
-                            jusqu'au {formatSubscriptionEnd(subscriptionEnd)}
+                            jusqu'au {fmtDate(subscriptionEnd)}
                           </p>
                         )}
                       </>
@@ -866,7 +854,6 @@ export default function LawyerDashboardPage() {
           )}
         </div>
 
-        {/* Actions rapides */}
         <div className="actions-section bg-white rounded-xl p-6 shadow-sm border mb-6">
           <h2 className="text-lg font-semibold text-slate-800 mb-4">
             Actions rapides
@@ -890,7 +877,6 @@ export default function LawyerDashboardPage() {
                 </div>
               </div>
             </button>
-
             <button
               onClick={() => router.push("/profile")}
               className="p-4 border border-slate-200 rounded-xl hover:border-teal-300 hover:bg-teal-50 transition-colors text-left group cursor-pointer"
@@ -907,7 +893,6 @@ export default function LawyerDashboardPage() {
                 </div>
               </div>
             </button>
-
             <button
               onClick={() => router.push(`/lawyers/${user?.id}`)}
               className="p-4 border border-slate-200 rounded-xl hover:border-teal-300 hover:bg-teal-50 transition-colors text-left group cursor-pointer"
@@ -924,14 +909,9 @@ export default function LawyerDashboardPage() {
                 </div>
               </div>
             </button>
-
             <button
               onClick={() => router.push("/lawyer/abonnements")}
-              className={`p-4 border rounded-xl transition-colors text-left group cursor-pointer ${
-                subscriptionStatus === "active"
-                  ? "border-teal-200 hover:border-teal-300 hover:bg-teal-50"
-                  : "border-teal-500 bg-teal-50 hover:bg-teal-100"
-              }`}
+              className={`p-4 border rounded-xl transition-colors text-left group cursor-pointer ${subscriptionStatus === "active" ? "border-teal-200 hover:border-teal-300 hover:bg-teal-50" : "border-teal-500 bg-teal-50 hover:bg-teal-100"}`}
             >
               <div className="flex items-start gap-3">
                 <CreditCard
@@ -945,7 +925,7 @@ export default function LawyerDashboardPage() {
                   </h3>
                   <p className="text-xs text-slate-500 mt-0.5">
                     {subscriptionStatus === "active"
-                      ? `Plan ${getPlanLabel(subscriptionPlan)}`
+                      ? `Plan ${planLabel(subscriptionPlan)}`
                       : "Activez votre visibilité"}
                   </p>
                 </div>
@@ -954,7 +934,6 @@ export default function LawyerDashboardPage() {
           </div>
         </div>
 
-        {/* Aide */}
         <div className="help-section bg-teal-50 rounded-xl p-6 text-center border border-teal-100">
           <h2 className="text-base font-semibold text-slate-800 mb-2">
             Besoin d'aide ?

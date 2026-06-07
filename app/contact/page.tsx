@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -12,10 +11,8 @@ export default function ContactPage() {
 
   useEffect(() => {
     if (!containerRef.current) return;
-
-    const timeline = gsap.timeline();
-
-    timeline
+    gsap
+      .timeline()
       .fromTo(
         ".back-btn",
         { opacity: 0, y: -20 },
@@ -36,13 +33,7 @@ export default function ContactPage() {
       .fromTo(
         ".contact-item",
         { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          stagger: 0.15,
-          ease: "power2.out",
-        },
+        { opacity: 1, y: 0, duration: 0.7, stagger: 0.15, ease: "power2.out" },
         "-=0.3"
       )
       .fromTo(
@@ -55,16 +46,7 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 pt-20">
-      <style>{`
-        .back-btn,
-        .header-title,
-        .header-desc,
-        .contact-item,
-        .faq-block {
-          opacity: 0;
-        }
-      `}</style>
-
+      <style>{`.back-btn,.header-title,.header-desc,.contact-item,.faq-block{opacity:0;}`}</style>
       <div className="max-w-4xl mx-auto px-5 py-20" ref={containerRef}>
         <button
           onClick={() => router.back()}
@@ -85,7 +67,7 @@ export default function ContactPage() {
         </div>
 
         <ul className="list-none mb-20">
-          <li className="contact-item border-b border-slate-200 py-10 transition-all">
+          <li className="contact-item border-b border-slate-200 py-10">
             <h2 className="text-3xl font-normal mb-3 text-slate-900">
               Support Technique
             </h2>
@@ -93,13 +75,9 @@ export default function ContactPage() {
               Pour tous vos problèmes techniques, bugs ou questions sur
               l'utilisation de la plateforme.
             </p>
-
             <a
               href="mailto:support@mizan-dz.com?subject=Support technique"
-              className="inline-block text-teal-600 text-xl font-mono relative pb-1 
-                after:content-[''] after:absolute after:bottom-0 after:left-0 
-                after:w-0 after:h-0.5 after:bg-teal-600 after:transition-all 
-                hover:after:w-full"
+              className="inline-block text-teal-600 text-xl font-mono relative pb-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal-600 after:transition-all hover:after:w-full"
             >
               support@mizan-dz.com
             </a>
@@ -108,7 +86,7 @@ export default function ContactPage() {
             </span>
           </li>
 
-          <li className="contact-item border-b border-slate-200 py-10 transition-all">
+          <li className="contact-item border-b border-slate-200 py-10">
             <h2 className="text-3xl font-normal mb-3 text-slate-900">
               Contact Général
             </h2>
@@ -116,13 +94,9 @@ export default function ContactPage() {
               Questions générales, partenariats, presse, suggestions
               d'amélioration de la plateforme.
             </p>
-
             <a
               href="mailto:contact@mizan-dz.com?subject=Contact"
-              className="inline-block text-teal-600 text-xl font-mono relative pb-1 
-                after:content-[''] after:absolute after:bottom-0 after:left-0 
-                after:w-0 after:h-0.5 after:bg-teal-600 after:transition-all 
-                hover:after:w-full"
+              className="inline-block text-teal-600 text-xl font-mono relative pb-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal-600 after:transition-all hover:after:w-full"
             >
               contact@mizan-dz.com
             </a>
@@ -131,28 +105,24 @@ export default function ContactPage() {
             </span>
           </li>
 
-          <li className="contact-item border-b border-slate-200 py-10 transition-all">
+          <li className="contact-item border-b border-slate-200 py-10">
             <div className="flex items-center gap-3 mb-3">
               <h2 className="text-3xl font-normal text-slate-900">
-                Support Avocats
+                Support Professionnels
               </h2>
               <span className="px-2 py-0.5 bg-slate-100 text-slate-600 text-xs font-medium rounded-md border border-slate-200">
-                Réservé aux avocats
+                Avocats · Notaires · Huissiers · Comptables
               </span>
             </div>
             <p className="text-slate-600 mb-5 text-lg leading-relaxed">
-              Service dédié exclusivement aux avocats pour la gestion de profil,
+              Service dédié aux professionnels pour la gestion de profil,
               réclamations et consultations.
             </p>
-
             <a
-              href="mailto:avocat@mizan-dz.com?subject=Question avocat"
-              className="inline-block text-teal-600 text-xl font-mono relative pb-1 
-                after:content-[''] after:absolute after:bottom-0 after:left-0 
-                after:w-0 after:h-0.5 after:bg-teal-600 after:transition-all 
-                hover:after:w-full"
+              href="mailto:professionnel@mizan-dz.com?subject=Question professionnel"
+              className="inline-block text-teal-600 text-xl font-mono relative pb-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal-600 after:transition-all hover:after:w-full"
             >
-              avocat@mizan-dz.com
+              professionnel@mizan-dz.com
             </a>
             <span className="inline-block text-sm text-slate-400 italic ml-5">
               Réponse prioritaire sous 12 heures
@@ -170,8 +140,7 @@ export default function ContactPage() {
           </p>
           <Link
             href="/faq"
-            className="inline-block mt-5 px-6 py-3 border-2 border-teal-600 text-teal-600 
-                hover:bg-teal-600 hover:text-white transition-all rounded-full"
+            className="inline-block mt-5 px-6 py-3 border-2 border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white transition-all rounded-full"
           >
             Consulter la FAQ
           </Link>

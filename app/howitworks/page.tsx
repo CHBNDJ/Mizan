@@ -317,7 +317,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { CheckCircle } from "lucide-react";
+import {
+  CheckCircle,
+  Scale,
+  FileText,
+  Briefcase,
+  Calculator,
+} from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
@@ -325,11 +331,12 @@ gsap.registerPlugin(ScrollTrigger);
 type UserType = "client" | "professionnel";
 type ProfType = "avocat" | "notaire" | "huissier" | "comptable";
 
-const PROFS = [
-  { id: "avocat" as ProfType, label: "Avocat", icon: "⚖️" },
-  { id: "notaire" as ProfType, label: "Notaire", icon: "📜" },
-  { id: "huissier" as ProfType, label: "Huissier", icon: "🔏" },
-  { id: "comptable" as ProfType, label: "Comptable", icon: "📊" },
+// Icônes Lucide au lieu d'emojis
+const PROFS: { id: ProfType; label: string; Icon: any }[] = [
+  { id: "avocat", label: "Avocat", Icon: Scale },
+  { id: "notaire", label: "Notaire", Icon: FileText },
+  { id: "huissier", label: "Huissier", Icon: Briefcase },
+  { id: "comptable", label: "Comptable", Icon: Calculator },
 ];
 
 const CLIENT_STEPS = [
@@ -355,8 +362,8 @@ const CLIENT_STEPS = [
   },
   {
     n: "3",
-    title: "Contactez",
-    desc: "Créez un compte gratuit et envoyez une demande directement depuis le profil. Le professionnel vous répond par messagerie sécurisée.",
+    title: "Contactez directement",
+    desc: "Créez un compte gratuit et envoyez une demande depuis le profil. Le professionnel vous répond par messagerie sécurisée.",
     points: [
       "Inscription gratuite",
       "Messagerie sécurisée",
@@ -364,6 +371,7 @@ const CLIENT_STEPS = [
     ],
   },
 ];
+
 const CLIENT_FAQS = [
   {
     q: "Puis-je utiliser Mizan depuis l'étranger ?",
@@ -652,7 +660,7 @@ export default function HowItWorksPage() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <style>{`.hero-title, .hero-sub, .tabs-row, .step-card, .faq-card, .cta-section { opacity:0; }`}</style>
+      <style>{`.hero-title,.hero-sub,.tabs-row,.step-card,.faq-card,.cta-section{opacity:0;}`}</style>
 
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
@@ -690,7 +698,7 @@ export default function HowItWorksPage() {
                   onClick={() => setProfType(p.id)}
                   className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${profType === p.id ? "bg-teal-600 text-white" : "bg-white border border-slate-200 text-slate-600 hover:border-teal-300"}`}
                 >
-                  {p.icon} {p.label}
+                  <p.Icon className="w-3.5 h-3.5" /> {p.label}
                 </button>
               ))}
             </div>
@@ -740,7 +748,7 @@ export default function HowItWorksPage() {
                 </div>
               </div>
               <Link href="/search?profession=avocat">
-                <button className="flex-shrink-0 text-sm px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-all cursor-pointer whitespace-nowrap">
+                <button className="flex-shrink-0 text-sm px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl cursor-pointer whitespace-nowrap">
                   Chercher mon profil
                 </button>
               </Link>
@@ -780,12 +788,12 @@ export default function HowItWorksPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/">
-              <button className="px-8 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl transition-all cursor-pointer shadow-sm">
+              <button className="px-8 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl cursor-pointer shadow-sm">
                 Trouver un expert
               </button>
             </Link>
             <Link href="/auth/lawyer/register">
-              <button className="px-8 py-3 bg-transparent hover:bg-teal-500 text-white font-semibold rounded-xl border border-white/50 transition-all cursor-pointer">
+              <button className="px-8 py-3 bg-transparent hover:bg-teal-500 text-white font-semibold rounded-xl border border-white/50 cursor-pointer">
                 S'inscrire comme professionnel
               </button>
             </Link>

@@ -11,10 +11,7 @@ import type { Metadata, Viewport } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 
-const merriweather = Merriweather({
-  subsets: ["latin"],
-  display: "swap",
-});
+const merriweather = Merriweather({ subsets: ["latin"], display: "swap" });
 
 export const viewport: Viewport = {
   themeColor: "#14b8a6",
@@ -59,9 +56,10 @@ export const metadata: Metadata = {
     locale: "fr_DZ",
     url: siteConfig.url,
     siteName: "Mizan",
-    title: "Mizan - Trouvez votre avocat en Algérie",
+    // ← Multi-profession
+    title: "Mizan — Trouvez votre expert juridique en Algérie",
     description:
-      "Annuaire des meilleurs avocats d'Algérie. Consultations juridiques en ligne, tous domaines de droit.",
+      "Avocats, notaires, huissiers, comptables vérifiés en Algérie. Consultations en ligne depuis l'Algérie et la diaspora.",
     images: [
       {
         url: `${siteConfig.url}/og-image.png`,
@@ -74,7 +72,7 @@ export const metadata: Metadata = {
         url: `${siteConfig.url}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "Mizan - Annuaire des avocats d'Algérie",
+        alt: "Mizan — Experts juridiques d'Algérie",
         type: "image/png",
       },
     ],
@@ -83,16 +81,12 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@mizan_dz",
-    title: "Mizan - Trouvez votre avocat en Algérie",
-    description: "Annuaire des meilleurs avocats d'Algérie",
+    title: "Mizan — Trouvez votre expert juridique en Algérie",
+    description: "Avocats, notaires, huissiers, comptables vérifiés en Algérie",
     images: [`${siteConfig.url}/og-image.png`],
   },
 
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "Mizan",
-  },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "Mizan" },
 };
 
 export default function RootLayout({
@@ -103,30 +97,23 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
-        {/* Google Search Console Verification */}
         <meta
           name="google-site-verification"
           content="W7PDaGtQ4F7JD8rOf8RDI1wmwSrgdMt0ivpebaRSeww"
         />
-
-        {/* Schema.org JSON-LD pour SEO */}
         <OrganizationJsonLd />
       </head>
-
       <body
         className={`${merriweather.className} antialiased overflow-x-hidden`}
       >
-        {/* Google Analytics */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_ID} />
         )}
-
         <AuthProvider>
           <Navigation />
           <ScrollManager>{children}</ScrollManager>
           <Footer />
         </AuthProvider>
-
         <SpeedInsights />
         <Analytics />
       </body>

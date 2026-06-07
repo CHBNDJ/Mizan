@@ -1,11 +1,18 @@
 import { Metadata } from "next";
 import { createClient } from "@supabase/supabase-js";
-import { generateAvocatMetadata } from "@/app/metadata";
+import { generateProfessionalMetadata } from "@/app/metadata";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
+
+const PROF_NOT_FOUND: Record<string, string> = {
+  avocat: "Avocat non trouvé | Mizan",
+  notaire: "Notaire non trouvé | Mizan",
+  huissier: "Huissier non trouvé | Mizan",
+  comptable: "Comptable non trouvé | Mizan",
+};
 
 export async function generateMetadata({
   params,
@@ -24,8 +31,9 @@ export async function generateMetadata({
 
     if (!lawyer) {
       return {
-        title: "Avocat non trouvé | Mizan",
-        description: "Cet avocat n'existe pas ou son profil a été supprimé.",
+        title: "Professionnel non trouvé | Mizan",
+        description:
+          "Ce professionnel n'existe pas ou son profil a été supprimé.",
       };
     }
 
@@ -38,36 +46,38 @@ export async function generateMetadata({
 
     if (!user) {
       return {
-        title: "Avocat non trouvé | Mizan",
-        description: "Cet avocat n'existe pas ou son profil a été supprimé.",
+        title: "Professionnel non trouvé | Mizan",
+        description:
+          "Ce professionnel n'existe pas ou son profil a été supprimé.",
       };
     }
+
+    const profession = lawyer.profession || "avocat";
 
     const specialisationsArray: string[] = Array.isArray(lawyer.specializations)
       ? lawyer.specializations
       : [];
-
     const specialite = specialisationsArray[0] || "Droit général";
 
     const wilayasArray: string[] = Array.isArray(lawyer.wilayas)
       ? lawyer.wilayas
       : [];
-
     const ville = wilayasArray[0] || user.location || "Algérie";
 
-    return generateAvocatMetadata(
+    return generateProfessionalMetadata(
       {
         prenom: user.first_name || "",
         nom: user.last_name || "",
         specialites: [specialite],
-        ville: ville,
+        ville,
         barreau: ville,
         bio: lawyer.bio,
+        profession,
       },
       id
     );
   } catch (error) {
-    console.error("Erreur récupération avocat:", error);
+    console.error("Erreur récupération professionnel:", error);
     return {
       title: "Erreur | Mizan",
       description: "Une erreur est survenue lors du chargement du profil.",
