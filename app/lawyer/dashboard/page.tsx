@@ -415,22 +415,32 @@ import {
   Edit,
   CheckCircle,
   Camera,
-  Lock,
-  TrendingUp,
-  ArrowRight,
-  Sparkles,
   Clock,
+  LayoutDashboard,
+  Scale,
+  ArrowRight,
+  ChevronRight,
   Star,
-  BarChart2,
+  CreditCard,
+  Users,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { gsap } from "gsap";
+
+const PROF_LABELS: Record<string, string> = {
+  avocat: "Avocat",
+  notaire: "Notaire",
+  huissier: "Huissier",
+  comptable: "Comptable",
+};
 
 export default function LawyerDashboardPage() {
   const supabase = createClient();
   const { profile, user, isAuthenticated, loading } = useAuth();
   const router = useRouter();
-  const ref = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [stats, setStats] = useState({
     total: 0,
@@ -444,17 +454,8 @@ export default function LawyerDashboardPage() {
   const [subPlan, setSubPlan] = useState<string | null>(null);
   const [subEnd, setSubEnd] = useState<string | null>(null);
 
-  // Abonnement payant = accès aux stats avancées
-  const isPaid = subStatus === "active";
-
   const profession = (profile as any)?.profession || "avocat";
-  const PROF: Record<string, string> = {
-    avocat: "Avocat",
-    notaire: "Notaire",
-    huissier: "Huissier",
-    comptable: "Comptable",
-  };
-  const profLabel = PROF[profession] || "Professionnel";
+  const profLabel = PROF_LABELS[profession] || "Professionnel";
   const initials =
     `${profile?.first_name?.[0] || ""}${profile?.last_name?.[0] || ""}`.toUpperCase();
 
@@ -470,51 +471,42 @@ export default function LawyerDashboardPage() {
   }, [user, profile]);
 
   useEffect(() => {
-    if (loading || loadingStats || !ref.current) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".dash-hero",
-        { opacity: 0, y: -24 },
-        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
-      );
-      gsap.fromTo(
-        ".dash-stat",
-        { opacity: 0, y: 16, scale: 0.96 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.5,
-          stagger: 0.08,
-          ease: "power2.out",
-          delay: 0.2,
-        }
-      );
-      gsap.fromTo(
-        ".dash-card",
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.07,
-          ease: "power2.out",
-          delay: 0.45,
-        }
-      );
-      gsap.fromTo(
-        ".dash-actions",
-        { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", delay: 0.65 }
-      );
-    }, ref);
-    return () => ctx.revert();
+    if (loading || loadingStats || !mainRef.current) return;
+    gsap.fromTo(
+      ".dash-content",
+      { opacity: 0, y: 16 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+    );
+    gsap.fromTo(
+      ".stat-card",
+      { opacity: 0, y: 12 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.4,
+        stagger: 0.07,
+        ease: "power2.out",
+        delay: 0.15,
+      }
+    );
+    gsap.fromTo(
+      ".action-row",
+      { opacity: 0, x: -8 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 0.4,
+        stagger: 0.06,
+        ease: "power2.out",
+        delay: 0.35,
+      }
+    );
   }, [loading, loadingStats]);
 
   useEffect(() => {
     if (!user) return;
     const ch = supabase
-      .channel("db-stats")
+      .channel("dash")
       .on(
         "postgres_changes",
         {
@@ -619,199 +611,217 @@ export default function LawyerDashboardPage() {
   if (loading)
     return (
       <div className="min-h-screen pt-16 bg-slate-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-teal-600 border-t-transparent" />
+        <div className="animate-spin rounded-full h-7 w-7 border-2 border-teal-600 border-t-transparent" />
       </div>
     );
   if (!isAuthenticated) return null;
 
-  return (
-    <div className="min-h-screen pt-16 bg-slate-50" ref={ref}>
-      <style>{`
-        .dash-hero,.dash-stat,.dash-card,.dash-actions{opacity:0;}
-        .stat-glow{box-shadow:0 0 0 1px rgba(20,184,166,0.15),0 4px 24px rgba(20,184,166,0.08);}
-      `}</style>
+  // ── Sidebar items ──────────────────────────────────────────────────────────
+  const NAV = [
+    {
+      icon: LayoutDashboard,
+      label: "Tableau de bord",
+      href: "/lawyer/dashboard",
+      active: true,
+    },
+    {
+      icon: MessageSquare,
+      label: "Consultations",
+      href: "/lawyer/consultations",
+      badge: stats.pending || 0,
+    },
+    { icon: Edit, label: "Mon profil", href: "/profile" },
+    { icon: Eye, label: "Profil public", href: `/lawyer/${user?.id}` },
+  ];
 
-      {/* ── Header bande teal ── */}
-      <div className="bg-gradient-to-r from-teal-700 via-teal-600 to-teal-500 pt-8 pb-20">
-        <div className="max-w-5xl mx-auto px-4 dash-hero">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              {/* Avatar */}
-              <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur border border-white/30 flex items-center justify-center text-white font-bold text-lg flex-shrink-0 overflow-hidden">
-                {profile?.avatar_url ? (
-                  <img
-                    src={profile.avatar_url}
-                    className="w-full h-full object-cover"
-                    alt=""
-                  />
-                ) : (
-                  initials
-                )}
-              </div>
-              <div>
-                <p className="text-teal-200 text-xs font-medium uppercase tracking-widest mb-0.5">
-                  {profLabel}
-                </p>
-                <h1 className="text-white text-xl sm:text-2xl font-bold leading-tight">
-                  Bonjour, {profile?.first_name}
-                </h1>
-                <div className="flex items-center gap-2 mt-1">
-                  {isVerified ? (
-                    <span className="inline-flex items-center gap-1 text-xs text-teal-100 font-medium">
-                      <CheckCircle className="w-3 h-3" />
-                      Profil vérifié
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 text-xs text-amber-200 font-medium">
-                      <Clock className="w-3 h-3" />
-                      Vérification en cours
-                    </span>
-                  )}
-                  <span className="text-teal-400">·</span>
-                  <span className="text-xs text-teal-200">
-                    {isPaid
-                      ? `Abonnement ${planLabel(subPlan)}`
-                      : "Lancement gratuit"}
-                  </span>
-                </div>
-              </div>
-            </div>
-            <button
-              onClick={() => router.push("/settings")}
-              className="w-10 h-10 rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
-            >
-              <Settings className="w-4 h-4" />
-            </button>
+  const Sidebar = ({ mobile = false }) => (
+    <div
+      className={`${mobile ? "flex" : "hidden lg:flex"} flex-col h-full bg-white border-r border-slate-200`}
+    >
+      {/* Logo */}
+      <div className="flex items-center gap-2.5 px-5 py-5 border-b border-slate-100">
+        <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center flex-shrink-0">
+          <Scale className="w-4 h-4 text-white" />
+        </div>
+        <span className="text-base font-bold text-slate-800 tracking-tight">
+          Mizan
+        </span>
+        {mobile && (
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="ml-auto text-slate-400 hover:text-slate-600 cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
+      </div>
+
+      {/* Profile pill */}
+      <div className="px-4 py-4 border-b border-slate-100">
+        <div className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50">
+          <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 overflow-hidden">
+            {profile?.avatar_url ? (
+              <img
+                src={profile.avatar_url}
+                className="w-full h-full object-cover"
+                alt=""
+              />
+            ) : (
+              initials
+            )}
           </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-semibold text-slate-800 truncate">
+              {profile?.first_name} {profile?.last_name}
+            </p>
+            <p className="text-[10px] text-slate-400 truncate">{profLabel}</p>
+          </div>
+          {isVerified && (
+            <CheckCircle className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
+          )}
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 -mt-14 pb-12">
-        {/* ── Stats flottantes ── */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-          {/* Demandes */}
-          <div className="dash-stat bg-white rounded-2xl p-5 stat-glow relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-16 h-16 bg-teal-50 rounded-bl-3xl" />
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
-              Demandes
-            </p>
-            <p className="text-3xl font-bold text-slate-800">
-              {loadingStats ? "—" : stats.total}
-            </p>
-            {stats.pending > 0 && (
-              <span className="inline-flex items-center gap-1 mt-2 px-2 py-0.5 bg-red-50 text-red-600 text-[11px] font-semibold rounded-full border border-red-100">
-                {stats.pending} non lu{stats.pending > 1 ? "s" : ""}
-              </span>
-            )}
-          </div>
+      {/* Nav */}
+      <nav className="flex-1 px-3 py-3 space-y-0.5">
+        {NAV.map((item) => (
+          <Link key={item.href} href={item.href}>
+            <div
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all group relative ${item.active ? "bg-teal-50 text-teal-700" : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"}`}
+            >
+              <item.icon
+                className={`w-4 h-4 flex-shrink-0 ${item.active ? "text-teal-600" : "text-slate-400 group-hover:text-slate-600"}`}
+              />
+              <span className="text-sm font-medium">{item.label}</span>
+              {(item.badge || 0) > 0 && (
+                <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center flex-shrink-0">
+                  {(item.badge || 0) > 9 ? "9+" : item.badge}
+                </span>
+              )}
+            </div>
+          </Link>
+        ))}
+      </nav>
 
-          {/* Répondues */}
-          <div className="dash-stat bg-white rounded-2xl p-5 stat-glow relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-16 h-16 bg-green-50 rounded-bl-3xl" />
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
-              Répondues
+      {/* Abonnement */}
+      <div className="px-4 py-4 border-t border-slate-100">
+        <div className="bg-slate-800 rounded-xl p-3">
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <Star className="w-3 h-3 text-amber-400" />
+            <p className="text-[10px] font-semibold text-slate-300 uppercase tracking-wide">
+              Abonnement
             </p>
-            <p className="text-3xl font-bold text-slate-800">
-              {loadingStats ? "—" : stats.answered}
-            </p>
-            {stats.total > 0 && (
-              <p className="text-[11px] text-slate-400 mt-2">
-                {Math.round((stats.answered / stats.total) * 100)}% de taux
-              </p>
-            )}
           </div>
-
-          {/* Vues profil — payant */}
-          <div
-            className={`dash-stat rounded-2xl p-5 relative overflow-hidden ${isPaid ? "bg-white stat-glow" : "bg-slate-100 border border-dashed border-slate-300"}`}
-          >
-            {isPaid ? (
-              <>
-                <div className="absolute top-0 right-0 w-16 h-16 bg-blue-50 rounded-bl-3xl" />
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
-                  Vues profil
-                </p>
-                <p className="text-3xl font-bold text-slate-800">
-                  {loadingStats ? "—" : stats.views}
-                </p>
-                <p className="text-[11px] text-slate-400 mt-2">ce mois</p>
-              </>
-            ) : (
-              <>
-                <Lock className="w-4 h-4 text-slate-400 mb-2" />
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
-                  Vues profil
-                </p>
-                <p className="text-sm font-semibold text-slate-400">
-                  Abonnement
-                </p>
-                <p className="text-[11px] text-slate-400 mt-1">
-                  Bientôt disponible
-                </p>
-              </>
-            )}
-          </div>
-
-          {/* Score / Abonnement */}
-          <div
-            className={`dash-stat rounded-2xl p-5 relative overflow-hidden ${isPaid ? "bg-teal-600" : "bg-slate-800"}`}
-          >
-            <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-bl-3xl" />
-            {isPaid ? (
-              <>
-                <Star className="w-4 h-4 text-teal-200 mb-2" />
-                <p className="text-xs font-semibold text-teal-200 uppercase tracking-wide mb-1">
-                  Abonnement
-                </p>
-                <p className="text-lg font-bold text-white">
-                  {planLabel(subPlan)}
-                </p>
-                {subEnd && (
-                  <p className="text-[11px] text-teal-300 mt-1">
-                    jusqu'au {fmtDate(subEnd)}
-                  </p>
-                )}
-              </>
-            ) : (
-              <>
-                <Sparkles className="w-4 h-4 text-slate-400 mb-2" />
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
-                  Abonnement
-                </p>
-                <p className="text-sm font-bold text-slate-300">
-                  Lancement gratuit
-                </p>
-                <p className="text-[11px] text-slate-500 mt-1">
-                  Paiement bientôt →
-                </p>
-              </>
-            )}
-          </div>
+          <p className="text-xs font-semibold text-white mb-0.5">
+            {subStatus === "active"
+              ? `Plan ${planLabel(subPlan)}`
+              : "Lancement gratuit"}
+          </p>
+          <p className="text-[10px] text-slate-400">
+            {subStatus === "active" && subEnd
+              ? `Expire le ${fmtDate(subEnd)}`
+              : "Paiement disponible bientôt"}
+          </p>
         </div>
+      </div>
 
-        {/* ── Banners contextuelles ── */}
-        {!isVerified && (
-          <div className="dash-card mb-4 bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-center gap-3">
-            <Clock className="w-5 h-5 text-amber-500 flex-shrink-0" />
-            <div>
-              <p className="text-sm font-semibold text-amber-800">
-                Vérification en cours · 24-48h
-              </p>
-              <p className="text-xs text-amber-600 mt-0.5">
-                Nos équipes vérifient vos informations. Email de confirmation à
-                venir.
-              </p>
+      {/* Settings */}
+      <div className="px-3 pb-4">
+        <button
+          onClick={() => router.push("/settings")}
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-all cursor-pointer"
+        >
+          <Settings className="w-4 h-4" />
+          <span className="text-sm">Paramètres</span>
+        </button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen pt-16 bg-slate-50 flex">
+      <style>{`.dash-content,.stat-card,.action-row{opacity:0;}`}</style>
+
+      {/* ── Sidebar desktop (fixe, largeur 220px) ── */}
+      <div className="hidden lg:block w-[220px] fixed top-16 left-0 bottom-0 z-30">
+        <Sidebar />
+      </div>
+
+      {/* ── Sidebar mobile (overlay) ── */}
+      {sidebarOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+          <div className="fixed top-16 left-0 bottom-0 w-[220px] z-50 lg:hidden">
+            <Sidebar mobile />
+          </div>
+        </>
+      )}
+
+      {/* ── Contenu principal ── */}
+      <div className="flex-1 lg:ml-[220px] min-h-screen" ref={mainRef}>
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+          {/* Header mobile */}
+          <div className="flex items-center justify-between mb-8 lg:hidden">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 rounded-lg bg-white border border-slate-200 text-slate-600 cursor-pointer"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+            <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
+              <Scale className="w-4 h-4 text-white" />
             </div>
           </div>
-        )}
 
-        {!profile?.avatar_url && (
-          <div className="dash-card mb-4 bg-white border border-slate-200 rounded-2xl p-4 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
-                <Camera className="w-4 h-4 text-teal-600" />
+          {/* Titre */}
+          <div className="dash-content mb-8">
+            <h1 className="text-2xl font-bold text-slate-900">
+              Tableau de bord
+            </h1>
+            <p className="text-sm text-slate-500 mt-1">
+              Bonjour {profile?.first_name} —{" "}
+              {new Date().toLocaleDateString("fr-DZ", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+              })}
+            </p>
+          </div>
+
+          {/* ── Banners ── */}
+          {!isVerified && (
+            <div className="dash-content mb-4 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+              <Clock className="w-4 h-4 text-amber-500 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-amber-800">
+                  Vérification en cours · 24-48h
+                </p>
+                <p className="text-xs text-amber-600">
+                  Un email vous sera envoyé dès validation.
+                </p>
               </div>
-              <div>
+            </div>
+          )}
+
+          {!profile?.avatar_url && (
+            <div className="dash-content mb-4 flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-3">
+              <Camera className="w-4 h-4 text-teal-600 flex-shrink-0" />
+              <div className="flex-1">
                 <p className="text-sm font-semibold text-slate-800">
                   Ajoutez votre photo
                 </p>
@@ -819,87 +829,150 @@ export default function LawyerDashboardPage() {
                   3× plus de demandes avec une photo professionnelle
                 </p>
               </div>
+              <Link href="/profile">
+                <button className="flex items-center gap-1 text-xs font-semibold text-teal-600 hover:text-teal-700 cursor-pointer whitespace-nowrap">
+                  Ajouter <ArrowRight className="w-3 h-3" />
+                </button>
+              </Link>
             </div>
-            <Link href="/profile">
-              <button className="flex items-center gap-1.5 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold rounded-xl cursor-pointer transition-colors whitespace-nowrap">
-                Ajouter <ArrowRight className="w-3 h-3" />
-              </button>
-            </Link>
+          )}
+
+          {/* ── Stats ── */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
+            <div className="stat-card bg-white border border-slate-200 rounded-xl p-5">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+                  Demandes
+                </p>
+                <Users className="w-4 h-4 text-slate-300" />
+              </div>
+              <p className="text-3xl font-bold text-slate-900 leading-none">
+                {loadingStats ? (
+                  <span className="text-slate-300">—</span>
+                ) : (
+                  stats.total
+                )}
+              </p>
+              {stats.pending > 0 && (
+                <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-red-50 border border-red-100 rounded-full">
+                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full" />
+                  <span className="text-[11px] text-red-600 font-semibold">
+                    {stats.pending} non lu{stats.pending > 1 ? "s" : ""}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="stat-card bg-white border border-slate-200 rounded-xl p-5">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+                  Répondues
+                </p>
+                <CheckCircle className="w-4 h-4 text-slate-300" />
+              </div>
+              <p className="text-3xl font-bold text-slate-900 leading-none">
+                {loadingStats ? (
+                  <span className="text-slate-300">—</span>
+                ) : (
+                  stats.answered
+                )}
+              </p>
+              {stats.total > 0 && (
+                <p className="text-[11px] text-slate-400 mt-2">
+                  {Math.round((stats.answered / stats.total) * 100)}% de taux
+                </p>
+              )}
+            </div>
+
+            <div className="stat-card col-span-2 sm:col-span-1 bg-white border border-slate-200 rounded-xl p-5">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+                  Vues profil
+                </p>
+                <Eye className="w-4 h-4 text-slate-300" />
+              </div>
+              <p className="text-3xl font-bold text-slate-900 leading-none">
+                {loadingStats ? (
+                  <span className="text-slate-300">—</span>
+                ) : (
+                  stats.views
+                )}
+              </p>
+              <p className="text-[11px] text-slate-400 mt-2">total</p>
+            </div>
           </div>
-        )}
 
-        {/* ── Actions rapides ── */}
-        <div className="dash-actions grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-          {/* Consultations */}
-          <button
-            onClick={() => router.push("/lawyer/consultations")}
-            className="group relative bg-white hover:bg-teal-50 border border-slate-200 hover:border-teal-300 rounded-2xl p-5 text-left transition-all cursor-pointer"
-          >
-            {stats.pending > 0 && (
-              <span className="absolute top-4 right-4 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                {stats.pending > 9 ? "9+" : stats.pending}
-              </span>
-            )}
-            <div className="w-10 h-10 rounded-xl bg-teal-50 group-hover:bg-teal-100 flex items-center justify-center mb-3 transition-colors">
-              <MessageSquare className="w-5 h-5 text-teal-600" />
+          {/* ── Actions ── */}
+          <div className="bg-white border border-slate-200 rounded-xl overflow-hidden mb-4">
+            <div className="px-5 py-3 border-b border-slate-100">
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+                Actions rapides
+              </p>
             </div>
-            <p className="text-sm font-bold text-slate-800 group-hover:text-teal-700">
-              Mes consultations
-            </p>
-            <p className="text-xs text-slate-500 mt-1">
-              {stats.pending > 0
-                ? `${stats.pending} message${stats.pending > 1 ? "s" : ""} non lu${stats.pending > 1 ? "s" : ""}`
-                : "Tout est à jour"}
-            </p>
-          </button>
 
-          {/* Modifier profil */}
-          <button
-            onClick={() => router.push("/profile")}
-            className="group bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-2xl p-5 text-left transition-all cursor-pointer"
-          >
-            <div className="w-10 h-10 rounded-xl bg-slate-100 group-hover:bg-slate-200 flex items-center justify-center mb-3 transition-colors">
-              <Edit className="w-5 h-5 text-slate-600" />
-            </div>
-            <p className="text-sm font-bold text-slate-800">
-              Modifier mon profil
-            </p>
-            <p className="text-xs text-slate-500 mt-1">
-              Spécialités · Langues · Adresse
-            </p>
-          </button>
-
-          {/* Profil public */}
-          <button
-            onClick={() => router.push(`/lawyer/${user?.id}`)}
-            className="group bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-2xl p-5 text-left transition-all cursor-pointer"
-          >
-            <div className="w-10 h-10 rounded-xl bg-blue-50 group-hover:bg-blue-100 flex items-center justify-center mb-3 transition-colors">
-              <Eye className="w-5 h-5 text-blue-500" />
-            </div>
-            <p className="text-sm font-bold text-slate-800">
-              Mon profil public
-            </p>
-            <p className="text-xs text-slate-500 mt-1">
-              Tel que les clients vous voient
-            </p>
-          </button>
-        </div>
-
-        {/* ── Aide ── */}
-        <div className="dash-card bg-white border border-slate-200 rounded-2xl p-5 flex items-center justify-between gap-4 flex-wrap">
-          <div>
-            <p className="text-sm font-bold text-slate-800">Besoin d'aide ?</p>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Notre équipe répond sous 24h
-            </p>
+            {[
+              {
+                icon: MessageSquare,
+                label: "Mes consultations",
+                sub:
+                  stats.pending > 0
+                    ? `${stats.pending} message${stats.pending > 1 ? "s" : ""} non lu${stats.pending > 1 ? "s" : ""}`
+                    : "Aucun message en attente",
+                href: "/lawyer/consultations",
+                badge: stats.pending,
+              },
+              {
+                icon: Edit,
+                label: "Modifier mon profil",
+                sub: "Spécialités · Langues · Adresse",
+                href: "/profile",
+              },
+              {
+                icon: Eye,
+                label: "Mon profil public",
+                sub: "Tel que les clients vous voient",
+                href: `/lawyer/${user?.id}`,
+              },
+            ].map((item, i) => (
+              <Link key={i} href={item.href}>
+                <div className="action-row flex items-center gap-4 px-5 py-4 hover:bg-slate-50 transition-colors cursor-pointer border-b border-slate-100 last:border-0 group">
+                  <div className="w-9 h-9 rounded-lg bg-slate-100 group-hover:bg-teal-50 flex items-center justify-center flex-shrink-0 transition-colors">
+                    <item.icon className="w-4 h-4 text-slate-500 group-hover:text-teal-600 transition-colors" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-slate-800">
+                      {item.label}
+                    </p>
+                    <p className="text-xs text-slate-400 mt-0.5">{item.sub}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {(item.badge || 0) > 0 && (
+                      <span className="bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                        {(item.badge || 0) > 9 ? "9+" : item.badge}
+                      </span>
+                    )}
+                    <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-teal-500 transition-colors" />
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
-          <a
-            href="mailto:support@mizan-dz.com"
-            className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded-xl transition-colors cursor-pointer"
-          >
-            Nous contacter <ArrowRight className="w-3 h-3" />
-          </a>
+
+          {/* Aide */}
+          <div className="flex items-center justify-between gap-4 px-5 py-4 bg-white border border-slate-200 rounded-xl">
+            <div>
+              <p className="text-sm font-semibold text-slate-800">
+                Besoin d'aide ?
+              </p>
+              <p className="text-xs text-slate-400">Réponse sous 24h</p>
+            </div>
+            <a
+              href="mailto:support@mizan-dz.com"
+              className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-teal-600 transition-colors cursor-pointer whitespace-nowrap"
+            >
+              Nous contacter <ArrowRight className="w-3 h-3" />
+            </a>
+          </div>
         </div>
       </div>
     </div>
