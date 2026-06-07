@@ -604,18 +604,22 @@ export default function HomePage() {
           </p>
 
           {/* 4 cards — 2 colonnes mobile, 4 desktop */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto">
             {PROFESSIONS.map(({ id, label, Icon, desc }) => (
               <Link key={id} href={`/${id}`}>
-                <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 p-4 sm:p-5 flex flex-col items-center gap-2 sm:gap-3 cursor-pointer text-center h-full">
-                  <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
+                <div
+                  className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 cursor-pointer
+                  flex items-center gap-4 px-4 py-4
+                  sm:flex-col sm:items-center sm:px-5 sm:py-5 sm:gap-3 sm:text-center"
+                >
+                  <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
                     <Icon className="w-5 h-5 text-teal-600" />
                   </div>
-                  <div>
+                  <div className="text-left sm:text-center">
                     <div className="font-bold text-slate-800 text-sm sm:text-base">
                       {label}
                     </div>
-                    <div className="text-xs text-slate-400 mt-1 leading-relaxed hidden sm:block">
+                    <div className="text-xs text-slate-400 mt-0.5 leading-relaxed">
                       {desc}
                     </div>
                   </div>
@@ -641,13 +645,13 @@ export default function HomePage() {
           ].map((s) => (
             <div
               key={s.label}
-              className="stat-card bg-white rounded-2xl shadow-sm border border-slate-100 px-4 py-4 sm:p-7 flex flex-row sm:flex-col items-center sm:items-center gap-3 sm:gap-0 text-left sm:text-center"
+              className="stat-card bg-white rounded-2xl shadow-sm border border-slate-100 p-5 sm:p-7 flex flex-col items-center text-center"
             >
               <AnimatedCounter
                 end={s.end}
                 duration={2000}
                 suffix={s.suffix}
-                className="text-2xl sm:text-4xl font-bold text-teal-600 sm:mb-2 flex-shrink-0"
+                className="text-3xl sm:text-4xl font-bold text-teal-600 mb-2"
               />
               <div className="text-slate-600 text-xs sm:text-sm leading-snug">
                 {s.label}
@@ -661,10 +665,10 @@ export default function HomePage() {
       <section className="steps-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-2xl shadow-sm p-6 sm:p-10">
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-8 sm:mb-10 text-center">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-6 md:mb-10 text-center">
               Comment ça marche
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
               {[
                 {
                   n: "1",
@@ -684,7 +688,7 @@ export default function HomePage() {
               ].map((s, i) => (
                 <div
                   key={s.n}
-                  className={`flex gap-4 ${i < 2 ? "sm:border-r sm:border-slate-100 sm:pr-8" : ""}`}
+                  className={`flex gap-4 ${i < 2 ? "md:border-r md:border-slate-100 md:pr-10 pb-6 md:pb-0 border-b md:border-b-0 border-slate-100" : ""}`}
                 >
                   <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-sm font-bold text-teal-700 flex-shrink-0 mt-0.5">
                     {s.n}

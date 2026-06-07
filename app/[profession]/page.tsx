@@ -165,24 +165,6 @@ export default function ProfessionPage() {
     setSelectedDomaines([]);
   }, [profId]);
 
-  // GSAP pros : gsap.set d'abord pour invisible, puis animate quand data + DOM prêts
-  useEffect(() => {
-    if (!topPros.length) return;
-    const timer = setTimeout(() => {
-      const els = document.querySelectorAll(".ph-pro");
-      if (!els.length) return;
-      gsap.set(els, { opacity: 0, y: 30 });
-      gsap.to(els, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power2.out",
-      });
-    }, 200);
-    return () => clearTimeout(timer);
-  }, [topPros]);
-
   useLayoutEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
     tl.fromTo(
@@ -215,22 +197,6 @@ export default function ProfessionPage() {
         "-=0.2"
       );
     // Animation pros — start:"top bottom" fire dès que la section est visible
-    gsap.fromTo(
-      ".ph-pro",
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".ph-pros-section",
-          start: "top bottom",
-          toggleActions: "play none none none",
-        },
-      }
-    );
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, [profId]);
 
@@ -363,7 +329,7 @@ export default function ProfessionPage() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
               {topPros.map((pro) => (
-                <div key={pro.id} className="ph-pro">
+                <div key={pro.id}>
                   <AvocatCard avocat={pro} />
                 </div>
               ))}
