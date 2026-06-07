@@ -959,7 +959,7 @@ export function Navigation() {
                         <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="center" className="w-48">
+                    <DropdownMenuContent align="center" className="w-56">
                       <DropdownMenuItem asChild>
                         <Link
                           href="/auth/client/login"
@@ -972,7 +972,7 @@ export function Navigation() {
                         {/* ← CHANGÉ */}
                         <Link
                           href="/auth/lawyer/login"
-                          className="w-full hover:bg-teal-50"
+                          className="w-full hover:bg-teal-50 whitespace-nowrap"
                         >
                           Je suis un professionnel
                         </Link>
@@ -990,7 +990,7 @@ export function Navigation() {
                     <DropdownMenuContent
                       align="center"
                       sameWidth={true}
-                      className="w-48"
+                      className="w-56"
                     >
                       <DropdownMenuItem asChild>
                         <Link
@@ -1004,7 +1004,7 @@ export function Navigation() {
                         {/* ← CHANGÉ */}
                         <Link
                           href="/auth/lawyer/register"
-                          className="w-full hover:bg-teal-50"
+                          className="w-full hover:bg-teal-50 whitespace-nowrap"
                         >
                           Je suis un professionnel
                         </Link>

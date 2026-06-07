@@ -452,25 +452,25 @@ const PROFESSIONS = [
   {
     id: "avocat",
     label: "Avocat",
-    icon: Scale,
+    Icon: Scale,
     desc: "Droit civil, pénal, famille, affaires...",
   },
   {
     id: "notaire",
     label: "Notaire",
-    icon: FileText,
+    Icon: FileText,
     desc: "Successions, immobilier, mariages...",
   },
   {
     id: "huissier",
     label: "Huissier",
-    icon: Briefcase,
+    Icon: Briefcase,
     desc: "Constats, exécutions, recouvrements...",
   },
   {
     id: "comptable",
     label: "Comptable",
-    icon: Calculator,
+    Icon: Calculator,
     desc: "Bilans, fiscalité, création société...",
   },
 ];
@@ -485,31 +485,22 @@ export default function HomePage() {
   });
 
   useLayoutEffect(() => {
-    const load = async () => {
-      getWilayas().then(setWilayas);
-      const [top, st] = await Promise.all([
-        getTopRatedAvocats(8),
-        getStatistiques(),
-      ]);
-      setTopAvocats(top);
-      setStats(st);
-    };
-    load();
+    getWilayas().then(setWilayas);
+    Promise.all([getTopRatedAvocats(8), getStatistiques()]).then(
+      ([top, st]) => {
+        setTopAvocats(top);
+        setStats(st);
+      }
+    );
   }, []);
 
   useLayoutEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
     tl.fromTo(
-      ".hero-badge",
-      { opacity: 0, y: -10 },
-      { opacity: 1, y: 0, duration: 0.5 }
+      ".hero-title",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.8 }
     )
-      .fromTo(
-        ".hero-title",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8 },
-        "-=0.3"
-      )
       .fromTo(
         ".hero-sub",
         { opacity: 0, y: 20 },
@@ -520,7 +511,7 @@ export default function HomePage() {
         ".prof-card",
         { opacity: 0, y: 24 },
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
-        "-=0.3"
+        "-=0.4"
       )
       .fromTo(
         ".hero-stats",
@@ -577,67 +568,44 @@ export default function HomePage() {
         },
       }
     );
-    gsap.fromTo(
-      ".avocats-title",
-      { opacity: 0, x: -30 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 0.7,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".avocats-section",
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      }
-    );
   }, [topAvocats]);
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden">
       <style>{`
-        .hero-badge,.hero-title,.hero-sub,.prof-card,.hero-stats,
-        .steps-section,.avocats-title,.avocat-card,.cta-cards { opacity:0; }
-        .prof-card-btn { transition: all 0.2s ease; }
+        .hero-title,.hero-sub,.prof-card,.hero-stats,.steps-section,.avocat-card,.cta-cards { opacity:0; }
+        .prof-card-btn { transition:all 0.2s ease; }
         .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
       `}</style>
 
       {/* Hero */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="hero-badge inline-flex items-center gap-2 bg-white border border-teal-200 text-teal-700 text-xs font-semibold px-4 py-2 rounded-full mb-6 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
-            La plateforme juridique de référence en Algérie
-          </div>
-          <h1 className="hero-title text-3xl sm:text-5xl lg:text-6xl font-bold text-slate-800 mb-6 leading-tight tracking-tight">
-            Trouvez le bon expert
+          {/* Titre — plus concis, sans badge */}
+          <h1 className="hero-title text-3xl sm:text-5xl lg:text-6xl font-bold text-slate-800 mb-5 leading-tight tracking-tight">
+            L'annuaire des experts
             <br className="hidden sm:block" />
-            <span className="text-teal-600"> juridique en Algérie</span>
+            <span className="text-teal-600"> juridiques d'Algérie</span>
           </h1>
-          <p className="hero-sub text-base sm:text-xl text-slate-600 mb-12 leading-relaxed max-w-2xl mx-auto">
-            Avocats, notaires, huissiers, comptables — tous vérifiés, avec avis
-            clients.{" "}
-            <strong className="text-teal-600">
-              Que vous soyez en Algérie ou à l'étranger
-            </strong>
-            , Mizan vous connecte au bon professionnel.
+          <p className="hero-sub text-base sm:text-xl text-slate-500 mb-12 leading-relaxed max-w-xl mx-auto">
+            Avocats, notaires, huissiers, comptables — vérifiés et recommandés.
+            Accessible depuis l'Algérie et la diaspora.
           </p>
 
-          {/* 4 Profession cards — sans emojis, avec icônes Lucide */}
+          {/* 4 cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-3xl mx-auto">
-            {PROFESSIONS.map((p) => (
-              <Link key={p.id} href={`/${p.id}`}>
+            {PROFESSIONS.map(({ id, label, Icon, desc }) => (
+              <Link key={id} href={`/${id}`}>
                 <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 p-5 flex flex-col items-center gap-3 cursor-pointer text-center h-full">
                   <div className="w-11 h-11 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
-                    <p.icon className="w-5 h-5 text-teal-600" />
+                    <Icon className="w-5 h-5 text-teal-600" />
                   </div>
                   <div>
                     <div className="font-bold text-slate-800 text-sm sm:text-base">
-                      {p.label}
+                      {label}
                     </div>
                     <div className="text-xs text-slate-400 mt-1 leading-relaxed hidden sm:block">
-                      {p.desc}
+                      {desc}
                     </div>
                   </div>
                   <div className="flex items-center gap-1 text-xs font-semibold text-teal-600 mt-auto">
@@ -654,12 +622,12 @@ export default function HomePage() {
       <section className="px-4 pb-16">
         <div className="max-w-3xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { end: stats.total_avocats, label: "Professionnels inscrits" },
-            { end: wilayas.length, label: "Wilayas couvertes" },
-            { end: 4, label: "Catégories d'experts" },
+            { end: stats.total_avocats, label: "Professionnels" },
+            { end: wilayas.length, label: "Wilayas" },
+            { end: 4, label: "Catégories" },
             {
               end: stats.pourcentage_verification,
-              label: "Taux de vérification",
+              label: "Vérifiés",
               suffix: "%",
             },
           ].map((s) => (
@@ -671,11 +639,9 @@ export default function HomePage() {
                 end={s.end}
                 duration={2000}
                 suffix={s.suffix}
-                className="text-3xl font-bold text-teal-600 mb-2"
+                className="text-3xl font-bold text-teal-600 mb-1"
               />
-              <div className="text-slate-600 font-medium text-sm">
-                {s.label}
-              </div>
+              <div className="text-slate-500 text-sm">{s.label}</div>
             </div>
           ))}
         </div>
@@ -693,29 +659,29 @@ export default function HomePage() {
                 {
                   n: "1",
                   title: "Choisissez votre expert",
-                  desc: "Cliquez sur la catégorie dont vous avez besoin parmi avocat, notaire, huissier ou comptable.",
+                  desc: "Sélectionnez la catégorie adaptée à votre besoin.",
                 },
                 {
                   n: "2",
                   title: "Filtrez sur la carte",
-                  desc: "Sélectionnez votre wilaya directement sur la carte de l'Algérie et précisez votre domaine.",
+                  desc: "Wilaya et domaine d'intervention en quelques clics.",
                 },
                 {
                   n: "3",
                   title: "Contactez directement",
-                  desc: "Envoyez votre demande depuis le profil. Le professionnel vous répond par messagerie sécurisée.",
+                  desc: "Messagerie sécurisée, depuis l'Algérie ou l'étranger.",
                 },
-              ].map((step) => (
-                <div key={step.n} className="flex gap-4">
+              ].map((s) => (
+                <div key={s.n} className="flex gap-4">
                   <div className="w-9 h-9 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-sm font-bold text-teal-700 flex-shrink-0 mt-0.5">
-                    {step.n}
+                    {s.n}
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-slate-800 mb-1">
-                      {step.title}
+                      {s.title}
                     </div>
                     <div className="text-sm text-slate-500 leading-relaxed">
-                      {step.desc}
+                      {s.desc}
                     </div>
                   </div>
                 </div>
@@ -730,51 +696,50 @@ export default function HomePage() {
         <section className="avocats-section pb-16 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="avocats-title text-3xl font-bold text-slate-800 mb-3">
-                Professionnels les mieux notés
+              <h2 className="text-3xl font-bold text-slate-800 mb-3">
+                Les mieux notés
               </h2>
-              <p className="text-lg text-slate-600">
+              <p className="text-slate-500">
                 Recommandés par notre communauté · Vérifiés par Mizan
               </p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-8">
-              {topAvocats.map((avocat) => (
-                <div key={avocat.id} className="avocat-card">
-                  <AvocatCard avocat={avocat} />
+              {topAvocats.map((a) => (
+                <div key={a.id} className="avocat-card">
+                  <AvocatCard avocat={a} />
                 </div>
               ))}
             </div>
             <div className="text-center">
               <button
-                className="text-teal-600 cursor-pointer items-center justify-center inline-flex hover:text-teal-700 transition-colors"
                 onClick={() => router.push("/search")}
+                className="text-teal-600 inline-flex items-center gap-1.5 hover:text-teal-700 transition-colors cursor-pointer text-sm font-medium"
               >
-                Voir tous les professionnels{" "}
-                <ArrowRight className="w-4 h-4 ml-2" />
+                Voir tous les professionnels <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>
         </section>
       )}
 
-      {/* CTA */}
+      {/* CTA double */}
       <section className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="cta-cards grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="bg-white rounded-2xl shadow-sm p-8 flex flex-col justify-between">
               <div>
                 <h3 className="text-xl font-bold text-slate-800 mb-3">
-                  Vous cherchez un expert juridique ?
+                  Vous cherchez un expert ?
                 </h3>
                 <p className="text-slate-500 leading-relaxed mb-6">
-                  Parcourez les profils d'avocats, notaires, huissiers et
-                  comptables vérifiés.
+                  Parcourez les profils vérifiés, consultez les avis et
+                  contactez directement depuis n'importe où.
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {PROFESSIONS.map((p) => (
-                    <Link key={p.id} href={`/${p.id}`}>
+                  {PROFESSIONS.map(({ id, label, Icon }) => (
+                    <Link key={id} href={`/${id}`}>
                       <span className="flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 border border-teal-200 text-teal-700 rounded-full text-xs font-semibold hover:bg-teal-100 transition-colors cursor-pointer">
-                        <p.icon className="w-3 h-3" /> {p.label}
+                        <Icon className="w-3 h-3" /> {label}
                       </span>
                     </Link>
                   ))}
@@ -784,7 +749,7 @@ export default function HomePage() {
                 onClick={() => router.push("/search")}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-all cursor-pointer w-fit"
               >
-                Rechercher un expert <ChevronRight className="w-4 h-4" />
+                Rechercher <ChevronRight className="w-4 h-4" />
               </button>
             </div>
             <div className="bg-teal-600 rounded-2xl p-8 flex flex-col justify-between">
@@ -793,25 +758,24 @@ export default function HomePage() {
                   Vous êtes professionnel du droit ?
                 </h3>
                 <p className="text-teal-100 leading-relaxed mb-4">
-                  Avocat, notaire, huissier ou comptable — rejoignez Mizan et
-                  soyez visible par des clients de toute l'Algérie et de la
-                  diaspora.
+                  Rejoignez Mizan et soyez visible par des clients de toute
+                  l'Algérie et de la diaspora. Inscription gratuite,
+                  vérification sous 24-48h.
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {PROFESSIONS.map((p) => (
+                  {PROFESSIONS.map(({ id, label, Icon }) => (
                     <span
-                      key={p.id}
+                      key={id}
                       className="flex items-center gap-1 px-3 py-1 bg-white/20 text-white rounded-full text-xs font-semibold"
                     >
-                      <p.icon className="w-3 h-3" /> {p.label}
+                      <Icon className="w-3 h-3" /> {label}
                     </span>
                   ))}
                 </div>
               </div>
               <Link href="/auth/lawyer/register">
                 <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl transition-all cursor-pointer w-fit">
-                  Créer mon profil professionnel{" "}
-                  <ChevronRight className="w-4 h-4" />
+                  Créer mon profil <ChevronRight className="w-4 h-4" />
                 </button>
               </Link>
             </div>

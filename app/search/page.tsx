@@ -434,7 +434,16 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { ArrowLeft, Users, X, SlidersHorizontal } from "lucide-react";
+import {
+  ArrowLeft,
+  Users,
+  X,
+  SlidersHorizontal,
+  Scale,
+  FileText,
+  Briefcase,
+  Calculator,
+} from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { AvocatCard } from "@/components/cards/AvocatCard";
@@ -443,7 +452,6 @@ import { SearchFilters, AvocatData } from "@/types";
 import {
   searchAvocats,
   getWilayas,
-  getSpecialites,
   DOMAINES_PAR_PROFESSION,
 } from "@/lib/avocatsData";
 import { AlgeriaMap } from "@/components/AlgeriaMap";
@@ -451,15 +459,21 @@ import Link from "next/link";
 import { gsap } from "gsap";
 
 const PROFESSIONS = [
-  { id: "avocat", label: "Avocat", icon: "⚖️", plural: "avocats" },
-  { id: "notaire", label: "Notaire", icon: "📜", plural: "notaires" },
-  { id: "huissier", label: "Huissier", icon: "🔏", plural: "huissiers" },
-  { id: "comptable", label: "Comptable", icon: "📊", plural: "comptables" },
+  { id: "avocat", label: "Avocat", Icon: Scale, plural: "avocats" },
+  { id: "notaire", label: "Notaire", Icon: FileText, plural: "notaires" },
+  { id: "huissier", label: "Huissier", Icon: Briefcase, plural: "huissiers" },
+  {
+    id: "comptable",
+    label: "Comptable",
+    Icon: Calculator,
+    plural: "comptables",
+  },
 ];
 
 function SearchResults() {
   const searchParams = useSearchParams();
   const router = useRouter();
+
   const [avocats, setAvocats] = useState<AvocatData[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("");
@@ -469,11 +483,11 @@ function SearchResults() {
   const professionParam = searchParams.get("profession") || "avocat";
   const currentProf =
     PROFESSIONS.find((p) => p.id === professionParam) || PROFESSIONS[0];
-  const domaines = DOMAINES_PAR_PROFESSION[professionParam] || [];
-  const domaineOptions = domaines.map((d) => ({ value: d, label: d }));
-  const isAvocat = professionParam === "avocat";
+  const domaineOptions = (DOMAINES_PAR_PROFESSION[professionParam] || []).map(
+    (d) => ({ value: d, label: d })
+  );
 
-  const [filters, setFilters] = useState<SearchFilters>(() => {
+  const readFilters = (): SearchFilters => {
     const f: SearchFilters = {};
     const specs = searchParams.getAll("specialite");
     if (specs.length) f.specialite = specs;
@@ -483,37 +497,21 @@ function SearchResults() {
       f.experience_min = parseInt(searchParams.get("experience_min")!);
     if (searchParams.get("langues")) f.langues = searchParams.get("langues")!;
     return f;
-  });
+  };
 
+  const [filters, setFilters] = useState<SearchFilters>(readFilters);
+  useEffect(() => {
+    setFilters(readFilters());
+  }, [searchParams]);
   useEffect(() => {
     getWilayas().then(setWilayas);
   }, []);
-
   useEffect(() => {
-    const f: SearchFilters = {};
-    const specs = searchParams.getAll("specialite");
-    if (specs.length) f.specialite = specs;
-    if (searchParams.get("wilaya")) f.wilaya = searchParams.get("wilaya")!;
-    if (searchParams.get("genre")) f.genre = searchParams.get("genre") as any;
-    if (searchParams.get("experience_min"))
-      f.experience_min = parseInt(searchParams.get("experience_min")!);
-    if (searchParams.get("langues")) f.langues = searchParams.get("langues")!;
-    setFilters(f);
-  }, [searchParams]);
-
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      try {
-        const results = await searchAvocats(filters, professionParam);
-        setAvocats(results);
-      } catch {
-        setAvocats([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
+    setLoading(true);
+    searchAvocats(filters, professionParam)
+      .then(setAvocats)
+      .catch(() => setAvocats([]))
+      .finally(() => setLoading(false));
   }, [filters, professionParam]);
 
   useEffect(() => {
@@ -523,52 +521,37 @@ function SearchResults() {
       { opacity: 0, y: -20 },
       { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
     );
-    if (avocats.length > 0) {
+    if (avocats.length > 0)
       gsap.fromTo(
         ".search-avocat-card",
         { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.05,
-          ease: "power2.out",
-          delay: 0.1,
-        }
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.05, delay: 0.1 }
       );
-    }
   }, [loading, avocats.length]);
 
   const updateURL = (f: SearchFilters) => {
-    const params = new URLSearchParams();
-    params.set("profession", professionParam);
-    f.specialite?.forEach((s) => params.append("specialite", s));
-    if (f.wilaya) params.set("wilaya", f.wilaya);
-    if (f.genre) params.set("genre", f.genre);
-    if (f.experience_min)
-      params.set("experience_min", f.experience_min.toString());
-    if (f.langues) params.set("langues", f.langues);
-    window.history.replaceState(
-      {},
-      "",
-      `${window.location.pathname}?${params}`
-    );
+    const p = new URLSearchParams();
+    p.set("profession", professionParam);
+    f.specialite?.forEach((s) => p.append("specialite", s));
+    if (f.wilaya) p.set("wilaya", f.wilaya);
+    if (f.genre) p.set("genre", f.genre);
+    if (f.experience_min) p.set("experience_min", f.experience_min.toString());
+    if (f.langues) p.set("langues", f.langues);
+    window.history.replaceState({}, "", `${window.location.pathname}?${p}`);
   };
 
-  const handleFilterChange = (key: keyof SearchFilters, value: any) => {
+  const handleFilter = (key: keyof SearchFilters, value: any) => {
     const nf = { ...filters, [key]: value || undefined };
     if (!value) delete nf[key];
     setFilters(nf);
     updateURL(nf);
   };
-
-  const handleWilayaSelect = (wilaya: string) => {
-    const nf = { ...filters, wilaya: wilaya || undefined };
-    if (!wilaya) delete nf.wilaya;
+  const handleWilaya = (w: string) => {
+    const nf = { ...filters, wilaya: w || undefined };
+    if (!w) delete nf.wilaya;
     setFilters(nf);
     updateURL(nf);
   };
-
   const clearFilters = () => {
     const nf: SearchFilters = {};
     setFilters(nf);
@@ -578,11 +561,11 @@ function SearchResults() {
   const sortAvocats = (list: AvocatData[], type: string) => {
     const s = [...list];
     if (type === "rating")
-      return s.sort((a, b) => {
-        const ra = a.rating_google ?? a.rating_mizan ?? 0;
-        const rb = b.rating_google ?? b.rating_mizan ?? 0;
-        return rb - ra;
-      });
+      return s.sort(
+        (a, b) =>
+          (b.rating_google ?? b.rating_mizan ?? 0) -
+          (a.rating_google ?? a.rating_mizan ?? 0)
+      );
     if (type === "experience")
       return s.sort(
         (a, b) => (b.experience?.annees ?? 0) - (a.experience?.annees ?? 0)
@@ -602,33 +585,6 @@ function SearchResults() {
 
   const avocatsTries = sortBy ? sortAvocats(avocats, sortBy) : avocats;
   const wilayaOptions = wilayas.map((w) => ({ value: w, label: w }));
-
-  const genreOptions = [
-    { value: "", label: "Tous" },
-    { value: "homme", label: "Homme" },
-    { value: "femme", label: "Femme" },
-  ];
-  const expOptions = [
-    { value: "", label: "Tous niveaux" },
-    { value: "5", label: "5 ans et plus" },
-    { value: "10", label: "10 ans et plus" },
-    { value: "20", label: "20 ans et plus" },
-  ];
-  const langOptions = [
-    { value: "", label: "Toutes les langues" },
-    { value: "Arabe", label: "Arabe" },
-    { value: "Français", label: "Français" },
-    { value: "Anglais", label: "Anglais" },
-    { value: "Tamazight", label: "Tamazight" },
-  ];
-  const triOptions = [
-    { value: "", label: "Par défaut" },
-    { value: "rating", label: "Mieux notés" },
-    { value: "experience", label: "Plus expérimentés" },
-    { value: "nom", label: "Alphabétique" },
-    { value: "recent", label: "Récemment inscrits" },
-  ];
-
   const hasFilters = !!(
     filters.wilaya ||
     filters.specialite?.length ||
@@ -637,89 +593,94 @@ function SearchResults() {
     filters.langues
   );
 
+  // Sidebar — z-index décroissant pour éviter tout chevauchement
   const SidebarContent = () => (
     <div className="space-y-5">
-      {/* Domaines — tous les professions */}
-      <div>
+      <div style={{ position: "relative", zIndex: 40 }}>
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
-          {isAvocat ? "Spécialité" : "Domaine d'intervention"}
+          {professionParam === "avocat" ? "Spécialité" : "Domaine"}
         </p>
-        <div className="relative z-40">
-          <MultiSelectWithCheckboxes
-            placeholder={
-              isAvocat
-                ? "Choisir des spécialités..."
-                : "Choisir des domaines..."
-            }
-            options={domaineOptions}
-            value={filters.specialite || []}
-            onChange={(v) =>
-              handleFilterChange("specialite", v.length ? v : undefined)
-            }
-            className="h-9"
-            placeholderClassName="text-slate-400 font-medium text-sm"
-          />
-        </div>
+        <MultiSelectWithCheckboxes
+          placeholder={
+            professionParam === "avocat" ? "Spécialités..." : "Domaines..."
+          }
+          options={domaineOptions}
+          value={filters.specialite || []}
+          onChange={(v) => handleFilter("specialite", v.length ? v : undefined)}
+          className="h-9"
+          placeholderClassName="text-slate-400 font-medium text-sm"
+        />
       </div>
 
-      {/* Wilaya — mobile uniquement (desktop a la carte) */}
-      <div className="lg:hidden">
+      <div className="lg:hidden" style={{ position: "relative", zIndex: 30 }}>
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
           Wilaya
         </p>
-        <div className="relative z-30">
-          <CustomSelect
-            options={[
-              { value: "", label: "Toutes les wilayas" },
-              ...wilayaOptions,
-            ]}
-            placeholder="Toutes les wilayas"
-            value={filters.wilaya || ""}
-            onChange={handleWilayaSelect}
-            className="h-9 text-sm"
-          />
-        </div>
+        <CustomSelect
+          options={[
+            { value: "", label: "Toutes les wilayas" },
+            ...wilayaOptions,
+          ]}
+          placeholder="Toutes les wilayas"
+          value={filters.wilaya || ""}
+          onChange={handleWilaya}
+          className="h-9 text-sm"
+        />
       </div>
 
-      <div>
+      <div style={{ position: "relative", zIndex: 20 }}>
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
           Genre
         </p>
-        <div className="relative z-20">
-          <CustomSelect
-            options={genreOptions}
-            placeholder="Tous"
-            value={filters.genre || ""}
-            onChange={(v) => handleFilterChange("genre", v)}
-            className="h-9 text-sm"
-          />
-        </div>
+        <CustomSelect
+          options={[
+            { value: "", label: "Tous" },
+            { value: "homme", label: "Homme" },
+            { value: "femme", label: "Femme" },
+          ]}
+          placeholder="Tous"
+          value={filters.genre || ""}
+          onChange={(v) => handleFilter("genre", v)}
+          className="h-9 text-sm"
+        />
       </div>
-      <div>
+
+      <div style={{ position: "relative", zIndex: 10 }}>
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
           Expérience
         </p>
-        <div className="relative z-10">
-          <CustomSelect
-            options={expOptions}
-            placeholder="Tous niveaux"
-            value={filters.experience_min?.toString() || ""}
-            onChange={(v) =>
-              handleFilterChange("experience_min", v ? parseInt(v) : undefined)
-            }
-            className="h-9 text-sm"
-          />
-        </div>
+        <CustomSelect
+          options={[
+            { value: "", label: "Tous niveaux" },
+            { value: "5", label: "5 ans+" },
+            { value: "10", label: "10 ans+" },
+            { value: "20", label: "20 ans+" },
+          ]}
+          placeholder="Tous niveaux"
+          value={filters.experience_min?.toString() || ""}
+          onChange={(v) =>
+            handleFilter("experience_min", v ? parseInt(v) : undefined)
+          }
+          className="h-9 text-sm"
+        />
       </div>
-      <div>
+
+      {/* Langue — z-index le plus bas pour ne jamais passer au-dessus */}
+      <div style={{ position: "relative", zIndex: 5 }}>
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
           Langue
         </p>
         <CustomSelect
-          options={langOptions}
-          placeholder="Toutes les langues"
+          options={[
+            { value: "", label: "Toutes" },
+            { value: "Arabe", label: "Arabe" },
+            { value: "Français", label: "Français" },
+            { value: "Anglais", label: "Anglais" },
+            { value: "Tamazight", label: "Tamazight" },
+          ]}
+          placeholder="Toutes"
           value={filters.langues || ""}
-          onChange={(v) => handleFilterChange("langues", v)}
+          onChange={(v) => handleFilter("langues", v)}
           className="h-9 text-sm"
         />
       </div>
@@ -729,7 +690,7 @@ function SearchResults() {
           onClick={clearFilters}
           className="w-full text-xs text-slate-500 hover:text-slate-700 py-2 px-3 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 transition-all cursor-pointer font-medium"
         >
-          Réinitialiser les filtres
+          Réinitialiser
         </button>
       )}
     </div>
@@ -737,17 +698,19 @@ function SearchResults() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <style>{`.search-header, .search-avocat-card { opacity: 0; }`}</style>
+      <style>{`.search-header,.search-avocat-card{opacity:0;}`}</style>
 
       {/* Barre sticky */}
       <div className="search-header sticky top-16 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 py-3">
-          {/* Tabs professions */}
+          {/* Tabs — retour vers /{profession}, pas vers / */}
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <Link href="/">
+            <Link href={`/${professionParam}`}>
               <button className="flex items-center gap-1 text-teal-600 hover:text-teal-700 text-sm font-medium cursor-pointer mr-2">
                 <ArrowLeft className="w-4 h-4" />
-                <span className="hidden sm:inline">Accueil</span>
+                <span className="hidden sm:inline capitalize">
+                  {currentProf.label}
+                </span>
               </button>
             </Link>
             <div className="h-4 w-px bg-slate-200 mr-2 hidden sm:block" />
@@ -757,10 +720,11 @@ function SearchResults() {
                 onClick={() => router.push(`/search?profession=${p.id}`)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${professionParam === p.id ? "bg-teal-600 text-white" : "text-slate-500 hover:bg-slate-100"}`}
               >
-                {p.icon} {p.label}
+                <p.Icon className="w-3.5 h-3.5" /> {p.label}
               </button>
             ))}
           </div>
+
           {/* Résultats + tri */}
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-2 flex-wrap">
@@ -772,7 +736,7 @@ function SearchResults() {
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-50 text-teal-700 border border-teal-100 rounded-full text-xs font-medium">
                   📍 {filters.wilaya}
                   <button
-                    onClick={() => handleWilayaSelect("")}
+                    onClick={() => handleWilaya("")}
                     className="hover:text-teal-900 cursor-pointer"
                   >
                     <X className="w-3 h-3" />
@@ -787,12 +751,12 @@ function SearchResults() {
                   {s}
                   <button
                     onClick={() =>
-                      handleFilterChange(
+                      handleFilter(
                         "specialite",
                         filters.specialite?.filter((x) => x !== s)
                       )
                     }
-                    className="hover:text-teal-900 cursor-pointer"
+                    className="cursor-pointer"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -800,16 +764,21 @@ function SearchResults() {
               ))}
             </div>
             <div className="flex items-center gap-2">
-              {/* Bouton filtres mobile */}
               <button
                 onClick={() => setShowMobileFilters(!showMobileFilters)}
                 className="lg:hidden flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-600 cursor-pointer"
               >
                 <SlidersHorizontal className="w-4 h-4" /> Filtres
               </button>
-              <div className="w-44">
+              <div className="w-40">
                 <CustomSelect
-                  options={triOptions}
+                  options={[
+                    { value: "", label: "Par défaut" },
+                    { value: "rating", label: "Mieux notés" },
+                    { value: "experience", label: "Plus exp." },
+                    { value: "nom", label: "Alphabétique" },
+                    { value: "recent", label: "Récents" },
+                  ]}
                   placeholder="Par défaut"
                   value={sortBy}
                   onChange={setSortBy}
@@ -820,7 +789,6 @@ function SearchResults() {
           </div>
         </div>
 
-        {/* Filtres mobile collapsible */}
         {showMobileFilters && (
           <div className="lg:hidden border-t border-slate-200 bg-white px-4 py-4">
             <SidebarContent />
@@ -833,11 +801,10 @@ function SearchResults() {
           {/* Sidebar desktop */}
           <aside className="hidden lg:block lg:sticky lg:top-40 lg:self-start">
             <div className="bg-white shadow-sm rounded-xl p-4">
-              {/* Carte Algérie desktop/tablette */}
               <div className="mb-5">
                 <AlgeriaMap
                   selectedWilaya={filters.wilaya}
-                  onSelect={handleWilayaSelect}
+                  onSelect={handleWilaya}
                 />
               </div>
               <SidebarContent />
@@ -847,7 +814,7 @@ function SearchResults() {
           {/* Résultats */}
           <div>
             {loading ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
                 {[...Array(8)].map((_, i) => (
                   <div
                     key={i}
@@ -861,10 +828,10 @@ function SearchResults() {
                 ))}
               </div>
             ) : avocatsTries.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                {avocatsTries.map((avocat) => (
-                  <div key={avocat.id} className="search-avocat-card">
-                    <AvocatCard avocat={avocat} searchParams={searchParams} />
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
+                {avocatsTries.map((a) => (
+                  <div key={a.id} className="search-avocat-card">
+                    <AvocatCard avocat={a} searchParams={searchParams} />
                   </div>
                 ))}
               </div>
@@ -874,19 +841,16 @@ function SearchResults() {
                   <Users className="w-9 h-9 text-slate-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-700 mb-2">
-                  Aucun {currentProf.label.toLowerCase()} ne correspond à vos
-                  critères
+                  Aucun {currentProf.label.toLowerCase()} ne correspond
                 </h3>
                 <p className="text-slate-500 mb-6 max-w-sm mx-auto text-sm">
-                  Essayez de modifier ou réinitialiser vos filtres
+                  Modifiez ou réinitialisez vos filtres
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <Button onClick={clearFilters}>
-                    Réinitialiser les filtres
-                  </Button>
-                  <Link href="/">
+                  <Button onClick={clearFilters}>Réinitialiser</Button>
+                  <Link href={`/${professionParam}`}>
                     <Button className="bg-teal-600 hover:bg-teal-700 text-white">
-                      Nouvelle recherche
+                      Retour
                     </Button>
                   </Link>
                 </div>
@@ -903,7 +867,7 @@ export default function SearchPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
+        <div className="min-h-screen pt-16 flex items-center justify-center bg-gradient-to-br from-teal-100 via-white to-teal-100">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600" />
         </div>
       }
