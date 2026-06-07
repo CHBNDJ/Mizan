@@ -785,39 +785,36 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ── Libellés par profession ───────────────────────────────────────────────────
+// ── Profession labels ─────────────────────────────────────────────────────────
 const PROF_LABELS: Record<string, { label: string; numLabel: string }> = {
   avocat: { label: "Avocat", numLabel: "Barreau de" },
   notaire: { label: "Notaire", numLabel: "Chambre des notaires de" },
   huissier: { label: "Huissier", numLabel: "Juridiction de" },
   comptable: { label: "Comptable", numLabel: "N° ONEC/ONCA" },
 };
-const getProfLabel = (profession?: string) =>
-  PROF_LABELS[profession || "avocat"] || PROF_LABELS.avocat;
+const getProfLabel = (p?: string) =>
+  PROF_LABELS[p || "avocat"] || PROF_LABELS.avocat;
 
-// ── Jitsi Meet ────────────────────────────────────────────────────────────────
-const getJitsiUrl = (lawyerId: string) =>
-  `https://meet.jit.si/mizan-${lawyerId.slice(0, 10)}`;
+// ── Jitsi ─────────────────────────────────────────────────────────────────────
+const getJitsiUrl = (id: string) =>
+  `https://meet.jit.si/mizan-${id.slice(0, 10)}`;
 
-// ── Google Maps ───────────────────────────────────────────────────────────────
-const getGoogleMapsQuery = (avocat: AvocatData): string => {
-  const parts = [
-    avocat.adresse?.rue,
-    avocat.adresse?.ville || avocat.ville,
-    avocat.wilaya,
-    "Algérie",
-  ].filter(Boolean);
-  return parts.join(", ");
+// ── Maps helpers ──────────────────────────────────────────────────────────────
+const getMapsQuery = (a: AvocatData) =>
+  [a.adresse?.rue, a.adresse?.ville || a.ville, a.wilaya, "Algérie"]
+    .filter(Boolean)
+    .join(", ");
+
+const getGoogleMapsUrl = (a: AvocatData) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getMapsQuery(a))}`;
+
+// OpenStreetMap embed — pas de blocage ERR_BLOCKED_BY_RESPONSE
+const getOsmEmbedUrl = (a: AvocatData) => {
+  const q = encodeURIComponent(getMapsQuery(a));
+  return `https://www.openstreetmap.org/export/embed.html?query=${q}&layer=mapnik`;
 };
 
-const getGoogleMapsUrl = (avocat: AvocatData) =>
-  `https://maps.google.com/?q=${encodeURIComponent(getGoogleMapsQuery(avocat))}`;
-
-// Embed sans API key — fonctionne avec une simple adresse texte
-const getGoogleMapsEmbedUrl = (avocat: AvocatData) =>
-  `https://maps.google.com/maps?q=${encodeURIComponent(getGoogleMapsQuery(avocat))}&output=embed&hl=fr&z=15`;
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Misc helpers ──────────────────────────────────────────────────────────────
 const getSiteLabel = (url: string) => {
   if (url.includes("linkedin.com"))
     return { label: "LinkedIn", sublabel: "Voir le profil" };
@@ -827,24 +824,24 @@ const getSiteLabel = (url: string) => {
     return { label: "Instagram", sublabel: "Voir le profil" };
   return { label: "Site web", sublabel: "Visiter le site" };
 };
-const getCountryFlag = (phone: string) => {
-  const c = phone.replace(/\s/g, "");
-  if (c.startsWith("+213")) return "🇩🇿";
-  if (c.startsWith("+33")) return "🇫🇷";
-  if (c.startsWith("+32")) return "🇧🇪";
-  if (c.startsWith("+41")) return "🇨🇭";
-  if (c.startsWith("+44")) return "🇬🇧";
-  if (c.startsWith("+1")) return "🇺🇸";
-  if (c.startsWith("+212")) return "🇲🇦";
-  if (c.startsWith("+216")) return "🇹🇳";
+const flag = (p: string) => {
+  const n = p.replace(/\s/g, "");
+  if (n.startsWith("+213")) return "🇩🇿";
+  if (n.startsWith("+33")) return "🇫🇷";
+  if (n.startsWith("+32")) return "🇧🇪";
+  if (n.startsWith("+41")) return "🇨🇭";
+  if (n.startsWith("+44")) return "🇬🇧";
+  if (n.startsWith("+1")) return "🇺🇸";
+  if (n.startsWith("+212")) return "🇲🇦";
+  if (n.startsWith("+216")) return "🇹🇳";
   return "🌍";
 };
-const getWhatsAppUrl = (phone: string) =>
-  `https://wa.me/${phone.replace(/[\s\-\(\)]/g, "").replace("+", "")}`;
-const getGridClass = (count: number) => {
-  if (count === 1) return "grid-cols-1";
-  if (count === 2) return "grid-cols-2";
-  if (count === 4) return "grid-cols-2";
+const waUrl = (p: string) =>
+  `https://wa.me/${p.replace(/[\s\-\(\)]/g, "").replace("+", "")}`;
+const gridClass = (n: number) => {
+  if (n === 1) return "grid-cols-1";
+  if (n === 2) return "grid-cols-2";
+  if (n === 4) return "grid-cols-2";
   return "grid-cols-3";
 };
 
@@ -858,7 +855,8 @@ interface InfoItem {
   teal?: boolean;
 }
 
-const WhatsAppIcon = () => (
+// ── WhatsApp SVG ──────────────────────────────────────────────────────────────
+const WaIcon = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
   </svg>
@@ -921,19 +919,17 @@ const InfoCardMobile = ({
         <div className="flex border-t border-slate-100">
           <a
             href={href}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors border-r border-slate-100"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-slate-600 hover:bg-slate-50 border-r border-slate-100"
           >
-            <Phone className="w-3.5 h-3.5" />
-            Appeler
+            <Phone className="w-3.5 h-3.5" /> Appeler
           </a>
           <a
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-white bg-[#25D366] hover:bg-[#20bd5a] transition-colors"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-white bg-[#25D366] hover:bg-[#20bd5a]"
           >
-            <WhatsAppIcon />
-            WhatsApp
+            <WaIcon /> WhatsApp
           </a>
         </div>
       )}
@@ -990,19 +986,17 @@ const InfoCardDesktop = ({
         <div className="flex border-t border-slate-100 mt-auto">
           <a
             href={href}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors border-r border-slate-100"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 border-r border-slate-100"
           >
-            <Phone className="w-3 h-3" />
-            Appeler
+            <Phone className="w-3 h-3" /> Appeler
           </a>
           <a
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-white bg-[#25D366] hover:bg-[#20bd5a] transition-colors"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-white bg-[#25D366] hover:bg-[#20bd5a]"
           >
-            <WhatsAppIcon />
-            WhatsApp
+            <WaIcon /> WhatsApp
           </a>
         </div>
       )}
@@ -1022,7 +1016,7 @@ const InfoCardDesktop = ({
   return <div className="h-full">{body}</div>;
 };
 
-// ── Google Maps Card ─────────────────────────────────────────────────────────
+// ── Google Maps Card — OpenStreetMap embed ────────────────────────────────────
 const GoogleMapsCard = ({
   avocat,
   showContact,
@@ -1032,8 +1026,7 @@ const GoogleMapsCard = ({
   showContact: boolean;
   onLockedClick: () => void;
 }) => {
-  const mapContainerRef = React.useRef<HTMLDivElement>(null);
-
+  const mapRef = React.useRef<HTMLDivElement>(null);
   const hasAddress = !!(
     avocat.adresse?.rue ||
     avocat.adresse?.ville ||
@@ -1041,20 +1034,18 @@ const GoogleMapsCard = ({
   );
   if (!hasAddress) return null;
 
-  const mapsUrl = getGoogleMapsUrl(avocat);
-  const embedUrl = getGoogleMapsEmbedUrl(avocat);
   const villeStr = [avocat.adresse?.ville || avocat.ville, avocat.wilaya]
     .filter(Boolean)
     .join(", ");
   const rueStr = avocat.adresse?.rue || "";
+  const googleUrl = getGoogleMapsUrl(avocat);
+  const osmUrl = getOsmEmbedUrl(avocat);
 
   const handleFullscreen = () => {
-    if (!mapContainerRef.current) return;
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    } else {
-      mapContainerRef.current.requestFullscreen?.();
-    }
+    if (!mapRef.current) return;
+    document.fullscreenElement
+      ? document.exitFullscreen()
+      : mapRef.current.requestFullscreen?.();
   };
 
   return (
@@ -1070,23 +1061,20 @@ const GoogleMapsCard = ({
             {villeStr}
           </p>
         )}
+        {!showContact && (
+          <p className="text-xs text-slate-400 mt-1 italic">
+            Connectez-vous pour voir l'adresse complète
+          </p>
+        )}
       </CardHeader>
-
       <CardContent className="p-0">
-        <div
-          ref={mapContainerRef}
-          className="relative w-full h-52 sm:h-64 bg-slate-100"
-        >
+        <div ref={mapRef} className="relative w-full h-52 sm:h-64 bg-slate-100">
           <iframe
-            src={embedUrl}
+            src={osmUrl}
             className="w-full h-full border-0"
             loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
             title={`Cabinet de ${avocat.prenom} ${avocat.nom}`}
-            sandbox="allow-scripts allow-same-origin allow-popups"
           />
-
-          {/* Overlay si non connecté */}
           {!showContact && (
             <button
               onClick={onLockedClick}
@@ -1094,38 +1082,53 @@ const GoogleMapsCard = ({
               aria-label="Connectez-vous pour accéder"
             />
           )}
-          {/* Contrôles top-right : Ouvrir dans Maps + Plein écran */}
-          <div className="absolute top-2 right-2 flex items-center gap-1.5 z-20">
-            {/* Plein écran — icône teal */}
-            <button
-              onClick={handleFullscreen}
-              className="w-8 h-8 bg-white border border-slate-300 rounded-lg shadow-sm flex items-center justify-center cursor-pointer hover:border-teal-300 hover:text-teal-600 transition-colors text-slate-600"
-              title="Plein écran"
+          <button
+            onClick={handleFullscreen}
+            className="absolute top-2 right-2 w-8 h-8 bg-white border border-slate-300 rounded-lg shadow-sm flex items-center justify-center z-10 cursor-pointer hover:border-teal-300 hover:text-teal-600 transition-colors text-slate-600"
+            title="Plein écran"
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              <svg
-                width="13"
-                height="13"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="15 3 21 3 21 9" />
-                <polyline points="9 21 3 21 3 15" />
-                <line x1="21" y1="3" x2="14" y2="10" />
-                <line x1="3" y1="21" x2="10" y2="14" />
-              </svg>
-            </button>
-          </div>
+              <polyline points="15 3 21 3 21 9" />
+              <polyline points="9 21 3 21 3 15" />
+              <line x1="21" y1="3" x2="14" y2="10" />
+              <line x1="3" y1="21" x2="10" y2="14" />
+            </svg>
+          </button>
         </div>
+        {showContact ? (
+          <a
+            href={googleUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-1.5 py-3 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors border-t border-slate-100"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            Ouvrir dans Google Maps
+          </a>
+        ) : (
+          <button
+            onClick={onLockedClick}
+            className="w-full flex items-center justify-center gap-2 py-3 text-xs font-medium text-slate-400 hover:bg-slate-50 transition-colors border-t border-slate-100 cursor-pointer"
+          >
+            <MapPin className="w-4 h-4" />
+            Connexion requise pour l'itinéraire
+          </button>
+        )}
       </CardContent>
     </Card>
   );
 };
 
-// ── Modal demande de consultation vidéo ──────────────────────────────────────
+// ── Modal demande consultation vidéo ─────────────────────────────────────────
 const VideoConsultationModal = ({
   isOpen,
   onClose,
@@ -1141,11 +1144,11 @@ const VideoConsultationModal = ({
   supabase: any;
   onSuccess: () => void;
 }) => {
-  const [date, setDate] = React.useState("");
-  const [heure, setHeure] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [sending, setSending] = React.useState(false);
-  const [sent, setSent] = React.useState(false);
+  const [date, setDate] = useState("");
+  const [heure, setHeure] = useState("");
+  const [description, setDesc] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
   if (!isOpen) return null;
 
@@ -1153,7 +1156,6 @@ const VideoConsultationModal = ({
     if (!date || !heure || !description.trim()) return;
     setSending(true);
     try {
-      // Créer ou récupérer la consultation
       const { data: existing } = await supabase
         .from("consultations")
         .select("id")
@@ -1164,9 +1166,8 @@ const VideoConsultationModal = ({
         .maybeSingle();
 
       let consultationId = existing?.id;
-
       if (!consultationId) {
-        const { data: newConsult } = await supabase
+        const { data: nc } = await supabase
           .from("consultations")
           .insert({
             client_id: userId,
@@ -1176,24 +1177,15 @@ const VideoConsultationModal = ({
           })
           .select("id")
           .single();
-        consultationId = newConsult?.id;
+        consultationId = nc?.id;
       }
 
       if (consultationId) {
-        const jitsiUrl = `https://meet.jit.si/mizan-${avocat.id.slice(0, 10)}`;
-        const content = `📹 Demande de consultation vidéo
-
-📅 Date souhaitée : ${date} à ${heure}
-📝 Motif : ${description.trim()}
-
-Lien de la salle vidéo : ${jitsiUrl}
-
-Merci de confirmer ce créneau et d'indiquer vos honoraires. Je rejoindrai la salle à l'heure confirmée.`;
-
+        const jitsiUrl = getJitsiUrl(avocat.id);
         await supabase.from("messages").insert({
           consultation_id: consultationId,
           sender_id: userId,
-          content,
+          content: `📹 Demande de consultation vidéo\n\n📅 Date souhaitée : ${date} à ${heure}\n📝 Motif : ${description.trim()}\n\nLien de la salle vidéo : ${jitsiUrl}\n\nMerci de confirmer ce créneau et d'indiquer vos honoraires.`,
         });
       }
 
@@ -1203,7 +1195,7 @@ Merci de confirmer ce créneau et d'indiquer vos honoraires. Je rejoindrai la sa
         setSent(false);
         setDate("");
         setHeure("");
-        setDescription("");
+        setDesc("");
         onSuccess();
       }, 2000);
     } catch (e) {
@@ -1213,7 +1205,7 @@ Merci de confirmer ce créneau et d'indiquer vos honoraires. Je rejoindrai la sa
     }
   };
 
-  const inputCls =
+  const inp =
     "w-full h-11 px-3 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-400 focus:border-2 outline-none transition-all text-slate-700";
 
   return (
@@ -1232,7 +1224,7 @@ Merci de confirmer ce créneau et d'indiquer vos honoraires. Je rejoindrai la sa
               Demande envoyée
             </h3>
             <p className="text-sm text-slate-500">
-              {avocat.prenom} {avocat.nom} va vous répondre avec confirmation et
+              {avocat.prenom} {avocat.nom} vous répondra avec confirmation et
               tarif.
             </p>
           </div>
@@ -1257,16 +1249,13 @@ Merci de confirmer ce créneau et d'indiquer vos honoraires. Je rejoindrai la sa
                 ×
               </button>
             </div>
-
-            {/* Info tarif */}
             <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 mb-4 flex items-start gap-2.5">
               <span className="text-base">💡</span>
               <p className="text-xs text-blue-700 leading-relaxed">
-                L'avocat vous confirmera le créneau et ses honoraires par
-                message. Le paiement sera convenu directement avec lui.
+                L'avocat confirmera le créneau et ses honoraires par message. Le
+                paiement sera convenu directement.
               </p>
             </div>
-
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -1278,7 +1267,7 @@ Merci de confirmer ce créneau et d'indiquer vos honoraires. Je rejoindrai la sa
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     min={new Date().toISOString().split("T")[0]}
-                    className={inputCls}
+                    className={inp}
                   />
                 </div>
                 <div>
@@ -1289,24 +1278,23 @@ Merci de confirmer ce créneau et d'indiquer vos honoraires. Je rejoindrai la sa
                     type="time"
                     value={heure}
                     onChange={(e) => setHeure(e.target.value)}
-                    className={inputCls}
+                    className={inp}
                   />
                 </div>
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-600 mb-1">
-                  Motif de la consultation *
+                  Motif *
                 </label>
                 <textarea
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={(e) => setDesc(e.target.value)}
                   rows={3}
                   placeholder="Décrivez brièvement votre problème juridique..."
-                  className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-400 focus:border-2 outline-none transition-all text-slate-700 resize-none"
+                  className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-400 outline-none transition-all text-slate-700 resize-none"
                 />
               </div>
             </div>
-
             <button
               onClick={handleSubmit}
               disabled={sending || !date || !heure || !description.trim()}
@@ -1478,21 +1466,36 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   );
   const validSiteUrl = avocat.contact?.site_web?.trim() || undefined;
   const siteInfo = validSiteUrl ? getSiteLabel(validSiteUrl) : null;
+  const hasAddress = !!(
+    avocat.adresse?.rue ||
+    avocat.adresse?.ville ||
+    avocat.ville
+  );
 
   const infoItems: InfoItem[] = [
+    ...(avocat.adresse?.rue || avocat.ville
+      ? [
+          {
+            icon: <MapPin className="w-3.5 h-3.5 text-teal-600" />,
+            label: "Cabinet",
+            value: `${avocat.adresse?.ville || avocat.ville}, ${avocat.wilaya}`,
+            sublabel: showContact
+              ? avocat.adresse?.rue || undefined
+              : undefined,
+            href: showContact ? getGoogleMapsUrl(avocat) : undefined,
+          },
+        ]
+      : []),
     ...(showContact
       ? allPhones.map((p) => ({
           icon: (
-            <span className="text-base leading-none">
-              {getCountryFlag(p.number)}
-            </span>
+            <span className="text-base leading-none">{flag(p.number)}</span>
           ),
           label: p.type === "mobile" ? "Mobile" : "Fixe",
           value: formatPhoneNumber(p.number),
           sublabel: p.type === "mobile" ? "Appeler · WhatsApp" : "Appeler",
           href: `tel:${p.number.replace(/\s/g, "")}`,
-          whatsappHref:
-            p.type === "mobile" ? getWhatsAppUrl(p.number) : undefined,
+          whatsappHref: p.type === "mobile" ? waUrl(p.number) : undefined,
         }))
       : []),
     ...(showContact && validSiteUrl && siteInfo
@@ -1514,17 +1517,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         ]
       : []),
   ];
-  // Card vidéo — uniquement pour clients connectés (même logique que WhatsApp)
-  const videoItem: InfoItem | null = showContact
-    ? {
-        icon: <Video className="w-3.5 h-3.5 text-blue-500" />,
-        label: "Consultation vidéo",
-        value: "Rejoindre la salle vidéo",
-        sublabel: "Ouvre Jitsi Meet · Notification envoyée",
-        href: "#video",
-        teal: false,
-      }
-    : null;
 
   const claimItem: InfoItem | null = !avocat.is_claimed
     ? {
@@ -1535,32 +1527,23 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         teal: true,
       }
     : null;
-  const allInfoItems = [
-    ...infoItems,
-    ...(videoItem ? [videoItem] : []),
-    ...(claimItem ? [claimItem] : []),
-  ];
 
-  // Afficher la carte uniquement si l'adresse est disponible
-  const hasAddress = !!(
-    avocat.adresse?.rue ||
-    avocat.adresse?.ville ||
-    avocat.ville
-  );
+  const allInfoItems = [...infoItems, ...(claimItem ? [claimItem] : [])];
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden w-full">
       <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Retour */}
         <button
           onClick={() => router.push(`/search?${searchParams.toString()}`)}
-          className="back-button opacity-0 invisible flex items-center gap-2 text-teal-600 hover:text-teal-700 transition-colors cursor-pointer mb-6 text-sm font-medium"
+          className="back-button opacity-0 invisible flex items-center gap-2 text-teal-600 hover:text-teal-700 cursor-pointer mb-6 text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="hidden sm:inline">Retour aux résultats</span>
           <span className="sm:hidden">Retour</span>
         </button>
 
-        {/* ── Hero ── */}
+        {/* Hero */}
         <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-4">
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[360px]">
             <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
@@ -1596,7 +1579,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       </span>
                     </div>
                   )}
-
                   {((avocat.rating_google &&
                     (avocat.reviews_count_google ?? 0) > 0) ||
                     (avocat.rating_mizan &&
@@ -1654,16 +1636,20 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                         }}
                         className="cursor-pointer bg-teal-600 hover:bg-teal-700 text-white py-2.5 px-4 rounded-xl flex items-center gap-2 font-semibold text-sm transition-all shadow-sm"
                       >
-                        <MessageCircle className="w-4 h-4" />
-                        Consulter
+                        <MessageCircle className="w-4 h-4" /> Consulter
+                      </button>
+                      <button
+                        onClick={handleVideoCall}
+                        className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-xl flex items-center gap-2 font-semibold text-sm transition-all shadow-sm"
+                      >
+                        <Video className="w-4 h-4" /> Vidéo
                       </button>
                     </div>
                   )}
                 </div>
                 {avocat.verified && (
                   <div className="flex items-center gap-1.5 mt-3 text-[11px] text-teal-600 font-medium">
-                    <CheckCircle className="w-3 h-3" />
-                    Vérifié par Mizan
+                    <CheckCircle className="w-3 h-3" /> Vérifié par Mizan
                   </div>
                 )}
               </div>
@@ -1684,7 +1670,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
         </div>
 
-        {/* ── Spécialités ── */}
+        {/* Spécialités */}
         {avocat.specialites && avocat.specialites.length > 0 && (
           <Card className="content-card opacity-0 invisible shadow-sm mb-4">
             <CardHeader>
@@ -1709,7 +1695,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </Card>
         )}
 
-        {/* ── CTA non connecté ── */}
+        {/* CTA non connecté */}
         {!user && !isOwnProfile && (
           <div className="content-card opacity-0 invisible mb-4">
             <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
@@ -1730,13 +1716,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </div>
               <div className="px-5 py-4 flex flex-col gap-2.5">
                 <Link href="/auth/client/register" className="block">
-                  <button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
-                    <MessageCircle className="w-4 h-4" />
-                    Créer un compte gratuit
+                  <button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer">
+                    <MessageCircle className="w-4 h-4" /> Créer un compte
+                    gratuit
                   </button>
                 </Link>
                 <Link href="/auth/client/login" className="block">
-                  <button className="w-full bg-white hover:bg-slate-50 text-slate-700 py-3 rounded-xl font-medium text-sm transition-all border border-slate-200 flex items-center justify-center gap-2 cursor-pointer">
+                  <button className="w-full bg-white hover:bg-slate-50 text-slate-700 py-3 rounded-xl font-medium text-sm border border-slate-200 flex items-center justify-center gap-2 cursor-pointer">
                     J'ai déjà un compte — Me connecter
                   </button>
                 </Link>
@@ -1745,63 +1731,35 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
         )}
 
-        {/* ── Info cards ── */}
+        {/* Info cards */}
         {allInfoItems.length > 0 && (
           <>
             <div className="content-card opacity-0 invisible sm:hidden flex flex-col gap-2.5 mb-4">
-              {allInfoItems.map((item, i) =>
-                item.label === "Consultation vidéo" ? (
-                  <div
-                    key={i}
-                    onClick={handleVideoCall}
-                    className="cursor-pointer"
-                  >
-                    <InfoCardMobile
-                      {...item}
-                      href={undefined}
-                      whatsappHref={undefined}
-                    />
-                  </div>
-                ) : (
-                  <InfoCardMobile
-                    key={i}
-                    {...item}
-                    href={item.href ?? undefined}
-                    whatsappHref={item.whatsappHref ?? undefined}
-                  />
-                )
-              )}
+              {allInfoItems.map((item, i) => (
+                <InfoCardMobile
+                  key={i}
+                  {...item}
+                  href={item.href ?? undefined}
+                  whatsappHref={item.whatsappHref ?? undefined}
+                />
+              ))}
             </div>
             <div
-              className={`content-card opacity-0 invisible hidden sm:grid ${getGridClass(allInfoItems.length)} gap-3 mb-4`}
+              className={`content-card opacity-0 invisible hidden sm:grid ${gridClass(allInfoItems.length)} gap-3 mb-4`}
             >
-              {allInfoItems.map((item, i) =>
-                item.label === "Consultation vidéo" ? (
-                  <div
-                    key={i}
-                    onClick={handleVideoCall}
-                    className="cursor-pointer h-full"
-                  >
-                    <InfoCardDesktop
-                      {...item}
-                      href={undefined}
-                      whatsappHref={undefined}
-                    />
-                  </div>
-                ) : (
-                  <InfoCardDesktop
-                    key={i}
-                    {...item}
-                    href={item.href ?? undefined}
-                    whatsappHref={item.whatsappHref ?? undefined}
-                  />
-                )
-              )}
+              {allInfoItems.map((item, i) => (
+                <InfoCardDesktop
+                  key={i}
+                  {...item}
+                  href={item.href ?? undefined}
+                  whatsappHref={item.whatsappHref ?? undefined}
+                />
+              ))}
             </div>
           </>
         )}
 
-        {/* ── Google Maps embed ── */}
+        {/* Google Maps */}
         {hasAddress && (
           <GoogleMapsCard
             avocat={avocat}
@@ -1810,19 +1768,25 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           />
         )}
 
-        {/* ── Boutons mobile ── */}
+        {/* Boutons mobile */}
         {isClient && !isOwnProfile && (
-          <div className="content-card opacity-0 invisible lg:hidden mb-4">
+          <div className="content-card opacity-0 invisible lg:hidden mb-4 grid grid-cols-2 gap-3">
             <button
               onClick={() => setIsConsultationModalOpen(true)}
-              className="cursor-pointer w-full bg-teal-600 hover:bg-teal-700 text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2 font-semibold text-sm transition-all shadow-sm"
+              className="cursor-pointer w-full bg-teal-600 hover:bg-teal-700 text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2 font-semibold text-sm shadow-sm"
             >
-              <MessageCircle className="w-4 h-4" />
-              Consulter
+              <MessageCircle className="w-4 h-4" /> Consulter
+            </button>
+            <button
+              onClick={handleVideoCall}
+              className="cursor-pointer w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2 font-semibold text-sm shadow-sm"
+            >
+              <Video className="w-4 h-4" /> Vidéo
             </button>
           </div>
         )}
 
+        {/* Avis */}
         <div className="reviews-section opacity-0 invisible mt-4">
           <ReviewSection
             lawyerId={avocat.id}
@@ -1830,6 +1794,14 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           />
         </div>
       </div>
+
+      <ConsultationModal
+        isOpen={isConsultationModalOpen}
+        onClose={() => setIsConsultationModalOpen(false)}
+        lawyerId={avocat.id}
+        lawyerName={`${avocat.prenom} ${avocat.nom}`}
+        onSuccess={() => setTimeout(() => setShowFeedbackPopup(true), 3000)}
+      />
 
       <VideoConsultationModal
         isOpen={isVideoModalOpen}
@@ -1839,13 +1811,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         supabase={supabase}
         onSuccess={() => setTimeout(() => setShowFeedbackPopup(true), 3000)}
       />
-      <ConsultationModal
-        isOpen={isConsultationModalOpen}
-        onClose={() => setIsConsultationModalOpen(false)}
-        lawyerId={avocat.id}
-        lawyerName={`${avocat.prenom} ${avocat.nom}`}
-        onSuccess={() => setTimeout(() => setShowFeedbackPopup(true), 3000)}
-      />
+
       {showFeedbackPopup && (
         <FeedbackPopup onClose={() => setShowFeedbackPopup(false)} />
       )}
