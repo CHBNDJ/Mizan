@@ -444,7 +444,7 @@ export default function LawyerDashboardPage() {
   const [subscriptionPlan, setSubscriptionPlan] = useState<string | null>(null);
   const [subscriptionEnd, setSubscriptionEnd] = useState<string | null>(null);
 
-  const hasActiveSubscription = true;
+  const hasActiveSubscription = false; // Chargily non implémenté
   const canSeeProfileViews = true;
 
   const profession = (profile as any)?.profession || "avocat";
@@ -459,6 +459,7 @@ export default function LawyerDashboardPage() {
   useEffect(() => {
     if (!loading && !isAuthenticated) router.push("/auth/lawyer/login");
   }, [loading, isAuthenticated, router]);
+
   useEffect(() => {
     if (user && profile?.user_type === "lawyer") {
       loadStats();
@@ -553,6 +554,7 @@ export default function LawyerDashboardPage() {
       .single();
     setIsVerified(data?.is_verified || false);
   };
+
   const loadSubscription = async () => {
     if (!user) return;
     const { data } = await supabase
@@ -566,6 +568,7 @@ export default function LawyerDashboardPage() {
       setSubscriptionEnd(data.subscription_end);
     }
   };
+
   const loadStats = async () => {
     if (!user) return;
     try {
@@ -650,6 +653,7 @@ export default function LawyerDashboardPage() {
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`.page-header,.page-subtitle,.settings-button,.verification-banner,.stats-card,.actions-section,.help-section{opacity:0;}`}</style>
       <div className="max-w-7xl mx-auto px-4 py-8" ref={containerRef}>
+        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="page-header text-2xl sm:text-3xl font-bold text-slate-800">
@@ -668,6 +672,7 @@ export default function LawyerDashboardPage() {
           </button>
         </div>
 
+        {/* Banner vérification en cours */}
         {!isVerified && (
           <div className="verification-banner bg-amber-50 border border-amber-200 rounded-xl p-5 mb-4">
             <div className="flex items-start gap-3">
@@ -686,32 +691,7 @@ export default function LawyerDashboardPage() {
           </div>
         )}
 
-        {isVerified && !hasActiveSubscription && (
-          <div className="verification-banner bg-teal-900 rounded-xl p-5 mb-4">
-            <div className="flex items-start justify-between gap-4 flex-wrap">
-              <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-full bg-teal-700 flex items-center justify-center flex-shrink-0">
-                  <CreditCard className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-white mb-1">
-                    Votre profil n'est pas encore visible
-                  </h3>
-                  <p className="text-teal-300 text-sm">
-                    Activez votre abonnement pour apparaître dans les résultats
-                    de recherche et recevoir des demandes clients.
-                  </p>
-                </div>
-              </div>
-              <Link href="/lawyer/abonnements" className="flex-shrink-0">
-                <button className="bg-teal-500 hover:bg-teal-400 text-white px-5 py-2.5 rounded-xl text-sm font-semibold cursor-pointer whitespace-nowrap">
-                  Choisir mon abonnement →
-                </button>
-              </Link>
-            </div>
-          </div>
-        )}
-
+        {/* Banner photo manquante */}
         {!profile?.avatar_url && (
           <div className="verification-banner bg-teal-50 border border-teal-200 rounded-xl p-5 mb-4">
             <div className="flex items-start justify-between gap-4">
@@ -721,11 +701,10 @@ export default function LawyerDashboardPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-teal-800 mb-1">
-                    Votre profil est incomplet
+                    Profil incomplet
                   </h3>
-
                   <p className="text-teal-700 text-sm">
-                    Les professionnels avec une photo reçoivent 3x plus de
+                    Les professionnels avec une photo reçoivent 3× plus de
                     demandes.
                   </p>
                 </div>
@@ -739,6 +718,37 @@ export default function LawyerDashboardPage() {
           </div>
         )}
 
+        {/* Banner abonnement — paiement bientôt disponible */}
+        {isVerified && (
+          <div className="verification-banner bg-slate-800 rounded-xl p-5 mb-4">
+            <div className="flex items-start justify-between gap-4 flex-wrap">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-full bg-slate-600 flex items-center justify-center flex-shrink-0">
+                  <CreditCard className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white mb-1">
+                    Abonnement — Bientôt disponible
+                  </h3>
+                  <p className="text-slate-300 text-sm">
+                    Le paiement en ligne sera disponible prochainement. Votre
+                    profil est visible gratuitement pendant la phase de
+                    lancement.
+                  </p>
+                </div>
+              </div>
+              {/* Bouton désactivé — pas de Chargily encore */}
+              <button
+                disabled
+                className="flex-shrink-0 bg-slate-600 text-slate-400 px-5 py-2.5 rounded-xl text-sm font-semibold cursor-not-allowed whitespace-nowrap"
+              >
+                Paiement bientôt →
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {loadingStats ? (
             [...Array(4)].map((_, i) => (
@@ -757,6 +767,7 @@ export default function LawyerDashboardPage() {
             ))
           ) : (
             <>
+              {/* Demandes clients */}
               <div className="stats-card bg-white rounded-xl p-5 shadow-sm border hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
                   <div className="p-2.5 rounded-lg bg-teal-100 flex-shrink-0">
@@ -772,6 +783,8 @@ export default function LawyerDashboardPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Répondues */}
               <div className="stats-card bg-white rounded-xl p-5 shadow-sm border hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
                   <div className="p-2.5 rounded-lg bg-green-100 flex-shrink-0">
@@ -785,6 +798,8 @@ export default function LawyerDashboardPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Vues profil */}
               {canSeeProfileViews ? (
                 <div className="stats-card bg-white rounded-xl p-5 shadow-sm border hover:shadow-md transition-shadow">
                   <div className="flex items-center gap-3">
@@ -818,6 +833,8 @@ export default function LawyerDashboardPage() {
                   </div>
                 </div>
               )}
+
+              {/* Abonnement */}
               <div className="stats-card bg-white rounded-xl p-5 shadow-sm border hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3">
                   <div
@@ -844,7 +861,7 @@ export default function LawyerDashboardPage() {
                       </>
                     ) : (
                       <p className="text-sm font-bold text-slate-400">
-                        Inactif
+                        Lancement gratuit
                       </p>
                     )}
                   </div>
@@ -854,15 +871,24 @@ export default function LawyerDashboardPage() {
           )}
         </div>
 
+        {/* Actions rapides */}
         <div className="actions-section bg-white rounded-xl p-6 shadow-sm border mb-6">
           <h2 className="text-lg font-semibold text-slate-800 mb-4">
             Actions rapides
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {/* Mes consultations — badge rouge si messages en attente */}
             <button
               onClick={() => router.push("/lawyer/consultations")}
-              className="p-4 border border-slate-200 rounded-xl hover:border-teal-300 hover:bg-teal-50 transition-colors text-left group cursor-pointer"
+              className="p-4 border border-slate-200 rounded-xl hover:border-teal-300 hover:bg-teal-50 transition-colors text-left group cursor-pointer relative"
             >
+              {stats.consultationsPending > 0 && (
+                <span className="absolute top-3 right-3 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {stats.consultationsPending > 9
+                    ? "9+"
+                    : stats.consultationsPending}
+                </span>
+              )}
               <div className="flex items-start gap-3">
                 <MessageSquare className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
                 <div>
@@ -871,12 +897,14 @@ export default function LawyerDashboardPage() {
                   </h3>
                   <p className="text-xs text-slate-500 mt-0.5">
                     {stats.consultationsPending > 0
-                      ? `${stats.consultationsPending} en attente`
-                      : "Aucune en attente"}
+                      ? `${stats.consultationsPending} message${stats.consultationsPending > 1 ? "s" : ""} non lu${stats.consultationsPending > 1 ? "s" : ""}`
+                      : "Aucun message en attente"}
                   </p>
                 </div>
               </div>
             </button>
+
+            {/* Modifier profil */}
             <button
               onClick={() => router.push("/profile")}
               className="p-4 border border-slate-200 rounded-xl hover:border-teal-300 hover:bg-teal-50 transition-colors text-left group cursor-pointer"
@@ -888,13 +916,15 @@ export default function LawyerDashboardPage() {
                     Modifier mon profil
                   </h3>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Personnalisez vos informations
+                    Spécialités, langues, adresse
                   </p>
                 </div>
               </div>
             </button>
+
+            {/* Profil public */}
             <button
-              onClick={() => router.push(`/lawyers/${user?.id}`)}
+              onClick={() => router.push(`/lawyer/${user?.id}`)}
               className="p-4 border border-slate-200 rounded-xl hover:border-teal-300 hover:bg-teal-50 transition-colors text-left group cursor-pointer"
             >
               <div className="flex items-start gap-3">
@@ -904,29 +934,7 @@ export default function LawyerDashboardPage() {
                     Mon profil public
                   </h3>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Comment les clients vous voient
-                  </p>
-                </div>
-              </div>
-            </button>
-            <button
-              onClick={() => router.push("/lawyer/abonnements")}
-              className={`p-4 border rounded-xl transition-colors text-left group cursor-pointer ${subscriptionStatus === "active" ? "border-teal-200 hover:border-teal-300 hover:bg-teal-50" : "border-teal-500 bg-teal-50 hover:bg-teal-100"}`}
-            >
-              <div className="flex items-start gap-3">
-                <CreditCard
-                  className={`w-5 h-5 flex-shrink-0 mt-0.5 ${subscriptionStatus === "active" ? "text-teal-600" : "text-teal-700"}`}
-                />
-                <div>
-                  <h3
-                    className={`font-medium text-sm ${subscriptionStatus === "active" ? "text-slate-800 group-hover:text-teal-700" : "text-teal-700"}`}
-                  >
-                    Mon abonnement
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    {subscriptionStatus === "active"
-                      ? `Plan ${planLabel(subscriptionPlan)}`
-                      : "Activez votre visibilité"}
+                    Tel que les clients vous voient
                   </p>
                 </div>
               </div>
@@ -934,12 +942,13 @@ export default function LawyerDashboardPage() {
           </div>
         </div>
 
+        {/* Aide */}
         <div className="help-section bg-teal-50 rounded-xl p-6 text-center border border-teal-100">
           <h2 className="text-base font-semibold text-slate-800 mb-2">
             Besoin d'aide ?
           </h2>
           <p className="text-slate-600 text-sm mb-4">
-            Notre équipe est là pour vous accompagner
+            Notre équipe est disponible pour vous accompagner
           </p>
           <a
             href="mailto:support@mizan-dz.com"
