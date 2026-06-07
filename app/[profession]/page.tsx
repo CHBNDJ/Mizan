@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { useState, useLayoutEffect, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import {
@@ -153,7 +154,15 @@ export default function ProfessionPage() {
     value: d,
     label: d,
   }));
-  const wilayaOptions = wilayas.map((w) => ({ value: w, label: w }));
+  // Inclure la wilaya sélectionnée même si elle n'est pas dans la liste DB
+  // (la map a les 69 wilayas, la DB peut en avoir moins)
+  const wilayaOptions = React.useMemo(() => {
+    const opts = wilayas.map((w) => ({ value: w, label: w }));
+    if (selectedWilaya && !opts.find((o) => o.value === selectedWilaya)) {
+      opts.unshift({ value: selectedWilaya, label: selectedWilaya });
+    }
+    return opts;
+  }, [wilayas, selectedWilaya]);
 
   useEffect(() => {
     getWilayas().then((w) => {
@@ -164,6 +173,21 @@ export default function ProfessionPage() {
     setSelectedWilaya("");
     setSelectedDomaines([]);
   }, [profId]);
+
+  // Animation pros — se déclenche quand les données arrivent
+  useEffect(() => {
+    if (!topPros.length) return;
+    const t = setTimeout(() => {
+      const els = document.querySelectorAll(".pro-card-anim");
+      if (!els.length) return;
+      gsap.fromTo(
+        els,
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.55, stagger: 0.09, ease: "power2.out" }
+      );
+    }, 100);
+    return () => clearTimeout(t);
+  }, [topPros]);
 
   useLayoutEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -329,7 +353,11 @@ export default function ProfessionPage() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
               {topPros.map((pro) => (
-                <div key={pro.id}>
+                <div
+                  key={pro.id}
+                  className="pro-card-anim"
+                  style={{ opacity: 0 }}
+                >
                   <AvocatCard avocat={pro} />
                 </div>
               ))}

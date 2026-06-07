@@ -477,9 +477,9 @@ const PROFESSIONS = [
 
 const HERO_TITLE = (
   <>
-    L'expertise juridique algérienne,
+    Les experts juridiques
     <br className="hidden sm:block" />{" "}
-    <span className="text-teal-600">enfin accessible</span>
+    <span className="text-teal-600">d'Algérie, vérifiés</span>
   </>
 );
 // Option A (points — plus fort) : "Comparez. Consultez. Contactez."
@@ -608,7 +608,7 @@ export default function HomePage() {
             {PROFESSIONS.map(({ id, label, Icon, desc }) => (
               <Link key={id} href={`/${id}`}>
                 <div
-                  className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 cursor-pointer
+                  className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 cursor-pointer h-full
                   flex items-center gap-4 px-4 py-4
                   sm:flex-col sm:items-center sm:px-5 sm:py-5 sm:gap-3 sm:text-center"
                 >
@@ -619,7 +619,7 @@ export default function HomePage() {
                     <div className="font-bold text-slate-800 text-sm sm:text-base">
                       {label}
                     </div>
-                    <div className="text-xs text-slate-400 mt-0.5 leading-relaxed">
+                    <div className="text-xs text-slate-400 mt-0.5 leading-relaxed line-clamp-2">
                       {desc}
                     </div>
                   </div>
