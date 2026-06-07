@@ -1032,7 +1032,7 @@ const GoogleMapsCard = ({
   showContact: boolean;
   onLockedClick: () => void;
 }) => {
-  const [mapType, setMapType] = React.useState<"m" | "k">("m"); // m=plan k=satellite
+  const [mapType, setMapType] = React.useState<"m" | "k">("m");
   const mapContainerRef = React.useRef<HTMLDivElement>(null);
 
   const hasAddress = !!(
@@ -1050,45 +1050,21 @@ const GoogleMapsCard = ({
   const rueStr = avocat.adresse?.rue || "";
 
   const handleFullscreen = () => {
-    if (mapContainerRef.current) {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      } else {
-        mapContainerRef.current.requestFullscreen?.();
-      }
+    if (!mapContainerRef.current) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      mapContainerRef.current.requestFullscreen?.();
     }
   };
 
   return (
     <Card className="content-card opacity-0 invisible shadow-sm mb-4 overflow-hidden">
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-            <MapPin className="w-4 h-4 text-teal-600" />
-            Localisation du cabinet
-          </div>
-          {/* Ouvrir dans Maps — uniquement connecté */}
-          {showContact ? (
-            <a
-              href={mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs text-teal-600 hover:text-teal-700 font-medium transition-colors"
-            >
-              <ExternalLink className="w-3 h-3" />
-              Ouvrir dans Maps
-            </a>
-          ) : (
-            <button
-              onClick={onLockedClick}
-              className="flex items-center gap-1 text-xs text-slate-400 cursor-pointer hover:text-slate-600 transition-colors"
-            >
-              <ExternalLink className="w-3 h-3" />
-              Ouvrir dans Maps
-            </button>
-          )}
+        <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+          <MapPin className="w-4 h-4 text-teal-600" />
+          Localisation du cabinet
         </div>
-        {/* Adresse */}
         {showContact && (rueStr || villeStr) && (
           <p className="text-xs text-slate-500 mt-1">
             {rueStr ? `${rueStr}, ` : ""}
@@ -1103,7 +1079,6 @@ const GoogleMapsCard = ({
       </CardHeader>
 
       <CardContent className="p-0">
-        {/* Carte + contrôles */}
         <div
           ref={mapContainerRef}
           className="relative w-full h-52 sm:h-64 bg-slate-100"
@@ -1118,53 +1093,78 @@ const GoogleMapsCard = ({
             sandbox="allow-scripts allow-same-origin allow-popups"
           />
 
-          {/* Overlay cliquable si non connecté */}
+          {/* Overlay si non connecté */}
           {!showContact && (
             <button
               onClick={onLockedClick}
-              className="absolute inset-0 w-full h-full cursor-pointer bg-transparent"
+              className="absolute inset-0 w-full h-full cursor-pointer bg-transparent z-10"
               aria-label="Connectez-vous pour accéder"
             />
           )}
 
-          {/* Toggle Plan / Satellite */}
-          <div className="absolute top-2 left-2 flex rounded-lg overflow-hidden border border-slate-300 shadow-sm text-xs font-semibold z-10">
+          {/* Contrôles top-left : Plan | Satellite */}
+          <div className="absolute top-2 left-2 flex rounded-lg overflow-hidden border border-slate-300 shadow-sm text-xs font-semibold z-20 bg-white">
             <button
               onClick={() => setMapType("m")}
-              className={`px-2.5 py-1.5 transition-colors cursor-pointer ${mapType === "m" ? "bg-white text-slate-800" : "bg-white/70 text-slate-500 hover:bg-white"}`}
+              className={`px-2.5 py-1.5 transition-colors cursor-pointer ${mapType === "m" ? "bg-white text-slate-800" : "bg-white/80 text-slate-400 hover:text-slate-700"}`}
             >
               Plan
             </button>
+            <div className="w-px bg-slate-200" />
             <button
               onClick={() => setMapType("k")}
-              className={`px-2.5 py-1.5 transition-colors cursor-pointer border-l border-slate-300 ${mapType === "k" ? "bg-white text-slate-800" : "bg-white/70 text-slate-500 hover:bg-white"}`}
+              className={`px-2.5 py-1.5 transition-colors cursor-pointer ${mapType === "k" ? "bg-white text-slate-800" : "bg-white/80 text-slate-400 hover:text-slate-700"}`}
             >
               Satellite
             </button>
           </div>
 
-          {/* Bouton plein écran */}
-          <button
-            onClick={handleFullscreen}
-            className="absolute top-2 right-2 w-8 h-8 bg-white/90 hover:bg-white border border-slate-300 rounded-lg shadow-sm flex items-center justify-center z-10 cursor-pointer transition-colors"
-            title="Plein écran"
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          {/* Contrôles top-right : Ouvrir dans Maps + Plein écran */}
+          <div className="absolute top-2 right-2 flex items-center gap-1.5 z-20">
+            {/* Ouvrir dans Maps — même style que Plan/Satellite */}
+            {showContact ? (
+              <a
+                href={mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg shadow-sm text-xs font-semibold text-slate-700 hover:text-teal-600 hover:border-teal-300 transition-colors"
+              >
+                <ExternalLink className="w-3 h-3" />
+                Maps
+              </a>
+            ) : (
+              <button
+                onClick={onLockedClick}
+                className="flex items-center gap-1 px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg shadow-sm text-xs font-semibold text-slate-400 cursor-pointer hover:text-slate-600 transition-colors"
+              >
+                <ExternalLink className="w-3 h-3" />
+                Maps
+              </button>
+            )}
+
+            {/* Plein écran — icône teal */}
+            <button
+              onClick={handleFullscreen}
+              className="w-8 h-8 bg-white border border-slate-300 rounded-lg shadow-sm flex items-center justify-center cursor-pointer hover:border-teal-300 hover:text-teal-600 transition-colors text-slate-600"
+              title="Plein écran"
             >
-              <polyline points="15 3 21 3 21 9" />
-              <polyline points="9 21 3 21 3 15" />
-              <line x1="21" y1="3" x2="14" y2="10" />
-              <line x1="3" y1="21" x2="10" y2="14" />
-            </svg>
-          </button>
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="15 3 21 3 21 9" />
+                <polyline points="9 21 3 21 3 15" />
+                <line x1="21" y1="3" x2="14" y2="10" />
+                <line x1="3" y1="21" x2="10" y2="14" />
+              </svg>
+            </button>
+          </div>
         </div>
       </CardContent>
     </Card>
