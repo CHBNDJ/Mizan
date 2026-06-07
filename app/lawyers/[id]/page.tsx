@@ -1070,11 +1070,6 @@ const GoogleMapsCard = ({
             {villeStr}
           </p>
         )}
-        {!showContact && (
-          <p className="text-xs text-slate-400 mt-1 italic">
-            Connectez-vous pour voir l'adresse complète
-          </p>
-        )}
       </CardHeader>
 
       <CardContent className="p-0">
@@ -1130,6 +1125,212 @@ const GoogleMapsCard = ({
   );
 };
 
+// ── Modal demande de consultation vidéo ──────────────────────────────────────
+const VideoConsultationModal = ({
+  isOpen,
+  onClose,
+  avocat,
+  userId,
+  supabase,
+  onSuccess,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  avocat: AvocatData;
+  userId: string;
+  supabase: any;
+  onSuccess: () => void;
+}) => {
+  const [date, setDate] = React.useState("");
+  const [heure, setHeure] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [sending, setSending] = React.useState(false);
+  const [sent, setSent] = React.useState(false);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async () => {
+    if (!date || !heure || !description.trim()) return;
+    setSending(true);
+    try {
+      // Créer ou récupérer la consultation
+      const { data: existing } = await supabase
+        .from("consultations")
+        .select("id")
+        .eq("client_id", userId)
+        .eq("lawyer_id", avocat.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      let consultationId = existing?.id;
+
+      if (!consultationId) {
+        const { data: newConsult } = await supabase
+          .from("consultations")
+          .insert({
+            client_id: userId,
+            lawyer_id: avocat.id,
+            status: "pending",
+            subject: "Consultation vidéo",
+          })
+          .select("id")
+          .single();
+        consultationId = newConsult?.id;
+      }
+
+      if (consultationId) {
+        const jitsiUrl = `https://meet.jit.si/mizan-${avocat.id.slice(0, 10)}`;
+        const content = `📹 Demande de consultation vidéo
+
+📅 Date souhaitée : ${date} à ${heure}
+📝 Motif : ${description.trim()}
+
+Lien de la salle vidéo : ${jitsiUrl}
+
+Merci de confirmer ce créneau et d'indiquer vos honoraires. Je rejoindrai la salle à l'heure confirmée.`;
+
+        await supabase.from("messages").insert({
+          consultation_id: consultationId,
+          sender_id: userId,
+          content,
+        });
+      }
+
+      setSent(true);
+      setTimeout(() => {
+        onClose();
+        setSent(false);
+        setDate("");
+        setHeure("");
+        setDescription("");
+        onSuccess();
+      }, 2000);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const inputCls =
+    "w-full h-11 px-3 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-400 focus:border-2 outline-none transition-all text-slate-700";
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      <div className="relative bg-white rounded-t-2xl sm:rounded-2xl shadow-xl w-full sm:max-w-md p-6 z-10">
+        {sent ? (
+          <div className="text-center py-6">
+            <div className="w-14 h-14 bg-teal-50 border border-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-7 h-7 text-teal-600" />
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 mb-1">
+              Demande envoyée
+            </h3>
+            <p className="text-sm text-slate-500">
+              {avocat.prenom} {avocat.nom} va vous répondre avec confirmation et
+              tarif.
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <div className="flex items-center gap-2 mb-0.5">
+                  <Video className="w-4 h-4 text-blue-500" />
+                  <h3 className="text-base font-bold text-slate-900">
+                    Consultation vidéo
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-500">
+                  Maître {avocat.prenom} {avocat.nom}
+                </p>
+              </div>
+              <button
+                onClick={onClose}
+                className="text-slate-400 hover:text-slate-600 cursor-pointer text-xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Info tarif */}
+            <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 mb-4 flex items-start gap-2.5">
+              <span className="text-base">💡</span>
+              <p className="text-xs text-blue-700 leading-relaxed">
+                L'avocat vous confirmera le créneau et ses honoraires par
+                message. Le paiement sera convenu directement avec lui.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
+                    Date souhaitée *
+                  </label>
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    min={new Date().toISOString().split("T")[0]}
+                    className={inputCls}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
+                    Heure *
+                  </label>
+                  <input
+                    type="time"
+                    value={heure}
+                    onChange={(e) => setHeure(e.target.value)}
+                    className={inputCls}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-600 mb-1">
+                  Motif de la consultation *
+                </label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={3}
+                  placeholder="Décrivez brièvement votre problème juridique..."
+                  className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-400 focus:border-2 outline-none transition-all text-slate-700 resize-none"
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={handleSubmit}
+              disabled={sending || !date || !heure || !description.trim()}
+              className="mt-5 w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
+            >
+              {sending ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                  Envoi...
+                </>
+              ) : (
+                <>
+                  <Video className="w-4 h-4" />
+                  Envoyer la demande
+                </>
+              )}
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // ── Page principale ───────────────────────────────────────────────────────────
 export default function ProfilePage({ params }: ProfilePageProps) {
   const { id } = use(params);
@@ -1139,6 +1340,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   const [avocat, setAvocat] = useState<AvocatData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isConsultationModalOpen, setIsConsultationModalOpen] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const supabase = createClient();
   const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
   const hasAnimated = useRef(false);
@@ -1247,7 +1449,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
       router.push("/auth/client/register");
       return;
     }
-    window.open(getJitsiUrl(avocat!.id), "_blank", "noopener,noreferrer");
+    setIsVideoModalOpen(true);
   };
 
   if (loading)
@@ -1312,6 +1514,18 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         ]
       : []),
   ];
+  // Card vidéo — uniquement pour clients connectés (même logique que WhatsApp)
+  const videoItem: InfoItem | null = showContact
+    ? {
+        icon: <Video className="w-3.5 h-3.5 text-blue-500" />,
+        label: "Consultation vidéo",
+        value: "Rejoindre la salle vidéo",
+        sublabel: "Ouvre Jitsi Meet · Notification envoyée",
+        href: "#video",
+        teal: false,
+      }
+    : null;
+
   const claimItem: InfoItem | null = !avocat.is_claimed
     ? {
         icon: <CheckCircle className="w-3.5 h-3.5 text-teal-600" />,
@@ -1321,7 +1535,11 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         teal: true,
       }
     : null;
-  const allInfoItems = claimItem ? [...infoItems, claimItem] : infoItems;
+  const allInfoItems = [
+    ...infoItems,
+    ...(videoItem ? [videoItem] : []),
+    ...(claimItem ? [claimItem] : []),
+  ];
 
   // Afficher la carte uniquement si l'adresse est disponible
   const hasAddress = !!(
@@ -1378,13 +1596,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       </span>
                     </div>
                   )}
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-1 h-1 rounded-full bg-blue-400 flex-shrink-0" />
-                    <Video className="w-3.5 h-3.5 flex-shrink-0 text-blue-500" />
-                    <span className="text-sm text-slate-500">
-                      Consultation vidéo disponible
-                    </span>
-                  </div>
+
                   {((avocat.rating_google &&
                     (avocat.reviews_count_google ?? 0) > 0) ||
                     (avocat.rating_mizan &&
@@ -1444,13 +1656,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       >
                         <MessageCircle className="w-4 h-4" />
                         Consulter
-                      </button>
-                      <button
-                        onClick={handleVideoCall}
-                        className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-xl flex items-center gap-2 font-semibold text-sm transition-all shadow-sm"
-                      >
-                        <Video className="w-4 h-4" />
-                        Vidéo
                       </button>
                     </div>
                   )}
@@ -1544,26 +1749,54 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         {allInfoItems.length > 0 && (
           <>
             <div className="content-card opacity-0 invisible sm:hidden flex flex-col gap-2.5 mb-4">
-              {allInfoItems.map((item, i) => (
-                <InfoCardMobile
-                  key={i}
-                  {...item}
-                  href={item.href ?? undefined}
-                  whatsappHref={item.whatsappHref ?? undefined}
-                />
-              ))}
+              {allInfoItems.map((item, i) =>
+                item.label === "Consultation vidéo" ? (
+                  <div
+                    key={i}
+                    onClick={handleVideoCall}
+                    className="cursor-pointer"
+                  >
+                    <InfoCardMobile
+                      {...item}
+                      href={undefined}
+                      whatsappHref={undefined}
+                    />
+                  </div>
+                ) : (
+                  <InfoCardMobile
+                    key={i}
+                    {...item}
+                    href={item.href ?? undefined}
+                    whatsappHref={item.whatsappHref ?? undefined}
+                  />
+                )
+              )}
             </div>
             <div
               className={`content-card opacity-0 invisible hidden sm:grid ${getGridClass(allInfoItems.length)} gap-3 mb-4`}
             >
-              {allInfoItems.map((item, i) => (
-                <InfoCardDesktop
-                  key={i}
-                  {...item}
-                  href={item.href ?? undefined}
-                  whatsappHref={item.whatsappHref ?? undefined}
-                />
-              ))}
+              {allInfoItems.map((item, i) =>
+                item.label === "Consultation vidéo" ? (
+                  <div
+                    key={i}
+                    onClick={handleVideoCall}
+                    className="cursor-pointer h-full"
+                  >
+                    <InfoCardDesktop
+                      {...item}
+                      href={undefined}
+                      whatsappHref={undefined}
+                    />
+                  </div>
+                ) : (
+                  <InfoCardDesktop
+                    key={i}
+                    {...item}
+                    href={item.href ?? undefined}
+                    whatsappHref={item.whatsappHref ?? undefined}
+                  />
+                )
+              )}
             </div>
           </>
         )}
@@ -1579,20 +1812,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
         {/* ── Boutons mobile ── */}
         {isClient && !isOwnProfile && (
-          <div className="content-card opacity-0 invisible lg:hidden mb-4 grid grid-cols-2 gap-3">
+          <div className="content-card opacity-0 invisible lg:hidden mb-4">
             <button
               onClick={() => setIsConsultationModalOpen(true)}
               className="cursor-pointer w-full bg-teal-600 hover:bg-teal-700 text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2 font-semibold text-sm transition-all shadow-sm"
             >
               <MessageCircle className="w-4 h-4" />
               Consulter
-            </button>
-            <button
-              onClick={handleVideoCall}
-              className="cursor-pointer w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2 font-semibold text-sm transition-all shadow-sm"
-            >
-              <Video className="w-4 h-4" />
-              Vidéo
             </button>
           </div>
         )}
@@ -1605,6 +1831,14 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         </div>
       </div>
 
+      <VideoConsultationModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+        avocat={avocat}
+        userId={user?.id || ""}
+        supabase={supabase}
+        onSuccess={() => setTimeout(() => setShowFeedbackPopup(true), 3000)}
+      />
       <ConsultationModal
         isOpen={isConsultationModalOpen}
         onClose={() => setIsConsultationModalOpen(false)}
