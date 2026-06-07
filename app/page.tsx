@@ -482,11 +482,11 @@ const HERO_TITLE = (
     <span className="text-teal-600">juridique en Algérie</span>
   </>
 );
-// Option A (points — plus fort) : "Comparez. Consultez. Contactez."
+// Option A (points — plus fort) : "Comparez. Choisissez. Contactez."
 // Option B (virgules — plus fluide) : "Comparez, Consultez, Contactez."
 // Actuellement : Option A
 const HERO_SUB_LINE1 = "L'annuaire qui vérifie pour vous.";
-const HERO_SUB_LINE2 = "Comparez. Consultez. Contactez.";
+const HERO_SUB_LINE2 = "Comparez. Choisissez. Contactez.";
 
 export default function HomePage() {
   const router = useRouter();
