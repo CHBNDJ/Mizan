@@ -483,7 +483,7 @@ const HERO_TITLE = (
   </>
 );
 const HERO_SUB =
-  "Des professionnels vérifiés dans toutes les wilayas. Consultez les avis, comparez, contactez directement.";
+  "Des professionnels vérifiés dans toutes les wilayas. Comparez, Consultez, Contactez.";
 
 export default function HomePage() {
   const router = useRouter();

@@ -200,21 +200,6 @@ export default function ProfessionPage() {
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
         "-=0.2"
       );
-    gsap.fromTo(
-      ".ph-pro",
-      { opacity: 0, y: 20 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.08,
-        scrollTrigger: {
-          trigger: ".ph-pros-section",
-          start: "top 85%",
-          toggleActions: "play none none none",
-        },
-      }
-    );
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, [profId]);
 
@@ -229,16 +214,19 @@ export default function ProfessionPage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`
-        .ph-title,.ph-sub,.ph-form,.ph-map,.ph-step,.ph-pro { opacity:0; }
-        .wilaya-select-wrapper span,
-        .wilaya-select-wrapper button > span:first-child,
-        .wilaya-select-wrapper [data-placeholder] {
+        .ph-title,.ph-sub,.ph-form,.ph-map,.ph-step { opacity:0; }
+        .wilaya-select-wrapper button,
+        .wilaya-select-wrapper button span,
+        .wilaya-select-wrapper button div {
           color: rgb(148 163 184) !important;
           font-weight: 500 !important;
           font-size: 0.875rem !important;
         }
-        .wilaya-select-wrapper button[aria-expanded] span:not([class*="sr"]) {
-          color: rgb(148 163 184) !important;
+        .wilaya-select-wrapper.has-value button,
+        .wilaya-select-wrapper.has-value button span,
+        .wilaya-select-wrapper.has-value button div {
+          color: rgb(15 23 42) !important;
+          font-weight: 400 !important;
         }
       `}</style>
       {/* ── Hero ── */}
@@ -288,7 +276,9 @@ export default function ProfessionPage() {
                   {loadingWilayas ? (
                     <div className="h-12 bg-slate-100 rounded-lg animate-pulse" />
                   ) : (
-                    <div className="wilaya-select-wrapper">
+                    <div
+                      className={`wilaya-select-wrapper${selectedWilaya ? " has-value" : ""}`}
+                    >
                       <CustomSelect
                         placeholder="Toutes les wilayas"
                         options={wilayaOptions}
@@ -303,22 +293,16 @@ export default function ProfessionPage() {
 
                 <button
                   onClick={handleSearch}
-                  className="w-full h-12 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer text-sm sm:text-base"
+                  className="w-full h-12 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl flex items-center justify-center transition-all cursor-pointer text-sm sm:text-base"
                 >
                   {`Trouver des ${prof.labelPlural}`}
                 </button>
               </div>
 
               {/* Steps */}
-              <div
-                className="mt-8 space-y-4 text-center lg:text-left relative"
-                style={{ zIndex: 1 }}
-              >
+              <div className="mt-8 space-y-4 relative" style={{ zIndex: 1 }}>
                 {prof.steps.map((step, i) => (
-                  <div
-                    key={i}
-                    className="ph-step flex gap-3 justify-center lg:justify-start"
-                  >
+                  <div key={i} className="ph-step flex gap-3">
                     <div className="w-7 h-7 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-xs font-bold text-teal-700 flex-shrink-0 mt-0.5">
                       {i + 1}
                     </div>
@@ -362,7 +346,7 @@ export default function ProfessionPage() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
               {topPros.map((pro) => (
-                <div key={pro.id} className="ph-pro">
+                <div key={pro.id}>
                   <AvocatCard avocat={pro} />
                 </div>
               ))}
