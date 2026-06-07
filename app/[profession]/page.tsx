@@ -155,6 +155,19 @@ export default function ProfessionPage() {
   }));
   const wilayaOptions = wilayas.map((w) => ({ value: w, label: w }));
 
+  // GSAP pros — fire quand les données arrivent, avec délai pour laisser React render
+  useEffect(() => {
+    if (!topPros.length) return;
+    const timer = setTimeout(() => {
+      gsap.fromTo(
+        ".ph-pro",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }
+      );
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [topPros]);
+
   useEffect(() => {
     getWilayas().then((w) => {
       setWilayas(w);
@@ -197,7 +210,7 @@ export default function ProfessionPage() {
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
         "-=0.2"
       );
-
+    // Animation pros — start:"top bottom" fire dès que la section est visible
     gsap.fromTo(
       ".ph-pro",
       { opacity: 0, y: 30 },
@@ -250,10 +263,12 @@ export default function ProfessionPage() {
                 {prof.sub}
               </p>
 
+              {/* Formulaire — domaine PUIS wilaya */}
               <div
                 className="ph-form bg-white rounded-2xl shadow-md p-5 sm:p-6 space-y-4 relative"
                 style={{ zIndex: 50 }}
               >
+                {/* 1. Domaines / Spécialités EN PREMIER */}
                 <div className="relative" style={{ zIndex: 20 }}>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                     {prof.domainLabel}
@@ -268,6 +283,7 @@ export default function ProfessionPage() {
                   />
                 </div>
 
+                {/* 2. Wilaya EN SECOND */}
                 <div className="relative" style={{ zIndex: 10 }}>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                     Wilaya
@@ -285,6 +301,7 @@ export default function ProfessionPage() {
                       />
                     </div>
                   )}
+                  {/* Pas de badge vert — la valeur sélectionnée apparaît directement dans le CustomSelect */}
                 </div>
 
                 <button

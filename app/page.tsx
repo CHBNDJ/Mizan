@@ -482,7 +482,9 @@ const HERO_TITLE = (
     <span className="text-teal-600">algérienne à portée de clic</span>
   </>
 );
-
+// Option A (points — plus fort) : "Comparez. Consultez. Contactez."
+// Option B (virgules — plus fluide) : "Comparez, Consultez, Contactez."
+// Actuellement : Option A
 const HERO_SUB_LINE1 = "Des professionnels vérifiés dans toutes les wilayas.";
 const HERO_SUB_LINE2 = "Comparez. Consultez. Contactez.";
 
@@ -598,9 +600,7 @@ export default function HomePage() {
           <p className="hero-sub text-sm sm:text-lg text-slate-500 mb-10 sm:mb-14 max-w-xl mx-auto leading-relaxed">
             {HERO_SUB_LINE1}
             <br className="block" />
-            <span className="font-semibold text-slate-700">
-              {HERO_SUB_LINE2}
-            </span>
+            {HERO_SUB_LINE2}
           </p>
 
           {/* 4 cards — 2 colonnes mobile, 4 desktop */}
@@ -628,7 +628,7 @@ export default function HomePage() {
 
       {/* ── Stats ── */}
       <section className="px-4 pb-14 sm:pb-20 pt-2">
-        <div className="max-w-4xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="max-w-4xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           {[
             { end: stats.total_avocats, label: "Professionnels inscrits" },
             { end: wilayas.length, label: "Wilayas couvertes" },
@@ -641,15 +641,15 @@ export default function HomePage() {
           ].map((s) => (
             <div
               key={s.label}
-              className="stat-card bg-teal-50/60 rounded-xl border border-teal-100 p-4 sm:p-5 flex flex-col items-center text-center"
+              className="stat-card bg-white rounded-2xl shadow-sm border border-slate-100 px-4 py-4 sm:p-7 flex flex-row sm:flex-col items-center sm:items-center gap-3 sm:gap-0 text-left sm:text-center"
             >
               <AnimatedCounter
                 end={s.end}
                 duration={2000}
                 suffix={s.suffix}
-                className="text-3xl sm:text-4xl font-bold text-teal-600 mb-1"
+                className="text-2xl sm:text-4xl font-bold text-teal-600 sm:mb-2 flex-shrink-0"
               />
-              <div className="text-slate-500 text-xs sm:text-sm leading-snug">
+              <div className="text-slate-600 text-xs sm:text-sm leading-snug">
                 {s.label}
               </div>
             </div>

@@ -661,6 +661,7 @@ function SearchResults() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+      <style>{`.search-header { opacity:0; } .search-avocat-card { opacity:0; }`}</style>
       {/* Barre sticky */}
       <div className="search-header sticky top-16 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
