@@ -739,7 +739,7 @@ export default function LawyerDashboardPage() {
   );
 
   return (
-    <div className="min-h-screen pt-16 bg-slate-50 flex">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-50 via-white to-teal-50 flex">
       <style>{`.dash-content,.stat-card,.action-row{opacity:0;}`}</style>
 
       {/* ── Sidebar desktop (fixe, largeur 220px) ── */}
@@ -846,9 +846,9 @@ export default function LawyerDashboardPage() {
                 </p>
                 <Users className="w-4 h-4 text-slate-300" />
               </div>
-              <p className="text-3xl font-bold text-slate-900 leading-none">
+              <p className="text-3xl font-bold text-teal-700 leading-none">
                 {loadingStats ? (
-                  <span className="text-slate-300">—</span>
+                  <span className="text-teal-200">—</span>
                 ) : (
                   stats.total
                 )}
@@ -870,9 +870,9 @@ export default function LawyerDashboardPage() {
                 </p>
                 <CheckCircle className="w-4 h-4 text-slate-300" />
               </div>
-              <p className="text-3xl font-bold text-slate-900 leading-none">
+              <p className="text-3xl font-bold text-green-700 leading-none">
                 {loadingStats ? (
-                  <span className="text-slate-300">—</span>
+                  <span className="text-green-200">—</span>
                 ) : (
                   stats.answered
                 )}
@@ -891,14 +891,14 @@ export default function LawyerDashboardPage() {
                 </p>
                 <Eye className="w-4 h-4 text-slate-300" />
               </div>
-              <p className="text-3xl font-bold text-slate-900 leading-none">
+              <p className="text-3xl font-bold text-blue-700 leading-none">
                 {loadingStats ? (
-                  <span className="text-slate-300">—</span>
+                  <span className="text-blue-200">—</span>
                 ) : (
                   stats.views
                 )}
               </p>
-              <p className="text-[11px] text-slate-400 mt-2">total</p>
+              <p className="text-[11px] text-blue-400 mt-2">total</p>
             </div>
           </div>
 
