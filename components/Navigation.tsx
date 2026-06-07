@@ -959,11 +959,11 @@ export function Navigation() {
                         <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="center" className="w-56">
+                    <DropdownMenuContent align="center" className="w-44">
                       <DropdownMenuItem asChild>
                         <Link
                           href="/auth/client/login"
-                          className="w-full hover:bg-teal-50"
+                          className="w-full hover:bg-teal-50 text-sm py-2"
                         >
                           Client
                         </Link>
@@ -972,7 +972,7 @@ export function Navigation() {
                         {/* ← CHANGÉ */}
                         <Link
                           href="/auth/lawyer/login"
-                          className="w-full hover:bg-teal-50"
+                          className="w-full hover:bg-teal-50 text-sm py-2"
                         >
                           Professionnel
                         </Link>
@@ -989,13 +989,13 @@ export function Navigation() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                       align="center"
-                      sameWidth={true}
-                      className="w-56"
+                      sameWidth={false}
+                      className="w-44"
                     >
                       <DropdownMenuItem asChild>
                         <Link
                           href="/auth/client/register"
-                          className="w-full hover:bg-teal-50"
+                          className="w-full hover:bg-teal-50 text-sm py-2"
                         >
                           Client
                         </Link>
@@ -1004,7 +1004,7 @@ export function Navigation() {
                         {/* ← CHANGÉ */}
                         <Link
                           href="/auth/lawyer/register"
-                          className="w-full hover:bg-teal-50"
+                          className="w-full hover:bg-teal-50 text-sm py-2"
                         >
                           Professionnel
                         </Link>

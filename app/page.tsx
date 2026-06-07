@@ -475,22 +475,15 @@ const PROFESSIONS = [
   },
 ];
 
-// ─── CHOISIR LE HERO ──────────────────────────────────────────────────────────
-// Option A : "Des experts juridiques vérifiés, partout en Algérie"
-// Option B : "Votre réseau d'experts juridiques en Algérie"
-// Option C : "Avocat, notaire, huissier, comptable — trouvez le bon expert"
-// Option D : "Droit, actes, chiffres — tous vos experts en un seul endroit"
-// Option E : "L'annuaire de confiance des experts juridiques algériens"
-// ─── ACTUELLEMENT : Option B ─────────────────────────────────────────────────
 const HERO_TITLE = (
   <>
-    Votre réseau d'experts
-    <br className="hidden sm:block" />
-    <span className="text-teal-600"> juridiques en Algérie</span>
+    L'expertise juridique
+    <br className="hidden sm:block" />{" "}
+    <span className="text-teal-600">algérienne à portée de clic</span>
   </>
 );
 const HERO_SUB =
-  "Avocats, notaires, huissiers, comptables — vérifiés et recommandés. Accessible depuis l'Algérie et la diaspora.";
+  "Des professionnels vérifiés dans toutes les wilayas. Consultez les avis, comparez, contactez directement.";
 
 export default function HomePage() {
   const router = useRouter();
@@ -512,55 +505,49 @@ export default function HomePage() {
   }, []);
 
   useLayoutEffect(() => {
+    gsap.set([".hero-title", ".hero-sub", ".prof-card", ".stat-card"], {
+      autoAlpha: 0,
+      y: 20,
+    });
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.fromTo(
-      ".hero-title",
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.8 }
-    )
-      .fromTo(
-        ".hero-sub",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.7 },
-        "-=0.5"
-      )
-      .fromTo(
+    tl.to(".hero-title", { autoAlpha: 1, y: 0, duration: 0.8 })
+      .to(".hero-sub", { autoAlpha: 1, y: 0, duration: 0.7 }, "-=0.5")
+      .to(
         ".prof-card",
-        { opacity: 0, y: 24 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
+        { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.1 },
         "-=0.4"
       )
-      .fromTo(
+      .to(
         ".stat-card",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
+        { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.08 },
         "-=0.2"
       );
+
     gsap.fromTo(
       ".steps-section",
-      { opacity: 0, y: 30 },
+      { autoAlpha: 0, y: 30 },
       {
-        opacity: 1,
+        autoAlpha: 1,
         y: 0,
         duration: 0.7,
         scrollTrigger: {
           trigger: ".steps-section",
-          start: "top 85%",
-          toggleActions: "play none none none",
+          start: "top 90%",
+          once: true,
         },
       }
     );
     gsap.fromTo(
       ".cta-section",
-      { opacity: 0, y: 30 },
+      { autoAlpha: 0, y: 30 },
       {
-        opacity: 1,
+        autoAlpha: 1,
         y: 0,
         duration: 0.7,
         scrollTrigger: {
           trigger: ".cta-section",
-          start: "top 85%",
-          toggleActions: "play none none none",
+          start: "top 90%",
+          once: true,
         },
       }
     );
@@ -571,17 +558,17 @@ export default function HomePage() {
     if (!topAvocats.length) return;
     gsap.fromTo(
       ".avocat-card",
-      { opacity: 0, x: -30 },
+      { autoAlpha: 0, x: -20 },
       {
-        opacity: 1,
+        autoAlpha: 1,
         x: 0,
-        duration: 0.8,
-        stagger: 0.08,
+        duration: 0.7,
+        stagger: 0.07,
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".avocats-section",
-          start: "top 60%",
-          toggleActions: "play none none none",
+          start: "top 90%",
+          once: true,
         },
       }
     );
@@ -590,28 +577,27 @@ export default function HomePage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden">
       <style>{`
-        .hero-title,.hero-sub,.prof-card,.stat-card,.steps-section,.avocat-card,.cta-section { opacity:0; }
         .prof-card-btn { transition:all 0.2s ease; }
         .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
       `}</style>
 
       {/* ── Hero ── */}
-      <section className="py-20 px-4">
+      <section className="py-14 sm:py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="hero-title text-3xl sm:text-5xl lg:text-6xl font-bold text-slate-800 mb-6 leading-tight tracking-tight">
+          <h1 className="hero-title text-2xl sm:text-4xl lg:text-6xl font-bold text-slate-800 mb-5 leading-tight tracking-tight">
             {HERO_TITLE}
           </h1>
-          <p className="hero-sub text-base sm:text-xl text-slate-500 mb-14 max-w-xl mx-auto leading-relaxed">
+          <p className="hero-sub text-sm sm:text-lg text-slate-500 mb-10 sm:mb-14 max-w-xl mx-auto leading-relaxed">
             {HERO_SUB}
           </p>
 
-          {/* 4 profession cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-3xl mx-auto">
+          {/* 4 cards — 2 colonnes mobile, 4 desktop */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto">
             {PROFESSIONS.map(({ id, label, Icon, desc }) => (
               <Link key={id} href={`/${id}`}>
-                <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 p-5 flex flex-col items-center gap-3 cursor-pointer text-center h-full">
-                  <div className="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
-                    <Icon className="w-6 h-6 text-teal-600" />
+                <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 p-4 sm:p-5 flex flex-col items-center gap-2 sm:gap-3 cursor-pointer text-center h-full">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600" />
                   </div>
                   <div>
                     <div className="font-bold text-slate-800 text-sm sm:text-base">
@@ -631,9 +617,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Stats — version spacieuse ── */}
-      <section className="px-4 pb-20">
-        <div className="max-w-4xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-5">
+      {/* ── Stats ── */}
+      <section className="px-4 pb-16 sm:pb-20">
+        <div className="max-w-4xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {[
             { end: stats.total_avocats, label: "Professionnels inscrits" },
             { end: wilayas.length, label: "Wilayas couvertes" },
@@ -646,15 +632,15 @@ export default function HomePage() {
           ].map((s) => (
             <div
               key={s.label}
-              className="stat-card bg-white rounded-2xl shadow-sm border border-slate-100 p-7 flex flex-col items-center text-center"
+              className="stat-card bg-white rounded-2xl shadow-sm border border-slate-100 p-5 sm:p-7 flex flex-col items-center text-center"
             >
               <AnimatedCounter
                 end={s.end}
                 duration={2000}
                 suffix={s.suffix}
-                className="text-4xl font-bold text-teal-600 mb-2"
+                className="text-3xl sm:text-4xl font-bold text-teal-600 mb-2"
               />
-              <div className="text-slate-600 font-medium text-sm leading-snug">
+              <div className="text-slate-600 font-medium text-xs sm:text-sm leading-snug">
                 {s.label}
               </div>
             </div>
@@ -663,36 +649,39 @@ export default function HomePage() {
       </section>
 
       {/* ── Comment ça marche ── */}
-      <section className="steps-section py-14 px-4">
+      <section className="steps-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-sm p-10">
-            <h2 className="text-2xl font-bold text-slate-800 mb-10 text-center">
+          <div className="bg-white rounded-2xl shadow-sm p-6 sm:p-10">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-8 sm:mb-10 text-center">
               Comment ça marche
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10">
               {[
                 {
                   n: "1",
                   title: "Choisissez votre expert",
-                  desc: "Sélectionnez la catégorie adaptée à votre besoin parmi les 4 professions disponibles.",
+                  desc: "Sélectionnez la catégorie adaptée — avocat, notaire, huissier ou comptable.",
                 },
                 {
                   n: "2",
                   title: "Filtrez par wilaya",
-                  desc: "Choisissez votre wilaya directement sur la carte interactive ou via le sélecteur.",
+                  desc: "Choisissez votre wilaya sur la carte interactive ou via le sélecteur.",
                 },
                 {
                   n: "3",
                   title: "Contactez directement",
-                  desc: "Messagerie sécurisée, accès depuis l'Algérie ou l'étranger. Inscription gratuite.",
+                  desc: "Messagerie sécurisée. Accessible depuis l'Algérie ou l'étranger. Inscription gratuite.",
                 },
-              ].map((s) => (
-                <div key={s.n} className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-sm font-bold text-teal-700 flex-shrink-0 mt-0.5">
+              ].map((s, i) => (
+                <div
+                  key={s.n}
+                  className={`flex gap-4 ${i < 2 ? "sm:border-r sm:border-slate-100 sm:pr-8" : ""}`}
+                >
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-sm font-bold text-teal-700 flex-shrink-0 mt-0.5">
                     {s.n}
                   </div>
                   <div>
-                    <div className="text-base font-semibold text-slate-800 mb-1.5">
+                    <div className="text-sm sm:text-base font-semibold text-slate-800 mb-1.5">
                       {s.title}
                     </div>
                     <div className="text-sm text-slate-500 leading-relaxed">
@@ -708,13 +697,13 @@ export default function HomePage() {
 
       {/* ── Top professionnels ── */}
       {topAvocats.length > 0 && (
-        <section className="avocats-section pb-20 px-4">
+        <section className="avocats-section pb-16 sm:pb-20 px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-slate-800 mb-3">
+            <div className="text-center mb-8 sm:mb-10">
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-3">
                 Les mieux notés
               </h2>
-              <p className="text-slate-500">
+              <p className="text-slate-500 text-sm sm:text-base">
                 Recommandés par notre communauté · Vérifiés par Mizan
               </p>
             </div>
@@ -737,44 +726,43 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ── CTA double — sans bulles de professions ── */}
-      <section className="cta-section py-14 px-4">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="bg-white rounded-2xl shadow-sm p-10 flex flex-col justify-between">
-            <div>
-              <h3 className="text-2xl font-bold text-slate-800 mb-3">
-                Vous cherchez un expert juridique ?
-              </h3>
-              <p className="text-slate-500 leading-relaxed mb-8">
-                Parcourez les profils vérifiés d'avocats, notaires, huissiers et
-                comptables. Consultez les avis clients et contactez directement
-                depuis n'importe où.
-              </p>
+      {/* ── CTA double — responsive centré ── */}
+      <section className="cta-section py-12 sm:py-14 px-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+          <div className="bg-white rounded-2xl shadow-sm p-7 sm:p-10 flex flex-col text-center sm:text-left">
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-800 mb-3">
+              Vous cherchez un expert juridique ?
+            </h3>
+            <p className="text-slate-500 leading-relaxed mb-8 text-sm sm:text-base">
+              Parcourez les profils vérifiés d'avocats, notaires, huissiers et
+              comptables. Consultez les avis et contactez directement depuis
+              n'importe où.
+            </p>
+            <div className="mt-auto flex justify-center sm:justify-start">
+              <button
+                onClick={() => router.push("/search")}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-all cursor-pointer"
+              >
+                Trouver un expert <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
-            <button
-              onClick={() => router.push("/search")}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-all cursor-pointer w-fit"
-            >
-              Trouver un expert <ChevronRight className="w-4 h-4" />
-            </button>
           </div>
 
-          <div className="bg-teal-600 rounded-2xl p-10 flex flex-col justify-between">
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-3">
-                Vous êtes professionnel du droit ?
-              </h3>
-              <p className="text-teal-100 leading-relaxed mb-8">
-                Avocat, notaire, huissier ou comptable — rejoignez Mizan et
-                soyez visible par des clients de toute l'Algérie et de la
-                diaspora. Inscription gratuite, vérification sous 24-48h.
-              </p>
+          <div className="bg-teal-600 rounded-2xl p-7 sm:p-10 flex flex-col text-center sm:text-left">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
+              Vous êtes professionnel du droit ?
+            </h3>
+            <p className="text-teal-100 leading-relaxed mb-8 text-sm sm:text-base">
+              Avocat, notaire, huissier ou comptable — rejoignez Mizan et soyez
+              visible par des clients de toute l'Algérie et de la diaspora.
+            </p>
+            <div className="mt-auto flex justify-center sm:justify-start">
+              <Link href="/auth/lawyer/register">
+                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl transition-all cursor-pointer">
+                  Créer mon profil <ChevronRight className="w-4 h-4" />
+                </button>
+              </Link>
             </div>
-            <Link href="/auth/lawyer/register">
-              <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl transition-all cursor-pointer w-fit">
-                Créer mon profil <ChevronRight className="w-4 h-4" />
-              </button>
-            </Link>
           </div>
         </div>
       </section>
