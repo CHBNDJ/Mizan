@@ -155,29 +155,33 @@ export default function ProfessionPage() {
   }));
   const wilayaOptions = wilayas.map((w) => ({ value: w, label: w }));
 
-  // GSAP pros — fire quand les données arrivent, avec délai pour laisser React render
-  useEffect(() => {
-    if (!topPros.length) return;
-    const timer = setTimeout(() => {
-      gsap.fromTo(
-        ".ph-pro",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }
-      );
-    }, 150);
-    return () => clearTimeout(timer);
-  }, [topPros]);
-
   useEffect(() => {
     getWilayas().then((w) => {
       setWilayas(w);
       setLoadingWilayas(false);
     });
     getTopRatedAvocats(6, profId).then(setTopPros);
-    // Reset state on profession change
     setSelectedWilaya("");
     setSelectedDomaines([]);
   }, [profId]);
+
+  // GSAP pros : gsap.set d'abord pour invisible, puis animate quand data + DOM prêts
+  useEffect(() => {
+    if (!topPros.length) return;
+    const timer = setTimeout(() => {
+      const els = document.querySelectorAll(".ph-pro");
+      if (!els.length) return;
+      gsap.set(els, { opacity: 0, y: 30 });
+      gsap.to(els, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power2.out",
+      });
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [topPros]);
 
   useLayoutEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -242,7 +246,6 @@ export default function ProfessionPage() {
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`
         .ph-title,.ph-sub,.ph-form,.ph-map,.ph-step { opacity:0; }
-        .ph-pro { opacity:0; }
       `}</style>
       {/* ── Hero ── */}
       <section className="px-4 py-10 sm:py-14">
@@ -337,6 +340,7 @@ export default function ProfessionPage() {
               <AlgeriaMap
                 selectedWilaya={selectedWilaya}
                 onSelect={setSelectedWilaya}
+                hideBar
               />
             </div>
           </div>

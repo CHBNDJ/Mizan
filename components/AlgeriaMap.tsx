@@ -76,14 +76,15 @@ const WILAYA_NAMES: Record<string, string> = {
 interface Props {
   selectedWilaya?: string;
   onSelect: (w: string) => void;
-  /** Mode landing : un clic wilaya redirige directement vers la search */
   onSelectAndSearch?: (w: string) => void;
+  hideBar?: boolean;
 }
 
 export function AlgeriaMap({
   selectedWilaya,
   onSelect,
   onSelectAndSearch,
+  hideBar,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svgContent, setSvgContent] = useState("");
@@ -119,12 +120,10 @@ export function AlgeriaMap({
       const id = getId(e.target as Element);
       if (!id) return;
       const name = WILAYA_NAMES[id];
-      // Mode landing → redirection directe
       if (onSelectAndSearch) {
         onSelectAndSearch(name);
         return;
       }
-      // Mode search → sélection normale
       onSelect(selectedWilaya === name ? "" : name);
     },
     [selectedWilaya, onSelect, onSelectAndSearch]
@@ -215,8 +214,9 @@ export function AlgeriaMap({
         )}
       </div>
 
-      {/* Wilaya sélectionnée (mode search uniquement) */}
+      {/* Wilaya sélectionnée — masqué si hideBar=true (le CustomSelect au-dessus le montre déjà) */}
       {!isLanding &&
+        !hideBar &&
         (selectedWilaya ? (
           <div className="mt-2 flex items-center justify-between bg-teal-50 border border-teal-200 rounded-xl px-4 py-2.5">
             <div className="flex items-center gap-2">

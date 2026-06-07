@@ -477,9 +477,9 @@ const PROFESSIONS = [
 
 const HERO_TITLE = (
   <>
-    L'expertise juridique
+    L'expertise juridique algérienne,
     <br className="hidden sm:block" />{" "}
-    <span className="text-teal-600">algérienne à portée de clic</span>
+    <span className="text-teal-600">enfin accessible</span>
   </>
 );
 // Option A (points — plus fort) : "Comparez. Consultez. Contactez."
