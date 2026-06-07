@@ -479,11 +479,12 @@ const HERO_TITLE = (
   <>
     L'expertise juridique
     <br className="hidden sm:block" />{" "}
-    <span className="text-teal-600">algérienne, enfin accessible</span>
+    <span className="text-teal-600">algérienne à portée de clic</span>
   </>
 );
-const HERO_SUB =
-  "Des professionnels vérifiés dans toutes les wilayas. Comparez, Consultez, Contactez.";
+
+const HERO_SUB_LINE1 = "Des professionnels vérifiés dans toutes les wilayas.";
+const HERO_SUB_LINE2 = "Comparez. Consultez. Contactez.";
 
 export default function HomePage() {
   const router = useRouter();
@@ -595,7 +596,11 @@ export default function HomePage() {
             {HERO_TITLE}
           </h1>
           <p className="hero-sub text-sm sm:text-lg text-slate-500 mb-10 sm:mb-14 max-w-xl mx-auto leading-relaxed">
-            {HERO_SUB}
+            {HERO_SUB_LINE1}
+            <br className="block" />
+            <span className="font-semibold text-slate-700">
+              {HERO_SUB_LINE2}
+            </span>
           </p>
 
           {/* 4 cards — 2 colonnes mobile, 4 desktop */}
@@ -603,19 +608,16 @@ export default function HomePage() {
             {PROFESSIONS.map(({ id, label, Icon, desc }) => (
               <Link key={id} href={`/${id}`}>
                 <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 p-4 sm:p-5 flex flex-col items-center gap-2 sm:gap-3 cursor-pointer text-center h-full">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
-                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600" />
+                  <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-teal-600" />
                   </div>
                   <div>
                     <div className="font-bold text-slate-800 text-sm sm:text-base">
                       {label}
                     </div>
-                    <div className="text-xs text-slate-400 mt-1 leading-relaxed">
+                    <div className="text-xs text-slate-400 mt-1 leading-relaxed hidden sm:block">
                       {desc}
                     </div>
-                  </div>
-                  <div className="flex items-center gap-1 text-xs font-semibold text-teal-600 mt-auto">
-                    Rechercher <ChevronRight className="w-3 h-3" />
                   </div>
                 </div>
               </Link>
@@ -639,13 +641,13 @@ export default function HomePage() {
           ].map((s) => (
             <div
               key={s.label}
-              className="stat-card bg-white rounded-xl shadow-sm border border-slate-100 p-4 sm:p-6 flex flex-col items-center text-center"
+              className="stat-card bg-teal-50/60 rounded-xl border border-teal-100 p-4 sm:p-5 flex flex-col items-center text-center"
             >
               <AnimatedCounter
                 end={s.end}
                 duration={2000}
                 suffix={s.suffix}
-                className="text-2xl sm:text-4xl font-bold text-teal-600 mb-1"
+                className="text-3xl sm:text-4xl font-bold text-teal-600 mb-1"
               />
               <div className="text-slate-500 text-xs sm:text-sm leading-snug">
                 {s.label}

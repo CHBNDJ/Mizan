@@ -197,6 +197,23 @@ export default function ProfessionPage() {
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
         "-=0.2"
       );
+
+    gsap.fromTo(
+      ".ph-pro",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".ph-pros-section",
+          start: "top bottom",
+          toggleActions: "play none none none",
+        },
+      }
+    );
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, [profId]);
 
@@ -212,6 +229,7 @@ export default function ProfessionPage() {
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`
         .ph-title,.ph-sub,.ph-form,.ph-map,.ph-step { opacity:0; }
+        .ph-pro { opacity:0; }
       `}</style>
       {/* ── Hero ── */}
       <section className="px-4 py-10 sm:py-14">
@@ -232,12 +250,10 @@ export default function ProfessionPage() {
                 {prof.sub}
               </p>
 
-              {/* Formulaire — domaine PUIS wilaya */}
               <div
                 className="ph-form bg-white rounded-2xl shadow-md p-5 sm:p-6 space-y-4 relative"
                 style={{ zIndex: 50 }}
               >
-                {/* 1. Domaines / Spécialités EN PREMIER */}
                 <div className="relative" style={{ zIndex: 20 }}>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                     {prof.domainLabel}
@@ -252,7 +268,6 @@ export default function ProfessionPage() {
                   />
                 </div>
 
-                {/* 2. Wilaya EN SECOND */}
                 <div className="relative" style={{ zIndex: 10 }}>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                     Wilaya
@@ -270,7 +285,6 @@ export default function ProfessionPage() {
                       />
                     </div>
                   )}
-                  {/* Pas de badge vert — la valeur sélectionnée apparaît directement dans le CustomSelect */}
                 </div>
 
                 <button
@@ -328,7 +342,7 @@ export default function ProfessionPage() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
               {topPros.map((pro) => (
-                <div key={pro.id}>
+                <div key={pro.id} className="ph-pro">
                   <AvocatCard avocat={pro} />
                 </div>
               ))}
