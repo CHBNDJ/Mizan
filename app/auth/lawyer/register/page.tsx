@@ -1565,52 +1565,48 @@ export default function LawyerRegisterPage() {
     if (currentStep === 3)
       return (
         <div className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-[3fr_1fr] gap-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                {profession === "avocat"
-                  ? "Spécialités"
-                  : "Domaine(s) d'intervention"}{" "}
-                *
-              </label>
-              <MultiSelectWithCheckboxes
-                placeholder={
-                  profession === "avocat"
-                    ? "Choisir des spécialités..."
-                    : "Choisir des domaines..."
-                }
-                options={domaineOptions}
-                value={formData.specializations}
-                onChange={(v) =>
-                  setFormData((p) => ({ ...p, specializations: v }))
-                }
-                className="h-12"
-                placeholderClassName="text-slate-400 font-medium text-sm"
-                disabled={isSubmitting}
-              />
-              {errors.specializations && (
-                <p className={errCls}>{errors.specializations}</p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1 whitespace-nowrap">
-                Expérience (années) *
-              </label>
-              <input
-                type="text"
-                name="experience"
-                value={formData.experience}
-                onChange={(e) => {
-                  if (/^\d*$/.test(e.target.value)) handleInput(e);
-                }}
-                className={`${inputCls} px-3 placeholder:text-slate-400`}
-                placeholder="5"
-                disabled={isSubmitting}
-              />
-              {errors.experience && (
-                <p className={errCls}>{errors.experience}</p>
-              )}
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              {profession === "avocat"
+                ? "Spécialités"
+                : "Domaine(s) d'intervention"}{" "}
+              *
+            </label>
+            <MultiSelectWithCheckboxes
+              placeholder={
+                profession === "avocat"
+                  ? "Choisissez vos spécialités..."
+                  : "Choisissez vos domaines..."
+              }
+              options={domaineOptions}
+              value={formData.specializations}
+              onChange={(v) =>
+                setFormData((p) => ({ ...p, specializations: v }))
+              }
+              className="h-12"
+              placeholderClassName="text-slate-400 font-medium text-sm"
+              disabled={isSubmitting}
+            />
+            {errors.specializations && (
+              <p className={errCls}>{errors.specializations}</p>
+            )}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1 whitespace-nowrap">
+              Expérience (années) *
+            </label>
+            <input
+              type="text"
+              name="experience"
+              value={formData.experience}
+              onChange={(e) => {
+                if (/^\d*$/.test(e.target.value)) handleInput(e);
+              }}
+              className={`${inputCls} px-3 placeholder:text-slate-400`}
+              placeholder="5"
+              disabled={isSubmitting}
+            />
+            {errors.experience && <p className={errCls}>{errors.experience}</p>}
           </div>
           <div className="bg-teal-50 border border-teal-100 rounded-lg p-3">
             <p className="text-teal-700 text-xs">
@@ -1738,10 +1734,6 @@ export default function LawyerRegisterPage() {
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-xs font-semibold text-teal-600 uppercase tracking-wide">
                   Étape {currentStep} sur 4
-                </span>
-                <span className="text-xs text-slate-400">
-                  · {currentProf && <currentProf.Icon className="w-3 h-3" />}{" "}
-                  {currentProf?.label}
                 </span>
               </div>
               <h2 className="text-lg font-bold text-slate-900">
