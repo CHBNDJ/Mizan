@@ -1223,9 +1223,20 @@ export default function LawyerRegisterPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            subject: `🚨 Nouveau ${profession} inscrit`,
-            title: `Nouveau ${profession} sur Mizan`,
-            message: `<p><strong>Profession :</strong> ${profession}</p><p><strong>Nom :</strong> ${formData.firstName} ${formData.lastName}</p><p><strong>Email :</strong> ${formData.email}</p><p><strong>N° :</strong> ${formData.barNumber}</p>`,
+            subject: `🚨 Nouveau ${currentProf?.label || profession} inscrit`,
+            title: `Nouveau ${currentProf?.label || profession} sur Mizan`,
+            message: `
+              <p>👤 <strong>Nom :</strong> ${formData.firstName} ${formData.lastName}</p>
+              <p>📧 <strong>Email :</strong> ${formData.email}</p>
+              <p>📱 <strong>Mobile :</strong> +${selectedMobileCountry}${formData.mobile}</p>
+              <p>📋 <strong>N° ${currentProf?.numLabel || "Pro"} :</strong> ${formData.barNumber}</p>
+              <p>📍 <strong>Ville :</strong> ${formData.address.city}, ${formData.address.wilaya}</p>
+              <p>🏢 <strong>Adresse :</strong> ${formData.address.street}, ${formData.address.postalCode}</p>
+              <p>⚖️ <strong>Spécialités :</strong> ${formData.specializations.map((s) => domaineOptions.find((o) => o.value === s)?.label || s).join(", ")}</p>
+              <p>🗣️ <strong>Langues :</strong> ${formData.languages.join(", ")}</p>
+              <p>📅 <strong>Expérience :</strong> ${formData.experience} ans</p>
+              <p>💼 <strong>Profession :</strong> ${currentProf?.label || profession}</p>
+            `,
             priority: "high",
           }),
         });
