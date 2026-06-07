@@ -1032,7 +1032,6 @@ const GoogleMapsCard = ({
   showContact: boolean;
   onLockedClick: () => void;
 }) => {
-  const [mapType, setMapType] = React.useState<"m" | "k">("m");
   const mapContainerRef = React.useRef<HTMLDivElement>(null);
 
   const hasAddress = !!(
@@ -1043,7 +1042,7 @@ const GoogleMapsCard = ({
   if (!hasAddress) return null;
 
   const mapsUrl = getGoogleMapsUrl(avocat);
-  const embedUrl = `${getGoogleMapsEmbedUrl(avocat)}&t=${mapType}`;
+  const embedUrl = getGoogleMapsEmbedUrl(avocat);
   const villeStr = [avocat.adresse?.ville || avocat.ville, avocat.wilaya]
     .filter(Boolean)
     .join(", ");
@@ -1084,7 +1083,6 @@ const GoogleMapsCard = ({
           className="relative w-full h-52 sm:h-64 bg-slate-100"
         >
           <iframe
-            key={mapType}
             src={embedUrl}
             className="w-full h-full border-0"
             loading="lazy"
@@ -1101,47 +1099,8 @@ const GoogleMapsCard = ({
               aria-label="Connectez-vous pour accéder"
             />
           )}
-
-          {/* Contrôles top-left : Plan | Satellite */}
-          <div className="absolute top-2 left-2 flex rounded-lg overflow-hidden border border-slate-300 shadow-sm text-xs font-semibold z-20 bg-white">
-            <button
-              onClick={() => setMapType("m")}
-              className={`px-2.5 py-1.5 transition-colors cursor-pointer ${mapType === "m" ? "bg-white text-slate-800" : "bg-white/80 text-slate-400 hover:text-slate-700"}`}
-            >
-              Plan
-            </button>
-            <div className="w-px bg-slate-200" />
-            <button
-              onClick={() => setMapType("k")}
-              className={`px-2.5 py-1.5 transition-colors cursor-pointer ${mapType === "k" ? "bg-white text-slate-800" : "bg-white/80 text-slate-400 hover:text-slate-700"}`}
-            >
-              Satellite
-            </button>
-          </div>
-
           {/* Contrôles top-right : Ouvrir dans Maps + Plein écran */}
           <div className="absolute top-2 right-2 flex items-center gap-1.5 z-20">
-            {/* Ouvrir dans Maps — même style que Plan/Satellite */}
-            {showContact ? (
-              <a
-                href={mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg shadow-sm text-xs font-semibold text-slate-700 hover:text-teal-600 hover:border-teal-300 transition-colors"
-              >
-                <ExternalLink className="w-3 h-3" />
-                Maps
-              </a>
-            ) : (
-              <button
-                onClick={onLockedClick}
-                className="flex items-center gap-1 px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg shadow-sm text-xs font-semibold text-slate-400 cursor-pointer hover:text-slate-600 transition-colors"
-              >
-                <ExternalLink className="w-3 h-3" />
-                Maps
-              </button>
-            )}
-
             {/* Plein écran — icône teal */}
             <button
               onClick={handleFullscreen}
