@@ -1,41 +1,29 @@
 import { Metadata } from "next";
-
-type Props = {
-  params: Promise<{ wilaya: string }>;
-};
-
+type Props = { params: Promise<{ wilaya: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { wilaya } = await params;
-  const wilayaNom = decodeURIComponent(wilaya);
-  const wilayaCapitalized =
-    wilayaNom.charAt(0).toUpperCase() + wilayaNom.slice(1);
-
+  const nom = decodeURIComponent(wilaya);
+  const cap = nom.charAt(0).toUpperCase() + nom.slice(1);
   return {
-    title: `Avocat à ${wilayaCapitalized} | Trouvez un avocat qualifié - Mizan`,
-    description: `Trouvez un avocat qualifié à ${wilayaCapitalized}, Algérie. Consultez les profils d'avocats vérifiés, comparez leurs spécialités et contactez-les directement. Service gratuit.`,
+    title: `Experts juridiques à ${cap} | Mizan Algérie`,
+    description: `Trouvez un avocat, notaire, huissier ou comptable vérifié à ${cap}, Algérie. Profils vérifiés, avis clients, contact direct.`,
     keywords: [
-      `avocat ${wilayaNom.toLowerCase()}`,
-      `avocat à ${wilayaNom.toLowerCase()}`,
-      `trouver avocat ${wilayaNom.toLowerCase()}`,
-      `consultation juridique ${wilayaNom.toLowerCase()}`,
-      `avocats ${wilayaNom.toLowerCase()} algérie`,
+      `avocat ${nom}`,
+      `notaire ${nom}`,
+      `huissier ${nom}`,
+      `comptable ${nom}`,
+      `expert juridique ${nom}`,
     ],
     openGraph: {
-      title: `Avocats à ${wilayaCapitalized} | Mizan`,
-      description: `Trouvez un avocat qualifié à ${wilayaCapitalized}. Profils vérifiés, spécialités variées, contact direct.`,
-      url: `https://mizan-dz.com/${wilayaNom.toLowerCase()}`,
+      title: `Experts juridiques à ${cap} | Mizan`,
+      description: `Avocats, notaires, huissiers et comptables vérifiés à ${cap}.`,
+      url: `https://mizan-dz.com/wilayas/${nom}`,
       type: "website",
     },
-    alternates: {
-      canonical: `https://mizan-dz.com/${wilayaNom.toLowerCase()}`,
-    },
-    robots: {
-      index: true,
-      follow: true,
-    },
+    alternates: { canonical: `https://mizan-dz.com/wilayas/${nom}` },
+    robots: { index: true, follow: true },
   };
 }
-
 export default function WilayaLayout({
   children,
 }: {

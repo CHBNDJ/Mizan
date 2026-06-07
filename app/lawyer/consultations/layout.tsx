@@ -1,15 +1,10 @@
 import { Metadata } from "next";
-
 export const metadata: Metadata = {
-  title: "Mes consultations | Espace Avocat - Mizan",
+  title: "Mes consultations | Espace Professionnel - Mizan",
   description:
     "Gérez et répondez aux demandes de consultation de vos clients sur Mizan.",
-  robots: {
-    index: false,
-    follow: false,
-  },
+  robots: { index: false, follow: false },
 };
-
 export default function LawyerConsultationsLayout({
   children,
 }: {

@@ -1,26 +1,24 @@
 import { Metadata } from "next";
-
 export const metadata: Metadata = {
-  title: "Rechercher un avocat en Algérie | Mizan",
+  title: "Rechercher un expert juridique en Algérie | Mizan",
   description:
-    "Recherchez et trouvez un avocat en Algérie selon vos besoins. Filtrez par spécialité juridique, ville et expérience. Profils vérifiés et avis clients.",
+    "Recherchez un avocat, notaire, huissier ou comptable en Algérie. Filtrez par wilaya et domaine d'intervention. Profils vérifiés, avis clients.",
   keywords: [
-    "recherche avocat",
-    "trouver avocat algérie",
-    "avocat par spécialité",
-    "avocat par ville",
-    "annuaire avocat",
+    "recherche avocat algérie",
+    "trouver notaire algérie",
+    "trouver huissier algérie",
+    "trouver comptable algérie",
+    "expert juridique par wilaya",
+    "annuaire juridique algérie",
   ],
   openGraph: {
-    title: "Rechercher un avocat | Mizan",
-    description: "Trouvez l'avocat qui correspond à vos besoins en Algérie",
+    title: "Rechercher un expert juridique | Mizan",
+    description:
+      "Trouvez l'expert juridique qui correspond à vos besoins en Algérie",
     url: "https://mizan-dz.com/search",
   },
-  alternates: {
-    canonical: "https://mizan-dz.com/search",
-  },
+  alternates: { canonical: "https://mizan-dz.com/search" },
 };
-
 export default function SearchLayout({
   children,
 }: {
