@@ -477,15 +477,15 @@ const PROFESSIONS = [
 
 const HERO_TITLE = (
   <>
-    Les experts juridiques
+    Trouvez votre expert
     <br className="hidden sm:block" />{" "}
-    <span className="text-teal-600">d'Algérie, vérifiés</span>
+    <span className="text-teal-600">juridique en Algérie</span>
   </>
 );
 // Option A (points — plus fort) : "Comparez. Consultez. Contactez."
 // Option B (virgules — plus fluide) : "Comparez, Consultez, Contactez."
 // Actuellement : Option A
-const HERO_SUB_LINE1 = "Des professionnels vérifiés dans toutes les wilayas.";
+const HERO_SUB_LINE1 = "L'annuaire qui vérifie pour vous.";
 const HERO_SUB_LINE2 = "Comparez. Consultez. Contactez.";
 
 export default function HomePage() {
@@ -610,7 +610,8 @@ export default function HomePage() {
                 <div
                   className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 cursor-pointer h-full
                   flex items-center gap-4 px-4 py-4
-                  sm:flex-col sm:items-center sm:px-5 sm:py-5 sm:gap-3 sm:text-center"
+                  sm:flex-col sm:items-center sm:px-5 sm:py-5 sm:gap-3 sm:text-center
+                  hover:border-teal-400 hover:shadow-md"
                 >
                   <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
                     <Icon className="w-5 h-5 text-teal-600" />
@@ -632,7 +633,7 @@ export default function HomePage() {
 
       {/* ── Stats ── */}
       <section className="px-4 pb-14 sm:pb-20 pt-2">
-        <div className="max-w-4xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {[
             { end: stats.total_avocats, label: "Professionnels inscrits" },
             { end: wilayas.length, label: "Wilayas couvertes" },
@@ -645,7 +646,7 @@ export default function HomePage() {
           ].map((s) => (
             <div
               key={s.label}
-              className="stat-card bg-white rounded-2xl shadow-sm border border-slate-100 p-5 sm:p-7 flex flex-col items-center text-center"
+              className="stat-card bg-white rounded-2xl shadow-sm border border-slate-100 p-4 md:p-6 flex flex-col items-center text-center"
             >
               <AnimatedCounter
                 end={s.end}

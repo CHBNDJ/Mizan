@@ -137,6 +137,61 @@ const PROFESSIONS: Record<
   },
 };
 
+// ── Sous-composant pros — useLayoutEffect garantit que le DOM est prêt ────────
+function TopProsSection({
+  topPros,
+  prof,
+  handleSearch,
+}: {
+  topPros: any[];
+  prof: { labelPlural: string };
+  handleSearch: () => void;
+}) {
+  useLayoutEffect(() => {
+    if (!topPros.length) return;
+    const els = document.querySelectorAll(".pro-card-anim");
+    if (!els.length) return;
+    gsap.fromTo(
+      els,
+      { opacity: 0, y: 28 },
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }
+    );
+  }, []);
+
+  return (
+    <section className="ph-pros-section pb-14 sm:pb-16 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-7 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">
+            {prof.labelPlural.charAt(0).toUpperCase() +
+              prof.labelPlural.slice(1)}{" "}
+            les mieux notés
+          </h2>
+          <p className="text-slate-500 text-sm">
+            Recommandés par notre communauté · Vérifiés par Mizan
+          </p>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+          {topPros.map((pro) => (
+            <div key={pro.id} className="pro-card-anim" style={{ opacity: 0 }}>
+              <AvocatCard avocat={pro} />
+            </div>
+          ))}
+        </div>
+        <div className="text-center">
+          <button
+            onClick={handleSearch}
+            className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium cursor-pointer text-sm"
+          >
+            Voir tous les {prof.labelPlural}{" "}
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function ProfessionPage() {
   const params = useParams();
   const router = useRouter();
@@ -173,21 +228,6 @@ export default function ProfessionPage() {
     setSelectedWilaya("");
     setSelectedDomaines([]);
   }, [profId]);
-
-  // Animation pros — se déclenche quand les données arrivent
-  useEffect(() => {
-    if (!topPros.length) return;
-    const t = setTimeout(() => {
-      const els = document.querySelectorAll(".pro-card-anim");
-      if (!els.length) return;
-      gsap.fromTo(
-        els,
-        { opacity: 0, y: 24 },
-        { opacity: 1, y: 0, duration: 0.55, stagger: 0.09, ease: "power2.out" }
-      );
-    }, 100);
-    return () => clearTimeout(t);
-  }, [topPros]);
 
   useLayoutEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -301,7 +341,7 @@ export default function ProfessionPage() {
                   onClick={handleSearch}
                   className="w-full h-12 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl flex items-center justify-center transition-all cursor-pointer text-sm sm:text-base"
                 >
-                  {`Trouver des ${prof.labelPlural}`}
+                  {`Voir les ${prof.labelPlural}`}
                 </button>
               </div>
 
@@ -339,40 +379,11 @@ export default function ProfessionPage() {
 
       {/* Top pros */}
       {topPros.length > 0 && (
-        <section className="ph-pros-section pb-14 sm:pb-16 px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-7 sm:mb-8">
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">
-                {prof.labelPlural.charAt(0).toUpperCase() +
-                  prof.labelPlural.slice(1)}{" "}
-                les mieux notés
-              </h2>
-              <p className="text-slate-500 text-sm">
-                Recommandés par notre communauté · Vérifiés par Mizan
-              </p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
-              {topPros.map((pro) => (
-                <div
-                  key={pro.id}
-                  className="pro-card-anim"
-                  style={{ opacity: 0 }}
-                >
-                  <AvocatCard avocat={pro} />
-                </div>
-              ))}
-            </div>
-            <div className="text-center">
-              <button
-                onClick={handleSearch}
-                className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium cursor-pointer text-sm"
-              >
-                Voir tous les {prof.labelPlural}{" "}
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </section>
+        <TopProsSection
+          topPros={topPros}
+          prof={prof}
+          handleSearch={handleSearch}
+        />
       )}
 
       {/* CTA pro */}
