@@ -1649,26 +1649,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         {/* Carte Leaflet + OpenStreetMap */}
         {hasAddress && (
           <div className="content-card opacity-0 invisible mb-4 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-            <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-                <MapPin className="w-4 h-4 text-teal-600" />
-                Localisation du cabinet
-              </div>
-              {showContact &&
-                (avocat.adresse?.rue ||
-                  avocat.adresse?.ville ||
-                  avocat.ville) && (
-                  <p className="text-xs text-slate-500">
-                    {[
-                      avocat.adresse?.rue,
-                      avocat.adresse?.ville || avocat.ville,
-                      avocat.wilaya,
-                    ]
-                      .filter(Boolean)
-                      .join(", ")}
-                  </p>
-                )}
-            </div>
             <LawyerMap
               address={[
                 avocat.adresse?.rue,
