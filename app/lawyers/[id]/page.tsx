@@ -781,6 +781,11 @@ import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
 import { toCivilite } from "@/lib/genderUtils";
 import { gsap } from "gsap";
+import dynamic from "next/dynamic";
+
+const LawyerMap = dynamic(() => import("@/components/map/LawyerMap"), {
+  ssr: false,
+});
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -1010,126 +1015,7 @@ const InfoCardDesktop = ({
   return <div className="h-full">{body}</div>;
 };
 
-// ── Google Maps Card ────────────────────────────────────────────────────────
-const GoogleMapsCard = ({
-  avocat,
-  showContact,
-  onLockedClick,
-}: {
-  avocat: AvocatData;
-  showContact: boolean;
-  onLockedClick: () => void;
-}) => {
-  const mapRef = React.useRef<HTMLDivElement>(null);
-  const hasAddress = !!(
-    avocat.adresse?.rue ||
-    avocat.adresse?.ville ||
-    avocat.ville
-  );
-  if (!hasAddress) return null;
-
-  const villeStr = [avocat.adresse?.ville || avocat.ville, avocat.wilaya]
-    .filter(Boolean)
-    .join(", ");
-  const rueStr = avocat.adresse?.rue || "";
-  const fullAddr = [rueStr, villeStr, "Algérie"].filter(Boolean).join(", ");
-
-  // Iframe Google Maps — fonctionne partout, pas besoin de clé API
-  const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent(fullAddr)}&output=embed&hl=fr`;
-
-  // Lien "ouvrir" — google.com/maps (pas maps.google.com qui est bloqué)
-  const openUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddr)}`;
-
-  const handleFullscreen = () => {
-    if (!mapRef.current) return;
-    document.fullscreenElement
-      ? document.exitFullscreen()
-      : mapRef.current.requestFullscreen?.();
-  };
-
-  return (
-    <Card className="content-card opacity-0 invisible shadow-sm mb-4 overflow-hidden">
-      <CardHeader>
-        <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-          <MapPin className="w-4 h-4 text-teal-600" />
-          Localisation du cabinet
-        </div>
-        {/* Adresse visible uniquement si connecté */}
-        {showContact && (rueStr || villeStr) && (
-          <p className="text-xs text-slate-500 mt-1">
-            {rueStr ? `${rueStr}, ` : ""}
-            {villeStr}
-          </p>
-        )}
-      </CardHeader>
-      <CardContent className="p-0">
-        {/* Carte visible pour tous — pin exact, adresse masquée dans l'UI */}
-        <div ref={mapRef} className="relative w-full h-52 sm:h-64 bg-slate-100">
-          <iframe
-            src={embedUrl}
-            className="w-full h-full border-0"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Localisation du cabinet"
-          />
-          {/* Bouton plein écran — disponible pour tous */}
-          <button
-            onClick={handleFullscreen}
-            className="absolute top-2 right-2 w-8 h-8 bg-white border border-slate-200 rounded-lg shadow-sm flex items-center justify-center z-10 cursor-pointer hover:border-teal-300 hover:text-teal-600 transition-colors text-slate-500"
-            title="Agrandir la carte"
-          >
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="15 3 21 3 21 9" />
-              <polyline points="9 21 3 21 3 15" />
-              <line x1="21" y1="3" x2="14" y2="10" />
-              <line x1="3" y1="21" x2="10" y2="14" />
-            </svg>
-          </button>
-          {/* Micro-overlay non-connectés — bloque uniquement le lien natif "Ouvrir dans Google Maps"
-              situé dans le coin bas-gauche de l'iframe (~200×28px).
-              Le reste de la carte (pan, zoom, satellite) reste totalement interactif. */}
-          {!showContact && (
-            <div
-              className="absolute bottom-0 left-0 z-[5]"
-              style={{ width: "210px", height: "28px" }}
-            />
-          )}
-        </div>
-        {/* Bouton "Ouvrir dans Google Maps" — connectés uniquement */}
-        {showContact ? (
-          <a
-            href={openUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-1.5 py-3 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors border-t border-slate-100"
-          >
-            <ExternalLink className="w-3.5 h-3.5" />
-            Ouvrir dans Google Maps
-          </a>
-        ) : (
-          <button
-            onClick={onLockedClick}
-            className="w-full flex items-center justify-center gap-2 py-3 text-xs font-medium text-slate-400 hover:bg-slate-50 transition-colors border-t border-slate-100 cursor-pointer"
-          >
-            <MapPin className="w-3.5 h-3.5" />
-            Connectez-vous pour l'itinéraire
-          </button>
-        )}
-      </CardContent>
-    </Card>
-  );
-};
-
-// ── Modal demande consultation vidéo ─────────────────────────────────────────
+// ── Modal demande// ── Modal demande consultation vidéo ─────────────────────────────────────────
 const VideoConsultationModal = ({
   isOpen,
   onClose,
@@ -1760,13 +1646,43 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </>
         )}
 
-        {/* Google Maps */}
+        {/* Carte Leaflet + OpenStreetMap */}
         {hasAddress && (
-          <GoogleMapsCard
-            avocat={avocat}
-            showContact={showContact}
-            onLockedClick={() => router.push("/auth/client/register")}
-          />
+          <div className="content-card opacity-0 invisible mb-4 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+                <MapPin className="w-4 h-4 text-teal-600" />
+                Localisation du cabinet
+              </div>
+              {showContact &&
+                (avocat.adresse?.rue ||
+                  avocat.adresse?.ville ||
+                  avocat.ville) && (
+                  <p className="text-xs text-slate-500">
+                    {[
+                      avocat.adresse?.rue,
+                      avocat.adresse?.ville || avocat.ville,
+                      avocat.wilaya,
+                    ]
+                      .filter(Boolean)
+                      .join(", ")}
+                  </p>
+                )}
+            </div>
+            <LawyerMap
+              address={[
+                avocat.adresse?.rue,
+                avocat.adresse?.ville || avocat.ville,
+                avocat.wilaya,
+                "Algérie",
+              ]
+                .filter(Boolean)
+                .join(", ")}
+              showContact={showContact}
+              googleMapsUrl={getGoogleMapsUrl(avocat)}
+              onLockedClick={() => router.push("/auth/client/register")}
+            />
+          </div>
         )}
 
         {/* Boutons mobile */}
