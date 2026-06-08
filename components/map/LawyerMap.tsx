@@ -15,7 +15,15 @@ export default function LawyerMap({
 }: Props) {
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
 
-  if (!key || !address) return null;
+  if (!address) return null;
+
+  if (!key) {
+    return (
+      <div className="flex items-center justify-center h-32 bg-slate-50 text-xs text-slate-400 border-t border-slate-100">
+        Clé Google Maps manquante — vérifier NEXT_PUBLIC_GOOGLE_MAPS_KEY
+      </div>
+    );
+  }
 
   const base = "https://www.google.com/maps/embed/v1/place";
   const planUrl = `${base}?key=${key}&q=${encodeURIComponent(address)}&zoom=15&language=fr`;
