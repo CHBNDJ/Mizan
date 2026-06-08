@@ -3,56 +3,54 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-interface LawyerMapProps {
+interface Props {
   address: string;
   showContact?: boolean;
   googleMapsUrl?: string;
   onLockedClick?: () => void;
 }
 
-const RED_ICON = L.divIcon({
-  html: `<svg width="24" height="36" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 0C5.4 0 0 5.4 0 12c0 8.4 12 24 12 24S24 20.4 24 12C24 5.4 18.6 0 12 0z" fill="#e24b4a"/>
-    <circle cx="12" cy="12" r="5" fill="white"/>
-  </svg>`,
-  className: "",
-  iconSize: [24, 36],
-  iconAnchor: [12, 36],
-});
+const MARKER_HTML = `<svg width="28" height="40" viewBox="0 0 28 40" xmlns="http://www.w3.org/2000/svg">
+  <path d="M14 0C6.3 0 0 6.3 0 14c0 9.8 14 26 14 26S28 23.8 28 14C28 6.3 21.7 0 14 0z" fill="#e24b4a"/>
+  <circle cx="14" cy="14" r="6" fill="white"/>
+</svg>`;
 
 export default function LawyerMap({
   address,
   showContact = false,
   googleMapsUrl,
   onLockedClick,
-}: LawyerMapProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+}: Props) {
+  const divRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const planRef = useRef<L.TileLayer | null>(null);
   const satRef = useRef<L.TileLayer | null>(null);
+
   const [layer, setLayer] = useState<"plan" | "satellite">("plan");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
+    if (!divRef.current || mapRef.current) return;
+    let cancelled = false;
 
-    // Geocode via Nominatim
     fetch(
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`,
       { headers: { "Accept-Language": "fr" } }
     )
       .then((r) => r.json())
       .then((data) => {
+        if (cancelled) return;
         if (!data?.[0]) {
           setError(true);
+          setLoading(false);
           return;
         }
 
         const lat = parseFloat(data[0].lat);
         const lon = parseFloat(data[0].lon);
 
-        const map = L.map(containerRef.current!, {
+        const map = L.map(divRef.current!, {
           zoomControl: true,
           attributionControl: false,
           scrollWheelZoom: false,
@@ -68,7 +66,13 @@ export default function LawyerMap({
           { maxZoom: 19 }
         );
 
-        L.marker([lat, lon], { icon: RED_ICON }).addTo(map);
+        const icon = L.divIcon({
+          html: MARKER_HTML,
+          className: "",
+          iconSize: [28, 40],
+          iconAnchor: [14, 40],
+        });
+        L.marker([lat, lon], { icon }).addTo(map);
 
         mapRef.current = map;
         planRef.current = plan;
@@ -76,11 +80,14 @@ export default function LawyerMap({
         setLoading(false);
       })
       .catch(() => {
-        setError(true);
-        setLoading(false);
+        if (!cancelled) {
+          setError(true);
+          setLoading(false);
+        }
       });
 
     return () => {
+      cancelled = true;
       mapRef.current?.remove();
       mapRef.current = null;
     };
@@ -99,36 +106,40 @@ export default function LawyerMap({
   };
 
   const handleFullscreen = () => {
-    if (!containerRef.current) return;
+    if (!divRef.current) return;
     document.fullscreenElement
       ? document.exitFullscreen()
-      : containerRef.current.requestFullscreen?.();
+      : divRef.current.requestFullscreen?.();
   };
 
   if (error) return null;
 
   return (
     <div>
+      {/* Carte */}
       <div className="relative w-full h-52 sm:h-64 bg-slate-100">
         {loading && (
-          <div className="absolute inset-0 flex items-center justify-center z-[400] bg-slate-100">
+          <div className="absolute inset-0 flex items-center justify-center z-[500] bg-slate-100">
             <div className="animate-spin rounded-full h-6 w-6 border-2 border-teal-600 border-t-transparent" />
           </div>
         )}
+        <div ref={divRef} className="w-full h-full" />
 
-        <div ref={containerRef} className="w-full h-full" />
-
-        {/* Switcher Plan / Satellite */}
-        <div className="absolute top-2 left-2 z-[400] flex rounded-lg overflow-hidden border border-slate-300 shadow-sm">
-          {(["plan", "satellite"] as const).map((mode) => (
+        {/* Plan / Satellite */}
+        <div className="absolute top-2 left-2 z-[400] flex rounded-lg overflow-hidden border border-slate-200 shadow-sm text-[11px] font-semibold">
+          {(["plan", "satellite"] as const).map((m, i) => (
             <button
-              key={mode}
-              onClick={() => switchLayer(mode)}
-              className={`px-2.5 py-1 text-[11px] font-semibold cursor-pointer transition-colors
-                ${mode === "satellite" ? "border-l border-slate-300" : ""}
-                ${layer === mode ? "bg-white text-slate-800" : "bg-slate-100 text-slate-500 hover:bg-white"}`}
+              key={m}
+              onClick={() => switchLayer(m)}
+              className={`px-3 py-1 cursor-pointer transition-colors
+                ${i === 1 ? "border-l border-slate-200" : ""}
+                ${
+                  layer === m
+                    ? "bg-white text-slate-800"
+                    : "bg-slate-100 text-slate-400 hover:bg-white"
+                }`}
             >
-              {mode === "plan" ? "Plan" : "Satellite"}
+              {m === "plan" ? "Plan" : "Satellite"}
             </button>
           ))}
         </div>
@@ -136,8 +147,8 @@ export default function LawyerMap({
         {/* Plein écran */}
         <button
           onClick={handleFullscreen}
-          className="absolute top-2 right-2 w-8 h-8 bg-white border border-slate-300 rounded-lg shadow-sm flex items-center justify-center z-[400] cursor-pointer hover:border-teal-300 hover:text-teal-600 transition-colors text-slate-500"
           title="Agrandir"
+          className="absolute top-2 right-2 w-8 h-8 bg-white border border-slate-200 rounded-lg shadow-sm flex items-center justify-center z-[400] cursor-pointer hover:border-teal-300 hover:text-teal-600 transition-colors text-slate-500"
         >
           <svg
             width="13"
@@ -163,7 +174,7 @@ export default function LawyerMap({
           href={googleMapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-1.5 py-3 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors border-t border-slate-100"
+          className="flex items-center justify-center gap-2 py-3 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors border-t border-slate-100"
         >
           <svg
             width="13"
@@ -179,7 +190,7 @@ export default function LawyerMap({
             <polyline points="15 3 21 3 21 9" />
             <line x1="10" y1="14" x2="21" y2="3" />
           </svg>
-          Ouvrir dans Google Maps
+          Ouvrir dans Google Maps · Itinéraire
         </a>
       ) : (
         <button
@@ -196,7 +207,7 @@ export default function LawyerMap({
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <rect x="3" y="11" width="18" height="11" rx="2" />
             <path d="M7 11V7a5 5 0 0110 0v4" />
           </svg>
           Connectez-vous pour l'itinéraire
