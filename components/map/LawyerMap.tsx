@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 
 interface Props {
   address: string;
@@ -8,91 +7,91 @@ interface Props {
   onLockedClick?: () => void;
 }
 
-const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? "";
-
 export default function LawyerMap({
   address,
   showContact = false,
   googleMapsUrl,
   onLockedClick,
 }: Props) {
-  const [coords, setCoords] = useState<{ lat: number; lon: number } | null>(
-    null
-  );
-  const [layer, setLayer] = useState<"plan" | "satellite">("plan");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
 
-  // Géocodage Nominatim → coordonnées → embed Google avec pin propre sans label
-  useEffect(() => {
-    fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`,
-      { headers: { "Accept-Language": "fr" } }
-    )
-      .then((r) => r.json())
-      .then((data) => {
-        if (!data?.[0]) {
-          setError(true);
-          setLoading(false);
-          return;
-        }
-        setCoords({
-          lat: parseFloat(data[0].lat),
-          lon: parseFloat(data[0].lon),
-        });
-        setLoading(false);
-      })
-      .catch(() => {
-        setError(true);
-        setLoading(false);
-      });
-  }, [address]);
+  if (!key || !address) return null;
 
-  // URL embed Google Maps Embed API — coordonnées = pin rouge sans texte parasite
-  const embedUrl = coords
-    ? `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=${coords.lat},${coords.lon}&zoom=15&maptype=${layer === "satellite" ? "satellite" : "roadmap"}&language=fr`
-    : null;
-
-  if (error) return null;
+  const base = "https://www.google.com/maps/embed/v1/place";
+  const planUrl = `${base}?key=${key}&q=${encodeURIComponent(address)}&zoom=15&language=fr`;
+  const satUrl = `${base}?key=${key}&q=${encodeURIComponent(address)}&zoom=15&maptype=satellite&language=fr`;
 
   return (
     <div>
       <div className="relative w-full h-52 sm:h-64 bg-slate-100">
-        {(loading || !embedUrl) && (
-          <div className="absolute inset-0 flex items-center justify-center z-10 bg-slate-100">
-            <div className="animate-spin rounded-full h-6 w-6 border-2 border-teal-600 border-t-transparent" />
-          </div>
-        )}
-
-        {embedUrl && (
-          <iframe
-            key={`${coords?.lat}-${coords?.lon}-${layer}`}
-            src={embedUrl}
-            className="w-full h-full border-0"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            allowFullScreen
-            title="Localisation du cabinet"
-          />
-        )}
+        {/* Iframe Plan par défaut — satellite se charge via switcher */}
+        <iframe
+          id="mizan-map-plan"
+          src={planUrl}
+          className="w-full h-full border-0"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allowFullScreen
+          title="Localisation du cabinet"
+          style={{ display: "block" }}
+        />
+        <iframe
+          id="mizan-map-sat"
+          src={satUrl}
+          className="w-full h-full border-0 absolute inset-0"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allowFullScreen
+          title="Localisation du cabinet satellite"
+          style={{ display: "none" }}
+        />
 
         {/* Switcher Plan / Satellite */}
         <div className="absolute top-2 left-2 z-10 flex rounded-lg overflow-hidden border border-slate-200 shadow-sm text-[11px] font-semibold">
-          {(["plan", "satellite"] as const).map((m, i) => (
-            <button
-              key={m}
-              onClick={() => setLayer(m)}
-              className={`px-3 py-1 cursor-pointer transition-colors
-                ${i === 1 ? "border-l border-slate-200" : ""}
-                ${
-                  layer === m
-                    ? "bg-white text-slate-800"
-                    : "bg-slate-100 text-slate-400 hover:bg-white"
-                }`}
-            >
-              {m === "plan" ? "Plan" : "Satellite"}
-            </button>
-          ))}
+          <button
+            id="btn-plan"
+            className="px-3 py-1 cursor-pointer bg-white text-slate-800 transition-colors"
+            onClick={() => {
+              const p = document.getElementById(
+                "mizan-map-plan"
+              ) as HTMLIFrameElement;
+              const s = document.getElementById(
+                "mizan-map-sat"
+              ) as HTMLIFrameElement;
+              const bp = document.getElementById("btn-plan")!;
+              const bs = document.getElementById("btn-sat")!;
+              if (p) p.style.display = "block";
+              if (s) s.style.display = "none";
+              bp.className =
+                "px-3 py-1 cursor-pointer bg-white text-slate-800 transition-colors";
+              bs.className =
+                "px-3 py-1 cursor-pointer border-l border-slate-200 bg-slate-100 text-slate-400 hover:bg-white transition-colors";
+            }}
+          >
+            Plan
+          </button>
+          <button
+            id="btn-sat"
+            className="px-3 py-1 cursor-pointer border-l border-slate-200 bg-slate-100 text-slate-400 hover:bg-white transition-colors"
+            onClick={() => {
+              const p = document.getElementById(
+                "mizan-map-plan"
+              ) as HTMLIFrameElement;
+              const s = document.getElementById(
+                "mizan-map-sat"
+              ) as HTMLIFrameElement;
+              const bp = document.getElementById("btn-plan")!;
+              const bs = document.getElementById("btn-sat")!;
+              if (p) p.style.display = "none";
+              if (s) s.style.display = "block";
+              bp.className =
+                "px-3 py-1 cursor-pointer bg-slate-100 text-slate-400 hover:bg-white transition-colors";
+              bs.className =
+                "px-3 py-1 cursor-pointer border-l border-slate-200 bg-white text-slate-800 transition-colors";
+            }}
+          >
+            Satellite
+          </button>
         </div>
       </div>
 
