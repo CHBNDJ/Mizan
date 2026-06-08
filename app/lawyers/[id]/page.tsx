@@ -1010,7 +1010,7 @@ const InfoCardDesktop = ({
   return <div className="h-full">{body}</div>;
 };
 
-// ── Google Maps Card ───────────────────────────────────────────────────────────
+// ── Google Maps Card ────────────────────────────────────────────────────────
 const GoogleMapsCard = ({
   avocat,
   showContact,
@@ -1020,6 +1020,7 @@ const GoogleMapsCard = ({
   showContact: boolean;
   onLockedClick: () => void;
 }) => {
+  const mapRef = React.useRef<HTMLDivElement>(null);
   const hasAddress = !!(
     avocat.adresse?.rue ||
     avocat.adresse?.ville ||
@@ -1031,69 +1032,102 @@ const GoogleMapsCard = ({
     .filter(Boolean)
     .join(", ");
   const rueStr = avocat.adresse?.rue || "";
-  const googleUrl = getGoogleMapsUrl(avocat);
+  const fullAddr = [rueStr, villeStr, "Algérie"].filter(Boolean).join(", ");
+
+  // Iframe Google Maps — fonctionne partout, pas besoin de clé API
+  const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent(fullAddr)}&output=embed&hl=fr`;
+
+  // Lien "ouvrir" — google.com/maps (pas maps.google.com qui est bloqué)
+  const openUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddr)}`;
+
+  const handleFullscreen = () => {
+    if (!mapRef.current) return;
+    document.fullscreenElement
+      ? document.exitFullscreen()
+      : mapRef.current.requestFullscreen?.();
+  };
 
   return (
     <Card className="content-card opacity-0 invisible shadow-sm mb-4 overflow-hidden">
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-            <MapPin className="w-4 h-4 text-teal-600" />
-            Localisation du cabinet
-          </div>
-          {showContact && (
-            <a
-              href={googleUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs text-teal-600 hover:text-teal-700 font-medium transition-colors"
-            >
-              <ExternalLink className="w-3 h-3" />
-              Ouvrir dans Maps
-            </a>
-          )}
+        <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+          <MapPin className="w-4 h-4 text-teal-600" />
+          Localisation du cabinet
         </div>
+        {/* Adresse visible uniquement si connecté */}
         {showContact && (rueStr || villeStr) && (
-          <p className="text-xs text-slate-500 mt-1.5">
+          <p className="text-xs text-slate-500 mt-1">
             {rueStr ? `${rueStr}, ` : ""}
             {villeStr}
           </p>
         )}
         {!showContact && (
-          <p className="text-xs text-slate-400 mt-1.5 italic">
-            Connectez-vous pour voir l'adresse et accéder à Google Maps
+          <p className="text-xs text-slate-400 mt-1 italic">
+            Quartier approximatif — connectez-vous pour l'adresse exacte
           </p>
         )}
       </CardHeader>
-
       <CardContent className="p-0">
+        {/* Carte visible pour tous — pin exact, adresse masquée dans l'UI */}
+        <div ref={mapRef} className="relative w-full h-52 sm:h-64 bg-slate-100">
+          <iframe
+            src={embedUrl}
+            className="w-full h-full border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Localisation du cabinet"
+          />
+          {/* Bouton plein écran — disponible pour tous */}
+          <button
+            onClick={handleFullscreen}
+            className="absolute top-2 right-2 w-8 h-8 bg-white border border-slate-200 rounded-lg shadow-sm flex items-center justify-center z-10 cursor-pointer hover:border-teal-300 hover:text-teal-600 transition-colors text-slate-500"
+            title="Agrandir la carte"
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="15 3 21 3 21 9" />
+              <polyline points="9 21 3 21 3 15" />
+              <line x1="21" y1="3" x2="14" y2="10" />
+              <line x1="3" y1="21" x2="10" y2="14" />
+            </svg>
+          </button>
+          {/* Overlay cliquable pour non-connectés — bloque l'ouverture externe uniquement */}
+          {!showContact && (
+            <div
+              className="absolute inset-0 z-10"
+              style={{ pointerEvents: "none" }}
+            >
+              {/* Overlay transparent — laisse voir la carte et le zoom natif,
+                  mais on masque le bouton "ouvrir" via le JSX en dessous */}
+            </div>
+          )}
+        </div>
+        {/* Bouton "Ouvrir dans Google Maps" — connectés uniquement */}
         {showContact ? (
           <a
-            href={googleUrl}
+            href={openUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 py-4 text-sm font-semibold text-teal-700 hover:bg-teal-50 transition-colors border-t border-slate-100 group"
+            className="flex items-center justify-center gap-1.5 py-3 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors border-t border-slate-100"
           >
-            <div className="w-8 h-8 rounded-lg bg-teal-50 group-hover:bg-teal-100 flex items-center justify-center transition-colors flex-shrink-0">
-              <MapPin className="w-4 h-4 text-teal-600" />
-            </div>
-            <div className="text-left">
-              <p className="text-sm font-semibold text-teal-800">
-                Voir sur Google Maps
-              </p>
-              <p className="text-xs text-teal-500 font-normal truncate max-w-[260px]">
-                {rueStr || villeStr}
-              </p>
-            </div>
-            <ExternalLink className="w-4 h-4 text-teal-400 ml-auto" />
+            <ExternalLink className="w-3.5 h-3.5" />
+            Ouvrir dans Google Maps
           </a>
         ) : (
           <button
             onClick={onLockedClick}
-            className="w-full flex items-center justify-center gap-2 py-4 text-sm font-medium text-slate-400 hover:bg-slate-50 transition-colors border-t border-slate-100 cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 py-3 text-xs font-medium text-slate-400 hover:bg-slate-50 transition-colors border-t border-slate-100 cursor-pointer"
           >
-            <MapPin className="w-4 h-4" />
-            Connexion requise pour voir l'adresse
+            <MapPin className="w-3.5 h-3.5" />
+            Connectez-vous pour l'itinéraire
           </button>
         )}
       </CardContent>
@@ -1101,7 +1135,7 @@ const GoogleMapsCard = ({
   );
 };
 
-// ── Modal demande// ── Modal demande consultation vidéo ─────────────────────────────────────────
+// ── Modal demande// ── Modal demande// ── Modal demande consultation vidéo ─────────────────────────────────────────
 const VideoConsultationModal = ({
   isOpen,
   onClose,
