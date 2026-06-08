@@ -1094,8 +1094,15 @@ const GoogleMapsCard = ({
               <line x1="3" y1="21" x2="10" y2="14" />
             </svg>
           </button>
-          {/* Overlay non-connectés — bloque les clics natifs iframe, bouton fullscreen reste au-dessus (z-10) */}
-          {!showContact && <div className="absolute inset-0 z-[5]" />}
+          {/* Micro-overlay non-connectés — bloque uniquement le lien natif "Ouvrir dans Google Maps"
+              situé dans le coin bas-gauche de l'iframe (~200×28px).
+              Le reste de la carte (pan, zoom, satellite) reste totalement interactif. */}
+          {!showContact && (
+            <div
+              className="absolute bottom-0 left-0 z-[5]"
+              style={{ width: "210px", height: "28px" }}
+            />
+          )}
         </div>
         {/* Bouton "Ouvrir dans Google Maps" — connectés uniquement */}
         {showContact ? (
@@ -1122,7 +1129,7 @@ const GoogleMapsCard = ({
   );
 };
 
-// ── Modal demande// ── Modal demande// ── Modal demande consultation vidéo ─────────────────────────────────────────
+// ── Modal demande consultation vidéo ─────────────────────────────────────────
 const VideoConsultationModal = ({
   isOpen,
   onClose,
