@@ -1360,19 +1360,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   );
 
   const infoItems: InfoItem[] = [
-    ...(avocat.adresse?.rue || avocat.ville
-      ? [
-          {
-            icon: <MapPin className="w-3.5 h-3.5 text-teal-600" />,
-            label: "Cabinet",
-            value: `${avocat.adresse?.ville || avocat.ville}, ${avocat.wilaya}`,
-            sublabel: showContact
-              ? avocat.adresse?.rue || undefined
-              : undefined,
-            href: showContact ? getGoogleMapsUrl(avocat) : undefined,
-          },
-        ]
-      : []),
     ...(showContact
       ? allPhones.map((p) => ({
           icon: (
@@ -1648,7 +1635,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
         {/* Carte Leaflet + OpenStreetMap */}
         {hasAddress && (
-          <div className="content-card opacity-0 invisible mb-4 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <div className="mb-4 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
             <LawyerMap
               address={[
                 avocat.adresse?.rue,
