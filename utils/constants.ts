@@ -77,6 +77,7 @@ export const SPECIALITES = [
   "Droit fiscal",
   "Droit international",
   "Droit maritime",
+  "Droit médical",
   "Droit pénal",
   "Droit public",
   "Droit routier",
