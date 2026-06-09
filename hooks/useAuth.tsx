@@ -103,13 +103,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       userType: "client" | "lawyer";
       location?: string;
       bar_number?: string;
-      profession?: string; // ← AJOUTÉ
+      profession?: string;
       specializations?: string[];
       wilayas?: string[];
       experience_years?: number;
       consultation_price?: number | null;
       gender?: string;
-      languages?: string[]; // ← DÉJÀ PRÉSENT mais pas utilisé correctement
+      languages?: string[];
       address?: {
         street: string;
         neighborhood?: string | null;
@@ -133,7 +133,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (userData.userType === "lawyer") {
         metaData.bar_number = userData.bar_number || "";
-        metaData.profession = userData.profession || "avocat"; // ← AJOUTÉ
+        metaData.profession = userData.profession || "avocat";
         metaData.specializations = userData.specializations || [];
         metaData.experience_years = userData.experience_years || 0;
         metaData.consultation_price = userData.consultation_price || null;

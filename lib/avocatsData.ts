@@ -49,7 +49,6 @@ export const AVOCATS_DATABASE: AvocatsDatabase = {
   },
 };
 
-// ── Domaines par profession ────────────────────────────────────
 export const DOMAINES_PAR_PROFESSION: Record<string, string[]> = {
   avocat: [...SPECIALITES],
   notaire: [

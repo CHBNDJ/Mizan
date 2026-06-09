@@ -145,7 +145,6 @@ export function Navigation() {
       ? `${cap(profile.first_name)} ${cap(profile.last_name)}`
       : user?.email || "Utilisateur";
 
-  // Label profession affiché sous le nom
   const getProfessionLabel = () => {
     if (profile?.user_type === "client") return "Client";
     const prof = (profile as any)?.profession;
@@ -526,7 +525,6 @@ export function Navigation() {
                           activeTab === "login"
                             ? "/auth/lawyer/login"
                             : "/auth/lawyer/register",
-                        // ← CHANGÉ
                         label: "Professionnel",
                         sub:
                           activeTab === "login"
