@@ -39,7 +39,6 @@ import { getInitials, formatPrice } from "@/lib/utils";
 import ImageCropModal from "@/components/ImageCropModal";
 import { gsap } from "gsap";
 
-// ── Labels dynamiques par profession ─────────────────────────────────────────
 const PROF_LABELS: Record<
   string,
   { label: string; numLabel: string; numPlaceholder: string; Icon: any }
@@ -111,11 +110,9 @@ export default function ProfilePage() {
     languages: [] as string[],
   });
 
-  // Profession du professionnel connecté
   const profession = (profile as any)?.profession || "avocat";
   const profInfo = getProfLabel(profession);
 
-  // Domaines selon la profession
   const domaineOptions = (
     DOMAINES_PAR_PROFESSION[profession] || SPECIALITES
   ).map((s) => ({

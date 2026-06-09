@@ -137,7 +137,6 @@ const PROFESSIONS: Record<
   },
 };
 
-// ── Sous-composant pros — useLayoutEffect garantit que le DOM est prêt ────────
 function TopProsSection({
   topPros,
   prof,
@@ -209,8 +208,6 @@ export default function ProfessionPage() {
     value: d,
     label: d,
   }));
-  // Inclure la wilaya sélectionnée même si elle n'est pas dans la liste DB
-  // (la map a les 69 wilayas, la DB peut en avoir moins)
   const wilayaOptions = React.useMemo(() => {
     const opts = wilayas.map((w) => ({ value: w, label: w }));
     if (selectedWilaya && !opts.find((o) => o.value === selectedWilaya)) {
@@ -260,7 +257,6 @@ export default function ProfessionPage() {
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
         "-=0.2"
       );
-    // Animation pros — start:"top bottom" fire dès que la section est visible
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, [profId]);
 

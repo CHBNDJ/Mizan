@@ -30,7 +30,6 @@ const PROFESSIONS = [
   },
 ];
 
-// Formate le slug wilaya en label lisible : "el-khroub" → "El Khroub"
 const formatWilaya = (slug: string) =>
   slug
     .split("-")
@@ -388,7 +387,6 @@ function SearchResults() {
   );
 }
 
-// Petit icône MapPin inline (évite l'import Lucide dans le JSX inline)
 const MapPinSmall = () => (
   <svg
     width="10"

@@ -56,7 +56,6 @@ export const metadata: Metadata = {
     locale: "fr_DZ",
     url: siteConfig.url,
     siteName: "Mizan",
-    // ← Multi-profession
     title: "Mizan — Trouvez votre expert juridique en Algérie",
     description:
       "Avocats, notaires, huissiers, comptables vérifiés en Algérie. Consultations en ligne depuis l'Algérie et la diaspora.",

@@ -27,7 +27,6 @@ export default function LawyerMap({
     );
   }
 
-  // Une seule iframe — Google Maps gère Plan/Satellite en natif
   const embedUrl = `https://www.google.com/maps/embed/v1/place?key=${key}&q=${encodeURIComponent(address)}&zoom=15&language=fr`;
 
   const handleFullscreen = () => {

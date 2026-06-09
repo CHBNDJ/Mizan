@@ -253,7 +253,7 @@ export interface Database {
           created_at?: string;
         };
       };
-      // NOUVELLES TABLES POUR LES NOTIFICATIONS
+      / NOUVELLES TABLES POUR LES NOTIFICATIONS
       user_preferences: {
         Row: {
           id: string;
