@@ -1,4 +1,5 @@
 "use client";
+import { useRef } from "react";
 
 interface Props {
   address: string;
@@ -13,6 +14,7 @@ export default function LawyerMap({
   googleMapsUrl,
   onLockedClick,
 }: Props) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
 
   if (!address) return null;
@@ -20,87 +22,58 @@ export default function LawyerMap({
   if (!key) {
     return (
       <div className="flex items-center justify-center h-32 bg-slate-50 text-xs text-slate-400 border-t border-slate-100">
-        Clé Google Maps manquante — vérifier NEXT_PUBLIC_GOOGLE_MAPS_KEY
+        Clé Google Maps manquante
       </div>
     );
   }
 
-  const base = "https://www.google.com/maps/embed/v1/place";
-  const planUrl = `${base}?key=${key}&q=${encodeURIComponent(address)}&zoom=15&language=fr`;
-  const satUrl = `${base}?key=${key}&q=${encodeURIComponent(address)}&zoom=15&maptype=satellite&language=fr`;
+  // Une seule iframe — Google Maps gère Plan/Satellite en natif
+  const embedUrl = `https://www.google.com/maps/embed/v1/place?key=${key}&q=${encodeURIComponent(address)}&zoom=15&language=fr`;
+
+  const handleFullscreen = () => {
+    if (!containerRef.current) return;
+    document.fullscreenElement
+      ? document.exitFullscreen()
+      : containerRef.current.requestFullscreen?.();
+  };
 
   return (
     <div>
-      <div className="relative w-full h-52 sm:h-64 bg-slate-100">
-        {/* Iframe Plan par défaut — satellite se charge via switcher */}
+      <div
+        ref={containerRef}
+        className="relative w-full h-52 sm:h-64 bg-slate-100"
+      >
         <iframe
-          id="mizan-map-plan"
-          src={planUrl}
+          src={embedUrl}
           className="w-full h-full border-0"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           allowFullScreen
           title="Localisation du cabinet"
-          style={{ display: "block" }}
-        />
-        <iframe
-          id="mizan-map-sat"
-          src={satUrl}
-          className="w-full h-full border-0 absolute inset-0"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          allowFullScreen
-          title="Localisation du cabinet satellite"
-          style={{ display: "none" }}
         />
 
-        {/* Switcher Plan / Satellite */}
-        <div className="absolute top-2 left-2 z-10 flex rounded-lg overflow-hidden border border-slate-200 shadow-sm text-[11px] font-semibold">
-          <button
-            id="btn-plan"
-            className="px-3 py-1 cursor-pointer bg-white text-slate-800 transition-colors"
-            onClick={() => {
-              const p = document.getElementById(
-                "mizan-map-plan"
-              ) as HTMLIFrameElement;
-              const s = document.getElementById(
-                "mizan-map-sat"
-              ) as HTMLIFrameElement;
-              const bp = document.getElementById("btn-plan")!;
-              const bs = document.getElementById("btn-sat")!;
-              if (p) p.style.display = "block";
-              if (s) s.style.display = "none";
-              bp.className =
-                "px-3 py-1 cursor-pointer bg-white text-slate-800 transition-colors";
-              bs.className =
-                "px-3 py-1 cursor-pointer border-l border-slate-200 bg-slate-100 text-slate-400 hover:bg-white transition-colors";
-            }}
+        {/* Bouton plein écran */}
+        <button
+          onClick={handleFullscreen}
+          title="Agrandir"
+          className="absolute top-2 right-2 w-8 h-8 bg-white border border-slate-200 rounded-lg shadow-sm flex items-center justify-center z-10 cursor-pointer hover:border-teal-300 hover:text-teal-600 transition-colors text-slate-500"
+        >
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            Plan
-          </button>
-          <button
-            id="btn-sat"
-            className="px-3 py-1 cursor-pointer border-l border-slate-200 bg-slate-100 text-slate-400 hover:bg-white transition-colors"
-            onClick={() => {
-              const p = document.getElementById(
-                "mizan-map-plan"
-              ) as HTMLIFrameElement;
-              const s = document.getElementById(
-                "mizan-map-sat"
-              ) as HTMLIFrameElement;
-              const bp = document.getElementById("btn-plan")!;
-              const bs = document.getElementById("btn-sat")!;
-              if (p) p.style.display = "none";
-              if (s) s.style.display = "block";
-              bp.className =
-                "px-3 py-1 cursor-pointer bg-slate-100 text-slate-400 hover:bg-white transition-colors";
-              bs.className =
-                "px-3 py-1 cursor-pointer border-l border-slate-200 bg-white text-slate-800 transition-colors";
-            }}
-          >
-            Satellite
-          </button>
-        </div>
+            <polyline points="15 3 21 3 21 9" />
+            <polyline points="9 21 3 21 3 15" />
+            <line x1="21" y1="3" x2="14" y2="10" />
+            <line x1="3" y1="21" x2="10" y2="14" />
+          </svg>
+        </button>
       </div>
 
       {/* Bouton bas */}
