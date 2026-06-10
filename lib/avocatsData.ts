@@ -577,6 +577,7 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     created_at: lawyer.users?.created_at || lawyer.created_at || null,
     profession: lawyer.profession || "avocat",
     is_cour_supreme: lawyer.is_cour_supreme || false,
+    bio: lawyer.bio || undefined,
   };
 }
 
@@ -781,7 +782,7 @@ export async function getAvocatById(id: string): Promise<AvocatData | null> {
     const { data: lawyer, error: lawyerError } = await supabase
       .from("lawyers")
       .select(
-        "id, bar_number, specializations, experience_years, consultation_price, is_verified, is_claimed, claimed_at, rating_google, reviews_count_google, rating_mizan, reviews_count_mizan, updated_at, created_at, profession"
+        "id, bar_number, specializations, experience_years, consultation_price, is_verified, is_claimed, claimed_at, rating_google, reviews_count_google, rating_mizan, reviews_count_mizan, updated_at, created_at, profession, is_cour_supreme, bio"
       )
       .eq("id", id)
       .eq("is_verified", true)
