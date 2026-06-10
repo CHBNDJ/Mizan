@@ -23,7 +23,7 @@ const CANAUX = [
     type: "phone",
     icon: Phone,
     label: "Téléphonique",
-    desc: "Appel vocal",
+    desc: "Appel vocal — 30 min",
     duration: "30 min",
   },
   {
@@ -49,17 +49,11 @@ const CANAUX = [
   },
 ];
 
-interface PricingRow {
-  id?: string;
-  type: string;
-  base_price: string;
-  is_active: boolean;
-}
-
 export default function PricingManager() {
   const supabase = createClient();
   const { user } = useAuth();
-  const [rows, setRows] = useState<Record<string, PricingRow>>({});
+  const [prices, setPrices] = useState<Record<string, string>>({});
+  const [ids, setIds] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -71,17 +65,15 @@ export default function PricingManager() {
       .select("*")
       .eq("lawyer_id", user.id)
       .then(({ data }) => {
-        const map: Record<string, PricingRow> = {};
+        const p: Record<string, string> = {};
+        const i: Record<string, string> = {};
         CANAUX.forEach((c) => {
-          const existing = data?.find((d) => d.type === c.type);
-          map[c.type] = {
-            id: existing?.id,
-            type: c.type,
-            base_price: existing?.base_price?.toString() || "",
-            is_active: existing?.is_active ?? false,
-          };
+          const row = data?.find((d) => d.type === c.type);
+          p[c.type] = row?.base_price?.toString() || "";
+          if (row?.id) i[c.type] = row.id;
         });
-        setRows(map);
+        setPrices(p);
+        setIds(i);
         setLoading(false);
       });
   }, [user]);
@@ -91,29 +83,26 @@ export default function PricingManager() {
     setSaving(true);
     try {
       for (const c of CANAUX) {
-        const row = rows[c.type];
-        if (!row) continue;
         const payload = {
           lawyer_id: user.id,
           type: c.type,
           label: c.label,
           duration: c.duration,
-          base_price: row.base_price ? parseInt(row.base_price) : null,
-          is_active: row.is_active,
+          base_price: prices[c.type] ? parseInt(prices[c.type]) : null,
+          is_active: true,
         };
-        if (row.id) {
+        if (ids[c.type]) {
           await supabase
             .from("consultation_pricing")
             .update(payload)
-            .eq("id", row.id);
-        } else if (row.is_active) {
+            .eq("id", ids[c.type]);
+        } else {
           const { data } = await supabase
             .from("consultation_pricing")
             .insert(payload)
             .select("id")
             .single();
-          if (data)
-            setRows((p) => ({ ...p, [c.type]: { ...p[c.type], id: data.id } }));
+          if (data) setIds((prev) => ({ ...prev, [c.type]: data.id }));
         }
       }
       setSaved(true);
@@ -122,15 +111,6 @@ export default function PricingManager() {
       setSaving(false);
     }
   };
-
-  const toggle = (type: string) =>
-    setRows((p) => ({
-      ...p,
-      [type]: { ...p[type], is_active: !p[type].is_active },
-    }));
-
-  const setPrice = (type: string, val: string) =>
-    setRows((p) => ({ ...p, [type]: { ...p[type], base_price: val } }));
 
   if (loading)
     return (
@@ -142,71 +122,48 @@ export default function PricingManager() {
   return (
     <div className="space-y-3">
       <p className="text-xs text-slate-500 mb-4">
-        Activez les canaux que vous proposez et indiquez un tarif indicatif en
-        DA. Le client verra "à partir de X DA" sur votre profil. Laissez le
-        tarif vide pour afficher "Tarif sur demande".
+        Indiquez votre tarif indicatif en DA pour chaque canal. Laissez vide
+        pour afficher "Tarif sur demande". Tous les canaux sont visibles par les
+        clients — vous fixez uniquement le prix.
       </p>
-
       {CANAUX.map((c) => {
-        const row = rows[c.type];
         const Icon = c.icon;
         return (
           <div
             key={c.type}
-            className={`border rounded-xl p-4 transition-all ${row?.is_active ? "bg-teal-50 border-teal-100" : "bg-white border-slate-200"}`}
+            className="flex items-center gap-4 p-4 bg-teal-50 border border-teal-100 rounded-xl"
           >
-            <div className="flex items-center gap-3">
-              <div
-                className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${row?.is_active ? "bg-teal-600" : "bg-slate-100"}`}
-              >
-                <Icon
-                  className={`w-4 h-4 ${row?.is_active ? "text-white" : "text-slate-400"}`}
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <p className="text-sm font-semibold text-slate-800">
-                    {c.label}
-                  </p>
-                  {c.duration && (
-                    <span className="text-[10px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
-                      {c.duration}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-slate-500">{c.desc}</p>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                <input
-                  type="checkbox"
-                  checked={row?.is_active || false}
-                  onChange={() => toggle(c.type)}
-                  className="sr-only peer"
-                />
-                <div className="w-10 h-6 bg-slate-200 peer-checked:bg-teal-600 rounded-full transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-4" />
-              </label>
+            <div className="w-9 h-9 rounded-lg bg-teal-600 flex items-center justify-center flex-shrink-0">
+              <Icon className="w-4 h-4 text-white" />
             </div>
-            {row?.is_active && (
-              <div className="mt-3 flex items-center gap-2">
-                <label className="text-xs font-medium text-slate-600 whitespace-nowrap">
-                  Tarif indicatif (DA)
-                </label>
-                <input
-                  type="number"
-                  value={row.base_price}
-                  onChange={(e) => setPrice(c.type, e.target.value)}
-                  placeholder="ex: 3000"
-                  className="flex-1 h-9 px-3 text-sm border border-slate-200 rounded-lg bg-white focus:border-teal-400 outline-none transition-all"
-                />
-                <span className="text-xs text-slate-400 whitespace-nowrap">
-                  laisser vide = sur demande
-                </span>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-semibold text-slate-800">
+                  {c.label}
+                </p>
+                {c.duration && (
+                  <span className="text-[10px] text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-full">
+                    {c.duration}
+                  </span>
+                )}
               </div>
-            )}
+              <p className="text-xs text-slate-500">{c.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <input
+                type="number"
+                value={prices[c.type] || ""}
+                onChange={(e) =>
+                  setPrices((p) => ({ ...p, [c.type]: e.target.value }))
+                }
+                placeholder="Sur demande"
+                className="w-32 h-9 px-3 text-sm border border-slate-200 rounded-lg bg-white focus:border-teal-400 outline-none text-right"
+              />
+              <span className="text-xs text-slate-400">DA</span>
+            </div>
           </div>
         );
       })}
-
       <button
         onClick={handleSave}
         disabled={saving}
@@ -225,7 +182,7 @@ export default function PricingManager() {
         ) : (
           <>
             <Save className="w-4 h-4" />
-            Enregistrer
+            Enregistrer les tarifs
           </>
         )}
       </button>

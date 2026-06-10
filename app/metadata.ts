@@ -11,14 +11,13 @@ export const siteConfig = {
 export const homeMetadata: Metadata = {
   title: "Mizan — Trouvez votre expert juridique en Algérie",
   description:
-    "Trouvez rapidement un avocat, notaire, huissier ou comptable vérifié en Algérie. Experts vérifiés dans toutes les wilayas. Que vous soyez en Algérie ou à l'étranger. Alger, Oran, Constantine, Annaba, Sétif.",
+    "Trouvez rapidement un avocat, notaire, huissier, comptable ou expert-comptable vérifié en Algérie. Experts vérifiés dans toutes les wilayas. Que vous soyez en Algérie ou à l'étranger.",
   keywords: [
     "avocat algérie",
     "notaire algérie",
     "huissier algérie",
     "comptable algérie",
-    "expert juridique algérie",
-    "consultant juridique algérie",
+    "expert comptable algérie",
     "avocat alger",
     "avocat oran",
     "avocat constantine",
@@ -76,13 +75,13 @@ export const homeMetadata: Metadata = {
 export const searchMetadata: Metadata = {
   title: "Rechercher un expert juridique | Mizan Algérie",
   description:
-    "Recherchez un avocat, notaire, huissier ou comptable vérifié en Algérie. Filtrez par wilaya et domaine d'intervention. Profils détaillés et avis clients.",
+    "Recherchez un avocat, notaire, huissier, comptable ou expert-comptable vérifié en Algérie. Filtrez par wilaya et domaine d'intervention.",
   keywords: [
     "rechercher avocat algérie",
     "trouver notaire",
     "huissier algérie",
     "comptable algérie",
-    "annuaire juridique",
+    "expert comptable algérie",
   ],
   openGraph: {
     title: "Rechercher un expert juridique | Mizan",
@@ -93,10 +92,22 @@ export const searchMetadata: Metadata = {
   alternates: { canonical: `${siteConfig.url}/search` },
 };
 
+export const consultationMetadata: Metadata = {
+  title: "Consulter un professionnel | Mizan",
+  description:
+    "Choisissez votre mode de consultation — message, téléphone, vidéo ou email — avec un professionnel juridique vérifié sur Mizan.",
+  openGraph: {
+    title: "Consulter un professionnel | Mizan",
+    description: "Consultation en ligne avec un expert juridique vérifié.",
+    url: `${siteConfig.url}/consultation`,
+    type: "website",
+  },
+  alternates: { canonical: `${siteConfig.url}/consultation` },
+};
+
 export const contactMetadata: Metadata = {
   title: "Contactez-nous | Mizan",
-  description:
-    "Besoin d'aide ? Contactez l'équipe Mizan. Nous sommes là pour répondre à vos questions sur notre plateforme juridique.",
+  description: "Besoin d'aide ? Contactez l'équipe Mizan.",
   openGraph: {
     title: "Contactez-nous | Mizan",
     description: "Besoin d'aide ? Contactez l'équipe Mizan.",
@@ -113,16 +124,16 @@ export const howItWorksMetadata: Metadata = {
   openGraph: {
     title: "Comment ça marche | Mizan",
     description: "Trouvez votre expert en 3 étapes simples.",
-    url: `${siteConfig.url}/howitworks`,
+    url: `${siteConfig.url}/comment-ca-marche`,
     type: "website",
   },
-  alternates: { canonical: `${siteConfig.url}/howitworks` },
+  alternates: { canonical: `${siteConfig.url}/comment-ca-marche` },
 };
 
 export const faqMetadata: Metadata = {
   title: "Questions Fréquentes (FAQ) | Mizan",
   description:
-    "Toutes vos questions sur Mizan : avocats, notaires, huissiers, comptables vérifiés en Algérie. Comment ça marche ? Est-ce gratuit ?",
+    "Toutes vos questions sur Mizan : avocats, notaires, huissiers, comptables et experts-comptables vérifiés en Algérie.",
   openGraph: {
     title: "FAQ | Mizan",
     description: "Toutes vos questions sur Mizan.",
@@ -195,6 +206,11 @@ const PROF_META: Record<
     singular: "Comptable",
     plural: "Comptables",
     numLabel: "agréé ONEC/ONCA",
+  },
+  "expert-comptable": {
+    singular: "Expert Comptable",
+    plural: "Experts Comptables",
+    numLabel: "agréé ONEC",
   },
 };
 

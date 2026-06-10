@@ -965,6 +965,13 @@ const PROFESSIONS = [
     numLabel: "N° ONEC / ONCA",
     numPlaceholder: "CMP2024-001",
   },
+  {
+    id: "expert-comptable" as Profession,
+    label: "Expert Comptable",
+    Icon: Calculator,
+    numLabel: "N° ONEC",
+    numPlaceholder: "ONEC2024-001",
+  },
 ];
 
 export default function LawyerRegisterPage() {

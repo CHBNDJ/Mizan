@@ -171,7 +171,6 @@ export default function ConsultationPage({
     PROF_LABELS[avocat.profession || "avocat"] || "Professionnel";
   const hasPricing = pricing.length > 0;
 
-  // Canaux par défaut si aucun configuré
   const defaultCanaux = [
     {
       type: "message",
@@ -197,7 +196,6 @@ export default function ConsultationPage({
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-50 via-white to-teal-50">
       <div className="max-w-xl mx-auto px-4 py-8">
-        {/* Retour */}
         <Link
           href={`/lawyers/${id}`}
           className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 text-sm font-medium mb-6"
@@ -205,7 +203,6 @@ export default function ConsultationPage({
           <ArrowLeft className="w-4 h-4" /> Retour au profil
         </Link>
 
-        {/* Header professionnel */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 mb-5 shadow-sm">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-teal-700 flex items-center justify-center text-white text-lg font-bold flex-shrink-0 overflow-hidden">
@@ -252,7 +249,6 @@ export default function ConsultationPage({
           </div>
         </div>
 
-        {/* Sent confirmation */}
         {sent && (
           <div className="bg-white border border-teal-100 rounded-2xl p-8 text-center shadow-sm mb-5">
             <div className="w-14 h-14 bg-teal-50 border border-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -278,7 +274,6 @@ export default function ConsultationPage({
                 " Les tarifs sont fixés par le professionnel selon votre dossier."}
             </p>
 
-            {/* Canaux */}
             <div className="space-y-3 mb-6">
               {canaux.map((canal: any) => {
                 const config = CANAL_CONFIG[canal.type];
@@ -352,7 +347,6 @@ export default function ConsultationPage({
               })}
             </div>
 
-            {/* Note tarif */}
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 mb-5 flex items-start gap-2">
               <svg
                 className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"
@@ -372,7 +366,6 @@ export default function ConsultationPage({
               </p>
             </div>
 
-            {/* CTA */}
             {!user ? (
               <div className="space-y-3">
                 <Link href="/auth/client/register" className="block">

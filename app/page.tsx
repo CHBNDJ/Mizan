@@ -168,7 +168,6 @@ export default function HomePage() {
         .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
       `}</style>
 
-      {/* ── Hero ── */}
       <section className="py-14 sm:py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="hero-title text-2xl sm:text-4xl lg:text-6xl font-bold text-slate-800 mb-5 leading-tight tracking-tight">
@@ -180,8 +179,7 @@ export default function HomePage() {
             {HERO_SUB_LINE2}
           </p>
 
-          {/* 4 cards — 2 colonnes mobile, 4 desktop */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 max-w-5xl mx-auto">
             {PROFESSIONS.map(({ id, label, Icon, desc }) => (
               <Link key={id} href={`/${id}`}>
                 <div
@@ -208,7 +206,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Stats ── */}
       <section className="px-4 pb-14 sm:pb-20 pt-2">
         <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {[
@@ -239,7 +236,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Comment ça marche ── */}
       <section className="steps-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-2xl shadow-sm p-6 sm:p-10">
@@ -286,7 +282,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Top professionnels ── */}
       {topAvocats.length > 0 && (
         <section className="avocats-section pb-16 sm:pb-20 px-4">
           <div className="max-w-6xl mx-auto">
@@ -317,7 +312,6 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ── CTA double — responsive centré ── */}
       <section className="cta-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
           <div className="bg-white rounded-2xl shadow-sm p-7 sm:p-10 flex flex-col text-center sm:text-left">

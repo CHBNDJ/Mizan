@@ -13,22 +13,28 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 type UserType = "client" | "professionnel";
-type ProfType = "avocat" | "notaire" | "huissier" | "comptable";
+type ProfType =
+  | "avocat"
+  | "notaire"
+  | "huissier"
+  | "comptable"
+  | "expert-comptable";
 
 const PROFS: { id: ProfType; label: string; Icon: any }[] = [
   { id: "avocat", label: "Avocat", Icon: Scale },
   { id: "notaire", label: "Notaire", Icon: FileText },
   { id: "huissier", label: "Huissier", Icon: Briefcase },
   { id: "comptable", label: "Comptable", Icon: Calculator },
+  { id: "expert-comptable", label: "Expert Comptable", Icon: Calculator },
 ];
 
 const CLIENT_STEPS = [
   {
     n: "1",
     title: "Choisissez votre expert",
-    desc: "Cliquez sur la catégorie dont vous avez besoin — avocat, notaire, huissier ou comptable.",
+    desc: "Cliquez sur la catégorie dont vous avez besoin.",
     points: [
-      "4 catégories d'experts",
+      "5 catégories d'experts",
       "Recherche par wilaya",
       "Accessible depuis l'étranger",
     ],
@@ -36,7 +42,7 @@ const CLIENT_STEPS = [
   {
     n: "2",
     title: "Filtrez et comparez",
-    desc: "Sélectionnez votre wilaya et domaine d'intervention. Consultez les avis et l'expérience de chaque professionnel.",
+    desc: "Sélectionnez votre wilaya et domaine. Consultez les avis et l'expérience.",
     points: [
       "Avis Google affichés",
       "Vérification officielle",
@@ -46,7 +52,7 @@ const CLIENT_STEPS = [
   {
     n: "3",
     title: "Contactez directement",
-    desc: "Créez un compte gratuit et envoyez une demande depuis le profil. Le professionnel vous répond par messagerie sécurisée.",
+    desc: "Créez un compte gratuit et envoyez une demande. Le professionnel répond par messagerie.",
     points: [
       "Inscription gratuite",
       "Messagerie sécurisée",
@@ -54,7 +60,6 @@ const CLIENT_STEPS = [
     ],
   },
 ];
-
 const CLIENT_FAQS = [
   {
     q: "Puis-je utiliser Mizan depuis l'étranger ?",
@@ -70,16 +75,15 @@ const CLIENT_FAQS = [
   },
   {
     q: "Puis-je contacter un notaire ou huissier ?",
-    a: "Oui — notaires, huissiers, avocats et comptables sont tous accessibles via la messagerie Mizan depuis n'importe où.",
+    a: "Oui — notaires, huissiers, avocats, comptables et experts-comptables sont tous accessibles via la messagerie Mizan.",
   },
 ];
 
 const PROF_DATA: Record<
   ProfType,
-  { steps: any[]; faqs: any[]; numLabel: string; claimBanner: boolean }
+  { steps: any[]; faqs: any[]; claimBanner: boolean }
 > = {
   avocat: {
-    numLabel: "N° de barreau",
     claimBanner: true,
     steps: [
       {
@@ -91,13 +95,13 @@ const PROF_DATA: Record<
       {
         n: "2",
         title: "Vérification",
-        desc: "Notre équipe valide votre inscription au barreau sous 24-48h. Votre profil apparaît dans les résultats.",
+        desc: "Notre équipe valide votre inscription au barreau sous 24-48h.",
         points: ["Délai 24-48h", "Vérification barreau", "Activation manuelle"],
       },
       {
         n: "3",
         title: "Recevez des clients",
-        desc: "Les clients vous contactent via la messagerie. Vous recevez une notification email à chaque nouvelle demande.",
+        desc: "Les clients vous contactent via la messagerie. Notification email à chaque nouvelle demande.",
         points: [
           "Messagerie intégrée",
           "Notification email",
@@ -125,13 +129,12 @@ const PROF_DATA: Record<
     ],
   },
   notaire: {
-    numLabel: "N° chambre des notaires",
     claimBanner: false,
     steps: [
       {
         n: "1",
         title: "Inscrivez-vous",
-        desc: "Créez votre profil notarial — actes immobiliers, successions, mariages. Votre N° de chambre sera requis.",
+        desc: "Créez votre profil notarial. Votre N° de chambre sera requis.",
         points: ["Profil complet", "N° chambre des notaires", "Gratuit"],
       },
       {
@@ -147,7 +150,7 @@ const PROF_DATA: Record<
       {
         n: "3",
         title: "Clients diaspora",
-        desc: "La diaspora a besoin de notaires pour successions, actes immobiliers, procurations. Soyez visible.",
+        desc: "La diaspora a besoin de notaires pour successions, actes, procurations.",
         points: [
           "Messagerie intégrée",
           "Clients diaspora",
@@ -175,13 +178,12 @@ const PROF_DATA: Record<
     ],
   },
   huissier: {
-    numLabel: "N° d'huissier",
     claimBanner: false,
     steps: [
       {
         n: "1",
         title: "Inscrivez-vous",
-        desc: "Créez votre profil — constats, exécutions, significations. Votre N° officiel d'huissier sera requis.",
+        desc: "Créez votre profil. Votre N° officiel d'huissier sera requis.",
         points: ["Profil complet", "N° d'huissier requis", "Gratuit"],
       },
       {
@@ -197,7 +199,7 @@ const PROF_DATA: Record<
       {
         n: "3",
         title: "Recevez des clients",
-        desc: "Particuliers et entreprises cherchent des huissiers pour constats, recouvrements, significations.",
+        desc: "Particuliers et entreprises cherchent des huissiers pour constats et recouvrements.",
         points: [
           "Messagerie intégrée",
           "Clients entreprises",
@@ -225,13 +227,12 @@ const PROF_DATA: Record<
     ],
   },
   comptable: {
-    numLabel: "N° ONEC / ONCA",
     claimBanner: false,
     steps: [
       {
         n: "1",
         title: "Inscrivez-vous",
-        desc: "Créez votre profil — fiscalité, création d'entreprise, bilans. Votre N° d'agrément ONEC ou ONCA sera requis.",
+        desc: "Créez votre profil. Votre N° d'agrément ONEC ou ONCA sera requis.",
         points: ["Profil complet", "N° agrément requis", "Gratuit"],
       },
       {
@@ -247,7 +248,7 @@ const PROF_DATA: Record<
       {
         n: "3",
         title: "Clients diaspora",
-        desc: "La diaspora qui crée des EURL/SARL en Algérie a besoin de comptables. Soyez leur premier contact.",
+        desc: "La diaspora qui crée des EURL/SARL en Algérie a besoin de comptables.",
         points: [
           "Messagerie intégrée",
           "Clients diaspora",
@@ -257,12 +258,12 @@ const PROF_DATA: Record<
     ],
     faqs: [
       {
-        q: "Expert-comptable vs comptable agréé ?",
-        a: "L'expert-comptable (ONEC) peut signer des bilans officiels. Le comptable agréé (ONCA) gère la comptabilité courante. Les deux s'inscrivent sur Mizan.",
-      },
-      {
         q: "Quels services puis-je proposer ?",
         a: "Création d'entreprise, déclarations IFU/G50/IBS, bilan annuel, paie, conseil fiscal, comptabilité EURL/SARL.",
+      },
+      {
+        q: "La publicité est-elle autorisée ?",
+        a: "Figurer dans un annuaire vérifié est autorisé et conforme à la déontologie ONEC/ONCA.",
       },
       {
         q: "L'inscription est-elle payante ?",
@@ -271,6 +272,51 @@ const PROF_DATA: Record<
       {
         q: "Les clients peuvent-ils envoyer des docs ?",
         a: "Oui, via la messagerie Mizan sécurisée. Idéal pour la diaspora qui gère son entreprise à distance.",
+      },
+    ],
+  },
+  "expert-comptable": {
+    claimBanner: false,
+    steps: [
+      {
+        n: "1",
+        title: "Inscrivez-vous",
+        desc: "Créez votre profil. Votre N° d'agrément ONEC sera requis.",
+        points: ["Profil complet", "N° ONEC requis", "Gratuit"],
+      },
+      {
+        n: "2",
+        title: "Vérification",
+        desc: "Notre équipe vérifie votre inscription à l'ordre ONEC sous 24-48h.",
+        points: ["Délai 24-48h", "Vérification ONEC", "Activation manuelle"],
+      },
+      {
+        n: "3",
+        title: "Clients entreprises",
+        desc: "Audit, consolidation, évaluation d'entreprise, due diligence pour entreprises algériennes et diaspora.",
+        points: [
+          "Messagerie intégrée",
+          "Clients diaspora",
+          "Missions à distance",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Quelle différence avec comptable agréé ?",
+        a: "L'expert-comptable (ONEC) peut signer des bilans officiels et exercer le commissariat aux comptes. Le comptable agréé gère la comptabilité courante.",
+      },
+      {
+        q: "Quels services puis-je proposer ?",
+        a: "Audit légal, consolidation des comptes, évaluation d'entreprise, due diligence, restructuration financière, conseil fiscal avancé.",
+      },
+      {
+        q: "L'inscription est-elle payante ?",
+        a: "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité.",
+      },
+      {
+        q: "Les missions peuvent-elles se faire à distance ?",
+        a: "Oui. La plupart des missions peuvent se faire par échange de documents et messagerie. Mizan facilite ce flux dès le premier contact.",
       },
     ],
   },
@@ -344,7 +390,6 @@ export default function HowItWorksPage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`.hero-title,.hero-sub,.tabs-row,.step-card,.faq-card,.cta-section{opacity:0;}`}</style>
-
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 mb-5 leading-tight">
@@ -352,11 +397,11 @@ export default function HowItWorksPage() {
           </h1>
           <p className="hero-sub text-base sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
             Mizan connecte des clients — en Algérie ou à l'étranger — avec des
-            avocats, notaires, huissiers et comptables vérifiés.
+            avocats, notaires, huissiers, comptables et experts-comptables
+            vérifiés.
           </p>
         </div>
       </section>
-
       <section className="px-4 pb-16">
         <div className="max-w-4xl mx-auto">
           <div className="tabs-row flex justify-center gap-3 mb-6">
@@ -372,7 +417,6 @@ export default function HowItWorksPage() {
               </button>
             ))}
           </div>
-
           {userType === "professionnel" && (
             <div className="flex justify-center gap-2 mb-8 flex-wrap">
               {PROFS.map((p) => (
@@ -386,7 +430,6 @@ export default function HowItWorksPage() {
               ))}
             </div>
           )}
-
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
             {steps.map((step: any) => (
               <div
@@ -418,7 +461,6 @@ export default function HowItWorksPage() {
               </div>
             ))}
           </div>
-
           {userType === "professionnel" && data.claimBanner && (
             <div className="mb-10 bg-teal-50 border border-teal-100 rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
@@ -437,7 +479,6 @@ export default function HowItWorksPage() {
               </Link>
             </div>
           )}
-
           <div>
             <p className="text-xs font-semibold text-teal-600 uppercase tracking-widest mb-4 text-center">
               Questions fréquentes
@@ -460,7 +501,6 @@ export default function HowItWorksPage() {
           </div>
         </div>
       </section>
-
       <section className="cta-section py-12 px-4 bg-teal-600">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
