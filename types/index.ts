@@ -32,6 +32,7 @@ export interface AvocatData {
   consultation_price?: number;
   langues?: string[];
   verified?: boolean;
+  is_cour_supreme?: boolean;
 
   rating_google?: number | null;
   reviews_count_google?: number;
