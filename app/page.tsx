@@ -179,7 +179,7 @@ export default function HomePage() {
             {HERO_SUB_LINE2}
           </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 max-w-5xl mx-auto">
             {PROFESSIONS.map(({ id, label, Icon, desc }) => (
               <Link key={id} href={`/${id}`}>
                 <div
