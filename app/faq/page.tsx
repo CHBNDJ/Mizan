@@ -364,6 +364,31 @@ export default function FAQPage() {
               Contactez-nous
             </Link>
           </div>
+          <div className="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-4">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
+              Mieux comprendre chaque profession
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { slug: "avocat", label: "Rôle de l'avocat" },
+                { slug: "notaire", label: "Rôle du notaire" },
+                { slug: "huissier", label: "Rôle de l'huissier" },
+                { slug: "comptable", label: "Rôle du comptable agréé" },
+                {
+                  slug: "expert-comptable",
+                  label: "Rôle de l'expert-comptable",
+                },
+              ].map((p) => (
+                <Link
+                  key={p.slug}
+                  href={`/professions/${p.slug}`}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-slate-200 hover:border-teal-300 text-xs font-medium text-slate-700 rounded-lg transition-all"
+                >
+                  {p.label} →
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

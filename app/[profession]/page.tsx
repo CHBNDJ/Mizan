@@ -3,13 +3,13 @@ import React from "react";
 import { useState, useLayoutEffect, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import {
-  Search,
   ChevronRight,
   ArrowLeft,
   Scale,
   FileText,
   Briefcase,
   Calculator,
+  BookOpen,
 } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { AlgeriaMap } from "@/components/AlgeriaMap";
@@ -23,16 +23,21 @@ import {
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
-
 gsap.registerPlugin(ScrollTrigger);
 
-type ProfId = "avocat" | "notaire" | "huissier" | "comptable";
+type ProfId =
+  | "avocat"
+  | "notaire"
+  | "huissier"
+  | "comptable"
+  | "expert-comptable";
 
 const PROF_ICONS: Record<ProfId, any> = {
   avocat: Scale,
   notaire: FileText,
   huissier: Briefcase,
   comptable: Calculator,
+  "expert-comptable": Calculator,
 };
 
 const PROFESSIONS: Record<
@@ -135,6 +140,28 @@ const PROFESSIONS: Record<
       },
     ],
   },
+  "expert-comptable": {
+    label: "Expert Comptable",
+    labelPlural: "experts comptables",
+    hero: "Trouvez un expert-comptable en Algérie",
+    sub: "Audit, évaluation d'entreprise, consolidation, due diligence — pour entreprises et diaspora.",
+    searchLabel: "Rechercher un expert-comptable",
+    domainLabel: "Domaine",
+    steps: [
+      {
+        title: "Précisez votre mission",
+        desc: "Audit légal, évaluation, due diligence, consolidation — chaque expert a ses spécialités.",
+      },
+      {
+        title: "Choisissez la wilaya",
+        desc: "Un expert-comptable local connaît l'environnement fiscal et réglementaire algérien.",
+      },
+      {
+        title: "Consultation à distance",
+        desc: "La majorité des missions d'expertise se font à distance par échange de documents.",
+      },
+    ],
+  },
 };
 
 function TopProsSection({
@@ -156,7 +183,6 @@ function TopProsSection({
       { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }
     );
   }, []);
-
   return (
     <section className="ph-pros-section pb-14 sm:pb-16 px-4">
       <div className="max-w-6xl mx-auto">
@@ -210,9 +236,8 @@ export default function ProfessionPage() {
   }));
   const wilayaOptions = React.useMemo(() => {
     const opts = wilayas.map((w) => ({ value: w, label: w }));
-    if (selectedWilaya && !opts.find((o) => o.value === selectedWilaya)) {
+    if (selectedWilaya && !opts.find((o) => o.value === selectedWilaya))
       opts.unshift({ value: selectedWilaya, label: selectedWilaya });
-    }
     return opts;
   }, [wilayas, selectedWilaya]);
 
@@ -270,10 +295,8 @@ export default function ProfessionPage() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <style>{`
-        .ph-title,.ph-sub,.ph-form,.ph-map,.ph-step { opacity:0; }
-      `}</style>
-      {/* ── Hero ── */}
+      <style>{`.ph-title,.ph-sub,.ph-form,.ph-map,.ph-step { opacity:0; }`}</style>
+
       <section className="px-4 py-10 sm:py-14">
         <div className="max-w-6xl mx-auto">
           <Link href="/">
@@ -281,9 +304,7 @@ export default function ProfessionPage() {
               <ArrowLeft className="w-4 h-4" />
             </button>
           </Link>
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-            {/* Gauche */}
             <div>
               <h1 className="ph-title text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 sm:mb-5 leading-tight text-center lg:text-left">
                 {prof.hero}
@@ -291,13 +312,10 @@ export default function ProfessionPage() {
               <p className="ph-sub text-sm sm:text-lg text-slate-600 mb-6 sm:mb-8 leading-relaxed text-center lg:text-left">
                 {prof.sub}
               </p>
-
-              {/* Formulaire — domaine PUIS wilaya */}
               <div
                 className="ph-form bg-white rounded-2xl shadow-md p-5 sm:p-6 space-y-4 relative"
                 style={{ zIndex: 50 }}
               >
-                {/* 1. Domaines / Spécialités EN PREMIER */}
                 <div className="relative" style={{ zIndex: 20 }}>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                     {prof.domainLabel}
@@ -311,8 +329,6 @@ export default function ProfessionPage() {
                     placeholderClassName="text-slate-400 font-medium text-sm"
                   />
                 </div>
-
-                {/* 2. Wilaya EN SECOND */}
                 <div className="relative" style={{ zIndex: 10 }}>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                     Wilaya
@@ -320,19 +336,15 @@ export default function ProfessionPage() {
                   {loadingWilayas ? (
                     <div className="h-12 bg-slate-100 rounded-lg animate-pulse" />
                   ) : (
-                    <div>
-                      <CustomSelect
-                        placeholder="Toutes les wilayas"
-                        options={wilayaOptions}
-                        value={selectedWilaya}
-                        onChange={setSelectedWilaya}
-                        className="h-12"
-                      />
-                    </div>
+                    <CustomSelect
+                      placeholder="Toutes les wilayas"
+                      options={wilayaOptions}
+                      value={selectedWilaya}
+                      onChange={setSelectedWilaya}
+                      className="h-12"
+                    />
                   )}
-                  {/* Pas de badge vert — la valeur sélectionnée apparaît directement dans le CustomSelect */}
                 </div>
-
                 <button
                   onClick={handleSearch}
                   className="w-full h-12 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl flex items-center justify-center transition-all cursor-pointer text-sm sm:text-base"
@@ -340,8 +352,6 @@ export default function ProfessionPage() {
                   {`Voir les ${prof.labelPlural}`}
                 </button>
               </div>
-
-              {/* Steps */}
               <div className="mt-8 space-y-4 relative" style={{ zIndex: 1 }}>
                 {prof.steps.map((step, i) => (
                   <div key={i} className="ph-step flex gap-3">
@@ -360,8 +370,6 @@ export default function ProfessionPage() {
                 ))}
               </div>
             </div>
-
-            {/* Carte — desktop uniquement, synchronisée avec le CustomSelect wilaya */}
             <div className="ph-map hidden lg:block sticky top-24">
               <AlgeriaMap
                 selectedWilaya={selectedWilaya}
@@ -373,7 +381,6 @@ export default function ProfessionPage() {
         </div>
       </section>
 
-      {/* Top pros */}
       {topPros.length > 0 && (
         <TopProsSection
           topPros={topPros}
@@ -382,7 +389,34 @@ export default function ProfessionPage() {
         />
       )}
 
-      {/* CTA pro */}
+      {/* Bloc "En savoir plus" vers la page explicative */}
+      <section className="px-4 pb-10">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-teal-50 border border-teal-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <BookOpen className="w-4 h-4 text-teal-600" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-800">
+                  Vous ne savez pas si un {prof.label.toLowerCase()} est fait
+                  pour vous ?
+                </p>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Découvrez le rôle exact, les missions et quand y faire appel.
+                </p>
+              </div>
+            </div>
+            <Link href={`/professions/${profId}`} className="flex-shrink-0">
+              <button className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-600 hover:text-teal-700 cursor-pointer whitespace-nowrap">
+                Rôle du {prof.label.toLowerCase()}{" "}
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="py-12 px-4 bg-teal-600">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-xl sm:text-2xl font-bold text-white mb-3">
