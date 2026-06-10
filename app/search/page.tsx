@@ -28,6 +28,12 @@ const PROFESSIONS = [
     Icon: Calculator,
     plural: "comptables",
   },
+  {
+    id: "expert-comptable",
+    label: "Expert Comptable",
+    Icon: Calculator,
+    plural: "experts comptables",
+  },
 ];
 
 const formatWilaya = (slug: string) =>

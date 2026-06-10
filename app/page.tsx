@@ -47,6 +47,12 @@ const PROFESSIONS = [
     Icon: Calculator,
     desc: "Bilans, fiscalité, création société...",
   },
+  {
+    id: "expert-comptable",
+    label: "Expert Comptable",
+    Icon: Calculator,
+    desc: "Audit, expertise, consolidation...",
+  },
 ];
 
 const HERO_TITLE = (
