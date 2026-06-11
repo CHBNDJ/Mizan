@@ -260,9 +260,8 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto text-center">
           <Link href="/professions" className="prof-roles-link">
             <span className="text-xs text-slate-400 hover:text-teal-600 cursor-pointer transition-colors">
-              Pas sûr de quelle profession vous avez besoin ?{" "}
               <span className="font-medium text-teal-600">
-                Comprendre les rôles →
+                Comprendre les professions juridiques en Algérie →
               </span>
             </span>
           </Link>
