@@ -1,95 +1,282 @@
+import { createAdminClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-import { Resend } from "resend";
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-type Status = "pending" | "accepted" | "in_progress" | "completed" | "declined";
-
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: NextRequest) {
   try {
-    const { id: consultationId } = await params;
-    const { status, message } = (await req.json()) as {
-      status: Status;
-      message?: string;
-    };
+    const { lawyerId, email, code, password } = await request.json();
 
-    const validStatuses: Status[] = [
-      "pending",
-      "accepted",
-      "in_progress",
-      "completed",
-      "declined",
-    ];
-    if (!validStatuses.includes(status)) {
-      return NextResponse.json({ error: "Invalid status" }, { status: 400 });
-    }
-
-    const { data: consult, error } = await supabaseAdmin
-      .from("consultations")
-      .update({ status, updated_at: new Date().toISOString() })
-      .eq("id", consultationId)
-      .select(
-        "*, lawyer:lawyer_id(first_name, last_name), client:client_id(first_name, last_name, email)"
-      )
-      .single();
-
-    if (error || !consult) {
+    if (!lawyerId || !email || !code || !password) {
       return NextResponse.json(
-        { error: "Consultation not found" },
-        { status: 404 }
+        { error: "Tous les champs sont requis" },
+        { status: 400 }
       );
     }
 
-    if (
-      (status === "accepted" || status === "declined") &&
-      consult.client?.email
-    ) {
-      const lawyerName = `${consult.lawyer?.first_name} ${consult.lawyer?.last_name}`;
-      const isAccepted = status === "accepted";
+    const supabase = await createAdminClient();
+    const { data: verification } = await supabase
+      .from("claim_verification_codes")
+      .select("*")
+      .eq("lawyer_id", lawyerId)
+      .eq("email", email)
+      .eq("used", false)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
-      await resend.emails.send({
-        from: "Mizan <notifications@mizan-dz.com>",
-        to: consult.client.email,
-        subject: isAccepted
-          ? `Votre demande a été acceptée — ${lawyerName}`
-          : `Mise à jour de votre demande — ${lawyerName}`,
-        html: `<!DOCTYPE html><html><head><meta charset="utf-8"></head>
-<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8fafc;margin:0;padding:24px">
-  <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
-    <div style="background:${isAccepted ? "#0f6e56" : "#475569"};padding:24px 28px">
-      <h1 style="color:#fff;font-size:20px;font-weight:700;margin:0">${isAccepted ? "Demande acceptée ✓" : "Demande non retenue"}</h1>
-    </div>
-    <div style="padding:28px">
-      <p style="color:#475569;font-size:15px;margin:0 0 20px">${isAccepted ? `${lawyerName} a accepté votre demande. Vous pouvez échanger dans la messagerie.` : `${lawyerName} n'est pas disponible pour cette demande.${message ? " " + message : ""}`}</p>
-      <a href="${process.env.NEXT_PUBLIC_APP_URL}/mes-consultations" style="display:inline-block;background:#0f6e56;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:12px 24px;border-radius:10px">Voir mes consultations →</a>
-    </div>
-  </div>
-</body></html>`,
-      });
+    if (!verification) {
+      return NextResponse.json(
+        { error: "Code invalide ou expiré. Demandez un nouveau code." },
+        { status: 400 }
+      );
     }
-
-    if (status === "accepted" || status === "declined") {
-      await supabaseAdmin.from("messages").insert({
-        consultation_id: consultationId,
-        sender_id: consult.lawyer_id,
-        content:
-          status === "accepted"
-            ? "✅ Demande acceptée. La consultation peut commencer."
-            : `❌ Demande non retenue.${message ? " " + message : ""}`,
-      });
+    if (new Date(verification.expires_at) < new Date()) {
+      await supabase
+        .from("claim_verification_codes")
+        .update({ used: true })
+        .eq("id", verification.id);
+      return NextResponse.json(
+        { error: "Code expiré. Demandez un nouveau code." },
+        { status: 400 }
+      );
     }
+    if (verification.attempts >= 3) {
+      await supabase
+        .from("claim_verification_codes")
+        .update({ used: true })
+        .eq("id", verification.id);
+      return NextResponse.json(
+        { error: "Trop de tentatives. Demandez un nouveau code." },
+        { status: 400 }
+      );
+    }
+    if (verification.code !== code) {
+      await supabase
+        .from("claim_verification_codes")
+        .update({ attempts: verification.attempts + 1 })
+        .eq("id", verification.id);
+      const attemptsLeft = 2 - verification.attempts;
+      return NextResponse.json(
+        { error: "Code incorrect", attemptsLeft },
+        { status: 400 }
+      );
+    }
+    const { data: oldUser } = await supabase
+      .from("users")
+      .select("*, lawyers(*)")
+      .eq("id", lawyerId)
+      .single();
 
-    return NextResponse.json({ ok: true, status });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: "Internal error" }, { status: 500 });
+    if (!oldUser?.lawyers)
+      return NextResponse.json(
+        { error: "Profil introuvable" },
+        { status: 404 }
+      );
+    if (oldUser.lawyers.is_claimed)
+      return NextResponse.json(
+        { error: "Ce profil a déjà été réclamé.", alreadyClaimed: true },
+        { status: 400 }
+      );
+    if (oldUser.professional_email !== email)
+      return NextResponse.json(
+        { error: "Email ne correspond pas au profil" },
+        { status: 400 }
+      );
+    const { data: existingAuthData } = await supabase.auth.admin.listUsers();
+    const existingWithRealEmail = existingAuthData?.users.find(
+      (u) => u.email === email
+    );
+    if (existingWithRealEmail) {
+      return NextResponse.json(
+        { error: "Un compte existe déjà avec cet email.", alreadyExists: true },
+        { status: 400 }
+      );
+    }
+    const existingAuthWithOldId = existingAuthData?.users.find(
+      (u) => u.id === lawyerId
+    );
+
+    let newAuthId: string;
+
+    if (existingAuthWithOldId) {
+      const { error: updateAuthError } =
+        await supabase.auth.admin.updateUserById(lawyerId, {
+          email: email,
+          password: password,
+          email_confirm: true,
+        });
+
+      if (updateAuthError) {
+        console.error("Erreur update auth:", updateAuthError);
+        return NextResponse.json(
+          { error: "Erreur lors de la mise à jour du compte" },
+          { status: 500 }
+        );
+      }
+
+      newAuthId = lawyerId;
+    } else {
+      const { data: authData, error: authError } =
+        await supabase.auth.admin.createUser({
+          email,
+          password,
+          email_confirm: true,
+          user_metadata: {
+            migrated_from: lawyerId,
+            claim_date: new Date().toISOString(),
+          },
+        });
+
+      if (authError || !authData.user) {
+        console.error("Erreur création auth:", authError);
+        return NextResponse.json(
+          { error: "Erreur lors de la création du compte" },
+          { status: 500 }
+        );
+      }
+
+      newAuthId = authData.user.id;
+    }
+    const userPayload = {
+      id: newAuthId,
+      email: email,
+      first_name: oldUser.first_name,
+      last_name: oldUser.last_name,
+      phone: oldUser.phone,
+      mobile: oldUser.mobile,
+      user_type: "lawyer" as const,
+      location: oldUser.location,
+      address: oldUser.address,
+      avatar_url: oldUser.avatar_url,
+      professional_email: null,
+      gender: oldUser.gender,
+      languages: oldUser.languages,
+      website: oldUser.website,
+      verified: true,
+      created_at: oldUser.created_at,
+      updated_at: new Date().toISOString(),
+    };
+
+    const { error: upsertUserError } = await supabase
+      .from("users")
+      .upsert(userPayload, { onConflict: "id" });
+
+    if (upsertUserError) {
+      console.error("Erreur upsert user:", upsertUserError);
+      if (newAuthId !== lawyerId)
+        await supabase.auth.admin.deleteUser(newAuthId);
+      return NextResponse.json(
+        { error: "Erreur mise à jour utilisateur" },
+        { status: 500 }
+      );
+    }
+    if (newAuthId === lawyerId) {
+      const { error: updateLawyerError } = await supabase
+        .from("lawyers")
+        .update({
+          is_claimed: true,
+          claimed_at: new Date().toISOString(),
+          is_verified: true,
+          verified: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", lawyerId);
+
+      if (updateLawyerError) {
+        console.error("Erreur update lawyer:", updateLawyerError);
+        return NextResponse.json(
+          { error: "Erreur mise à jour profil avocat" },
+          { status: 500 }
+        );
+      }
+    } else {
+      const { error: insertLawyerError } = await supabase
+        .from("lawyers")
+        .insert({
+          id: newAuthId,
+          bar_number: oldUser.lawyers.bar_number,
+          specializations: oldUser.lawyers.specializations,
+          wilayas: oldUser.lawyers.wilayas,
+          experience_years: oldUser.lawyers.experience_years,
+          consultation_price: oldUser.lawyers.consultation_price,
+          bio: oldUser.lawyers.bio,
+          is_claimed: true,
+          claimed_at: new Date().toISOString(),
+          is_verified: true,
+          is_available: oldUser.lawyers.is_available,
+          total_consultations: oldUser.lawyers.total_consultations,
+          average_rating: oldUser.lawyers.average_rating,
+          total_reviews: oldUser.lawyers.total_reviews,
+          reviews_count: oldUser.lawyers.reviews_count,
+          rating_google: oldUser.lawyers.rating_google,
+          reviews_count_google: oldUser.lawyers.reviews_count_google,
+          rating_mizan: oldUser.lawyers.rating_mizan,
+          reviews_count_mizan: oldUser.lawyers.reviews_count_mizan,
+          previous_id: lawyerId,
+          profession: oldUser.lawyers.profession,
+          created_at: oldUser.lawyers.created_at || new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        });
+
+      if (insertLawyerError) {
+        console.error("Erreur insert lawyer:", insertLawyerError);
+        await supabase.from("users").delete().eq("id", newAuthId);
+        await supabase.auth.admin.deleteUser(newAuthId);
+        return NextResponse.json(
+          { error: "Erreur mise à jour profil avocat" },
+          { status: 500 }
+        );
+      }
+      try {
+        await Promise.all([
+          supabase
+            .from("consultations")
+            .update({ lawyer_id: newAuthId })
+            .eq("lawyer_id", lawyerId),
+          supabase
+            .from("reviews")
+            .update({ lawyer_id: newAuthId })
+            .eq("lawyer_id", lawyerId),
+          supabase
+            .from("profile_views")
+            .update({ lawyer_id: newAuthId })
+            .eq("lawyer_id", lawyerId),
+        ]);
+      } catch (migrationError) {
+        console.error("Erreur migration:", migrationError);
+      }
+      try {
+        await supabase.from("lawyers").delete().eq("id", lawyerId);
+        await supabase.from("users").delete().eq("id", lawyerId);
+        await supabase.auth.admin.deleteUser(lawyerId);
+      } catch (deleteError) {
+        console.error("Erreur suppression ancien profil:", deleteError);
+      }
+    }
+    await supabase
+      .from("claim_verification_codes")
+      .update({ used: true })
+      .eq("id", verification.id);
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/admin/notify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subject: "✅ Profil avocat réclamé",
+          title: "Un avocat a réclamé son profil",
+          message: `<p><strong>Nom :</strong> ${oldUser.first_name} ${oldUser.last_name}</p><p><strong>Email :</strong> ${email}</p><p><strong>ID :</strong> ${newAuthId}</p>`,
+        }),
+      });
+    } catch {}
+
+    return NextResponse.json({
+      success: true,
+      message: "Profil activé avec succès",
+    });
+  } catch (error: any) {
+    console.error("Erreur claim-profile:", error);
+    return NextResponse.json(
+      { error: error.message || "Erreur serveur" },
+      { status: 500 }
+    );
   }
 }
