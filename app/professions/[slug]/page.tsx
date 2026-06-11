@@ -77,10 +77,7 @@ export default function ProfessionPage() {
   const otherProfs = PROFESSIONS_LIST.filter((p) => p !== slug);
 
   return (
-    <div
-      className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100"
-      ref={containerRef}
-    >
+    <div className="min-h-screen pt-16 bg-white" ref={containerRef}>
       <style>{`.hero-section,.section-card,.cta-section{opacity:0;}`}</style>
       <div className="max-w-4xl mx-auto px-4 py-8">
         <button
