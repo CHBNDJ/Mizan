@@ -627,11 +627,11 @@ const ConsultationPanel = ({
             <button
               key={canal.type}
               onClick={() => setSelected(canal.type)}
-              className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all text-left ${isSelected ? "border-teal-600 bg-teal-50" : "border-slate-200 hover:border-teal-200 hover:bg-slate-50"}`}
+              className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all text-left ${isSelected ? { message: "border-teal-500 bg-teal-50", phone: "border-green-500 bg-green-50", video_30: "border-purple-500 bg-purple-50", video_60: "border-purple-500 bg-purple-50", email: "border-amber-500 bg-amber-50" }[canal.type] || "border-teal-500 bg-teal-50" : "border-slate-200 hover:border-teal-200 hover:bg-slate-50"}`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600" : "bg-slate-100"}`}
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? { message: "bg-teal-600", phone: "bg-green-600", video_30: "bg-purple-600", video_60: "bg-purple-600", email: "bg-amber-500" }[canal.type] || "bg-teal-600" : "bg-slate-100"}`}
                 >
                   <Icon
                     className={`w-4 h-4 ${isSelected ? "text-white" : "text-slate-500"}`}
@@ -663,37 +663,22 @@ const ConsultationPanel = ({
         })}
       </div>
       <div className="px-4 pb-4 space-y-2 pt-1">
-        {!user ? (
-          <>
-            <Link href="/auth/client/register" className="block">
-              <button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer">
-                <MessageCircle className="w-4 h-4" /> Créer un compte gratuit
-              </button>
-            </Link>
-            <Link href="/auth/client/login" className="block">
-              <button className="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 py-2.5 rounded-xl font-medium text-sm flex items-center justify-center cursor-pointer">
-                Déjà un compte
-              </button>
-            </Link>
-          </>
-        ) : (
-          <button
-            onClick={handleSend}
-            disabled={!selected || sending}
-            className="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
-          >
-            {sending ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                Envoi...
-              </>
-            ) : (
-              <>
-                Envoyer ma demande <ChevronRight className="w-4 h-4" />
-              </>
-            )}
-          </button>
-        )}
+        <button
+          onClick={handleSend}
+          disabled={!selected || sending}
+          className="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
+        >
+          {sending ? (
+            <>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+              Envoi...
+            </>
+          ) : (
+            <>
+              Envoyer ma demande <ChevronRight className="w-4 h-4" />
+            </>
+          )}
+        </button>
         {isAppointment && (
           <button
             onClick={onBooking}
