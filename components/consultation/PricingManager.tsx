@@ -157,7 +157,7 @@ export default function PricingManager() {
                   setPrices((p) => ({ ...p, [c.type]: e.target.value }))
                 }
                 placeholder="Sur demande"
-                className="w-32 h-9 px-3 text-sm border border-teal-200 rounded-lg bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none text-right text-slate-800 placeholder:text-slate-400"
+                className="w-32 h-9 px-3 text-sm border border-teal-200 rounded-lg bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none text-right text-slate-800 placeholder:text-slate-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
               <span className="text-xs text-slate-600 font-medium">DA</span>
             </div>
