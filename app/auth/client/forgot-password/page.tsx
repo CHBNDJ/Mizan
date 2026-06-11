@@ -18,9 +18,7 @@ export default function ClientForgotPasswordPage() {
 
   useEffect(() => {
     if (!containerRef.current) return;
-
     const timeline = gsap.timeline();
-
     timeline
       .fromTo(
         ".icon-container",
@@ -53,7 +51,9 @@ export default function ClientForgotPasswordPage() {
     setStatus("idle");
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset-password?type=client`,
+      });
 
       if (error) throw error;
 
@@ -74,12 +74,7 @@ export default function ClientForgotPasswordPage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`
-        .icon-container,
-        .page-title,
-        .page-subtitle,
-        .form-card {
-          opacity: 0;
-        }
+        .icon-container, .page-title, .page-subtitle, .form-card { opacity: 0; }
       `}</style>
 
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>

@@ -23,6 +23,14 @@ function ResetPasswordForm() {
   const [sessionReady, setSessionReady] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
+  const type = searchParams.get("type") || "client";
+  const loginPath =
+    type === "lawyer" ? "/auth/lawyer/login" : "/auth/client/login";
+  const forgotPath =
+    type === "lawyer"
+      ? "/auth/lawyer/forgot-password"
+      : "/auth/client/forgot-password";
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -33,16 +41,15 @@ function ResetPasswordForm() {
     const handlePasswordReset = async () => {
       try {
         const tokenHash = searchParams.get("token_hash");
-        const type = searchParams.get("type");
+        const tokenType = searchParams.get("type");
 
-        if (tokenHash && type === "recovery") {
+        if (tokenHash && tokenType === "recovery") {
           const { error: verifyError } = await supabase.auth.verifyOtp({
             token_hash: tokenHash,
             type: "recovery",
           });
 
           if (verifyError) {
-            console.error("❌ Erreur vérification OTP:", verifyError);
             setError("Lien de réinitialisation invalide ou expiré");
             setIsLoading(false);
             setSessionReady(false);
@@ -69,7 +76,6 @@ function ResetPasswordForm() {
         setSessionReady(true);
         setIsLoading(false);
       } catch (err) {
-        console.error("Erreur initialisation:", err);
         setError("Une erreur est survenue");
         setIsLoading(false);
         setSessionReady(false);
@@ -81,9 +87,7 @@ function ResetPasswordForm() {
 
   useEffect(() => {
     if (!containerRef.current || isLoading || !isMounted) return;
-
     const timeline = gsap.timeline();
-
     timeline
       .fromTo(
         ".icon-container",
@@ -132,11 +136,10 @@ function ResetPasswordForm() {
 
     try {
       const { error: updateError } = await supabase.auth.updateUser({
-        password: password,
+        password,
       });
 
       if (updateError) {
-        console.error("Erreur update:", updateError);
         setError("Erreur lors de la modification : " + updateError.message);
         setIsSubmitting(false);
         return;
@@ -146,10 +149,9 @@ function ResetPasswordForm() {
 
       setTimeout(async () => {
         await supabase.auth.signOut();
-        router.push("/auth/client/login");
+        router.push(loginPath);
       }, 2000);
     } catch (err: any) {
-      console.error("Erreur reset password:", err);
       setError("Une erreur est survenue. Réessayez.");
       setIsSubmitting(false);
     }
@@ -180,21 +182,12 @@ function ResetPasswordForm() {
             <p className="text-slate-600 mb-6">
               {error || "Le lien de réinitialisation est invalide ou a expiré."}
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 w-full">
-              <button
-                onClick={() => router.push("/auth/lawyer/forgot-password")}
-                className="cursor-pointer flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium"
-              >
-                Renvoyer (Avocat)
-              </button>
-              <button
-                onClick={() => router.push("/auth/client/forgot-password")}
-                className="cursor-pointer flex-1 px-6 py-3 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors font-medium"
-              >
-                Renvoyer (Client)
-              </button>
-            </div>
+            <button
+              onClick={() => router.push(forgotPath)}
+              className="cursor-pointer w-full px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium"
+            >
+              Renvoyer un lien
+            </button>
           </div>
         </div>
       </div>
@@ -329,7 +322,7 @@ function ResetPasswordForm() {
 
         <p className="text-center text-sm text-slate-500 mt-6">
           <button
-            onClick={() => router.push("/auth/client/login")}
+            onClick={() => router.push(loginPath)}
             className="text-teal-600 hover:text-teal-700 font-medium"
           >
             Retour à la connexion
