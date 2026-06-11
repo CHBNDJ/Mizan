@@ -1,0 +1,33 @@
+"use client";
+import { useRouter } from "next/navigation";
+import { Video, Mic } from "lucide-react";
+
+interface Props {
+  consultationId: string;
+  canal: string;
+}
+
+export function JoinCallButton({ consultationId, canal }: Props) {
+  const router = useRouter();
+
+  const isVideo = canal.startsWith("video");
+  const isAudio = canal === "phone";
+
+  if (!isVideo && !isAudio) return null;
+
+  const mode = isAudio ? "audio" : "video";
+  const label = isAudio ? "Rejoindre l'appel audio" : "Rejoindre la vidéo";
+  const Icon = isAudio ? Mic : Video;
+
+  return (
+    <button
+      onClick={() =>
+        router.push(`/consultation/${consultationId}/video?mode=${mode}`)
+      }
+      className="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl cursor-pointer transition-all shadow-sm"
+    >
+      <Icon className="w-4 h-4" />
+      {label}
+    </button>
+  );
+}
