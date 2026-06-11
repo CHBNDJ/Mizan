@@ -476,7 +476,7 @@ const VideoConsultationModal = ({
   );
 };
 
-// ── ConsultationPanel — CP1 liste verticale ──────────────────────────────────
+// ── ConsultationPanel — CP-A horizontal teal ──────────────────────────────────
 const ConsultationPanel = ({
   avocat,
   pricingChannels,
@@ -495,7 +495,7 @@ const ConsultationPanel = ({
   onBooking: () => void;
 }) => {
   const router = useRouter();
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string | null>("message");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const isAppointment = ["notaire", "huissier"].includes(
@@ -505,39 +505,20 @@ const ConsultationPanel = ({
   const ALL_CANAUX = [
     {
       type: "message",
-      label: "Message écrit",
-      desc: "Réponse sous 24-48h",
+      label: "Message",
+      icon: MessageSquare,
       duration: undefined,
     },
-    {
-      type: "phone",
-      label: "Téléphonique",
-      desc: "Appel vocal",
-      duration: "30 min",
-    },
-    {
-      type: "video_30",
-      label: "Vidéo",
-      desc: "Consultation vidéo",
-      duration: "30 min",
-    },
-    {
-      type: "video_60",
-      label: "Vidéo",
-      desc: "Consultation vidéo",
-      duration: "1 heure",
-    },
-    {
-      type: "email",
-      label: "Email",
-      desc: "Réponse sous 48h",
-      duration: undefined,
-    },
+    { type: "phone", label: "Tél.", icon: Phone, duration: "30 min" },
+    { type: "video_30", label: "Vidéo", icon: Video, duration: "30 min" },
+    { type: "video_60", label: "Vidéo", icon: Video, duration: "1h" },
+    { type: "email", label: "Email", icon: Mail, duration: undefined },
   ];
   const canaux = ALL_CANAUX.map((c) => {
     const pricing = pricingChannels.find((p: any) => p.type === c.type);
     return { ...c, base_price: pricing?.base_price ?? null };
   });
+  const selectedCanal = canaux.find((c) => c.type === selected);
 
   const handleSend = async () => {
     if (!user || profile?.user_type !== "client") {
@@ -587,7 +568,7 @@ const ConsultationPanel = ({
       setSent(true);
       setTimeout(() => {
         setSent(false);
-        setSelected(null);
+        setSelected("message");
         onSuccess();
         router.push("/mes-consultations");
       }, 2500);
@@ -598,101 +579,87 @@ const ConsultationPanel = ({
 
   if (sent)
     return (
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 text-center shadow-sm">
-        <div className="w-12 h-12 bg-teal-50 border border-teal-100 rounded-full flex items-center justify-center mx-auto mb-3">
-          <CheckCircle className="w-6 h-6 text-teal-600" />
+      <div className="bg-teal-600 rounded-2xl p-6 text-center">
+        <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+          <CheckCircle className="w-6 h-6 text-white" />
         </div>
-        <p className="text-sm font-bold text-slate-900 mb-1">Demande envoyée</p>
-        <p className="text-xs text-slate-500">
+        <p className="text-sm font-bold text-white mb-1">Demande envoyée</p>
+        <p className="text-xs text-teal-100">
           Redirection vers vos consultations...
         </p>
       </div>
     );
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-      <div className="bg-teal-600 px-5 py-4">
-        <p className="text-xs font-semibold text-teal-200 uppercase tracking-widest mb-1">
-          Consultation en ligne
+    <div className="bg-teal-600 rounded-2xl overflow-hidden shadow-sm">
+      {/* Barre canaux horizontale */}
+      <div className="px-4 pt-4 pb-3">
+        <p className="text-xs font-semibold text-teal-100 uppercase tracking-widest mb-3">
+          Consulter {avocat.prenom} {avocat.nom}
         </p>
-        <p className="text-sm font-bold text-white">
-          {avocat.prenom} {avocat.nom}
-        </p>
-      </div>
-      <div className="p-3 space-y-2">
-        {canaux.map((canal) => {
-          const config = CANAL_CONFIG[canal.type];
-          if (!config) return null;
-          const Icon = config.icon;
-          const isSelected = selected === canal.type;
-          return (
-            <button
-              key={canal.type}
-              onClick={() => setSelected(canal.type)}
-              className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all text-left ${isSelected ? "border-teal-500 bg-teal-50" : "border-slate-100 hover:border-teal-200 hover:bg-teal-50/30"}`}
-            >
-              <div className="flex items-center gap-3 min-w-0">
-                <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600" : "bg-teal-50 border border-teal-100"}`}
-                >
-                  <Icon
-                    className={`w-4 h-4 ${isSelected ? "text-white" : "text-teal-600"}`}
-                  />
-                </div>
-                <div className="min-w-0">
-                  <p
-                    className={`text-xs font-semibold ${isSelected ? "text-teal-800" : "text-slate-800"}`}
-                  >
-                    {config.label}
-                  </p>
-                  <p
-                    className={`text-[10px] ${isSelected ? "text-teal-600" : "text-slate-400"}`}
-                  >
-                    {config.desc}
-                    {canal.duration ? ` · ${canal.duration}` : ""}
-                  </p>
-                </div>
-              </div>
-              <span
-                className={`text-xs font-medium flex-shrink-0 ${isSelected ? "text-teal-600" : "text-slate-400"}`}
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          {canaux.map((canal) => {
+            const Icon = canal.icon;
+            const isSelected = selected === canal.type;
+            return (
+              <button
+                key={canal.type}
+                onClick={() => setSelected(canal.type)}
+                className={`flex flex-col items-center gap-1 px-3 py-2.5 rounded-xl flex-shrink-0 cursor-pointer transition-all ${isSelected ? "bg-white" : "bg-white/15 hover:bg-white/25"}`}
               >
-                {canal.base_price
-                  ? `${canal.base_price.toLocaleString()} DA`
-                  : "Sur demande"}
-              </span>
-            </button>
-          );
-        })}
+                <Icon
+                  className={`w-4 h-4 ${isSelected ? "text-teal-700" : "text-white"}`}
+                />
+                <span
+                  className={`text-[10px] font-semibold whitespace-nowrap ${isSelected ? "text-teal-700" : "text-teal-100"}`}
+                >
+                  {canal.label}
+                </span>
+                {canal.duration && (
+                  <span
+                    className={`text-[9px] ${isSelected ? "text-teal-500" : "text-teal-200"}`}
+                  >
+                    {canal.duration}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
-      <div className="px-4 pb-4 space-y-2 pt-1">
-        <button
-          onClick={handleSend}
-          disabled={!selected || sending}
-          className="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
-        >
-          {sending ? (
-            <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-              Envoi...
-            </>
-          ) : (
-            <>
-              Envoyer ma demande <ChevronRight className="w-4 h-4" />
-            </>
+      {/* Prix + CTA */}
+      <div className="bg-white/10 border-t border-white/20 px-4 py-3 flex items-center justify-between gap-3">
+        <div>
+          <p className="text-xs text-teal-200">
+            {selectedCanal?.base_price
+              ? `${selectedCanal.base_price.toLocaleString()} DA`
+              : "Tarif sur demande"}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          {isAppointment && (
+            <button
+              onClick={onBooking}
+              className="px-3 py-2 bg-white/15 hover:bg-white/25 text-white text-xs font-medium rounded-lg cursor-pointer transition-all flex items-center gap-1.5"
+            >
+              <Calendar className="w-3.5 h-3.5" /> RDV cabinet
+            </button>
           )}
-        </button>
-        {isAppointment && (
           <button
-            onClick={onBooking}
-            className="w-full bg-white border border-teal-200 text-teal-700 hover:bg-teal-50 py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
+            onClick={handleSend}
+            disabled={!selected || sending}
+            className="px-4 py-2 bg-white hover:bg-teal-50 disabled:opacity-50 text-teal-700 font-semibold text-xs rounded-lg cursor-pointer transition-all whitespace-nowrap flex items-center gap-1.5"
           >
-            <Calendar className="w-4 h-4" /> RDV physique au cabinet
+            {sending ? (
+              <>
+                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-teal-700" />
+                Envoi...
+              </>
+            ) : (
+              "Envoyer ma demande →"
+            )}
           </button>
-        )}
-        <p className="text-[10px] text-slate-400 text-center leading-relaxed pt-1">
-          Tarifs indicatifs · Le professionnel confirme le tarif définitif selon
-          votre dossier.
-        </p>
+        </div>
       </div>
     </div>
   );
