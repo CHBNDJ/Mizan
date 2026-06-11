@@ -476,7 +476,7 @@ const VideoConsultationModal = ({
   );
 };
 
-// ── ConsultationPanel — grille 2 colonnes, 5 canaux ──────────────────────────
+// ── ConsultationPanel — CP1 liste verticale ──────────────────────────────────
 const ConsultationPanel = ({
   avocat,
   pricingChannels,
@@ -503,11 +503,36 @@ const ConsultationPanel = ({
   );
 
   const ALL_CANAUX = [
-    { type: "message", label: "Message", duration: undefined },
-    { type: "phone", label: "Téléphone", duration: "30 min" },
-    { type: "video_30", label: "Vidéo", duration: "30 min" },
-    { type: "video_60", label: "Vidéo", duration: "1 heure" },
-    { type: "email", label: "Email", duration: undefined },
+    {
+      type: "message",
+      label: "Message écrit",
+      desc: "Réponse sous 24-48h",
+      duration: undefined,
+    },
+    {
+      type: "phone",
+      label: "Téléphonique",
+      desc: "Appel vocal",
+      duration: "30 min",
+    },
+    {
+      type: "video_30",
+      label: "Vidéo",
+      desc: "Consultation vidéo",
+      duration: "30 min",
+    },
+    {
+      type: "video_60",
+      label: "Vidéo",
+      desc: "Consultation vidéo",
+      duration: "1 heure",
+    },
+    {
+      type: "email",
+      label: "Email",
+      desc: "Réponse sous 48h",
+      duration: undefined,
+    },
   ];
   const canaux = ALL_CANAUX.map((c) => {
     const pricing = pricingChannels.find((p: any) => p.type === c.type);
@@ -586,46 +611,48 @@ const ConsultationPanel = ({
 
   return (
     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-      <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-        <div>
-          <p className="text-sm font-bold text-slate-900">
-            Consulter {avocat.prenom} {avocat.nom}
-          </p>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Choisissez votre format de consultation
-          </p>
-        </div>
+      <div className="px-5 py-4 border-b border-slate-100">
+        <p className="text-sm font-bold text-slate-900">
+          Consulter {avocat.prenom} {avocat.nom}
+        </p>
+        <p className="text-xs text-slate-400 mt-0.5">Choisissez votre format</p>
       </div>
-      <div className="p-3 grid grid-cols-2 gap-2">
-        {canaux.map((canal, i) => {
+      <div className="p-3 space-y-2">
+        {canaux.map((canal) => {
           const config = CANAL_CONFIG[canal.type];
           if (!config) return null;
           const Icon = config.icon;
           const isSelected = selected === canal.type;
-          const isLast = i === canaux.length - 1;
           return (
             <button
               key={canal.type}
               onClick={() => setSelected(canal.type)}
-              className={`flex flex-col items-center text-center p-3 rounded-xl border cursor-pointer transition-all ${isLast ? "col-span-2" : ""} ${isSelected ? "border-teal-600 bg-teal-50 shadow-sm" : "border-slate-200 hover:border-teal-200 hover:bg-slate-50"}`}
+              className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all text-left ${isSelected ? "border-teal-600 bg-teal-50" : "border-slate-200 hover:border-teal-200 hover:bg-slate-50"}`}
             >
-              <Icon
-                className={`w-5 h-5 mb-1.5 ${isSelected ? "text-teal-600" : "text-slate-400"}`}
-              />
-              <span
-                className={`text-xs font-semibold ${isSelected ? "text-teal-800" : "text-slate-700"}`}
-              >
-                {config.label}
-              </span>
-              {canal.duration && (
-                <span
-                  className={`text-[10px] mt-0.5 ${isSelected ? "text-teal-600" : "text-slate-400"}`}
+              <div className="flex items-center gap-3 min-w-0">
+                <div
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600" : "bg-slate-100"}`}
                 >
-                  {canal.duration}
-                </span>
-              )}
+                  <Icon
+                    className={`w-4 h-4 ${isSelected ? "text-white" : "text-slate-500"}`}
+                  />
+                </div>
+                <div className="min-w-0">
+                  <p
+                    className={`text-xs font-semibold ${isSelected ? "text-teal-800" : "text-slate-800"}`}
+                  >
+                    {config.label}
+                  </p>
+                  <p
+                    className={`text-[10px] ${isSelected ? "text-teal-600" : "text-slate-400"}`}
+                  >
+                    {config.desc}
+                    {canal.duration ? ` · ${canal.duration}` : ""}
+                  </p>
+                </div>
+              </div>
               <span
-                className={`text-xs font-semibold mt-1 ${isSelected ? "text-teal-700" : "text-slate-500"}`}
+                className={`text-xs font-semibold flex-shrink-0 ${isSelected ? "text-teal-700" : "text-slate-500"}`}
               >
                 {canal.base_price
                   ? `${canal.base_price.toLocaleString()} DA`
@@ -635,7 +662,7 @@ const ConsultationPanel = ({
           );
         })}
       </div>
-      <div className="px-4 pb-4 space-y-2">
+      <div className="px-4 pb-4 space-y-2 pt-1">
         {!user ? (
           <>
             <Link href="/auth/client/register" className="block">
@@ -675,9 +702,7 @@ const ConsultationPanel = ({
             <Calendar className="w-4 h-4" /> RDV physique au cabinet
           </button>
         )}
-      </div>
-      <div className="px-4 pb-3">
-        <p className="text-[10px] text-slate-400 text-center leading-relaxed">
+        <p className="text-[10px] text-slate-400 text-center leading-relaxed pt-1">
           Tarifs indicatifs · Le professionnel confirme le tarif définitif selon
           votre dossier.
         </p>
@@ -1105,12 +1130,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 }
                 onBooking={() => setIsBookingModalOpen(true)}
               />
-              <button
-                onClick={() => setIsVideoModalOpen(true)}
-                className="mt-3 w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-sm"
-              >
-                <Video className="w-4 h-4" /> Consultation vidéo
-              </button>
             </div>
           )}
 
