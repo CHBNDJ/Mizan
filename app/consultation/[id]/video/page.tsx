@@ -42,15 +42,16 @@ export default function VideoConsultationPage({ params }: PageProps) {
         setLoading(false);
         return;
       }
-
-      if (user.id !== consult.lawyer_id && user.id !== consult.client_id) {
+      if (
+        !user ||
+        (user.id !== consult.lawyer_id && user.id !== consult.client_id)
+      ) {
         setError("Accès non autorisé");
         setLoading(false);
         return;
       }
 
       setConsultation(consult);
-
       const room = await getOrCreateDailyRoom(id);
       setRoomUrl(room);
     } catch (e) {
@@ -68,7 +69,6 @@ export default function VideoConsultationPage({ params }: PageProps) {
       .maybeSingle();
 
     if (existing?.room_url) return existing.room_url;
-
     const res = await fetch("/api/daily/create-room", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -131,6 +131,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-slate-900 flex flex-col">
+      {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 bg-slate-800 border-b border-slate-700">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
@@ -152,6 +153,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
         </button>
       </div>
 
+      {/* Zone vidéo Daily.co */}
       <div className="flex-1 relative">
         {!joined ? (
           <div className="absolute inset-0 flex items-center justify-center px-4">
