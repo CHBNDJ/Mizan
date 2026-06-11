@@ -131,6 +131,7 @@ export default function HomePage() {
   }, []);
 
   useLayoutEffect(() => {
+    // ── Animation identique à l'originale ──
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
     tl.fromTo(
       ".hero-title",
@@ -155,6 +156,14 @@ export default function HomePage() {
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 },
         "-=0.2"
       );
+
+    // Lien professions — indépendant, après la fin du timeline principal (~1.5s)
+    gsap.fromTo(
+      ".prof-roles-link",
+      { opacity: 0, y: 8 },
+      { opacity: 1, y: 0, duration: 0.5, delay: 1.5, ease: "power2.out" }
+    );
+
     gsap.fromTo(
       ".steps-section",
       { opacity: 0, y: 30 },
@@ -183,6 +192,7 @@ export default function HomePage() {
         },
       }
     );
+
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
 
@@ -255,14 +265,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Lien discret vers la page professions */}
+      {/* Lien discret vers /professions */}
       <section className="px-4 pb-4 pt-0">
         <div className="max-w-5xl mx-auto text-center">
-          <Link href="/professions" className="prof-roles-link">
-            <span className="text-xs text-slate-400 hover:text-teal-600 cursor-pointer transition-colors">
-              <span className="font-medium text-teal-600">
-                Comprendre les professions juridiques en Algérie →
-              </span>
+          <Link href="/professions" className="prof-roles-link inline-block">
+            <span className="text-xs font-medium text-teal-600 hover:text-teal-700 cursor-pointer transition-colors">
+              Comprendre les professions juridiques en Algérie →
             </span>
           </Link>
         </div>
