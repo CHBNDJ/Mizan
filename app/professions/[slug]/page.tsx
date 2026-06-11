@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { notFound, useRouter } from "next/navigation";
+import { notFound, useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -35,13 +35,10 @@ const PROF_COLORS: Record<string, string> = {
   "expert-comptable": "from-indigo-600 to-indigo-800",
 };
 
-export default function ProfessionPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default function ProfessionPage() {
+  const params = useParams();
   const router = useRouter();
-  const slug = params.slug as ProfessionSlug;
+  const slug = (params?.slug as ProfessionSlug) || "avocat";
   const data = PROFESSIONS_DATA[slug];
   if (!data) notFound();
 
@@ -94,6 +91,7 @@ export default function ProfessionPage({
           <ArrowLeft className="w-4 h-4" /> Retour
         </button>
 
+        {/* Hero */}
         <div
           className={`hero-section bg-gradient-to-br ${color} rounded-2xl p-8 mb-8 text-white`}
         >
@@ -116,6 +114,7 @@ export default function ProfessionPage({
           <p className="text-white/80 text-sm leading-relaxed">{data.intro}</p>
         </div>
 
+        {/* Cadre juridique */}
         <div className="section-card bg-white border border-slate-200 rounded-2xl p-6 mb-5 shadow-sm">
           <h2 className="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
             <span className="w-6 h-6 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center text-xs">
@@ -128,6 +127,7 @@ export default function ProfessionPage({
           </p>
         </div>
 
+        {/* Missions */}
         <div className="section-card bg-white border border-slate-200 rounded-2xl p-6 mb-5 shadow-sm">
           <h2 className="text-base font-bold text-slate-900 mb-5">
             Missions et rôle concret
@@ -149,6 +149,7 @@ export default function ProfessionPage({
           </div>
         </div>
 
+        {/* Quand faire appel */}
         <div className="section-card bg-white border border-slate-200 rounded-2xl p-6 mb-5 shadow-sm">
           <h2 className="text-base font-bold text-slate-900 mb-5">
             Quand faire appel à un {data.label.toLowerCase()} ?
@@ -173,6 +174,7 @@ export default function ProfessionPage({
           </div>
         </div>
 
+        {/* Différences */}
         <div className="section-card bg-white border border-slate-200 rounded-2xl p-6 mb-8 shadow-sm">
           <h2 className="text-base font-bold text-slate-900 mb-5">
             {data.label} vs autres professionnels
@@ -194,6 +196,7 @@ export default function ProfessionPage({
           </div>
         </div>
 
+        {/* CTA */}
         <div className="cta-section bg-teal-600 rounded-2xl p-7 text-center mb-8">
           <h2 className="text-xl font-bold text-white mb-2">
             Trouvez un {data.label.toLowerCase()} vérifié en Algérie
@@ -209,6 +212,7 @@ export default function ProfessionPage({
           </Link>
         </div>
 
+        {/* Autres professions */}
         <div className="section-card">
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">
             Autres professions sur Mizan

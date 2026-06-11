@@ -9,7 +9,6 @@ import {
   FileText,
   Briefcase,
   Calculator,
-  BookOpen,
 } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { AlgeriaMap } from "@/components/AlgeriaMap";
@@ -217,7 +216,7 @@ function TopProsSection({
   );
 }
 
-export default function ProfessionPage() {
+export default function ProfessionLandingPage() {
   const params = useParams();
   const router = useRouter();
   const profId = (params?.profession as ProfId) || "avocat";
@@ -389,28 +388,16 @@ export default function ProfessionPage() {
         />
       )}
 
-      {/* Bloc "En savoir plus" vers la page explicative */}
+      {/* Option C — bannière sobre avant CTA */}
       <section className="px-4 pb-10">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-teal-50 border border-teal-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                <BookOpen className="w-4 h-4 text-teal-600" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-slate-800">
-                  Vous ne savez pas si un {prof.label.toLowerCase()} est fait
-                  pour vous ?
-                </p>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Découvrez le rôle exact, les missions et quand y faire appel.
-                </p>
-              </div>
-            </div>
+          <div className="bg-slate-50 border-t-2 border-teal-600 rounded-b-2xl px-6 py-5 flex items-center justify-between gap-4">
+            <p className="text-sm font-semibold text-slate-800">
+              Le rôle du {prof.label.toLowerCase()} en Algérie
+            </p>
             <Link href={`/professions/${profId}`} className="flex-shrink-0">
-              <button className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-600 hover:text-teal-700 cursor-pointer whitespace-nowrap">
-                Rôle du {prof.label.toLowerCase()}{" "}
-                <ChevronRight className="w-4 h-4" />
+              <button className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-600 hover:text-teal-700 border border-teal-600 px-3 py-2 rounded-lg cursor-pointer whitespace-nowrap transition-all hover:bg-teal-50">
+                En savoir plus →
               </button>
             </Link>
           </div>

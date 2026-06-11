@@ -1,3 +1,4 @@
+import React from "react";
 import { PROFESSIONS_DATA, ProfessionSlug } from "@/lib/professionsData";
 import { Metadata } from "next";
 import { siteConfig } from "@/app/metadata";
