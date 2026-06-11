@@ -12,14 +12,14 @@ type Status = "pending" | "accepted" | "in_progress" | "completed" | "declined";
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id: consultationId } = await params;
     const { status, message } = (await req.json()) as {
       status: Status;
       message?: string;
     };
-    const consultationId = params.id;
 
     const validStatuses: Status[] = [
       "pending",
@@ -105,7 +105,7 @@ export async function PATCH(
 
     return NextResponse.json({ ok: true, status });
   } catch (error) {
-    console.error("Status update error:", error);
+    console.error(error);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 }
