@@ -388,17 +388,28 @@ export default function ProfessionLandingPage() {
         />
       )}
 
+      {/* Lien profession — bien visible */}
       <section className="px-4 pb-8">
-        <div className="max-w-6xl mx-auto text-center">
-          <Link
-            href={`/professions/${profId}`}
-            className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-teal-600 transition-colors cursor-pointer"
-          >
-            <span>Qu'est-ce qu'un {prof.label.toLowerCase()} exactement ?</span>
-            <span className="text-teal-600 font-medium">
-              Découvrir le rôle →
-            </span>
-          </Link>
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-white border border-slate-200 rounded-2xl px-5 py-4 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <span className="text-sm">💡</span>
+              </div>
+              <span className="text-sm text-slate-700">
+                Qu'est-ce qu'un{" "}
+                <span className="font-semibold">
+                  {prof.label.toLowerCase()}
+                </span>{" "}
+                exactement ?
+              </span>
+            </div>
+            <Link href={`/professions/${profId}`} className="flex-shrink-0">
+              <button className="inline-flex items-center gap-1.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold px-4 py-2 rounded-lg cursor-pointer transition-all whitespace-nowrap">
+                En savoir plus →
+              </button>
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -236,11 +236,6 @@ export default function FAQPage() {
     gsap
       .timeline()
       .fromTo(
-        ".back-btn",
-        { opacity: 0, y: -20 },
-        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
-      )
-      .fromTo(
         ".main-title",
         { opacity: 0, y: -30 },
         { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
@@ -286,7 +281,7 @@ export default function FAQPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <style>{`.back-btn,.main-title,.subtitle,.tabs-wrapper,.faq-item,.cta-block{opacity:0;}`}</style>
+      <style>{`.main-title,.subtitle,.tabs-wrapper,.faq-item,.cta-block{opacity:0;}`}</style>
       <div className="max-w-4xl mx-auto px-5 py-16" ref={containerRef}>
         <button
           onClick={() => router.back()}
@@ -295,7 +290,7 @@ export default function FAQPage() {
           <ArrowLeft size={18} /> Retour
         </button>
         <div className="text-center mb-10">
-          <h1 className="main-title text-4xl font-bold text-slate-900 mb-3">
+          <h1 className="main-title text-4xl sm:text-5xl font-bold text-slate-900 mb-3">
             Questions Fréquentes
           </h1>
           <p className="subtitle text-lg text-slate-600 max-w-2xl mx-auto">
@@ -303,14 +298,14 @@ export default function FAQPage() {
           </p>
         </div>
         <div className="tabs-wrapper mb-8">
-          <div className="flex flex-nowrap overflow-x-auto gap-1 bg-white p-1.5 rounded-xl border border-slate-200 scrollbar-hide">
+          <div className="flex flex-wrap justify-center gap-2">
             {tabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-3 py-2 rounded-lg font-medium text-xs transition-all cursor-pointer flex-shrink-0 ${activeTab === tab ? "bg-teal-600 text-white shadow-sm" : "text-slate-600 hover:bg-slate-50"}`}
+                className={`px-4 py-2 rounded-full font-medium text-sm transition-all cursor-pointer ${activeTab === tab ? "bg-teal-600 text-white shadow-sm" : "bg-white border border-slate-200 text-slate-600 hover:border-teal-200 hover:text-teal-700"}`}
               >
-                {tab}
+                {tab === "Expert Comptable" ? "Expert-comptable" : tab}
               </button>
             ))}
           </div>
