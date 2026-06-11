@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { gsap } from "gsap";
+import { PendingConsultations } from "@/components/dashboard/PendingConsultations";
 
 const PROF_LABELS: Record<string, string> = {
   avocat: "Avocat",
@@ -60,6 +61,7 @@ export default function LawyerDashboardPage() {
   useEffect(() => {
     if (!loading && !isAuthenticated) router.push("/auth/lawyer/login");
   }, [loading, isAuthenticated]);
+
   useEffect(() => {
     if (user && profile?.user_type === "lawyer") {
       loadStats();
@@ -116,6 +118,7 @@ export default function LawyerDashboardPage() {
       .single();
     setIsVerified(!!data?.is_verified);
   };
+
   const loadSub = async () => {
     if (!user) return;
     const { data } = await supabase
@@ -129,6 +132,7 @@ export default function LawyerDashboardPage() {
       setSubEnd(data.subscription_end);
     }
   };
+
   const loadStats = async () => {
     if (!user) return;
     setLoadingStats(true);
@@ -218,9 +222,7 @@ export default function LawyerDashboardPage() {
   return (
     <div className="min-h-screen pt-16 bg-teal-50" ref={ref}>
       <style>{`.d-fade{opacity:0;}`}</style>
-
       <div className="max-w-3xl mx-auto px-4 py-8">
-        {/* ── Header profil ── */}
         <div className="d-fade flex items-center justify-between mb-7">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-2xl bg-teal-700 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 overflow-hidden">
@@ -270,7 +272,6 @@ export default function LawyerDashboardPage() {
           </button>
         </div>
 
-        {/* ── Banner photo manquante ── */}
         {!profile?.avatar_url && (
           <div className="d-fade mb-5 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3">
             <Camera className="w-4 h-4 text-amber-500 flex-shrink-0" />
@@ -290,7 +291,6 @@ export default function LawyerDashboardPage() {
           </div>
         )}
 
-        {/* ── Banners vérification ── */}
         {!isVerified && (
           <div className="d-fade mb-5 flex items-center gap-3 bg-white border border-teal-100 rounded-2xl px-4 py-3">
             <Clock className="w-4 h-4 text-teal-500 flex-shrink-0" />
@@ -305,9 +305,7 @@ export default function LawyerDashboardPage() {
           </div>
         )}
 
-        {/* ── Stats — 4 cards ── */}
         <div className="d-fade grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-          {/* Demandes */}
           <div className="bg-white border border-teal-100 rounded-2xl p-4">
             <div className="flex items-center justify-between mb-3">
               <Users className="w-4 h-4 text-teal-400" />
@@ -328,8 +326,6 @@ export default function LawyerDashboardPage() {
               )}
             </p>
           </div>
-
-          {/* Répondues */}
           <div className="bg-white border border-teal-100 rounded-2xl p-4">
             <div className="flex items-center justify-between mb-3">
               <CheckCircle className="w-4 h-4 text-teal-400" />
@@ -350,8 +346,6 @@ export default function LawyerDashboardPage() {
               </p>
             )}
           </div>
-
-          {/* Vues */}
           <div className="bg-white border border-teal-100 rounded-2xl p-4">
             <div className="flex items-center justify-between mb-3">
               <Eye className="w-4 h-4 text-teal-400" />
@@ -367,8 +361,6 @@ export default function LawyerDashboardPage() {
               )}
             </p>
           </div>
-
-          {/* Abonnement */}
           <div className="bg-teal-700 border border-teal-600 rounded-2xl p-4">
             <div className="flex items-center justify-between mb-3">
               <Settings className="w-4 h-4 text-teal-300" />
@@ -392,7 +384,6 @@ export default function LawyerDashboardPage() {
           </div>
         </div>
 
-        {/* ── Actions — 3 cards ── */}
         <div className="d-fade grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
           {ACTIONS.map((item, i) => (
             <Link key={i} href={item.href}>
@@ -401,12 +392,11 @@ export default function LawyerDashboardPage() {
                   <div className="w-8 h-8 rounded-xl bg-teal-50 group-hover:bg-white flex items-center justify-center transition-colors">
                     <item.icon className="w-4 h-4 text-teal-600" />
                   </div>
-                  {(item.badge || 0) > 0 && (
+                  {(item.badge || 0) > 0 ? (
                     <span className="bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">
                       {(item.badge || 0) > 9 ? "9+" : item.badge}
                     </span>
-                  )}
-                  {!(item.badge || 0) && (
+                  ) : (
                     <ChevronRight className="w-4 h-4 text-teal-200 group-hover:text-teal-400 transition-colors" />
                   )}
                 </div>
@@ -417,7 +407,10 @@ export default function LawyerDashboardPage() {
           ))}
         </div>
 
-        {/* Mes tarifs et canaux — tous les professionnels */}
+        <div className="d-fade mb-5">
+          <PendingConsultations />
+        </div>
+
         <div className="d-fade mb-5">
           <div className="bg-white border border-teal-100 rounded-2xl overflow-hidden">
             <div className="px-5 py-4 border-b border-teal-50 flex items-center gap-2">
@@ -432,7 +425,6 @@ export default function LawyerDashboardPage() {
           </div>
         </div>
 
-        {/* Disponibilités — notaires et huissiers */}
         {(profession === "notaire" || profession === "huissier") && (
           <div className="d-fade mb-5">
             <div className="bg-white border border-teal-100 rounded-2xl overflow-hidden">
@@ -449,7 +441,6 @@ export default function LawyerDashboardPage() {
           </div>
         )}
 
-        {/* ── Aide ── */}
         <div className="d-fade flex items-center justify-between bg-white border border-teal-100 rounded-2xl px-5 py-4">
           <div>
             <p className="text-sm font-bold text-teal-900">Besoin d'aide ?</p>

@@ -13,6 +13,7 @@ import {
   Mail,
   ChevronRight,
 } from "lucide-react";
+import { JoinCallButton } from "@/components/consultation/JoinCallButton";
 
 const CANAL_ICONS: Record<string, any> = {
   message: MessageCircle,
@@ -27,7 +28,7 @@ interface Consultation {
   status: string;
   created_at: string;
   subject: string;
-  client: { first_name: string; last_name: string; avatar_url?: string };
+  client: { first_name: string; last_name: string };
   lastMessage?: string;
   canal?: string;
 }
@@ -44,7 +45,6 @@ export function PendingConsultations() {
   useEffect(() => {
     if (!user) return;
     loadPending();
-
     const channel = supabase
       .channel("pending-consultations")
       .on(
@@ -57,8 +57,17 @@ export function PendingConsultations() {
         },
         () => loadPending()
       )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "consultations",
+          filter: `lawyer_id=eq.${user.id}`,
+        },
+        () => loadPending()
+      )
       .subscribe();
-
     return () => {
       supabase.removeChannel(channel);
     };
@@ -69,11 +78,7 @@ export function PendingConsultations() {
     const { data } = await supabase
       .from("consultations")
       .select(
-        `
-        id, status, created_at, subject,
-        client:client_id(first_name, last_name, avatar_url),
-        messages(content, created_at)
-      `
+        `id, status, created_at, subject, client:client_id(first_name, last_name), messages(content, created_at)`
       )
       .eq("lawyer_id", user.id)
       .in("status", ["pending", "accepted", "in_progress"])
@@ -83,11 +88,11 @@ export function PendingConsultations() {
     if (!data) return;
 
     const enriched = data.map((c: any) => {
-      const msgs = c.messages || [];
-      const first = msgs.sort(
+      const msgs = (c.messages || []).sort(
         (a: any, b: any) =>
           new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      )[0];
+      );
+      const first = msgs[0];
       const content = first?.content || "";
       const canal = Object.keys(CANAL_ICONS).find((k) =>
         content.toLowerCase().includes(k.replace("_", " "))
@@ -146,9 +151,15 @@ export function PendingConsultations() {
     return `il y a ${Math.floor(hrs / 24)}j`;
   };
 
+  const isVideo = (subject?: string) =>
+    !!(
+      subject?.toLowerCase().includes("vidéo") ||
+      subject?.toLowerCase().includes("video")
+    );
+
   if (loading)
     return (
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 animate-pulse">
+      <div className="bg-white border border-teal-100 rounded-2xl p-6 animate-pulse">
         <div className="h-4 bg-slate-100 rounded w-40 mb-4" />
         {[1, 2, 3].map((i) => (
           <div key={i} className="h-16 bg-slate-50 rounded-xl mb-3" />
@@ -157,11 +168,11 @@ export function PendingConsultations() {
     );
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-      <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+    <div className="bg-white border border-teal-100 rounded-2xl overflow-hidden">
+      <div className="px-5 py-4 border-b border-teal-50 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Clock className="w-4 h-4 text-teal-600" />
-          <h2 className="text-sm font-bold text-slate-900">Consultations</h2>
+          <h2 className="text-sm font-bold text-teal-900">Consultations</h2>
           {items.filter((i) => i.status === "pending").length > 0 && (
             <span className="bg-teal-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
               {items.filter((i) => i.status === "pending").length}
@@ -169,7 +180,7 @@ export function PendingConsultations() {
           )}
         </div>
         <button
-          onClick={() => router.push("/dashboard/consultations")}
+          onClick={() => router.push("/lawyer/consultations")}
           className="text-xs text-teal-600 font-medium hover:text-teal-700 cursor-pointer"
         >
           Voir tout →
@@ -182,10 +193,10 @@ export function PendingConsultations() {
             <MessageCircle className="w-5 h-5 text-teal-400" />
           </div>
           <p className="text-sm font-medium text-slate-600 mb-1">
-            Aucune consultation
+            Aucune consultation en attente
           </p>
           <p className="text-xs text-slate-400">
-            Les demandes apparaîtront ici
+            Les nouvelles demandes apparaîtront ici
           </p>
         </div>
       ) : (
@@ -194,6 +205,8 @@ export function PendingConsultations() {
             const badge = getStatusBadge(c.status);
             const CanalIcon = c.canal ? CANAL_ICONS[c.canal] : MessageCircle;
             const isPending = c.status === "pending";
+            const isAccepted =
+              c.status === "accepted" || c.status === "in_progress";
 
             return (
               <div key={c.id} className="px-5 py-4">
@@ -202,7 +215,6 @@ export function PendingConsultations() {
                     {c.client?.first_name?.[0]}
                     {c.client?.last_name?.[0]}
                   </div>
-
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2 mb-1">
                       <p className="text-sm font-semibold text-slate-800 truncate">
@@ -212,7 +224,6 @@ export function PendingConsultations() {
                         {timeAgo(c.created_at)}
                       </span>
                     </div>
-
                     <div className="flex items-center gap-2 mb-2">
                       <CanalIcon className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
                       <p className="text-xs text-slate-500 truncate">
@@ -233,7 +244,7 @@ export function PendingConsultations() {
                             onChange={(e) => setDeclineMsg(e.target.value)}
                             placeholder="Motif (optionnel)..."
                             rows={2}
-                            className="w-full text-xs border border-slate-200 rounded-lg px-3 py-2 resize-none focus:border-teal-400 outline-none"
+                            className="w-full text-xs border border-slate-200 rounded-lg px-3 py-2 resize-none focus:border-teal-400 outline-none text-slate-700 placeholder:text-slate-400"
                           />
                           <div className="flex gap-2">
                             <button
@@ -269,15 +280,20 @@ export function PendingConsultations() {
                         </div>
                       )
                     ) : (
-                      <button
-                        onClick={() =>
-                          router.push(`/dashboard/consultations/${c.id}`)
-                        }
-                        className="flex items-center gap-1 text-xs text-teal-600 hover:text-teal-700 font-medium cursor-pointer mt-1"
-                      >
-                        Voir la conversation{" "}
-                        <ChevronRight className="w-3 h-3" />
-                      </button>
+                      <div className="flex items-center gap-2 mt-1 flex-wrap">
+                        {isAccepted && isVideo(c.subject) && (
+                          <JoinCallButton
+                            consultationId={c.id}
+                            canal="video_30"
+                          />
+                        )}
+                        <button
+                          onClick={() => router.push("/lawyer/consultations")}
+                          className="flex items-center gap-1 text-xs text-teal-600 hover:text-teal-700 font-medium cursor-pointer"
+                        >
+                          Messagerie <ChevronRight className="w-3 h-3" />
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>
