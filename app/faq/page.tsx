@@ -1,12 +1,10 @@
 "use client";
-import { ArrowLeft, ChevronDown } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 export default function FAQPage() {
-  const router = useRouter();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState("Général");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -283,12 +281,6 @@ export default function FAQPage() {
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`.main-title,.subtitle,.tabs-wrapper,.faq-item,.cta-block{opacity:0;}`}</style>
       <div className="max-w-4xl mx-auto px-5 py-16" ref={containerRef}>
-        <button
-          onClick={() => router.back()}
-          className="back-btn cursor-pointer inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 mb-8 text-sm font-medium"
-        >
-          <ArrowLeft size={18} /> Retour
-        </button>
         <div className="text-center mb-10">
           <h1 className="main-title text-4xl sm:text-5xl font-bold text-slate-900 mb-3">
             Questions Fréquentes
