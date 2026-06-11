@@ -342,13 +342,11 @@ const VideoConsultationModal = ({
         consultationId = nc?.id;
       }
       if (consultationId) {
-        await supabase
-          .from("messages")
-          .insert({
-            consultation_id: consultationId,
-            sender_id: userId,
-            content: `📹 Demande de consultation vidéo\n\n📅 Date souhaitée : ${date} à ${heure}\n📝 Motif : ${description.trim()}\n\nLien : ${getJitsiUrl(avocat.id)}\n\nMerci de confirmer ce créneau et d'indiquer vos honoraires.`,
-          });
+        await supabase.from("messages").insert({
+          consultation_id: consultationId,
+          sender_id: userId,
+          content: `📹 Demande de consultation vidéo\n\n📅 Date souhaitée : ${date} à ${heure}\n📝 Motif : ${description.trim()}\n\nLien : ${getJitsiUrl(avocat.id)}\n\nMerci de confirmer ce créneau et d'indiquer vos honoraires.`,
+        });
       }
       setSent(true);
       setTimeout(() => {
@@ -478,7 +476,6 @@ const VideoConsultationModal = ({
   );
 };
 
-// ── Panneau consultation intégré ─────────────────────────────────────────────
 const ConsultationPanel = ({
   avocat,
   pricingChannels,
@@ -504,27 +501,20 @@ const ConsultationPanel = ({
     avocat.profession || ""
   );
 
-  const defaultCanaux = [
-    {
-      type: "message",
-      label: "Message écrit",
-      base_price: undefined,
-      duration: undefined,
-    },
-    {
-      type: "video_30",
-      label: "Vidéo 30 min",
-      base_price: undefined,
-      duration: "30 min",
-    },
-    {
-      type: "phone",
-      label: "Téléphonique",
-      base_price: undefined,
-      duration: "30 min",
-    },
+  // 5 canaux complets — fallback si pas de pricing en base
+  const ALL_CANAUX = [
+    { type: "message", label: "Message", duration: undefined },
+    { type: "phone", label: "Téléphone", duration: "30 min" },
+    { type: "video_30", label: "Vidéo", duration: "30 min" },
+    { type: "video_60", label: "Vidéo", duration: "1 heure" },
+    { type: "email", label: "Email", duration: undefined },
   ];
-  const canaux = pricingChannels.length > 0 ? pricingChannels : defaultCanaux;
+
+  // Merge avec les prix Supabase
+  const canaux = ALL_CANAUX.map((c) => {
+    const pricing = pricingChannels.find((p: any) => p.type === c.type);
+    return { ...c, base_price: pricing?.base_price ?? null };
+  });
 
   const handleSend = async () => {
     if (!user || profile?.user_type !== "client") {
@@ -562,14 +552,12 @@ const ConsultationPanel = ({
         const priceStr = price?.base_price
           ? `\n💰 Tarif indicatif : ${price.base_price.toLocaleString()} DA`
           : "";
-        const durStr = price?.duration ? ` · ${price.duration}` : "";
-        await supabase
-          .from("messages")
-          .insert({
-            consultation_id: cid,
-            sender_id: user.id,
-            content: `📋 Demande de consultation\n\n🔔 Canal : ${canal.label}${durStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif selon mon dossier.`,
-          });
+        const durStr = canal.duration ? ` · ${canal.duration}` : "";
+        await supabase.from("messages").insert({
+          consultation_id: cid,
+          sender_id: user.id,
+          content: `📋 Demande de consultation\n\n🔔 Canal : ${canal.label}${durStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif.`,
+        });
       }
       setSent(true);
       setTimeout(() => {
@@ -598,78 +586,72 @@ const ConsultationPanel = ({
 
   return (
     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+      {/* Header */}
       <div className="px-5 py-4 border-b border-slate-100">
         <p className="text-sm font-bold text-slate-900">Consulter</p>
         <p className="text-xs text-slate-400 mt-0.5">Choisissez votre format</p>
       </div>
-      <div className="p-4 space-y-2">
-        {canaux.map((canal: any) => {
+
+      {/* Grille 2 colonnes — design 2 */}
+      <div className="p-3 grid grid-cols-2 gap-2">
+        {canaux.map((canal, i) => {
           const config = CANAL_CONFIG[canal.type];
           if (!config) return null;
           const Icon = config.icon;
           const isSelected = selected === canal.type;
+          const isLast = i === canaux.length - 1;
           return (
             <button
               key={canal.type}
               onClick={() => setSelected(canal.type)}
-              className={`w-full text-left px-3 py-3 rounded-xl border transition-all cursor-pointer ${isSelected ? "bg-teal-50 border-teal-300" : "border-slate-100 hover:border-teal-200 hover:bg-slate-50"}`}
+              className={`
+                flex flex-col items-center text-center p-3 rounded-xl border cursor-pointer transition-all
+                ${isLast ? "col-span-2" : ""}
+                ${
+                  isSelected
+                    ? "border-teal-600 bg-teal-50 shadow-sm"
+                    : "border-slate-200 hover:border-teal-200 hover:bg-slate-50"
+                }
+              `}
             >
-              <div className="flex items-center gap-3">
-                <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600" : "bg-slate-100"}`}
+              <Icon
+                className={`w-5 h-5 mb-1.5 ${isSelected ? "text-teal-600" : "text-slate-400"}`}
+              />
+              <span
+                className={`text-xs font-semibold ${isSelected ? "text-teal-800" : "text-slate-700"}`}
+              >
+                {config.label}
+              </span>
+              {canal.duration && (
+                <span
+                  className={`text-[10px] mt-0.5 ${isSelected ? "text-teal-600" : "text-slate-400"}`}
                 >
-                  <Icon
-                    className={`w-4 h-4 ${isSelected ? "text-white" : "text-slate-500"}`}
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <p className="text-xs font-semibold text-slate-800">
-                      {config.label}
-                    </p>
-                    {canal.duration && (
-                      <span className="text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full">
-                        {canal.duration}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-xs font-bold text-teal-700 mt-0.5">
-                    {canal.base_price
-                      ? `À partir de ${canal.base_price.toLocaleString()} DA`
-                      : "Tarif sur demande"}
-                  </p>
-                </div>
-                <div
-                  className={`w-4 h-4 rounded-full border-2 flex-shrink-0 ${isSelected ? "border-teal-600 bg-teal-600" : "border-slate-300"}`}
-                >
-                  {isSelected && (
-                    <svg
-                      viewBox="0 0 20 20"
-                      fill="white"
-                      className="w-full h-full"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      />
-                    </svg>
-                  )}
-                </div>
-              </div>
+                  {canal.duration}
+                </span>
+              )}
+              <span
+                className={`text-xs font-semibold mt-1 ${isSelected ? "text-teal-700" : "text-slate-500"}`}
+              >
+                {canal.base_price
+                  ? `${canal.base_price.toLocaleString()} DA`
+                  : "Sur demande"}
+              </span>
             </button>
           );
         })}
       </div>
+
+      {/* CTA */}
       <div className="px-4 pb-4 space-y-2">
         {!user ? (
           <>
             <Link href="/auth/client/register" className="block">
-              <button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2.5 rounded-xl font-semibold text-sm cursor-pointer transition-all">
-                Créer un compte gratuit
+              <button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer">
+                <MessageCircle className="w-4 h-4" /> Créer un compte gratuit
               </button>
             </Link>
             <Link href="/auth/client/login" className="block">
-              <button className="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 py-2.5 rounded-xl font-medium text-sm cursor-pointer transition-all">
+              <button className="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 cursor-pointer">
                 Déjà un compte
               </button>
             </Link>
@@ -682,7 +664,7 @@ const ConsultationPanel = ({
           >
             {sending ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />{" "}
                 Envoi...
               </>
             ) : (
@@ -701,8 +683,8 @@ const ConsultationPanel = ({
           </button>
         )}
       </div>
-      <div className="px-4 pb-4">
-        <p className="text-[10px] text-slate-400 leading-relaxed text-center">
+      <div className="px-4 pb-3">
+        <p className="text-[10px] text-slate-400 text-center leading-relaxed">
           Tarifs indicatifs. Le professionnel confirme le tarif définitif selon
           votre dossier.
         </p>
@@ -711,7 +693,6 @@ const ConsultationPanel = ({
   );
 };
 
-// ── Mobile consultation bottom sheet ─────────────────────────────────────────
 const ConsultationSheet = ({
   isOpen,
   onClose,
@@ -771,7 +752,6 @@ const ConsultationSheet = ({
   );
 };
 
-// ── Page principale ───────────────────────────────────────────────────────────
 export default function ProfilePage({ params }: ProfilePageProps) {
   const { id } = use(params);
   const router = useRouter();
@@ -985,11 +965,8 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           <span className="sm:hidden">Retour</span>
         </button>
 
-        {/* Layout desktop : 2 colonnes */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-5 items-start">
-          {/* Colonne principale */}
           <div className="space-y-4">
-            {/* Hero */}
             <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
               <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[320px]">
                 <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
@@ -1078,7 +1055,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                         </div>
                       )}
                     </div>
-                    {/* Boutons mobile uniquement */}
+
                     {showConsultPanel && (
                       <div className="flex gap-2 mt-4 lg:hidden">
                         <button
@@ -1113,7 +1090,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </div>
             </div>
 
-            {/* Spécialités */}
             {avocat.specialites && avocat.specialites.length > 0 && (
               <Card className="content-card opacity-0 invisible shadow-sm">
                 <CardHeader>
@@ -1138,7 +1114,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </Card>
             )}
 
-            {/* CTA non connecté */}
             {!user && !isOwnProfile && (
               <div className="content-card opacity-0 invisible">
                 <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
@@ -1174,7 +1149,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </div>
             )}
 
-            {/* Info cards */}
             {allInfoItems.length > 0 && (
               <>
                 <div className="content-card opacity-0 invisible sm:hidden flex flex-col gap-2.5">
@@ -1202,7 +1176,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </>
             )}
 
-            {/* Carte */}
             {hasAddress && (
               <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                 <LawyerMap
@@ -1221,7 +1194,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </div>
             )}
 
-            {/* Avis */}
             <div className="reviews-section opacity-0 invisible mt-4">
               <ReviewSection
                 lawyerId={avocat.id}
@@ -1230,7 +1202,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             </div>
           </div>
 
-          {/* Colonne droite sticky — desktop uniquement */}
           {showConsultPanel && (
             <div className="hidden lg:block lg:sticky lg:top-24 space-y-4">
               <ConsultationPanel

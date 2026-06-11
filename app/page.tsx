@@ -9,6 +9,7 @@ import {
   FileText,
   Briefcase,
   Calculator,
+  TrendingUp,
 } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
@@ -19,7 +20,6 @@ import {
 } from "@/lib/avocatsData";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 gsap.registerPlugin(ScrollTrigger);
 
 const PROFESSIONS = [
@@ -27,31 +27,31 @@ const PROFESSIONS = [
     id: "avocat",
     label: "Avocat",
     Icon: Scale,
-    desc: "Droit civil, pénal, famille, affaires...",
+    desc: "Droit civil, pénal, famille...",
   },
   {
     id: "notaire",
     label: "Notaire",
     Icon: FileText,
-    desc: "Successions, immobilier, mariages...",
+    desc: "Successions, immobilier...",
   },
   {
     id: "huissier",
     label: "Huissier",
     Icon: Briefcase,
-    desc: "Constats, exécutions, recouvrements...",
+    desc: "Constats, recouvrements...",
   },
   {
     id: "comptable",
     label: "Comptable",
     Icon: Calculator,
-    desc: "Bilans, fiscalité, création société...",
+    desc: "Bilans, fiscalité, EURL...",
   },
   {
     id: "expert-comptable",
     label: "Expert Comptable",
-    Icon: Calculator,
-    desc: "Audit, expertise, consolidation...",
+    Icon: TrendingUp,
+    desc: "Audit légal, due diligence",
   },
 ];
 
@@ -62,8 +62,54 @@ const HERO_TITLE = (
     <span className="text-teal-600">juridique en Algérie</span>
   </>
 );
-const HERO_SUB_LINE1 = "L'annuaire qui vérifie pour vous.";
-const HERO_SUB_LINE2 = "Comparez. Choisissez. Contactez.";
+
+/* Carte verticale (desktop + tablet petit) */
+function ProfCard({ id, label, Icon, desc, size = "normal" }: any) {
+  return (
+    <Link href={`/${id}`}>
+      <div
+        className={`prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 cursor-pointer h-full flex flex-col items-center text-center hover:border-teal-400 hover:shadow-md transition-all ${size === "big" ? "px-6 py-6 gap-3" : "px-4 py-4 gap-2"}`}
+      >
+        <div
+          className={`flex-shrink-0 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center ${size === "big" ? "w-12 h-12" : "w-9 h-9"}`}
+        >
+          <Icon
+            className={`text-teal-600 ${size === "big" ? "w-6 h-6" : "w-4 h-4"}`}
+          />
+        </div>
+        <div>
+          <div
+            className={`font-bold text-slate-800 ${size === "big" ? "text-base" : "text-sm"}`}
+          >
+            {label}
+          </div>
+          <div className="text-xs text-slate-400 mt-0.5 leading-relaxed line-clamp-2">
+            {desc}
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+/* Carte horizontale (mobile) */
+function ProfCardHorizontal({ id, label, Icon, desc }: any) {
+  return (
+    <Link href={`/${id}`}>
+      <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 cursor-pointer flex items-center gap-4 px-4 py-4 hover:border-teal-400 hover:shadow-md transition-all">
+        <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
+          <Icon className="w-5 h-5 text-teal-600" />
+        </div>
+        <div className="text-left">
+          <div className="font-bold text-slate-800 text-sm">{label}</div>
+          <div className="text-xs text-slate-400 mt-0.5 leading-relaxed">
+            {desc}
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
 
 export default function HomePage() {
   const router = useRouter();
@@ -174,33 +220,36 @@ export default function HomePage() {
             {HERO_TITLE}
           </h1>
           <p className="hero-sub text-sm sm:text-lg text-slate-500 mb-10 sm:mb-14 max-w-xl mx-auto leading-relaxed">
-            {HERO_SUB_LINE1}
-            <br className="block" />
-            {HERO_SUB_LINE2}
+            L'annuaire qui vérifie pour vous.
+            <br />
+            Comparez. Choisissez. Contactez.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 max-w-5xl mx-auto">
-            {PROFESSIONS.map(({ id, label, Icon, desc }) => (
-              <Link key={id} href={`/${id}`}>
-                <div
-                  className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 cursor-pointer h-full
-                  flex items-center gap-4 px-4 py-4
-                  sm:flex-col sm:items-center sm:px-5 sm:py-5 sm:gap-3 sm:text-center
-                  hover:border-teal-400 hover:shadow-md"
-                >
-                  <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-teal-600" />
-                  </div>
-                  <div className="text-left sm:text-center">
-                    <div className="font-bold text-slate-800 text-sm sm:text-base">
-                      {label}
-                    </div>
-                    <div className="text-xs text-slate-400 mt-0.5 leading-relaxed line-clamp-2">
-                      {desc}
-                    </div>
-                  </div>
-                </div>
-              </Link>
+          {/* ── Mobile : colonne verticale ── */}
+          <div className="flex flex-col gap-3 max-w-sm mx-auto sm:hidden">
+            {PROFESSIONS.map((p) => (
+              <ProfCardHorizontal key={p.id} {...p} />
+            ))}
+          </div>
+
+          {/* ── Tablet : T2 — 2 grandes + 3 petites ── */}
+          <div className="hidden sm:flex lg:hidden flex-col gap-3 max-w-2xl mx-auto w-full">
+            <div className="grid grid-cols-2 gap-3">
+              {PROFESSIONS.slice(0, 2).map((p) => (
+                <ProfCard key={p.id} {...p} size="big" />
+              ))}
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              {PROFESSIONS.slice(2, 5).map((p) => (
+                <ProfCard key={p.id} {...p} size="normal" />
+              ))}
+            </div>
+          </div>
+
+          {/* ── Desktop : 5 colonnes ── */}
+          <div className="hidden lg:grid grid-cols-5 gap-4 max-w-5xl mx-auto">
+            {PROFESSIONS.map((p) => (
+              <ProfCard key={p.id} {...p} size="normal" />
             ))}
           </div>
         </div>
@@ -211,7 +260,7 @@ export default function HomePage() {
           {[
             { end: stats.total_avocats, label: "Professionnels inscrits" },
             { end: wilayas.length, label: "Wilayas couvertes" },
-            { end: 4, label: "Catégories d'experts" },
+            { end: 5, label: "Catégories d'experts" },
             {
               end: stats.pourcentage_verification,
               label: "Taux de vérification",
@@ -320,8 +369,7 @@ export default function HomePage() {
             </h3>
             <p className="text-slate-500 leading-relaxed mb-8 text-sm sm:text-base">
               Parcourez les profils vérifiés d'avocats, notaires, huissiers et
-              comptables. Consultez les avis et contactez directement depuis
-              n'importe où.
+              comptables.
             </p>
             <div className="mt-auto flex justify-center sm:justify-start">
               <button
@@ -332,14 +380,13 @@ export default function HomePage() {
               </button>
             </div>
           </div>
-
           <div className="bg-teal-600 rounded-2xl p-7 sm:p-10 flex flex-col text-center sm:text-left">
             <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
               Vous êtes professionnel du droit ?
             </h3>
             <p className="text-teal-100 leading-relaxed mb-8 text-sm sm:text-base">
-              Avocat, notaire, huissier ou comptable — rejoignez Mizan et soyez
-              visible par des clients de toute l'Algérie et de la diaspora.
+              Rejoignez Mizan et soyez visible par des clients de toute
+              l'Algérie et de la diaspora.
             </p>
             <div className="mt-auto flex justify-center sm:justify-start">
               <Link href="/auth/lawyer/register">

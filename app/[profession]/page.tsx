@@ -388,19 +388,17 @@ export default function ProfessionLandingPage() {
         />
       )}
 
-      {/* Option C — bannière sobre avant CTA */}
-      <section className="px-4 pb-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-slate-50 border-t-2 border-teal-600 rounded-b-2xl px-6 py-5 flex items-center justify-between gap-4">
-            <p className="text-sm font-semibold text-slate-800">
-              Le rôle du {prof.label.toLowerCase()} en Algérie
-            </p>
-            <Link href={`/professions/${profId}`} className="flex-shrink-0">
-              <button className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-600 hover:text-teal-700 border border-teal-600 px-3 py-2 rounded-lg cursor-pointer whitespace-nowrap transition-all hover:bg-teal-50">
-                En savoir plus →
-              </button>
-            </Link>
-          </div>
+      <section className="px-4 pb-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <Link
+            href={`/professions/${profId}`}
+            className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-teal-600 transition-colors cursor-pointer"
+          >
+            <span>Qu'est-ce qu'un {prof.label.toLowerCase()} exactement ?</span>
+            <span className="text-teal-600 font-medium">
+              Découvrir le rôle →
+            </span>
+          </Link>
         </div>
       </section>
 

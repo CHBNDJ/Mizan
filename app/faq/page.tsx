@@ -303,12 +303,12 @@ export default function FAQPage() {
           </p>
         </div>
         <div className="tabs-wrapper mb-8">
-          <div className="flex flex-wrap justify-center gap-2 bg-white p-1.5 rounded-xl border border-slate-200">
+          <div className="flex flex-nowrap overflow-x-auto gap-1 bg-white p-1.5 rounded-xl border border-slate-200 scrollbar-hide">
             {tabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-3 sm:px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition-all cursor-pointer ${activeTab === tab ? "bg-teal-600 text-white shadow-sm" : "text-slate-600 hover:bg-slate-50"}`}
+                className={`px-3 py-2 rounded-lg font-medium text-xs transition-all cursor-pointer flex-shrink-0 ${activeTab === tab ? "bg-teal-600 text-white shadow-sm" : "text-slate-600 hover:bg-slate-50"}`}
               >
                 {tab}
               </button>

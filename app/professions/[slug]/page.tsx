@@ -88,7 +88,7 @@ export default function ProfessionPage() {
           onClick={() => router.back()}
           className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 mb-8 text-sm font-medium cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4" /> Retour
+          <ArrowLeft className="w-4 h-4" />
         </button>
 
         {/* Hero */}
