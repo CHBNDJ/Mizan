@@ -209,7 +209,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden">
       <style>{`
-        .hero-title,.hero-sub,.prof-card,.stat-card,.steps-section,.avocat-card,.cta-section { opacity:0; }
+        .hero-title,.hero-sub,.prof-card,.stat-card,.steps-section,.avocat-card,.cta-section,.prof-roles-link { opacity:0; }
         .prof-card-btn { transition:all 0.2s ease; }
         .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
       `}</style>
@@ -258,9 +258,9 @@ export default function HomePage() {
       {/* Lien discret vers la page professions */}
       <section className="px-4 pb-4 pt-0">
         <div className="max-w-5xl mx-auto text-center">
-          <Link href="/professions">
+          <Link href="/professions" className="prof-roles-link">
             <span className="text-xs text-slate-400 hover:text-teal-600 cursor-pointer transition-colors">
-              Vous ne savez pas quelle profession vous convient ?{" "}
+              Pas sûr de quelle profession vous avez besoin ?{" "}
               <span className="font-medium text-teal-600">
                 Comprendre les rôles →
               </span>

@@ -476,7 +476,7 @@ const VideoConsultationModal = ({
   );
 };
 
-// ── ConsultationPanel — minimaliste, sans card, direct ────────────────────────
+// ── ConsultationPanel — avec icônes, sans titre ────────────────────────────────
 const ConsultationPanel = ({
   avocat,
   pricingChannels,
@@ -506,7 +506,7 @@ const ConsultationPanel = ({
     {
       type: "message",
       label: "Message",
-      desc: "Réponse 24-48h",
+      desc: "Réponse sous 24-48h",
       duration: undefined,
     },
     {
@@ -527,7 +527,12 @@ const ConsultationPanel = ({
       desc: "Consultation vidéo",
       duration: "1 heure",
     },
-    { type: "email", label: "Email", desc: "Réponse 48h", duration: undefined },
+    {
+      type: "email",
+      label: "Email",
+      desc: "Réponse sous 48h",
+      duration: undefined,
+    },
   ];
   const canaux = ALL_CANAUX.map((c) => ({
     ...c,
@@ -607,17 +612,20 @@ const ConsultationPanel = ({
 
   return (
     <div>
-      {/* Liste canaux — sans card wrapper */}
       <div className="divide-y divide-slate-100">
         {canaux.map((canal) => {
+          const config = CANAL_CONFIG[canal.type];
+          if (!config) return null;
+          const Icon = config.icon;
           const isSelected = selected === canal.type;
           return (
             <button
               key={canal.type}
               onClick={() => setSelected(canal.type)}
-              className={`w-full flex items-center justify-between gap-3 py-3 px-1 cursor-pointer transition-all text-left group ${isSelected ? "bg-teal-50 -mx-1 px-2 rounded-xl" : "hover:bg-slate-50 -mx-1 px-2 rounded-xl"}`}
+              className={`w-full flex items-center justify-between gap-3 py-3 px-2 cursor-pointer transition-all text-left rounded-xl ${isSelected ? "bg-teal-50" : "hover:bg-slate-50"}`}
             >
               <div className="flex items-center gap-3 min-w-0">
+                {/* Radio */}
                 <div
                   className={`w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${isSelected ? "border-teal-600 bg-teal-600" : "border-slate-300"}`}
                 >
@@ -625,11 +633,19 @@ const ConsultationPanel = ({
                     <div className="w-1 h-1 bg-white rounded-full" />
                   )}
                 </div>
+                {/* Icône canal */}
+                <div
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600" : "bg-teal-50 border border-teal-100"}`}
+                >
+                  <Icon
+                    className={`w-3.5 h-3.5 ${isSelected ? "text-white" : "text-teal-600"}`}
+                  />
+                </div>
                 <div className="min-w-0">
                   <span
                     className={`text-sm font-medium ${isSelected ? "text-teal-800" : "text-slate-700"}`}
                   >
-                    {canal.label}
+                    {config.label}
                   </span>
                   {canal.duration && (
                     <span
@@ -639,14 +655,14 @@ const ConsultationPanel = ({
                     </span>
                   )}
                   <p
-                    className={`text-xs mt-0 ${isSelected ? "text-teal-600" : "text-slate-400"}`}
+                    className={`text-xs ${isSelected ? "text-teal-600" : "text-slate-400"}`}
                   >
-                    {canal.desc}
+                    {config.desc}
                   </p>
                 </div>
               </div>
               <span
-                className={`text-xs font-semibold flex-shrink-0 ${isSelected ? "text-teal-600" : "text-slate-400"}`}
+                className={`text-xs font-semibold flex-shrink-0 ${isSelected ? "text-teal-600 bg-white px-2 py-0.5 rounded-full shadow-sm" : "text-slate-400"}`}
               >
                 {canal.base_price
                   ? `${canal.base_price.toLocaleString()} DA`
@@ -656,8 +672,6 @@ const ConsultationPanel = ({
           );
         })}
       </div>
-
-      {/* CTA */}
       <div className="mt-4 space-y-2">
         <button
           onClick={handleSend}
@@ -1099,9 +1113,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           {/* ── Consultation panel — après spécialités ── */}
           {showConsultPanel && (
             <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-              <p className="text-sm font-semibold text-slate-800 mb-4">
-                Consulter {avocat.prenom} {avocat.nom}
-              </p>
               <ConsultationPanel
                 avocat={avocat}
                 pricingChannels={pricingChannels}

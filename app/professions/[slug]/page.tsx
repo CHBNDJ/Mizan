@@ -77,10 +77,12 @@ export default function ProfessionPage() {
   const otherProfs = PROFESSIONS_LIST.filter((p) => p !== slug);
 
   return (
-    <div className="min-h-screen pt-16 bg-white" ref={ref}>
+    <div
+      className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100"
+      ref={ref}
+    >
       <style>{`.pf-hero,.pf-section,.pf-cta{opacity:0;}`}</style>
       <div className="max-w-3xl mx-auto px-4 py-10">
-        {/* Retour */}
         <button
           onClick={() => router.back()}
           className="inline-flex items-center gap-1.5 text-teal-600 hover:text-teal-700 mb-8 text-sm font-medium cursor-pointer transition-colors"
@@ -88,7 +90,6 @@ export default function ProfessionPage() {
           <ArrowLeft className="w-4 h-4" />
         </button>
 
-        {/* ── Hero ── */}
         <div className="pf-hero bg-teal-600 rounded-2xl p-7 sm:p-8 mb-6 text-white">
           <div className="flex items-start gap-4 mb-5">
             <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -107,7 +108,6 @@ export default function ProfessionPage() {
             </div>
           </div>
 
-          {/* Pills missions rapides */}
           <div className="flex flex-wrap gap-2 mt-4">
             {data.missions.slice(0, 4).map((m, i) => (
               <div
@@ -130,7 +130,6 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        {/* ── Cadre juridique ── */}
         <div className="pf-section bg-white border border-slate-200 rounded-2xl p-6 mb-4 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
             <span className="w-6 h-6 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center text-xs">
@@ -143,7 +142,6 @@ export default function ProfessionPage() {
           </p>
         </div>
 
-        {/* ── Missions détaillées ── */}
         <div className="pf-section bg-white border border-slate-200 rounded-2xl p-6 mb-4 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 mb-5">
             Missions et rôle concret
@@ -165,7 +163,6 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        {/* ── Quand faire appel ── */}
         <div className="pf-section bg-teal-50 border border-teal-100 rounded-2xl p-6 mb-4">
           <h2 className="text-sm font-bold text-teal-900 mb-4">
             Quand faire appel à un {data.label.toLowerCase()} ?
@@ -190,7 +187,6 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        {/* ── Différences ── */}
         <div className="pf-section bg-white border border-slate-200 rounded-2xl p-6 mb-7 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 mb-4">
             {data.label} vs autres professionnels
@@ -212,7 +208,6 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        {/* ── CTA ── */}
         <div className="pf-cta bg-teal-600 rounded-2xl p-7 text-center mb-8">
           <h2 className="text-lg font-bold text-white mb-2">
             Trouvez un {data.label.toLowerCase()} vérifié en Algérie
@@ -228,7 +223,6 @@ export default function ProfessionPage() {
           </Link>
         </div>
 
-        {/* ── Autres professions ── */}
         <div className="pf-section">
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">
             Autres professions sur Mizan
