@@ -63,12 +63,15 @@ const HERO_TITLE = (
   </>
 );
 
-/* Carte verticale (desktop + tablet petit) */
+/* Carte desktop/tablet — avec lien "En savoir plus" sous le titre */
 function ProfCard({ id, label, Icon, desc, size = "normal" }: any) {
   return (
-    <Link href={`/${id}`}>
-      <div
-        className={`prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 cursor-pointer h-full flex flex-col items-center text-center hover:border-teal-400 hover:shadow-md transition-all ${size === "big" ? "px-6 py-6 gap-3" : "px-4 py-4 gap-2"}`}
+    <div
+      className={`prof-card bg-white rounded-2xl border-2 border-slate-200 h-full flex flex-col items-center text-center transition-all hover:border-teal-300 hover:shadow-md ${size === "big" ? "px-6 py-5 gap-2" : "px-4 py-4 gap-2"}`}
+    >
+      <Link
+        href={`/${id}`}
+        className="flex flex-col items-center gap-2 flex-1 w-full cursor-pointer"
       >
         <div
           className={`flex-shrink-0 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center ${size === "big" ? "w-12 h-12" : "w-9 h-9"}`}
@@ -87,27 +90,40 @@ function ProfCard({ id, label, Icon, desc, size = "normal" }: any) {
             {desc}
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+      <Link href={`/professions/${id}`} className="mt-0.5">
+        <span className="text-[10px] font-medium text-teal-600 hover:text-teal-700 hover:underline cursor-pointer transition-colors">
+          En savoir plus →
+        </span>
+      </Link>
+    </div>
   );
 }
 
-/* Carte horizontale (mobile) */
+/* Carte mobile — horizontal avec "Rôle →" à droite */
 function ProfCardHorizontal({ id, label, Icon, desc }: any) {
   return (
-    <Link href={`/${id}`}>
-      <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 cursor-pointer flex items-center gap-4 px-4 py-4 hover:border-teal-400 hover:shadow-md transition-all">
+    <div className="prof-card bg-white rounded-2xl border-2 border-slate-200 flex items-center gap-4 px-4 py-4 hover:border-teal-300 hover:shadow-md transition-all">
+      <Link
+        href={`/${id}`}
+        className="flex items-center gap-4 flex-1 cursor-pointer min-w-0"
+      >
         <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
           <Icon className="w-5 h-5 text-teal-600" />
         </div>
-        <div className="text-left">
+        <div className="text-left min-w-0">
           <div className="font-bold text-slate-800 text-sm">{label}</div>
           <div className="text-xs text-slate-400 mt-0.5 leading-relaxed">
             {desc}
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+      <Link href={`/professions/${id}`} className="flex-shrink-0">
+        <span className="text-[10px] font-medium text-teal-500 hover:text-teal-600 cursor-pointer whitespace-nowrap">
+          Rôle →
+        </span>
+      </Link>
+    </div>
   );
 }
 
@@ -210,8 +226,8 @@ export default function HomePage() {
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden">
       <style>{`
         .hero-title,.hero-sub,.prof-card,.stat-card,.steps-section,.avocat-card,.cta-section { opacity:0; }
-        .prof-card-btn { transition:all 0.2s ease; }
-        .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
+        .prof-card { transition:all 0.2s ease; }
+        .prof-card:hover { transform:translateY(-3px); }
       `}</style>
 
       <section className="py-14 sm:py-20 px-4">
@@ -225,14 +241,14 @@ export default function HomePage() {
             Comparez. Choisissez. Contactez.
           </p>
 
-          {/* ── Mobile : colonne verticale ── */}
+          {/* Mobile */}
           <div className="flex flex-col gap-3 max-w-sm mx-auto sm:hidden">
             {PROFESSIONS.map((p) => (
               <ProfCardHorizontal key={p.id} {...p} />
             ))}
           </div>
 
-          {/* ── Tablet : T2 — 2 grandes + 3 petites ── */}
+          {/* Tablet T2 */}
           <div className="hidden sm:flex lg:hidden flex-col gap-3 max-w-2xl mx-auto w-full">
             <div className="grid grid-cols-2 gap-3">
               {PROFESSIONS.slice(0, 2).map((p) => (
@@ -246,7 +262,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* ── Desktop : 5 colonnes ── */}
+          {/* Desktop 5 col */}
           <div className="hidden lg:grid grid-cols-5 gap-4 max-w-5xl mx-auto">
             {PROFESSIONS.map((p) => (
               <ProfCard key={p.id} {...p} size="normal" />
@@ -360,30 +376,6 @@ export default function HomePage() {
           </div>
         </section>
       )}
-
-      {/* HOME-1 — bande teal comprendre les professions */}
-      <section className="px-4 pb-10">
-        <div className="max-w-5xl mx-auto">
-          <div className="bg-teal-600 rounded-2xl p-5 sm:p-6">
-            <p className="text-xs font-semibold text-teal-200 uppercase tracking-widest mb-4">
-              Tout comprendre sur chaque profession
-            </p>
-            <div className="flex flex-wrap gap-2.5">
-              {PROFESSIONS.map(({ id, label, Icon }) => (
-                <Link key={id} href={`/professions/${id}`}>
-                  <div className="flex items-center gap-2 bg-white/15 hover:bg-white/25 px-4 py-2.5 rounded-full cursor-pointer transition-all">
-                    <Icon className="w-3.5 h-3.5 text-teal-100" />
-                    <span className="text-sm font-medium text-white">
-                      {label}
-                    </span>
-                    <span className="text-teal-200 text-xs">→</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section className="cta-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
