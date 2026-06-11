@@ -611,11 +611,13 @@ const ConsultationPanel = ({
 
   return (
     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-      <div className="px-5 py-4 border-b border-slate-100">
-        <p className="text-sm font-bold text-slate-900">
-          Consulter {avocat.prenom} {avocat.nom}
+      <div className="bg-teal-600 px-5 py-4">
+        <p className="text-xs font-semibold text-teal-200 uppercase tracking-widest mb-1">
+          Consultation en ligne
         </p>
-        <p className="text-xs text-slate-400 mt-0.5">Choisissez votre format</p>
+        <p className="text-sm font-bold text-white">
+          {avocat.prenom} {avocat.nom}
+        </p>
       </div>
       <div className="p-3 space-y-2">
         {canaux.map((canal) => {
@@ -627,14 +629,14 @@ const ConsultationPanel = ({
             <button
               key={canal.type}
               onClick={() => setSelected(canal.type)}
-              className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all text-left ${isSelected ? { message: "border-teal-500 bg-teal-50", phone: "border-green-500 bg-green-50", video_30: "border-purple-500 bg-purple-50", video_60: "border-purple-500 bg-purple-50", email: "border-amber-500 bg-amber-50" }[canal.type] || "border-teal-500 bg-teal-50" : "border-slate-200 hover:border-teal-200 hover:bg-slate-50"}`}
+              className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all text-left ${isSelected ? "border-teal-500 bg-teal-50" : "border-slate-100 hover:border-teal-200 hover:bg-teal-50/30"}`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? { message: "bg-teal-600", phone: "bg-green-600", video_30: "bg-purple-600", video_60: "bg-purple-600", email: "bg-amber-500" }[canal.type] || "bg-teal-600" : "bg-slate-100"}`}
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600" : "bg-teal-50 border border-teal-100"}`}
                 >
                   <Icon
-                    className={`w-4 h-4 ${isSelected ? "text-white" : "text-slate-500"}`}
+                    className={`w-4 h-4 ${isSelected ? "text-white" : "text-teal-600"}`}
                   />
                 </div>
                 <div className="min-w-0">
@@ -652,7 +654,7 @@ const ConsultationPanel = ({
                 </div>
               </div>
               <span
-                className={`text-xs font-semibold flex-shrink-0 ${isSelected ? "text-teal-700" : "text-slate-500"}`}
+                className={`text-xs font-medium flex-shrink-0 ${isSelected ? "text-teal-600" : "text-slate-400"}`}
               >
                 {canal.base_price
                   ? `${canal.base_price.toLocaleString()} DA`
