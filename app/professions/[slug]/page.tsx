@@ -90,7 +90,6 @@ export default function ProfessionPage() {
           <ArrowLeft className="w-4 h-4" />
         </button>
 
-        {/* ── Hero teal foncé ── */}
         <div className="hero-section bg-teal-700 rounded-2xl p-7 sm:p-8 mb-5 text-white">
           <div className="flex items-center gap-4 mb-5">
             <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -113,7 +112,6 @@ export default function ProfessionPage() {
           </p>
         </div>
 
-        {/* ── Cadre juridique ── */}
         <div className="section-card bg-white border border-slate-200 rounded-2xl p-6 mb-4 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
             <span className="w-6 h-6 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center text-xs">
@@ -126,7 +124,6 @@ export default function ProfessionPage() {
           </p>
         </div>
 
-        {/* ── Missions ── */}
         <div className="section-card bg-white border border-slate-200 rounded-2xl p-6 mb-4 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 mb-4">
             Missions et rôle concret
@@ -151,7 +148,6 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        {/* ── Quand faire appel ── */}
         <div className="section-card bg-white border border-slate-200 rounded-2xl p-6 mb-4 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 mb-4">
             Quand faire appel à un {data.label.toLowerCase()} ?
@@ -176,7 +172,6 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        {/* ── Différences ── */}
         <div className="section-card bg-white border border-slate-200 rounded-2xl p-6 mb-6 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 mb-4">
             {data.label} vs autres professionnels
@@ -198,7 +193,6 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        {/* ── CTA ── */}
         <div className="cta-section bg-teal-600 rounded-2xl p-7 text-center mb-6">
           <h2 className="text-lg font-bold text-white mb-2">
             Trouvez un {data.label.toLowerCase()} vérifié en Algérie
@@ -214,7 +208,6 @@ export default function ProfessionPage() {
           </Link>
         </div>
 
-        {/* ── Autres professions ── */}
         <div className="section-card">
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">
             Autres professions sur Mizan
