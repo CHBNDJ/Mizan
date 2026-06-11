@@ -388,28 +388,24 @@ export default function ProfessionLandingPage() {
         />
       )}
 
-      {/* Lien profession — bien visible */}
+      {/* BL1 — card compact carrée */}
       <section className="px-4 pb-8">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white border border-slate-200 rounded-2xl px-5 py-4 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="text-sm">💡</span>
+          <Link href={`/professions/${profId}`}>
+            <div className="inline-flex flex-col gap-2 bg-white border border-slate-200 hover:border-teal-200 rounded-2xl p-4 cursor-pointer transition-all hover:shadow-sm max-w-xs">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <ProfIcon className="w-4 h-4 text-teal-600" />
+                </div>
+                <p className="text-sm font-semibold text-slate-800">
+                  Pourquoi choisir un {prof.label.toLowerCase()} en Algérie ?
+                </p>
               </div>
-              <span className="text-sm text-slate-700">
-                Qu'est-ce qu'un{" "}
-                <span className="font-semibold">
-                  {prof.label.toLowerCase()}
-                </span>{" "}
-                exactement ?
+              <span className="text-xs font-semibold text-teal-600 hover:text-teal-700">
+                En savoir plus →
               </span>
             </div>
-            <Link href={`/professions/${profId}`} className="flex-shrink-0">
-              <button className="inline-flex items-center gap-1.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold px-4 py-2 rounded-lg cursor-pointer transition-all whitespace-nowrap">
-                En savoir plus →
-              </button>
-            </Link>
-          </div>
+          </Link>
         </div>
       </section>
 
