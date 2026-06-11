@@ -369,12 +369,28 @@ export default function ProfessionLandingPage() {
                 ))}
               </div>
             </div>
-            <div className="ph-map hidden lg:block sticky top-24">
+            <div className="ph-map hidden lg:flex flex-col gap-3 sticky top-24">
               <AlgeriaMap
                 selectedWilaya={selectedWilaya}
                 onSelect={setSelectedWilaya}
                 hideBar
               />
+              <Link href={`/professions/${profId}`}>
+                <div className="bg-white border border-slate-200 hover:border-teal-300 rounded-2xl px-4 py-4 flex items-center justify-between gap-3 cursor-pointer transition-all hover:shadow-sm group">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-8 h-8 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <ProfIcon className="w-4 h-4 text-teal-600" />
+                    </div>
+                    <p className="text-xs font-semibold text-slate-800 leading-snug">
+                      Pourquoi choisir un {prof.label.toLowerCase()} en Algérie
+                      ?
+                    </p>
+                  </div>
+                  <span className="flex-shrink-0 text-xs font-semibold text-teal-600 group-hover:text-teal-700 whitespace-nowrap">
+                    En savoir plus →
+                  </span>
+                </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -387,32 +403,6 @@ export default function ProfessionLandingPage() {
           handleSearch={handleSearch}
         />
       )}
-
-      {/* Pourquoi choisir — full width sous la carte, centré */}
-      <section className="px-4 pb-8">
-        <div className="max-w-6xl mx-auto">
-          <Link href={`/professions/${profId}`}>
-            <div className="w-full bg-white border border-slate-200 hover:border-teal-300 rounded-2xl px-6 py-5 flex items-center justify-between gap-4 cursor-pointer transition-all hover:shadow-sm group">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-teal-50 border border-teal-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <ProfIcon className="w-5 h-5 text-teal-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-slate-800">
-                    Pourquoi choisir un {prof.label.toLowerCase()} en Algérie ?
-                  </p>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    Rôle officiel, missions, cadre légal — tout comprendre
-                  </p>
-                </div>
-              </div>
-              <span className="flex-shrink-0 text-xs font-semibold text-teal-600 group-hover:text-teal-700 whitespace-nowrap">
-                En savoir plus →
-              </span>
-            </div>
-          </Link>
-        </div>
-      </section>
 
       <section className="py-12 px-4 bg-teal-600">
         <div className="max-w-3xl mx-auto text-center">
