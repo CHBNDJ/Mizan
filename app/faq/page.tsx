@@ -353,21 +353,6 @@ export default function FAQPage() {
           </div>
         </div>
       </div>
-      <div className="cta-block mt-6">
-        <Link href="/professions">
-          <div className="flex items-center justify-between p-5 bg-teal-50 border border-teal-100 hover:border-teal-300 rounded-xl cursor-pointer transition-all group">
-            <div>
-              <p className="text-sm font-semibold text-teal-800 mb-1">
-                Découvrir le rôle de chaque profession
-              </p>
-              <p className="text-xs text-teal-600">
-                Avocat, notaire, huissier, comptable, expert-comptable
-              </p>
-            </div>
-            <ChevronRight className="w-5 h-5 text-teal-400 group-hover:text-teal-600 flex-shrink-0" />
-          </div>
-        </Link>
-      </div>
     </div>
   );
 }
