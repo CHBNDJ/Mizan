@@ -63,15 +63,12 @@ const HERO_TITLE = (
   </>
 );
 
-/* Carte desktop/tablet — avec lien "En savoir plus" sous le titre */
+/* Carte desktop/tablet */
 function ProfCard({ id, label, Icon, desc, size = "normal" }: any) {
   return (
-    <div
-      className={`prof-card bg-white rounded-2xl border-2 border-slate-200 h-full flex flex-col items-center text-center transition-all hover:border-teal-300 hover:shadow-md ${size === "big" ? "px-6 py-5 gap-2" : "px-4 py-4 gap-2"}`}
-    >
-      <Link
-        href={`/${id}`}
-        className="flex flex-col items-center gap-2 flex-1 w-full cursor-pointer"
+    <Link href={`/${id}`}>
+      <div
+        className={`prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 cursor-pointer h-full flex flex-col items-center text-center hover:border-teal-400 hover:shadow-md transition-all ${size === "big" ? "px-6 py-6 gap-3" : "px-4 py-4 gap-2"}`}
       >
         <div
           className={`flex-shrink-0 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center ${size === "big" ? "w-12 h-12" : "w-9 h-9"}`}
@@ -90,40 +87,27 @@ function ProfCard({ id, label, Icon, desc, size = "normal" }: any) {
             {desc}
           </div>
         </div>
-      </Link>
-      <Link href={`/professions/${id}`} className="mt-0.5">
-        <span className="text-[10px] font-medium text-teal-600 hover:text-teal-700 hover:underline cursor-pointer transition-colors">
-          En savoir plus →
-        </span>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }
 
-/* Carte mobile — horizontal avec "Rôle →" à droite */
+/* Carte mobile */
 function ProfCardHorizontal({ id, label, Icon, desc }: any) {
   return (
-    <div className="prof-card bg-white rounded-2xl border-2 border-slate-200 flex items-center gap-4 px-4 py-4 hover:border-teal-300 hover:shadow-md transition-all">
-      <Link
-        href={`/${id}`}
-        className="flex items-center gap-4 flex-1 cursor-pointer min-w-0"
-      >
+    <Link href={`/${id}`}>
+      <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 cursor-pointer flex items-center gap-4 px-4 py-4 hover:border-teal-400 hover:shadow-md transition-all">
         <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
           <Icon className="w-5 h-5 text-teal-600" />
         </div>
-        <div className="text-left min-w-0">
+        <div className="text-left">
           <div className="font-bold text-slate-800 text-sm">{label}</div>
           <div className="text-xs text-slate-400 mt-0.5 leading-relaxed">
             {desc}
           </div>
         </div>
-      </Link>
-      <Link href={`/professions/${id}`} className="flex-shrink-0">
-        <span className="text-[10px] font-medium text-teal-500 hover:text-teal-600 cursor-pointer whitespace-nowrap">
-          Rôle →
-        </span>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }
 
@@ -226,8 +210,8 @@ export default function HomePage() {
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden">
       <style>{`
         .hero-title,.hero-sub,.prof-card,.stat-card,.steps-section,.avocat-card,.cta-section { opacity:0; }
-        .prof-card { transition:all 0.2s ease; }
-        .prof-card:hover { transform:translateY(-3px); }
+        .prof-card-btn { transition:all 0.2s ease; }
+        .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
       `}</style>
 
       <section className="py-14 sm:py-20 px-4">
@@ -268,6 +252,20 @@ export default function HomePage() {
               <ProfCard key={p.id} {...p} size="normal" />
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Lien discret vers la page professions */}
+      <section className="px-4 pb-4 pt-0">
+        <div className="max-w-5xl mx-auto text-center">
+          <Link href="/professions">
+            <span className="text-xs text-slate-400 hover:text-teal-600 cursor-pointer transition-colors">
+              Vous ne savez pas quelle profession vous convient ?{" "}
+              <span className="font-medium text-teal-600">
+                Comprendre les rôles →
+              </span>
+            </span>
+          </Link>
         </div>
       </section>
 

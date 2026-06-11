@@ -476,7 +476,7 @@ const VideoConsultationModal = ({
   );
 };
 
-// ── ConsultationPanel — PAN-A radio buttons propres ────────────────────────────
+// ── ConsultationPanel — minimaliste, sans card, direct ────────────────────────
 const ConsultationPanel = ({
   avocat,
   pricingChannels,
@@ -505,13 +505,13 @@ const ConsultationPanel = ({
   const ALL_CANAUX = [
     {
       type: "message",
-      label: "Message écrit",
-      desc: "Réponse sous 24-48h",
+      label: "Message",
+      desc: "Réponse 24-48h",
       duration: undefined,
     },
     {
       type: "phone",
-      label: "Téléphonique",
+      label: "Téléphone",
       desc: "Appel vocal",
       duration: "30 min",
     },
@@ -527,17 +527,13 @@ const ConsultationPanel = ({
       desc: "Consultation vidéo",
       duration: "1 heure",
     },
-    {
-      type: "email",
-      label: "Email",
-      desc: "Réponse sous 48h",
-      duration: undefined,
-    },
+    { type: "email", label: "Email", desc: "Réponse 48h", duration: undefined },
   ];
-  const canaux = ALL_CANAUX.map((c) => {
-    const pricing = pricingChannels.find((p: any) => p.type === c.type);
-    return { ...c, base_price: pricing?.base_price ?? null };
-  });
+  const canaux = ALL_CANAUX.map((c) => ({
+    ...c,
+    base_price:
+      pricingChannels.find((p: any) => p.type === c.type)?.base_price ?? null,
+  }));
 
   const handleSend = async () => {
     if (!user || profile?.user_type !== "client") {
@@ -573,7 +569,7 @@ const ConsultationPanel = ({
       }
       if (cid) {
         const priceStr = price?.base_price
-          ? `\n💰 Tarif indicatif : ${price.base_price.toLocaleString()} DA`
+          ? `\n💰 Tarif : ${price.base_price.toLocaleString()} DA`
           : "";
         const durStr = canal.duration ? ` · ${canal.duration}` : "";
         await supabase
@@ -581,7 +577,7 @@ const ConsultationPanel = ({
           .insert({
             consultation_id: cid,
             sender_id: user.id,
-            content: `📋 Demande de consultation\n\n🔔 Canal : ${canal.label}${durStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif.`,
+            content: `📋 Demande de consultation\n\n🔔 ${canal.label}${durStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif.`,
           });
       }
       setSent(true);
@@ -598,7 +594,7 @@ const ConsultationPanel = ({
 
   if (sent)
     return (
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 text-center shadow-sm">
+      <div className="text-center py-6">
         <div className="w-12 h-12 bg-teal-50 border border-teal-100 rounded-full flex items-center justify-center mx-auto mb-3">
           <CheckCircle className="w-6 h-6 text-teal-600" />
         </div>
@@ -610,58 +606,47 @@ const ConsultationPanel = ({
     );
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-      {/* Header */}
-      <div className="px-5 py-4 border-b border-slate-100">
-        <p className="text-sm font-bold text-slate-900">
-          Consulter {avocat.prenom} {avocat.nom}
-        </p>
-        <p className="text-xs text-slate-400 mt-0.5">
-          Choisissez votre mode de consultation
-        </p>
-      </div>
-
-      {/* Radio list */}
-      <div className="px-4 py-3 space-y-2">
+    <div>
+      {/* Liste canaux — sans card wrapper */}
+      <div className="divide-y divide-slate-100">
         {canaux.map((canal) => {
           const isSelected = selected === canal.type;
           return (
             <button
               key={canal.type}
               onClick={() => setSelected(canal.type)}
-              className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all text-left ${isSelected ? "border-teal-500 bg-teal-50" : "border-slate-100 hover:border-teal-200 hover:bg-slate-50"}`}
+              className={`w-full flex items-center justify-between gap-3 py-3 px-1 cursor-pointer transition-all text-left group ${isSelected ? "bg-teal-50 -mx-1 px-2 rounded-xl" : "hover:bg-slate-50 -mx-1 px-2 rounded-xl"}`}
             >
               <div className="flex items-center gap-3 min-w-0">
-                {/* Radio indicator */}
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${isSelected ? "border-teal-600 bg-teal-600" : "border-slate-300"}`}
+                  className={`w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${isSelected ? "border-teal-600 bg-teal-600" : "border-slate-300"}`}
                 >
                   {isSelected && (
-                    <div className="w-1.5 h-1.5 bg-white rounded-full" />
+                    <div className="w-1 h-1 bg-white rounded-full" />
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p
-                    className={`text-xs font-semibold ${isSelected ? "text-teal-800" : "text-slate-800"}`}
+                  <span
+                    className={`text-sm font-medium ${isSelected ? "text-teal-800" : "text-slate-700"}`}
                   >
                     {canal.label}
-                    {canal.duration && (
-                      <span
-                        className={`ml-1.5 font-normal ${isSelected ? "text-teal-600" : "text-slate-400"}`}
-                      >
-                        {canal.duration}
-                      </span>
-                    )}
-                  </p>
+                  </span>
+                  {canal.duration && (
+                    <span
+                      className={`ml-2 text-xs ${isSelected ? "text-teal-500" : "text-slate-400"}`}
+                    >
+                      {canal.duration}
+                    </span>
+                  )}
                   <p
-                    className={`text-[10px] ${isSelected ? "text-teal-600" : "text-slate-400"}`}
+                    className={`text-xs mt-0 ${isSelected ? "text-teal-600" : "text-slate-400"}`}
                   >
                     {canal.desc}
                   </p>
                 </div>
               </div>
               <span
-                className={`text-xs font-semibold flex-shrink-0 ${isSelected ? "text-teal-700 bg-white px-2 py-0.5 rounded-full" : "text-slate-400"}`}
+                className={`text-xs font-semibold flex-shrink-0 ${isSelected ? "text-teal-600" : "text-slate-400"}`}
               >
                 {canal.base_price
                   ? `${canal.base_price.toLocaleString()} DA`
@@ -673,11 +658,11 @@ const ConsultationPanel = ({
       </div>
 
       {/* CTA */}
-      <div className="px-4 pb-4 pt-1 space-y-2">
+      <div className="mt-4 space-y-2">
         <button
           onClick={handleSend}
           disabled={!selected || sending}
-          className="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
+          className="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
         >
           {sending ? (
             <>
@@ -1113,7 +1098,10 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
           {/* ── Consultation panel — après spécialités ── */}
           {showConsultPanel && (
-            <div className="content-card opacity-0 invisible">
+            <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+              <p className="text-sm font-semibold text-slate-800 mb-4">
+                Consulter {avocat.prenom} {avocat.nom}
+              </p>
               <ConsultationPanel
                 avocat={avocat}
                 pricingChannels={pricingChannels}

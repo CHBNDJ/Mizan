@@ -376,18 +376,20 @@ export default function ProfessionLandingPage() {
                 hideBar
               />
               <Link href={`/professions/${profId}`}>
-                <div className="bg-white border border-slate-200 hover:border-teal-300 rounded-2xl px-4 py-4 flex items-center justify-between gap-3 cursor-pointer transition-all hover:shadow-sm group">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <ProfIcon className="w-4 h-4 text-teal-600" />
+                <div className="bg-teal-50 border border-teal-200 hover:border-teal-400 rounded-2xl p-5 cursor-pointer transition-all hover:shadow-sm group">
+                  <div className="flex items-center gap-3 mb-2.5">
+                    <div className="w-9 h-9 bg-teal-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <ProfIcon className="w-4 h-4 text-white" />
                     </div>
-                    <p className="text-xs font-semibold text-slate-800 leading-snug">
-                      Pourquoi choisir un {prof.label.toLowerCase()} en Algérie
-                      ?
+                    <p className="text-sm font-bold text-teal-900 leading-snug">
+                      Pourquoi choisir un {prof.label.toLowerCase()} ?
                     </p>
                   </div>
-                  <span className="flex-shrink-0 text-xs font-semibold text-teal-600 group-hover:text-teal-700 whitespace-nowrap">
-                    En savoir plus →
+                  <p className="text-xs text-teal-700 leading-relaxed mb-3">
+                    Rôle officiel, missions et cadre légal algérien.
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-teal-600 group-hover:text-teal-700">
+                    En savoir plus <ChevronRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
               </Link>

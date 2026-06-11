@@ -1,5 +1,5 @@
 "use client";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
@@ -351,30 +351,23 @@ export default function FAQPage() {
               Contactez-nous
             </Link>
           </div>
-          <div className="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-4">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
-              Mieux comprendre chaque profession
+          <div className="mt-4 border-t border-slate-100 pt-4">
+            <p className="text-xs text-slate-400 mb-3">
+              Découvrir le rôle de chaque profession
             </p>
-            <div className="flex flex-wrap gap-2">
-              {[
-                { slug: "avocat", label: "Rôle de l'avocat" },
-                { slug: "notaire", label: "Rôle du notaire" },
-                { slug: "huissier", label: "Rôle de l'huissier" },
-                { slug: "comptable", label: "Rôle du comptable agréé" },
-                {
-                  slug: "expert-comptable",
-                  label: "Rôle de l'expert-comptable",
-                },
-              ].map((p) => (
-                <Link
-                  key={p.slug}
-                  href={`/professions/${p.slug}`}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-slate-200 hover:border-teal-300 text-xs font-medium text-slate-700 rounded-lg transition-all"
-                >
-                  {p.label} →
-                </Link>
-              ))}
-            </div>
+            <Link href="/professions" className="block">
+              <div className="flex items-center justify-between p-4 bg-teal-50 border border-teal-100 hover:border-teal-300 rounded-xl cursor-pointer transition-all group">
+                <div>
+                  <p className="text-sm font-semibold text-teal-800 mb-0.5">
+                    Guide des professions juridiques
+                  </p>
+                  <p className="text-xs text-teal-600">
+                    Avocat, notaire, huissier, comptable, expert-comptable
+                  </p>
+                </div>
+                <ChevronRight className="w-4 h-4 text-teal-400 group-hover:text-teal-600 flex-shrink-0" />
+              </div>
+            </Link>
           </div>
         </div>
       </div>
