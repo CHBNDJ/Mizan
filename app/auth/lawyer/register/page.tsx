@@ -430,7 +430,7 @@ export default function LawyerRegisterPage() {
           </p>
           <div className="grid grid-cols-2 gap-3 mb-3">
             {PROFESSIONS.slice(0, 4).map((p) => {
-              const isSelected = professions[0] === p.id;
+              const isSelected = professions.includes(p.id);
               return (
                 <button
                   key={p.id}
@@ -791,11 +791,6 @@ export default function LawyerRegisterPage() {
               disabled={isSubmitting}
             />
             {errors.experience && <p className={errCls}>{errors.experience}</p>}
-          </div>
-          <div className="bg-teal-50 border border-teal-100 rounded-lg p-3">
-            <p className="text-teal-700 text-xs">
-              Les tarifs sont négociés directement entre vous et vos clients.
-            </p>
           </div>
         </div>
       );

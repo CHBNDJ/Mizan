@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MultiSelectWithCheckboxesProps } from "@/types";
@@ -15,10 +15,24 @@ export function MultiSelectWithCheckboxes({
   disabled = false,
 }: MultiSelectWithCheckboxesProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
 
   const handleToggle = (optionValue: string) => {
     if (disabled) return;
-
     if (value.includes(optionValue)) {
       onChange(value.filter((v) => v !== optionValue));
     } else {
@@ -44,13 +58,11 @@ export function MultiSelectWithCheckboxes({
         </label>
       )}
 
-      <div className={`relative ${className}`}>
+      <div className={`relative ${className}`} ref={containerRef}>
         <div
           className={cn(
             "w-full px-3 py-2 border border-slate-300 rounded-lg bg-white flex items-center justify-between",
-            "transition-all duration-200 h-12 max-h-12",
-            "outline-none",
-
+            "transition-all duration-200 h-12 max-h-12 outline-none",
             disabled
               ? "opacity-50 cursor-not-allowed bg-slate-50 border-slate-200"
               : cn(
