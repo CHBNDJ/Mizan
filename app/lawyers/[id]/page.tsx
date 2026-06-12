@@ -476,7 +476,6 @@ const VideoConsultationModal = ({
   );
 };
 
-// ── ConsultationPanel — avec icônes, sans titre ────────────────────────────────
 const ConsultationPanel = ({
   avocat,
   pricingChannels,
@@ -625,7 +624,6 @@ const ConsultationPanel = ({
               className={`w-full flex items-center justify-between gap-3 py-3 px-2 cursor-pointer transition-all text-left rounded-xl ${isSelected ? "bg-teal-50" : "hover:bg-slate-50"}`}
             >
               <div className="flex items-center gap-3 min-w-0">
-                {/* Radio */}
                 <div
                   className={`w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${isSelected ? "border-teal-600 bg-teal-600" : "border-slate-300"}`}
                 >
@@ -633,7 +631,6 @@ const ConsultationPanel = ({
                     <div className="w-1 h-1 bg-white rounded-full" />
                   )}
                 </div>
-                {/* Icône canal */}
                 <div
                   className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600" : "bg-teal-50 border border-teal-100"}`}
                 >
@@ -705,7 +702,6 @@ const ConsultationPanel = ({
   );
 };
 
-// ── ConsultationSheet mobile ─────────────────────────────────────────────────
 const ConsultationSheet = ({
   isOpen,
   onClose,
@@ -765,7 +761,6 @@ const ConsultationSheet = ({
   );
 };
 
-// ── Page principale ──────────────────────────────────────────────────────────
 export default function ProfilePage({ params }: ProfilePageProps) {
   const { id } = use(params);
   const router = useRouter();
@@ -923,6 +918,11 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     avocat.ville
   );
 
+  const avokatProfessions: string[] =
+    (avocat as any).professions?.length > 1
+      ? (avocat as any).professions
+      : [avocat.profession || "avocat"];
+
   const infoItems: InfoItem[] = [
     ...(showContact
       ? allPhones.map((p) => ({
@@ -969,7 +969,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   return (
     <div className="min-h-screen pt-16 pb-24 lg:pb-8 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden w-full">
       <div className="max-w-3xl mx-auto px-4 py-8">
-        {/* Retour */}
         <button
           onClick={() => router.push(`/search?${searchParams.toString()}`)}
           className="back-button opacity-0 invisible flex items-center gap-2 text-teal-600 hover:text-teal-700 cursor-pointer mb-6 text-sm font-medium"
@@ -980,14 +979,25 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         </button>
 
         <div className="space-y-4">
-          {/* ── Hero ── */}
           <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[320px]">
               <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
                 <div>
-                  <p className="text-[10px] font-semibold text-teal-600 uppercase tracking-widest mb-3">
-                    {profInfo.label} · {profInfo.numLabel} {avocat.barreau}
-                  </p>
+                  {/* ── Badges multi-professions ── */}
+                  <div className="flex items-center gap-2 flex-wrap mb-3">
+                    {avokatProfessions.map((p: string) => (
+                      <span
+                        key={p}
+                        className="text-[10px] font-semibold text-teal-600 uppercase tracking-widest bg-teal-50 px-2 py-0.5 rounded-full border border-teal-100"
+                      >
+                        {getProfLabel(p).label}
+                      </span>
+                    ))}
+                    <span className="text-[10px] text-slate-400">
+                      · {profInfo.numLabel} {avocat.barreau}
+                    </span>
+                  </div>
+
                   <h1 className="text-2xl sm:text-3xl font-light text-slate-800 leading-tight mb-1">
                     {toCivilite(avocat.genre)} {avocat.prenom}
                   </h1>
@@ -1085,13 +1095,12 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             </div>
           </div>
 
-          {/* ── Spécialités ── */}
           {avocat.specialites && avocat.specialites.length > 0 && (
             <Card className="content-card opacity-0 invisible shadow-sm">
               <CardHeader>
                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-                  <Briefcase className="w-4 h-4 text-teal-600" />
-                  Domaines d'expertise
+                  <Briefcase className="w-4 h-4 text-teal-600" /> Domaines
+                  d'expertise
                 </div>
               </CardHeader>
               <CardContent>
@@ -1110,7 +1119,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             </Card>
           )}
 
-          {/* ── Consultation panel — après spécialités ── */}
           {showConsultPanel && (
             <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
               <ConsultationPanel
@@ -1127,7 +1135,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             </div>
           )}
 
-          {/* ── Info cards ── */}
           {allInfoItems.length > 0 && (
             <>
               <div className="content-card opacity-0 invisible sm:hidden flex flex-col gap-2.5">
@@ -1155,7 +1162,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             </>
           )}
 
-          {/* ── Carte ── */}
           {hasAddress && (
             <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
               <LawyerMap
@@ -1174,7 +1180,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             </div>
           )}
 
-          {/* ── Avis ── */}
           <div className="reviews-section opacity-0 invisible mt-4">
             <ReviewSection
               lawyerId={avocat.id}
@@ -1184,7 +1189,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         </div>
       </div>
 
-      {/* ── CP-C sticky bottom bar mobile ── */}
       {showConsultPanel && (
         <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-white border-t border-slate-200 px-4 py-3 shadow-lg">
           <div className="flex items-center justify-between gap-3 max-w-lg mx-auto">

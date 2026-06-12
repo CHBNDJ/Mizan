@@ -980,7 +980,7 @@ export default function LawyerRegisterPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
 
-  const [profession, setProfession] = useState<Profession | null>(null);
+  const [professions, setProfessions] = useState<Profession[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<ExtendedLawyerSignupFormData>({
     firstName: "",
@@ -1008,13 +1008,22 @@ export default function LawyerRegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const currentProf = PROFESSIONS.find((p) => p.id === profession);
-  const domaineOptions = profession
-    ? (DOMAINES_PAR_PROFESSION[profession] || []).map((d) => ({
+  const primaryProfession = professions[0] || null;
+  const currentProf = PROFESSIONS.find((p) => p.id === primaryProfession);
+  const domaineOptions = primaryProfession
+    ? (DOMAINES_PAR_PROFESSION[primaryProfession] || []).map((d) => ({
         value: d.toLowerCase().replace(/\s+/g, "-"),
         label: d,
       }))
     : [];
+
+  const handleProfessionSelect = (p: Profession) => {
+    if (p === "expert-comptable") {
+      setProfessions(["expert-comptable", "comptable"]);
+    } else {
+      setProfessions([p]);
+    }
+  };
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -1070,7 +1079,6 @@ export default function LawyerRegisterPage() {
     label: `${c.flag} +${c.code}`,
   }));
   const langueOptions = LANGUES.map((l) => ({ value: l, label: l }));
-  const genreOptions = CIVILITE_OPTIONS;
 
   const inputCls =
     "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white hover:border-teal-300 focus:border-teal-300 focus:border-2 outline-none transition-all duration-200 text-slate-700";
@@ -1083,10 +1091,8 @@ export default function LawyerRegisterPage() {
           .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
           .join(" ")
       : s;
-
-  const handleCap = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCap = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFormData((p) => ({ ...p, [e.target.name]: cap(e.target.value) }));
-  };
   const handleAddr = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fn = e.target.name.replace("address.", "");
     setFormData((p) => ({
@@ -1097,9 +1103,8 @@ export default function LawyerRegisterPage() {
       },
     }));
   };
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
-  };
 
   const validateStep = (step: number): boolean => {
     const e: FormErrors = {};
@@ -1148,7 +1153,7 @@ export default function LawyerRegisterPage() {
   };
 
   const handleNext = () => {
-    if (currentStep === 0 && profession) {
+    if (currentStep === 0 && professions.length > 0) {
       setCurrentStep(1);
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
@@ -1164,7 +1169,7 @@ export default function LawyerRegisterPage() {
   };
 
   const handleSubmit = async () => {
-    if (!validateStep(4) || !profession) return;
+    if (!validateStep(4) || professions.length === 0) return;
     setIsSubmitting(true);
     setErrors({});
     try {
@@ -1187,7 +1192,7 @@ export default function LawyerRegisterPage() {
           setTimeout(() => router.push("/auth/lawyer/login"), 2000);
           return;
         }
-        setErrors({ general: `Un profil existe déjà. Redirection...` });
+        setErrors({ general: "Un profil existe déjà. Redirection..." });
         setIsSubmitting(false);
         setTimeout(() => router.push(`/claim-profile/${existing[0].id}`), 2000);
         return;
@@ -1209,7 +1214,8 @@ export default function LawyerRegisterPage() {
         userType: "lawyer" as const,
         location: formData.address.city.trim(),
         bar_number: formData.barNumber.trim(),
-        profession,
+        profession: primaryProfession!,
+        professions: professions,
         specializations: formData.specializations.map(
           (slug) => domaineOptions.find((o) => o.value === slug)?.label || slug
         ),
@@ -1229,19 +1235,18 @@ export default function LawyerRegisterPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            subject: `🚨 Nouveau ${currentProf?.label || profession} inscrit`,
-            title: `Nouveau ${currentProf?.label || profession} sur Mizan`,
+            subject: `🚨 Nouveau ${currentProf?.label} inscrit`,
+            title: `Nouveau professionnel sur Mizan`,
             message: `
               <p>👤 <strong>Nom :</strong> ${formData.firstName} ${formData.lastName}</p>
               <p>📧 <strong>Email :</strong> ${formData.email}</p>
               <p>📱 <strong>Mobile :</strong> +${selectedMobileCountry}${formData.mobile}</p>
-              <p>📋 <strong>N° ${currentProf?.numLabel || "Pro"} :</strong> ${formData.barNumber}</p>
+              <p>💼 <strong>Professions :</strong> ${professions.join(", ")}</p>
+              <p>📋 <strong>${currentProf?.numLabel} :</strong> ${formData.barNumber}</p>
               <p>📍 <strong>Ville :</strong> ${formData.address.city}, ${formData.address.wilaya}</p>
-              <p>🏢 <strong>Adresse :</strong> ${formData.address.street}, ${formData.address.postalCode}</p>
               <p>⚖️ <strong>Spécialités :</strong> ${formData.specializations.map((s) => domaineOptions.find((o) => o.value === s)?.label || s).join(", ")}</p>
               <p>🗣️ <strong>Langues :</strong> ${formData.languages.join(", ")}</p>
               <p>📅 <strong>Expérience :</strong> ${formData.experience} ans</p>
-              <p>💼 <strong>Profession :</strong> ${currentProf?.label || profession}</p>
             `,
             priority: "high",
           }),
@@ -1306,7 +1311,9 @@ export default function LawyerRegisterPage() {
     2: { title: "Informations du cabinet", sub: "Localisation et coordonnées" },
     3: {
       title:
-        profession === "avocat" ? "Spécialités" : "Domaines d'intervention",
+        primaryProfession === "avocat"
+          ? "Spécialités"
+          : "Domaines d'intervention",
       sub: "Vos spécialités et domaines d'expertise",
     },
     4: { title: "Création de compte", sub: "Vos identifiants de connexion" },
@@ -1323,24 +1330,42 @@ export default function LawyerRegisterPage() {
             Choisissez votre catégorie pour personnaliser le formulaire
           </p>
           <div className="grid grid-cols-2 gap-3">
-            {PROFESSIONS.map((p) => (
-              <button
-                key={p.id}
-                type="button"
-                onClick={() => setProfession(p.id)}
-                className={`p-4 border-2 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer ${profession === p.id ? "border-teal-600 bg-teal-50" : "border-slate-200 bg-white hover:border-teal-300"}`}
-              >
-                <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
-                  <p.Icon className="w-5 h-5 text-teal-600" />
-                </div>
-                <span
-                  className={`text-sm font-semibold ${profession === p.id ? "text-teal-700" : "text-slate-700"}`}
+            {PROFESSIONS.map((p) => {
+              const isSelected = professions[0] === p.id;
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => handleProfessionSelect(p.id)}
+                  className={`p-4 border-2 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer relative ${isSelected ? "border-teal-600 bg-teal-50" : "border-slate-200 bg-white hover:border-teal-300"}`}
                 >
-                  {p.label}
-                </span>
-              </button>
-            ))}
+                  <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
+                    <p.Icon className="w-5 h-5 text-teal-600" />
+                  </div>
+                  <span
+                    className={`text-sm font-semibold ${isSelected ? "text-teal-700" : "text-slate-700"}`}
+                  >
+                    {p.label}
+                  </span>
+                  {isSelected && (
+                    <div className="absolute top-2 right-2 w-5 h-5 bg-teal-600 rounded-full flex items-center justify-center">
+                      <CheckCircle className="w-3 h-3 text-white" />
+                    </div>
+                  )}
+                </button>
+              );
+            })}
           </div>
+
+          {professions[0] === "expert-comptable" && (
+            <div className="mt-4 bg-teal-50 border border-teal-100 rounded-xl px-4 py-3 flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-teal-600 flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-teal-700">
+                Votre profil sera automatiquement visible dans les recherches{" "}
+                <strong>Expert Comptable</strong> et <strong>Comptable</strong>.
+              </p>
+            </div>
+          )}
         </div>
       );
 
@@ -1352,7 +1377,7 @@ export default function LawyerRegisterPage() {
               Civilité *
             </label>
             <CustomSelect
-              options={genreOptions}
+              options={CIVILITE_OPTIONS}
               value={formData.gender}
               onChange={(v) => setFormData((p) => ({ ...p, gender: v }))}
               placeholder="Sélectionnez"
@@ -1565,7 +1590,7 @@ export default function LawyerRegisterPage() {
               {errors.barNumber && <p className={errCls}>{errors.barNumber}</p>}
             </div>
           </div>
-          {profession === "avocat" && (
+          {primaryProfession === "avocat" && (
             <div className="flex items-start gap-3 p-4 border border-amber-200 bg-amber-50 rounded-xl">
               <input
                 type="checkbox"
@@ -1587,8 +1612,7 @@ export default function LawyerRegisterPage() {
                   Je suis agréé auprès de la Cour Suprême et du Conseil d'État
                 </span>
                 <p className="text-xs text-amber-600 mt-0.5 font-normal">
-                  Requiert 10 ans d'ancienneté minimum. Une preuve d'agrément
-                  vous sera demandée lors de la validation.
+                  Requiert 10 ans d'ancienneté minimum.
                 </p>
               </label>
             </div>
@@ -1601,14 +1625,14 @@ export default function LawyerRegisterPage() {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              {profession === "avocat"
+              {primaryProfession === "avocat"
                 ? "Spécialités"
                 : "Domaine(s) d'intervention"}{" "}
               *
             </label>
             <MultiSelectWithCheckboxes
               placeholder={
-                profession === "avocat"
+                primaryProfession === "avocat"
                   ? "Choisissez vos spécialités..."
                   : "Choisissez vos domaines..."
               }
@@ -1626,7 +1650,7 @@ export default function LawyerRegisterPage() {
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1 whitespace-nowrap">
+            <label className="block text-sm font-medium text-slate-700 mb-1">
               Expérience (années) *
             </label>
             <input
@@ -1636,7 +1660,7 @@ export default function LawyerRegisterPage() {
               onChange={(e) => {
                 if (/^\d*$/.test(e.target.value)) handleInput(e);
               }}
-              className={`${inputCls} px-3 placeholder:text-slate-400`}
+              className={`${inputCls} placeholder:text-slate-400`}
               placeholder="5"
               disabled={isSubmitting}
             />
@@ -1644,8 +1668,7 @@ export default function LawyerRegisterPage() {
           </div>
           <div className="bg-teal-50 border border-teal-100 rounded-lg p-3">
             <p className="text-teal-700 text-xs">
-              Les tarifs sont négociés directement entre vous et vos clients —
-              ils n'apparaissent pas sur votre profil public.
+              Les tarifs sont négociés directement entre vous et vos clients.
             </p>
           </div>
         </div>
@@ -1749,27 +1772,24 @@ export default function LawyerRegisterPage() {
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
           <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
-            {profession
+            {professions.length > 0
               ? `Inscription ${currentProf?.label}`
               : "Rejoindre Mizan"}
           </h1>
           <p className="page-subtitle text-slate-600">
-            {profession
-              ? `Créez votre profil de ${currentProf?.label ? (currentProf.label[0].match(/[aeiouAEIOU]/) ? "d'" : "de ") + currentProf.label.toLowerCase() : "professionnel"} vérifié`
+            {professions.length > 0
+              ? "Créez votre profil professionnel vérifié"
               : "Choisissez votre profession pour commencer"}
           </p>
         </div>
 
         <div className="register-form bg-white rounded-2xl shadow-lg p-6 border border-slate-100">
           {currentStep > 0 && <StepIndicator />}
-
           {currentStep > 0 && (
             <div className="mb-6">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs font-semibold text-teal-600 uppercase tracking-wide">
-                  Étape {currentStep} sur 4
-                </span>
-              </div>
+              <span className="text-xs font-semibold text-teal-600 uppercase tracking-wide">
+                Étape {currentStep} sur 4
+              </span>
               <h2 className="text-lg font-bold text-slate-900">
                 {stepMeta[currentStep]?.title}
               </h2>
@@ -1778,15 +1798,12 @@ export default function LawyerRegisterPage() {
               </p>
             </div>
           )}
-
           {errors.general && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-600 text-sm">{errors.general}</p>
             </div>
           )}
-
           {renderStep()}
-
           <div className="flex items-center justify-between mt-6">
             <button
               type="button"
@@ -1799,7 +1816,7 @@ export default function LawyerRegisterPage() {
               <button
                 type="button"
                 onClick={handleNext}
-                disabled={currentStep === 0 && !profession}
+                disabled={currentStep === 0 && professions.length === 0}
                 className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-sm font-semibold bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white transition-all cursor-pointer"
               >
                 Continuer <ChevronRight className="w-4 h-4" />
@@ -1825,7 +1842,6 @@ export default function LawyerRegisterPage() {
             )}
           </div>
         </div>
-
         <div className="text-center mt-4">
           <span className="text-sm text-slate-600">
             Vous avez déjà un compte ?{" "}
