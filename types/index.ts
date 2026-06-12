@@ -6,6 +6,7 @@ export interface AvocatData {
   bio?: string;
   titre: string;
   profession?: string;
+  professions?: string[];
   genre?: "homme" | "femme";
   specialites?: string[];
   barreau: string;

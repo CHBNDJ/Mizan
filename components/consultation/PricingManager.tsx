@@ -49,7 +49,11 @@ const CANAUX = [
   },
 ];
 
-export default function PricingManager() {
+interface Props {
+  profession?: string;
+}
+
+export default function PricingManager({ profession }: Props) {
   const supabase = createClient();
   const { user } = useAuth();
   const [prices, setPrices] = useState<Record<string, string>>({});
@@ -58,12 +62,19 @@ export default function PricingManager() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
+  const activeProfession =
+    profession ||
+    (typeof window !== "undefined"
+      ? localStorage.getItem("activeProfession") || "default"
+      : "default");
+
   useEffect(() => {
     if (!user) return;
     supabase
       .from("consultation_pricing")
       .select("*")
       .eq("lawyer_id", user.id)
+      .eq("profession", activeProfession)
       .then(({ data }) => {
         const p: Record<string, string> = {};
         const i: Record<string, string> = {};
@@ -76,7 +87,7 @@ export default function PricingManager() {
         setIds(i);
         setLoading(false);
       });
-  }, [user]);
+  }, [user, activeProfession]);
 
   const handleSave = async () => {
     if (!user) return;
@@ -90,6 +101,7 @@ export default function PricingManager() {
           duration: c.duration,
           base_price: prices[c.type] ? parseInt(prices[c.type]) : null,
           is_active: true,
+          profession: activeProfession,
         };
         if (ids[c.type]) {
           await supabase
@@ -122,9 +134,15 @@ export default function PricingManager() {
   return (
     <div className="space-y-3">
       <p className="text-xs text-slate-500 mb-4">
-        Indiquez votre tarif indicatif en DA pour chaque canal. Laissez vide
-        pour afficher "Tarif sur demande". Tous les canaux sont visibles par les
-        clients — vous fixez uniquement le prix.
+        Tarifs pour votre profil{" "}
+        <strong>
+          {activeProfession === "expert-comptable"
+            ? "Expert Comptable"
+            : activeProfession === "comptable"
+              ? "Comptable"
+              : activeProfession}
+        </strong>
+        . Laissez vide pour "Tarif sur demande".
       </p>
       {CANAUX.map((c) => {
         const Icon = c.icon;

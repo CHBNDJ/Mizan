@@ -444,7 +444,6 @@ export const AVOCATS_DATABASE: AvocatsDatabase = {
   },
 };
 
-// ── Domaines par profession ────────────────────────────────────
 export const DOMAINES_PAR_PROFESSION: Record<string, string[]> = {
   avocat: [...SPECIALITES],
   notaire: [
@@ -507,7 +506,6 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
       .join(" ");
   };
-
   const capitalizeSpecialites = (specs: string[]): string[] => {
     if (!specs || !Array.isArray(specs)) return [];
     return specs.map((s) => capitalizeWords(s.trim()));
@@ -515,11 +513,9 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
 
   const userAddress = lawyer.users?.address;
   const genre = dbToFrontend(lawyer.users?.gender);
-
   const ville = userAddress?.city
     ? capitalizeWords(userAddress.city)
     : capitalizeWords(lawyer.users?.location || "Alger");
-
   const wilaya = userAddress?.wilaya
     ? capitalizeWords(userAddress.wilaya)
     : capitalizeWords(lawyer.users?.location || "Alger");
@@ -576,6 +572,7 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     consultation_price: lawyer.consultation_price,
     created_at: lawyer.users?.created_at || lawyer.created_at || null,
     profession: lawyer.profession || "avocat",
+    professions: lawyer.professions || [lawyer.profession || "avocat"],
     is_cour_supreme: lawyer.is_cour_supreme || false,
     bio: lawyer.bio || undefined,
   };
@@ -588,12 +585,14 @@ export async function getSupabaseAvocats(
   try {
     let query = supabase
       .from("lawyers")
-      .select("*")
+      .select("*, professions")
       .eq("is_verified", true)
       .order("ranking_score", { ascending: false, nullsFirst: false });
 
     if (profession) {
-      query = query.eq("profession", profession);
+      query = query.or(
+        `profession.eq.${profession},professions.cs.{${profession}}`
+      );
     }
 
     const { data: lawyers, error: lawyersError } = await query;
@@ -640,28 +639,23 @@ export async function searchAvocats(
       );
       if (!hasMatch) return false;
     }
-
     if (filters.wilaya) {
       const ok =
         avocat.wilaya === filters.wilaya ||
         avocat.wilaya?.toLowerCase() === filters.wilaya.toLowerCase();
       if (!ok) return false;
     }
-
     if (filters.genre && avocat.genre !== filters.genre) return false;
-
     if (filters.experience_min && filters.experience_min > 0) {
       if ((avocat.experience?.annees || 0) < filters.experience_min)
         return false;
     }
-
     if (filters.langues) {
       const ok = avocat.langues?.some((l) =>
         l.toLowerCase().includes(filters.langues!.toLowerCase())
       );
       if (!ok) return false;
     }
-
     return true;
   });
 }
@@ -734,11 +728,46 @@ export async function getTopRatedAvocats(
   }
 }
 
-export function getSpecialites(profession?: string): string[] {
-  if (profession && DOMAINES_PAR_PROFESSION[profession]) {
-    return [...DOMAINES_PAR_PROFESSION[profession]].sort();
+export async function getAvocatById(id: string): Promise<AvocatData | null> {
+  const supabase = createClient();
+  try {
+    const { data: lawyer, error: lawyerError } = await supabase
+      .from("lawyers")
+      .select(
+        "id, bar_number, specializations, experience_years, consultation_price, is_verified, is_claimed, claimed_at, rating_google, reviews_count_google, rating_mizan, reviews_count_mizan, updated_at, created_at, profession, professions, is_cour_supreme, bio"
+      )
+      .eq("id", id)
+      .eq("is_verified", true)
+      .maybeSingle();
+
+    if (lawyerError || !lawyer) return null;
+
+    const { data: user, error: userError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", id)
+      .eq("user_type", "lawyer")
+      .is("deleted_at", null)
+      .maybeSingle();
+
+    if (userError || !user) return null;
+    return convertSupabaseToAvocatData({ ...lawyer, users: user });
+  } catch {
+    return null;
   }
+}
+
+export function getSpecialites(profession?: string): string[] {
+  if (profession && DOMAINES_PAR_PROFESSION[profession])
+    return [...DOMAINES_PAR_PROFESSION[profession]].sort();
   return [...SPECIALITES].sort();
+}
+
+export async function getAvocatsByWilaya(
+  wilaya: string
+): Promise<AvocatData[]> {
+  const all = await getSupabaseAvocats();
+  return all.filter((a) => a.wilaya.toLowerCase() === wilaya.toLowerCase());
 }
 
 export function getVilles(): string[] {
@@ -767,40 +796,4 @@ export function getAvocatsBySpecialite(_: string): AvocatData[] {
 }
 export function getRandomAvocats(_: number): AvocatData[] {
   return [];
-}
-
-export async function getAvocatsByWilaya(
-  wilaya: string
-): Promise<AvocatData[]> {
-  const all = await getSupabaseAvocats();
-  return all.filter((a) => a.wilaya.toLowerCase() === wilaya.toLowerCase());
-}
-
-export async function getAvocatById(id: string): Promise<AvocatData | null> {
-  const supabase = createClient();
-  try {
-    const { data: lawyer, error: lawyerError } = await supabase
-      .from("lawyers")
-      .select(
-        "id, bar_number, specializations, experience_years, consultation_price, is_verified, is_claimed, claimed_at, rating_google, reviews_count_google, rating_mizan, reviews_count_mizan, updated_at, created_at, profession, is_cour_supreme, bio"
-      )
-      .eq("id", id)
-      .eq("is_verified", true)
-      .maybeSingle();
-
-    if (lawyerError || !lawyer) return null;
-
-    const { data: user, error: userError } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", id)
-      .eq("user_type", "lawyer")
-      .is("deleted_at", null)
-      .maybeSingle();
-
-    if (userError || !user) return null;
-    return convertSupabaseToAvocatData({ ...lawyer, users: user });
-  } catch {
-    return null;
-  }
 }

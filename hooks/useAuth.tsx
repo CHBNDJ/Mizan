@@ -409,7 +409,11 @@ interface AuthContextType extends AuthState {
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
   isAuthenticated: boolean;
-  getRedirectPath: (userType: string, action: "login" | "register") => string;
+  getRedirectPath: (
+    userType: string,
+    action: "login" | "register",
+    lawyerProf?: any
+  ) => string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -450,8 +454,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const getRedirectPath = (userType: string, action: "login" | "register") =>
-    userType === "lawyer" ? "/lawyer/dashboard" : "/";
+  const getRedirectPath = (
+    userType: string,
+    action: "login" | "register",
+    lawyerProf?: any
+  ) => {
+    if (userType === "lawyer") {
+      if (lawyerProf?.profession && typeof window !== "undefined") {
+        localStorage.setItem("activeProfession", lawyerProf.profession);
+      }
+      return "/lawyer/dashboard";
+    }
+    return "/";
+  };
 
   const refreshProfile = async () => {
     if (!state.user?.id) return;
@@ -510,7 +525,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         gender: userData.gender || null,
         languages: userData.languages || ["Arabe", "Français"],
       };
-
       if (userData.userType === "lawyer") {
         metaData.bar_number = userData.bar_number || "";
         metaData.profession = userData.profession || "avocat";
@@ -525,14 +539,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         password,
         options: { data: metaData, emailRedirectTo: undefined },
       });
-
       if (authError) throw new Error(authError.message);
       if (!authData.user) throw new Error("Échec de création d'utilisateur");
 
       await new Promise((resolve) => setTimeout(resolve, 2500));
 
       try {
-        if (userData.languages && userData.languages.length > 0) {
+        if (userData.languages?.length) {
           await supabase
             .from("users")
             .update({ languages: userData.languages })
@@ -545,10 +558,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             .eq("id", authData.user.id);
         }
         if (userData.userType === "lawyer" && userData.profession) {
-          const professionsToSet =
-            userData.professions && userData.professions.length > 0
-              ? userData.professions
-              : [userData.profession];
+          const professionsToSet = userData.professions?.length
+            ? userData.professions
+            : [userData.profession];
           await supabase
             .from("lawyers")
             .update({
@@ -558,11 +570,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             .eq("id", authData.user.id);
         }
       } catch (updateError) {
-        console.warn("Mise à jour post-signup partielle:", updateError);
+        console.warn("Post-signup update partielle:", updateError);
       }
 
       try {
-        const codeResponse = await fetch("/api/send-verification-code", {
+        const codeRes = await fetch("/api/send-verification-code", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -571,7 +583,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             userType: userData.userType,
           }),
         });
-        if (!codeResponse.ok) throw new Error("Erreur envoi code");
+        if (!codeRes.ok) throw new Error("Erreur envoi code");
       } catch {
         throw new Error("Impossible d'envoyer le code de vérification");
       }
@@ -638,9 +650,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         lawyerProfile,
         loading: false,
       });
+
+      const redirectPath = getRedirectPath(
+        profile?.user_type || "client",
+        "login",
+        lawyerProfile
+      );
       return {
         ...authData,
-        redirectPath: getRedirectPath(profile?.user_type || "client", "login"),
+        redirectPath,
         userType: profile?.user_type || "client",
       };
     } catch (error: any) {
@@ -658,6 +676,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     try {
+      localStorage.removeItem("activeProfession");
       setState({
         user: null,
         session: null,
