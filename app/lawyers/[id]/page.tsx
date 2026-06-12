@@ -340,13 +340,11 @@ const VideoConsultationModal = ({
         consultationId = nc?.id;
       }
       if (consultationId) {
-        await supabase
-          .from("messages")
-          .insert({
-            consultation_id: consultationId,
-            sender_id: userId,
-            content: `📹 Demande de consultation vidéo\n\n📅 Date souhaitée : ${date} à ${heure}\n📝 Motif : ${description.trim()}\n\nLien : ${getJitsiUrl(avocat.id)}\n\nMerci de confirmer ce créneau et d'indiquer vos honoraires.`,
-          });
+        await supabase.from("messages").insert({
+          consultation_id: consultationId,
+          sender_id: userId,
+          content: `📹 Demande de consultation vidéo\n\n📅 Date souhaitée : ${date} à ${heure}\n📝 Motif : ${description.trim()}\n\nLien : ${getJitsiUrl(avocat.id)}\n\nMerci de confirmer ce créneau et d'indiquer vos honoraires.`,
+        });
       }
       setSent(true);
       setTimeout(() => {
@@ -526,12 +524,6 @@ const ConsultationPanel = ({
       desc: "Consultation vidéo",
       duration: "1 heure",
     },
-    {
-      type: "email",
-      label: "Email",
-      desc: "Réponse sous 48h",
-      duration: undefined,
-    },
   ];
   const canaux = ALL_CANAUX.map((c) => ({
     ...c,
@@ -576,13 +568,11 @@ const ConsultationPanel = ({
           ? `\n💰 Tarif : ${price.base_price.toLocaleString()} DA`
           : "";
         const durStr = canal.duration ? ` · ${canal.duration}` : "";
-        await supabase
-          .from("messages")
-          .insert({
-            consultation_id: cid,
-            sender_id: user.id,
-            content: `📋 Demande de consultation\n\n🔔 ${canal.label}${durStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif.`,
-          });
+        await supabase.from("messages").insert({
+          consultation_id: cid,
+          sender_id: user.id,
+          content: `📋 Demande de consultation\n\n🔔 ${canal.label}${durStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif.`,
+        });
       }
       setSent(true);
       setTimeout(() => {
