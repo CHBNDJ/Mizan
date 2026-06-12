@@ -340,11 +340,13 @@ const VideoConsultationModal = ({
         consultationId = nc?.id;
       }
       if (consultationId) {
-        await supabase.from("messages").insert({
-          consultation_id: consultationId,
-          sender_id: userId,
-          content: `📹 Demande de consultation vidéo\n\n📅 Date souhaitée : ${date} à ${heure}\n📝 Motif : ${description.trim()}\n\nLien : ${getJitsiUrl(avocat.id)}\n\nMerci de confirmer ce créneau et d'indiquer vos honoraires.`,
-        });
+        await supabase
+          .from("messages")
+          .insert({
+            consultation_id: consultationId,
+            sender_id: userId,
+            content: `📹 Demande de consultation vidéo\n\n📅 Date souhaitée : ${date} à ${heure}\n📝 Motif : ${description.trim()}\n\nLien : ${getJitsiUrl(avocat.id)}\n\nMerci de confirmer ce créneau et d'indiquer vos honoraires.`,
+          });
       }
       setSent(true);
       setTimeout(() => {
@@ -568,11 +570,13 @@ const ConsultationPanel = ({
           ? `\n💰 Tarif : ${price.base_price.toLocaleString()} DA`
           : "";
         const durStr = canal.duration ? ` · ${canal.duration}` : "";
-        await supabase.from("messages").insert({
-          consultation_id: cid,
-          sender_id: user.id,
-          content: `📋 Demande de consultation\n\n🔔 ${canal.label}${durStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif.`,
-        });
+        await supabase
+          .from("messages")
+          .insert({
+            consultation_id: cid,
+            sender_id: user.id,
+            content: `📋 Demande de consultation\n\n🔔 ${canal.label}${durStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif.`,
+          });
       }
       setSent(true);
       setTimeout(() => {
@@ -1178,29 +1182,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
         </div>
       </div>
-
-      {showConsultPanel && (
-        <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-white border-t border-slate-200 px-4 py-3 shadow-lg">
-          <div className="flex items-center justify-between gap-3 max-w-lg mx-auto">
-            <div className="min-w-0">
-              <p className="text-xs text-slate-500 truncate">
-                {avocat.prenom} {avocat.nom}
-              </p>
-              <p className="text-sm font-semibold text-slate-800 truncate">
-                {avocat.consultation_price
-                  ? `Consultation dès ${avocat.consultation_price.toLocaleString("fr-DZ")} DA`
-                  : "Consultation disponible"}
-              </p>
-            </div>
-            <button
-              onClick={() => setIsConsultSheetOpen(true)}
-              className="flex-shrink-0 bg-teal-600 hover:bg-teal-700 text-white px-5 py-2.5 rounded-xl font-semibold text-sm cursor-pointer transition-all whitespace-nowrap"
-            >
-              Consulter →
-            </button>
-          </div>
-        </div>
-      )}
 
       <VideoConsultationModal
         isOpen={isVideoModalOpen}
