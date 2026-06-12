@@ -309,7 +309,7 @@ export const LOCATION = [
   { value: "yemen", label: "Yémen" },
   { value: "zambie", label: "Zambie" },
   { value: "zimbabwe", label: "Zimbabwe" },
-] as const;
+];
 
 export const LANGUES = [
   "Arabe",
