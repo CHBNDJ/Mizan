@@ -7,16 +7,60 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
+  { auth: { autoRefreshToken: false, persistSession: false } }
+);
+
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const WINDOW_MS = 60 * 60 * 1000;
+const MAX_REQUESTS = 3;
+
+function getIp(req: NextRequest): string {
+  const forwarded = req.headers.get("x-forwarded-for");
+  return forwarded ? forwarded.split(",")[0].trim() : "unknown";
+}
+
+function checkRateLimit(ip: string): { allowed: boolean; resetIn: number } {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+    return { allowed: true, resetIn: WINDOW_MS };
   }
+  if (entry.count >= MAX_REQUESTS) {
+    return { allowed: false, resetIn: entry.resetAt - now };
+  }
+  entry.count += 1;
+  return { allowed: true, resetIn: entry.resetAt - now };
+}
+
+setInterval(
+  () => {
+    const now = Date.now();
+    for (const [key, entry] of rateLimitMap.entries()) {
+      if (now > entry.resetAt) rateLimitMap.delete(key);
+    }
+  },
+  10 * 60 * 1000
 );
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = getIp(request);
+    const rl = checkRateLimit(ip);
+
+    if (!rl.allowed) {
+      const minutesLeft = Math.ceil(rl.resetIn / 60000);
+      return NextResponse.json(
+        {
+          error: `Trop de tentatives. Réessayez dans ${minutesLeft} minute${minutesLeft > 1 ? "s" : ""}.`,
+        },
+        {
+          status: 429,
+          headers: { "Retry-After": String(Math.ceil(rl.resetIn / 1000)) },
+        }
+      );
+    }
+
     const { email, firstName, userType } = await request.json();
 
     if (!email || !userType) {
@@ -34,8 +78,8 @@ export async function POST(request: NextRequest) {
     const { error: insertError } = await supabaseAdmin
       .from("email_verifications")
       .insert({
-        email: email,
-        code: code,
+        email,
+        code,
         user_type: userType,
         expires_at: expiresAt.toISOString(),
       });
@@ -56,65 +100,39 @@ export async function POST(request: NextRequest) {
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
           </head>
-          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f0fdfa;">
-            <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f0fdfa; padding: 40px 20px;">
+          <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f0fdfa;">
+            <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f0fdfa;padding:40px 20px;">
               <tr>
                 <td align="center">
-                  <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-
+                  <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:16px;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
                     <tr>
-                      <td style="background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%); padding: 40px 30px; text-align: center;">
-                        <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold;">
-                          🔐 Code de vérification
-                        </h1>
+                      <td style="background:linear-gradient(135deg,#0d9488 0%,#14b8a6 100%);padding:40px 30px;text-align:center;">
+                        <h1 style="margin:0;color:#ffffff;font-size:28px;font-weight:bold;">🔐 Code de vérification</h1>
                       </td>
                     </tr>
-
                     <tr>
-                      <td style="padding: 40px 30px;">
-                        <p style="margin: 0 0 20px; color: #334155; font-size: 16px;">
-                          Bonjour ${firstName || ""},
+                      <td style="padding:40px 30px;">
+                        <p style="margin:0 0 20px;color:#334155;font-size:16px;">Bonjour ${firstName || ""},</p>
+                        <p style="margin:0 0 30px;color:#334155;font-size:16px;">
+                          Merci de vous être inscrit sur <strong>Mizan</strong> ! Pour finaliser la création de votre compte ${userType === "lawyer" ? "professionnel" : "client"}, veuillez entrer le code ci-dessous :
                         </p>
-
-                        <p style="margin: 0 0 30px; color: #334155; font-size: 16px;">
-                          Merci de vous être inscrit sur <strong>Mizan</strong> ! Pour finaliser la création de votre compte ${userType === "lawyer" ? "avocat" : "client"}, veuillez entrer le code ci-dessous :
-                        </p>
-
-                        <div style="background-color: #f0fdfa; border: 2px dashed #0d9488; border-radius: 12px; padding: 30px; text-align: center; margin: 30px 0;">
-                          <p style="margin: 0 0 10px; color: #64748b; font-size: 14px; font-weight: 600;">
-                            VOTRE CODE DE VÉRIFICATION
-                          </p>
-                          <p style="margin: 0; color: #0f172a; font-size: 42px; font-weight: bold; letter-spacing: 8px; font-family: 'Courier New', monospace;">
-                            ${code}
-                          </p>
+                        <div style="background-color:#f0fdfa;border:2px dashed #0d9488;border-radius:12px;padding:30px;text-align:center;margin:30px 0;">
+                          <p style="margin:0 0 10px;color:#64748b;font-size:14px;font-weight:600;">VOTRE CODE DE VÉRIFICATION</p>
+                          <p style="margin:0;color:#0f172a;font-size:42px;font-weight:bold;letter-spacing:8px;font-family:'Courier New',monospace;">${code}</p>
                         </div>
-
-                        <p style="margin: 0 0 20px; color: #334155; font-size: 14px;">
-                          ⏱️ <strong>Ce code est valide pendant 15 minutes.</strong>
-                        </p>
-
-                        <p style="margin: 0; color: #64748b; font-size: 14px;">
-                          Si vous n'avez pas demandé cette vérification, ignorez cet email.
-                        </p>
+                        <p style="margin:0 0 20px;color:#334155;font-size:14px;">⏱️ <strong>Ce code est valide pendant 15 minutes.</strong></p>
+                        <p style="margin:0;color:#64748b;font-size:14px;">Si vous n'avez pas demandé cette vérification, ignorez cet email.</p>
                       </td>
                     </tr>
-
                     <tr>
-                      <td style="background-color: #f8fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-                        <p style="margin: 0 0 10px; color: #64748b; font-size: 14px;">
-                          Besoin d'aide ?
+                      <td style="background-color:#f8fafc;padding:30px;text-align:center;border-top:1px solid #e2e8f0;">
+                        <p style="margin:0 0 10px;color:#64748b;font-size:14px;">Besoin d'aide ?</p>
+                        <p style="margin:0;color:#0d9488;font-size:14px;font-weight:600;">
+                          <a href="mailto:support@mizan-dz.com" style="color:#0d9488;text-decoration:none;">support@mizan-dz.com</a>
                         </p>
-                        <p style="margin: 0; color: #0d9488; font-size: 14px; font-weight: 600;">
-                          <a href="mailto:support@mizan-dz.com" style="color: #0d9488; text-decoration: none;">
-                            support@mizan-dz.com
-                          </a>
-                        </p>
-                        <p style="margin: 20px 0 0; color: #94a3b8; font-size: 12px;">
-                          © ${new Date().getFullYear()} Mizan
-                        </p>
+                        <p style="margin:20px 0 0;color:#94a3b8;font-size:12px;">© ${new Date().getFullYear()} Mizan</p>
                       </td>
                     </tr>
-
                   </table>
                 </td>
               </tr>

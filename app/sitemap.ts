@@ -6,6 +6,14 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+const PROFESSIONS = [
+  "avocat",
+  "notaire",
+  "huissier",
+  "comptable",
+  "expert-comptable",
+];
+
 const SPECIALITES_SLUGS = [
   "droit-de-la-famille",
   "droit-commercial",
@@ -86,6 +94,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
+  const professionPages: MetadataRoute.Sitemap = PROFESSIONS.map((prof) => ({
+    url: `${baseUrl}/professions/${prof}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.95,
+  }));
+
+  const searchProfessionPages: MetadataRoute.Sitemap = PROFESSIONS.map(
+    (prof) => ({
+      url: `${baseUrl}/search?profession=${prof}`,
+      lastModified: new Date(),
+      changeFrequency: "daily" as const,
+      priority: 0.85,
+    })
+  );
+
   const specialitePages: MetadataRoute.Sitemap = SPECIALITES_SLUGS.map(
     (slug) => ({
       url: `${baseUrl}/lawyers/specialite/${slug}`,
@@ -103,60 +127,56 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   try {
-    const { data: lawyers, error: lawyersError } = await supabase
+    const { data: lawyers } = await supabase
       .from("lawyers")
-      .select("id, updated_at, users!inner(id, user_type)")
+      .select("id, updated_at, users!inner(user_type)")
       .eq("is_verified", true)
       .eq("users.user_type", "lawyer");
 
-    if (lawyersError) {
-      console.error("Erreur récupération lawyers pour sitemap:", lawyersError);
-    }
-
-    const lawyerPages: MetadataRoute.Sitemap =
-      lawyers?.map((lawyer) => ({
+    const lawyerPages: MetadataRoute.Sitemap = (lawyers || []).map(
+      (lawyer) => ({
         url: `${baseUrl}/lawyers/${lawyer.id}`,
         lastModified: new Date(lawyer.updated_at || new Date()),
         changeFrequency: "weekly" as const,
         priority: 0.8,
-      })) || [];
+      })
+    );
 
-    const { data: wilayasData, error: wilayasError } = await supabase
-      .from("lawyers")
-      .select("wilayas")
-      .eq("is_verified", true);
-
-    if (wilayasError) {
-      console.error("Erreur récupération wilayas pour sitemap:", wilayasError);
-    }
+    const { data: usersData } = await supabase
+      .from("users")
+      .select("address")
+      .eq("user_type", "lawyer");
 
     const wilayasSet = new Set<string>();
-    wilayasData?.forEach((lawyer) => {
-      if (lawyer.wilayas && Array.isArray(lawyer.wilayas)) {
-        lawyer.wilayas.forEach((wilaya: string) => {
-          if (wilaya) wilayasSet.add(wilaya.toLowerCase());
-        });
-      }
+    usersData?.forEach((u) => {
+      if (u.address?.wilaya) wilayasSet.add(u.address.wilaya.toLowerCase());
     });
 
-    const wilayaPages: MetadataRoute.Sitemap = Array.from(wilayasSet).map(
-      (wilaya) => ({
-        url: `${baseUrl}/wilayas/${encodeURIComponent(wilaya)}`,
-        lastModified: new Date(),
-        changeFrequency: "weekly" as const,
-        priority: 0.75,
-      })
+    const wilayaPages: MetadataRoute.Sitemap = Array.from(wilayasSet).flatMap(
+      (wilaya) =>
+        PROFESSIONS.map((prof) => ({
+          url: `${baseUrl}/search?profession=${prof}&wilaya=${encodeURIComponent(wilaya)}`,
+          lastModified: new Date(),
+          changeFrequency: "weekly" as const,
+          priority: 0.75,
+        }))
     );
 
     return [
       ...staticPages,
+      ...professionPages,
+      ...searchProfessionPages,
       ...specialitePages,
       ...blogPages,
       ...lawyerPages,
       ...wilayaPages,
     ];
-  } catch (error) {
-    console.error("Erreur génération sitemap:", error);
-    return [...staticPages, ...specialitePages, ...blogPages];
+  } catch {
+    return [
+      ...staticPages,
+      ...professionPages,
+      ...specialitePages,
+      ...blogPages,
+    ];
   }
 }
