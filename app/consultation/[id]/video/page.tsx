@@ -85,11 +85,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
       .eq("id", id);
 
     const isLawyerUser = user?.id === consultation?.lawyer_id;
-    router.push(
-      isLawyerUser
-        ? "/lawyer/consultations?feedback=true"
-        : "/mes-consultations?feedback=true"
-    );
+    router.push(isLawyerUser ? "/lawyer/consultations" : "/mes-consultations");
   };
 
   if (!user)
