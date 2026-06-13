@@ -424,7 +424,7 @@
 // }
 
 "use client";
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   ArrowLeft,
@@ -479,6 +479,7 @@ function SearchResults() {
   const [sortBy, setSortBy] = useState("");
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [page, setPage] = useState(1);
+  const prevPageRef = useRef(1);
 
   const professionParam = searchParams.get("profession") || "avocat";
   const currentProf =
@@ -518,16 +519,30 @@ function SearchResults() {
       { autoAlpha: 1, y: 0, duration: 0.5, ease: "power3.out" }
     );
     if (avocats.length > 0) {
-      gsap.set(".search-avocat-card", { autoAlpha: 0, y: 20 });
-      gsap.to(".search-avocat-card", {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.5,
-        stagger: 0.04,
-        delay: 0.1,
-      });
+      gsap.fromTo(
+        ".search-avocat-card",
+        { autoAlpha: 0, y: 20 },
+        { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.04, delay: 0.1 }
+      );
     }
+    prevPageRef.current = 1;
   }, [loading, avocats.length]);
+
+  useEffect(() => {
+    if (page <= 1 || page <= prevPageRef.current) return;
+    prevPageRef.current = page;
+    setTimeout(() => {
+      const cards = document.querySelectorAll(".search-avocat-card");
+      const newCards = Array.from(cards).slice((page - 1) * PAGE_SIZE);
+      if (newCards.length > 0) {
+        gsap.fromTo(
+          newCards,
+          { autoAlpha: 0, y: 20 },
+          { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.04 }
+        );
+      }
+    }, 50);
+  }, [page]);
 
   const updateURL = (f: SearchFilters) => {
     const p = new URLSearchParams();
@@ -674,7 +689,7 @@ function SearchResults() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <style>{`.search-header { opacity:0; }`}</style>
+      <style>{`.search-header { opacity:0; } .search-avocat-card { opacity:0; }`}</style>
 
       <div className="search-header sticky top-16 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
