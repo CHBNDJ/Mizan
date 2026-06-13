@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import {
   User,
@@ -440,14 +441,16 @@ function ProfilePageContent() {
                 <div className="relative w-24 h-24 mx-auto mb-2 group">
                   {avatarUrl ? (
                     <>
-                      <img
+                      <Image
                         src={avatarUrl}
                         alt="Photo"
+                        fill
                         onClick={() => {
                           setSelectedImage(avatarUrl);
                           setShowCropModal(true);
                         }}
-                        className="w-full h-full rounded-full object-cover border-4 border-teal-100 shadow-lg cursor-pointer hover:opacity-90 hover:scale-105 transition-all"
+                        className="rounded-full object-cover border-4 border-teal-100 shadow-lg cursor-pointer hover:opacity-90 hover:scale-105 transition-all"
+                        sizes="96px"
                       />
                       <label
                         htmlFor="avatar-upload"

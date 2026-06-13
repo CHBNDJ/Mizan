@@ -578,6 +578,17 @@ const ConsultationPanel = ({
             content: `📋 Demande de consultation\n\n🔔 ${canal.label}${durStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif.`,
           });
       }
+      fetch("/api/push/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lawyer_id: avocat.id,
+          title: "Nouvelle demande de consultation",
+          body: `Un client souhaite vous consulter via ${canal.label}`,
+          url: "/lawyer/consultations",
+        }),
+      }).catch(() => {});
+
       setSent(true);
       setTimeout(() => {
         setSent(false);
@@ -1075,10 +1086,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               </div>
               <div className="hero-right opacity-0 invisible bg-gradient-to-b from-teal-500 to-teal-800 flex items-center justify-center relative order-first sm:order-last min-h-[260px] sm:min-h-0">
                 {avocat.avatar_url ? (
-                  <img
+                  <Image
                     src={avocat.avatar_url}
                     alt={`${avocat.prenom} ${avocat.nom}`}
-                    className="w-full h-full object-cover absolute inset-0"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, 220px"
+                    priority
                   />
                 ) : (
                   <span className="text-6xl font-bold text-white/90">
