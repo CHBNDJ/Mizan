@@ -12,8 +12,10 @@
 //   AlertCircle,
 //   User,
 //   ArrowLeft,
+//   Video,
 // } from "lucide-react";
 // import { gsap } from "gsap";
+// import { JoinCallButton } from "@/components/consultation/JoinCallButton";
 
 // export default function MesConsultationsPage() {
 //   const supabase = createClient();
@@ -52,7 +54,6 @@
 //   useEffect(() => {
 //     if (selectedConsultation) loadMessages(selectedConsultation.id);
 //   }, [selectedConsultation]);
-
 //   useEffect(() => {
 //     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 //   }, [messages]);
@@ -205,6 +206,7 @@
 //           return {
 //             id: item.id,
 //             status: item.status as "pending" | "answered" | "closed",
+//             subject: item.subject || "",
 //             created_at: item.created_at,
 //             unread_count: count || 0,
 //             lawyer: {
@@ -215,7 +217,7 @@
 //         })
 //       );
 //       setConsultations(withUnread);
-//     } catch (error) {
+//     } catch {
 //       setError("Erreur lors du chargement des consultations.");
 //     } finally {
 //       setLoading(false);
@@ -233,9 +235,7 @@
 //         .order("created_at", { ascending: true });
 //       if (err) throw err;
 //       setMessages(data || []);
-//     } catch (error) {
-//       console.error("Erreur messages:", error);
-//     }
+//     } catch {}
 //   };
 
 //   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -332,21 +332,29 @@
 //     await markMessagesAsRead(consultation.id);
 //   };
 
-//   const formatDate = (dateString: string) =>
-//     new Date(dateString).toLocaleDateString("fr-FR", {
+//   const isVideoConsultation = (subject?: string) => {
+//     if (!subject) return false;
+//     return (
+//       subject.toLowerCase().includes("vidéo") ||
+//       subject.toLowerCase().includes("video")
+//     );
+//   };
+
+//   const formatDate = (d: string) =>
+//     new Date(d).toLocaleDateString("fr-FR", {
 //       day: "numeric",
 //       month: "long",
 //       year: "numeric",
 //       hour: "2-digit",
 //       minute: "2-digit",
 //     });
-//   const formatTime = (dateString: string) =>
-//     new Date(dateString).toLocaleTimeString("fr-FR", {
+//   const formatTime = (d: string) =>
+//     new Date(d).toLocaleTimeString("fr-FR", {
 //       hour: "2-digit",
 //       minute: "2-digit",
 //     });
 
-//   if (loading) {
+//   if (loading)
 //     return (
 //       <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
 //         <div className="max-w-6xl mx-auto px-4 py-8 space-y-4">
@@ -360,7 +368,6 @@
 //         </div>
 //       </div>
 //     );
-//   }
 
 //   const ChatPanel = () => (
 //     <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col h-[600px]">
@@ -384,6 +391,12 @@
 //               {formatDate(selectedConsultation!.created_at)}
 //             </p>
 //           </div>
+//           {isVideoConsultation((selectedConsultation as any)?.subject) && (
+//             <JoinCallButton
+//               consultationId={selectedConsultation!.id}
+//               canal="video_30"
+//             />
+//           )}
 //           {selectedConsultation!.status === "answered" &&
 //             (selectedConsultation!.unread_count ?? 0) === 0 && (
 //               <CheckCircle className="w-5 h-5 text-teal-600 flex-shrink-0" />
@@ -640,10 +653,19 @@
 //                           Me. {consultation.lawyer.first_name}{" "}
 //                           {consultation.lawyer.last_name}
 //                         </h3>
-//                         <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
-//                           <Calendar className="w-3 h-3" />
-//                           {formatDate(consultation.created_at)}
-//                         </p>
+//                         <div className="flex items-center gap-2 mt-0.5">
+//                           <p className="text-xs text-slate-500 flex items-center gap-1">
+//                             <Calendar className="w-3 h-3" />
+//                             {formatDate(consultation.created_at)}
+//                           </p>
+//                           {isVideoConsultation(
+//                             (consultation as any).subject
+//                           ) && (
+//                             <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 bg-teal-50 px-1.5 py-0.5 rounded-full border border-teal-100">
+//                               <Video className="w-2.5 h-2.5" /> Vidéo
+//                             </span>
+//                           )}
+//                         </div>
 //                       </div>
 //                     </div>
 //                     {consultation.status === "answered" &&
@@ -678,6 +700,7 @@
 
 "use client";
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -691,15 +714,21 @@ import {
   User,
   ArrowLeft,
   Video,
+  Archive,
+  Clock,
+  Filter,
 } from "lucide-react";
 import { gsap } from "gsap";
 import { JoinCallButton } from "@/components/consultation/JoinCallButton";
+
+type TabFilter = "active" | "archived" | "all";
 
 export default function MesConsultationsPage() {
   const supabase = createClient();
   const { user, profile } = useAuth();
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
+
   const [consultations, setConsultations] = useState<ClientConsultation[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
@@ -709,8 +738,9 @@ export default function MesConsultationsPage() {
   const [showChat, setShowChat] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [tabFilter, setTabFilter] = useState<TabFilter>("active");
+  const [archiving, setArchiving] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [isTyping, setIsTyping] = useState(false);
   const [otherUserTyping, setOtherUserTyping] = useState(false);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -886,6 +916,7 @@ export default function MesConsultationsPage() {
             status: item.status as "pending" | "answered" | "closed",
             subject: item.subject || "",
             created_at: item.created_at,
+            archived_at: item.archived_at || null,
             unread_count: count || 0,
             lawyer: {
               first_name: lawyerUser?.first_name || "Prénom",
@@ -914,6 +945,28 @@ export default function MesConsultationsPage() {
       if (err) throw err;
       setMessages(data || []);
     } catch {}
+  };
+
+  const handleArchive = async (
+    consultationId: string,
+    currentlyArchived: boolean
+  ) => {
+    setArchiving(consultationId);
+    try {
+      await supabase
+        .from("consultations")
+        .update({
+          archived_at: currentlyArchived ? null : new Date().toISOString(),
+        })
+        .eq("id", consultationId);
+      await loadConsultations();
+      if (selectedConsultation?.id === consultationId && !currentlyArchived) {
+        setSelectedConsultation(null);
+        setShowChat(false);
+      }
+    } finally {
+      setArchiving(null);
+    }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1010,14 +1063,9 @@ export default function MesConsultationsPage() {
     await markMessagesAsRead(consultation.id);
   };
 
-  const isVideoConsultation = (subject?: string) => {
-    if (!subject) return false;
-    return (
-      subject.toLowerCase().includes("vidéo") ||
-      subject.toLowerCase().includes("video")
-    );
-  };
-
+  const isVideoConsultation = (subject?: string) =>
+    subject?.toLowerCase().includes("vidéo") ||
+    subject?.toLowerCase().includes("video");
   const formatDate = (d: string) =>
     new Date(d).toLocaleDateString("fr-FR", {
       day: "numeric",
@@ -1031,6 +1079,15 @@ export default function MesConsultationsPage() {
       hour: "2-digit",
       minute: "2-digit",
     });
+
+  const filteredConsultations = consultations.filter((c) => {
+    if (tabFilter === "active") return !c.archived_at;
+    if (tabFilter === "archived") return !!c.archived_at;
+    return true;
+  });
+
+  const activeCount = consultations.filter((c) => !c.archived_at).length;
+  const archivedCount = consultations.filter((c) => !!c.archived_at).length;
 
   if (loading)
     return (
@@ -1053,7 +1110,7 @@ export default function MesConsultationsPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowChat(false)}
-            className="lg:hidden p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer flex-shrink-0"
+            className="lg:hidden p-1.5 rounded-lg hover:bg-slate-100 cursor-pointer flex-shrink-0"
           >
             <ArrowLeft className="w-5 h-5 text-slate-600" />
           </button>
@@ -1069,16 +1126,31 @@ export default function MesConsultationsPage() {
               {formatDate(selectedConsultation!.created_at)}
             </p>
           </div>
-          {isVideoConsultation((selectedConsultation as any)?.subject) && (
-            <JoinCallButton
-              consultationId={selectedConsultation!.id}
-              canal="video_30"
-            />
-          )}
-          {selectedConsultation!.status === "answered" &&
-            (selectedConsultation!.unread_count ?? 0) === 0 && (
-              <CheckCircle className="w-5 h-5 text-teal-600 flex-shrink-0" />
+          <div className="flex items-center gap-2">
+            {isVideoConsultation((selectedConsultation as any)?.subject) && (
+              <JoinCallButton
+                consultationId={selectedConsultation!.id}
+                canal="video_30"
+              />
             )}
+            <button
+              onClick={() =>
+                handleArchive(
+                  selectedConsultation!.id,
+                  !!(selectedConsultation as any).archived_at
+                )
+              }
+              disabled={archiving === selectedConsultation!.id}
+              className="p-1.5 rounded-lg hover:bg-slate-100 cursor-pointer text-slate-400 hover:text-slate-600 transition-colors"
+              title={
+                (selectedConsultation as any).archived_at
+                  ? "Désarchiver"
+                  : "Archiver"
+              }
+            >
+              <Archive className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -1088,9 +1160,6 @@ export default function MesConsultationsPage() {
             <div className="text-center">
               <MessageSquare className="w-12 h-12 text-slate-300 mx-auto mb-3" />
               <p className="text-slate-500 font-medium">Aucun message</p>
-              <p className="text-slate-400 text-sm mt-1">
-                Commencez la conversation
-              </p>
             </div>
           </div>
         ) : (
@@ -1124,7 +1193,7 @@ export default function MesConsultationsPage() {
                           href={message.attachment_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-2 bg-white/10 rounded p-2 hover:bg-white/20 transition-colors"
+                          className="flex items-center gap-2 bg-white/10 rounded p-2 hover:bg-white/20"
                         >
                           <span>📄</span>
                           <span className="text-sm underline">
@@ -1210,7 +1279,7 @@ export default function MesConsultationsPage() {
           />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="cursor-pointer px-3 border border-slate-200 rounded-lg hover:border-teal-400 hover:bg-teal-50 transition-all"
+            className="cursor-pointer px-3 border border-slate-200 rounded-lg hover:border-teal-400 hover:bg-teal-50"
             disabled={isSending || uploading}
           >
             📎
@@ -1219,8 +1288,7 @@ export default function MesConsultationsPage() {
             value={newMessage}
             onChange={(e) => {
               setNewMessage(e.target.value);
-              if (!isTyping && selectedConsultation) {
-                setIsTyping(true);
+              if (selectedConsultation) {
                 const ch = supabase.channel(
                   `typing-${selectedConsultation.id}`
                 );
@@ -1235,10 +1303,7 @@ export default function MesConsultationsPage() {
               }
               if (typingTimeoutRef.current)
                 clearTimeout(typingTimeoutRef.current);
-              typingTimeoutRef.current = setTimeout(
-                () => setIsTyping(false),
-                1000
-              );
+              typingTimeoutRef.current = setTimeout(() => {}, 1000);
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
@@ -1247,7 +1312,7 @@ export default function MesConsultationsPage() {
               }
             }}
             placeholder="Écrivez votre message..."
-            className="w-full h-14 px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-300 outline-none transition-all text-slate-700 resize-none"
+            className="w-full h-14 px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-300 outline-none text-slate-700 resize-none"
             rows={2}
           />
           <button
@@ -1255,7 +1320,7 @@ export default function MesConsultationsPage() {
             disabled={
               (!newMessage.trim() && !selectedFile) || isSending || uploading
             }
-            className="cursor-pointer px-4 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 transition-all"
+            className="cursor-pointer px-4 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50"
           >
             {isSending || uploading ? (
               <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
@@ -1270,8 +1335,7 @@ export default function MesConsultationsPage() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <style>{`.page-header, .page-subtitle, .consultations-list, .chat-container { opacity: 0; }`}</style>
-
+      <style>{`.page-header,.page-subtitle,.consultations-list,.chat-container{opacity:0;}`}</style>
       <div className="max-w-6xl mx-auto px-4 py-8" ref={containerRef}>
         <div className="mb-6">
           <h1 className="page-header text-2xl sm:text-3xl font-bold text-slate-900 mb-1">
@@ -1300,76 +1364,146 @@ export default function MesConsultationsPage() {
             </p>
             <button
               onClick={() => router.push("/search")}
-              className="cursor-pointer bg-teal-600 text-white px-6 py-3 rounded-xl hover:bg-teal-700 transition-colors font-medium text-sm"
+              className="cursor-pointer bg-teal-600 text-white px-6 py-3 rounded-xl hover:bg-teal-700 font-medium text-sm"
             >
               Trouver un avocat
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div
-              className={`consultations-list space-y-3 ${showChat ? "hidden lg:block" : "block"}`}
-            >
-              {consultations.map((consultation) => (
-                <div
-                  key={consultation.id}
-                  onClick={() => handleSelectConsultation(consultation)}
-                  className={`cursor-pointer bg-white rounded-xl p-4 border-2 transition-all hover:shadow-md relative ${selectedConsultation?.id === consultation.id ? "border-teal-500 shadow-md" : "border-slate-200 hover:border-teal-300"}`}
+          <>
+            <div className="flex items-center gap-2 mb-5">
+              {[
+                { key: "active", label: "En cours", count: activeCount },
+                { key: "archived", label: "Archivées", count: archivedCount },
+                { key: "all", label: "Toutes", count: consultations.length },
+              ].map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setTabFilter(tab.key as TabFilter)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${tabFilter === tab.key ? "bg-teal-600 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
                 >
-                  {(consultation.unread_count ?? 0) > 0 && (
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
-                      {consultation.unread_count}
-                    </div>
+                  {tab.key === "archived" ? (
+                    <Archive className="w-3.5 h-3.5" />
+                  ) : tab.key === "active" ? (
+                    <Clock className="w-3.5 h-3.5" />
+                  ) : (
+                    <Filter className="w-3.5 h-3.5" />
                   )}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <User className="w-5 h-5 text-teal-600" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-slate-900 text-sm">
-                          Me. {consultation.lawyer.first_name}{" "}
-                          {consultation.lawyer.last_name}
-                        </h3>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          <p className="text-xs text-slate-500 flex items-center gap-1">
-                            <Calendar className="w-3 h-3" />
-                            {formatDate(consultation.created_at)}
-                          </p>
-                          {isVideoConsultation(
-                            (consultation as any).subject
-                          ) && (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 bg-teal-50 px-1.5 py-0.5 rounded-full border border-teal-100">
-                              <Video className="w-2.5 h-2.5" /> Vidéo
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    {consultation.status === "answered" &&
-                      (consultation.unread_count ?? 0) === 0 && (
-                        <CheckCircle className="w-5 h-5 text-teal-600 flex-shrink-0" />
-                      )}
-                  </div>
-                </div>
+                  {tab.label}
+                  <span
+                    className={`text-xs px-1.5 py-0.5 rounded-full ${tabFilter === tab.key ? "bg-white/20" : "bg-slate-100"}`}
+                  >
+                    {tab.count}
+                  </span>
+                </button>
               ))}
             </div>
 
-            <div
-              className={`chat-container lg:sticky lg:top-24 lg:self-start ${showChat ? "block" : "hidden lg:block"}`}
-            >
-              {selectedConsultation ? (
-                <ChatPanel />
-              ) : (
-                <div className="hidden lg:flex bg-slate-50 rounded-xl p-12 text-center border-2 border-dashed border-slate-300 flex-col items-center">
-                  <MessageSquare className="w-12 h-12 text-slate-300 mb-3" />
-                  <p className="text-slate-500 font-medium">
-                    Sélectionnez une consultation pour voir la conversation
-                  </p>
-                </div>
-              )}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div
+                className={`consultations-list space-y-3 ${showChat ? "hidden lg:block" : "block"}`}
+              >
+                {filteredConsultations.length === 0 ? (
+                  <div className="bg-white rounded-xl p-8 text-center border border-slate-200">
+                    <Archive className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+                    <p className="text-slate-500 text-sm">
+                      {tabFilter === "archived"
+                        ? "Aucune consultation archivée"
+                        : "Aucune consultation en cours"}
+                    </p>
+                  </div>
+                ) : (
+                  filteredConsultations.map((consultation) => (
+                    <div
+                      key={consultation.id}
+                      onClick={() => handleSelectConsultation(consultation)}
+                      className={`cursor-pointer bg-white rounded-xl p-4 border-2 transition-all hover:shadow-md relative ${selectedConsultation?.id === consultation.id ? "border-teal-500 shadow-md" : "border-slate-200 hover:border-teal-300"} ${(consultation as any).archived_at ? "opacity-70" : ""}`}
+                    >
+                      {(consultation.unread_count ?? 0) > 0 && (
+                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
+                          {consultation.unread_count}
+                        </div>
+                      )}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <User className="w-5 h-5 text-teal-600" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <h3 className="font-semibold text-slate-900 text-sm truncate">
+                              Me. {consultation.lawyer.first_name}{" "}
+                              {consultation.lawyer.last_name}
+                            </h3>
+                            <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                              <p className="text-xs text-slate-500 flex items-center gap-1">
+                                <Calendar className="w-3 h-3" />
+                                {formatDate(consultation.created_at)}
+                              </p>
+                              {isVideoConsultation(
+                                (consultation as any).subject
+                              ) && (
+                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 bg-teal-50 px-1.5 py-0.5 rounded-full border border-teal-100">
+                                  <Video className="w-2.5 h-2.5" /> Vidéo
+                                </span>
+                              )}
+                              {(consultation as any).archived_at && (
+                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-full">
+                                  <Archive className="w-2.5 h-2.5" /> Archivée
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                          {consultation.status === "answered" &&
+                            (consultation.unread_count ?? 0) === 0 && (
+                              <CheckCircle className="w-5 h-5 text-teal-600" />
+                            )}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleArchive(
+                                consultation.id,
+                                !!(consultation as any).archived_at
+                              );
+                            }}
+                            disabled={archiving === consultation.id}
+                            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                            title={
+                              (consultation as any).archived_at
+                                ? "Désarchiver"
+                                : "Archiver"
+                            }
+                          >
+                            {archiving === consultation.id ? (
+                              <div className="w-4 h-4 animate-spin rounded-full border-2 border-slate-400 border-t-transparent" />
+                            ) : (
+                              <Archive className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <div
+                className={`chat-container lg:sticky lg:top-24 lg:self-start ${showChat ? "block" : "hidden lg:block"}`}
+              >
+                {selectedConsultation ? (
+                  <ChatPanel />
+                ) : (
+                  <div className="hidden lg:flex bg-slate-50 rounded-xl p-12 text-center border-2 border-dashed border-slate-300 flex-col items-center">
+                    <MessageSquare className="w-12 h-12 text-slate-300 mb-3" />
+                    <p className="text-slate-500 font-medium">
+                      Sélectionnez une consultation pour voir la conversation
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </div>

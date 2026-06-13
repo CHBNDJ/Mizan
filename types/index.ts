@@ -347,7 +347,9 @@ export interface Consultation {
 export interface ClientConsultation {
   id: string;
   status: "pending" | "answered" | "closed";
+  subject: string;
   created_at: string;
+  archived_at: string | null;
   lawyer: {
     first_name: string;
     last_name: string;
