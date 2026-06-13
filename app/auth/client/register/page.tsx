@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Eye, EyeOff, Phone, Smartphone } from "lucide-react";
+import { Eye, EyeOff, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { CustomSelect } from "@/components/ui/CustomSelect";
-import { COUNTRIES, LOCATION } from "@/utils/constants";
+import { LOCATION, COUNTRIES, LOCATION_TO_PHONE_CODE } from "@/utils/constants";
 import { FormErrors } from "@/types";
 import { useAuth } from "@/hooks/useAuth";
 import { gsap } from "gsap";
@@ -20,14 +20,12 @@ export default function ClientRegisterPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    phone: "",
     mobile: "",
     location: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState("213");
-  const [selectedMobileCountry, setSelectedMobileCountry] = useState("213");
+  const [mobileCountry, setMobileCountry] = useState("213");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -56,12 +54,12 @@ export default function ClientRegisterPage() {
 
   const countryOptions = COUNTRIES.map((c) => ({
     value: c.code,
-    label: `${c.flag} +${c.code}`,
+    label: `${c.flag} +${c.code} ${c.name}`,
   }));
+
   const inputCls =
     "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white hover:border-teal-300 focus:border-teal-300 focus:border-2 outline-none transition-all duration-200 text-slate-700";
   const errCls = "text-red-500 text-xs mt-1";
-
   const cap = (s: string) =>
     s
       ? s
@@ -74,6 +72,12 @@ export default function ClientRegisterPage() {
     setFormData((p) => ({ ...p, [e.target.name]: cap(e.target.value) }));
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
+
+  const handleLocationChange = (v: string) => {
+    setFormData((p) => ({ ...p, location: v }));
+    const code = LOCATION_TO_PHONE_CODE[v];
+    if (code) setMobileCountry(code);
+  };
 
   const validateForm = (): boolean => {
     const e: FormErrors = {};
@@ -89,9 +93,7 @@ export default function ClientRegisterPage() {
     if (formData.password !== formData.confirmPassword)
       e.confirmPassword = "Les mots de passe ne correspondent pas";
     if (!formData.mobile.trim()) e.mobile = "Le mobile est requis";
-    else if (formData.mobile.length < 8) e.mobile = "Numéro trop court";
-    if (formData.phone.trim() && formData.phone.length < 8)
-      e.phone = "Numéro trop court";
+    else if (formData.mobile.length < 7) e.mobile = "Numéro trop court";
     if (!formData.location) e.location = "Sélectionnez votre lieu de résidence";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -106,8 +108,7 @@ export default function ClientRegisterPage() {
       const result = await signUp(formData.email, formData.password, {
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
-        phone: `+${selectedCountry}${formData.phone}`,
-        mobile: `+${selectedMobileCountry}${formData.mobile}`,
+        mobile: `+${mobileCountry}${formData.mobile}`,
         userType: "client" as const,
         location: formData.location,
       });
@@ -124,7 +125,7 @@ export default function ClientRegisterPage() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <style>{`.page-title, .page-subtitle, .register-form { opacity:0; }`}</style>
+      <style>{`.page-title,.page-subtitle,.register-form{opacity:0;}`}</style>
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
           <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
@@ -180,6 +181,52 @@ export default function ClientRegisterPage() {
                 {errors.lastName && <p className={errCls}>{errors.lastName}</p>}
               </div>
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Lieu de résidence *
+              </label>
+              <CustomSelect
+                options={LOCATION}
+                value={formData.location}
+                onChange={handleLocationChange}
+                placeholder="Sélectionnez votre pays"
+                className="h-12"
+                disabled={isSubmitting}
+              />
+              {errors.location && <p className={errCls}>{errors.location}</p>}
+            </div>
+
+            <div>
+              <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
+                <Smartphone className="w-4 h-4" /> Numéro mobile *
+              </label>
+              <div className="flex gap-2">
+                <div className="w-44 flex-shrink-0">
+                  <CustomSelect
+                    options={countryOptions}
+                    value={mobileCountry}
+                    onChange={setMobileCountry}
+                    placeholder="+213"
+                    className="h-12"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <input
+                  type="tel"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={(e) => {
+                    if (/^\d*$/.test(e.target.value)) handleInput(e);
+                  }}
+                  className={inputCls}
+                  placeholder="555 123 456"
+                  disabled={isSubmitting}
+                />
+              </div>
+              {errors.mobile && <p className={errCls}>{errors.mobile}</p>}
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Adresse email *
@@ -195,6 +242,7 @@ export default function ClientRegisterPage() {
               />
               {errors.email && <p className={errCls}>{errors.email}</p>}
             </div>
+
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Mot de passe *
@@ -223,6 +271,7 @@ export default function ClientRegisterPage() {
               </div>
               {errors.password && <p className={errCls}>{errors.password}</p>}
             </div>
+
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Confirmer le mot de passe *
@@ -253,74 +302,7 @@ export default function ClientRegisterPage() {
                 <p className={errCls}>{errors.confirmPassword}</p>
               )}
             </div>
-            <div className="relative z-[70]">
-              <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
-                <Phone className="w-4 h-4" /> Téléphone fixe
-              </label>
-              <div className="flex gap-2">
-                <CustomSelect
-                  options={countryOptions}
-                  value={selectedCountry}
-                  onChange={setSelectedCountry}
-                  placeholder="+213"
-                  className="w-24 h-12"
-                  disabled={isSubmitting}
-                />
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={(e) => {
-                    if (/^\d*$/.test(e.target.value)) handleInput(e);
-                  }}
-                  className={`${inputCls} placeholder:text-slate-400`}
-                  placeholder="21 123 456"
-                  disabled={isSubmitting}
-                />
-              </div>
-              {errors.phone && <p className={errCls}>{errors.phone}</p>}
-            </div>
-            <div className="relative z-[60]">
-              <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
-                <Smartphone className="w-5 h-5" /> Mobile *
-              </label>
-              <div className="flex gap-2">
-                <CustomSelect
-                  options={countryOptions}
-                  value={selectedMobileCountry}
-                  onChange={setSelectedMobileCountry}
-                  placeholder="+213"
-                  className="w-24 h-12"
-                  disabled={isSubmitting}
-                />
-                <input
-                  type="tel"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={(e) => {
-                    if (/^\d*$/.test(e.target.value)) handleInput(e);
-                  }}
-                  className={`${inputCls} placeholder:text-slate-400`}
-                  placeholder="555 123 456"
-                  disabled={isSubmitting}
-                />
-              </div>
-              {errors.mobile && <p className={errCls}>{errors.mobile}</p>}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Lieu de résidence *
-              </label>
-              <CustomSelect
-                options={LOCATION}
-                value={formData.location}
-                onChange={(v) => setFormData((p) => ({ ...p, location: v }))}
-                placeholder="Sélectionnez votre lieu de résidence"
-                className="h-12"
-                disabled={isSubmitting}
-              />
-              {errors.location && <p className={errCls}>{errors.location}</p>}
-            </div>
+
             <div className="flex items-start space-x-3">
               <input
                 type="checkbox"
@@ -344,6 +326,7 @@ export default function ClientRegisterPage() {
                 </Link>
               </label>
             </div>
+
             <button
               type="submit"
               disabled={isSubmitting}
@@ -359,6 +342,7 @@ export default function ClientRegisterPage() {
               )}
             </button>
           </form>
+
           <div className="flex items-center justify-between mt-6">
             <span className="text-sm text-slate-600">
               Vous avez déjà un compte ?{" "}

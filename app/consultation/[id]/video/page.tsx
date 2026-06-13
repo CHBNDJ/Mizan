@@ -3,7 +3,7 @@ import { use, useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { Video, X, Mic, MicOff, VideoOff, Phone } from "lucide-react";
+import { Video, X, Phone } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -12,7 +12,7 @@ interface PageProps {
 export default function VideoConsultationPage({ params }: PageProps) {
   const { id } = use(params);
   const router = useRouter();
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
   const supabase = createClient();
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -54,7 +54,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
       setConsultation(consult);
       const room = await getOrCreateDailyRoom(id);
       setRoomUrl(room);
-    } catch (e) {
+    } catch {
       setError("Erreur lors du chargement");
     } finally {
       setLoading(false);
@@ -83,7 +83,13 @@ export default function VideoConsultationPage({ params }: PageProps) {
       .from("consultations")
       .update({ status: "completed", updated_at: new Date().toISOString() })
       .eq("id", id);
-    router.push("/mes-consultations");
+
+    const isLawyerUser = user?.id === consultation?.lawyer_id;
+    router.push(
+      isLawyerUser
+        ? "/lawyer/consultations?feedback=true"
+        : "/mes-consultations?feedback=true"
+    );
   };
 
   if (!user)
@@ -115,7 +121,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
           <p className="text-white font-semibold mb-2">{error}</p>
           <button
             onClick={() => router.push("/mes-consultations")}
-            className="mt-4 bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all"
+            className="mt-4 bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-xl text-sm font-medium cursor-pointer"
           >
             Retour aux consultations
           </button>
@@ -131,7 +137,6 @@ export default function VideoConsultationPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-slate-900 flex flex-col">
-      {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 bg-slate-800 border-b border-slate-700">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
@@ -146,14 +151,13 @@ export default function VideoConsultationPage({ params }: PageProps) {
         </div>
         <button
           onClick={handleLeave}
-          className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm font-medium cursor-pointer transition-all"
+          className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm font-medium cursor-pointer"
         >
           <Phone className="w-4 h-4 rotate-[135deg]" />
           <span className="hidden sm:inline">Terminer</span>
         </button>
       </div>
 
-      {/* Zone vidéo Daily.co */}
       <div className="flex-1 relative">
         {!joined ? (
           <div className="absolute inset-0 flex items-center justify-center px-4">
@@ -170,7 +174,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
               </p>
               <button
                 onClick={() => setJoined(true)}
-                className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold text-sm cursor-pointer transition-all"
+                className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold text-sm cursor-pointer"
               >
                 Rejoindre la consultation
               </button>

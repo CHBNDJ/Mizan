@@ -184,7 +184,6 @@ export function AlgeriaMap({
           </svg>
         )}
 
-        {/* Styles dynamiques */}
         {(hovered || selId) && (
           <style>{`
             ${selId ? `${cssId(selId)}  { fill: #0d9488 !important; stroke: #0f766e !important; stroke-width: 18 !important; }` : ""}
@@ -192,7 +191,6 @@ export function AlgeriaMap({
           `}</style>
         )}
 
-        {/* Tooltip */}
         {hovered && WILAYA_NAMES[hovered] && (
           <div
             className="absolute pointer-events-none z-10 bg-white border border-teal-200 text-teal-800 text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow-md whitespace-nowrap"
@@ -214,7 +212,6 @@ export function AlgeriaMap({
         )}
       </div>
 
-      {/* Wilaya sélectionnée — masqué si hideBar=true (le CustomSelect au-dessus le montre déjà) */}
       {!isLanding &&
         !hideBar &&
         (selectedWilaya ? (

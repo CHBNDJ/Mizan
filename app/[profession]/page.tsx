@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useState, useLayoutEffect, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { notFound, useRouter, useParams } from "next/navigation";
 import {
   ChevronRight,
   ArrowLeft,
@@ -216,11 +216,9 @@ function TopProsSection({
   );
 }
 
-export default function ProfessionLandingPage() {
-  const params = useParams();
+function ProfessionContent({ profId }: { profId: ProfId }) {
   const router = useRouter();
-  const profId = (params?.profession as ProfId) || "avocat";
-  const prof = PROFESSIONS[profId] || PROFESSIONS.avocat;
+  const prof = PROFESSIONS[profId]!;
   const ProfIcon = PROF_ICONS[profId] || Scale;
 
   const [selectedWilaya, setSelectedWilaya] = useState("");
@@ -320,7 +318,11 @@ export default function ProfessionLandingPage() {
                     {prof.domainLabel}
                   </label>
                   <MultiSelectWithCheckboxes
-                    placeholder={`Choisir ${profId === "avocat" ? "des spécialités" : "des domaines"}...`}
+                    placeholder={
+                      profId === "avocat"
+                        ? "Choisir des spécialités..."
+                        : "Choisir des domaines..."
+                    }
                     options={domaineOptions}
                     value={selectedDomaines}
                     onChange={setSelectedDomaines}
@@ -348,7 +350,7 @@ export default function ProfessionLandingPage() {
                   onClick={handleSearch}
                   className="w-full h-12 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl flex items-center justify-center transition-all cursor-pointer text-sm sm:text-base"
                 >
-                  {`Voir les ${prof.labelPlural}`}
+                  {"Voir les " + prof.labelPlural}
                 </button>
               </div>
               <div className="mt-8 space-y-4 relative" style={{ zIndex: 1 }}>
@@ -375,7 +377,7 @@ export default function ProfessionLandingPage() {
                 onSelect={setSelectedWilaya}
                 hideBar
               />
-              <Link href={`/professions/${profId}`}>
+              <Link href={"/professions/" + profId}>
                 <div className="bg-teal-50 border border-teal-200 hover:border-teal-400 rounded-2xl p-5 cursor-pointer transition-all hover:shadow-sm group">
                   <div className="flex items-center gap-3 mb-2.5">
                     <div className="w-9 h-9 bg-teal-600 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -423,4 +425,15 @@ export default function ProfessionLandingPage() {
       </section>
     </div>
   );
+}
+
+export default function ProfessionLandingPage() {
+  const params = useParams();
+  const profId = params?.profession as ProfId;
+
+  if (!profId || !PROFESSIONS[profId]) {
+    return notFound();
+  }
+
+  return <ProfessionContent profId={profId} />;
 }
