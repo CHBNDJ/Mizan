@@ -117,6 +117,11 @@ export function PendingConsultations() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status, message }),
     });
+
+    if (status === "accepted") {
+      localStorage.setItem("pendingFeedback", "true");
+    }
+
     loadPending();
     setDeclining(null);
     setDeclineMsg("");
@@ -228,7 +233,7 @@ export function PendingConsultations() {
                           onChange={(e) => setDeclineMsg(e.target.value)}
                           placeholder="Motif (optionnel)..."
                           rows={2}
-                          className="w-full text-xs border border-slate-200 rounded-lg px-3 py-2 resize-none focus:border-teal-400 outline-none text-slate-700 placeholder:text-slate-400"
+                          className="w-full text-xs border border-slate-200 rounded-lg px-3 py-2 resize-none focus:border-teal-400 outline-none text-slate-700"
                         />
                         <div className="flex gap-2">
                           <button

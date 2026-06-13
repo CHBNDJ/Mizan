@@ -435,9 +435,11 @@ import {
   Briefcase,
   Calculator,
   TrendingUp,
+  MessageCircle,
 } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
+import TestimonialsSection from "@/components/TestimonialsSection";
 import {
   getTopRatedAvocats,
   getWilayas,
@@ -591,34 +593,27 @@ export default function HomePage() {
       { opacity: 1, y: 0, duration: 0.5, delay: 1.5, ease: "power2.out" }
     );
 
-    gsap.fromTo(
-      ".steps-section",
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        scrollTrigger: {
-          trigger: ".steps-section",
-          start: trigStart,
-          toggleActions: "play none none none",
-        },
-      }
-    );
-    gsap.fromTo(
-      ".cta-section",
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        scrollTrigger: {
-          trigger: ".cta-section",
-          start: trigStart,
-          toggleActions: "play none none none",
-        },
-      }
-    );
+    [
+      "steps-section",
+      "cta-section",
+      "testimonials-section",
+      "feedback-cta",
+    ].forEach((cls) => {
+      gsap.fromTo(
+        `.${cls}`,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          scrollTrigger: {
+            trigger: `.${cls}`,
+            start: trigStart,
+            toggleActions: "play none none none",
+          },
+        }
+      );
+    });
 
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
@@ -647,11 +642,12 @@ export default function HomePage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden">
       <style>{`
-        .hero-title,.hero-sub,.prof-card,.stat-card,.steps-section,.avocat-card,.cta-section,.prof-roles-link { opacity:0; }
+        .hero-title,.hero-sub,.prof-card,.stat-card,.steps-section,.avocat-card,.cta-section,.prof-roles-link,.testimonials-section,.feedback-cta { opacity:0; }
         .prof-card-btn { transition:all 0.2s ease; }
         .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
       `}</style>
 
+      {/* Hero */}
       <section className="py-14 sm:py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="hero-title text-2xl sm:text-4xl lg:text-6xl font-bold text-slate-800 mb-5 leading-tight tracking-tight">
@@ -700,6 +696,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Stats */}
       <section className="px-4 pb-14 sm:pb-20 pt-2">
         <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {[
@@ -730,6 +727,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Comment ça marche */}
       <section className="steps-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-2xl shadow-sm p-6 sm:p-10">
@@ -776,6 +774,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Mieux notés */}
       {topAvocats.length > 0 && (
         <section className="avocats-section pb-16 sm:pb-20 px-4">
           <div className="max-w-6xl mx-auto">
@@ -797,7 +796,7 @@ export default function HomePage() {
             <div className="text-center">
               <button
                 onClick={() => router.push("/search")}
-                className="text-teal-600 inline-flex items-center gap-1.5 hover:text-teal-700 transition-colors cursor-pointer text-sm font-medium"
+                className="text-teal-600 inline-flex items-center gap-1.5 hover:text-teal-700 cursor-pointer text-sm font-medium"
               >
                 Voir tous les professionnels <ArrowRight className="w-4 h-4" />
               </button>
@@ -806,6 +805,33 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* Témoignages */}
+      <div className="testimonials-section">
+        <TestimonialsSection />
+      </div>
+
+      {/* CTA laisser un avis */}
+      <section className="feedback-cta px-4 py-12">
+        <div className="max-w-2xl mx-auto bg-teal-50 border border-teal-100 rounded-2xl p-8 text-center">
+          <div className="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <MessageCircle className="w-6 h-6 text-white" />
+          </div>
+          <h3 className="text-xl font-bold text-slate-800 mb-2">
+            Vous avez utilisé Mizan ?
+          </h3>
+          <p className="text-slate-500 text-sm mb-5">
+            Partagez votre expérience et aidez la communauté à choisir le bon
+            professionnel.
+          </p>
+          <Link href="/feedback">
+            <button className="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-xl font-medium text-sm cursor-pointer transition-all">
+              Laisser un témoignage <ChevronRight className="w-4 h-4" />
+            </button>
+          </Link>
+        </div>
+      </section>
+
+      {/* CTA double */}
       <section className="cta-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
           <div className="bg-white rounded-2xl shadow-sm p-7 sm:p-10 flex flex-col text-center sm:text-left">
@@ -819,7 +845,7 @@ export default function HomePage() {
             <div className="mt-auto flex justify-center sm:justify-start">
               <button
                 onClick={() => router.push("/search")}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl cursor-pointer"
               >
                 Trouver un expert <ChevronRight className="w-4 h-4" />
               </button>
@@ -835,7 +861,7 @@ export default function HomePage() {
             </p>
             <div className="mt-auto flex justify-center sm:justify-start">
               <Link href="/auth/lawyer/register">
-                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl transition-all cursor-pointer">
+                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl cursor-pointer">
                   Créer mon profil <ChevronRight className="w-4 h-4" />
                 </button>
               </Link>
