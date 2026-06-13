@@ -821,12 +821,7 @@ function SearchResults() {
                       className="flex items-center gap-2 px-6 py-3 bg-white border border-teal-200 text-teal-700 hover:bg-teal-50 hover:border-teal-400 rounded-xl font-semibold text-sm cursor-pointer transition-all"
                     >
                       <ChevronDown className="w-4 h-4" />
-                      Charger{" "}
-                      {Math.min(
-                        PAGE_SIZE,
-                        avocatsTries.length - page * PAGE_SIZE
-                      )}{" "}
-                      {currentProf.plural} de plus
+                      Afficher plus
                     </button>
                   </div>
                 )}
