@@ -11,7 +11,6 @@ export async function POST(
   try {
     const supabase = await createClient();
     const { id: consultationId } = await params;
-
     const { message, attachment_url, attachment_type, attachment_name } =
       await request.json();
 
@@ -25,10 +24,8 @@ export async function POST(
     const {
       data: { user },
     } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!user)
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
-    }
 
     const { data: userData } = await supabase
       .from("users")
@@ -36,12 +33,11 @@ export async function POST(
       .eq("id", user.id)
       .single();
 
-    if (!userData) {
+    if (!userData)
       return NextResponse.json(
         { error: "Utilisateur non trouvé" },
         { status: 404 }
       );
-    }
 
     const senderType = userData.user_type === "lawyer" ? "lawyer" : "client";
 
@@ -52,7 +48,6 @@ export async function POST(
       .single();
 
     if (consultationError || !consultation) {
-      console.error("Consultation non trouvée:", consultationError);
       return NextResponse.json(
         { error: "Consultation non trouvée" },
         { status: 404 }
@@ -61,13 +56,8 @@ export async function POST(
 
     const isAuthorized =
       user.id === consultation.client_id || user.id === consultation.lawyer_id;
-
-    if (!isAuthorized) {
-      return NextResponse.json(
-        { error: "Non autorisé pour cette consultation" },
-        { status: 403 }
-      );
-    }
+    if (!isAuthorized)
+      return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
 
     const { data: newMessage, error: insertError } = await supabase
       .from("consultation_messages")
@@ -84,10 +74,7 @@ export async function POST(
       .select()
       .single();
 
-    if (insertError) {
-      console.error("Erreur création message:", insertError);
-      throw insertError;
-    }
+    if (insertError) throw insertError;
 
     if (senderType === "lawyer") {
       const { data: consultationStatus } = await supabase
@@ -99,10 +86,7 @@ export async function POST(
       if (consultationStatus?.status === "pending") {
         await supabase
           .from("consultations")
-          .update({
-            status: "answered",
-            answered_at: new Date().toISOString(),
-          })
+          .update({ status: "answered", answered_at: new Date().toISOString() })
           .eq("id", consultationId);
       }
     }
@@ -112,7 +96,6 @@ export async function POST(
         senderType === "lawyer"
           ? consultation.client_id
           : consultation.lawyer_id;
-
       const { data: recipient } = await supabase
         .from("users")
         .select("email, first_name, last_name, user_type")
@@ -120,82 +103,102 @@ export async function POST(
         .single();
 
       if (recipient) {
-        const { data: recipientPrefs } = await supabase
-          .from("user_preferences")
-          .select("email_notifications")
-          .eq("user_id", recipientId)
-          .maybeSingle();
+        const senderName =
+          senderType === "lawyer"
+            ? `Me. ${userData.first_name} ${userData.last_name}`
+            : `${userData.first_name} ${userData.last_name}`;
+        const recipientName =
+          recipient.user_type === "lawyer"
+            ? `Me. ${recipient.first_name} ${recipient.last_name}`
+            : `${recipient.first_name} ${recipient.last_name}`;
+        const consultationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${recipient.user_type === "lawyer" ? "lawyer/consultations" : "mes-consultations"}`;
+        const messagePreview =
+          message?.trim()?.slice(0, 150) || "📎 Fichier joint";
 
-        const shouldSendEmail =
-          !recipientPrefs || recipientPrefs.email_notifications !== false;
+        await resend.emails.send({
+          from: "Mizan <noreply@mizan-dz.com>",
+          to: recipient.email,
+          subject: `💬 Nouveau message de ${senderName}`,
+          html: `<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f0f4f8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f4f8;padding:40px 16px;">
+  <tr><td align="center">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
+    <tr>
+      <td style="padding-bottom:20px;">
+        <table cellpadding="0" cellspacing="0"><tr>
+          <td style="background:#0d9488;width:34px;height:34px;border-radius:8px;text-align:center;vertical-align:middle;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+              <path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
+            </svg>
+          </td>
+          <td style="padding-left:10px;font-size:17px;font-weight:700;color:#134e4a;">Mizan</td>
+        </tr></table>
+      </td>
+    </tr>
+    <tr>
+      <td style="background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08);">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="background:linear-gradient(135deg,#0d9488 0%,#0f766e 100%);padding:28px 32px;">
+              <p style="margin:0 0 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#99f6e4;">Nouveau message</p>
+              <p style="margin:0;font-size:20px;font-weight:700;color:#fff;">De ${senderName}</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:28px 32px;">
+              <p style="margin:0 0 16px;font-size:14px;color:#475569;line-height:1.7;">Bonjour ${recipientName},</p>
+              <div style="background:#f8fafc;border-left:3px solid #0d9488;border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:24px;">
+                <p style="margin:0;font-size:14px;color:#1e293b;line-height:1.7;white-space:pre-wrap;">${messagePreview}${message?.trim()?.length > 150 ? "..." : ""}</p>
+                ${attachment_url ? `<p style="margin:8px 0 0;font-size:12px;color:#64748b;">📎 Fichier joint</p>` : ""}
+              </div>
+              <table cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+                <tr>
+                  <td style="background:#0d9488;border-radius:8px;padding:11px 24px;">
+                    <a href="${consultationUrl}" style="font-size:14px;font-weight:700;color:#fff;text-decoration:none;display:block;">Répondre →</a>
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="border-top:1px solid #e2e8f0;padding-top:16px;font-size:11px;color:#94a3b8;">
+                    © 2026 Mizan · <a href="https://mizan-dz.com" style="color:#94a3b8;text-decoration:none;">mizan-dz.com</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  </td></tr>
+</table>
+</body>
+</html>`,
+        });
 
-        if (shouldSendEmail) {
-          const senderName =
-            senderType === "lawyer"
-              ? `Me. ${userData.first_name} ${userData.last_name}`
-              : `${userData.first_name} ${userData.last_name}`;
-
-          const recipientName =
-            recipient.user_type === "lawyer"
-              ? `Me. ${recipient.first_name} ${recipient.last_name}`
-              : `${recipient.first_name} ${recipient.last_name}`;
-
-          await resend.emails.send({
-            from: "Mizan <noreply@mizan-dz.com>",
-            to: recipient.email,
-            subject: `💬 Nouveau message de ${senderName}`,
-            html: `
-              <!DOCTYPE html>
-              <html>
-                <head>
-                  <meta charset="UTF-8">
-                </head>
-                <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
-                  <div style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 10px; padding: 30px;">
-                    <h1 style="color: #0d9488; margin-bottom: 20px;">💬 Nouveau message</h1>
-                    
-                    <p style="color: #475569; font-size: 16px; line-height: 1.6;">
-                      Bonjour <strong>${recipientName}</strong>,
-                    </p>
-                    
-                    <p style="color: #475569; font-size: 16px; line-height: 1.6;">
-                      <strong>${senderName}</strong> vous a envoyé un message :
-                    </p>
-                    
-                    <div style="background-color: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                      <p style="color: #1e293b; font-size: 15px; line-height: 1.6; margin: 0; white-space: pre-wrap;">${message?.trim() || "📎 Fichier joint"}</p>
-                    </div>
-                    
-                    ${
-                      attachment_url
-                        ? `<p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">📎 Un fichier est joint à ce message</p>`
-                        : ""
-                    }
-                    
-                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/${recipient.user_type === "lawyer" ? "lawyer/consultations" : "mes-consultations"}"
-                       style="display: inline-block; background-color: #0d9488; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; margin-top: 20px; font-weight: 600;">
-                      Voir le message
-                    </a>
-                    
-                    <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
-                    
-                    <p style="color: #94a3b8; font-size: 13px; line-height: 1.5;">
-                      Vous recevez cet email car vous avez une conversation active sur Mizan.
-                      <br>
-                      <a href="${process.env.NEXT_PUBLIC_APP_URL}/settings" 
-                         style="color: #0d9488; text-decoration: none;">
-                        Gérer mes préférences de notifications
-                      </a>
-                    </p>
-                  </div>
-                </body>
-              </html>
-            `,
-          });
-        }
+        const appUrl =
+          process.env.NEXT_PUBLIC_APP_URL || "https://mizan-dz.com";
+        await fetch(`${appUrl}/api/push/send`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-internal-secret": process.env.INTERNAL_API_SECRET || "",
+          },
+          body: JSON.stringify({
+            user_id: recipientId,
+            title: `Nouveau message de ${senderName}`,
+            body: messagePreview,
+            url: consultationUrl,
+          }),
+        }).catch(() => {});
       }
-    } catch (emailError) {
-      console.error("Erreur envoi email destinataire:", emailError);
+    } catch (notifError) {
+      console.error("Erreur notifications:", notifError);
     }
 
     return NextResponse.json({ success: true, message: newMessage });
