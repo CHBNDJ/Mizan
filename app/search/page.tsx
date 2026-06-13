@@ -517,12 +517,16 @@ function SearchResults() {
       { autoAlpha: 0, y: -20 },
       { autoAlpha: 1, y: 0, duration: 0.5, ease: "power3.out" }
     );
-    if (avocats.length > 0)
-      gsap.fromTo(
-        ".search-avocat-card",
-        { autoAlpha: 0, y: 20 },
-        { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.04, delay: 0.1 }
-      );
+    if (avocats.length > 0) {
+      gsap.set(".search-avocat-card", { autoAlpha: 0, y: 20 });
+      gsap.to(".search-avocat-card", {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.5,
+        stagger: 0.04,
+        delay: 0.1,
+      });
+    }
   }, [loading, avocats.length]);
 
   const updateURL = (f: SearchFilters) => {
@@ -670,7 +674,7 @@ function SearchResults() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
-      <style>{`.search-header { opacity:0; } .search-avocat-card { opacity:0; }`}</style>
+      <style>{`.search-header { opacity:0; }`}</style>
 
       <div className="search-header sticky top-16 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
@@ -802,7 +806,12 @@ function SearchResults() {
                       className="flex items-center gap-2 px-6 py-3 bg-white border border-teal-200 text-teal-700 hover:bg-teal-50 hover:border-teal-400 rounded-xl font-semibold text-sm cursor-pointer transition-all"
                     >
                       <ChevronDown className="w-4 h-4" />
-                      Voir plus de {currentProf.plural}
+                      Charger{" "}
+                      {Math.min(
+                        PAGE_SIZE,
+                        avocatsTries.length - page * PAGE_SIZE
+                      )}{" "}
+                      {currentProf.plural} de plus
                     </button>
                   </div>
                 )}
