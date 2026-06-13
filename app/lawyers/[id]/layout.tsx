@@ -7,13 +7,6 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-const PROF_NOT_FOUND: Record<string, string> = {
-  avocat: "Avocat non trouvé | Mizan",
-  notaire: "Notaire non trouvé | Mizan",
-  huissier: "Huissier non trouvé | Mizan",
-  comptable: "Comptable non trouvé | Mizan",
-};
-
 export async function generateMetadata({
   params,
 }: {
@@ -24,7 +17,7 @@ export async function generateMetadata({
 
     const { data: lawyer } = await supabase
       .from("lawyers")
-      .select("*")
+      .select("profession, specializations, experience_years, bio, is_verified")
       .eq("id", id)
       .eq("is_verified", true)
       .single();
@@ -39,7 +32,7 @@ export async function generateMetadata({
 
     const { data: user } = await supabase
       .from("users")
-      .select("*")
+      .select("first_name, last_name, location, address, avatar_url")
       .eq("id", id)
       .eq("user_type", "lawyer")
       .single();
@@ -59,10 +52,14 @@ export async function generateMetadata({
       : [];
     const specialite = specialisationsArray[0] || "Droit général";
 
-    const wilayasArray: string[] = Array.isArray(lawyer.wilayas)
-      ? lawyer.wilayas
-      : [];
-    const ville = wilayasArray[0] || user.location || "Algérie";
+    const ville = user.address?.wilaya
+      ? user.address.wilaya
+          .split("-")
+          .map(
+            (w: string) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
+          )
+          .join(" ")
+      : user.location || "Algérie";
 
     return generateProfessionalMetadata(
       {

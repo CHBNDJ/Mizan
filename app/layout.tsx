@@ -10,6 +10,7 @@ import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import type { Metadata, Viewport } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import PushNotificationInit from "@/components/PushNotificationInit";
 
 const merriweather = Merriweather({ subsets: ["latin"], display: "swap" });
 
@@ -109,6 +110,7 @@ export default function RootLayout({
           <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_ID} />
         )}
         <AuthProvider>
+          <PushNotificationInit />
           <Navigation />
           <ScrollManager>{children}</ScrollManager>
           <Footer />
