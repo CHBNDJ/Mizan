@@ -96,6 +96,7 @@ export default function LawyerRegisterPage() {
     experience: "",
     consultationPrice: "",
     address: { street: "", wilaya: "", city: "", postalCode: "" },
+    website: "",
   });
   const [communeOptions, setCommuneOptions] = useState<
     Array<{ value: string; label: string }>
@@ -312,6 +313,11 @@ export default function LawyerRegisterPage() {
         mobile: m1 || undefined,
         userType: "lawyer" as const,
         location: formData.address.city.trim(),
+        website: formData.website?.trim()
+          ? formData.website.startsWith("http")
+            ? formData.website.trim()
+            : `https://${formData.website.trim()}`
+          : undefined,
         bar_number: formData.barNumber.trim(),
         profession: primaryProfession!,
         professions: professions,
@@ -743,6 +749,28 @@ export default function LawyerRegisterPage() {
               </label>
             </div>
           )}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              Site web{" "}
+              <span className="text-slate-400 font-normal text-xs">
+                (optionnel)
+              </span>
+            </label>
+            <input
+              type="text"
+              name="website"
+              value={formData.website || ""}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, website: e.target.value }))
+              }
+              className={`${inputCls} placeholder:text-slate-400`}
+              placeholder="www.votre-cabinet.com"
+              disabled={isSubmitting}
+            />
+            <p className="text-xs text-slate-400 mt-1">
+              Sans https:// nécessaire
+            </p>
+          </div>
         </div>
       );
 

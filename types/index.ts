@@ -233,6 +233,7 @@ export interface ExtendedLawyerSignupFormData {
   consultationPrice: string;
   gender: string;
   languages: string[];
+  website?: string;
   address: {
     street: string;
     city: string;
