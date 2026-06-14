@@ -12,6 +12,7 @@ import {
   Video,
   Mail,
   ChevronRight,
+  Calendar,
 } from "lucide-react";
 import { JoinCallButton } from "@/components/consultation/JoinCallButton";
 
@@ -28,8 +29,8 @@ interface Consultation {
   status: string;
   created_at: string;
   subject: string;
+  scheduled_at: string | null;
   client: { first_name: string; last_name: string };
-  lastMessage?: string;
   canal?: string;
 }
 
@@ -78,7 +79,7 @@ export function PendingConsultations() {
     const { data } = await supabase
       .from("consultations")
       .select(
-        `id, status, created_at, subject, client:client_id(first_name, last_name), messages(content, created_at)`
+        `id, status, created_at, subject, scheduled_at, client:client_id(first_name, last_name)`
       )
       .eq("lawyer_id", user.id)
       .in("status", ["pending", "accepted", "in_progress"])
@@ -91,16 +92,17 @@ export function PendingConsultations() {
     }
 
     const enriched = data.map((c: any) => {
-      const msgs = (c.messages || []).sort(
-        (a: any, b: any) =>
-          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      );
-      const first = msgs[0];
-      const content = first?.content || "";
-      const canal = Object.keys(CANAL_ICONS).find((k) =>
-        content.toLowerCase().includes(k.replace("_", " "))
-      );
-      return { ...c, lastMessage: content, canal };
+      const subjectLower = (c.subject || "").toLowerCase();
+      const canal =
+        Object.keys(CANAL_ICONS).find((k) =>
+          subjectLower.includes(k.replace("_", " "))
+        ) ||
+        (subjectLower.includes("vidéo") || subjectLower.includes("video")
+          ? "video_30"
+          : subjectLower.includes("téléphone") || subjectLower.includes("phone")
+            ? "phone"
+            : "message");
+      return { ...c, canal };
     });
 
     setItems(enriched);
@@ -117,11 +119,7 @@ export function PendingConsultations() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status, message }),
     });
-
-    if (status === "accepted") {
-      localStorage.setItem("pendingFeedback", "true");
-    }
-
+    if (status === "accepted") localStorage.setItem("pendingFeedback", "true");
     loadPending();
     setDeclining(null);
     setDeclineMsg("");
@@ -159,11 +157,24 @@ export function PendingConsultations() {
     return `il y a ${Math.floor(hrs / 24)}j`;
   };
 
-  const isVideo = (subject?: string) =>
-    !!(
-      subject?.toLowerCase().includes("vidéo") ||
-      subject?.toLowerCase().includes("video")
-    );
+  const formatScheduled = (iso: string) => {
+    const d = new Date(iso);
+    const date = d.toLocaleDateString("fr-FR", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+    });
+    const time = d.toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return { date, time };
+  };
+
+  const isVideoCanal = (canal?: string) =>
+    canal === "video_30" || canal === "video_60";
+  const needsSchedule = (canal?: string) =>
+    ["phone", "video_30", "video_60"].includes(canal || "");
 
   if (loading || items.length === 0) return null;
 
@@ -196,6 +207,9 @@ export function PendingConsultations() {
           const isPending = c.status === "pending";
           const isAccepted =
             c.status === "accepted" || c.status === "in_progress";
+          const scheduled = c.scheduled_at
+            ? formatScheduled(c.scheduled_at)
+            : null;
 
           return (
             <div key={c.id} className="px-5 py-4">
@@ -213,7 +227,7 @@ export function PendingConsultations() {
                       {timeAgo(c.created_at)}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
                     <CanalIcon className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
                     <p className="text-xs text-slate-500 truncate">
                       {c.subject || "Consultation"}
@@ -224,6 +238,20 @@ export function PendingConsultations() {
                       {badge.label}
                     </span>
                   </div>
+
+                  {scheduled && needsSchedule(c.canal) && (
+                    <div className="mb-2 flex items-center gap-2 bg-teal-50 border border-teal-100 rounded-lg px-3 py-2">
+                      <Calendar className="w-3.5 h-3.5 text-teal-600 flex-shrink-0" />
+                      <div>
+                        <p className="text-xs font-semibold text-teal-800">
+                          {scheduled.date}
+                        </p>
+                        <p className="text-xs text-teal-600">
+                          {scheduled.time}
+                        </p>
+                      </div>
+                    </div>
+                  )}
 
                   {isPending ? (
                     declining === c.id ? (
@@ -270,7 +298,7 @@ export function PendingConsultations() {
                     )
                   ) : (
                     <div className="flex items-center gap-2 mt-1 flex-wrap">
-                      {isAccepted && isVideo(c.subject) && (
+                      {isAccepted && isVideoCanal(c.canal) && (
                         <JoinCallButton
                           consultationId={c.id}
                           canal="video_30"

@@ -21,10 +21,7 @@ import {
   Scale,
   ChevronRight,
   Linkedin,
-  Video,
   Mail,
-  MessageSquare,
-  X,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";
@@ -33,9 +30,9 @@ import { AvocatData, ProfilePageProps } from "@/types";
 import { createClient } from "@/lib/supabase/client";
 import BookingModal from "@/components/booking/BookingModal";
 import ReviewSection from "@/components/reviews/ReviewSection";
+import { ConsultationPanel } from "@/components/consultation/ConsultationPanel";
 import Link from "next/link";
 import { formatPhoneNumber, detectPhoneType } from "@/lib/phoneFormatter";
-import FeedbackPopup from "@/components/FeedbackPopup";
 import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
 import { toCivilite } from "@/lib/genderUtils";
@@ -57,38 +54,6 @@ const PROF_LABELS: Record<string, { label: string; numLabel: string }> = {
 const getProfLabel = (p?: string) =>
   PROF_LABELS[p || "avocat"] || PROF_LABELS.avocat;
 
-const CANAL_CONFIG: Record<
-  string,
-  { icon: any; label: string; desc: string; duration?: string }
-> = {
-  message: {
-    icon: MessageSquare,
-    label: "Message écrit",
-    desc: "Réponse sous 24-48h",
-  },
-  phone: {
-    icon: Phone,
-    label: "Téléphonique",
-    desc: "Appel vocal",
-    duration: "30 min",
-  },
-  video_30: {
-    icon: Video,
-    label: "Vidéo",
-    desc: "Consultation vidéo",
-    duration: "30 min",
-  },
-  video_60: {
-    icon: Video,
-    label: "Vidéo",
-    desc: "Consultation vidéo",
-    duration: "1h",
-  },
-  email: { icon: Mail, label: "Email", desc: "Réponse sous 48h" },
-};
-
-const getJitsiUrl = (id: string) =>
-  `https://meet.jit.si/mizan-${id.slice(0, 10)}`;
 const getMapsQuery = (a: AvocatData) =>
   [a.adresse?.rue, a.adresse?.ville || a.ville, a.wilaya, "Algérie"]
     .filter(Boolean)
@@ -292,476 +257,6 @@ const InfoCardDesktop = ({
   return <div className="h-full">{body}</div>;
 };
 
-const VideoConsultationModal = ({
-  isOpen,
-  onClose,
-  avocat,
-  userId,
-  supabase,
-  onSuccess,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  avocat: AvocatData;
-  userId: string;
-  supabase: any;
-  onSuccess: () => void;
-}) => {
-  const [date, setDate] = useState("");
-  const [heure, setHeure] = useState("");
-  const [description, setDesc] = useState("");
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
-  if (!isOpen) return null;
-  const handleSubmit = async () => {
-    if (!date || !heure || !description.trim()) return;
-    setSending(true);
-    try {
-      const { data: existing } = await supabase
-        .from("consultations")
-        .select("id")
-        .eq("client_id", userId)
-        .eq("lawyer_id", avocat.id)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      let consultationId = existing?.id;
-      if (!consultationId) {
-        const { data: nc } = await supabase
-          .from("consultations")
-          .insert({
-            client_id: userId,
-            lawyer_id: avocat.id,
-            status: "pending",
-            subject: "Consultation vidéo",
-          })
-          .select("id")
-          .single();
-        consultationId = nc?.id;
-      }
-      if (consultationId) {
-        await supabase.from("messages").insert({
-          consultation_id: consultationId,
-          sender_id: userId,
-          content: `📹 Demande de consultation vidéo\n\n📅 Date souhaitée : ${date} à ${heure}\n📝 Motif : ${description.trim()}\n\nLien : ${getJitsiUrl(avocat.id)}\n\nMerci de confirmer ce créneau et d'indiquer vos honoraires.`,
-        });
-      }
-      setSent(true);
-      setTimeout(() => {
-        onClose();
-        setSent(false);
-        setDate("");
-        setHeure("");
-        setDesc("");
-        onSuccess();
-      }, 2000);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setSending(false);
-    }
-  };
-  const inp =
-    "w-full h-11 px-3 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-400 focus:border-2 outline-none transition-all text-slate-700";
-  return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      <div className="relative bg-white rounded-t-2xl sm:rounded-2xl shadow-xl w-full sm:max-w-md p-6 z-10">
-        {sent ? (
-          <div className="text-center py-6">
-            <div className="w-14 h-14 bg-teal-50 border border-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="w-7 h-7 text-teal-600" />
-            </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-1">
-              Demande envoyée
-            </h3>
-            <p className="text-sm text-slate-500">
-              {avocat.prenom} {avocat.nom} vous répondra avec confirmation et
-              tarif.
-            </p>
-          </div>
-        ) : (
-          <>
-            <div className="flex items-center justify-between mb-5">
-              <div>
-                <div className="flex items-center gap-2 mb-0.5">
-                  <Video className="w-4 h-4 text-blue-500" />
-                  <h3 className="text-base font-bold text-slate-900">
-                    Consultation vidéo
-                  </h3>
-                </div>
-                <p className="text-xs text-slate-500">
-                  Maître {avocat.prenom} {avocat.nom}
-                </p>
-              </div>
-              <button
-                onClick={onClose}
-                className="text-slate-400 hover:text-slate-600 cursor-pointer text-xl leading-none"
-              >
-                ×
-              </button>
-            </div>
-            <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 mb-4 flex items-start gap-2.5">
-              <span className="text-base">💡</span>
-              <p className="text-xs text-blue-700 leading-relaxed">
-                Le professionnel confirmera le créneau et ses honoraires par
-                message.
-              </p>
-            </div>
-            <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-600 mb-1">
-                    Date souhaitée *
-                  </label>
-                  <input
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    min={new Date().toISOString().split("T")[0]}
-                    className={inp}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-600 mb-1">
-                    Heure *
-                  </label>
-                  <input
-                    type="time"
-                    value={heure}
-                    onChange={(e) => setHeure(e.target.value)}
-                    className={inp}
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">
-                  Motif *
-                </label>
-                <textarea
-                  value={description}
-                  onChange={(e) => setDesc(e.target.value)}
-                  rows={3}
-                  placeholder="Décrivez brièvement votre problème..."
-                  className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-400 outline-none transition-all text-slate-700 resize-none"
-                />
-              </div>
-            </div>
-            <button
-              onClick={handleSubmit}
-              disabled={sending || !date || !heure || !description.trim()}
-              className="mt-5 w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
-            >
-              {sending ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                  Envoi...
-                </>
-              ) : (
-                <>
-                  <Video className="w-4 h-4" />
-                  Envoyer la demande
-                </>
-              )}
-            </button>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const ConsultationPanel = ({
-  avocat,
-  pricingChannels,
-  user,
-  profile,
-  supabase,
-  onSuccess,
-  onBooking,
-}: {
-  avocat: AvocatData;
-  pricingChannels: any[];
-  user: any;
-  profile: any;
-  supabase: any;
-  onSuccess: () => void;
-  onBooking: () => void;
-}) => {
-  const router = useRouter();
-  const [selected, setSelected] = useState<string | null>(null);
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
-  const isAppointment = ["notaire", "huissier"].includes(
-    avocat.profession || ""
-  );
-
-  const ALL_CANAUX = [
-    {
-      type: "message",
-      label: "Message",
-      desc: "Réponse sous 24-48h",
-      duration: undefined,
-    },
-    {
-      type: "phone",
-      label: "Téléphone",
-      desc: "Appel vocal",
-      duration: "30 min",
-    },
-    {
-      type: "video_30",
-      label: "Vidéo",
-      desc: "Consultation vidéo",
-      duration: "30 min",
-    },
-    {
-      type: "video_60",
-      label: "Vidéo",
-      desc: "Consultation vidéo",
-      duration: "1 heure",
-    },
-  ];
-  const canaux = ALL_CANAUX.map((c) => ({
-    ...c,
-    base_price:
-      pricingChannels.find((p: any) => p.type === c.type)?.base_price ?? null,
-  }));
-
-  const handleSend = async () => {
-    if (!user || profile?.user_type !== "client") {
-      router.push("/auth/client/register");
-      return;
-    }
-    if (!selected) return;
-    setSending(true);
-    try {
-      const canal = CANAL_CONFIG[selected];
-      const price = pricingChannels.find((p: any) => p.type === selected);
-      const { data: existing } = await supabase
-        .from("consultations")
-        .select("id")
-        .eq("client_id", user.id)
-        .eq("lawyer_id", avocat.id)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      let cid = existing?.id;
-      if (!cid) {
-        const { data: nc } = await supabase
-          .from("consultations")
-          .insert({
-            client_id: user.id,
-            lawyer_id: avocat.id,
-            status: "pending",
-            subject: canal.label,
-          })
-          .select("id")
-          .single();
-        cid = nc?.id;
-      }
-      if (cid) {
-        const priceStr = price?.base_price
-          ? `\n💰 Tarif : ${price.base_price.toLocaleString()} DA`
-          : "";
-        const durStr = canal.duration ? ` · ${canal.duration}` : "";
-        await supabase.from("messages").insert({
-          consultation_id: cid,
-          sender_id: user.id,
-          content: `📋 Demande de consultation\n\n🔔 ${canal.label}${durStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif.`,
-        });
-      }
-      fetch("/api/push/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          lawyer_id: avocat.id,
-          title: "Nouvelle demande de consultation",
-          body: `Un client souhaite vous consulter via ${canal.label}`,
-          url: "/lawyer/consultations",
-        }),
-      }).catch(() => {});
-
-      setSent(true);
-      setTimeout(() => {
-        setSent(false);
-        setSelected(null);
-        onSuccess();
-        router.push("/mes-consultations?feedback=true");
-      }, 2500);
-    } finally {
-      setSending(false);
-    }
-  };
-
-  if (sent)
-    return (
-      <div className="text-center py-6">
-        <div className="w-12 h-12 bg-teal-50 border border-teal-100 rounded-full flex items-center justify-center mx-auto mb-3">
-          <CheckCircle className="w-6 h-6 text-teal-600" />
-        </div>
-        <p className="text-sm font-bold text-slate-900 mb-1">Demande envoyée</p>
-        <p className="text-xs text-slate-500">
-          Redirection vers vos consultations...
-        </p>
-      </div>
-    );
-
-  return (
-    <div>
-      <div className="divide-y divide-slate-100">
-        {canaux.map((canal) => {
-          const config = CANAL_CONFIG[canal.type];
-          if (!config) return null;
-          const Icon = config.icon;
-          const isSelected = selected === canal.type;
-          return (
-            <button
-              key={canal.type}
-              onClick={() => setSelected(canal.type)}
-              className={`w-full flex items-center justify-between gap-3 py-3 px-2 cursor-pointer transition-all text-left rounded-xl ${isSelected ? "bg-teal-50" : "hover:bg-slate-50"}`}
-            >
-              <div className="flex items-center gap-3 min-w-0">
-                <div
-                  className={`w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${isSelected ? "border-teal-600 bg-teal-600" : "border-slate-300"}`}
-                >
-                  {isSelected && (
-                    <div className="w-1 h-1 bg-white rounded-full" />
-                  )}
-                </div>
-                <div
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600" : "bg-teal-50 border border-teal-100"}`}
-                >
-                  <Icon
-                    className={`w-3.5 h-3.5 ${isSelected ? "text-white" : "text-teal-600"}`}
-                  />
-                </div>
-                <div className="min-w-0">
-                  <span
-                    className={`text-sm font-medium ${isSelected ? "text-teal-800" : "text-slate-700"}`}
-                  >
-                    {config.label}
-                  </span>
-                  {canal.duration && (
-                    <span
-                      className={`ml-2 text-xs ${isSelected ? "text-teal-500" : "text-slate-400"}`}
-                    >
-                      {canal.duration}
-                    </span>
-                  )}
-                  <p
-                    className={`text-xs ${isSelected ? "text-teal-600" : "text-slate-400"}`}
-                  >
-                    {config.desc}
-                  </p>
-                </div>
-              </div>
-              <span
-                className={`text-xs font-semibold flex-shrink-0 ${isSelected ? "text-teal-600 bg-white px-2 py-0.5 rounded-full shadow-sm" : "text-slate-400"}`}
-              >
-                {canal.base_price
-                  ? `${canal.base_price.toLocaleString()} DA`
-                  : "Sur demande"}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-      <div className="mt-4 space-y-2">
-        <button
-          onClick={handleSend}
-          disabled={!selected || sending}
-          className="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
-        >
-          {sending ? (
-            <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-              Envoi...
-            </>
-          ) : (
-            <>
-              Envoyer ma demande <ChevronRight className="w-4 h-4" />
-            </>
-          )}
-        </button>
-        {isAppointment && (
-          <button
-            onClick={onBooking}
-            className="w-full bg-white border border-teal-200 text-teal-700 hover:bg-teal-50 py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
-          >
-            <Calendar className="w-4 h-4" /> RDV physique au cabinet
-          </button>
-        )}
-        <p className="text-[10px] text-slate-400 text-center">
-          Tarifs indicatifs · confirmés par le professionnel
-        </p>
-      </div>
-    </div>
-  );
-};
-
-const ConsultationSheet = ({
-  isOpen,
-  onClose,
-  avocat,
-  pricingChannels,
-  user,
-  profile,
-  supabase,
-  onSuccess,
-  onBooking,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  avocat: AvocatData;
-  pricingChannels: any[];
-  user: any;
-  profile: any;
-  supabase: any;
-  onSuccess: () => void;
-  onBooking: () => void;
-}) => {
-  if (!isOpen) return null;
-  return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center">
-      <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      <div className="relative bg-white rounded-t-2xl w-full max-h-[85vh] overflow-y-auto z-10">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-          <p className="text-sm font-bold text-slate-900">
-            Consulter {avocat.prenom} {avocat.nom}
-          </p>
-          <button onClick={onClose} className="text-slate-400 cursor-pointer">
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-        <div className="p-4">
-          <ConsultationPanel
-            avocat={avocat}
-            pricingChannels={pricingChannels}
-            user={user}
-            profile={profile}
-            supabase={supabase}
-            onSuccess={() => {
-              onClose();
-              onSuccess();
-            }}
-            onBooking={() => {
-              onClose();
-              onBooking();
-            }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-
 export default function ProfilePage({ params }: ProfilePageProps) {
   const { id } = use(params);
   const router = useRouter();
@@ -769,18 +264,12 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   const { user, profile } = useAuth();
   const [avocat, setAvocat] = useState<AvocatData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-  const [isConsultSheetOpen, setIsConsultSheetOpen] = useState(false);
   const [pricingChannels, setPricingChannels] = useState<any[]>([]);
-  const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
   const supabase = createClient();
   const hasAnimated = useRef(false);
 
   const isOwnProfile = user?.id === avocat?.id;
-  const isAppointmentProfession = ["notaire", "huissier"].includes(
-    avocat?.profession || ""
-  );
   const isClient = !!user && profile?.user_type === "client";
   const showConsultPanel = (!user || isClient) && !isOwnProfile;
 
@@ -838,7 +327,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         }
       );
       setTimeout(() => {
-        if (document.querySelector(".reviews-section")) {
+        if (document.querySelector(".reviews-section"))
           gsap.fromTo(
             ".reviews-section",
             { autoAlpha: 0, y: 50 },
@@ -854,7 +343,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               },
             }
           );
-        }
       }, 100);
     });
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
@@ -918,7 +406,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     avocat.adresse?.ville ||
     avocat.ville
   );
-
   const avokatProfessions: string[] =
     (avocat as any).professions?.length > 1
       ? (avocat as any).professions
@@ -984,7 +471,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[320px]">
               <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
                 <div>
-                  {/* ── Badges multi-professions ── */}
                   <div className="flex items-center gap-2 flex-wrap mb-3">
                     {avokatProfessions.map((p: string) => (
                       <span
@@ -998,7 +484,6 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       · {profInfo.numLabel} {avocat.barreau}
                     </span>
                   </div>
-
                   <h1 className="text-2xl sm:text-3xl font-light text-slate-800 leading-tight mb-1">
                     {toCivilite(avocat.genre)} {avocat.prenom}
                   </h1>
@@ -1087,7 +572,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     alt={`${avocat.prenom} ${avocat.nom}`}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 640px) 100vw, 220px"
+                    sizes="(max-width:640px) 100vw, 220px"
                     priority
                   />
                 ) : (
@@ -1131,9 +616,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 user={user}
                 profile={profile}
                 supabase={supabase}
-                onSuccess={() =>
-                  setTimeout(() => setShowFeedbackPopup(true), 3000)
-                }
+                onSuccess={() => {}}
                 onBooking={() => setIsBookingModalOpen(true)}
               />
             </div>
@@ -1193,39 +676,14 @@ export default function ProfilePage({ params }: ProfilePageProps) {
         </div>
       </div>
 
-      <VideoConsultationModal
-        isOpen={isVideoModalOpen}
-        onClose={() => setIsVideoModalOpen(false)}
-        avocat={avocat}
-        userId={user?.id || ""}
-        supabase={supabase}
-        onSuccess={() => setTimeout(() => setShowFeedbackPopup(true), 3000)}
-      />
       <BookingModal
         isOpen={isBookingModalOpen}
         onClose={() => setIsBookingModalOpen(false)}
         lawyerId={avocat.id}
         lawyerName={`${avocat.prenom} ${avocat.nom}`}
         profession={avocat.profession || "notaire"}
-        onSuccess={() => setTimeout(() => setShowFeedbackPopup(true), 3000)}
+        onSuccess={() => {}}
       />
-      <ConsultationSheet
-        isOpen={isConsultSheetOpen}
-        onClose={() => setIsConsultSheetOpen(false)}
-        avocat={avocat}
-        pricingChannels={pricingChannels}
-        user={user}
-        profile={profile}
-        supabase={supabase}
-        onSuccess={() => setTimeout(() => setShowFeedbackPopup(true), 3000)}
-        onBooking={() => {
-          setIsConsultSheetOpen(false);
-          setIsBookingModalOpen(true);
-        }}
-      />
-      {showFeedbackPopup && (
-        <FeedbackPopup onClose={() => setShowFeedbackPopup(false)} />
-      )}
     </div>
   );
 }

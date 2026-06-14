@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Message, ClientConsultation } from "@/types";
@@ -20,13 +20,16 @@ import {
 } from "lucide-react";
 import { gsap } from "gsap";
 import { JoinCallButton } from "@/components/consultation/JoinCallButton";
+import FeedbackPopup from "@/components/FeedbackPopup";
+import { Suspense } from "react";
 
 type TabFilter = "active" | "archived" | "all";
 
-export default function MesConsultationsPage() {
+function MesConsultationsContent() {
   const supabase = createClient();
   const { user, profile } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [consultations, setConsultations] = useState<ClientConsultation[]>([]);
@@ -40,6 +43,7 @@ export default function MesConsultationsPage() {
   const [isSending, setIsSending] = useState(false);
   const [tabFilter, setTabFilter] = useState<TabFilter>("active");
   const [archiving, setArchiving] = useState<string | null>(null);
+  const [showFeedback, setShowFeedback] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [otherUserTyping, setOtherUserTyping] = useState(false);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -58,6 +62,13 @@ export default function MesConsultationsPage() {
     }
     loadConsultations();
   }, [user, profile]);
+
+  useEffect(() => {
+    if (searchParams.get("feedback") === "true") {
+      const timer = setTimeout(() => setShowFeedback(true), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (selectedConsultation) loadMessages(selectedConsultation.id);
@@ -217,6 +228,7 @@ export default function MesConsultationsPage() {
             subject: item.subject || "",
             created_at: item.created_at,
             archived_at: item.archived_at || null,
+            scheduled_at: item.scheduled_at || null,
             unread_count: count || 0,
             lawyer: {
               first_name: lawyerUser?.first_name || "Prénom",
@@ -247,20 +259,17 @@ export default function MesConsultationsPage() {
     } catch {}
   };
 
-  const handleArchive = async (
-    consultationId: string,
-    currentlyArchived: boolean
-  ) => {
-    setArchiving(consultationId);
+  const handleArchive = async (id: string, currentlyArchived: boolean) => {
+    setArchiving(id);
     try {
       await supabase
         .from("consultations")
         .update({
           archived_at: currentlyArchived ? null : new Date().toISOString(),
         })
-        .eq("id", consultationId);
+        .eq("id", id);
       await loadConsultations();
-      if (selectedConsultation?.id === consultationId && !currentlyArchived) {
+      if (selectedConsultation?.id === id && !currentlyArchived) {
         setSelectedConsultation(null);
         setShowChat(false);
       }
@@ -366,6 +375,20 @@ export default function MesConsultationsPage() {
   const isVideoConsultation = (subject?: string) =>
     subject?.toLowerCase().includes("vidéo") ||
     subject?.toLowerCase().includes("video");
+  const isPhoneConsultation = (subject?: string) =>
+    !!subject?.toLowerCase().includes("téléphone");
+  const formatScheduled = (iso: string) => {
+    const d = new Date(iso);
+    return (
+      d.toLocaleDateString("fr-FR", {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+      }) +
+      " à " +
+      d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+    );
+  };
   const formatDate = (d: string) =>
     new Date(d).toLocaleDateString("fr-FR", {
       day: "numeric",
@@ -381,13 +404,17 @@ export default function MesConsultationsPage() {
     });
 
   const filteredConsultations = consultations.filter((c) => {
-    if (tabFilter === "active") return !c.archived_at;
-    if (tabFilter === "archived") return !!c.archived_at;
+    if (tabFilter === "active") return !(c as any).archived_at;
+    if (tabFilter === "archived") return !!(c as any).archived_at;
     return true;
   });
 
-  const activeCount = consultations.filter((c) => !c.archived_at).length;
-  const archivedCount = consultations.filter((c) => !!c.archived_at).length;
+  const activeCount = consultations.filter(
+    (c) => !(c as any).archived_at
+  ).length;
+  const archivedCount = consultations.filter(
+    (c) => !!(c as any).archived_at
+  ).length;
 
   if (loading)
     return (
@@ -441,7 +468,7 @@ export default function MesConsultationsPage() {
                 )
               }
               disabled={archiving === selectedConsultation!.id}
-              className="p-1.5 rounded-lg hover:bg-slate-100 cursor-pointer text-slate-400 hover:text-slate-600 transition-colors"
+              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 cursor-pointer"
               title={
                 (selectedConsultation as any).archived_at
                   ? "Désarchiver"
@@ -673,30 +700,42 @@ export default function MesConsultationsPage() {
           <>
             <div className="flex items-center gap-2 mb-5">
               {[
-                { key: "active", label: "En cours", count: activeCount },
-                { key: "archived", label: "Archivées", count: archivedCount },
-                { key: "all", label: "Toutes", count: consultations.length },
-              ].map((tab) => (
-                <button
-                  key={tab.key}
-                  onClick={() => setTabFilter(tab.key as TabFilter)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${tabFilter === tab.key ? "bg-teal-600 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
-                >
-                  {tab.key === "archived" ? (
-                    <Archive className="w-3.5 h-3.5" />
-                  ) : tab.key === "active" ? (
-                    <Clock className="w-3.5 h-3.5" />
-                  ) : (
-                    <Filter className="w-3.5 h-3.5" />
-                  )}
-                  {tab.label}
-                  <span
-                    className={`text-xs px-1.5 py-0.5 rounded-full ${tabFilter === tab.key ? "bg-white/20" : "bg-slate-100"}`}
+                {
+                  key: "active",
+                  label: "En cours",
+                  count: activeCount,
+                  icon: Clock,
+                },
+                {
+                  key: "archived",
+                  label: "Archivées",
+                  count: archivedCount,
+                  icon: Archive,
+                },
+                {
+                  key: "all",
+                  label: "Toutes",
+                  count: consultations.length,
+                  icon: Filter,
+                },
+              ].map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.key}
+                    onClick={() => setTabFilter(tab.key as TabFilter)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium cursor-pointer ${tabFilter === tab.key ? "bg-teal-600 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
                   >
-                    {tab.count}
-                  </span>
-                </button>
-              ))}
+                    <Icon className="w-3.5 h-3.5" />
+                    {tab.label}
+                    <span
+                      className={`text-xs px-1.5 py-0.5 rounded-full ${tabFilter === tab.key ? "bg-white/20" : "bg-slate-100"}`}
+                    >
+                      {tab.count}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -752,6 +791,22 @@ export default function MesConsultationsPage() {
                                 </span>
                               )}
                             </div>
+                            {(consultation as any).scheduled_at &&
+                              (isVideoConsultation(
+                                (consultation as any).subject
+                              ) ||
+                                isPhoneConsultation(
+                                  (consultation as any).subject
+                                )) && (
+                                <div className="flex items-center gap-1 mt-1.5 text-teal-700 bg-teal-50 border border-teal-100 rounded-lg px-2 py-1 w-fit">
+                                  <Calendar className="w-3 h-3 flex-shrink-0" />
+                                  <span className="text-[11px] font-medium">
+                                    {formatScheduled(
+                                      (consultation as any).scheduled_at
+                                    )}
+                                  </span>
+                                </div>
+                              )}
                           </div>
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0 ml-2">
@@ -768,12 +823,7 @@ export default function MesConsultationsPage() {
                               );
                             }}
                             disabled={archiving === consultation.id}
-                            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
-                            title={
-                              (consultation as any).archived_at
-                                ? "Désarchiver"
-                                : "Archiver"
-                            }
+                            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 cursor-pointer"
                           >
                             {archiving === consultation.id ? (
                               <div className="w-4 h-4 animate-spin rounded-full border-2 border-slate-400 border-t-transparent" />
@@ -806,6 +856,22 @@ export default function MesConsultationsPage() {
           </>
         )}
       </div>
+
+      {showFeedback && <FeedbackPopup onClose={() => setShowFeedback(false)} />}
     </div>
+  );
+}
+
+export default function MesConsultationsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen pt-16 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-teal-600" />
+        </div>
+      }
+    >
+      <MesConsultationsContent />
+    </Suspense>
   );
 }
