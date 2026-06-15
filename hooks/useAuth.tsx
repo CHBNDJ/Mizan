@@ -127,6 +127,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       consultation_price?: number | null;
       gender?: string;
       languages?: string[];
+      website?: string;
       address?: {
         street: string;
         neighborhood?: string | null;
@@ -183,22 +184,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const professionsToSet = userData.professions?.length
             ? userData.professions
             : [userData.profession];
+          const rawSlug = `${userData.firstName}-${userData.lastName}`
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/̀-ͯ/g, "")
+            .replace(/[^a-z0-9-]/g, "-")
+            .replace(/-+/g, "-")
+            .replace(/^-|-$/g, "");
           await supabase
             .from("lawyers")
             .update({
               profession: userData.profession,
               professions: professionsToSet,
+              slug: rawSlug,
             })
             .eq("id", authData.user.id);
+          if (userData.website) {
+            const ws = userData.website.trim();
+            const websiteUrl = ws.startsWith("http") ? ws : `https://${ws}`;
+            await supabase
+              .from("users")
+              .update({ website: websiteUrl })
+              .eq("id", authData.user.id);
+          }
         }
         if (userData.userType === "client" && userData.location) {
           const locationOpt = (
             LOCATION as readonly { value: string; label: string }[]
           ).find((l) => l.value === userData.location);
-          const country =
-            userData.location === "algerie"
-              ? "DZ"
-              : locationOpt?.label || userData.location;
+          const country = locationOpt?.label || userData.location || "";
           await supabase
             .from("users")
             .update({ country })

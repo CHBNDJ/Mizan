@@ -1,5 +1,6 @@
 export interface AvocatData {
   id: string;
+  slug?: string | null;
   nom: string;
   prenom?: string;
   avatar_url?: string;
@@ -295,7 +296,7 @@ export interface CustomSelectProps {
 
 export interface ProfilePageProps {
   params: Promise<{
-    id: string;
+    slug: string;
   }>;
 }
 

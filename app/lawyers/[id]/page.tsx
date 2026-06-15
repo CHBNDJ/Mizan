@@ -22,11 +22,12 @@ import {
   ChevronRight,
   Linkedin,
   Mail,
+  Eye,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";
 import { getInitials } from "@/lib/utils";
-import { AvocatData, ProfilePageProps } from "@/types";
+import { AvocatData } from "@/types";
 import { createClient } from "@/lib/supabase/client";
 import BookingModal from "@/components/booking/BookingModal";
 import ReviewSection from "@/components/reviews/ReviewSection";
@@ -257,8 +258,12 @@ const InfoCardDesktop = ({
   return <div className="h-full">{body}</div>;
 };
 
-export default function ProfilePage({ params }: ProfilePageProps) {
-  const { id } = use(params);
+export default function ProfilePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = use(params as Promise<{ slug: string }>);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, profile } = useAuth();
@@ -274,18 +279,22 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   const showConsultPanel = (!user || isClient) && !isOwnProfile;
 
   useEffect(() => {
-    supabase
-      .from("consultation_pricing")
-      .select("*")
-      .eq("lawyer_id", id)
-      .eq("is_active", true)
-      .order("created_at")
-      .then(({ data: pr }) => setPricingChannels(pr || []));
-    getAvocatById(id)
-      .then(setAvocat)
+    getAvocatById(slug)
+      .then((data) => {
+        setAvocat(data);
+        if (data?.id) {
+          supabase
+            .from("consultation_pricing")
+            .select("*")
+            .eq("lawyer_id", data.id)
+            .eq("is_active", true)
+            .order("created_at")
+            .then(({ data: pr }) => setPricingChannels(pr || []));
+        }
+      })
       .catch(() => setAvocat(null))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [slug]);
 
   useLayoutEffect(() => {
     if (!avocat || loading || hasAnimated.current) return;
@@ -369,7 +378,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
       : [];
   const reloadAvocat = async () => {
     await new Promise((r) => setTimeout(r, 2000));
-    getAvocatById(id)
+    getAvocatById(slug)
       .then((d) => {
         if (d) setAvocat(d);
       })
@@ -470,6 +479,27 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           <span className="hidden sm:inline">Retour aux résultats</span>
           <span className="sm:hidden">Retour</span>
         </button>
+
+        {isOwnProfile && (
+          <div className="mb-4 flex items-center justify-between bg-teal-50 border border-teal-200 rounded-xl px-4 py-3">
+            <div className="flex items-center gap-2">
+              <Eye className="w-4 h-4 text-teal-700" />
+              <div>
+                <p className="text-sm font-medium text-teal-900">
+                  Aperçu de votre profil public
+                </p>
+                <p className="text-xs text-teal-600">
+                  Tel que vos clients vous voient
+                </p>
+              </div>
+            </div>
+            <Link href="/profile">
+              <button className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer transition-all">
+                Modifier →
+              </button>
+            </Link>
+          </div>
+        )}
 
         <div className="space-y-4">
           {/* Hero card */}

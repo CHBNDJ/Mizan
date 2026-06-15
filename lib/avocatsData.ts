@@ -126,14 +126,14 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     : capitalizeWords(lawyer.users?.location || "Alger");
 
   let langues = ["Arabe", "Français"];
-  if (lawyer.users?.languages && Array.isArray(lawyer.users.languages)) {
+  if (lawyer.users?.languages && Array.isArray(lawyer.users.languages))
     langues = lawyer.users.languages.map((l: string) => capitalizeWords(l));
-  } else if (lawyer.languages && Array.isArray(lawyer.languages)) {
+  else if (lawyer.languages && Array.isArray(lawyer.languages))
     langues = lawyer.languages.map((l: string) => capitalizeWords(l));
-  }
 
   return {
     id: lawyer.id,
+    slug: lawyer.slug || null,
     nom: lawyer.users?.last_name?.toUpperCase() || "",
     prenom: capitalizeWords(lawyer.users?.first_name || ""),
     avatar_url: lawyer.users?.avatar_url || undefined,
@@ -194,11 +194,10 @@ export async function getSupabaseAvocats(
       .eq("is_verified", true)
       .order("ranking_score", { ascending: false, nullsFirst: false });
 
-    if (profession) {
+    if (profession)
       query = query.or(
         `profession.eq.${profession},professions.cs.{${profession}}`
       );
-    }
 
     const { data: lawyers, error: lawyersError } = await query;
     if (lawyersError || !lawyers || lawyers.length === 0) return [];
@@ -208,7 +207,6 @@ export async function getSupabaseAvocats(
       .select("*")
       .eq("user_type", "lawyer")
       .is("deleted_at", null);
-
     if (usersError) return [];
 
     const combined = lawyers
@@ -230,7 +228,6 @@ export async function searchAvocats(
 ): Promise<AvocatData[]> {
   const prof = profession || filters.profession || undefined;
   const all = await getSupabaseAvocats(prof);
-
   return all.filter((avocat) => {
     if (filters.specialite && filters.specialite.length > 0) {
       const hasMatch = avocat.specialites?.some((spec) =>
@@ -333,29 +330,36 @@ export async function getTopRatedAvocats(
   }
 }
 
-export async function getAvocatById(id: string): Promise<AvocatData | null> {
+export async function getAvocatById(
+  idOrSlug: string
+): Promise<AvocatData | null> {
   const supabase = createClient();
   try {
-    const { data: lawyer, error: lawyerError } = await supabase
+    const isUUID =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        idOrSlug
+      );
+
+    const { data: lawyer } = await supabase
       .from("lawyers")
       .select(
-        "id, bar_number, specializations, experience_years, consultation_price, is_verified, is_claimed, claimed_at, rating_google, reviews_count_google, rating_mizan, reviews_count_mizan, updated_at, created_at, profession, professions, is_cour_supreme, bio"
+        "id, slug, bar_number, specializations, experience_years, consultation_price, is_verified, is_claimed, claimed_at, rating_google, reviews_count_google, rating_mizan, reviews_count_mizan, updated_at, created_at, profession, professions, is_cour_supreme, bio"
       )
-      .eq("id", id)
+      .eq(isUUID ? "id" : "slug", idOrSlug)
       .eq("is_verified", true)
       .maybeSingle();
 
-    if (lawyerError || !lawyer) return null;
+    if (!lawyer) return null;
 
-    const { data: user, error: userError } = await supabase
+    const { data: user } = await supabase
       .from("users")
       .select("*")
-      .eq("id", id)
+      .eq("id", lawyer.id)
       .eq("user_type", "lawyer")
       .is("deleted_at", null)
       .maybeSingle();
 
-    if (userError || !user) return null;
+    if (!user) return null;
     return convertSupabaseToAvocatData({ ...lawyer, users: user });
   } catch {
     return null;
