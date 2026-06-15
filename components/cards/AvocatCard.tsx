@@ -13,7 +13,8 @@ interface AvocatCardProps {
 export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
   const getProfileUrl = () => {
     const params = searchParams?.toString();
-    return `/lawyers/${avocat.id}${params ? `?${params}` : ""}`;
+    const identifier = avocat.slug || avocat.id;
+    return `/lawyers/${identifier}${params ? `?${params}` : ""}`;
   };
 
   const specialites = avocat.specialites || [];
