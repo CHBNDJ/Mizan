@@ -502,7 +502,6 @@ export default function ProfilePage({
         )}
 
         <div className="space-y-4">
-          {/* Hero card */}
           <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[320px]">
               <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
@@ -620,7 +619,6 @@ export default function ProfilePage({
             </div>
           </div>
 
-          {/* Spécialités */}
           {avocat.specialites && avocat.specialites.length > 0 && (
             <Card className="content-card opacity-0 invisible shadow-sm">
               <CardHeader>
@@ -645,7 +643,6 @@ export default function ProfilePage({
             </Card>
           )}
 
-          {/* Panel consultation */}
           {showConsultPanel && (
             <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
               <ConsultationPanel
@@ -660,7 +657,6 @@ export default function ProfilePage({
             </div>
           )}
 
-          {/* Contacts */}
           {allInfoItems.length > 0 && (
             <>
               <div className="content-card opacity-0 invisible sm:hidden flex flex-col gap-2.5">
@@ -688,7 +684,6 @@ export default function ProfilePage({
             </>
           )}
 
-          {/* Carte */}
           {hasAddress && (
             <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
               <LawyerMap
@@ -707,7 +702,6 @@ export default function ProfilePage({
             </div>
           )}
 
-          {/* Avis */}
           <div className="reviews-section opacity-0 invisible mt-4">
             <ReviewSection
               lawyerId={avocat.id}
