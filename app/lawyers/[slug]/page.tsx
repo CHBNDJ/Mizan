@@ -276,7 +276,7 @@ export default function ProfilePage({
 
   const isOwnProfile = user?.id === avocat?.id;
   const isClient = !!user && profile?.user_type === "client";
-  const showConsultPanel = (!user || isClient) && !isOwnProfile;
+  const showConsultPanel = !user || isClient || isOwnProfile;
 
   useEffect(() => {
     getAvocatById(slug)
@@ -404,10 +404,7 @@ export default function ProfilePage({
     ...telephones.map((p) => ({ number: p, type: detectPhoneType(p) })),
     ...mobiles.map((p) => ({ number: p, type: detectPhoneType(p) })),
   ];
-  const showContact = !!(
-    user &&
-    (profile?.id === avocat.id || profile?.user_type === "client")
-  );
+  const showContact = isOwnProfile;
   const rawSiteUrl = avocat.contact?.site_web?.trim();
   const validSiteUrl = rawSiteUrl
     ? rawSiteUrl.startsWith("http")
@@ -502,6 +499,7 @@ export default function ProfilePage({
         )}
 
         <div className="space-y-4">
+          {/* Hero card */}
           <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[320px]">
               <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
@@ -619,6 +617,7 @@ export default function ProfilePage({
             </div>
           </div>
 
+          {/* Spécialités */}
           {avocat.specialites && avocat.specialites.length > 0 && (
             <Card className="content-card opacity-0 invisible shadow-sm">
               <CardHeader>
@@ -643,8 +642,19 @@ export default function ProfilePage({
             </Card>
           )}
 
+          {/* Panel consultation */}
           {showConsultPanel && (
-            <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+            <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden">
+              {isOwnProfile && (
+                <div className="absolute inset-0 z-10 bg-white/80 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center gap-2">
+                  <div className="flex items-center gap-2 bg-teal-50 border border-teal-200 text-teal-800 text-xs font-medium px-4 py-2 rounded-full">
+                    <Eye className="w-3.5 h-3.5" /> Ce que vos clients voient
+                  </div>
+                  <p className="text-xs text-slate-400">
+                    Vous ne pouvez pas vous envoyer une consultation
+                  </p>
+                </div>
+              )}
               <ConsultationPanel
                 avocat={avocat}
                 pricingChannels={pricingChannels}
@@ -657,6 +667,7 @@ export default function ProfilePage({
             </div>
           )}
 
+          {/* Contacts */}
           {allInfoItems.length > 0 && (
             <>
               <div className="content-card opacity-0 invisible sm:hidden flex flex-col gap-2.5">
@@ -684,6 +695,7 @@ export default function ProfilePage({
             </>
           )}
 
+          {/* Carte */}
           {hasAddress && (
             <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
               <LawyerMap
@@ -702,6 +714,7 @@ export default function ProfilePage({
             </div>
           )}
 
+          {/* Avis */}
           <div className="reviews-section opacity-0 invisible mt-4">
             <ReviewSection
               lawyerId={avocat.id}
