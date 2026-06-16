@@ -222,7 +222,6 @@ export default function HomePage() {
         .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
       `}</style>
 
-      {/* Hero */}
       <section className="py-14 sm:py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="hero-title text-2xl sm:text-4xl lg:text-6xl font-bold text-slate-800 mb-5 leading-tight tracking-tight">
@@ -271,7 +270,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats */}
       <section className="px-4 pb-14 sm:pb-20 pt-2">
         <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {[
@@ -302,7 +300,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Comment ça marche */}
       <section className="steps-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-2xl shadow-sm p-6 sm:p-10">
@@ -349,7 +346,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Mieux notés */}
       {topAvocats.length > 0 && (
         <section className="avocats-section pb-16 sm:pb-20 px-4">
           <div className="max-w-6xl mx-auto">
@@ -380,48 +376,64 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Témoignages */}
       <div className="testimonials-section">
         <TestimonialsSection />
       </div>
 
-      {/* Style A — bandeau témoignage */}
-      <section className="feedback-cta px-4 py-8">
+      <section className="feedback-cta px-4 py-10 sm:py-12">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-[#085041] rounded-2xl px-6 py-5 flex items-center gap-5">
-            <div className="flex flex-shrink-0">
-              {[
-                ["HB", "#1D9E75"],
-                ["FA", "#5DCAA5"],
-                ["AA", "#0F6E56"],
-              ].map(([init, bg], i) => (
-                <div
-                  key={init}
-                  className="w-9 h-9 rounded-full border-2 border-[#085041] flex items-center justify-center text-xs font-semibold text-white flex-shrink-0"
-                  style={{ background: bg, marginLeft: i > 0 ? "-8px" : "0" }}
-                >
-                  {init}
-                </div>
-              ))}
+          <div className="bg-[#04342C] rounded-2xl px-6 py-7 sm:px-8 sm:py-7 flex flex-col sm:flex-row sm:items-center gap-5">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex flex-shrink-0">
+                {[
+                  ["HB", "#1D9E75", "#E1F5EE"],
+                  ["FA", "#5DCAA5", "#085041"],
+                  ["AA", "#0F6E56", "#9FE1CB"],
+                ].map(([init, bg, color], i) => (
+                  <div
+                    key={init}
+                    className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-[3px] border-[#04342C] flex items-center justify-center text-[13px] font-medium flex-shrink-0"
+                    style={{
+                      background: bg,
+                      color,
+                      marginLeft: i > 0 ? "-12px" : "0",
+                      zIndex: 3 - i,
+                      position: "relative",
+                    }}
+                  >
+                    {init}
+                  </div>
+                ))}
+              </div>
+              <div className="sm:hidden">
+                <p className="text-[15px] font-medium text-[#E1F5EE] leading-tight mb-0.5">
+                  Vous avez utilisé Mizan ?
+                </p>
+                <p className="text-[12px] text-[#5DCAA5]">
+                  3 utilisateurs partagent leur avis
+                </p>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-white mb-0.5">
+
+            <div className="hidden sm:block flex-1">
+              <p className="text-[17px] font-medium text-[#E1F5EE] mb-1">
                 Vous avez utilisé Mizan ?
               </p>
-              <p className="text-xs text-teal-300 hidden sm:block">
-                Rejoignez nos utilisateurs et partagez votre expérience
+              <p className="text-[13px] text-[#5DCAA5]">
+                Partagez votre expérience et aidez la communauté à choisir le
+                bon professionnel.
               </p>
             </div>
+
             <Link href="/feedback" className="flex-shrink-0">
-              <button className="bg-white hover:bg-teal-50 text-[#085041] text-sm font-semibold px-4 py-2 rounded-xl cursor-pointer transition-all whitespace-nowrap">
-                Donner mon avis
+              <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#1D9E75] hover:bg-[#0F6E56] text-[#E1F5EE] text-sm font-medium px-6 py-3 rounded-xl cursor-pointer transition-all">
+                Donner mon avis <ChevronRight className="w-4 h-4" />
               </button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA double */}
       <section className="cta-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
           <div className="bg-white rounded-2xl shadow-sm p-7 sm:p-10 flex flex-col text-center sm:text-left">
