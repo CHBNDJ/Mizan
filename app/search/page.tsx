@@ -101,7 +101,7 @@ function SearchResults() {
       );
     }
     prevPageRef.current = 1;
-  }, [loading, avocats.length]);
+  }, [loading, avocats.length, sortBy]);
 
   useEffect(() => {
     if (page <= 1 || page <= prevPageRef.current) return;
