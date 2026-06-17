@@ -178,7 +178,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (userData.userType === "lawyer" && userData.address) {
           await supabase
             .from("users")
-            .update({ address: userData.address })
+            .update({ address: userData.address, country: "Algérie" })
             .eq("id", authData.user.id);
         }
         if (userData.userType === "lawyer" && userData.profession) {

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Eye, EyeOff, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { CustomSelect } from "@/components/ui/CustomSelect";
+import { CIVILITE_OPTIONS, frontendToDb } from "@/lib/genderUtils";
 import { LOCATION, COUNTRIES, LOCATION_TO_PHONE_CODE } from "@/utils/constants";
 import { FormErrors } from "@/types";
 import { useAuth } from "@/hooks/useAuth";
@@ -22,6 +23,7 @@ export default function ClientRegisterPage() {
     confirmPassword: "",
     mobile: "",
     location: "",
+    gender: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -95,6 +97,7 @@ export default function ClientRegisterPage() {
     if (!formData.mobile.trim()) e.mobile = "Le mobile est requis";
     else if (formData.mobile.length < 7) e.mobile = "Numéro trop court";
     if (!formData.location) e.location = "Sélectionnez votre lieu de résidence";
+    if (!formData.gender) e.gender = "La civilité est requise";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -111,6 +114,7 @@ export default function ClientRegisterPage() {
         mobile: `+${mobileCountry}${formData.mobile}`,
         userType: "client" as const,
         location: formData.location,
+        gender: frontendToDb(formData.gender),
       });
       router.push(result.redirectPath || "/");
     } catch (error: any) {
@@ -147,6 +151,21 @@ export default function ClientRegisterPage() {
             className="register-form space-y-4"
             noValidate
           >
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Civilité *
+              </label>
+              <CustomSelect
+                options={CIVILITE_OPTIONS}
+                value={formData.gender}
+                onChange={(v) => setFormData((p) => ({ ...p, gender: v }))}
+                placeholder="Sélectionnez"
+                className="h-12"
+                disabled={isSubmitting}
+              />
+              {errors.gender && <p className={errCls}>{errors.gender}</p>}
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
