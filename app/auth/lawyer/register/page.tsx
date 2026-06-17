@@ -313,6 +313,7 @@ export default function LawyerRegisterPage() {
         mobile: m1 || undefined,
         userType: "lawyer" as const,
         location: formData.address.city.trim(),
+        is_cour_supreme: !!(formData as any).isCourtSupreme,
         website: formData.website?.trim()
           ? formData.website.startsWith("http")
             ? formData.website.trim()

@@ -128,6 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       gender?: string;
       languages?: string[];
       website?: string;
+      is_cour_supreme?: boolean;
       address?: {
         street: string;
         neighborhood?: string | null;
@@ -197,6 +198,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               profession: userData.profession,
               professions: professionsToSet,
               slug: rawSlug,
+              is_cour_supreme: !!userData.is_cour_supreme,
             })
             .eq("id", authData.user.id);
           if (userData.website) {
