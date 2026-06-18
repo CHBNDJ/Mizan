@@ -40,7 +40,7 @@ const PROFESSIONS = [
     id: "avocat" as Profession,
     label: "Avocat",
     Icon: Scale,
-    numLabel: "N° de carte professionnelle",
+    numLabel: "N° carte pro",
     numPlaceholder: "23/446",
   },
   {
