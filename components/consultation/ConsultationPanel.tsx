@@ -9,6 +9,7 @@ import {
   Video,
   Mail,
   CheckCircle,
+  Lock,
 } from "lucide-react";
 import { AvocatData } from "@/types";
 
@@ -344,6 +345,7 @@ export function ConsultationPanel({
             </>
           )}
         </button>
+
         {isAppointment && (
           <button
             onClick={onBooking}
@@ -352,6 +354,25 @@ export function ConsultationPanel({
             <Calendar className="w-4 h-4" /> RDV physique au cabinet
           </button>
         )}
+
+        {/* Paiement en ligne — Coming soon */}
+        <div className="mt-3 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+          <div className="w-7 h-7 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
+            <Lock className="w-3.5 h-3.5 text-amber-600" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-semibold text-amber-800">
+              Paiement en ligne
+            </p>
+            <p className="text-[10px] text-amber-600 mt-0.5">
+              Bientôt disponible · CIB · Edahabia · Visa · Mastercard
+            </p>
+          </div>
+          <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full whitespace-nowrap">
+            Bientôt
+          </span>
+        </div>
+
         <p className="text-[10px] text-slate-400 text-center">
           Tarifs indicatifs · confirmés par le professionnel
         </p>
