@@ -40,8 +40,8 @@ const PROFESSIONS = [
     id: "avocat" as Profession,
     label: "Avocat",
     Icon: Scale,
-    numLabel: "N° de barreau",
-    numPlaceholder: "ALG2024-001",
+    numLabel: "N° de carte professionnelle",
+    numPlaceholder: "23/446",
   },
   {
     id: "notaire" as Profession,
@@ -227,6 +227,11 @@ export default function LawyerRegisterPage() {
         e.postalCode = "5 chiffres requis";
       if (!formData.barNumber.trim())
         e.barNumber = `Le ${currentProf?.numLabel || "numéro"} est requis`;
+      else if (
+        primaryProfession === "avocat" &&
+        !/^(\d{2}\/\d{3,4}|\d{3,4}\/\d{2})$/.test(formData.barNumber.trim())
+      )
+        e.barNumber = "Format invalide, exemple : 23/446";
     }
     if (step === 3) {
       if (formData.specializations.length === 0)
