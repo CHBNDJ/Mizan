@@ -176,11 +176,12 @@ export function ConsultationPanel({
         });
       }
 
+      // FIX : user_id (et non lawyer_id) pour matcher /api/push/send
       fetch("/api/push/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          lawyer_id: avocat.id,
+          user_id: avocat.id,
           title: "Nouvelle demande de consultation",
           body: `Un client souhaite vous consulter via ${canal.label}${scheduledAt ? ` le ${new Date(scheduledAt).toLocaleDateString("fr-FR")}` : ""}`,
           url: "/lawyer/consultations",
