@@ -192,7 +192,7 @@ export function Navigation() {
     <>
       <nav className="fixed top-0 left-0 right-0 z-[999] backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative flex items-center justify-between h-16 w-full">
+          <div className="flex lg:grid lg:grid-cols-[1fr_auto_1fr] items-center justify-between lg:justify-normal h-16 w-full">
             <Link
               href="/"
               className="flex items-center gap-3 group flex-shrink-0"
@@ -201,7 +201,7 @@ export function Navigation() {
               <span className="text-xl font-bold text-slate-800">MIZAN</span>
             </Link>
 
-            <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+            <div className="hidden lg:flex items-center justify-center gap-8">
               {allNavLinks.map((link) => (
                 <Link
                   key={link.href}
@@ -228,7 +228,7 @@ export function Navigation() {
               ))}
             </div>
 
-            <div className="hidden md:flex items-center justify-end gap-2 flex-shrink-0">
+            <div className="hidden lg:flex items-center justify-end gap-2 flex-shrink-0">
               {isAuthenticated ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -367,7 +367,7 @@ export function Navigation() {
             </div>
 
             <button
-              className="cursor-pointer md:hidden p-2 text-slate-700 rounded-lg"
+              className="cursor-pointer lg:hidden p-2 text-slate-700 rounded-lg"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? (
@@ -381,7 +381,7 @@ export function Navigation() {
       </nav>
 
       {isOpen && (
-        <div className="fixed top-16 left-0 right-0 z-[9999] md:hidden border-t border-slate-200 bg-gradient-to-br from-teal-100 via-white to-teal-100 shadow-2xl backdrop-blur-lg">
+        <div className="fixed top-16 left-0 right-0 z-[9999] lg:hidden border-t border-slate-200 bg-gradient-to-br from-teal-100 via-white to-teal-100 shadow-2xl backdrop-blur-lg">
           <div className="py-4 space-y-4">
             {/* AJOUT : sélecteur de langue en haut du menu mobile */}
             <div className="px-4 flex justify-center">
