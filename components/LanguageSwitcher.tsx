@@ -52,7 +52,9 @@ export function LanguageSwitcher() {
       </button>
 
       {open && (
-        <div className="absolute top-11 end-0 bg-white border border-slate-200 rounded-lg shadow-lg p-1 min-w-[140px] z-50">
+        <div
+          className={`absolute top-11 ${locale === "ar" ? "left-0" : "right-0"} bg-white border border-slate-200 rounded-lg shadow-lg p-1 min-w-[70px] z-50`}
+        >
           {LANGUAGES.map((l) => (
             <button
               key={l.code}
@@ -60,13 +62,13 @@ export function LanguageSwitcher() {
                 setOpen(false);
                 router.replace(pathname, { locale: l.code });
               }}
-              className={`w-full flex items-center gap-2 text-start px-2.5 py-1.5 rounded-md text-sm cursor-pointer transition-all whitespace-nowrap ${
+              className={`w-full text-center px-2.5 py-1.5 rounded-md text-sm cursor-pointer transition-all whitespace-nowrap ${
                 locale === l.code
                   ? "bg-teal-600 text-white font-medium"
                   : "text-slate-600 hover:bg-slate-50"
               }`}
             >
-              {l.full}
+              {l.label}
             </button>
           ))}
         </div>

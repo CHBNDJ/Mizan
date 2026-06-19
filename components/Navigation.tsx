@@ -176,7 +176,6 @@ export function Navigation() {
         ]
       : []),
     { href: "/howitworks", label: "Comment ça marche" },
-    { href: "/faq", label: "FAQ" },
   ];
 
   const handleSignOut = async () => {
@@ -193,7 +192,7 @@ export function Navigation() {
     <>
       <nav className="fixed top-0 left-0 right-0 z-[999] backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 w-full">
+          <div className="relative flex items-center justify-between h-16 w-full">
             <Link
               href="/"
               className="flex items-center gap-3 group flex-shrink-0"
@@ -202,7 +201,7 @@ export function Navigation() {
               <span className="text-xl font-bold text-slate-800">MIZAN</span>
             </Link>
 
-            <div className="hidden md:flex items-center justify-center gap-8 flex-1 px-4">
+            <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
               {allNavLinks.map((link) => (
                 <Link
                   key={link.href}

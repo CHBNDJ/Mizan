@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Scale } from "lucide-react";
 
 export default function Footer() {
@@ -30,6 +30,12 @@ export default function Footer() {
             className="text-slate-600 hover:text-teal-600 transition-colors"
           >
             Légal
+          </Link>
+          <Link
+            href="/faq"
+            className="text-slate-600 hover:text-teal-600 transition-colors"
+          >
+            FAQ
           </Link>
           <Link
             href="/contact"
