@@ -193,13 +193,16 @@ export function Navigation() {
     <>
       <nav className="fixed top-0 left-0 right-0 z-[999] backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex md:grid md:grid-cols-[1fr_auto_1fr] items-center justify-between md:justify-normal h-16 w-full">
-            <Link href="/" className="flex items-center gap-3 group">
+          <div className="flex items-center justify-between h-16 w-full">
+            <Link
+              href="/"
+              className="flex items-center gap-3 group flex-shrink-0"
+            >
               <Scale className="h-8 w-8 text-teal-600 transition-transform group-hover:rotate-12" />
               <span className="text-xl font-bold text-slate-800">MIZAN</span>
             </Link>
 
-            <div className="hidden md:flex items-center justify-center space-x-8">
+            <div className="hidden md:flex items-center justify-center gap-8 flex-1 px-4">
               {allNavLinks.map((link) => (
                 <Link
                   key={link.href}
@@ -226,7 +229,7 @@ export function Navigation() {
               ))}
             </div>
 
-            <div className="hidden md:flex items-center justify-end gap-2">
+            <div className="hidden md:flex items-center justify-end gap-2 flex-shrink-0">
               {isAuthenticated ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -303,33 +306,6 @@ export function Navigation() {
                 <>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button className="group flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-teal-600 cursor-pointer">
-                        Connexion{" "}
-                        <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="center" className="w-44">
-                      <DropdownMenuItem asChild>
-                        <Link
-                          href="/auth/client/login"
-                          className="w-full hover:bg-teal-50 text-sm py-2"
-                        >
-                          Client
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link
-                          href="/auth/lawyer/login"
-                          className="w-full hover:bg-teal-50 text-sm py-2"
-                        >
-                          Professionnel
-                        </Link>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
                       <button className="group rounded-lg py-2 flex items-center gap-2 bg-teal-600 text-white px-8 cursor-pointer shadow-sm">
                         S'inscrire{" "}
                         <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
@@ -351,6 +327,33 @@ export function Navigation() {
                       <DropdownMenuItem asChild>
                         <Link
                           href="/auth/lawyer/register"
+                          className="w-full hover:bg-teal-50 text-sm py-2"
+                        >
+                          Professionnel
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="group flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-teal-600 cursor-pointer">
+                        Connexion{" "}
+                        <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="center" className="w-44">
+                      <DropdownMenuItem asChild>
+                        <Link
+                          href="/auth/client/login"
+                          className="w-full hover:bg-teal-50 text-sm py-2"
+                        >
+                          Client
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link
+                          href="/auth/lawyer/login"
                           className="w-full hover:bg-teal-50 text-sm py-2"
                         >
                           Professionnel
