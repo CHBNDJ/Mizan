@@ -1,0 +1,40 @@
+{
+  "common": {
+    "send": "Envoyer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "loading": "Chargement...",
+    "comingSoon": "Bientôt"
+  },
+  "consultationPanel": {
+    "channels": {
+      "message": { "label": "Message", "desc": "Réponse sous 24-48h" },
+      "phone": { "label": "Téléphone", "desc": "Appel vocal" },
+      "video30": { "label": "Vidéo", "desc": "Consultation vidéo" },
+      "video60": { "label": "Vidéo", "desc": "Consultation vidéo" }
+    },
+    "duration": {
+      "thirtyMin": "30 min",
+      "oneHour": "1 heure"
+    },
+    "onDemand": "Sur demande",
+    "schedule": {
+      "title": "Choisissez votre créneau souhaité",
+      "subtitle": "Le professionnel confirmera la disponibilité et ses honoraires.",
+      "date": "Date",
+      "time": "Heure",
+      "errorRequired": "Veuillez choisir une date et une heure pour ce type de consultation."
+    },
+    "sendRequest": "Envoyer ma demande",
+    "sending": "Envoi...",
+    "physicalAppointment": "RDV physique au cabinet",
+    "payment": {
+      "title": "Paiement en ligne",
+      "subtitle": "Bientôt disponible · CIB · Edahabia · Visa · Mastercard",
+      "badge": "Bientôt"
+    },
+    "priceDisclaimer": "Tarifs indicatifs · confirmés par le professionnel",
+    "sentTitle": "Demande envoyée",
+    "sentSubtitle": "Redirection vers vos consultations..."
+  }
+}

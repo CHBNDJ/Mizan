@@ -1,0 +1,117 @@
+import { Merriweather } from "next/font/google";
+import "../globals.css";
+import { Navigation } from "@/components/Navigation";
+import ScrollManager from "@/components/ScrollManager";
+import { AuthProvider } from "@/hooks/useAuth";
+import Footer from "@/components/layout/Footer";
+import { homeMetadata, siteConfig } from "@/app/metadata";
+import { OrganizationJsonLd } from "@/components/JsonLd";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import type { Metadata, Viewport } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
+import PushNotificationInit from "@/components/PushNotificationInit";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
+
+const merriweather = Merriweather({ subsets: ["latin"], display: "swap" });
+
+const RTL_LOCALES = ["ar"];
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export const viewport: Viewport = {
+  themeColor: "#14b8a6",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
+export const metadata: Metadata = {
+  ...homeMetadata,
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      { rel: "icon", url: "/favicon-192.png", sizes: "192x192", type: "image/png" },
+      { rel: "icon", url: "/favicon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+  },
+  manifest: "/manifest.json",
+  openGraph: {
+    type: "website",
+    locale: "fr_DZ",
+    url: siteConfig.url,
+    siteName: "Mizan",
+    title: "Mizan — Trouvez votre expert juridique en Algérie",
+    description:
+      "Avocats, notaires, huissiers, comptables vérifiés en Algérie. Consultations en ligne depuis l'Algérie et la diaspora.",
+    images: [
+      { url: `${siteConfig.url}/og-image.png`, width: 512, height: 512, alt: "Logo Mizan", type: "image/png" },
+      { url: `${siteConfig.url}/og-image.png`, width: 1200, height: 630, alt: "Mizan — Experts juridiques d'Algérie", type: "image/png" },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@mizan_dz",
+    title: "Mizan — Trouvez votre expert juridique en Algérie",
+    description: "Avocats, notaires, huissiers, comptables vérifiés en Algérie",
+    images: [`${siteConfig.url}/og-image.png`],
+  },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "Mizan" },
+};
+
+export default async function RootLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
+  if (!routing.locales.includes(locale as any)) {
+    notFound();
+  }
+
+  const messages = await getMessages();
+  const dir = RTL_LOCALES.includes(locale) ? "rtl" : "ltr";
+
+  return (
+    <html lang={locale} dir={dir}>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="W7PDaGtQ4F7JD8rOf8RDI1wmwSrgdMt0ivpebaRSeww"
+        />
+        <OrganizationJsonLd />
+      </head>
+      <body className={`${merriweather.className} antialiased overflow-x-hidden`}>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
+        <NextIntlClientProvider messages={messages}>
+          <AuthProvider>
+            <PushNotificationInit />
+            <Navigation />
+            <ScrollManager>{children}</ScrollManager>
+            <Footer />
+          </AuthProvider>
+        </NextIntlClientProvider>
+        <SpeedInsights />
+        <Analytics />
+      </body>
+    </html>
+  );
+}

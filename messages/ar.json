@@ -1,0 +1,40 @@
+{
+  "common": {
+    "send": "إرسال",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "loading": "جارٍ التحميل...",
+    "comingSoon": "قريبًا"
+  },
+  "consultationPanel": {
+    "channels": {
+      "message": { "label": "رسالة", "desc": "الرد خلال 24-48 ساعة" },
+      "phone": { "label": "هاتفية", "desc": "مكالمة صوتية" },
+      "video30": { "label": "فيديو", "desc": "استشارة عبر الفيديو" },
+      "video60": { "label": "فيديو", "desc": "استشارة عبر الفيديو" }
+    },
+    "duration": {
+      "thirtyMin": "30 دقيقة",
+      "oneHour": "ساعة واحدة"
+    },
+    "onDemand": "بحسب الطلب",
+    "schedule": {
+      "title": "اختر الموعد الذي يناسبك",
+      "subtitle": "سيؤكد المختص التوفر والأتعاب.",
+      "date": "التاريخ",
+      "time": "الوقت",
+      "errorRequired": "يرجى اختيار تاريخ ووقت لهذا النوع من الاستشارة."
+    },
+    "sendRequest": "إرسال طلبي",
+    "sending": "جارٍ الإرسال...",
+    "physicalAppointment": "موعد حضوري في المكتب",
+    "payment": {
+      "title": "الدفع عبر الإنترنت",
+      "subtitle": "قريبًا · CIB · الذهبية · Visa · Mastercard",
+      "badge": "قريبًا"
+    },
+    "priceDisclaimer": "أسعار إرشادية · يؤكدها المختص",
+    "sentTitle": "تم إرسال الطلب",
+    "sentSubtitle": "إعادة التوجيه إلى استشاراتك..."
+  }
+}

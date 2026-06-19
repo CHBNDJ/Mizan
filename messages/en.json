@@ -1,0 +1,40 @@
+{
+  "common": {
+    "send": "Send",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "comingSoon": "Coming soon"
+  },
+  "consultationPanel": {
+    "channels": {
+      "message": { "label": "Message", "desc": "Response within 24-48h" },
+      "phone": { "label": "Phone", "desc": "Voice call" },
+      "video30": { "label": "Video", "desc": "Video consultation" },
+      "video60": { "label": "Video", "desc": "Video consultation" }
+    },
+    "duration": {
+      "thirtyMin": "30 min",
+      "oneHour": "1 hour"
+    },
+    "onDemand": "On request",
+    "schedule": {
+      "title": "Choose your preferred time slot",
+      "subtitle": "The professional will confirm availability and fees.",
+      "date": "Date",
+      "time": "Time",
+      "errorRequired": "Please choose a date and time for this type of consultation."
+    },
+    "sendRequest": "Send my request",
+    "sending": "Sending...",
+    "physicalAppointment": "In-person appointment at office",
+    "payment": {
+      "title": "Online payment",
+      "subtitle": "Coming soon · CIB · Edahabia · Visa · Mastercard",
+      "badge": "Coming soon"
+    },
+    "priceDisclaimer": "Indicative rates · confirmed by the professional",
+    "sentTitle": "Request sent",
+    "sentSubtitle": "Redirecting to your consultations..."
+  }
+}

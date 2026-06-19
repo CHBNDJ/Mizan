@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { contactMetadata } from "../metadata";
+import { contactMetadata } from "@/app/metadata";
 
 export const metadata: Metadata = contactMetadata;
 

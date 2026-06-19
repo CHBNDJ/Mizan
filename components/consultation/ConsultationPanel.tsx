@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   ChevronRight,
   Calendar,
@@ -13,34 +14,12 @@ import {
 } from "lucide-react";
 import { AvocatData } from "@/types";
 
-const CANAL_CONFIG: Record<
-  string,
-  { icon: any; label: string; desc: string; duration?: string }
-> = {
-  message: {
-    icon: MessageSquare,
-    label: "Message écrit",
-    desc: "Réponse sous 24-48h",
-  },
-  phone: {
-    icon: Phone,
-    label: "Téléphonique",
-    desc: "Appel vocal",
-    duration: "30 min",
-  },
-  video_30: {
-    icon: Video,
-    label: "Vidéo",
-    desc: "Consultation vidéo",
-    duration: "30 min",
-  },
-  video_60: {
-    icon: Video,
-    label: "Vidéo",
-    desc: "Consultation vidéo",
-    duration: "1h",
-  },
-  email: { icon: Mail, label: "Email", desc: "Réponse sous 48h" },
+const CANAL_ICONS: Record<string, any> = {
+  message: MessageSquare,
+  phone: Phone,
+  video_30: Video,
+  video_60: Video,
+  email: Mail,
 };
 
 const NEEDS_SCHEDULE = ["phone", "video_30", "video_60"];
@@ -65,6 +44,7 @@ export function ConsultationPanel({
   onBooking,
 }: ConsultationPanelProps) {
   const router = useRouter();
+  const tc = useTranslations("consultationPanel");
 
   const [selected, setSelected] = useState<string | null>(null);
   const [scheduledDate, setScheduledDate] = useState("");
@@ -79,30 +59,31 @@ export function ConsultationPanel({
   const needsSchedule = NEEDS_SCHEDULE.includes(selected || "");
   const today = new Date().toISOString().split("T")[0];
 
+  // 2. Plus de texte en dur ici — tout vient de tc("...")
   const ALL_CANAUX = [
     {
       type: "message",
-      label: "Message",
-      desc: "Réponse sous 24-48h",
+      label: tc("channels.message.label"),
+      desc: tc("channels.message.desc"),
       duration: undefined,
     },
     {
       type: "phone",
-      label: "Téléphone",
-      desc: "Appel vocal",
-      duration: "30 min",
+      label: tc("channels.phone.label"),
+      desc: tc("channels.phone.desc"),
+      duration: tc("duration.thirtyMin"),
     },
     {
       type: "video_30",
-      label: "Vidéo",
-      desc: "Consultation vidéo",
-      duration: "30 min",
+      label: tc("channels.video30.label"),
+      desc: tc("channels.video30.desc"),
+      duration: tc("duration.thirtyMin"),
     },
     {
       type: "video_60",
-      label: "Vidéo",
-      desc: "Consultation vidéo",
-      duration: "1 heure",
+      label: tc("channels.video60.label"),
+      desc: tc("channels.video60.desc"),
+      duration: tc("duration.oneHour"),
     },
   ];
 
@@ -119,16 +100,14 @@ export function ConsultationPanel({
     }
     if (!selected) return;
     if (needsSchedule && (!scheduledDate || !scheduledTime)) {
-      setError(
-        "Veuillez choisir une date et une heure pour ce type de consultation."
-      );
+      setError(tc("schedule.errorRequired"));
       return;
     }
     setError("");
     setSending(true);
 
     try {
-      const canal = CANAL_CONFIG[selected];
+      const canal = ALL_CANAUX.find((c) => c.type === selected)!;
       const price = pricingChannels.find((p: any) => p.type === selected);
 
       const scheduledAt =
@@ -163,28 +142,27 @@ export function ConsultationPanel({
 
       if (cid) {
         const priceStr = price?.base_price
-          ? `\n💰 Tarif : ${price.base_price.toLocaleString()} DA`
+          ? `\n💰 ${price.base_price.toLocaleString()} DA`
           : "";
         const durStr = canal.duration ? ` · ${canal.duration}` : "";
         const dateStr = scheduledAt
-          ? `\n📅 Date souhaitée : ${new Date(scheduledAt).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })} à ${scheduledTime}`
+          ? `\n📅 ${new Date(scheduledAt).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })} à ${scheduledTime}`
           : "";
 
         await supabase.from("messages").insert({
           consultation_id: cid,
           sender_id: user.id,
-          content: `📋 Demande de consultation\n\n🔔 ${canal.label}${durStr}${dateStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif.`,
+          content: `📋 ${canal.label}${durStr}${dateStr}${priceStr}`,
         });
       }
 
-      // FIX : user_id (et non lawyer_id) pour matcher /api/push/send
       fetch("/api/push/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           user_id: avocat.id,
           title: "Nouvelle demande de consultation",
-          body: `Un client souhaite vous consulter via ${canal.label}${scheduledAt ? ` le ${new Date(scheduledAt).toLocaleDateString("fr-FR")}` : ""}`,
+          body: `${canal.label}${scheduledAt ? ` le ${new Date(scheduledAt).toLocaleDateString("fr-FR")}` : ""}`,
           url: "/lawyer/consultations",
         }),
       }).catch(() => {});
@@ -209,10 +187,10 @@ export function ConsultationPanel({
         <div className="w-12 h-12 bg-teal-50 border border-teal-100 rounded-full flex items-center justify-center mx-auto mb-3">
           <CheckCircle className="w-6 h-6 text-teal-600" />
         </div>
-        <p className="text-sm font-bold text-slate-900 mb-1">Demande envoyée</p>
-        <p className="text-xs text-slate-500">
-          Redirection vers vos consultations...
+        <p className="text-sm font-bold text-slate-900 mb-1">
+          {tc("sentTitle")}
         </p>
+        <p className="text-xs text-slate-500">{tc("sentSubtitle")}</p>
       </div>
     );
 
@@ -223,9 +201,8 @@ export function ConsultationPanel({
     <div>
       <div className="divide-y divide-slate-100">
         {canaux.map((canal) => {
-          const config = CANAL_CONFIG[canal.type];
-          if (!config) return null;
-          const Icon = config.icon;
+          const Icon = CANAL_ICONS[canal.type];
+          if (!Icon) return null;
           const isSelected = selected === canal.type;
           return (
             <button
@@ -234,7 +211,8 @@ export function ConsultationPanel({
                 setSelected(canal.type);
                 setError("");
               }}
-              className={`w-full flex items-center justify-between gap-3 py-3 px-2 cursor-pointer transition-all text-left rounded-xl ${isSelected ? "bg-teal-50" : "hover:bg-slate-50"}`}
+              // 3. text-left → text-start : s'inverse automatiquement en RTL
+              className={`w-full flex items-center justify-between gap-3 py-3 px-2 cursor-pointer transition-all text-start rounded-xl ${isSelected ? "bg-teal-50" : "hover:bg-slate-50"}`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div
@@ -255,11 +233,12 @@ export function ConsultationPanel({
                   <span
                     className={`text-sm font-medium ${isSelected ? "text-teal-800" : "text-slate-700"}`}
                   >
-                    {config.label}
+                    {canal.label}
                   </span>
                   {canal.duration && (
+                    // 4. ml-2 → ms-2 (margin-start) : à droite en LTR, à gauche en RTL
                     <span
-                      className={`ml-2 text-xs ${isSelected ? "text-teal-500" : "text-slate-400"}`}
+                      className={`ms-2 text-xs ${isSelected ? "text-teal-500" : "text-slate-400"}`}
                     >
                       {canal.duration}
                     </span>
@@ -267,7 +246,7 @@ export function ConsultationPanel({
                   <p
                     className={`text-xs ${isSelected ? "text-teal-600" : "text-slate-400"}`}
                   >
-                    {config.desc}
+                    {canal.desc}
                   </p>
                 </div>
               </div>
@@ -276,7 +255,7 @@ export function ConsultationPanel({
               >
                 {canal.base_price
                   ? `${canal.base_price.toLocaleString()} DA`
-                  : "Sur demande"}
+                  : tc("onDemand")}
               </span>
             </button>
           );
@@ -288,16 +267,14 @@ export function ConsultationPanel({
           <div className="flex items-center gap-2 mb-1">
             <Calendar className="w-4 h-4 text-teal-600" />
             <p className="text-xs font-semibold text-teal-800">
-              Choisissez votre créneau souhaité
+              {tc("schedule.title")}
             </p>
           </div>
-          <p className="text-[11px] text-teal-600">
-            Le professionnel confirmera la disponibilité et ses honoraires.
-          </p>
+          <p className="text-[11px] text-teal-600">{tc("schedule.subtitle")}</p>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">
-                Date *
+                {tc("schedule.date")} *
               </label>
               <input
                 type="date"
@@ -309,7 +286,7 @@ export function ConsultationPanel({
             </div>
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">
-                Heure *
+                {tc("schedule.time")} *
               </label>
               <input
                 type="time"
@@ -337,11 +314,11 @@ export function ConsultationPanel({
           {sending ? (
             <>
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />{" "}
-              Envoi...
+              {tc("sending")}
             </>
           ) : (
             <>
-              Envoyer ma demande <ChevronRight className="w-4 h-4" />
+              {tc("sendRequest")} <ChevronRight className="w-4 h-4" />
             </>
           )}
         </button>
@@ -351,30 +328,29 @@ export function ConsultationPanel({
             onClick={onBooking}
             className="w-full bg-white border border-teal-200 text-teal-700 hover:bg-teal-50 py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
           >
-            <Calendar className="w-4 h-4" /> RDV physique au cabinet
+            <Calendar className="w-4 h-4" /> {tc("physicalAppointment")}
           </button>
         )}
 
-        {/* Paiement en ligne — Coming soon */}
         <div className="mt-3 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
           <div className="w-7 h-7 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
             <Lock className="w-3.5 h-3.5 text-amber-600" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-semibold text-amber-800">
-              Paiement en ligne
+              {tc("payment.title")}
             </p>
             <p className="text-[10px] text-amber-600 mt-0.5">
-              Bientôt disponible · CIB · Edahabia · Visa · Mastercard
+              {tc("payment.subtitle")}
             </p>
           </div>
           <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full whitespace-nowrap">
-            Bientôt
+            {tc("payment.badge")}
           </span>
         </div>
 
         <p className="text-[10px] text-slate-400 text-center">
-          Tarifs indicatifs · confirmés par le professionnel
+          {tc("priceDisclaimer")}
         </p>
       </div>
     </div>
