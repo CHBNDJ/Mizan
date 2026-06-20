@@ -7,6 +7,7 @@ import React, {
   useLayoutEffect,
 } from "react";
 import { notFound, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   ArrowLeft,
   MapPin,
@@ -32,7 +33,7 @@ import { createClient } from "@/lib/supabase/client";
 import BookingModal from "@/components/booking/BookingModal";
 import ReviewSection from "@/components/reviews/ReviewSection";
 import { ConsultationPanel } from "@/components/consultation/ConsultationPanel";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { formatPhoneNumber, detectPhoneType } from "@/lib/phoneFormatter";
 import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
@@ -45,15 +46,13 @@ const LawyerMap = dynamic(() => import("@/components/map/LawyerMap"), {
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
-const PROF_LABELS: Record<string, { label: string; numLabel: string }> = {
-  avocat: { label: "Avocat", numLabel: "Barreau de" },
-  notaire: { label: "Notaire", numLabel: "Chambre des notaires de" },
-  huissier: { label: "Huissier", numLabel: "Juridiction de" },
-  "expert-comptable": { label: "Expert Comptable", numLabel: "N° ONEC" },
-  comptable: { label: "Comptable", numLabel: "N° ONEC/ONCA" },
+const PROF_KEY: Record<string, string> = {
+  avocat: "avocat",
+  notaire: "notaire",
+  huissier: "huissier",
+  "expert-comptable": "expertComptable",
+  comptable: "comptable",
 };
-const getProfLabel = (p?: string) =>
-  PROF_LABELS[p || "avocat"] || PROF_LABELS.avocat;
 
 const getMapsQuery = (a: AvocatData) =>
   [a.adresse?.rue, a.adresse?.ville || a.ville, a.wilaya, "Algérie"]
@@ -61,15 +60,7 @@ const getMapsQuery = (a: AvocatData) =>
     .join(", ");
 const getGoogleMapsUrl = (a: AvocatData) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getMapsQuery(a))}`;
-const getSiteLabel = (url: string) => {
-  if (url.includes("linkedin.com"))
-    return { label: "LinkedIn", sublabel: "Voir le profil" };
-  if (url.includes("facebook.com"))
-    return { label: "Facebook", sublabel: "Voir la page" };
-  if (url.includes("instagram.com"))
-    return { label: "Instagram", sublabel: "Voir le profil" };
-  return { label: "Site web", sublabel: "Visiter le site" };
-};
+
 const flag = (p: string) => {
   const n = p.replace(/\s/g, "");
   if (n.startsWith("+213")) return "🇩🇿";
@@ -115,6 +106,7 @@ const InfoCardMobile = ({
   whatsappHref,
   teal = false,
 }: InfoItem) => {
+  const t = useTranslations();
   const body = (
     <div className="flex items-center gap-3 px-4 py-3.5">
       <div
@@ -162,9 +154,9 @@ const InfoCardMobile = ({
         <div className="flex border-t border-slate-100">
           <a
             href={href}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-slate-600 hover:bg-slate-50 border-r border-slate-100"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-slate-600 hover:bg-slate-50 border-e border-slate-100"
           >
-            <Phone className="w-3.5 h-3.5" /> Appeler
+            <Phone className="w-3.5 h-3.5" /> {t("lawyerProfile.contact.call")}
           </a>
           <a
             href={whatsappHref}
@@ -189,6 +181,7 @@ const InfoCardDesktop = ({
   whatsappHref,
   teal = false,
 }: InfoItem) => {
+  const t = useTranslations();
   const body = (
     <div
       className={`rounded-xl border shadow-sm overflow-hidden flex flex-col h-full ${teal ? "bg-teal-50 border-teal-100" : "bg-white border-slate-200"}`}
@@ -228,9 +221,9 @@ const InfoCardDesktop = ({
         <div className="flex border-t border-slate-100 mt-auto">
           <a
             href={href}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 border-r border-slate-100"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 border-e border-slate-100"
           >
-            <Phone className="w-3 h-3" /> Appeler
+            <Phone className="w-3 h-3" /> {t("lawyerProfile.contact.call")}
           </a>
           <a
             href={whatsappHref}
@@ -267,6 +260,7 @@ export default function ProfilePage({
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, profile } = useAuth();
+  const t = useTranslations();
   const [avocat, setAvocat] = useState<AvocatData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
@@ -277,6 +271,36 @@ export default function ProfilePage({
   const isOwnProfile = user?.id === avocat?.id;
   const isClient = !!user && profile?.user_type === "client";
   const showConsultPanel = !user || isClient || isOwnProfile;
+
+  const getProfLabel = (p?: string) => {
+    const key = PROF_KEY[p || "avocat"] || "avocat";
+    return {
+      label: t(`professions.${key}.label`),
+      numLabel: t(`lawyerProfile.numLabels.${key}`),
+    };
+  };
+
+  const getSiteLabel = (url: string) => {
+    if (url.includes("linkedin.com"))
+      return {
+        label: "LinkedIn",
+        sublabel: t("lawyerProfile.contact.linkedinProfile"),
+      };
+    if (url.includes("facebook.com"))
+      return {
+        label: "Facebook",
+        sublabel: t("lawyerProfile.contact.facebookPage"),
+      };
+    if (url.includes("instagram.com"))
+      return {
+        label: "Instagram",
+        sublabel: t("lawyerProfile.contact.instagramProfile"),
+      };
+    return {
+      label: t("lawyerProfile.contact.website"),
+      sublabel: t("lawyerProfile.contact.visitSite"),
+    };
+  };
 
   useEffect(() => {
     getAvocatById(slug)
@@ -428,9 +452,15 @@ export default function ProfilePage({
           icon: (
             <span className="text-base leading-none">{flag(p.number)}</span>
           ),
-          label: p.type === "mobile" ? "Mobile" : "Fixe",
+          label:
+            p.type === "mobile"
+              ? t("lawyerProfile.contact.mobile")
+              : t("lawyerProfile.contact.fixed"),
           value: formatPhoneNumber(p.number),
-          sublabel: p.type === "mobile" ? "Appeler · WhatsApp" : "Appeler",
+          sublabel:
+            p.type === "mobile"
+              ? t("lawyerProfile.contact.callWhatsapp")
+              : t("lawyerProfile.contact.call"),
           href: `tel:${p.number.replace(/\s/g, "")}`,
           whatsappHref: p.type === "mobile" ? waUrl(p.number) : undefined,
         }))
@@ -457,8 +487,8 @@ export default function ProfilePage({
   const claimItem: InfoItem | null = !avocat.is_claimed
     ? {
         icon: <CheckCircle className="w-3.5 h-3.5 text-teal-600" />,
-        label: "Vous êtes ce professionnel ?",
-        value: "Réclamer ce profil",
+        label: t("lawyerProfile.claimQuestion"),
+        value: t("lawyerProfile.claimAction"),
         href: `/claim-profile/${avocat.id}`,
         teal: true,
       }
@@ -473,8 +503,8 @@ export default function ProfilePage({
           className="back-button opacity-0 invisible flex items-center gap-2 text-teal-600 hover:text-teal-700 cursor-pointer mb-6 text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span className="hidden sm:inline">Retour aux résultats</span>
-          <span className="sm:hidden">Retour</span>
+          <span className="hidden sm:inline">{t("lawyerProfile.back")}</span>
+          <span className="sm:hidden">{t("lawyerProfile.backShort")}</span>
         </button>
 
         {isOwnProfile && (
@@ -483,16 +513,16 @@ export default function ProfilePage({
               <Eye className="w-4 h-4 text-teal-700" />
               <div>
                 <p className="text-sm font-medium text-teal-900">
-                  Aperçu de votre profil public
+                  {t("lawyerProfile.ownPreviewTitle")}
                 </p>
                 <p className="text-xs text-teal-600">
-                  Tel que vos clients vous voient
+                  {t("lawyerProfile.ownPreviewSubtitle")}
                 </p>
               </div>
             </div>
             <Link href="/profile">
               <button className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer transition-all">
-                Modifier →
+                {t("lawyerProfile.edit")}
               </button>
             </Link>
           </div>
@@ -529,10 +559,10 @@ export default function ProfilePage({
                       <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
                       <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-teal-600" />
                       <span className="text-sm text-slate-600 font-medium">
-                        {expAnnees} ans d'expérience
+                        {expAnnees} {t("lawyerProfile.experienceYears")}
                       </span>
                       <span className="text-sm text-slate-400">
-                        · inscrit en{" "}
+                        · {t("lawyerProfile.registeredIn")}{" "}
                         {avocat.experience?.date_inscription || "N/A"}
                       </span>
                     </div>
@@ -588,12 +618,14 @@ export default function ProfilePage({
                 <div className="flex flex-wrap items-center gap-2">
                   {avocat.verified && (
                     <div className="flex items-center gap-1 text-[11px] text-teal-600 font-medium bg-teal-50 border border-teal-100 px-2 py-0.5 rounded-full">
-                      <CheckCircle className="w-3 h-3" /> Vérifié par Mizan
+                      <CheckCircle className="w-3 h-3" />{" "}
+                      {t("lawyerProfile.verifiedBadge")}
                     </div>
                   )}
                   {avocat.is_cour_supreme && (
                     <div className="flex items-center gap-1 text-[11px] text-amber-700 font-medium bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
-                      <CheckCircle className="w-3 h-3" /> Agréé Cour Suprême
+                      <CheckCircle className="w-3 h-3" />{" "}
+                      {t("lawyerProfile.courSupremeBadge")}
                     </div>
                   )}
                 </div>
@@ -622,8 +654,8 @@ export default function ProfilePage({
             <Card className="content-card opacity-0 invisible shadow-sm">
               <CardHeader>
                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-                  <Briefcase className="w-4 h-4 text-teal-600" /> Domaines
-                  d'expertise
+                  <Briefcase className="w-4 h-4 text-teal-600" />{" "}
+                  {t("lawyerProfile.expertiseDomains")}
                 </div>
               </CardHeader>
               <CardContent>
@@ -648,10 +680,11 @@ export default function ProfilePage({
               {isOwnProfile && (
                 <div className="absolute inset-0 z-10 bg-white/80 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center gap-2">
                   <div className="flex items-center gap-2 bg-teal-50 border border-teal-200 text-teal-800 text-xs font-medium px-4 py-2 rounded-full">
-                    <Eye className="w-3.5 h-3.5" /> Ce que vos clients voient
+                    <Eye className="w-3.5 h-3.5" />{" "}
+                    {t("lawyerProfile.ownProfileOverlay")}
                   </div>
                   <p className="text-xs text-slate-400">
-                    Vous ne pouvez pas vous envoyer une consultation
+                    {t("lawyerProfile.ownProfileNote")}
                   </p>
                 </div>
               )}

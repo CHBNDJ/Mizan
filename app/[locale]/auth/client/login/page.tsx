@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { FormErrors } from "@/types";
 import { useAuth } from "@/hooks/useAuth";
 import { gsap } from "gsap";
@@ -11,6 +12,7 @@ import { gsap } from "gsap";
 export default function ClientLoginPage() {
   const router = useRouter();
   const { signIn } = useAuth();
+  const t = useTranslations();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState({
@@ -73,13 +75,13 @@ export default function ClientLoginPage() {
     const newErrors: FormErrors = {};
 
     if (!formData.email.trim()) {
-      newErrors.email = "L'email est requis";
+      newErrors.email = t("validation.required.email");
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Format email invalide";
+      newErrors.email = t("validation.invalid.email");
     }
 
     if (!formData.password.trim()) {
-      newErrors.password = "Le mot de passe est requis";
+      newErrors.password = t("validation.required.password");
     }
 
     setErrors(newErrors);
@@ -101,21 +103,20 @@ export default function ClientLoginPage() {
     } catch (error: any) {
       console.error("Erreur connexion client:", error);
 
-      let errorMessage = "Email ou mot de passe incorrect.";
+      let errorMessage = t("validation.general.wrongCredentials");
 
       if (error.message?.includes("Invalid login credentials")) {
-        errorMessage = "Email ou mot de passe incorrect.";
+        errorMessage = t("validation.general.wrongCredentials");
       } else if (error.message?.includes("Too many requests")) {
-        errorMessage = "Trop de tentatives. Veuillez réessayer plus tard.";
+        errorMessage = t("validation.general.tooManyAttempts");
       } else if (
         error.message?.includes("Ce compte n'est pas un compte client")
       ) {
-        errorMessage = error.message;
+        errorMessage = t("validation.general.notClientAccount");
       } else if (error.message?.includes("User not found")) {
-        errorMessage = "Aucun compte trouvé avec cet email.";
+        errorMessage = t("validation.general.userNotFound");
       } else if (error.message?.includes("Email not confirmed")) {
-        errorMessage =
-          "Veuillez confirmer votre email avant de vous connecter.";
+        errorMessage = t("validation.general.emailNotConfirmed");
       }
 
       setErrors({ general: errorMessage });
@@ -138,10 +139,10 @@ export default function ClientLoginPage() {
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
           <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
-            Connexion Client
+            {t("auth.clientLogin.title")}
           </h1>
           <p className="page-subtitle text-slate-600">
-            Accédez à votre espace personnel
+            {t("auth.clientLogin.subtitle")}
           </p>
         </div>
 
@@ -159,7 +160,7 @@ export default function ClientLoginPage() {
           >
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Email
+                {t("auth.clientLogin.email")}
               </label>
               <input
                 type="email"
@@ -167,7 +168,7 @@ export default function ClientLoginPage() {
                 value={formData.email}
                 onChange={handleInputChange}
                 className={`${inputBaseClass} placeholder:text-slate-400`}
-                placeholder="votre@email.com"
+                placeholder={t("auth.clientLogin.emailPh")}
                 required
                 disabled={isSubmitting}
               />
@@ -176,7 +177,7 @@ export default function ClientLoginPage() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Mot de passe
+                {t("auth.clientLogin.password")}
               </label>
               <div className="relative">
                 <input
@@ -184,8 +185,8 @@ export default function ClientLoginPage() {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`${inputBaseClass} pr-12 placeholder:text-slate-400`}
-                  placeholder="Votre mot de passe"
+                  className={`${inputBaseClass} pe-12 placeholder:text-slate-400`}
+                  placeholder={t("auth.clientLogin.passwordPh")}
                   required
                   disabled={isSubmitting}
                 />
@@ -193,7 +194,7 @@ export default function ClientLoginPage() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   disabled={isSubmitting}
-                  className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50"
                 >
                   {showPassword ? (
                     <EyeOff className="w-5 h-5" />
@@ -215,15 +216,15 @@ export default function ClientLoginPage() {
                   className="w-4 h-4 border-slate-300 rounded focus:ring-teal-500 accent-teal-600 disabled:opacity-50"
                   style={{ accentColor: "#0d9488" }}
                 />
-                <span className="ml-2 text-sm text-slate-600 select-none">
-                  Se souvenir de moi
+                <span className="ms-2 text-sm text-slate-600 select-none">
+                  {t("auth.clientLogin.rememberMe")}
                 </span>
               </label>
               <Link
                 href="/auth/client/forgot-password"
-                className="text-sm text-teal-600 hover:text-teal-700 transition-colors font-medium text-left sm:text-right"
+                className="text-sm text-teal-600 hover:text-teal-700 transition-colors font-medium text-start sm:text-end"
               >
-                Mot de passe oublié ?
+                {t("auth.clientLogin.forgotPassword")}
               </Link>
             </div>
 
@@ -234,11 +235,11 @@ export default function ClientLoginPage() {
             >
               {isSubmitting ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Connexion en cours...
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white me-2"></div>
+                  {t("auth.clientLogin.submitting")}
                 </>
               ) : (
-                "Se connecter"
+                t("auth.clientLogin.submit")
               )}
             </button>
           </form>
@@ -246,13 +247,13 @@ export default function ClientLoginPage() {
           <div className="form-footer text-center mt-6 pt-6 border-t border-slate-100">
             <div className="flex flex-col gap-2 sm:block">
               <span className="text-sm text-slate-600">
-                Nouveau sur Mizan ?
+                {t("auth.clientLogin.newHere")}
               </span>
               <Link
                 href="/auth/client/register"
-                className="text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors sm:ml-1"
+                className="text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors sm:ms-1"
               >
-                Créer un compte
+                {t("auth.clientLogin.createAccount")}
               </Link>
             </div>
           </div>

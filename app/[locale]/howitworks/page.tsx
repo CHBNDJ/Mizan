@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import {
   CheckCircle,
   Scale,
@@ -20,311 +21,63 @@ type ProfType =
   | "comptable"
   | "expert-comptable";
 
-const PROFS: { id: ProfType; label: string; Icon: any }[] = [
-  { id: "avocat", label: "Avocat", Icon: Scale },
-  { id: "notaire", label: "Notaire", Icon: FileText },
-  { id: "huissier", label: "Huissier", Icon: Briefcase },
-  { id: "comptable", label: "Comptable", Icon: Calculator },
-  { id: "expert-comptable", label: "Expert Comptable", Icon: Calculator },
-];
-
-const CLIENT_STEPS = [
-  {
-    n: "1",
-    title: "Choisissez votre expert",
-    desc: "Cliquez sur la catégorie dont vous avez besoin.",
-    points: [
-      "5 catégories d'experts",
-      "Recherche par wilaya",
-      "Accessible depuis l'étranger",
-    ],
-  },
-  {
-    n: "2",
-    title: "Filtrez et comparez",
-    desc: "Sélectionnez votre wilaya et domaine. Consultez les avis et l'expérience.",
-    points: [
-      "Avis Google affichés",
-      "Vérification officielle",
-      "Années d'expérience",
-    ],
-  },
-  {
-    n: "3",
-    title: "Contactez directement",
-    desc: "Créez un compte gratuit et envoyez une demande. Le professionnel répond par messagerie.",
-    points: [
-      "Inscription gratuite",
-      "Messagerie sécurisée",
-      "Notifications temps réel",
-    ],
-  },
-];
-const CLIENT_FAQS = [
-  {
-    q: "Puis-je utiliser Mizan depuis l'étranger ?",
-    a: "Oui, la plateforme est accessible depuis n'importe quel pays. La diaspora algérienne peut contacter un avocat, notaire ou comptable depuis la France, le Canada ou ailleurs.",
-  },
-  {
-    q: "L'inscription est-elle payante ?",
-    a: "Non, l'inscription et la recherche de professionnels sont entièrement gratuites pour les clients.",
-  },
-  {
-    q: "Comment savoir si un professionnel est fiable ?",
-    a: "Chaque professionnel est vérifié par notre équipe avant activation. Les avis Google et Mizan sont affichés sur son profil.",
-  },
-  {
-    q: "Puis-je contacter un notaire ou huissier ?",
-    a: "Oui — notaires, huissiers, avocats, comptables et experts-comptables sont tous accessibles via la messagerie Mizan.",
-  },
-];
-
-const PROF_DATA: Record<
-  ProfType,
-  { steps: any[]; faqs: any[]; claimBanner: boolean }
-> = {
-  avocat: {
-    claimBanner: true,
-    steps: [
-      {
-        n: "1",
-        title: "Inscrivez-vous",
-        desc: "Créez votre profil — spécialités, expérience, cabinet. Votre numéro de barreau sera demandé.",
-        points: ["Profil complet", "N° de barreau requis", "Gratuit"],
-      },
-      {
-        n: "2",
-        title: "Vérification",
-        desc: "Notre équipe valide votre inscription au barreau sous 24-48h.",
-        points: ["Délai 24-48h", "Vérification barreau", "Activation manuelle"],
-      },
-      {
-        n: "3",
-        title: "Recevez des clients",
-        desc: "Les clients vous contactent via la messagerie. Notification email à chaque nouvelle demande.",
-        points: [
-          "Messagerie intégrée",
-          "Notification email",
-          "Gestion des consultations",
-        ],
-      },
-    ],
-    faqs: [
-      {
-        q: "Mon profil existe peut-être déjà",
-        a: "Si vous avez un Google Business, vos informations ont pu être référencées. Réclamez votre profil pour en prendre le contrôle.",
-      },
-      {
-        q: "L'inscription est-elle payante ?",
-        a: "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité dans les résultats.",
-      },
-      {
-        q: "Qui peut voir mes coordonnées ?",
-        a: "Vos coordonnées professionnelles sont visibles sur votre profil public pour les clients connectés.",
-      },
-      {
-        q: "Comment modifier mon profil ?",
-        a: "Depuis votre espace personnel, vous pouvez modifier vos informations à tout moment.",
-      },
-    ],
-  },
-  notaire: {
-    claimBanner: false,
-    steps: [
-      {
-        n: "1",
-        title: "Inscrivez-vous",
-        desc: "Créez votre profil notarial. Votre N° de chambre sera requis.",
-        points: ["Profil complet", "N° chambre des notaires", "Gratuit"],
-      },
-      {
-        n: "2",
-        title: "Vérification",
-        desc: "Notre équipe vérifie votre inscription à la chambre sous 24-48h.",
-        points: [
-          "Délai 24-48h",
-          "Vérification officielle",
-          "Activation manuelle",
-        ],
-      },
-      {
-        n: "3",
-        title: "Clients diaspora",
-        desc: "La diaspora a besoin de notaires pour successions, actes, procurations.",
-        points: [
-          "Messagerie intégrée",
-          "Clients diaspora",
-          "Dossiers à distance",
-        ],
-      },
-    ],
-    faqs: [
-      {
-        q: "Quels actes puis-je proposer ?",
-        a: "Actes immobiliers, successions, contrats de mariage, donations, procurations, création d'entreprise.",
-      },
-      {
-        q: "La publicité est-elle autorisée ?",
-        a: "Figurer sur un annuaire numérique vérifié est légalement autorisé et conforme aux règles déontologiques.",
-      },
-      {
-        q: "L'inscription est-elle payante ?",
-        a: "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité.",
-      },
-      {
-        q: "Les clients peuvent-ils envoyer des docs ?",
-        a: "Oui, via la messagerie Mizan. Les clients peuvent joindre des documents à leurs demandes.",
-      },
-    ],
-  },
-  huissier: {
-    claimBanner: false,
-    steps: [
-      {
-        n: "1",
-        title: "Inscrivez-vous",
-        desc: "Créez votre profil. Votre N° officiel d'huissier sera requis.",
-        points: ["Profil complet", "N° d'huissier requis", "Gratuit"],
-      },
-      {
-        n: "2",
-        title: "Vérification",
-        desc: "Notre équipe vérifie votre statut d'huissier assermenté sous 24-48h.",
-        points: [
-          "Délai 24-48h",
-          "Vérification officielle",
-          "Activation manuelle",
-        ],
-      },
-      {
-        n: "3",
-        title: "Recevez des clients",
-        desc: "Particuliers et entreprises cherchent des huissiers pour constats et recouvrements.",
-        points: [
-          "Messagerie intégrée",
-          "Clients entreprises",
-          "Gestion des interventions",
-        ],
-      },
-    ],
-    faqs: [
-      {
-        q: "Quels services puis-je proposer ?",
-        a: "Constats, exécution de jugements, significations, recouvrement de créances, saisies, procès-verbaux.",
-      },
-      {
-        q: "La publicité est-elle autorisée ?",
-        a: "Figurer dans un annuaire vérifié est conforme aux règles déontologiques de la profession.",
-      },
-      {
-        q: "L'inscription est-elle payante ?",
-        a: "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité.",
-      },
-      {
-        q: "Des demandes d'urgence sont-elles possibles ?",
-        a: "Oui, via la messagerie avec indication d'urgence. Vous gérez les priorités depuis votre tableau de bord.",
-      },
-    ],
-  },
-  comptable: {
-    claimBanner: false,
-    steps: [
-      {
-        n: "1",
-        title: "Inscrivez-vous",
-        desc: "Créez votre profil. Votre N° d'agrément ONEC ou ONCA sera requis.",
-        points: ["Profil complet", "N° agrément requis", "Gratuit"],
-      },
-      {
-        n: "2",
-        title: "Vérification",
-        desc: "Notre équipe vérifie votre inscription au tableau de l'ordre sous 24-48h.",
-        points: [
-          "Délai 24-48h",
-          "Vérification ONEC/ONCA",
-          "Activation manuelle",
-        ],
-      },
-      {
-        n: "3",
-        title: "Clients diaspora",
-        desc: "La diaspora qui crée des EURL/SARL en Algérie a besoin de comptables.",
-        points: [
-          "Messagerie intégrée",
-          "Clients diaspora",
-          "Création d'entreprise",
-        ],
-      },
-    ],
-    faqs: [
-      {
-        q: "Quels services puis-je proposer ?",
-        a: "Création d'entreprise, déclarations IFU/G50/IBS, bilan annuel, paie, conseil fiscal, comptabilité EURL/SARL.",
-      },
-      {
-        q: "La publicité est-elle autorisée ?",
-        a: "Figurer dans un annuaire vérifié est autorisé et conforme à la déontologie ONEC/ONCA.",
-      },
-      {
-        q: "L'inscription est-elle payante ?",
-        a: "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité.",
-      },
-      {
-        q: "Les clients peuvent-ils envoyer des docs ?",
-        a: "Oui, via la messagerie Mizan sécurisée. Idéal pour la diaspora qui gère son entreprise à distance.",
-      },
-    ],
-  },
-  "expert-comptable": {
-    claimBanner: false,
-    steps: [
-      {
-        n: "1",
-        title: "Inscrivez-vous",
-        desc: "Créez votre profil. Votre N° d'agrément ONEC sera requis.",
-        points: ["Profil complet", "N° ONEC requis", "Gratuit"],
-      },
-      {
-        n: "2",
-        title: "Vérification",
-        desc: "Notre équipe vérifie votre inscription à l'ordre ONEC sous 24-48h.",
-        points: ["Délai 24-48h", "Vérification ONEC", "Activation manuelle"],
-      },
-      {
-        n: "3",
-        title: "Clients entreprises",
-        desc: "Audit, consolidation, évaluation d'entreprise, due diligence pour entreprises algériennes et diaspora.",
-        points: [
-          "Messagerie intégrée",
-          "Clients diaspora",
-          "Missions à distance",
-        ],
-      },
-    ],
-    faqs: [
-      {
-        q: "Quelle différence avec comptable agréé ?",
-        a: "L'expert-comptable (ONEC) peut signer des bilans officiels et exercer le commissariat aux comptes. Le comptable agréé gère la comptabilité courante.",
-      },
-      {
-        q: "Quels services puis-je proposer ?",
-        a: "Audit légal, consolidation des comptes, évaluation d'entreprise, due diligence, restructuration financière, conseil fiscal avancé.",
-      },
-      {
-        q: "L'inscription est-elle payante ?",
-        a: "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité.",
-      },
-      {
-        q: "Les missions peuvent-elles se faire à distance ?",
-        a: "Oui. La plupart des missions peuvent se faire par échange de documents et messagerie. Mizan facilite ce flux dès le premier contact.",
-      },
-    ],
-  },
+const PROF_KEY: Record<ProfType, string> = {
+  avocat: "avocat",
+  notaire: "notaire",
+  huissier: "huissier",
+  comptable: "comptable",
+  "expert-comptable": "expertComptable",
 };
 
+const PROF_ICONS: { id: ProfType; Icon: any }[] = [
+  { id: "avocat", Icon: Scale },
+  { id: "notaire", Icon: FileText },
+  { id: "huissier", Icon: Briefcase },
+  { id: "comptable", Icon: Calculator },
+  { id: "expert-comptable", Icon: Calculator },
+];
+
+// Seul "avocat" affiche la bannière "réclamer mon profil" (Google Business)
+const CLAIM_BANNER: Record<ProfType, boolean> = {
+  avocat: true,
+  notaire: false,
+  huissier: false,
+  comptable: false,
+  "expert-comptable": false,
+};
+
+interface Step {
+  title: string;
+  desc: string;
+  points: string[];
+}
+interface Faq {
+  q: string;
+  a: string;
+}
+
 export default function HowItWorksPage() {
+  const t = useTranslations();
   const [userType, setUserType] = useState<UserType>("client");
   const [profType, setProfType] = useState<ProfType>("avocat");
+
+  const PROFS = PROF_ICONS.map((p) => ({
+    ...p,
+    label: t(`professions.${PROF_KEY[p.id]}.label`),
+  }));
+
+  const profKey = PROF_KEY[profType];
+  const claimBanner = CLAIM_BANNER[profType];
+
+  const steps: Step[] =
+    userType === "client"
+      ? (t.raw("howItWorks.client.steps") as Step[])
+      : (t.raw(`howItWorks.professions.${profKey}.steps`) as Step[]);
+
+  const faqs: Faq[] =
+    userType === "client"
+      ? (t.raw("howItWorks.client.faqs") as Faq[])
+      : (t.raw(`howItWorks.professions.${profKey}.faqs`) as Faq[]);
 
   useEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -383,37 +136,31 @@ export default function HowItWorksPage() {
     );
   }, [userType, profType]);
 
-  const data = PROF_DATA[profType];
-  const steps = userType === "client" ? CLIENT_STEPS : data.steps;
-  const faqs = userType === "client" ? CLIENT_FAQS : data.faqs;
-
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <style>{`.hero-title,.hero-sub,.tabs-row,.step-card,.faq-card,.cta-section{opacity:0;}`}</style>
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 mb-5 leading-tight">
-            Comment fonctionne Mizan ?
+            {t("howItWorks.heroTitle")}
           </h1>
           <p className="hero-sub text-base sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Mizan connecte des clients — en Algérie ou à l'étranger — avec des
-            avocats, notaires, huissiers, comptables et experts-comptables
-            vérifiés.
+            {t("howItWorks.heroSubtitle")}
           </p>
         </div>
       </section>
       <section className="px-4 pb-16">
         <div className="max-w-4xl mx-auto">
           <div className="tabs-row flex justify-center gap-3 mb-6">
-            {(["client", "professionnel"] as const).map((t) => (
+            {(["client", "professionnel"] as const).map((ut) => (
               <button
-                key={t}
-                onClick={() => setUserType(t)}
-                className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${userType === t ? "bg-teal-600 text-white shadow-sm" : "bg-white border border-slate-200 text-slate-600 hover:border-teal-200"}`}
+                key={ut}
+                onClick={() => setUserType(ut)}
+                className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${userType === ut ? "bg-teal-600 text-white shadow-sm" : "bg-white border border-slate-200 text-slate-600 hover:border-teal-200"}`}
               >
-                {t === "client"
-                  ? "Vous êtes client"
-                  : "Vous êtes professionnel"}
+                {ut === "client"
+                  ? t("howItWorks.tabClient")
+                  : t("howItWorks.tabPro")}
               </button>
             ))}
           </div>
@@ -431,14 +178,14 @@ export default function HowItWorksPage() {
             </div>
           )}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-            {steps.map((step: any) => (
+            {steps.map((step, idx) => (
               <div
-                key={step.n}
+                key={step.title}
                 className="step-card bg-white border border-slate-200 rounded-xl p-5 hover:shadow-sm transition-all"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-8 h-8 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-sm font-bold text-teal-700 flex-shrink-0">
-                    {step.n}
+                    {idx + 1}
                   </div>
                   <div className="text-sm font-semibold text-slate-800">
                     {step.title}
@@ -461,30 +208,29 @@ export default function HowItWorksPage() {
               </div>
             ))}
           </div>
-          {userType === "professionnel" && data.claimBanner && (
+          {userType === "professionnel" && claimBanner && (
             <div className="mb-10 bg-teal-50 border border-teal-100 rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <div className="text-sm font-semibold text-teal-800 mb-1">
-                  Votre profil existe peut-être déjà sur Mizan
+                  {t("howItWorks.claimBannerTitle")}
                 </div>
                 <div className="text-xs text-teal-700 leading-relaxed">
-                  Si vous avez un Google Business, vos informations ont pu être
-                  référencées. Réclamez votre profil.
+                  {t("howItWorks.claimBannerDesc")}
                 </div>
               </div>
               <Link href="/search?profession=avocat">
                 <button className="flex-shrink-0 text-sm px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl cursor-pointer whitespace-nowrap">
-                  Chercher mon profil
+                  {t("howItWorks.claimBannerAction")}
                 </button>
               </Link>
             </div>
           )}
           <div>
             <p className="text-xs font-semibold text-teal-600 uppercase tracking-widest mb-4 text-center">
-              Questions fréquentes
+              {t("howItWorks.faqTitle")}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {faqs.map((faq: any, i: number) => (
+              {faqs.map((faq, i) => (
                 <div
                   key={i}
                   className="faq-card bg-white border border-slate-200 rounded-xl p-4 hover:border-teal-100 transition-all"
@@ -504,20 +250,18 @@ export default function HowItWorksPage() {
       <section className="cta-section py-12 px-4 bg-teal-600">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
-            Prêt à commencer ?
+            {t("howItWorks.ctaTitle")}
           </h2>
-          <p className="text-teal-100 mb-8">
-            Trouvez votre expert ou rejoignez la plateforme
-          </p>
+          <p className="text-teal-100 mb-8">{t("howItWorks.ctaSubtitle")}</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/">
               <button className="px-8 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl cursor-pointer shadow-sm">
-                Trouver un expert
+                {t("howItWorks.ctaFindExpert")}
               </button>
             </Link>
             <Link href="/auth/lawyer/register">
               <button className="px-8 py-3 bg-transparent hover:bg-teal-500 text-white font-semibold rounded-xl border border-white/50 cursor-pointer">
-                S'inscrire comme professionnel
+                {t("howItWorks.ctaJoinAsPro")}
               </button>
             </Link>
           </div>

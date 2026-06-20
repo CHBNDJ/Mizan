@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import {
   ArrowLeft,
   Users,
@@ -16,25 +17,23 @@ import { CustomSelect } from "@/components/ui/CustomSelect";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { SearchFilters, AvocatData } from "@/types";
 import { searchAvocats } from "@/lib/avocatsData";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { gsap } from "gsap";
 
-const PROFESSIONS = [
-  { id: "avocat", label: "Avocat", Icon: Scale, plural: "avocats" },
-  { id: "notaire", label: "Notaire", Icon: FileText, plural: "notaires" },
-  { id: "huissier", label: "Huissier", Icon: Briefcase, plural: "huissiers" },
-  {
-    id: "comptable",
-    label: "Comptable",
-    Icon: Calculator,
-    plural: "comptables",
-  },
-  {
-    id: "expert-comptable",
-    label: "Expert Comptable",
-    Icon: Calculator,
-    plural: "experts comptables",
-  },
+const PROF_KEY: Record<string, string> = {
+  avocat: "avocat",
+  notaire: "notaire",
+  huissier: "huissier",
+  comptable: "comptable",
+  "expert-comptable": "expertComptable",
+};
+
+const PROFESSION_ICONS = [
+  { id: "avocat", Icon: Scale },
+  { id: "notaire", Icon: FileText },
+  { id: "huissier", Icon: Briefcase },
+  { id: "comptable", Icon: Calculator },
+  { id: "expert-comptable", Icon: Calculator },
 ];
 
 const PAGE_SIZE = 12;
@@ -48,6 +47,8 @@ const formatWilaya = (slug: string) =>
 function SearchResults() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const t = useTranslations();
+  const locale = useLocale();
 
   const [avocats, setAvocats] = useState<AvocatData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -55,6 +56,12 @@ function SearchResults() {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [page, setPage] = useState(1);
   const prevPageRef = useRef(1);
+
+  const PROFESSIONS = PROFESSION_ICONS.map((p) => ({
+    ...p,
+    label: t(`professions.${PROF_KEY[p.id]}.label`),
+    plural: t(`professions.${PROF_KEY[p.id]}.plural`),
+  }));
 
   const professionParam = searchParams.get("profession") || "avocat";
   const currentProf =
@@ -196,19 +203,50 @@ function SearchResults() {
     filters.langues
   );
 
+  const LANGUAGE_OPTIONS = [
+    { value: "", label: t("search.language.all") },
+    {
+      value: "Arabe",
+      label: locale === "ar" ? "العربية" : locale === "en" ? "Arabic" : "Arabe",
+    },
+    {
+      value: "Français",
+      label:
+        locale === "ar" ? "الفرنسية" : locale === "en" ? "French" : "Français",
+    },
+    {
+      value: "Anglais",
+      label:
+        locale === "ar"
+          ? "الإنجليزية"
+          : locale === "en"
+            ? "English"
+            : "Anglais",
+    },
+    {
+      value: "Tamazight",
+      label:
+        locale === "ar"
+          ? "الأمازيغية"
+          : locale === "en"
+            ? "Tamazight"
+            : "Tamazight",
+    },
+  ];
+
   const LightFilters = () => (
     <div className="space-y-4">
       <div style={{ position: "relative", zIndex: 30 }}>
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
-          Genre
+          {t("search.genre.label")}
         </p>
         <CustomSelect
           options={[
-            { value: "", label: "Tous" },
-            { value: "homme", label: "Homme" },
-            { value: "femme", label: "Femme" },
+            { value: "", label: t("search.genre.all") },
+            { value: "homme", label: t("search.genre.male") },
+            { value: "femme", label: t("search.genre.female") },
           ]}
-          placeholder="Tous"
+          placeholder={t("search.genre.all")}
           value={filters.genre || ""}
           onChange={(v) => handleFilter("genre", v)}
           className="h-9 text-sm"
@@ -216,16 +254,16 @@ function SearchResults() {
       </div>
       <div style={{ position: "relative", zIndex: 20 }}>
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
-          Expérience
+          {t("search.experience.label")}
         </p>
         <CustomSelect
           options={[
-            { value: "", label: "Tous niveaux" },
-            { value: "5", label: "5 ans+" },
-            { value: "10", label: "10 ans+" },
-            { value: "20", label: "20 ans+" },
+            { value: "", label: t("search.experience.all") },
+            { value: "5", label: t("search.experience.5") },
+            { value: "10", label: t("search.experience.10") },
+            { value: "20", label: t("search.experience.20") },
           ]}
-          placeholder="Tous niveaux"
+          placeholder={t("search.experience.all")}
           value={filters.experience_min?.toString() || ""}
           onChange={(v) =>
             handleFilter("experience_min", v ? parseInt(v) : undefined)
@@ -235,17 +273,11 @@ function SearchResults() {
       </div>
       <div style={{ position: "relative", zIndex: 10 }}>
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
-          Langue
+          {t("search.language.label")}
         </p>
         <CustomSelect
-          options={[
-            { value: "", label: "Toutes" },
-            { value: "Arabe", label: "Arabe" },
-            { value: "Français", label: "Français" },
-            { value: "Anglais", label: "Anglais" },
-            { value: "Tamazight", label: "Tamazight" },
-          ]}
-          placeholder="Toutes"
+          options={LANGUAGE_OPTIONS}
+          placeholder={t("search.language.all")}
           value={filters.langues || ""}
           onChange={(v) => handleFilter("langues", v)}
           className="h-9 text-sm"
@@ -256,7 +288,7 @@ function SearchResults() {
           onClick={clearLightFilters}
           className="w-full text-xs text-slate-500 hover:text-slate-700 py-2 px-3 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 cursor-pointer font-medium"
         >
-          Réinitialiser
+          {t("search.reset")}
         </button>
       )}
     </div>
@@ -270,14 +302,14 @@ function SearchResults() {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
           <div className="flex items-center gap-1.5 sm:gap-2 mb-2 flex-wrap">
             <Link href={`/${professionParam}`}>
-              <button className="flex items-center gap-1 text-teal-600 hover:text-teal-700 text-xs sm:text-sm font-medium cursor-pointer mr-1 sm:mr-2">
+              <button className="flex items-center gap-1 text-teal-600 hover:text-teal-700 text-xs sm:text-sm font-medium cursor-pointer me-1 sm:me-2">
                 <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span className="hidden sm:inline capitalize">
                   {currentProf.label}
                 </span>
               </button>
             </Link>
-            <div className="h-3.5 w-px bg-slate-200 mr-1 hidden sm:block" />
+            <div className="h-3.5 w-px bg-slate-200 me-1 hidden sm:block" />
             {PROFESSIONS.map((p) => (
               <button
                 key={p.id}
@@ -292,8 +324,8 @@ function SearchResults() {
           <div className="flex items-center justify-between gap-2 flex-wrap">
             <div className="flex items-center gap-1.5 flex-wrap">
               <span className="text-xs sm:text-sm text-slate-500">
-                {avocats.length} {currentProf.plural} trouvé
-                {avocats.length > 1 ? "s" : ""}
+                {avocats.length} {currentProf.plural}{" "}
+                {t("search.found", { count: avocats.length })}
               </span>
               {filters.wilaya && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-600 text-white rounded-full text-xs font-semibold">
@@ -301,7 +333,7 @@ function SearchResults() {
                   {formatWilaya(filters.wilaya)}
                   <button
                     onClick={() => handleFilter("wilaya", "")}
-                    className="ml-0.5 text-teal-200 hover:text-white cursor-pointer leading-none"
+                    className="ms-0.5 text-teal-200 hover:text-white cursor-pointer leading-none"
                   >
                     ×
                   </button>
@@ -321,18 +353,19 @@ function SearchResults() {
                 onClick={() => setShowMobileFilters(!showMobileFilters)}
                 className="lg:hidden flex items-center gap-1 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-600 cursor-pointer"
               >
-                <SlidersHorizontal className="w-3.5 h-3.5" /> Filtres
+                <SlidersHorizontal className="w-3.5 h-3.5" />{" "}
+                {t("search.filters")}
               </button>
               <div className="w-36 sm:w-40">
                 <CustomSelect
                   options={[
-                    { value: "", label: "Par défaut" },
-                    { value: "rating", label: "Mieux notés" },
-                    { value: "experience", label: "Plus exp." },
-                    { value: "nom", label: "A→Z" },
-                    { value: "recent", label: "Récents" },
+                    { value: "", label: t("search.sort.default") },
+                    { value: "rating", label: t("search.sort.rating") },
+                    { value: "experience", label: t("search.sort.experience") },
+                    { value: "nom", label: t("search.sort.name") },
+                    { value: "recent", label: t("search.sort.recent") },
                   ]}
-                  placeholder="Par défaut"
+                  placeholder={t("search.sort.default")}
                   value={sortBy}
                   onChange={(v) => {
                     setSortBy(v);
@@ -356,7 +389,7 @@ function SearchResults() {
           <aside className="hidden lg:block lg:sticky lg:top-40 lg:self-start">
             <div className="bg-white shadow-sm rounded-xl p-4">
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-4">
-                Affiner
+                {t("search.refine")}
               </p>
               <LightFilters />
             </div>
@@ -388,7 +421,7 @@ function SearchResults() {
                 {hasMore && (
                   <div className="flex flex-col items-center mt-8 gap-2">
                     <p className="text-xs text-slate-400">
-                      {displayed.length} sur {avocatsTries.length}{" "}
+                      {displayed.length} {t("search.of")} {avocatsTries.length}{" "}
                       {currentProf.plural}
                     </p>
                     <button
@@ -396,7 +429,7 @@ function SearchResults() {
                       className="flex items-center gap-2 px-6 py-3 bg-white border border-teal-200 text-teal-700 hover:bg-teal-50 hover:border-teal-400 rounded-xl font-semibold text-sm cursor-pointer transition-all"
                     >
                       <ChevronDown className="w-4 h-4" />
-                      Afficher plus
+                      {t("search.showMore")}
                     </button>
                   </div>
                 )}
@@ -407,20 +440,22 @@ function SearchResults() {
                   <Users className="w-7 h-7 sm:w-9 sm:h-9 text-slate-400" />
                 </div>
                 <h3 className="text-base sm:text-lg font-semibold text-slate-700 mb-2">
-                  Aucun {currentProf.label.toLowerCase()} ne correspond
+                  {t("search.noResultsTitle", {
+                    profession: currentProf.label.toLowerCase(),
+                  })}
                 </h3>
                 <p className="text-slate-500 mb-6 max-w-sm mx-auto text-sm">
-                  Modifiez vos filtres ou revenez pour changer de wilaya
+                  {t("search.noResultsDesc")}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   {hasLightFilters && (
                     <Button onClick={clearLightFilters}>
-                      Réinitialiser les filtres
+                      {t("search.resetFilters")}
                     </Button>
                   )}
                   <Link href={`/${professionParam}`}>
                     <Button className="bg-teal-600 hover:bg-teal-700 text-white">
-                      Changer de wilaya
+                      {t("search.changeWilaya")}
                     </Button>
                   </Link>
                 </div>

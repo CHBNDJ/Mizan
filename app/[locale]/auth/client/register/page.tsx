@@ -1,8 +1,9 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Eye, EyeOff, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { CIVILITE_OPTIONS, frontendToDb } from "@/lib/genderUtils";
 import { LOCATION, COUNTRIES, LOCATION_TO_PHONE_CODE } from "@/utils/constants";
@@ -13,6 +14,7 @@ import { gsap } from "gsap";
 export default function ClientRegisterPage() {
   const router = useRouter();
   const { signUp } = useAuth();
+  const t = useTranslations();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState({
@@ -83,21 +85,25 @@ export default function ClientRegisterPage() {
 
   const validateForm = (): boolean => {
     const e: FormErrors = {};
-    if (!formData.firstName.trim()) e.firstName = "Le prénom est requis";
-    if (!formData.lastName.trim()) e.lastName = "Le nom est requis";
-    if (!formData.email.trim()) e.email = "L'email est requis";
+    if (!formData.firstName.trim())
+      e.firstName = t("validation.required.firstName");
+    if (!formData.lastName.trim())
+      e.lastName = t("validation.required.lastName");
+    if (!formData.email.trim()) e.email = t("validation.required.email");
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      e.email = "Format email invalide";
-    if (!formData.password) e.password = "Le mot de passe est requis";
-    else if (formData.password.length < 8) e.password = "Minimum 8 caractères";
+      e.email = t("validation.invalid.email");
+    if (!formData.password) e.password = t("validation.required.password");
+    else if (formData.password.length < 8)
+      e.password = t("validation.invalid.passwordLength");
     else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password))
-      e.password = "1 majuscule, 1 minuscule, 1 chiffre";
+      e.password = t("validation.invalid.passwordComplexity");
     if (formData.password !== formData.confirmPassword)
-      e.confirmPassword = "Les mots de passe ne correspondent pas";
-    if (!formData.mobile.trim()) e.mobile = "Le mobile est requis";
-    else if (formData.mobile.length < 7) e.mobile = "Numéro trop court";
-    if (!formData.location) e.location = "Sélectionnez votre lieu de résidence";
-    if (!formData.gender) e.gender = "La civilité est requise";
+      e.confirmPassword = t("validation.invalid.passwordMismatch");
+    if (!formData.mobile.trim()) e.mobile = t("validation.required.mobile");
+    else if (formData.mobile.length < 7)
+      e.mobile = t("validation.invalid.mobileTooShort");
+    if (!formData.location) e.location = t("validation.required.location");
+    if (!formData.gender) e.gender = t("validation.required.civilite");
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -118,9 +124,9 @@ export default function ClientRegisterPage() {
       });
       router.push(result.redirectPath || "/");
     } catch (error: any) {
-      let msg = "Une erreur est survenue.";
+      let msg = t("validation.general.genericError");
       if (error.message?.includes("already registered"))
-        msg = "Cette adresse email est déjà utilisée.";
+        msg = t("validation.general.emailTaken");
       setErrors({ general: msg });
     } finally {
       setIsSubmitting(false);
@@ -133,10 +139,10 @@ export default function ClientRegisterPage() {
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
           <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
-            Inscription Client
+            {t("auth.clientRegister.title")}
           </h1>
           <p className="page-subtitle text-slate-600">
-            Créez votre compte et trouvez le bon expert juridique
+            {t("auth.clientRegister.subtitle")}
           </p>
         </div>
 
@@ -153,13 +159,13 @@ export default function ClientRegisterPage() {
           >
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Civilité *
+                {t("auth.clientRegister.civilite")} *
               </label>
               <CustomSelect
                 options={CIVILITE_OPTIONS}
                 value={formData.gender}
                 onChange={(v) => setFormData((p) => ({ ...p, gender: v }))}
-                placeholder="Sélectionnez"
+                placeholder={t("auth.clientRegister.select")}
                 className="h-12"
                 disabled={isSubmitting}
               />
@@ -169,7 +175,7 @@ export default function ClientRegisterPage() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Prénom *
+                  {t("auth.clientRegister.firstName")} *
                 </label>
                 <input
                   type="text"
@@ -177,7 +183,7 @@ export default function ClientRegisterPage() {
                   value={formData.firstName}
                   onChange={handleCap}
                   className={inputCls}
-                  placeholder="Votre prénom"
+                  placeholder={t("auth.clientRegister.firstNamePh")}
                   disabled={isSubmitting}
                 />
                 {errors.firstName && (
@@ -186,7 +192,7 @@ export default function ClientRegisterPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Nom *
+                  {t("auth.clientRegister.lastName")} *
                 </label>
                 <input
                   type="text"
@@ -194,7 +200,7 @@ export default function ClientRegisterPage() {
                   value={formData.lastName}
                   onChange={handleCap}
                   className={inputCls}
-                  placeholder="Votre nom"
+                  placeholder={t("auth.clientRegister.lastNamePh")}
                   disabled={isSubmitting}
                 />
                 {errors.lastName && <p className={errCls}>{errors.lastName}</p>}
@@ -203,13 +209,13 @@ export default function ClientRegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Lieu de résidence *
+                {t("auth.clientRegister.location")} *
               </label>
               <CustomSelect
                 options={LOCATION}
                 value={formData.location}
                 onChange={handleLocationChange}
-                placeholder="Sélectionnez votre pays"
+                placeholder={t("auth.clientRegister.locationPh")}
                 className="h-12"
                 disabled={isSubmitting}
               />
@@ -218,7 +224,8 @@ export default function ClientRegisterPage() {
 
             <div>
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
-                <Smartphone className="w-4 h-4" /> Numéro mobile *
+                <Smartphone className="w-4 h-4" />{" "}
+                {t("auth.clientRegister.mobile")} *
               </label>
               <div className="flex gap-2">
                 <div className="w-44 flex-shrink-0">
@@ -239,7 +246,7 @@ export default function ClientRegisterPage() {
                     if (/^\d*$/.test(e.target.value)) handleInput(e);
                   }}
                   className={inputCls}
-                  placeholder="555 123 456"
+                  placeholder={t("auth.clientRegister.mobilePh")}
                   disabled={isSubmitting}
                 />
               </div>
@@ -248,7 +255,7 @@ export default function ClientRegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Adresse email *
+                {t("auth.clientRegister.email")} *
               </label>
               <input
                 type="email"
@@ -256,7 +263,7 @@ export default function ClientRegisterPage() {
                 value={formData.email}
                 onChange={handleInput}
                 className={`${inputCls} placeholder:text-slate-400`}
-                placeholder="votre@email.com"
+                placeholder={t("auth.clientRegister.emailPh")}
                 disabled={isSubmitting}
               />
               {errors.email && <p className={errCls}>{errors.email}</p>}
@@ -264,7 +271,7 @@ export default function ClientRegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Mot de passe *
+                {t("auth.clientRegister.password")} *
               </label>
               <div className="relative">
                 <input
@@ -272,14 +279,14 @@ export default function ClientRegisterPage() {
                   name="password"
                   value={formData.password}
                   onChange={handleInput}
-                  className={`${inputCls} pr-12`}
-                  placeholder="Minimum 8 caractères"
+                  className={`${inputCls} pe-12`}
+                  placeholder={t("auth.clientRegister.passwordPh")}
                   disabled={isSubmitting}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                 >
                   {showPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -293,7 +300,7 @@ export default function ClientRegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Confirmer le mot de passe *
+                {t("auth.clientRegister.confirmPassword")} *
               </label>
               <div className="relative">
                 <input
@@ -301,14 +308,14 @@ export default function ClientRegisterPage() {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInput}
-                  className={`${inputCls} pr-12`}
-                  placeholder="Répétez votre mot de passe"
+                  className={`${inputCls} pe-12`}
+                  placeholder={t("auth.clientRegister.confirmPasswordPh")}
                   disabled={isSubmitting}
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                 >
                   {showConfirmPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -335,13 +342,13 @@ export default function ClientRegisterPage() {
                 htmlFor="terms"
                 className="text-sm text-slate-600 cursor-pointer"
               >
-                J'accepte les{" "}
+                {t("auth.clientRegister.termsPrefix")}{" "}
                 <Link href="/cgu" className="text-teal-600 hover:underline">
-                  conditions d'utilisation
+                  {t("auth.clientRegister.termsCgu")}
                 </Link>{" "}
-                et la{" "}
+                {t("auth.clientRegister.termsAnd")}{" "}
                 <Link href="/privacy" className="text-teal-600 hover:underline">
-                  politique de confidentialité
+                  {t("auth.clientRegister.termsPrivacy")}
                 </Link>
               </label>
             </div>
@@ -353,24 +360,24 @@ export default function ClientRegisterPage() {
             >
               {isSubmitting ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                  Création en cours...
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white me-2" />
+                  {t("auth.clientRegister.submitting")}
                 </>
               ) : (
-                "Créer mon compte"
+                t("auth.clientRegister.submit")
               )}
             </button>
           </form>
 
           <div className="flex items-center justify-between mt-6">
             <span className="text-sm text-slate-600">
-              Vous avez déjà un compte ?{" "}
+              {t("auth.clientRegister.hasAccount")}{" "}
             </span>
             <Link
               href="/auth/client/login"
               className="text-sm text-teal-600 hover:text-teal-700 font-medium"
             >
-              Se connecter
+              {t("auth.clientRegister.login")}
             </Link>
           </div>
         </div>

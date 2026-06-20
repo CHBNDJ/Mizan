@@ -1,6 +1,7 @@
 "use client";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { AvocatData } from "@/types";
 import { MapPin, Star, Scale } from "lucide-react";
 import { getInitials } from "@/lib/utils";
@@ -11,6 +12,8 @@ interface AvocatCardProps {
 }
 
 export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
+  const t = useTranslations();
+
   const getProfileUrl = () => {
     const params = searchParams?.toString();
     const identifier = avocat.slug || avocat.id;
@@ -45,7 +48,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
         </div>
         <div className="flex items-center justify-center gap-1.5 mb-1 w-full">
           <span className="text-[11px] text-slate-500 truncate">
-            {specialites[0] || "Avocat"}
+            {specialites[0] || t("professions.avocat.label")}
           </span>
           {autresSpecialites > 0 && (
             <span className="flex-shrink-0 bg-teal-100 text-teal-700 text-[10px] font-medium px-1.5 py-0.5 rounded">
@@ -112,7 +115,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
         </div>
         <div className="flex items-center gap-1.5 mb-2 min-h-[20px] flex-shrink-0">
           <div className="text-xs text-slate-600 truncate flex-1">
-            {specialites[0] || "Avocat"}
+            {specialites[0] || t("professions.avocat.label")}
           </div>
           {autresSpecialites > 0 && (
             <div className="flex-shrink-0 bg-teal-100 text-teal-700 text-[10px] font-medium px-1.5 py-0.5 rounded">

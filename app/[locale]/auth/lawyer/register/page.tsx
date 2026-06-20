@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import {
   Eye,
   EyeOff,
@@ -16,6 +16,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 import { ExtendedLawyerSignupFormData, FormErrors } from "@/types";
 import { CIVILITE_OPTIONS, frontendToDb } from "@/lib/genderUtils";
@@ -35,47 +36,26 @@ type Profession =
   | "comptable"
   | "expert-comptable";
 
-const PROFESSIONS = [
-  {
-    id: "avocat" as Profession,
-    label: "Avocat",
-    Icon: Scale,
-    numLabel: "N° carte pro",
-    numPlaceholder: "23/3456",
-  },
-  {
-    id: "notaire" as Profession,
-    label: "Notaire",
-    Icon: FileText,
-    numLabel: "N° chambre des notaires",
-    numPlaceholder: "NOT2024-001",
-  },
-  {
-    id: "huissier" as Profession,
-    label: "Huissier",
-    Icon: Briefcase,
-    numLabel: "N° d'huissier",
-    numPlaceholder: "HUI2024-001",
-  },
-  {
-    id: "comptable" as Profession,
-    label: "Comptable",
-    Icon: Calculator,
-    numLabel: "N° ONEC / ONCA",
-    numPlaceholder: "CMP2024-001",
-  },
-  {
-    id: "expert-comptable" as Profession,
-    label: "Expert Comptable",
-    Icon: TrendingUp,
-    numLabel: "N° ONEC",
-    numPlaceholder: "ONEC2024-001",
-  },
+const PROF_KEY: Record<Profession, string> = {
+  avocat: "avocat",
+  notaire: "notaire",
+  huissier: "huissier",
+  comptable: "comptable",
+  "expert-comptable": "expertComptable",
+};
+
+const PROFESSION_ICONS: { id: Profession; Icon: any }[] = [
+  { id: "avocat", Icon: Scale },
+  { id: "notaire", Icon: FileText },
+  { id: "huissier", Icon: Briefcase },
+  { id: "comptable", Icon: Calculator },
+  { id: "expert-comptable", Icon: TrendingUp },
 ];
 
 export default function LawyerRegisterPage() {
   const router = useRouter();
   const { signUp } = useAuth();
+  const t = useTranslations();
   const containerRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
 
@@ -107,6 +87,17 @@ export default function LawyerRegisterPage() {
   const [selectedMobileCountry, setSelectedMobileCountry] = useState("213");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
+
+  // Tableau des professions entièrement traduit (label, numLabel, numPlaceholder)
+  const PROFESSIONS = PROFESSION_ICONS.map((p) => {
+    const key = PROF_KEY[p.id];
+    return {
+      ...p,
+      label: t(`professions.${key}.label`),
+      numLabel: t(`auth.lawyerRegister.numLabels.${key}`),
+      numPlaceholder: t(`auth.lawyerRegister.numPlaceholders.${key}`),
+    };
+  });
 
   const primaryProfession = professions[0] || null;
   const currentProf = PROFESSIONS.find((p) => p.id === primaryProfession);
@@ -209,49 +200,55 @@ export default function LawyerRegisterPage() {
   const validateStep = (step: number): boolean => {
     const e: FormErrors = {};
     if (step === 1) {
-      if (!formData.gender) e.gender = "La civilité est requise";
-      if (!formData.firstName.trim()) e.firstName = "Le prénom est requis";
-      if (!formData.lastName.trim()) e.lastName = "Le nom est requis";
-      if (!formData.mobile.trim()) e.mobile = "Le mobile est requis";
-      else if (formData.mobile.length < 8) e.mobile = "Numéro trop court";
+      if (!formData.gender) e.gender = t("validation.required.civilite");
+      if (!formData.firstName.trim())
+        e.firstName = t("validation.required.firstName");
+      if (!formData.lastName.trim())
+        e.lastName = t("validation.required.lastName");
+      if (!formData.mobile.trim()) e.mobile = t("validation.required.mobile");
+      else if (formData.mobile.length < 8)
+        e.mobile = t("validation.invalid.mobileTooShort");
       if (formData.languages.length === 0)
-        e.languages = "Sélectionnez au moins une langue";
+        e.languages = t("validation.required.languages");
     }
     if (step === 2) {
-      if (!formData.address.street.trim()) e.street = "L'adresse est requise";
-      if (!formData.address.wilaya) e.wilaya = "La wilaya est requise";
-      if (!formData.address.city) e.city = "La commune est requise";
+      if (!formData.address.street.trim())
+        e.street = t("validation.required.street");
+      if (!formData.address.wilaya) e.wilaya = t("validation.required.wilaya");
+      if (!formData.address.city) e.city = t("validation.required.city");
       if (!formData.address.postalCode.trim())
-        e.postalCode = "Le code postal est requis";
+        e.postalCode = t("validation.required.postalCode");
       else if (!/^\d{5}$/.test(formData.address.postalCode))
-        e.postalCode = "5 chiffres requis";
+        e.postalCode = t("validation.invalid.postalCode");
       if (!formData.barNumber.trim())
-        e.barNumber = `Le ${currentProf?.numLabel || "numéro"} est requis`;
+        e.barNumber = t("auth.lawyerRegister.barNumberRequired", {
+          numLabel: currentProf?.numLabel || "",
+        });
       else if (
         primaryProfession === "avocat" &&
         !/^(\d{2}\/\d{3,4}|\d{3,4}\/\d{2})$/.test(formData.barNumber.trim())
       )
-        e.barNumber = "Format invalide, exemple : 23/446";
+        e.barNumber = t("validation.invalid.barNumber");
     }
     if (step === 3) {
       if (formData.specializations.length === 0)
-        e.specializations = "Sélectionnez au moins un domaine";
+        e.specializations = t("validation.required.specializations");
       if (!formData.experience.trim())
-        e.experience = "L'expérience est requise";
+        e.experience = t("validation.required.experience");
       else if (parseInt(formData.experience) > 50)
-        e.experience = "Maximum 50 ans";
+        e.experience = t("validation.invalid.experienceMax");
     }
     if (step === 4) {
-      if (!formData.email.trim()) e.email = "L'email est requis";
+      if (!formData.email.trim()) e.email = t("validation.required.email");
       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-        e.email = "Format email invalide";
-      if (!formData.password) e.password = "Le mot de passe est requis";
+        e.email = t("validation.invalid.email");
+      if (!formData.password) e.password = t("validation.required.password");
       else if (formData.password.length < 8)
-        e.password = "Minimum 8 caractères";
+        e.password = t("validation.invalid.passwordLength");
       else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password))
-        e.password = "1 majuscule, 1 minuscule, 1 chiffre requis";
+        e.password = t("validation.invalid.passwordComplexityFull");
       if (formData.password !== formData.confirmPassword)
-        e.confirmPassword = "Les mots de passe ne correspondent pas";
+        e.confirmPassword = t("validation.invalid.passwordMismatch");
     }
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -292,12 +289,12 @@ export default function LawyerRegisterPage() {
           .eq("id", existing[0].id)
           .single();
         if (ld?.is_claimed) {
-          setErrors({ general: "Ce profil a déjà été réclamé." });
+          setErrors({ general: t("auth.lawyerRegister.profileClaimed") });
           setIsSubmitting(false);
           setTimeout(() => router.push("/auth/lawyer/login"), 2000);
           return;
         }
-        setErrors({ general: "Un profil existe déjà. Redirection..." });
+        setErrors({ general: t("auth.lawyerRegister.profileExists") });
         setIsSubmitting(false);
         setTimeout(() => router.push(`/claim-profile/${existing[0].id}`), 2000);
         return;
@@ -366,11 +363,11 @@ export default function LawyerRegisterPage() {
 
       router.push(result.redirectPath || "/lawyer/dashboard");
     } catch (error: any) {
-      let msg = "Une erreur est survenue.";
+      let msg = t("validation.general.genericError");
       if (error.message?.includes("already registered"))
-        msg = "Cette adresse email est déjà utilisée.";
+        msg = t("validation.general.emailTaken");
       else if (error.message?.includes("Database error"))
-        msg = "Erreur technique. Réessayez.";
+        msg = t("validation.general.dbError");
       setErrors({ general: msg });
     } finally {
       setIsSubmitting(false);
@@ -378,10 +375,10 @@ export default function LawyerRegisterPage() {
   };
 
   const STEPS = [
-    { id: 1, label: "Identité" },
-    { id: 2, label: "Cabinet" },
-    { id: 3, label: "Expertise" },
-    { id: 4, label: "Compte" },
+    { id: 1, label: t("auth.lawyerRegister.steps.identity") },
+    { id: 2, label: t("auth.lawyerRegister.steps.office") },
+    { id: 3, label: t("auth.lawyerRegister.steps.expertise") },
+    { id: 4, label: t("auth.lawyerRegister.steps.account") },
   ];
 
   const StepIndicator = () => (
@@ -416,18 +413,26 @@ export default function LawyerRegisterPage() {
 
   const stepMeta: Record<number, { title: string; sub: string }> = {
     1: {
-      title: "Informations personnelles",
-      sub: `Vos coordonnées en tant que ${currentProf?.label || "professionnel"}`,
+      title: t("auth.lawyerRegister.stepMeta.identityTitle"),
+      sub: t("auth.lawyerRegister.stepMeta.identitySubtitle", {
+        profession: currentProf?.label || "",
+      }),
     },
-    2: { title: "Informations du cabinet", sub: "Localisation et coordonnées" },
+    2: {
+      title: t("auth.lawyerRegister.stepMeta.officeTitle"),
+      sub: t("auth.lawyerRegister.stepMeta.officeSubtitle"),
+    },
     3: {
       title:
         primaryProfession === "avocat"
-          ? "Spécialités"
-          : "Domaines d'intervention",
-      sub: "Vos spécialités et domaines d'expertise",
+          ? t("auth.lawyerRegister.stepMeta.expertiseTitleAvocat")
+          : t("auth.lawyerRegister.stepMeta.expertiseTitleOther"),
+      sub: t("auth.lawyerRegister.stepMeta.expertiseSubtitle"),
     },
-    4: { title: "Création de compte", sub: "Vos identifiants de connexion" },
+    4: {
+      title: t("auth.lawyerRegister.stepMeta.accountTitle"),
+      sub: t("auth.lawyerRegister.stepMeta.accountSubtitle"),
+    },
   };
 
   const renderStep = () => {
@@ -435,10 +440,10 @@ export default function LawyerRegisterPage() {
       return (
         <div>
           <h3 className="text-base font-bold text-slate-800 mb-2">
-            Quelle est votre profession ?
+            {t("auth.lawyerRegister.step0Title")}
           </h3>
           <p className="text-sm text-slate-500 mb-6">
-            Choisissez votre catégorie pour personnaliser le formulaire
+            {t("auth.lawyerRegister.step0Subtitle")}
           </p>
           <div className="grid grid-cols-2 gap-3 mb-3">
             {PROFESSIONS.slice(0, 4).map((p) => {
@@ -459,7 +464,7 @@ export default function LawyerRegisterPage() {
                     {p.label}
                   </span>
                   {isSelected && (
-                    <div className="absolute top-2 right-2 w-5 h-5 bg-teal-600 rounded-full flex items-center justify-center">
+                    <div className="absolute top-2 end-2 w-5 h-5 bg-teal-600 rounded-full flex items-center justify-center">
                       <CheckCircle className="w-3 h-3 text-white" />
                     </div>
                   )}
@@ -486,7 +491,7 @@ export default function LawyerRegisterPage() {
                     {p.label}
                   </span>
                   {isSelected && (
-                    <div className="absolute top-2 right-2 w-5 h-5 bg-teal-600 rounded-full flex items-center justify-center">
+                    <div className="absolute top-2 end-2 w-5 h-5 bg-teal-600 rounded-full flex items-center justify-center">
                       <CheckCircle className="w-3 h-3 text-white" />
                     </div>
                   )}
@@ -499,8 +504,7 @@ export default function LawyerRegisterPage() {
             <div className="mt-4 bg-teal-50 border border-teal-100 rounded-xl px-4 py-3 flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-teal-600 flex-shrink-0 mt-0.5" />
               <p className="text-xs text-teal-700">
-                Votre profil sera automatiquement visible dans les recherches{" "}
-                <strong>Expert Comptable</strong> et <strong>Comptable</strong>.
+                {t("auth.lawyerRegister.expertComptableNote")}
               </p>
             </div>
           )}
@@ -512,13 +516,13 @@ export default function LawyerRegisterPage() {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Civilité *
+              {t("auth.lawyerRegister.civilite")} *
             </label>
             <CustomSelect
               options={CIVILITE_OPTIONS}
               value={formData.gender}
               onChange={(v) => setFormData((p) => ({ ...p, gender: v }))}
-              placeholder="Sélectionnez"
+              placeholder={t("auth.clientRegister.select")}
               className="h-12"
               disabled={isSubmitting}
             />
@@ -527,7 +531,7 @@ export default function LawyerRegisterPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Prénom *
+                {t("auth.lawyerRegister.firstName")} *
               </label>
               <input
                 type="text"
@@ -535,14 +539,14 @@ export default function LawyerRegisterPage() {
                 value={formData.firstName}
                 onChange={handleCap}
                 className={inputCls}
-                placeholder="Votre prénom"
+                placeholder={t("auth.clientRegister.firstNamePh")}
                 disabled={isSubmitting}
               />
               {errors.firstName && <p className={errCls}>{errors.firstName}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Nom *
+                {t("auth.lawyerRegister.lastName")} *
               </label>
               <input
                 type="text"
@@ -550,7 +554,7 @@ export default function LawyerRegisterPage() {
                 value={formData.lastName}
                 onChange={handleCap}
                 className={inputCls}
-                placeholder="Votre nom"
+                placeholder={t("auth.clientRegister.lastNamePh")}
                 disabled={isSubmitting}
               />
               {errors.lastName && <p className={errCls}>{errors.lastName}</p>}
@@ -558,7 +562,8 @@ export default function LawyerRegisterPage() {
           </div>
           <div className="relative z-20">
             <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
-              <Smartphone className="w-4 h-4" /> Mobile *
+              <Smartphone className="w-4 h-4" />{" "}
+              {t("auth.lawyerRegister.mobile")} *
             </label>
             <div className="flex gap-2">
               <CustomSelect
@@ -577,7 +582,7 @@ export default function LawyerRegisterPage() {
                   if (/^\d*$/.test(e.target.value)) handleInput(e);
                 }}
                 className={`${inputCls} placeholder:text-slate-400`}
-                placeholder="555 123 456"
+                placeholder={t("auth.lawyerRegister.mobilePh")}
                 disabled={isSubmitting}
               />
             </div>
@@ -585,7 +590,8 @@ export default function LawyerRegisterPage() {
           </div>
           <div className="relative z-10">
             <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
-              <Phone className="w-4 h-4" /> Téléphone fixe
+              <Phone className="w-4 h-4" />{" "}
+              {t("auth.lawyerRegister.fixedPhone")}
             </label>
             <div className="flex gap-2">
               <CustomSelect
@@ -604,17 +610,17 @@ export default function LawyerRegisterPage() {
                   if (/^\d*$/.test(e.target.value)) handleInput(e);
                 }}
                 className={`${inputCls} placeholder:text-slate-400`}
-                placeholder="21 123 456"
+                placeholder={t("auth.lawyerRegister.fixedPhonePh")}
                 disabled={isSubmitting}
               />
             </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Langues parlées *
+              {t("auth.lawyerRegister.languages")} *
             </label>
             <MultiSelectWithCheckboxes
-              placeholder="Choisir des langues..."
+              placeholder={t("auth.lawyerRegister.languagesPh")}
               options={langueOptions}
               value={formData.languages}
               onChange={(v) => setFormData((p) => ({ ...p, languages: v }))}
@@ -632,7 +638,7 @@ export default function LawyerRegisterPage() {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Adresse *
+              {t("auth.lawyerRegister.address")} *
             </label>
             <input
               type="text"
@@ -640,14 +646,14 @@ export default function LawyerRegisterPage() {
               value={formData.address.street}
               onChange={handleAddr}
               className={`${inputCls} placeholder:text-slate-400`}
-              placeholder="123 Rue de la République"
+              placeholder={t("auth.lawyerRegister.addressPh")}
               disabled={isSubmitting}
             />
             {errors.street && <p className={errCls}>{errors.street}</p>}
           </div>
           <div className="relative z-40">
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Wilaya *
+              {t("auth.lawyerRegister.wilaya")} *
             </label>
             <CustomSelect
               options={wilayaOptions}
@@ -658,7 +664,7 @@ export default function LawyerRegisterPage() {
                   address: { ...p.address, wilaya: v, city: "" },
                 }))
               }
-              placeholder="Sélectionnez la wilaya"
+              placeholder={t("auth.lawyerRegister.wilayaPh")}
               className="h-12"
               disabled={isSubmitting}
             />
@@ -666,7 +672,7 @@ export default function LawyerRegisterPage() {
           </div>
           <div className="relative z-30">
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Commune *
+              {t("auth.lawyerRegister.commune")} *
             </label>
             <CustomSelect
               options={communeOptions}
@@ -679,8 +685,8 @@ export default function LawyerRegisterPage() {
               }
               placeholder={
                 formData.address.wilaya
-                  ? "Sélectionnez la commune"
-                  : "Choisissez d'abord la wilaya"
+                  ? t("auth.lawyerRegister.communePh")
+                  : t("auth.lawyerRegister.communePhDisabled")
               }
               className="h-12"
               disabled={isSubmitting || !formData.address.wilaya}
@@ -690,7 +696,7 @@ export default function LawyerRegisterPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Code postal *
+                {t("auth.lawyerRegister.postalCode")} *
               </label>
               <input
                 type="text"
@@ -747,19 +753,19 @@ export default function LawyerRegisterPage() {
                 className="text-sm text-amber-800 cursor-pointer"
               >
                 <span className="font-semibold">
-                  Je suis agréé auprès de la Cour Suprême et du Conseil d'État
+                  {t("auth.lawyerRegister.courSupremeLabel")}
                 </span>
                 <p className="text-xs text-amber-600 mt-0.5 font-normal">
-                  Requiert 10 ans d'ancienneté minimum.
+                  {t("auth.lawyerRegister.courSupremeNote")}
                 </p>
               </label>
             </div>
           )}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Site web{" "}
+              {t("auth.lawyerRegister.website")}{" "}
               <span className="text-slate-400 font-normal text-xs">
-                (optionnel)
+                {t("auth.lawyerRegister.websiteOptional")}
               </span>
             </label>
             <input
@@ -770,11 +776,11 @@ export default function LawyerRegisterPage() {
                 setFormData((p) => ({ ...p, website: e.target.value }))
               }
               className={`${inputCls} placeholder:text-slate-400`}
-              placeholder="www.votre-cabinet.com"
+              placeholder={t("auth.lawyerRegister.websitePh")}
               disabled={isSubmitting}
             />
             <p className="text-xs text-slate-400 mt-1">
-              Sans https:// nécessaire
+              {t("auth.lawyerRegister.websiteNote")}
             </p>
           </div>
         </div>
@@ -786,15 +792,15 @@ export default function LawyerRegisterPage() {
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
               {primaryProfession === "avocat"
-                ? "Spécialités"
-                : "Domaine(s) d'intervention"}{" "}
+                ? t("auth.lawyerRegister.specialitiesAvocat")
+                : t("auth.lawyerRegister.specialitiesOther")}{" "}
               *
             </label>
             <MultiSelectWithCheckboxes
               placeholder={
                 primaryProfession === "avocat"
-                  ? "Choisissez vos spécialités..."
-                  : "Choisissez vos domaines..."
+                  ? t("auth.lawyerRegister.specialitiesPhAvocat")
+                  : t("auth.lawyerRegister.specialitiesPhOther")
               }
               options={domaineOptions}
               value={formData.specializations}
@@ -811,7 +817,7 @@ export default function LawyerRegisterPage() {
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Expérience (années) *
+              {t("auth.lawyerRegister.experience")} *
             </label>
             <input
               type="text"
@@ -834,7 +840,7 @@ export default function LawyerRegisterPage() {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Email *
+              {t("auth.lawyerRegister.email")} *
             </label>
             <input
               type="email"
@@ -842,14 +848,14 @@ export default function LawyerRegisterPage() {
               value={formData.email}
               onChange={handleInput}
               className={`${inputCls} placeholder:text-slate-400`}
-              placeholder="professionnel@exemple.com"
+              placeholder={t("auth.lawyerRegister.emailPh")}
               disabled={isSubmitting}
             />
             {errors.email && <p className={errCls}>{errors.email}</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Mot de passe *
+              {t("auth.lawyerRegister.password")} *
             </label>
             <div className="relative">
               <input
@@ -857,14 +863,14 @@ export default function LawyerRegisterPage() {
                 name="password"
                 value={formData.password}
                 onChange={handleInput}
-                className={`${inputCls} pr-12`}
-                placeholder="Minimum 8 caractères"
+                className={`${inputCls} pe-12`}
+                placeholder={t("auth.lawyerRegister.passwordPh")}
                 disabled={isSubmitting}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
               >
                 {showPassword ? (
                   <EyeOff className="w-4 h-4" />
@@ -877,7 +883,7 @@ export default function LawyerRegisterPage() {
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Confirmer le mot de passe *
+              {t("auth.lawyerRegister.confirmPassword")} *
             </label>
             <div className="relative">
               <input
@@ -885,14 +891,14 @@ export default function LawyerRegisterPage() {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleInput}
-                className={`${inputCls} pr-12`}
-                placeholder="Répétez votre mot de passe"
+                className={`${inputCls} pe-12`}
+                placeholder={t("auth.lawyerRegister.confirmPasswordPh")}
                 disabled={isSubmitting}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="w-4 h-4" />
@@ -906,16 +912,18 @@ export default function LawyerRegisterPage() {
             )}
           </div>
           <div className="bg-slate-50 rounded-xl p-4 text-xs text-slate-500 leading-relaxed">
-            En créant votre compte, vous acceptez les{" "}
-            <Link href="/cgu" className="text-teal-600 hover:underline">
-              CGU
-            </Link>{" "}
-            et la{" "}
-            <Link href="/privacy" className="text-teal-600 hover:underline">
-              politique de confidentialité
-            </Link>{" "}
-            de Mizan. Votre profil sera examiné avant publication (24–48h
-            ouvrées).
+            {t.rich("auth.lawyerRegister.termsNote", {
+              cgu: (chunks) => (
+                <Link href="/cgu" className="text-teal-600 hover:underline">
+                  {chunks}
+                </Link>
+              ),
+              privacy: (chunks) => (
+                <Link href="/privacy" className="text-teal-600 hover:underline">
+                  {chunks}
+                </Link>
+              ),
+            })}
           </div>
         </div>
       );
@@ -928,13 +936,15 @@ export default function LawyerRegisterPage() {
         <div className="text-center mb-8">
           <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
             {professions.length > 0
-              ? `Inscription ${currentProf?.label}`
-              : "Rejoindre Mizan"}
+              ? t("auth.lawyerRegister.registerTitle", {
+                  profession: currentProf?.label || "",
+                })
+              : t("auth.lawyerRegister.joinTitle")}
           </h1>
           <p className="page-subtitle text-slate-600">
             {professions.length > 0
-              ? "Créez votre profil professionnel vérifié"
-              : "Choisissez votre profession pour commencer"}
+              ? t("auth.lawyerRegister.registerSubtitle")
+              : t("auth.lawyerRegister.joinSubtitle")}
           </p>
         </div>
 
@@ -943,7 +953,7 @@ export default function LawyerRegisterPage() {
           {currentStep > 0 && (
             <div className="mb-6">
               <span className="text-xs font-semibold text-teal-600 uppercase tracking-wide">
-                Étape {currentStep} sur 4
+                {t("auth.lawyerRegister.stepOf", { step: currentStep })}
               </span>
               <h2 className="text-lg font-bold text-slate-900">
                 {stepMeta[currentStep]?.title}
@@ -965,7 +975,8 @@ export default function LawyerRegisterPage() {
               onClick={handleBack}
               className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-medium border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all cursor-pointer ${currentStep === 0 ? "invisible pointer-events-none" : ""}`}
             >
-              <ChevronLeft className="w-4 h-4" /> Retour
+              <ChevronLeft className="w-4 h-4" />{" "}
+              {t("auth.lawyerRegister.back")}
             </button>
             {currentStep < 4 ? (
               <button
@@ -974,7 +985,8 @@ export default function LawyerRegisterPage() {
                 disabled={currentStep === 0 && professions.length === 0}
                 className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-sm font-semibold bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white transition-all cursor-pointer"
               >
-                Continuer <ChevronRight className="w-4 h-4" />
+                {t("auth.lawyerRegister.continue")}{" "}
+                <ChevronRight className="w-4 h-4" />
               </button>
             ) : (
               <button
@@ -986,11 +998,12 @@ export default function LawyerRegisterPage() {
                 {isSubmitting ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />{" "}
-                    Création...
+                    {t("auth.lawyerRegister.submitting")}
                   </>
                 ) : (
                   <>
-                    Créer mon compte <CheckCircle className="w-4 h-4" />
+                    {t("auth.lawyerRegister.submit")}{" "}
+                    <CheckCircle className="w-4 h-4" />
                   </>
                 )}
               </button>
@@ -999,13 +1012,13 @@ export default function LawyerRegisterPage() {
         </div>
         <div className="text-center mt-4">
           <span className="text-sm text-slate-600">
-            Vous avez déjà un compte ?{" "}
+            {t("auth.lawyerRegister.hasAccount")}{" "}
           </span>
           <Link
             href="/auth/lawyer/login"
             className="text-sm text-teal-600 hover:text-teal-700 font-medium"
           >
-            Se connecter
+            {t("auth.lawyerRegister.login")}
           </Link>
         </div>
       </div>

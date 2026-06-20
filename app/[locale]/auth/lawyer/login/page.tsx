@@ -1,8 +1,9 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { FormErrors } from "@/types";
 import { createClient } from "@/lib/supabase/client";
 import { gsap } from "gsap";
@@ -10,6 +11,7 @@ import { gsap } from "gsap";
 export default function LawyerLoginPage() {
   const router = useRouter();
   const supabase = createClient();
+  const t = useTranslations();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -59,10 +61,11 @@ export default function LawyerLoginPage() {
 
   const validate = (): boolean => {
     const e: FormErrors = {};
-    if (!formData.email.trim()) e.email = "L'email est requis";
+    if (!formData.email.trim()) e.email = t("validation.required.email");
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      e.email = "Format email invalide";
-    if (!formData.password.trim()) e.password = "Le mot de passe est requis";
+      e.email = t("validation.invalid.email");
+    if (!formData.password.trim())
+      e.password = t("validation.required.password");
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -89,31 +92,29 @@ export default function LawyerLoginPage() {
 
       if (profile.user_type !== "lawyer") {
         await supabase.auth.signOut();
-        throw new Error(
-          "Ce compte n'est pas un compte professionnel. Utilisez la connexion client."
-        );
+        throw new Error("notLawyerAccount");
       }
       if (!profile.verified) {
         await supabase.auth.signOut();
         setErrors({
-          general:
-            "Votre compte est en attente de validation. Vous recevrez un email dès que votre profil sera vérifié.",
+          general: t("validation.general.pendingVerification"),
         });
         setIsSubmitting(false);
         return;
       }
       router.push("/lawyer/dashboard");
     } catch (err: any) {
-      let msg = "Email ou mot de passe incorrect.";
+      let msg = t("validation.general.wrongCredentials");
       if (err.message?.includes("Invalid login credentials"))
-        msg = "Email ou mot de passe incorrect.";
+        msg = t("validation.general.wrongCredentials");
       else if (err.message?.includes("Too many requests"))
-        msg = "Trop de tentatives. Réessayez plus tard.";
-      else if (err.message?.includes("professionnel")) msg = err.message;
+        msg = t("validation.general.tooManyAttemptsShort");
+      else if (err.message === "notLawyerAccount")
+        msg = t("validation.general.notLawyerAccount");
       else if (err.message?.includes("User not found"))
-        msg = "Aucun compte trouvé avec cet email.";
+        msg = t("validation.general.userNotFound");
       else if (err.message?.includes("Email not confirmed"))
-        msg = "Confirmez votre email avant de vous connecter.";
+        msg = t("validation.general.emailNotConfirmedShort");
       setErrors({ general: msg });
     } finally {
       setIsSubmitting(false);
@@ -125,12 +126,11 @@ export default function LawyerLoginPage() {
       <style>{`.page-title,.page-subtitle,.login-form,.form-footer{opacity:0;}`}</style>
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
-          {/* ← CHANGÉ : Connexion Avocat → Connexion Professionnel */}
           <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
-            Connexion Professionnel
+            {t("auth.lawyerLogin.title")}
           </h1>
           <p className="page-subtitle text-slate-600">
-            Accédez à votre espace professionnel
+            {t("auth.lawyerLogin.subtitle")}
           </p>
         </div>
 
@@ -147,7 +147,7 @@ export default function LawyerLoginPage() {
           >
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Email
+                {t("auth.lawyerLogin.email")}
               </label>
               <input
                 type="email"
@@ -155,14 +155,14 @@ export default function LawyerLoginPage() {
                 value={formData.email}
                 onChange={handleChange}
                 className={`${inputCls} placeholder:text-slate-400`}
-                placeholder="votre@email.com"
+                placeholder={t("auth.lawyerLogin.emailPh")}
                 disabled={isSubmitting}
               />
               {errors.email && <p className={errCls}>{errors.email}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Mot de passe
+                {t("auth.lawyerLogin.password")}
               </label>
               <div className="relative">
                 <input
@@ -170,15 +170,15 @@ export default function LawyerLoginPage() {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={`${inputCls} pr-12 placeholder:text-slate-400`}
-                  placeholder="Votre mot de passe"
+                  className={`${inputCls} pe-12 placeholder:text-slate-400`}
+                  placeholder={t("auth.lawyerLogin.passwordPh")}
                   disabled={isSubmitting}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   disabled={isSubmitting}
-                  className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                 >
                   {showPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -197,15 +197,15 @@ export default function LawyerLoginPage() {
                   className="w-4 h-4 border-slate-300 rounded"
                   style={{ accentColor: "#0d9488" }}
                 />
-                <span className="ml-2 text-sm text-slate-600 select-none">
-                  Se souvenir de moi
+                <span className="ms-2 text-sm text-slate-600 select-none">
+                  {t("auth.lawyerLogin.rememberMe")}
                 </span>
               </label>
               <Link
                 href="/auth/lawyer/forgot-password"
                 className="text-sm text-teal-600 hover:text-teal-700 font-medium"
               >
-                Mot de passe oublié ?
+                {t("auth.lawyerLogin.forgotPassword")}
               </Link>
             </div>
             <button
@@ -215,21 +215,23 @@ export default function LawyerLoginPage() {
             >
               {isSubmitting ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />{" "}
-                  Connexion...
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white me-2" />{" "}
+                  {t("auth.lawyerLogin.submitting")}
                 </>
               ) : (
-                "Se connecter"
+                t("auth.lawyerLogin.submit")
               )}
             </button>
           </form>
           <div className="form-footer text-center mt-6 pt-6 border-t border-slate-100">
-            <span className="text-sm text-slate-600">Nouveau sur Mizan ? </span>
+            <span className="text-sm text-slate-600">
+              {t("auth.lawyerLogin.newHere")}{" "}
+            </span>
             <Link
               href="/auth/lawyer/register"
               className="text-sm text-teal-600 hover:text-teal-700 font-medium"
             >
-              Créer un compte
+              {t("auth.lawyerLogin.createAccount")}
             </Link>
           </div>
         </div>

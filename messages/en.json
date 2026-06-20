@@ -8,10 +8,22 @@
   },
   "consultationPanel": {
     "channels": {
-      "message": { "label": "Message", "desc": "Response within 24-48h" },
-      "phone": { "label": "Phone", "desc": "Voice call" },
-      "video30": { "label": "Video", "desc": "Video consultation" },
-      "video60": { "label": "Video", "desc": "Video consultation" }
+      "message": {
+        "label": "Message",
+        "desc": "Response within 24-48h"
+      },
+      "phone": {
+        "label": "Phone",
+        "desc": "Voice call"
+      },
+      "video30": {
+        "label": "Video",
+        "desc": "Video consultation"
+      },
+      "video60": {
+        "label": "Video",
+        "desc": "Video consultation"
+      }
     },
     "duration": {
       "thirtyMin": "30 min",
@@ -36,5 +48,633 @@
     "priceDisclaimer": "Indicative rates · confirmed by the professional",
     "sentTitle": "Request sent",
     "sentSubtitle": "Redirecting to your consultations..."
+  },
+  "professions": {
+    "avocat": {
+      "label": "Lawyer",
+      "desc": "Civil, criminal, family law...",
+      "plural": "lawyers"
+    },
+    "notaire": {
+      "label": "Notary",
+      "desc": "Inheritance, real estate...",
+      "plural": "notaries"
+    },
+    "huissier": {
+      "label": "Bailiff",
+      "desc": "Reports, debt collection...",
+      "plural": "bailiffs"
+    },
+    "comptable": {
+      "label": "Accountant",
+      "desc": "Balance sheets, taxation, EURL...",
+      "plural": "accountants"
+    },
+    "expertComptable": {
+      "label": "Chartered Accountant",
+      "desc": "Statutory audit, due diligence",
+      "plural": "chartered accountants"
+    }
+  },
+  "validation": {
+    "required": {
+      "civilite": "Title is required",
+      "firstName": "First name is required",
+      "lastName": "Last name is required",
+      "email": "Email is required",
+      "password": "Password is required",
+      "mobile": "Mobile number is required",
+      "location": "Select your place of residence",
+      "wilaya": "Wilaya is required",
+      "city": "City is required",
+      "street": "Address is required",
+      "postalCode": "Postal code is required",
+      "languages": "Select at least one language",
+      "specializations": "Select at least one specialty",
+      "experience": "Experience is required"
+    },
+    "invalid": {
+      "email": "Invalid email format",
+      "passwordLength": "Minimum 8 characters",
+      "passwordComplexity": "1 uppercase, 1 lowercase, 1 digit",
+      "passwordComplexityFull": "1 uppercase, 1 lowercase, 1 digit required",
+      "mobileTooShort": "Number too short",
+      "postalCode": "5 digits required",
+      "experienceMax": "Maximum 50 years",
+      "passwordMismatch": "Passwords do not match",
+      "barNumber": "Invalid format, example: 23/446"
+    },
+    "general": {
+      "emailTaken": "This email address is already in use.",
+      "genericError": "An error occurred.",
+      "dbError": "Technical error. Please try again.",
+      "wrongCredentials": "Incorrect email or password.",
+      "tooManyAttempts": "Too many attempts. Please try again later.",
+      "tooManyAttemptsShort": "Too many attempts. Try again later.",
+      "userNotFound": "No account found with this email.",
+      "emailNotConfirmed": "Please confirm your email before logging in.",
+      "emailNotConfirmedShort": "Confirm your email before logging in.",
+      "notClientAccount": "This account is not a client account. Please use the professional interface.",
+      "notLawyerAccount": "This account is not a professional account. Use client login.",
+      "pendingVerification": "Your account is pending verification. You will receive an email once your profile is verified."
+    }
+  },
+  "home": {
+    "hero": {
+      "title1": "Find your expert",
+      "title2": "legal professional in Algeria",
+      "sub1": "The directory that verifies for you.",
+      "sub2": "Compare. Choose. Contact."
+    },
+    "profLink": "Understanding legal professions in Algeria →",
+    "stats": {
+      "total": "Registered professionals",
+      "wilayas": "Wilayas covered",
+      "categories": "Expert categories",
+      "verification": "Verification rate"
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "steps": [
+        {
+          "title": "Choose your expert",
+          "desc": "Select the right category — lawyer, notary, bailiff or accountant."
+        },
+        {
+          "title": "Filter by wilaya",
+          "desc": "Choose your wilaya on the interactive map or via the selector."
+        },
+        {
+          "title": "Contact directly",
+          "desc": "Secure messaging. Accessible from Algeria or abroad. Free registration."
+        }
+      ]
+    },
+    "topRated": {
+      "title": "Top rated",
+      "subtitle": "Recommended by our community · Verified by Mizan",
+      "seeAll": "See all professionals"
+    },
+    "feedbackCta": {
+      "title": "Have you used Mizan?",
+      "subtitleShort": "3 users share their feedback",
+      "subtitleLong": "Share your experience and help the community choose the right professional.",
+      "action": "Give my feedback"
+    },
+    "ctaClient": {
+      "title": "Looking for a legal expert?",
+      "desc": "Browse verified profiles of lawyers, notaries, bailiffs and accountants.",
+      "action": "Find an expert"
+    },
+    "ctaLawyer": {
+      "title": "Are you a legal professional?",
+      "desc": "Join Mizan and become visible to clients across Algeria and the diaspora.",
+      "action": "Create my profile"
+    }
+  },
+  "search": {
+    "genre": {
+      "label": "Gender",
+      "all": "All",
+      "male": "Male",
+      "female": "Female"
+    },
+    "experience": {
+      "label": "Experience",
+      "all": "All levels",
+      "5": "5+ years",
+      "10": "10+ years",
+      "20": "20+ years"
+    },
+    "language": {
+      "label": "Language",
+      "all": "All"
+    },
+    "reset": "Reset",
+    "filters": "Filters",
+    "refine": "Refine",
+    "sort": {
+      "default": "Default",
+      "rating": "Top rated",
+      "experience": "Most experienced",
+      "name": "A→Z",
+      "recent": "Recent"
+    },
+    "found": "found",
+    "showMore": "Show more",
+    "of": "of",
+    "noResultsTitle": "No {profession} matches",
+    "noResultsDesc": "Adjust your filters or change wilaya",
+    "resetFilters": "Reset filters",
+    "changeWilaya": "Change wilaya"
+  },
+  "lawyerProfile": {
+    "back": "Back to results",
+    "backShort": "Back",
+    "ownPreviewTitle": "Preview of your public profile",
+    "ownPreviewSubtitle": "As your clients see it",
+    "edit": "Edit →",
+    "numLabels": {
+      "avocat": "Bar of",
+      "notaire": "Chamber of notaries of",
+      "huissier": "Jurisdiction of",
+      "expertComptable": "ONEC No.",
+      "comptable": "ONEC/ONCA No."
+    },
+    "experienceYears": "years of experience",
+    "registeredIn": "registered in",
+    "verifiedBadge": "Verified by Mizan",
+    "courSupremeBadge": "Supreme Court accredited",
+    "expertiseDomains": "Areas of expertise",
+    "ownProfileOverlay": "What your clients see",
+    "ownProfileNote": "You cannot send yourself a consultation",
+    "claimQuestion": "Are you this professional?",
+    "claimAction": "Claim this profile",
+    "contact": {
+      "mobile": "Mobile",
+      "fixed": "Landline",
+      "callWhatsapp": "Call · WhatsApp",
+      "call": "Call",
+      "whatsapp": "WhatsApp",
+      "website": "Website",
+      "visitSite": "Visit site",
+      "linkedinProfile": "View profile",
+      "facebookPage": "View page",
+      "instagramProfile": "View profile"
+    }
+  },
+  "auth": {
+    "clientRegister": {
+      "title": "Client Registration",
+      "subtitle": "Create your account and find the right legal expert",
+      "civilite": "Title",
+      "select": "Select",
+      "firstName": "First name",
+      "firstNamePh": "Your first name",
+      "lastName": "Last name",
+      "lastNamePh": "Your last name",
+      "location": "Place of residence",
+      "locationPh": "Select your country",
+      "mobile": "Mobile number",
+      "mobilePh": "555 123 456",
+      "email": "Email address",
+      "emailPh": "your@email.com",
+      "password": "Password",
+      "passwordPh": "Minimum 8 characters",
+      "confirmPassword": "Confirm password",
+      "confirmPasswordPh": "Repeat your password",
+      "termsPrefix": "I accept the",
+      "termsCgu": "terms of use",
+      "termsAnd": "and the",
+      "termsPrivacy": "privacy policy",
+      "submit": "Create my account",
+      "submitting": "Creating account...",
+      "hasAccount": "Already have an account?",
+      "login": "Log in"
+    },
+    "lawyerRegister": {
+      "joinTitle": "Join Mizan",
+      "joinSubtitle": "Choose your profession to get started",
+      "registerTitle": "{profession} Registration",
+      "registerSubtitle": "Create your verified professional profile",
+      "step0Title": "What is your profession?",
+      "step0Subtitle": "Choose your category to customize the form",
+      "expertComptableNote": "Your profile will automatically be visible in Chartered Accountant and Accountant searches.",
+      "steps": {
+        "identity": "Identity",
+        "office": "Office",
+        "expertise": "Expertise",
+        "account": "Account"
+      },
+      "stepOf": "Step {step} of 4",
+      "stepMeta": {
+        "identityTitle": "Personal information",
+        "identitySubtitle": "Your details as a {profession}",
+        "officeTitle": "Office information",
+        "officeSubtitle": "Location and contact details",
+        "expertiseTitleAvocat": "Specialties",
+        "expertiseTitleOther": "Areas of intervention",
+        "expertiseSubtitle": "Your specialties and areas of expertise",
+        "accountTitle": "Account creation",
+        "accountSubtitle": "Your login credentials"
+      },
+      "civilite": "Title",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "mobile": "Mobile",
+      "mobilePh": "555 123 456",
+      "fixedPhone": "Landline",
+      "fixedPhonePh": "21 123 456",
+      "languages": "Languages spoken",
+      "languagesPh": "Choose languages...",
+      "address": "Address",
+      "addressPh": "123 Republic Street",
+      "wilaya": "Wilaya",
+      "wilayaPh": "Select the wilaya",
+      "commune": "City",
+      "communePh": "Select the city",
+      "communePhDisabled": "Choose a wilaya first",
+      "postalCode": "Postal code",
+      "courSupremeLabel": "I am accredited with the Supreme Court and Council of State",
+      "courSupremeNote": "Requires a minimum of 10 years of experience.",
+      "website": "Website",
+      "websiteOptional": "(optional)",
+      "websitePh": "www.your-office.com",
+      "websiteNote": "No https:// needed",
+      "specialitiesAvocat": "Specialties",
+      "specialitiesOther": "Area(s) of intervention",
+      "specialitiesPhAvocat": "Choose your specialties...",
+      "specialitiesPhOther": "Choose your areas...",
+      "experience": "Experience (years)",
+      "email": "Email",
+      "emailPh": "professional@example.com",
+      "password": "Password",
+      "passwordPh": "Minimum 8 characters",
+      "confirmPassword": "Confirm password",
+      "confirmPasswordPh": "Repeat your password",
+      "termsNote": "By creating your account, you accept Mizan's <cgu>terms of use</cgu> and <privacy>privacy policy</privacy>. Your profile will be reviewed before publication (24–48 business hours).",
+      "back": "Back",
+      "continue": "Continue",
+      "submit": "Create my account",
+      "submitting": "Creating...",
+      "hasAccount": "Already have an account?",
+      "login": "Log in",
+      "profileExists": "A profile already exists. Redirecting...",
+      "profileClaimed": "This profile has already been claimed.",
+      "numLabels": {
+        "avocat": "Professional card No.",
+        "notaire": "Chamber of notaries No.",
+        "huissier": "Bailiff No.",
+        "comptable": "ONEC / ONCA No.",
+        "expertComptable": "ONEC No."
+      },
+      "numPlaceholders": {
+        "avocat": "23/3456",
+        "notaire": "NOT2024-001",
+        "huissier": "HUI2024-001",
+        "comptable": "CMP2024-001",
+        "expertComptable": "ONEC2024-001"
+      },
+      "barNumberRequired": "{numLabel} is required"
+    },
+    "clientLogin": {
+      "title": "Client Login",
+      "subtitle": "Access your personal space",
+      "email": "Email",
+      "emailPh": "your@email.com",
+      "password": "Password",
+      "passwordPh": "Your password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "submit": "Log in",
+      "submitting": "Logging in...",
+      "newHere": "New to Mizan?",
+      "createAccount": "Create an account"
+    },
+    "lawyerLogin": {
+      "title": "Professional Login",
+      "subtitle": "Access your professional space",
+      "email": "Email",
+      "emailPh": "your@email.com",
+      "password": "Password",
+      "passwordPh": "Your password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "submit": "Log in",
+      "submitting": "Logging in...",
+      "newHere": "New to Mizan?",
+      "createAccount": "Create an account"
+    }
+  },
+  "howItWorks": {
+    "heroTitle": "How does Mizan work?",
+    "heroSubtitle": "Mizan connects clients — in Algeria or abroad — with verified lawyers, notaries, bailiffs, accountants and chartered accountants.",
+    "tabClient": "You are a client",
+    "tabPro": "You are a professional",
+    "faqTitle": "Frequently asked questions",
+    "claimBannerTitle": "Your profile may already exist on Mizan",
+    "claimBannerDesc": "If you have a Google Business listing, your information may already be referenced. Claim your profile.",
+    "claimBannerAction": "Search for my profile",
+    "ctaTitle": "Ready to get started?",
+    "ctaSubtitle": "Find your expert or join the platform",
+    "ctaFindExpert": "Find an expert",
+    "ctaJoinAsPro": "Sign up as a professional",
+    "client": {
+      "steps": [
+        {
+          "title": "Choose your expert",
+          "desc": "Click on the category you need.",
+          "points": [
+            "5 expert categories",
+            "Search by wilaya",
+            "Accessible from abroad"
+          ]
+        },
+        {
+          "title": "Filter and compare",
+          "desc": "Select your wilaya and field. Check reviews and experience.",
+          "points": [
+            "Google reviews displayed",
+            "Official verification",
+            "Years of experience"
+          ]
+        },
+        {
+          "title": "Contact directly",
+          "desc": "Create a free account and send a request. The professional responds via messaging.",
+          "points": [
+            "Free registration",
+            "Secure messaging",
+            "Real-time notifications"
+          ]
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can I use Mizan from abroad?",
+          "a": "Yes, the platform is accessible from any country. The Algerian diaspora can contact a lawyer, notary or accountant from France, Canada or elsewhere."
+        },
+        {
+          "q": "Is registration paid?",
+          "a": "No, registration and searching for professionals are entirely free for clients."
+        },
+        {
+          "q": "How do I know if a professional is trustworthy?",
+          "a": "Every professional is verified by our team before activation. Google and Mizan reviews are displayed on their profile."
+        },
+        {
+          "q": "Can I contact a notary or bailiff?",
+          "a": "Yes — notaries, bailiffs, lawyers, accountants and chartered accountants are all accessible via Mizan messaging."
+        }
+      ]
+    },
+    "professions": {
+      "avocat": {
+        "claimBanner": true,
+        "steps": [
+          {
+            "title": "Register",
+            "desc": "Create your profile — specialties, experience, office. Your bar number will be requested.",
+            "points": ["Complete profile", "Bar number required", "Free"]
+          },
+          {
+            "title": "Verification",
+            "desc": "Our team validates your bar registration within 24-48h.",
+            "points": ["24-48h delay", "Bar verification", "Manual activation"]
+          },
+          {
+            "title": "Receive clients",
+            "desc": "Clients contact you via messaging. Email notification for every new request.",
+            "points": [
+              "Built-in messaging",
+              "Email notification",
+              "Consultation management"
+            ]
+          }
+        ],
+        "faqs": [
+          {
+            "q": "My profile may already exist",
+            "a": "If you have a Google Business listing, your information may already be referenced. Claim your profile to take control of it."
+          },
+          {
+            "q": "Is registration paid?",
+            "a": "Registration is free. An optional subscription improves your visibility in results."
+          },
+          {
+            "q": "Who can see my contact details?",
+            "a": "Your professional contact details are visible on your public profile to logged-in clients."
+          },
+          {
+            "q": "How do I edit my profile?",
+            "a": "From your personal space, you can edit your information at any time."
+          }
+        ]
+      },
+      "notaire": {
+        "claimBanner": false,
+        "steps": [
+          {
+            "title": "Register",
+            "desc": "Create your notarial profile. Your chamber number will be required.",
+            "points": ["Complete profile", "Chamber of notaries number", "Free"]
+          },
+          {
+            "title": "Verification",
+            "desc": "Our team verifies your chamber registration within 24-48h.",
+            "points": [
+              "24-48h delay",
+              "Official verification",
+              "Manual activation"
+            ]
+          },
+          {
+            "title": "Diaspora clients",
+            "desc": "The diaspora needs notaries for inheritance, deeds, powers of attorney.",
+            "points": [
+              "Built-in messaging",
+              "Diaspora clients",
+              "Remote case handling"
+            ]
+          }
+        ],
+        "faqs": [
+          {
+            "q": "What deeds can I offer?",
+            "a": "Real estate deeds, inheritance, marriage contracts, donations, powers of attorney, company formation."
+          },
+          {
+            "q": "Is advertising allowed?",
+            "a": "Appearing on a verified digital directory is legally authorized and compliant with ethical rules."
+          },
+          {
+            "q": "Is registration paid?",
+            "a": "Registration is free. An optional subscription improves your visibility."
+          },
+          {
+            "q": "Can clients send documents?",
+            "a": "Yes, via Mizan messaging. Clients can attach documents to their requests."
+          }
+        ]
+      },
+      "huissier": {
+        "claimBanner": false,
+        "steps": [
+          {
+            "title": "Register",
+            "desc": "Create your profile. Your official bailiff number will be required.",
+            "points": ["Complete profile", "Bailiff number required", "Free"]
+          },
+          {
+            "title": "Verification",
+            "desc": "Our team verifies your sworn bailiff status within 24-48h.",
+            "points": [
+              "24-48h delay",
+              "Official verification",
+              "Manual activation"
+            ]
+          },
+          {
+            "title": "Receive clients",
+            "desc": "Individuals and businesses look for bailiffs for reports and debt collection.",
+            "points": [
+              "Built-in messaging",
+              "Business clients",
+              "Intervention management"
+            ]
+          }
+        ],
+        "faqs": [
+          {
+            "q": "What services can I offer?",
+            "a": "Reports, enforcement of judgments, service of process, debt collection, seizures, official reports."
+          },
+          {
+            "q": "Is advertising allowed?",
+            "a": "Appearing in a verified directory complies with the profession's ethical rules."
+          },
+          {
+            "q": "Is registration paid?",
+            "a": "Registration is free. An optional subscription improves your visibility."
+          },
+          {
+            "q": "Are urgent requests possible?",
+            "a": "Yes, via messaging with an urgency flag. You manage priorities from your dashboard."
+          }
+        ]
+      },
+      "comptable": {
+        "claimBanner": false,
+        "steps": [
+          {
+            "title": "Register",
+            "desc": "Create your profile. Your ONEC or ONCA accreditation number will be required.",
+            "points": [
+              "Complete profile",
+              "Accreditation number required",
+              "Free"
+            ]
+          },
+          {
+            "title": "Verification",
+            "desc": "Our team verifies your registration with the order within 24-48h.",
+            "points": [
+              "24-48h delay",
+              "ONEC/ONCA verification",
+              "Manual activation"
+            ]
+          },
+          {
+            "title": "Diaspora clients",
+            "desc": "The diaspora setting up EURL/SARL companies in Algeria needs accountants.",
+            "points": [
+              "Built-in messaging",
+              "Diaspora clients",
+              "Company formation"
+            ]
+          }
+        ],
+        "faqs": [
+          {
+            "q": "What services can I offer?",
+            "a": "Company formation, tax filings, annual balance sheet, payroll, tax advice, EURL/SARL bookkeeping."
+          },
+          {
+            "q": "Is advertising allowed?",
+            "a": "Appearing in a verified directory is authorized and compliant with ONEC/ONCA ethics."
+          },
+          {
+            "q": "Is registration paid?",
+            "a": "Registration is free. An optional subscription improves your visibility."
+          },
+          {
+            "q": "Can clients send documents?",
+            "a": "Yes, via secure Mizan messaging. Ideal for diaspora managing their company remotely."
+          }
+        ]
+      },
+      "expertComptable": {
+        "claimBanner": false,
+        "steps": [
+          {
+            "title": "Register",
+            "desc": "Create your profile. Your ONEC accreditation number will be required.",
+            "points": ["Complete profile", "ONEC number required", "Free"]
+          },
+          {
+            "title": "Verification",
+            "desc": "Our team verifies your registration with the ONEC order within 24-48h.",
+            "points": ["24-48h delay", "ONEC verification", "Manual activation"]
+          },
+          {
+            "title": "Corporate clients",
+            "desc": "Audit, consolidation, business valuation, due diligence for Algerian companies and diaspora.",
+            "points": [
+              "Built-in messaging",
+              "Diaspora clients",
+              "Remote assignments"
+            ]
+          }
+        ],
+        "faqs": [
+          {
+            "q": "What's the difference with an accredited accountant?",
+            "a": "The chartered accountant (ONEC) can sign official financial statements and perform statutory audits. The accredited accountant handles day-to-day bookkeeping."
+          },
+          {
+            "q": "What services can I offer?",
+            "a": "Statutory audit, account consolidation, business valuation, due diligence, financial restructuring, advanced tax advice."
+          },
+          {
+            "q": "Is registration paid?",
+            "a": "Registration is free. An optional subscription improves your visibility."
+          },
+          {
+            "q": "Can assignments be done remotely?",
+            "a": "Yes. Most assignments can be done through document exchange and messaging. Mizan facilitates this flow from first contact."
+          }
+        ]
+      }
+    }
   }
 }
