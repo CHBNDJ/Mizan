@@ -1886,5 +1886,123 @@
     "errorSubmit": "Erreur lors de l'envoi de l'avis",
     "clientFallback": "Client",
     "initialFallback": "M"
+  },
+  "verifyEmailPage": {
+    "missingEmailTitle": "Email manquant",
+    "missingEmailDesc": "Impossible de vérifier votre compte sans email.",
+    "backHome": "Retour à l'accueil",
+    "title": "Vérifiez votre email",
+    "subtitle": "Un code de vérification à 6 chiffres a été envoyé à :",
+    "successTitle": "Email vérifié avec succès ! ✨",
+    "successSubtitle": "Redirection en cours...",
+    "resendSuccess": "Un nouveau code a été envoyé à votre email !",
+    "codeLabel": "Code de vérification",
+    "codeHint": "Entrez le code reçu par email",
+    "verifying": "Vérification...",
+    "verified": "Vérifié ✓",
+    "verifyAction": "Vérifier mon email",
+    "noEmailTitle": "Vous ne voyez pas l'email ?",
+    "noEmailDesc": "Vérifiez vos spams ou courrier indésirable.",
+    "resending": "Envoi en cours...",
+    "resendAction": "Renvoyer le code",
+    "needHelp": "Besoin d'aide ?",
+    "contactUs": "Contactez-nous",
+    "errors": {
+      "codeLength": "Le code doit contenir 6 chiffres",
+      "invalidCode": "Code invalide",
+      "invalidOrExpired": "Code invalide ou expiré",
+      "resendError": "Erreur lors du renvoi du code",
+      "serverError": "Erreur serveur ({status})",
+      "communicationError": "Erreur de communication avec le serveur"
+    }
+  },
+  "forgotPasswordPage": {
+    "title": "Mot de passe oublié",
+    "subtitle": "Entrez votre email pour recevoir un lien de réinitialisation",
+    "successMsg": "Un email de réinitialisation a été envoyé à votre adresse.",
+    "checkSpam": "Vérifiez votre boîte email et vos spams.",
+    "redirecting": "Redirection vers la page de connexion dans 3 secondes...",
+    "errorMsg": "Erreur lors de l'envoi de l'email.",
+    "emailLabel": "Adresse email",
+    "sending": "Envoi en cours...",
+    "sendLink": "Envoyer le lien",
+    "backToLogin": "← Retour à la connexion"
+  },
+  "resetPasswordPage": {
+    "invalidLink": "Lien de réinitialisation invalide ou expiré",
+    "genericError": "Une erreur est survenue",
+    "checkingLink": "Vérification du lien...",
+    "invalidLinkTitle": "Lien invalide ou expiré",
+    "invalidLinkDesc": "Le lien de réinitialisation est invalide ou a expiré.",
+    "resendLink": "Renvoyer un lien",
+    "successTitle": "Mot de passe réinitialisé !",
+    "successDesc": "Votre mot de passe a été modifié avec succès.",
+    "successRedirect": "Redirection vers la page de connexion...",
+    "title": "Nouveau mot de passe",
+    "subtitle": "Choisissez un mot de passe sécurisé",
+    "newPassword": "Nouveau mot de passe",
+    "passwordPh": "Minimum 8 caractères",
+    "passwordHint": "Minimum 8 caractères avec majuscule, minuscule et chiffre",
+    "confirmPassword": "Confirmer le mot de passe",
+    "confirmPasswordPh": "Répétez le mot de passe",
+    "submitting": "Modification en cours...",
+    "submit": "Réinitialiser mon mot de passe",
+    "backToLogin": "Retour à la connexion",
+    "errors": {
+      "minLength": "Le mot de passe doit contenir au moins 8 caractères.",
+      "complexity": "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre.",
+      "mismatch": "Les mots de passe ne correspondent pas.",
+      "updateError": "Erreur lors de la modification : {msg}",
+      "tryAgain": "Une erreur est survenue. Réessayez."
+    }
+  },
+  "onboardingPage": {
+    "checkingProfile": "Vérification de votre profil...",
+    "welcome": "Bienvenue {name} !",
+    "registered": "Votre inscription a bien été enregistrée",
+    "validationTitle": "Validation en cours",
+    "validationDesc": "Notre équipe vérifie vos informations. Vous recevrez un email sous 24-48h pour activer votre compte.",
+    "step1": "Vérification de vos informations",
+    "step2": "Validation (24-48h)",
+    "step3": "Email de confirmation avec accès",
+    "backHome": "Retour à l'accueil",
+    "questions": "Questions ?",
+    "titlePrefix": "Maître"
+  },
+  "claimProfilePage": {
+    "codeExpired": "Le code a expiré. Veuillez demander un nouveau code.",
+    "title": "Réclamer votre profil",
+    "step1": {
+      "label": "Entrez votre email professionnel",
+      "hint": "Utilisez l'email professionnel associé à votre profil. Un code de vérification vous sera envoyé.",
+      "sending": "Envoi en cours...",
+      "submit": "Envoyer le code de vérification",
+      "infoBox": "📧 Un code à 6 chiffres sera envoyé par email. Valable 15 minutes."
+    },
+    "step2": {
+      "sentTitle": "Code envoyé !",
+      "sentDesc": "Vérifiez votre boîte email.",
+      "expiresIn": "⏱️ Expire dans {n} min",
+      "codeLabel": "Code (6 chiffres)",
+      "codeReceived": "Code reçu par email",
+      "attemptsLeft": "{n, plural, one {# tentative} other {# tentatives}}",
+      "passwordLabel": "Créez votre mot de passe",
+      "passwordPh": "Min 8 caractères",
+      "newCode": "Nouveau code",
+      "activating": "Activation...",
+      "activate": "Activer mon compte",
+      "notReceived": "⚠️ Pas reçu ? Vérifiez vos spams ou cliquez \"Nouveau code\""
+    },
+    "footer": "Activez votre compte pour gérer votre profil et vos consultations.",
+    "errors": {
+      "emailMismatch": "Cet email ne correspond pas au profil ou une erreur est survenue.",
+      "sendError": "Erreur lors de l'envoi du code.",
+      "codeLength": "Le code doit contenir 6 chiffres",
+      "passwordLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "alreadyClaimed": "Ce profil a déjà été réclamé. Veuillez vous connecter.",
+      "wrongCode": "Code incorrect. Il vous reste {n, plural, one {# tentative} other {# tentatives}}.",
+      "activationError": "Erreur lors de l'activation",
+      "activationErrorGeneric": "Erreur lors de l'activation du compte"
+    }
   }
 }

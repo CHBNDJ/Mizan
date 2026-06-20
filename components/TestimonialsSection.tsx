@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useTranslations } from "next-intl";
 import { Star, Quote } from "lucide-react";
 
 interface Testimonial {
@@ -13,6 +14,7 @@ interface Testimonial {
 
 export default function TestimonialsSection() {
   const supabase = createClient();
+  const t = useTranslations("testimonials");
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,20 +39,20 @@ export default function TestimonialsSection() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-10">
           <p className="text-xs font-semibold text-teal-600 uppercase tracking-widest mb-3">
-            Témoignages
+            {t("tag")}
           </p>
           <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-3">
-            Ce que disent nos utilisateurs
+            {t("title")}
           </h2>
           <p className="text-slate-500 text-sm max-w-lg mx-auto">
-            Des clients et professionnels qui font confiance à Mizan
+            {t("subtitle")}
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {testimonials.map((t) => (
+          {testimonials.map((item) => (
             <div
-              key={t.id}
+              key={item.id}
               className="bg-slate-50 border border-slate-100 rounded-2xl p-6 flex flex-col gap-4 hover:shadow-sm transition-shadow"
             >
               <div className="flex items-center justify-between">
@@ -65,22 +67,22 @@ export default function TestimonialsSection() {
                 <Quote className="w-5 h-5 text-teal-200" />
               </div>
               <p className="text-sm text-slate-600 leading-relaxed flex-1 line-clamp-4">
-                {t.message}
+                {item.message}
               </p>
               <div className="flex items-center gap-3 pt-3 border-t border-slate-200">
                 <div className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center flex-shrink-0">
                   <span className="text-white text-xs font-bold">
-                    {t.user_name?.charAt(0)?.toUpperCase() || "?"}
+                    {item.user_name?.charAt(0)?.toUpperCase() || "?"}
                   </span>
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-slate-800">
-                    {t.user_name}
+                    {item.user_name}
                   </p>
                   <p className="text-xs text-slate-500">
-                    {t.user_type === "lawyer"
-                      ? "Professionnel vérifié"
-                      : "Client Mizan"}
+                    {item.user_type === "lawyer"
+                      ? t("verifiedPro")
+                      : t("client")}
                   </p>
                 </div>
               </div>

@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Message, ClientConsultation } from "@/types";
@@ -31,6 +32,10 @@ function MesConsultationsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const containerRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations();
+  const locale = useLocale();
+  const dateLocale =
+    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-FR";
 
   const [consultations, setConsultations] = useState<ClientConsultation[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -231,15 +236,17 @@ function MesConsultationsContent() {
             scheduled_at: item.scheduled_at || null,
             unread_count: count || 0,
             lawyer: {
-              first_name: lawyerUser?.first_name || "Prénom",
-              last_name: lawyerUser?.last_name || "Nom",
+              first_name:
+                lawyerUser?.first_name || t("myProfile.firstNameFallback"),
+              last_name:
+                lawyerUser?.last_name || t("myProfile.lastNameFallback"),
             },
           };
         })
       );
       setConsultations(withUnread);
     } catch {
-      setError("Erreur lors du chargement des consultations.");
+      setError(t("consultShared.loadError"));
     } finally {
       setLoading(false);
     }
@@ -282,12 +289,12 @@ function MesConsultationsContent() {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > 10 * 1024 * 1024) {
-      setError("Le fichier ne doit pas dépasser 10MB");
+      setError(t("consultShared.fileTooBig"));
       return;
     }
     const allowed = ["image/jpeg", "image/png", "image/gif", "application/pdf"];
     if (!allowed.includes(file.type)) {
-      setError("Type de fichier non autorisé");
+      setError(t("consultShared.fileNotAllowed"));
       return;
     }
     setSelectedFile(file);
@@ -327,7 +334,7 @@ function MesConsultationsContent() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            message: newMessage.trim() || "(Fichier joint)",
+            message: newMessage.trim() || t("consultShared.attachedFile"),
             attachment_url: attachmentUrl,
             attachment_type: attachmentType,
             attachment_name: attachmentName,
@@ -339,7 +346,7 @@ function MesConsultationsContent() {
       setNewMessage("");
       setSelectedFile(null);
     } catch (error: any) {
-      setError(error.message || "Erreur lors de l'envoi.");
+      setError(error.message || t("consultShared.sendError"));
     } finally {
       setIsSending(false);
       setUploading(false);
@@ -380,17 +387,17 @@ function MesConsultationsContent() {
   const formatScheduled = (iso: string) => {
     const d = new Date(iso);
     return (
-      d.toLocaleDateString("fr-FR", {
+      d.toLocaleDateString(dateLocale, {
         weekday: "short",
         day: "numeric",
         month: "short",
       }) +
-      " à " +
-      d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+      ` ${t("consultShared.atConnector")} ` +
+      d.toLocaleTimeString(dateLocale, { hour: "2-digit", minute: "2-digit" })
     );
   };
   const formatDate = (d: string) =>
-    new Date(d).toLocaleDateString("fr-FR", {
+    new Date(d).toLocaleDateString(dateLocale, {
       day: "numeric",
       month: "long",
       year: "numeric",
@@ -398,7 +405,7 @@ function MesConsultationsContent() {
       minute: "2-digit",
     });
   const formatTime = (d: string) =>
-    new Date(d).toLocaleTimeString("fr-FR", {
+    new Date(d).toLocaleTimeString(dateLocale, {
       hour: "2-digit",
       minute: "2-digit",
     });
@@ -446,7 +453,8 @@ function MesConsultationsContent() {
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-slate-900 truncate">
-              Me. {selectedConsultation!.lawyer.first_name}{" "}
+              {t("mesConsultations.lawyerPrefix")}{" "}
+              {selectedConsultation!.lawyer.first_name}{" "}
               {selectedConsultation!.lawyer.last_name}
             </h3>
             <p className="text-xs text-slate-500">
@@ -471,8 +479,8 @@ function MesConsultationsContent() {
               className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 cursor-pointer"
               title={
                 (selectedConsultation as any).archived_at
-                  ? "Désarchiver"
-                  : "Archiver"
+                  ? t("consultShared.unarchive")
+                  : t("consultShared.archive")
               }
             >
               <Archive className="w-4 h-4" />
@@ -486,7 +494,9 @@ function MesConsultationsContent() {
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
               <MessageSquare className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-              <p className="text-slate-500 font-medium">Aucun message</p>
+              <p className="text-slate-500 font-medium">
+                {t("consultShared.noMessages")}
+              </p>
             </div>
           </div>
         ) : (
@@ -509,7 +519,9 @@ function MesConsultationsContent() {
                       {message.attachment_type?.startsWith("image/") ? (
                         <img
                           src={message.attachment_url}
-                          alt={message.attachment_name || "Image"}
+                          alt={
+                            message.attachment_name || t("consultShared.image")
+                          }
                           className="max-w-full rounded-lg cursor-pointer"
                           onClick={() =>
                             window.open(message.attachment_url!, "_blank")
@@ -524,7 +536,8 @@ function MesConsultationsContent() {
                         >
                           <span>📄</span>
                           <span className="text-sm underline">
-                            {message.attachment_name || "Fichier joint"}
+                            {message.attachment_name ||
+                              t("consultShared.attachedFileFallback")}
                           </span>
                         </a>
                       )}
@@ -562,7 +575,7 @@ function MesConsultationsContent() {
                     ))}
                   </div>
                   <span className="text-xs text-slate-500">
-                    L'avocat est en train d'écrire...
+                    {t("mesConsultations.lawyerTyping")}
                   </span>
                 </div>
               </div>
@@ -638,7 +651,7 @@ function MesConsultationsContent() {
                 handleSendMessage();
               }
             }}
-            placeholder="Écrivez votre message..."
+            placeholder={t("consultShared.messagePlaceholder")}
             className="w-full h-14 px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-300 outline-none text-slate-700 resize-none"
             rows={2}
           />
@@ -666,10 +679,10 @@ function MesConsultationsContent() {
       <div className="max-w-6xl mx-auto px-4 py-8" ref={containerRef}>
         <div className="mb-6">
           <h1 className="page-header text-2xl sm:text-3xl font-bold text-slate-900 mb-1">
-            Mes consultations
+            {t("mesConsultations.title")}
           </h1>
           <p className="page-subtitle text-slate-600 text-sm sm:text-base">
-            Suivez vos questions et les réponses de vos avocats
+            {t("mesConsultations.subtitle")}
           </p>
         </div>
 
@@ -684,16 +697,16 @@ function MesConsultationsContent() {
           <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-slate-200">
             <MessageSquare className="w-16 h-16 text-slate-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-slate-800 mb-2">
-              Aucune consultation
+              {t("mesConsultations.emptyTitle")}
             </h3>
             <p className="text-slate-600 mb-6">
-              Vous n'avez pas encore posé de question à un avocat
+              {t("mesConsultations.emptyDesc")}
             </p>
             <button
               onClick={() => router.push("/search")}
               className="cursor-pointer bg-teal-600 text-white px-6 py-3 rounded-xl hover:bg-teal-700 font-medium text-sm"
             >
-              Trouver un avocat
+              {t("mesConsultations.findLawyer")}
             </button>
           </div>
         ) : (
@@ -702,19 +715,19 @@ function MesConsultationsContent() {
               {[
                 {
                   key: "active",
-                  label: "En cours",
+                  label: t("consultShared.tabs.active"),
                   count: activeCount,
                   icon: Clock,
                 },
                 {
                   key: "archived",
-                  label: "Archivées",
+                  label: t("consultShared.tabs.archived"),
                   count: archivedCount,
                   icon: Archive,
                 },
                 {
                   key: "all",
-                  label: "Toutes",
+                  label: t("consultShared.tabs.all"),
                   count: consultations.length,
                   icon: Filter,
                 },
@@ -747,8 +760,8 @@ function MesConsultationsContent() {
                     <Archive className="w-10 h-10 text-slate-300 mx-auto mb-3" />
                     <p className="text-slate-500 text-sm">
                       {tabFilter === "archived"
-                        ? "Aucune consultation archivée"
-                        : "Aucune consultation en cours"}
+                        ? t("consultShared.noArchived")
+                        : t("consultShared.noActive")}
                     </p>
                   </div>
                 ) : (
@@ -759,7 +772,7 @@ function MesConsultationsContent() {
                       className={`cursor-pointer bg-white rounded-xl p-4 border-2 transition-all hover:shadow-md relative ${selectedConsultation?.id === consultation.id ? "border-teal-500 shadow-md" : "border-slate-200 hover:border-teal-300"} ${(consultation as any).archived_at ? "opacity-70" : ""}`}
                     >
                       {(consultation.unread_count ?? 0) > 0 && (
-                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
+                        <div className="absolute -top-2 -end-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
                           {consultation.unread_count}
                         </div>
                       )}
@@ -770,7 +783,8 @@ function MesConsultationsContent() {
                           </div>
                           <div className="min-w-0 flex-1">
                             <h3 className="font-semibold text-slate-900 text-sm truncate">
-                              Me. {consultation.lawyer.first_name}{" "}
+                              {t("mesConsultations.lawyerPrefix")}{" "}
+                              {consultation.lawyer.first_name}{" "}
                               {consultation.lawyer.last_name}
                             </h3>
                             <div className="flex items-center gap-2 mt-0.5 flex-wrap">
@@ -782,12 +796,14 @@ function MesConsultationsContent() {
                                 (consultation as any).subject
                               ) && (
                                 <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 bg-teal-50 px-1.5 py-0.5 rounded-full border border-teal-100">
-                                  <Video className="w-2.5 h-2.5" /> Vidéo
+                                  <Video className="w-2.5 h-2.5" />{" "}
+                                  {t("consultShared.videoLabel")}
                                 </span>
                               )}
                               {(consultation as any).archived_at && (
                                 <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-full">
-                                  <Archive className="w-2.5 h-2.5" /> Archivée
+                                  <Archive className="w-2.5 h-2.5" />{" "}
+                                  {t("consultShared.archivedLabel")}
                                 </span>
                               )}
                             </div>
@@ -809,7 +825,7 @@ function MesConsultationsContent() {
                               )}
                           </div>
                         </div>
-                        <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                        <div className="flex items-center gap-2 flex-shrink-0 ms-2">
                           {consultation.status === "answered" &&
                             (consultation.unread_count ?? 0) === 0 && (
                               <CheckCircle className="w-5 h-5 text-teal-600" />
@@ -847,7 +863,7 @@ function MesConsultationsContent() {
                   <div className="hidden lg:flex bg-slate-50 rounded-xl p-12 text-center border-2 border-dashed border-slate-300 flex-col items-center">
                     <MessageSquare className="w-12 h-12 text-slate-300 mb-3" />
                     <p className="text-slate-500 font-medium">
-                      Sélectionnez une consultation pour voir la conversation
+                      {t("mesConsultations.selectPrompt")}
                     </p>
                   </div>
                 )}

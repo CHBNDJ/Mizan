@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { Mail } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { gsap } from "gsap";
@@ -10,6 +11,7 @@ import { gsap } from "gsap";
 export default function LawyerForgotPasswordPage() {
   const supabase = createClient();
   const router = useRouter();
+  const t = useTranslations("forgotPasswordPage");
   const containerRef = useRef<HTMLDivElement>(null);
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,14 +60,14 @@ export default function LawyerForgotPasswordPage() {
       if (error) throw error;
 
       setStatus("success");
-      setMessage("Un email de réinitialisation a été envoyé à votre adresse.");
+      setMessage(t("successMsg"));
 
       setTimeout(() => {
         router.push("/auth/lawyer/login");
       }, 3000);
     } catch (error: any) {
       setStatus("error");
-      setMessage("Erreur lors de l'envoi de l'email.");
+      setMessage(t("errorMsg"));
     } finally {
       setIsSubmitting(false);
     }
@@ -83,10 +85,10 @@ export default function LawyerForgotPasswordPage() {
             <Mail className="w-8 h-8 text-teal-600" />
           </div>
           <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
-            Mot de passe oublié
+            {t("title")}
           </h1>
           <p className="page-subtitle text-slate-600 text-sm">
-            Entrez votre email pour recevoir un lien de réinitialisation
+            {t("subtitle")}
           </p>
         </div>
 
@@ -94,11 +96,9 @@ export default function LawyerForgotPasswordPage() {
           {status === "success" && (
             <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
               <p className="text-green-600 text-sm font-medium">{message}</p>
-              <p className="text-green-600 text-xs mt-2">
-                Vérifiez votre boîte email et vos spams.
-              </p>
+              <p className="text-green-600 text-xs mt-2">{t("checkSpam")}</p>
               <p className="text-green-600 text-xs mt-2 font-medium">
-                Redirection vers la page de connexion dans 3 secondes...
+                {t("redirecting")}
               </p>
             </div>
           )}
@@ -112,7 +112,7 @@ export default function LawyerForgotPasswordPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Adresse email
+                {t("emailLabel")}
               </label>
               <input
                 type="email"
@@ -130,7 +130,7 @@ export default function LawyerForgotPasswordPage() {
               disabled={isSubmitting || status === "success"}
               className="cursor-pointer w-full bg-teal-600 text-white py-3 rounded-lg font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Envoi en cours..." : "Envoyer le lien"}
+              {isSubmitting ? t("sending") : t("sendLink")}
             </button>
           </form>
 
@@ -139,7 +139,7 @@ export default function LawyerForgotPasswordPage() {
               href="/auth/lawyer/login"
               className="text-sm text-teal-600 hover:text-teal-700 transition-colors"
             >
-              ← Retour à la connexion
+              {t("backToLogin")}
             </Link>
           </div>
         </div>

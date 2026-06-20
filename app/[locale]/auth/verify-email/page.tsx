@@ -2,12 +2,14 @@
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Mail, CheckCircle, AlertCircle } from "lucide-react";
 import { gsap } from "gsap";
 
 function VerifyEmailForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const t = useTranslations("verifyEmailPage");
   const containerRef = useRef<HTMLDivElement>(null);
   const email = searchParams.get("email") || "";
   const userType = searchParams.get("type") || "client";
@@ -56,7 +58,7 @@ function VerifyEmailForm() {
     setIsVerifying(true);
 
     if (code.length !== 6) {
-      setError("Le code doit contenir 6 chiffres");
+      setError(t("errors.codeLength"));
       setIsVerifying(false);
       return;
     }
@@ -75,7 +77,7 @@ function VerifyEmailForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Code invalide");
+        throw new Error(data.error || t("errors.invalidCode"));
       }
 
       setSuccess(true);
@@ -85,7 +87,7 @@ function VerifyEmailForm() {
         router.push(redirectPath);
       }, 2000);
     } catch (err: any) {
-      setError(err.message || "Code invalide ou expiré");
+      setError(err.message || t("errors.invalidOrExpired"));
     } finally {
       setIsVerifying(false);
     }
@@ -112,13 +114,15 @@ function VerifyEmailForm() {
         if (contentType?.includes("application/json")) {
           try {
             const data = await response.json();
-            throw new Error(data.error || "Erreur lors du renvoi du code");
+            throw new Error(data.error || t("errors.resendError"));
           } catch (parseError) {
-            throw new Error(`Erreur serveur (${response.status})`);
+            throw new Error(
+              t("errors.serverError", { status: response.status })
+            );
           }
         } else {
           const text = await response.text();
-          throw new Error(`Erreur serveur: ${response.status}`);
+          throw new Error(t("errors.serverError", { status: response.status }));
         }
       }
 
@@ -126,13 +130,13 @@ function VerifyEmailForm() {
       try {
         data = await response.json();
       } catch (parseError) {
-        throw new Error("Erreur de communication avec le serveur");
+        throw new Error(t("errors.communicationError"));
       }
 
       setResendSuccess(true);
       setTimeout(() => setResendSuccess(false), 5000);
     } catch (err: any) {
-      setError(err.message || "Erreur lors du renvoi du code");
+      setError(err.message || t("errors.resendError"));
     } finally {
       setIsResending(false);
     }
@@ -144,16 +148,14 @@ function VerifyEmailForm() {
         <div className="bg-white rounded-2xl shadow-lg p-8 text-center max-w-md">
           <AlertCircle className="w-16 h-16 text-red-600 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-slate-800 mb-2">
-            Email manquant
+            {t("missingEmailTitle")}
           </h2>
-          <p className="text-slate-600 mb-4">
-            Impossible de vérifier votre compte sans email.
-          </p>
+          <p className="text-slate-600 mb-4">{t("missingEmailDesc")}</p>
           <button
             onClick={() => router.push("/")}
             className="cursor-pointer bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors"
           >
-            Retour à l'accueil
+            {t("backHome")}
           </button>
         </div>
       </div>
@@ -178,12 +180,10 @@ function VerifyEmailForm() {
           </div>
 
           <h1 className="page-title text-2xl font-bold text-slate-800 mb-4">
-            Vérifiez votre email
+            {t("title")}
           </h1>
 
-          <p className="page-subtitle text-slate-600 mb-2">
-            Un code de vérification à 6 chiffres a été envoyé à :
-          </p>
+          <p className="page-subtitle text-slate-600 mb-2">{t("subtitle")}</p>
           <p className="font-semibold text-slate-800">{email}</p>
         </div>
 
@@ -193,10 +193,10 @@ function VerifyEmailForm() {
               <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="text-green-800 font-medium text-sm">
-                  Email vérifié avec succès ! ✨
+                  {t("successTitle")}
                 </p>
                 <p className="text-green-700 text-xs mt-1">
-                  Redirection en cours...
+                  {t("successSubtitle")}
                 </p>
               </div>
             </div>
@@ -212,16 +212,14 @@ function VerifyEmailForm() {
           {resendSuccess && (
             <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-3">
               <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-              <p className="text-blue-700 text-sm">
-                Un nouveau code a été envoyé à votre email !
-              </p>
+              <p className="text-blue-700 text-sm">{t("resendSuccess")}</p>
             </div>
           )}
 
           <form onSubmit={handleVerify} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2 text-center">
-                Code de vérification
+                {t("codeLabel")}
               </label>
               <input
                 type="text"
@@ -238,7 +236,7 @@ function VerifyEmailForm() {
                 autoFocus
               />
               <p className="text-xs text-slate-500 mt-2 text-center">
-                Entrez le code reçu par email
+                {t("codeHint")}
               </p>
             </div>
 
@@ -250,12 +248,12 @@ function VerifyEmailForm() {
               {isVerifying ? (
                 <div className="flex items-center justify-center gap-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                  Vérification...
+                  {t("verifying")}
                 </div>
               ) : success ? (
-                "Vérifié ✓"
+                t("verified")
               ) : (
-                "Vérifier mon email"
+                t("verifyAction")
               )}
             </button>
           </form>
@@ -263,9 +261,9 @@ function VerifyEmailForm() {
           <div className="mt-6 pt-6 border-t border-slate-100">
             <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-4">
               <p className="text-teal-800 text-sm">
-                <strong>Vous ne voyez pas l'email ?</strong>
+                <strong>{t("noEmailTitle")}</strong>
                 <br />
-                Vérifiez vos spams ou courrier indésirable.
+                {t("noEmailDesc")}
               </p>
             </div>
 
@@ -277,22 +275,22 @@ function VerifyEmailForm() {
               {isResending ? (
                 <div className="flex items-center justify-center gap-2">
                   <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-teal-600"></div>
-                  Envoi en cours...
+                  {t("resending")}
                 </div>
               ) : (
-                "Renvoyer le code"
+                t("resendAction")
               )}
             </button>
           </div>
         </div>
 
         <p className="text-center text-xs text-slate-500 mt-6">
-          Besoin d'aide ?{" "}
+          {t("needHelp")}{" "}
           <a
             href="mailto:support@mizan-dz.com"
             className="text-teal-600 hover:text-teal-700"
           >
-            Contactez-nous
+            {t("contactUs")}
           </a>
         </p>
       </div>

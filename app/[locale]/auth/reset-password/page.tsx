@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Eye, EyeOff, Lock, CheckCircle, AlertCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { gsap } from "gsap";
@@ -10,6 +11,7 @@ function ResetPasswordForm() {
   const supabase = createClient();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations("resetPasswordPage");
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [password, setPassword] = useState("");
@@ -50,7 +52,7 @@ function ResetPasswordForm() {
           });
 
           if (verifyError) {
-            setError("Lien de réinitialisation invalide ou expiré");
+            setError(t("invalidLink"));
             setIsLoading(false);
             setSessionReady(false);
             return;
@@ -67,7 +69,7 @@ function ResetPasswordForm() {
         } = await supabase.auth.getSession();
 
         if (sessionError || !session) {
-          setError("Lien de réinitialisation invalide ou expiré");
+          setError(t("invalidLink"));
           setIsLoading(false);
           setSessionReady(false);
           return;
@@ -76,7 +78,7 @@ function ResetPasswordForm() {
         setSessionReady(true);
         setIsLoading(false);
       } catch (err) {
-        setError("Une erreur est survenue");
+        setError(t("genericError"));
         setIsLoading(false);
         setSessionReady(false);
       }
@@ -115,21 +117,19 @@ function ResetPasswordForm() {
     setIsSubmitting(true);
 
     if (password.length < 8) {
-      setError("Le mot de passe doit contenir au moins 8 caractères.");
+      setError(t("errors.minLength"));
       setIsSubmitting(false);
       return;
     }
 
     if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
-      setError(
-        "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre."
-      );
+      setError(t("errors.complexity"));
       setIsSubmitting(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Les mots de passe ne correspondent pas.");
+      setError(t("errors.mismatch"));
       setIsSubmitting(false);
       return;
     }
@@ -140,7 +140,7 @@ function ResetPasswordForm() {
       });
 
       if (updateError) {
-        setError("Erreur lors de la modification : " + updateError.message);
+        setError(t("errors.updateError", { msg: updateError.message }));
         setIsSubmitting(false);
         return;
       }
@@ -152,7 +152,7 @@ function ResetPasswordForm() {
         router.push(loginPath);
       }, 2000);
     } catch (err: any) {
-      setError("Une erreur est survenue. Réessayez.");
+      setError(t("errors.tryAgain"));
       setIsSubmitting(false);
     }
   };
@@ -162,7 +162,7 @@ function ResetPasswordForm() {
       <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
-          <p className="text-slate-600">Vérification du lien...</p>
+          <p className="text-slate-600">{t("checkingLink")}</p>
         </div>
       </div>
     );
@@ -177,16 +177,16 @@ function ResetPasswordForm() {
               <AlertCircle className="w-8 h-8 text-red-600" />
             </div>
             <h2 className="text-2xl font-bold text-slate-800 mb-2">
-              Lien invalide ou expiré
+              {t("invalidLinkTitle")}
             </h2>
             <p className="text-slate-600 mb-6">
-              {error || "Le lien de réinitialisation est invalide ou a expiré."}
+              {error || t("invalidLinkDesc")}
             </p>
             <button
               onClick={() => router.push(forgotPath)}
               className="cursor-pointer w-full px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium"
             >
-              Renvoyer un lien
+              {t("resendLink")}
             </button>
           </div>
         </div>
@@ -203,14 +203,10 @@ function ResetPasswordForm() {
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
             <h2 className="text-2xl font-bold text-slate-800 mb-2">
-              Mot de passe réinitialisé !
+              {t("successTitle")}
             </h2>
-            <p className="text-slate-600 mb-4">
-              Votre mot de passe a été modifié avec succès.
-            </p>
-            <p className="text-sm text-slate-500">
-              Redirection vers la page de connexion...
-            </p>
+            <p className="text-slate-600 mb-4">{t("successDesc")}</p>
+            <p className="text-sm text-slate-500">{t("successRedirect")}</p>
           </div>
         </div>
       </div>
@@ -225,11 +221,9 @@ function ResetPasswordForm() {
             <Lock className="w-8 h-8 text-teal-600" />
           </div>
           <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
-            Nouveau mot de passe
+            {t("title")}
           </h1>
-          <p className="text-slate-600 text-sm">
-            Choisissez un mot de passe sécurisé
-          </p>
+          <p className="text-slate-600 text-sm">{t("subtitle")}</p>
         </div>
 
         <div className="form-card bg-white rounded-2xl shadow-lg p-6 border border-slate-100">
@@ -243,7 +237,7 @@ function ResetPasswordForm() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Nouveau mot de passe
+                {t("newPassword")}
               </label>
               <div className="relative">
                 <input
@@ -251,7 +245,7 @@ function ResetPasswordForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="text-slate-800 w-full h-12 px-4 text-sm border-2 border-slate-300 rounded-lg bg-white hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all duration-200"
-                  placeholder="Minimum 8 caractères"
+                  placeholder={t("passwordPh")}
                   required
                   disabled={isSubmitting}
                   minLength={8}
@@ -259,7 +253,7 @@ function ResetPasswordForm() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                   disabled={isSubmitting}
                 >
                   {showPassword ? (
@@ -269,14 +263,12 @@ function ResetPasswordForm() {
                   )}
                 </button>
               </div>
-              <p className="text-xs text-slate-500 mt-2">
-                Minimum 8 caractères avec majuscule, minuscule et chiffre
-              </p>
+              <p className="text-xs text-slate-500 mt-2">{t("passwordHint")}</p>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Confirmer le mot de passe
+                {t("confirmPassword")}
               </label>
               <div className="relative">
                 <input
@@ -284,14 +276,14 @@ function ResetPasswordForm() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="text-slate-800 w-full h-12 px-4 text-sm border-2 border-slate-300 rounded-lg bg-white hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all duration-200"
-                  placeholder="Répétez le mot de passe"
+                  placeholder={t("confirmPasswordPh")}
                   required
                   disabled={isSubmitting}
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                   disabled={isSubmitting}
                 >
                   {showConfirmPassword ? (
@@ -311,10 +303,10 @@ function ResetPasswordForm() {
               {isSubmitting ? (
                 <div className="flex items-center justify-center gap-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                  Modification en cours...
+                  {t("submitting")}
                 </div>
               ) : (
-                "Réinitialiser mon mot de passe"
+                t("submit")
               )}
             </button>
           </form>
@@ -325,7 +317,7 @@ function ResetPasswordForm() {
             onClick={() => router.push(loginPath)}
             className="text-teal-600 hover:text-teal-700 font-medium"
           >
-            Retour à la connexion
+            {t("backToLogin")}
           </button>
         </p>
       </div>

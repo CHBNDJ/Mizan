@@ -1,10 +1,12 @@
 "use client";
 import { useState } from "react";
 import { Filter, Languages, User, Briefcase } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { FilterPanelProps } from "@/types";
 import { CIVILITE_OPTIONS, toCivilite } from "@/lib/genderUtils";
+import { localizedDigits } from "@/lib/arabicNumerals";
 
 export function FilterPanel({
   filters,
@@ -12,20 +14,50 @@ export function FilterPanel({
   searchParams,
 }: FilterPanelProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const t = useTranslations("filterPanel");
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
 
   const experienceOptions = [
-    { value: "5", label: "5+ ans d'expérience" },
-    { value: "10", label: "10+ ans d'expérience" },
-    { value: "20", label: "20+ ans d'expérience" },
-    { value: "30", label: "30+ ans d'expérience" },
+    { value: "5", label: t("experienceOption", { n: ld("5") }) },
+    { value: "10", label: t("experienceOption", { n: ld("10") }) },
+    { value: "20", label: t("experienceOption", { n: ld("20") }) },
+    { value: "30", label: t("experienceOption", { n: ld("30") }) },
   ];
 
   const langueOptions = [
-    { value: "Français", label: "Français" },
-    { value: "Arabe", label: "العربية" },
-    { value: "Anglais", label: "English" },
-    { value: "Berbère", label: "Tamazight" },
-    { value: "Espagnol", label: "Español" },
+    {
+      value: "Français",
+      label:
+        locale === "ar" ? "الفرنسية" : locale === "en" ? "French" : "Français",
+    },
+    {
+      value: "Arabe",
+      label: locale === "ar" ? "العربية" : locale === "en" ? "Arabic" : "Arabe",
+    },
+    {
+      value: "Anglais",
+      label:
+        locale === "ar"
+          ? "الإنجليزية"
+          : locale === "en"
+            ? "English"
+            : "Anglais",
+    },
+    {
+      value: "Berbère",
+      label:
+        locale === "ar"
+          ? "الأمازيغية"
+          : locale === "en"
+            ? "Tamazight"
+            : "Tamazight",
+    },
+    {
+      value: "Espagnol",
+      label:
+        locale === "ar" ? "الإسبانية" : locale === "en" ? "Spanish" : "Español",
+    },
   ];
 
   const genreOptions = CIVILITE_OPTIONS;
@@ -64,7 +96,9 @@ export function FilterPanel({
   if (searchParams?.getAll("specialite").length) {
     activeFilters.push({
       key: "specialite",
-      label: `${searchParams.getAll("specialite").length} spécialité(s)`,
+      label: t("specialitesCount", {
+        n: ld(String(searchParams.getAll("specialite").length)),
+      }),
       color: "teal" as const,
     });
   }
@@ -96,7 +130,7 @@ export function FilterPanel({
   if (filters.experience_min) {
     activeFilters.push({
       key: "experience_min",
-      label: `${filters.experience_min}+ ans d'expérience`,
+      label: t("experienceOption", { n: ld(String(filters.experience_min)) }),
       color: "yellow" as const,
     });
   }
@@ -112,15 +146,15 @@ export function FilterPanel({
             <Filter className="w-4 h-4 text-teal-600" />
           </div>
           <div>
-            <h3 className="font-semibold text-slate-800">Filtres</h3>
+            <h3 className="font-semibold text-slate-800">{t("title")}</h3>
             <p className="text-sm text-slate-500">
               {activeFilters.length === 0
-                ? "Affiner votre recherche"
-                : `${activeFilters.length} actif(s)`}
+                ? t("subtitleEmpty")
+                : t("subtitleActive", { n: ld(String(activeFilters.length)) })}
             </p>
           </div>
         </div>
-        <Button>{isExpanded ? "Masquer" : "Afficher"}</Button>
+        <Button>{isExpanded ? t("hide") : t("show")}</Button>
       </div>
 
       {isExpanded && (
@@ -129,10 +163,10 @@ export function FilterPanel({
             <div className="space-y-2 relative z-[60]">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <Languages className="w-4 h-4" />
-                Langue parlée
+                {t("languageLabel")}
               </label>
               <CustomSelect
-                placeholder="Toutes les langues"
+                placeholder={t("languageAll")}
                 options={langueOptions}
                 value={filters.langues}
                 onChange={handleLangueChange}
@@ -142,10 +176,10 @@ export function FilterPanel({
             <div className="space-y-2 relative z-[55]">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <User className="w-4 h-4" />
-                Civilité
+                {t("civiliteLabel")}
               </label>
               <CustomSelect
-                placeholder="Tous"
+                placeholder={t("civiliteAll")}
                 options={genreOptions}
                 value={filters.genre}
                 onChange={handleGenreChange}
@@ -155,10 +189,10 @@ export function FilterPanel({
             <div className="space-y-2 relative z-50">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <Briefcase className="w-4 h-4" />
-                Expérience minimum
+                {t("experienceLabel")}
               </label>
               <CustomSelect
-                placeholder="Toute expérience"
+                placeholder={t("experienceAll")}
                 options={experienceOptions}
                 value={
                   filters.experience_min !== null &&

@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import FeedbackPopup from "@/components/FeedbackPopup";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -41,6 +42,10 @@ function LawyerConsultationsContent() {
   const { user, profile } = useAuth();
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations();
+  const locale = useLocale();
+  const dateLocale =
+    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-FR";
 
   const [consultations, setConsultations] = useState<Consultation[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -251,7 +256,7 @@ function LawyerConsultationsContent() {
       );
       setConsultations(withUnread);
     } catch {
-      setError("Erreur lors du chargement des consultations.");
+      setError(t("consultShared.loadError"));
     } finally {
       setLoading(false);
     }
@@ -280,7 +285,8 @@ function LawyerConsultationsContent() {
           return {
             ...msg,
             sender: {
-              first_name: sender?.first_name || "Utilisateur",
+              first_name:
+                sender?.first_name || t("myProfile.firstNameFallback"),
               last_name: sender?.last_name || "",
             },
           };
@@ -322,12 +328,11 @@ function LawyerConsultationsContent() {
         .eq("id", user.id)
         .single();
       const lawyerName =
-        `Me. ${userData?.first_name || ""} ${userData?.last_name || ""}`.trim();
+        `${t("mesConsultations.lawyerPrefix")} ${userData?.first_name || ""} ${userData?.last_name || ""}`.trim();
 
-      const autoMessage =
-        action === "decline"
-          ? `❌ Demande déclinée\n\n${lawyerName} n'est pas en mesure de prendre en charge votre demande actuellement.\n\nNous vous invitons à consulter d'autres avocats disponibles sur Mizan.`
-          : `✅ Consultation clôturée\n\n${lawyerName} a marqué cette consultation comme terminée.\n\nMerci de votre confiance.`;
+      const autoMessage = t(`lawyerConsultations.autoMessages.${action}`, {
+        lawyerName,
+      });
 
       // Envoyer le message automatique via l'API (qui gère push + email)
       await fetch(`/api/consultations/${selectedConsultation.id}/messages`, {
@@ -349,7 +354,7 @@ function LawyerConsultationsContent() {
       setSelectedConsultation(null);
       setShowChat(false);
     } catch {
-      setError("Erreur lors de l'action.");
+      setError(t("lawyerConsultations.actionError"));
     } finally {
       setIsActioning(false);
     }
@@ -359,12 +364,12 @@ function LawyerConsultationsContent() {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > 10 * 1024 * 1024) {
-      setError("Le fichier ne doit pas dépasser 10MB");
+      setError(t("consultShared.fileTooBig"));
       return;
     }
     const allowed = ["image/jpeg", "image/png", "image/gif", "application/pdf"];
     if (!allowed.includes(file.type)) {
-      setError("Type de fichier non autorisé");
+      setError(t("consultShared.fileNotAllowed"));
       return;
     }
     setSelectedFile(file);
@@ -404,7 +409,7 @@ function LawyerConsultationsContent() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            message: newMessage.trim() || "(Fichier joint)",
+            message: newMessage.trim() || t("consultShared.attachedFile"),
             attachment_url: attachmentUrl,
             attachment_type: attachmentType,
             attachment_name: attachmentName,
@@ -416,7 +421,7 @@ function LawyerConsultationsContent() {
       setNewMessage("");
       setSelectedFile(null);
     } catch (error: any) {
-      setError(error.message || "Erreur lors de l'envoi.");
+      setError(error.message || t("consultShared.sendError"));
     } finally {
       setIsSending(false);
       setUploading(false);
@@ -467,7 +472,7 @@ function LawyerConsultationsContent() {
   const isPhoneConsultation = (subject?: string) =>
     !!subject?.toLowerCase().includes("téléphone");
   const formatDate = (d: string) =>
-    new Date(d).toLocaleDateString("fr-FR", {
+    new Date(d).toLocaleDateString(dateLocale, {
       day: "numeric",
       month: "long",
       year: "numeric",
@@ -475,20 +480,20 @@ function LawyerConsultationsContent() {
       minute: "2-digit",
     });
   const formatTime = (d: string) =>
-    new Date(d).toLocaleTimeString("fr-FR", {
+    new Date(d).toLocaleTimeString(dateLocale, {
       hour: "2-digit",
       minute: "2-digit",
     });
   const formatScheduled = (iso: string) => {
     const d = new Date(iso);
     return (
-      d.toLocaleDateString("fr-FR", {
+      d.toLocaleDateString(dateLocale, {
         weekday: "short",
         day: "numeric",
         month: "short",
       }) +
-      " à " +
-      d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+      ` ${t("consultShared.atConnector")} ` +
+      d.toLocaleTimeString(dateLocale, { hour: "2-digit", minute: "2-digit" })
     );
   };
 
@@ -579,8 +584,8 @@ function LawyerConsultationsContent() {
               disabled={archiving === selectedConsultation!.id}
               title={
                 (selectedConsultation as any).archived_at
-                  ? "Désarchiver"
-                  : "Archiver"
+                  ? t("consultShared.unarchive")
+                  : t("consultShared.archive")
               }
               className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 cursor-pointer"
             >
@@ -595,42 +600,42 @@ function LawyerConsultationsContent() {
             {confirmAction === "decline" ? (
               <div className="flex-1 bg-red-50 border border-red-200 rounded-xl p-3 flex items-center justify-between gap-2">
                 <p className="text-xs text-red-700 font-medium">
-                  Décliner et notifier le client ?
+                  {t("lawyerConsultations.declineConfirm")}
                 </p>
                 <div className="flex gap-2">
                   <button
                     onClick={() => setConfirmAction(null)}
                     className="text-xs text-slate-500 hover:text-slate-700 cursor-pointer px-2 py-1 rounded-lg hover:bg-slate-100"
                   >
-                    Annuler
+                    {t("lawyerConsultations.cancel")}
                   </button>
                   <button
                     onClick={() => handleConsultationAction("decline")}
                     disabled={isActioning}
                     className="text-xs font-semibold text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded-lg cursor-pointer disabled:opacity-50"
                   >
-                    {isActioning ? "..." : "Confirmer"}
+                    {isActioning ? "..." : t("lawyerConsultations.confirm")}
                   </button>
                 </div>
               </div>
             ) : confirmAction === "close" ? (
               <div className="flex-1 bg-teal-50 border border-teal-200 rounded-xl p-3 flex items-center justify-between gap-2">
                 <p className="text-xs text-teal-700 font-medium">
-                  Clôturer et notifier le client ?
+                  {t("lawyerConsultations.closeConfirm")}
                 </p>
                 <div className="flex gap-2">
                   <button
                     onClick={() => setConfirmAction(null)}
                     className="text-xs text-slate-500 hover:text-slate-700 cursor-pointer px-2 py-1 rounded-lg hover:bg-slate-100"
                   >
-                    Annuler
+                    {t("lawyerConsultations.cancel")}
                   </button>
                   <button
                     onClick={() => handleConsultationAction("close")}
                     disabled={isActioning}
                     className="text-xs font-semibold text-white bg-teal-600 hover:bg-teal-700 px-3 py-1 rounded-lg cursor-pointer disabled:opacity-50"
                   >
-                    {isActioning ? "..." : "Confirmer"}
+                    {isActioning ? "..." : t("lawyerConsultations.confirm")}
                   </button>
                 </div>
               </div>
@@ -640,13 +645,15 @@ function LawyerConsultationsContent() {
                   onClick={() => setConfirmAction("decline")}
                   className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl cursor-pointer transition-all"
                 >
-                  <XCircle className="w-3.5 h-3.5" /> Décliner
+                  <XCircle className="w-3.5 h-3.5" />{" "}
+                  {t("lawyerConsultations.decline")}
                 </button>
                 <button
                   onClick={() => setConfirmAction("close")}
                   className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded-xl cursor-pointer transition-all"
                 >
-                  <CheckSquare className="w-3.5 h-3.5" /> Clôturer
+                  <CheckSquare className="w-3.5 h-3.5" />{" "}
+                  {t("lawyerConsultations.close")}
                 </button>
               </>
             )}
@@ -656,7 +663,9 @@ function LawyerConsultationsContent() {
         {isClosed && (
           <div className="mt-3 flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
             <CheckCircle className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-            <p className="text-xs text-slate-500">Consultation terminée</p>
+            <p className="text-xs text-slate-500">
+              {t("lawyerConsultations.consultationClosed")}
+            </p>
           </div>
         )}
       </div>
@@ -681,7 +690,7 @@ function LawyerConsultationsContent() {
                   {message.attachment_type?.startsWith("image/") ? (
                     <img
                       src={message.attachment_url}
-                      alt={message.attachment_name || "Image"}
+                      alt={message.attachment_name || t("consultShared.image")}
                       className="max-w-full rounded-lg cursor-pointer"
                       onClick={() =>
                         window.open(message.attachment_url!, "_blank")
@@ -696,7 +705,8 @@ function LawyerConsultationsContent() {
                     >
                       <span>📄</span>
                       <span className="text-sm underline">
-                        {message.attachment_name || "Fichier joint"}
+                        {message.attachment_name ||
+                          t("consultShared.attachedFileFallback")}
                       </span>
                     </a>
                   )}
@@ -734,7 +744,7 @@ function LawyerConsultationsContent() {
                 ))}
               </div>
               <span className="text-xs text-slate-500">
-                Le client est en train d'écrire...
+                {t("lawyerConsultations.clientTyping")}
               </span>
             </div>
           </div>
@@ -746,7 +756,7 @@ function LawyerConsultationsContent() {
       <div className="p-4 border-t border-slate-200">
         {isClosed ? (
           <p className="text-center text-xs text-slate-400 py-2">
-            Cette consultation est clôturée
+            {t("lawyerConsultations.consultationClosed")}
           </p>
         ) : (
           <>
@@ -819,7 +829,7 @@ function LawyerConsultationsContent() {
                     handleSendMessage();
                   }
                 }}
-                placeholder="Écrivez votre message..."
+                placeholder={t("consultShared.messagePlaceholder")}
                 className="w-full h-14 px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-300 outline-none text-slate-700 resize-none"
                 rows={2}
               />
@@ -851,10 +861,10 @@ function LawyerConsultationsContent() {
       <div className="max-w-7xl mx-auto px-4 py-8" ref={containerRef}>
         <div className="mb-6">
           <h1 className="page-header text-2xl sm:text-3xl font-bold text-slate-900 mb-1">
-            Mes consultations
+            {t("lawyerConsultations.title")}
           </h1>
           <p className="page-subtitle text-slate-600 text-sm sm:text-base">
-            Gérez les questions de vos clients et apportez vos réponses
+            {t("lawyerConsultations.subtitle")}
           </p>
         </div>
 
@@ -869,10 +879,10 @@ function LawyerConsultationsContent() {
           <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-slate-200">
             <MessageSquare className="w-16 h-16 text-slate-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-slate-800 mb-2">
-              Aucune consultation
+              {t("lawyerConsultations.emptyTitle")}
             </h3>
             <p className="text-slate-600">
-              Vous n'avez pas encore reçu de consultation
+              {t("lawyerConsultations.emptyDesc")}
             </p>
           </div>
         ) : (
@@ -881,19 +891,19 @@ function LawyerConsultationsContent() {
               {[
                 {
                   key: "active",
-                  label: "En cours",
+                  label: t("consultShared.tabs.active"),
                   count: activeCount,
                   icon: Clock,
                 },
                 {
                   key: "archived",
-                  label: "Archivées",
+                  label: t("consultShared.tabs.archived"),
                   count: archivedCount,
                   icon: Archive,
                 },
                 {
                   key: "all",
-                  label: "Toutes",
+                  label: t("consultShared.tabs.all"),
                   count: consultations.length,
                   icon: Filter,
                 },
@@ -929,8 +939,8 @@ function LawyerConsultationsContent() {
                     <Archive className="w-10 h-10 text-slate-300 mx-auto mb-3" />
                     <p className="text-slate-500 text-sm">
                       {tabFilter === "archived"
-                        ? "Aucune consultation archivée"
-                        : "Aucune consultation en cours"}
+                        ? t("consultShared.noArchived")
+                        : t("consultShared.noActive")}
                     </p>
                   </div>
                 ) : (
@@ -941,7 +951,7 @@ function LawyerConsultationsContent() {
                       className={`cursor-pointer bg-white rounded-xl p-4 border-2 transition-all hover:shadow-md relative ${selectedConsultation?.id === consultation.id ? "border-teal-500 shadow-md" : "border-slate-200 hover:border-teal-300"} ${(consultation as any).archived_at ? "opacity-70" : ""}`}
                     >
                       {(consultation.unread_count ?? 0) > 0 && (
-                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
+                        <div className="absolute -top-2 -end-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
                           {consultation.unread_count}
                         </div>
                       )}
@@ -966,26 +976,28 @@ function LawyerConsultationsContent() {
                                 (consultation as any).subject
                               ) && (
                                 <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 bg-teal-50 px-1.5 py-0.5 rounded-full border border-teal-100">
-                                  <Video className="w-2.5 h-2.5" /> Vidéo
+                                  <Video className="w-2.5 h-2.5" />{" "}
+                                  {t("consultShared.videoLabel")}
                                 </span>
                               )}
                               {isPhoneConsultation(
                                 (consultation as any).subject
                               ) && (
                                 <span className="inline-flex items-center gap-1 text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full border border-blue-100">
-                                  📞 Tél.
+                                  {t("lawyerConsultations.phoneLabel")}
                                 </span>
                               )}
                               {consultation.status === "closed" && (
                                 <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-full">
                                   <CheckCircle className="w-2.5 h-2.5" />{" "}
-                                  Clôturée
+                                  {t("lawyerConsultations.closedLabel")}
                                 </span>
                               )}
                               {(consultation as any).archived_at &&
                                 consultation.status !== "closed" && (
                                   <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-full">
-                                    <Archive className="w-2.5 h-2.5" /> Archivée
+                                    <Archive className="w-2.5 h-2.5" />{" "}
+                                    {t("consultShared.archivedLabel")}
                                   </span>
                                 )}
                             </div>
@@ -1007,7 +1019,7 @@ function LawyerConsultationsContent() {
                               )}
                           </div>
                         </div>
-                        <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                        <div className="flex items-center gap-2 flex-shrink-0 ms-2">
                           {consultation.status === "answered" &&
                             (consultation.unread_count ?? 0) === 0 && (
                               <CheckCircle className="w-5 h-5 text-teal-600" />
@@ -1045,7 +1057,7 @@ function LawyerConsultationsContent() {
                   <div className="hidden lg:flex bg-slate-50 rounded-xl p-12 text-center border-2 border-dashed border-slate-300 flex-col items-center">
                     <MessageSquare className="w-12 h-12 text-slate-300 mb-3" />
                     <p className="text-slate-500 font-medium">
-                      Sélectionnez une consultation pour démarrer
+                      {t("lawyerConsultations.selectPrompt")}
                     </p>
                   </div>
                 )}

@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import {
   CheckCircle,
   X,
@@ -38,6 +40,11 @@ export function PendingConsultations() {
   const { user } = useAuth();
   const router = useRouter();
   const supabase = createClient();
+  const t = useTranslations("pendingConsultations");
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
+  const dateLocale =
+    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-FR";
   const [items, setItems] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
   const [declining, setDeclining] = useState<string | null>(null);
@@ -128,15 +135,15 @@ export function PendingConsultations() {
   const getStatusBadge = (status: string) => {
     const map: Record<string, { label: string; color: string }> = {
       pending: {
-        label: "En attente",
+        label: t("statusPending"),
         color: "bg-amber-50 text-amber-700 border-amber-200",
       },
       accepted: {
-        label: "Acceptée",
+        label: t("statusAccepted"),
         color: "bg-teal-50 text-teal-700 border-teal-200",
       },
       in_progress: {
-        label: "En cours",
+        label: t("statusInProgress"),
         color: "bg-blue-50 text-blue-700 border-blue-200",
       },
     };
@@ -151,24 +158,24 @@ export function PendingConsultations() {
   const timeAgo = (date: string) => {
     const diff = Date.now() - new Date(date).getTime();
     const mins = Math.floor(diff / 60000);
-    if (mins < 60) return `il y a ${mins} min`;
+    if (mins < 60) return t("minutesAgo", { n: ld(String(mins)) });
     const hrs = Math.floor(mins / 60);
-    if (hrs < 24) return `il y a ${hrs}h`;
-    return `il y a ${Math.floor(hrs / 24)}j`;
+    if (hrs < 24) return t("hoursAgo", { n: ld(String(hrs)) });
+    return t("daysAgo", { n: ld(String(Math.floor(hrs / 24))) });
   };
 
   const formatScheduled = (iso: string) => {
     const d = new Date(iso);
-    const date = d.toLocaleDateString("fr-FR", {
+    const date = d.toLocaleDateString(dateLocale, {
       weekday: "short",
       day: "numeric",
       month: "short",
     });
-    const time = d.toLocaleTimeString("fr-FR", {
+    const time = d.toLocaleTimeString(dateLocale, {
       hour: "2-digit",
       minute: "2-digit",
     });
-    return { date, time };
+    return { date: ld(date), time: ld(time) };
   };
 
   const isVideoCanal = (canal?: string) =>
@@ -183,12 +190,10 @@ export function PendingConsultations() {
       <div className="px-5 py-4 border-b border-teal-50 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Clock className="w-4 h-4 text-teal-600" />
-          <h2 className="text-sm font-bold text-teal-900">
-            Consultations en attente
-          </h2>
+          <h2 className="text-sm font-bold text-teal-900">{t("title")}</h2>
           {items.filter((i) => i.status === "pending").length > 0 && (
             <span className="bg-teal-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-              {items.filter((i) => i.status === "pending").length}
+              {ld(String(items.filter((i) => i.status === "pending").length))}
             </span>
           )}
         </div>
@@ -196,7 +201,7 @@ export function PendingConsultations() {
           onClick={() => router.push("/lawyer/consultations")}
           className="text-xs text-teal-600 font-medium hover:text-teal-700 cursor-pointer"
         >
-          Voir tout →
+          {t("seeAll")}
         </button>
       </div>
 
@@ -230,7 +235,7 @@ export function PendingConsultations() {
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
                     <CanalIcon className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
                     <p className="text-xs text-slate-500 truncate">
-                      {c.subject || "Consultation"}
+                      {c.subject || t("consultationFallback")}
                     </p>
                     <span
                       className={`flex-shrink-0 text-[10px] font-medium px-1.5 py-0.5 rounded-full border ${badge.color}`}
@@ -259,7 +264,7 @@ export function PendingConsultations() {
                         <textarea
                           value={declineMsg}
                           onChange={(e) => setDeclineMsg(e.target.value)}
-                          placeholder="Motif (optionnel)..."
+                          placeholder={t("declineReasonPh")}
                           rows={2}
                           className="w-full text-xs border border-slate-200 rounded-lg px-3 py-2 resize-none focus:border-teal-400 outline-none text-slate-700"
                         />
@@ -270,13 +275,13 @@ export function PendingConsultations() {
                             }
                             className="flex-1 bg-slate-600 hover:bg-slate-700 text-white text-xs font-medium py-1.5 rounded-lg cursor-pointer"
                           >
-                            Confirmer le refus
+                            {t("confirmDecline")}
                           </button>
                           <button
                             onClick={() => setDeclining(null)}
                             className="px-3 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs rounded-lg cursor-pointer"
                           >
-                            Annuler
+                            {t("cancel")}
                           </button>
                         </div>
                       </div>
@@ -286,13 +291,13 @@ export function PendingConsultations() {
                           onClick={() => updateStatus(c.id, "accepted")}
                           className="flex-1 flex items-center justify-center gap-1.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold py-2 rounded-lg cursor-pointer"
                         >
-                          <CheckCircle className="w-3.5 h-3.5" /> Accepter
+                          <CheckCircle className="w-3.5 h-3.5" /> {t("accept")}
                         </button>
                         <button
                           onClick={() => setDeclining(c.id)}
                           className="flex-1 flex items-center justify-center gap-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-medium py-2 rounded-lg cursor-pointer"
                         >
-                          <X className="w-3.5 h-3.5" /> Refuser
+                          <X className="w-3.5 h-3.5" /> {t("refuse")}
                         </button>
                       </div>
                     )
@@ -308,7 +313,7 @@ export function PendingConsultations() {
                         onClick={() => router.push("/lawyer/consultations")}
                         className="flex items-center gap-1 text-xs text-teal-600 hover:text-teal-700 font-medium cursor-pointer"
                       >
-                        Messagerie <ChevronRight className="w-3 h-3" />
+                        {t("messaging")} <ChevronRight className="w-3 h-3" />
                       </button>
                     </div>
                   )}

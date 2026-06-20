@@ -1,12 +1,17 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { Loader2, Home } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { localizedDigits } from "@/lib/arabicNumerals";
 
 export default function LawyerOnboardingPage() {
   const router = useRouter();
   const supabase = createClientComponentClient();
+  const t = useTranslations("onboardingPage");
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
   const [lawyerName, setLawyerName] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -34,16 +39,17 @@ export default function LawyerOnboardingPage() {
         }
         const firstName = profile.first_name || "";
         const lastName = profile.last_name || "";
+        const titlePrefix = t("titlePrefix");
 
         let fullName = "";
         if (firstName && lastName) {
-          fullName = `Maître ${firstName} ${lastName}`;
+          fullName = `${titlePrefix} ${firstName} ${lastName}`;
         } else if (firstName) {
-          fullName = `Maître ${firstName}`;
+          fullName = `${titlePrefix} ${firstName}`;
         } else if (lastName) {
-          fullName = `Maître ${lastName}`;
+          fullName = `${titlePrefix} ${lastName}`;
         } else {
-          fullName = "Maître";
+          fullName = titlePrefix;
         }
 
         setLawyerName(fullName);
@@ -91,7 +97,7 @@ export default function LawyerOnboardingPage() {
       <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-12 h-12 text-teal-600 animate-spin mx-auto mb-4" />
-          <p className="text-slate-600">Vérification de votre profil...</p>
+          <p className="text-slate-600">{t("checkingProfile")}</p>
         </div>
       </div>
     );
@@ -118,12 +124,10 @@ export default function LawyerOnboardingPage() {
           </div>
 
           <h1 className="text-3xl font-bold text-slate-800 mb-3">
-            Bienvenue {lawyerName} !
+            {t("welcome", { name: lawyerName })}
           </h1>
 
-          <p className="text-slate-600 text-lg">
-            Votre inscription a bien été enregistrée
-          </p>
+          <p className="text-slate-600 text-lg">{t("registered")}</p>
         </div>
 
         <div className="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-lg mb-6">
@@ -143,11 +147,10 @@ export default function LawyerOnboardingPage() {
             </svg>
             <div>
               <h3 className="font-semibold text-amber-900 mb-2">
-                Validation en cours
+                {t("validationTitle")}
               </h3>
               <p className="text-amber-800 text-sm leading-relaxed">
-                Notre équipe vérifie vos informations. Vous recevrez un email
-                sous 24-48h pour activer votre compte.
+                {t("validationDesc")}
               </p>
             </div>
           </div>
@@ -156,27 +159,23 @@ export default function LawyerOnboardingPage() {
         <div className="space-y-3 mb-8">
           <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
             <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-teal-600 font-bold text-sm">1</span>
+              <span className="text-teal-600 font-bold text-sm">{ld("1")}</span>
             </div>
-            <p className="text-sm text-slate-700">
-              Vérification de vos informations
-            </p>
+            <p className="text-sm text-slate-700">{t("step1")}</p>
           </div>
 
           <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
             <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-teal-600 font-bold text-sm">2</span>
+              <span className="text-teal-600 font-bold text-sm">{ld("2")}</span>
             </div>
-            <p className="text-sm text-slate-700">Validation (24-48h)</p>
+            <p className="text-sm text-slate-700">{t("step2")}</p>
           </div>
 
           <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
             <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-teal-600 font-bold text-sm">3</span>
+              <span className="text-teal-600 font-bold text-sm">{ld("3")}</span>
             </div>
-            <p className="text-sm text-slate-700">
-              Email de confirmation avec accès
-            </p>
+            <p className="text-sm text-slate-700">{t("step3")}</p>
           </div>
         </div>
 
@@ -186,11 +185,11 @@ export default function LawyerOnboardingPage() {
             className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg cursor-pointer mb-4"
           >
             <Home className="w-4 h-4" />
-            Retour à l'accueil
+            {t("backHome")}
           </button>
 
           <p className="text-sm text-slate-500">
-            Questions ?{" "}
+            {t("questions")}{" "}
             <a
               href="mailto:support@mizan-dz.com"
               className="text-teal-600 hover:text-teal-700 font-medium"

@@ -1,10 +1,13 @@
 "use client";
 import { useEffect } from "react";
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { ArrowLeft, MapPin } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { getAvocatsByWilaya, getVillesByWilaya } from "@/lib/avocatsData";
+import { getWilayaLabel } from "@/lib/i18nLabels";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import { gsap } from "gsap";
 
 interface WilayaPageProps {
@@ -65,6 +68,11 @@ function WilayaPageClient({
   villes,
   avocats,
 }: any) {
+  const t = useTranslations();
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
+  const wilayaLabel = getWilayaLabel(wilayaCapitalized, t);
+
   useEffect(() => {
     gsap.fromTo(
       ".wilaya-header",
@@ -137,29 +145,26 @@ function WilayaPageClient({
               href="/"
               className="inline-flex items-center text-slate-600 hover:text-slate-800 mb-6 transition-colors"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Retour à l'accueil
+              <ArrowLeft className="w-4 h-4 me-2" />
+              {t("wilayaPage.backHome")}
             </Link>
 
             <div className="flex items-start justify-between">
               <div>
                 <h1 className="text-4xl font-bold text-slate-800 mb-4">
-                  Avocats à {wilayaCapitalized}
+                  {t("wilayaPage.title", { wilaya: wilayaLabel })}
                 </h1>
                 <p className="text-lg text-slate-600 max-w-2xl">
-                  Trouvez un avocat qualifié dans la wilaya de{" "}
-                  {wilayaCapitalized}. Tous nos avocats sont vérifiés et
-                  spécialisés dans différents domaines du droit.
+                  {t("wilayaPage.desc", { wilaya: wilayaLabel })}
                 </p>
               </div>
 
-              <div className="text-right">
+              <div className="text-end">
                 <div className="text-3xl font-bold text-teal-600">
-                  {totalAvocats}
+                  {ld(String(totalAvocats))}
                 </div>
                 <div className="text-sm text-slate-500">
-                  Avocat{totalAvocats > 1 ? "s" : ""} disponible
-                  {totalAvocats > 1 ? "s" : ""}
+                  {t("wilayaPage.available", { count: totalAvocats })}
                 </div>
               </div>
             </div>
@@ -172,32 +177,40 @@ function WilayaPageClient({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="wilaya-stat text-center p-4 bg-teal-50 rounded-lg">
               <div className="text-2xl font-bold text-teal-600 mb-1">
-                {totalAvocats}
-              </div>
-              <div className="text-sm text-slate-600">Avocats</div>
-            </div>
-
-            <div className="wilaya-stat text-center p-4 bg-teal-50 rounded-lg">
-              <div className="text-2xl font-bold text-teal-600 mb-1">
-                {avocatsVerifies}
-              </div>
-              <div className="text-sm text-slate-600">Vérifiés</div>
-            </div>
-
-            <div className="wilaya-stat text-center p-4 bg-teal-50 rounded-lg">
-              <div className="text-2xl font-bold text-teal-600 mb-1">
-                {moyenneExperience.toFixed(0)}
+                {ld(String(totalAvocats))}
               </div>
               <div className="text-sm text-slate-600">
-                Ans d'expérience moy.
+                {t("wilayaPage.statLawyers")}
               </div>
             </div>
 
             <div className="wilaya-stat text-center p-4 bg-teal-50 rounded-lg">
               <div className="text-2xl font-bold text-teal-600 mb-1">
-                {moyenneRating ? moyenneRating.toFixed(1) : "N/A"}
+                {ld(String(avocatsVerifies))}
               </div>
-              <div className="text-sm text-slate-600">Note moyenne</div>
+              <div className="text-sm text-slate-600">
+                {t("wilayaPage.statVerified")}
+              </div>
+            </div>
+
+            <div className="wilaya-stat text-center p-4 bg-teal-50 rounded-lg">
+              <div className="text-2xl font-bold text-teal-600 mb-1">
+                {ld(moyenneExperience.toFixed(0))}
+              </div>
+              <div className="text-sm text-slate-600">
+                {t("wilayaPage.statExperience")}
+              </div>
+            </div>
+
+            <div className="wilaya-stat text-center p-4 bg-teal-50 rounded-lg">
+              <div className="text-2xl font-bold text-teal-600 mb-1">
+                {moyenneRating
+                  ? ld(moyenneRating.toFixed(1))
+                  : t("wilayaPage.noRating")}
+              </div>
+              <div className="text-sm text-slate-600">
+                {t("wilayaPage.statRating")}
+              </div>
             </div>
           </div>
         </div>
@@ -207,7 +220,7 @@ function WilayaPageClient({
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="wilaya-villes">
             <h2 className="text-xl font-semibold text-slate-800 mb-4">
-              Villes couvertes dans {wilayaCapitalized}
+              {t("wilayaPage.citiesCovered", { wilaya: wilayaLabel })}
             </h2>
             <div className="flex flex-wrap gap-2">
               {villes.map((ville: string) => {
@@ -219,8 +232,8 @@ function WilayaPageClient({
                     key={ville}
                     className="px-4 py-2 bg-teal-50 text-teal-700 rounded-lg text-sm font-medium hover:bg-teal-100 transition-colors"
                   >
-                    <MapPin className="w-4 h-4 inline mr-1" />
-                    {ville} ({avocatsVille})
+                    <MapPin className="w-4 h-4 inline me-1" />
+                    {ville} ({ld(String(avocatsVille))})
                   </span>
                 );
               })}

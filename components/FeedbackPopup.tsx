@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { X, MessageCircle, Lightbulb, Bug, Send } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { FeedbackPopupProps } from "@/types";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
   const { user } = useAuth();
+  const t = useTranslations("feedbackPopup");
   const [type, setType] = useState("testimonial");
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
@@ -20,8 +22,6 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
     setError("");
 
     try {
-      console.log("📤 Envoi feedback avec userId:", user.id);
-
       const response = await fetch("/api/platform-feedback/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,17 +34,16 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
       });
 
       const data = await response.json();
-      console.log("📥 Réponse API:", data);
 
       if (!response.ok) {
-        throw new Error(data.error || "Erreur lors de l'envoi");
+        throw new Error(data.error || t("errorSend"));
       }
 
       setSuccess(true);
       setTimeout(() => onClose(), 2000);
     } catch (err: any) {
-      console.error("❌ Erreur:", err);
-      setError(err.message || "Une erreur est survenue");
+      console.error("Erreur feedback:", err);
+      setError(err.message || t("errorGeneric"));
     } finally {
       setSending(false);
     }
@@ -54,26 +53,25 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
     {
       value: "testimonial",
       icon: MessageCircle,
-      label: "Partager mon expérience",
+      label: t("types.testimonial"),
     },
-    {
-      value: "suggestion",
-      icon: Lightbulb,
-      label: "Suggérer une amélioration",
-    },
-    {
-      value: "bug",
-      icon: Bug,
-      label: "Signaler un bug",
-    },
+    { value: "suggestion", icon: Lightbulb, label: t("types.suggestion") },
+    { value: "bug", icon: Bug, label: t("types.bug") },
   ];
+
+  const placeholder =
+    type === "bug"
+      ? t("placeholders.bug")
+      : type === "suggestion"
+        ? t("placeholders.suggestion")
+        : t("placeholders.testimonial");
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl max-w-lg w-full shadow-xl relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 transition-colors"
+          className="absolute top-4 end-4 text-slate-400 hover:text-slate-700 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -96,19 +94,17 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
               </svg>
             </div>
             <h3 className="text-xl font-semibold text-slate-900 mb-2">
-              Merci pour votre feedback !
+              {t("thanksTitle")}
             </h3>
-            <p className="text-slate-600">Votre message a bien été envoyé.</p>
+            <p className="text-slate-600">{t("thanksDesc")}</p>
           </div>
         ) : (
           <>
             <div className="p-6 border-b border-slate-100">
               <h3 className="text-xl font-semibold text-slate-900 mb-1">
-                Votre avis nous intéresse
+                {t("title")}
               </h3>
-              <p className="text-sm text-slate-600">
-                Aidez-nous à améliorer votre expérience sur Mizan
-              </p>
+              <p className="text-sm text-slate-600">{t("subtitle")}</p>
             </div>
 
             <div className="p-6">
@@ -159,7 +155,7 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
                         {ft.label}
                       </span>
                       {isSelected && (
-                        <div className="ml-auto w-5 h-5 bg-teal-600 rounded-full flex items-center justify-center">
+                        <div className="ms-auto w-5 h-5 bg-teal-600 rounded-full flex items-center justify-center">
                           <svg
                             className="w-3 h-3 text-white"
                             fill="currentColor"
@@ -180,18 +176,12 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
 
               <div className="mb-6">
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Votre message
+                  {t("messageLabel")}
                 </label>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder={
-                    type === "bug"
-                      ? "Décrivez le problème..."
-                      : type === "suggestion"
-                        ? "Quelle fonctionnalité aimeriez-vous ?"
-                        : "Partagez votre expérience..."
-                  }
+                  placeholder={placeholder}
                   className="w-full px-4 py-3 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700 resize-none h-32"
                 />
               </div>
@@ -201,7 +191,7 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
                   onClick={onClose}
                   className="cursor-pointer flex-1 px-4 py-2.5 border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-colors"
                 >
-                  Plus tard
+                  {t("later")}
                 </button>
                 <button
                   onClick={handleSubmit}
@@ -211,12 +201,12 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
                   {sending ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                      Envoi...
+                      {t("sending")}
                     </>
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      Envoyer
+                      {t("send")}
                     </>
                   )}
                 </button>

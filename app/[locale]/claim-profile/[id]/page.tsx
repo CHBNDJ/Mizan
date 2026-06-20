@@ -1,9 +1,11 @@
 "use client";
 import { use, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { getAvocatById } from "@/lib/avocatsData";
+import { localizedDigits, toArabicNumerals } from "@/lib/arabicNumerals";
 import {
   AlertCircle,
   Mail,
@@ -21,6 +23,9 @@ export default function ClaimProfilePage({
 }) {
   const { id } = use(params);
   const router = useRouter();
+  const t = useTranslations("claimProfilePage");
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
   const containerRef = useRef<HTMLDivElement>(null);
   const [avocat, setAvocat] = useState<any>(null);
   const [email, setEmail] = useState("");
@@ -84,7 +89,7 @@ export default function ClaimProfilePage({
       setCodeExpiresIn((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          setError("Le code a expiré. Veuillez demander un nouveau code.");
+          setError(t("codeExpired"));
           setStep(1);
           return 0;
         }
@@ -110,17 +115,14 @@ export default function ClaimProfilePage({
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.error ||
-            "Cet email ne correspond pas au profil ou une erreur est survenue."
-        );
+        throw new Error(data.error || t("errors.emailMismatch"));
       }
 
       setCodeExpiresIn(data.expiresIn || 15);
       setStep(2);
       setError("");
     } catch (err: any) {
-      setError(err.message || "Erreur lors de l'envoi du code.");
+      setError(err.message || t("errors.sendError"));
     } finally {
       setLoading(false);
     }
@@ -132,13 +134,13 @@ export default function ClaimProfilePage({
     setError("");
 
     if (code.length !== 6) {
-      setError("Le code doit contenir 6 chiffres");
+      setError(t("errors.codeLength"));
       setLoading(false);
       return;
     }
 
     if (password.length < 8) {
-      setError("Le mot de passe doit contenir au moins 8 caractères");
+      setError(t("errors.passwordLength"));
       setLoading(false);
       return;
     }
@@ -154,26 +156,24 @@ export default function ClaimProfilePage({
 
       if (!response.ok) {
         if (data.alreadyClaimed) {
-          setError("Ce profil a déjà été réclamé. Veuillez vous connecter.");
+          setError(t("errors.alreadyClaimed"));
           setTimeout(() => router.push("/auth/lawyer/login"), 2000);
           return;
         }
 
         if (data.attemptsLeft !== undefined) {
           setAttemptsLeft(data.attemptsLeft);
-          setError(
-            `Code incorrect. Il vous reste ${data.attemptsLeft} tentative${data.attemptsLeft > 1 ? "s" : ""}.`
-          );
+          setError(t("errors.wrongCode", { n: data.attemptsLeft }));
           setLoading(false);
           return;
         }
 
-        throw new Error(data.error || "Erreur lors de l'activation");
+        throw new Error(data.error || t("errors.activationError"));
       }
 
       router.push("/auth/lawyer/login?claimed=true");
     } catch (err: any) {
-      setError(err.message || "Erreur lors de l'activation du compte");
+      setError(err.message || t("errors.activationErrorGeneric"));
     } finally {
       setLoading(false);
     }
@@ -208,7 +208,7 @@ export default function ClaimProfilePage({
             <CheckCircle2 className="w-10 h-10 text-teal-600" />
           </div>
           <h1 className="page-title text-3xl font-bold text-slate-800 mb-3">
-            Réclamer votre profil
+            {t("title")}
           </h1>
           <p className="page-subtitle text-lg text-slate-600">
             {avocat.prenom} {avocat.nom}
@@ -222,7 +222,7 @@ export default function ClaimProfilePage({
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-3">
                     <Mail className="w-5 h-5" />
-                    Entrez votre email professionnel
+                    {t("step1.label")}
                   </label>
                   <input
                     type="email"
@@ -234,8 +234,7 @@ export default function ClaimProfilePage({
                     disabled={loading}
                   />
                   <p className="text-sm text-slate-500 mt-3">
-                    Utilisez l'email professionnel associé à votre profil. Un
-                    code de vérification vous sera envoyé.
+                    {t("step1.hint")}
                   </p>
                 </div>
 
@@ -254,18 +253,15 @@ export default function ClaimProfilePage({
                   {loading ? (
                     <div className="flex items-center justify-center gap-2">
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-                      Envoi en cours...
+                      {t("step1.sending")}
                     </div>
                   ) : (
-                    "Envoyer le code de vérification"
+                    t("step1.submit")
                   )}
                 </Button>
 
                 <div className="bg-teal-50 border-2 border-teal-200 p-4 rounded-lg">
-                  <p className="text-teal-800 text-sm">
-                    📧 Un code à 6 chiffres sera envoyé par email. Valable 15
-                    minutes.
-                  </p>
+                  <p className="text-teal-800 text-sm">{t("step1.infoBox")}</p>
                 </div>
               </form>
             )}
@@ -277,13 +273,13 @@ export default function ClaimProfilePage({
                     <CheckCircle2 className="w-6 h-6 text-teal-600 flex-shrink-0 mt-0.5" />
                     <div>
                       <p className="text-teal-800 font-semibold text-base">
-                        Code envoyé !
+                        {t("step2.sentTitle")}
                       </p>
                       <p className="text-teal-700 text-sm mt-1">
-                        Vérifiez votre boîte email.
+                        {t("step2.sentDesc")}
                       </p>
                       <p className="text-teal-600 text-xs mt-2">
-                        ⏱️ Expire dans <strong>{codeExpiresIn} min</strong>
+                        {t("step2.expiresIn", { n: ld(String(codeExpiresIn)) })}
                       </p>
                     </div>
                   </div>
@@ -291,7 +287,7 @@ export default function ClaimProfilePage({
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-3">
-                    Code (6 chiffres)
+                    {t("step2.codeLabel")}
                   </label>
                   <input
                     type="text"
@@ -308,11 +304,11 @@ export default function ClaimProfilePage({
                   />
                   <div className="flex items-center justify-between mt-2">
                     <p className="text-xs text-slate-500">
-                      Code reçu par email
+                      {t("step2.codeReceived")}
                     </p>
                     {attemptsLeft !== null && (
                       <p className="text-xs text-amber-600 font-medium">
-                        {attemptsLeft} tentative{attemptsLeft > 1 ? "s" : ""}
+                        {t("step2.attemptsLeft", { n: attemptsLeft })}
                       </p>
                     )}
                   </div>
@@ -321,15 +317,15 @@ export default function ClaimProfilePage({
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-3">
                     <Lock className="w-5 h-5" />
-                    Créez votre mot de passe
+                    {t("step2.passwordLabel")}
                   </label>
                   <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Min 8 caractères"
-                      className="w-full h-14 px-4 pr-12 text-base border-2 border-slate-300 rounded-lg bg-white focus:border-teal-400 outline-none transition-all text-slate-700"
+                      placeholder={t("step2.passwordPh")}
+                      className="w-full h-14 px-4 pe-12 text-base border-2 border-slate-300 rounded-lg bg-white focus:border-teal-400 outline-none transition-all text-slate-700"
                       required
                       minLength={8}
                       disabled={loading}
@@ -337,7 +333,7 @@ export default function ClaimProfilePage({
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                       disabled={loading}
                     >
                       {showPassword ? (
@@ -362,7 +358,7 @@ export default function ClaimProfilePage({
                           onClick={handleResendCode}
                           className="mt-2 text-teal-600 text-sm font-medium hover:underline"
                         >
-                          Nouveau code
+                          {t("step2.newCode")}
                         </button>
                       )}
                     </div>
@@ -376,7 +372,7 @@ export default function ClaimProfilePage({
                     disabled={loading}
                     className="flex-1 h-14 bg-slate-200 text-slate-700 font-semibold rounded-lg hover:bg-slate-300 transition-colors disabled:opacity-50"
                   >
-                    Nouveau code
+                    {t("step2.newCode")}
                   </button>
                   <button
                     type="submit"
@@ -386,17 +382,17 @@ export default function ClaimProfilePage({
                     {loading ? (
                       <div className="flex items-center justify-center gap-2">
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-                        Activation...
+                        {t("step2.activating")}
                       </div>
                     ) : (
-                      "Activer mon compte"
+                      t("step2.activate")
                     )}
                   </button>
                 </div>
 
                 <div className="bg-amber-50 border-2 border-amber-200 p-4 rounded-lg">
                   <p className="text-amber-800 text-xs">
-                    ⚠️ Pas reçu ? Vérifiez vos spams ou cliquez "Nouveau code"
+                    {t("step2.notReceived")}
                   </p>
                 </div>
               </form>
@@ -405,7 +401,7 @@ export default function ClaimProfilePage({
         </Card>
 
         <p className="footer-text text-center text-sm text-slate-500 mt-6">
-          Activez votre compte pour gérer votre profil et vos consultations.
+          {t("footer")}
         </p>
       </div>
     </div>

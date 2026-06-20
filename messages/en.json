@@ -1882,5 +1882,123 @@
     "errorSubmit": "Error sending review",
     "clientFallback": "Client",
     "initialFallback": "M"
+  },
+  "verifyEmailPage": {
+    "missingEmailTitle": "Missing email",
+    "missingEmailDesc": "Cannot verify your account without an email.",
+    "backHome": "Back to home",
+    "title": "Verify your email",
+    "subtitle": "A 6-digit verification code has been sent to:",
+    "successTitle": "Email verified successfully! ✨",
+    "successSubtitle": "Redirecting...",
+    "resendSuccess": "A new code has been sent to your email!",
+    "codeLabel": "Verification code",
+    "codeHint": "Enter the code received by email",
+    "verifying": "Verifying...",
+    "verified": "Verified ✓",
+    "verifyAction": "Verify my email",
+    "noEmailTitle": "Don't see the email?",
+    "noEmailDesc": "Check your spam or junk folder.",
+    "resending": "Sending...",
+    "resendAction": "Resend code",
+    "needHelp": "Need help?",
+    "contactUs": "Contact us",
+    "errors": {
+      "codeLength": "The code must contain 6 digits",
+      "invalidCode": "Invalid code",
+      "invalidOrExpired": "Invalid or expired code",
+      "resendError": "Error resending code",
+      "serverError": "Server error ({status})",
+      "communicationError": "Error communicating with server"
+    }
+  },
+  "forgotPasswordPage": {
+    "title": "Forgot password",
+    "subtitle": "Enter your email to receive a reset link",
+    "successMsg": "A reset email has been sent to your address.",
+    "checkSpam": "Check your inbox and spam folder.",
+    "redirecting": "Redirecting to login page in 3 seconds...",
+    "errorMsg": "Error sending the email.",
+    "emailLabel": "Email address",
+    "sending": "Sending...",
+    "sendLink": "Send link",
+    "backToLogin": "← Back to login"
+  },
+  "resetPasswordPage": {
+    "invalidLink": "Invalid or expired reset link",
+    "genericError": "An error occurred",
+    "checkingLink": "Checking link...",
+    "invalidLinkTitle": "Invalid or expired link",
+    "invalidLinkDesc": "The reset link is invalid or has expired.",
+    "resendLink": "Resend link",
+    "successTitle": "Password reset!",
+    "successDesc": "Your password has been successfully changed.",
+    "successRedirect": "Redirecting to login page...",
+    "title": "New password",
+    "subtitle": "Choose a secure password",
+    "newPassword": "New password",
+    "passwordPh": "Minimum 8 characters",
+    "passwordHint": "Minimum 8 characters with uppercase, lowercase and digit",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPh": "Repeat password",
+    "submitting": "Updating...",
+    "submit": "Reset my password",
+    "backToLogin": "Back to login",
+    "errors": {
+      "minLength": "Password must contain at least 8 characters.",
+      "complexity": "Password must contain at least one uppercase, one lowercase letter and one digit.",
+      "mismatch": "Passwords do not match.",
+      "updateError": "Error during update: {msg}",
+      "tryAgain": "An error occurred. Please try again."
+    }
+  },
+  "onboardingPage": {
+    "checkingProfile": "Checking your profile...",
+    "welcome": "Welcome {name}!",
+    "registered": "Your registration has been successfully recorded",
+    "validationTitle": "Validation in progress",
+    "validationDesc": "Our team is verifying your information. You will receive an email within 24-48h to activate your account.",
+    "step1": "Verifying your information",
+    "step2": "Validation (24-48h)",
+    "step3": "Confirmation email with access",
+    "backHome": "Back to home",
+    "questions": "Questions?",
+    "titlePrefix": "Mr./Mrs."
+  },
+  "claimProfilePage": {
+    "codeExpired": "The code has expired. Please request a new code.",
+    "title": "Claim your profile",
+    "step1": {
+      "label": "Enter your professional email",
+      "hint": "Use the professional email associated with your profile. A verification code will be sent to you.",
+      "sending": "Sending...",
+      "submit": "Send verification code",
+      "infoBox": "📧 A 6-digit code will be sent by email. Valid for 15 minutes."
+    },
+    "step2": {
+      "sentTitle": "Code sent!",
+      "sentDesc": "Check your inbox.",
+      "expiresIn": "⏱️ Expires in {n} min",
+      "codeLabel": "Code (6 digits)",
+      "codeReceived": "Code received by email",
+      "attemptsLeft": "{n, plural, one {# attempt} other {# attempts}}",
+      "passwordLabel": "Create your password",
+      "passwordPh": "Min 8 characters",
+      "newCode": "New code",
+      "activating": "Activating...",
+      "activate": "Activate my account",
+      "notReceived": "⚠️ Didn't receive it? Check your spam or click \"New code\""
+    },
+    "footer": "Activate your account to manage your profile and consultations.",
+    "errors": {
+      "emailMismatch": "This email does not match the profile or an error occurred.",
+      "sendError": "Error sending the code.",
+      "codeLength": "The code must contain 6 digits",
+      "passwordLength": "The password must contain at least 8 characters",
+      "alreadyClaimed": "This profile has already been claimed. Please log in.",
+      "wrongCode": "Incorrect code. You have {n, plural, one {# attempt} other {# attempts}} left.",
+      "activationError": "Error during activation",
+      "activationErrorGeneric": "Error activating account"
+    }
   }
 }
