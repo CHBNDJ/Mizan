@@ -1,5 +1,6 @@
 "use client";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import {
   Scale,
   Menu,
@@ -30,11 +31,11 @@ type NavLink = {
   notificationCount?: number;
 };
 
-const PROFESSION_LABELS: Record<string, string> = {
-  avocat: "Avocat",
-  notaire: "Notaire",
-  huissier: "Huissier",
-  comptable: "Comptable",
+const PROF_KEY: Record<string, string> = {
+  avocat: "avocat",
+  notaire: "notaire",
+  huissier: "huissier",
+  comptable: "comptable",
 };
 
 export function Navigation() {
@@ -44,6 +45,7 @@ export function Navigation() {
 
   const router = useRouter();
   const supabase = createClient();
+  const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
   const { user, profile, signOut, isAuthenticated } = useAuth();
@@ -143,21 +145,22 @@ export function Navigation() {
   const getUserDisplayName = () =>
     profile?.first_name && profile?.last_name
       ? `${cap(profile.first_name)} ${cap(profile.last_name)}`
-      : user?.email || "Utilisateur";
+      : user?.email || t("nav.defaultUser");
 
   const getProfessionLabel = () => {
-    if (profile?.user_type === "client") return "Client";
+    if (profile?.user_type === "client") return t("nav.client");
     const prof = (profile as any)?.profession;
-    return PROFESSION_LABELS[prof] || "Professionnel";
+    const key = PROF_KEY[prof];
+    return key ? t(`professions.${key}.label`) : t("nav.professional");
   };
 
   const allNavLinks: NavLink[] = [
-    { href: "/", label: "Accueil" },
+    { href: "/", label: t("nav.home") },
     ...(isAuthenticated && profile?.user_type === "client"
       ? [
           {
             href: "/mes-consultations",
-            label: "Mes consultations",
+            label: t("nav.myConsultations"),
             hasNotification:
               unreadCount > 0 && pathname !== "/mes-consultations",
             notificationCount: unreadCount,
@@ -168,14 +171,14 @@ export function Navigation() {
       ? [
           {
             href: "/lawyer/consultations",
-            label: "Consultations",
+            label: t("nav.consultations"),
             hasNotification:
               unreadCount > 0 && pathname !== "/lawyer/consultations",
             notificationCount: unreadCount,
           },
         ]
       : []),
-    { href: "/howitworks", label: "Comment ça marche" },
+    { href: "/howitworks", label: t("nav.howItWorks") },
   ];
 
   const handleSignOut = async () => {
@@ -214,7 +217,7 @@ export function Navigation() {
                   <span className="relative inline-flex items-center">
                     {link.label}
                     {link.hasNotification && link.notificationCount ? (
-                      <span className="absolute -top-2 -right-4 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold animate-pulse">
+                      <span className="absolute -top-2 -end-4 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold animate-pulse">
                         {link.notificationCount > 9
                           ? "9+"
                           : link.notificationCount}
@@ -222,7 +225,7 @@ export function Navigation() {
                     ) : null}
                   </span>
                   {pathname === link.href && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-teal-600 rounded-full" />
+                    <div className="absolute bottom-0 start-0 end-0 h-0.5 bg-teal-600 rounded-full" />
                   )}
                 </Link>
               ))}
@@ -238,7 +241,7 @@ export function Navigation() {
                           {getUserInitial()}
                         </span>
                       </div>
-                      <div className="text-left">
+                      <div className="text-start">
                         <div className="text-sm font-medium text-slate-700">
                           {getUserDisplayName()}
                         </div>
@@ -257,8 +260,8 @@ export function Navigation() {
                             href="/lawyer/dashboard"
                             className="w-full hover:bg-teal-50"
                           >
-                            <LayoutDashboard className="w-4 h-4 mr-2" />
-                            Tableau de bord
+                            <LayoutDashboard className="w-4 h-4 me-2" />
+                            {t("nav.dashboard")}
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
@@ -266,8 +269,8 @@ export function Navigation() {
                             href="/lawyer/abonnements"
                             className="w-full hover:bg-teal-50"
                           >
-                            <CreditCard className="w-4 h-4 mr-2" />
-                            Mon abonnement
+                            <CreditCard className="w-4 h-4 me-2" />
+                            {t("nav.mySubscription")}
                           </Link>
                         </DropdownMenuItem>
                       </>
@@ -279,8 +282,8 @@ export function Navigation() {
                       }}
                       className="w-full hover:bg-teal-50 cursor-pointer"
                     >
-                      <User className="w-4 h-4 mr-2" />
-                      Mon profil
+                      <User className="w-4 h-4 me-2" />
+                      {t("nav.myProfile")}
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => {
@@ -289,15 +292,15 @@ export function Navigation() {
                       }}
                       className="w-full hover:bg-teal-50 cursor-pointer"
                     >
-                      <Settings className="w-4 h-4 mr-2" />
-                      Paramètres
+                      <Settings className="w-4 h-4 me-2" />
+                      {t("nav.settings")}
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={handleSignOut}
                       className="w-full hover:bg-red-100 text-red-600 cursor-pointer"
                     >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Se déconnecter
+                      <LogOut className="w-4 h-4 me-2" />
+                      {t("nav.logout")}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -306,7 +309,7 @@ export function Navigation() {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button className="group rounded-lg py-2 flex items-center gap-2 bg-teal-600 text-white px-8 cursor-pointer shadow-sm">
-                        S'inscrire{" "}
+                        {t("nav.signup")}{" "}
                         <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                       </button>
                     </DropdownMenuTrigger>
@@ -320,7 +323,7 @@ export function Navigation() {
                           href="/auth/client/register"
                           className="w-full hover:bg-teal-50 text-sm py-2"
                         >
-                          Client
+                          {t("nav.client")}
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
@@ -328,7 +331,7 @@ export function Navigation() {
                           href="/auth/lawyer/register"
                           className="w-full hover:bg-teal-50 text-sm py-2"
                         >
-                          Professionnel
+                          {t("nav.professional")}
                         </Link>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -337,7 +340,7 @@ export function Navigation() {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button className="group flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-teal-600 cursor-pointer">
-                        Connexion{" "}
+                        {t("nav.login")}{" "}
                         <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                       </button>
                     </DropdownMenuTrigger>
@@ -347,7 +350,7 @@ export function Navigation() {
                           href="/auth/client/login"
                           className="w-full hover:bg-teal-50 text-sm py-2"
                         >
-                          Client
+                          {t("nav.client")}
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
@@ -355,7 +358,7 @@ export function Navigation() {
                           href="/auth/lawyer/login"
                           className="w-full hover:bg-teal-50 text-sm py-2"
                         >
-                          Professionnel
+                          {t("nav.professional")}
                         </Link>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -381,9 +384,8 @@ export function Navigation() {
       </nav>
 
       {isOpen && (
-        <div className="fixed top-16 left-0 right-0 z-[9999] lg:hidden border-t border-slate-200 bg-gradient-to-br from-teal-100 via-white to-teal-100 shadow-2xl backdrop-blur-lg">
+        <div className="fixed top-16 start-0 end-0 z-[9999] lg:hidden border-t border-slate-200 bg-gradient-to-br from-teal-100 via-white to-teal-100 shadow-2xl backdrop-blur-lg">
           <div className="py-4 space-y-4">
-            {/* AJOUT : sélecteur de langue en haut du menu mobile */}
             <div className="px-4 flex justify-center">
               <LanguageSwitcher />
             </div>
@@ -403,7 +405,7 @@ export function Navigation() {
                 <span className="relative inline-flex items-center">
                   {link.label}
                   {link.hasNotification && link.notificationCount ? (
-                    <span className="ml-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                    <span className="ms-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
                       {link.notificationCount > 9
                         ? "9+"
                         : link.notificationCount}
@@ -439,11 +441,11 @@ export function Navigation() {
                             router.push("/lawyer/dashboard");
                             setIsOpen(false);
                           }}
-                          className="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-white/60 rounded-lg"
+                          className="w-full flex items-center gap-3 px-3 py-2 text-start hover:bg-white/60 rounded-lg"
                         >
                           <Scale className="w-4 h-4 text-slate-600" />
                           <span className="text-sm font-medium text-slate-900">
-                            Tableau de bord
+                            {t("nav.dashboard")}
                           </span>
                         </button>
                         <button
@@ -451,11 +453,11 @@ export function Navigation() {
                             router.push("/lawyer/abonnements");
                             setIsOpen(false);
                           }}
-                          className="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-white/60 rounded-lg"
+                          className="w-full flex items-center gap-3 px-3 py-2 text-start hover:bg-white/60 rounded-lg"
                         >
                           <CreditCard className="w-4 h-4 text-slate-600" />
                           <span className="text-sm font-medium text-slate-900">
-                            Mon abonnement
+                            {t("nav.mySubscription")}
                           </span>
                         </button>
                       </>
@@ -465,11 +467,11 @@ export function Navigation() {
                         router.push("/profile");
                         setIsOpen(false);
                       }}
-                      className="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-white/60 rounded-lg"
+                      className="w-full flex items-center gap-3 px-3 py-2 text-start hover:bg-white/60 rounded-lg"
                     >
                       <User className="w-4 h-4 text-slate-600" />
                       <span className="text-sm font-medium text-slate-900">
-                        Mon profil
+                        {t("nav.myProfile")}
                       </span>
                     </button>
                     <button
@@ -477,20 +479,20 @@ export function Navigation() {
                         router.push("/settings");
                         setIsOpen(false);
                       }}
-                      className="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-white/60 rounded-lg"
+                      className="w-full flex items-center gap-3 px-3 py-2 text-start hover:bg-white/60 rounded-lg"
                     >
                       <Settings className="w-4 h-4 text-slate-600" />
                       <span className="text-sm font-medium text-slate-900">
-                        Paramètres
+                        {t("nav.settings")}
                       </span>
                     </button>
                     <button
                       onClick={handleSignOut}
-                      className="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-red-50/80 text-red-600 rounded-lg"
+                      className="w-full flex items-center gap-3 px-3 py-2 text-start hover:bg-red-50/80 text-red-600 rounded-lg"
                     >
                       <LogOut className="w-4 h-4" />
                       <span className="text-sm font-medium">
-                        Se déconnecter
+                        {t("nav.logout")}
                       </span>
                     </button>
                   </div>
@@ -509,7 +511,9 @@ export function Navigation() {
                             : "text-slate-600 hover:text-slate-700"
                         )}
                       >
-                        {tab === "login" ? "Connexion" : "Inscription"}
+                        {tab === "login"
+                          ? t("nav.loginTab")
+                          : t("nav.signupTab")}
                       </button>
                     ))}
                   </div>
@@ -520,11 +524,11 @@ export function Navigation() {
                           activeTab === "login"
                             ? "/auth/client/login"
                             : "/auth/client/register",
-                        label: "Client",
+                        label: t("nav.client"),
                         sub:
                           activeTab === "login"
-                            ? "Accéder à mon compte"
-                            : "Créer mon compte",
+                            ? t("nav.accessAccount")
+                            : t("nav.createAccount"),
                         icon: User,
                       },
                       {
@@ -532,11 +536,11 @@ export function Navigation() {
                           activeTab === "login"
                             ? "/auth/lawyer/login"
                             : "/auth/lawyer/register",
-                        label: "Professionnel",
+                        label: t("nav.professional"),
                         sub:
                           activeTab === "login"
-                            ? "Espace professionnel"
-                            : "Rejoindre la plateforme",
+                            ? t("nav.professionalSpace")
+                            : t("nav.joinPlatform"),
                         icon: Scale,
                       },
                     ].map(({ href, label, sub, icon: Icon }) => (

@@ -2,8 +2,11 @@
 
 import { Link } from "@/i18n/navigation";
 import { Scale } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+  const t = useTranslations("footer");
+
   return (
     <footer className="bg-white border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 py-6">
@@ -17,37 +20,37 @@ export default function Footer() {
             href="/cgu"
             className="text-slate-600 hover:text-teal-600 transition-colors"
           >
-            CGU
+            {t("cgu")}
           </Link>
           <Link
             href="/privacy"
             className="text-slate-600 hover:text-teal-600 transition-colors"
           >
-            Confidentialité
+            {t("privacy")}
           </Link>
           <Link
             href="/legal"
             className="text-slate-600 hover:text-teal-600 transition-colors"
           >
-            Légal
+            {t("legal")}
           </Link>
           <Link
             href="/faq"
             className="text-slate-600 hover:text-teal-600 transition-colors"
           >
-            FAQ
+            {t("faq")}
           </Link>
           <Link
             href="/contact"
             className="text-slate-600 hover:text-teal-600 transition-colors"
           >
-            Contact
+            {t("contact")}
           </Link>
           <Link
             href="/feedback"
             className="text-slate-600 hover:text-teal-600 transition-colors"
           >
-            Feedback
+            {t("feedback")}
           </Link>
           <span className="text-slate-300">|</span>
           <span className="text-slate-400">© {new Date().getFullYear()}</span>
