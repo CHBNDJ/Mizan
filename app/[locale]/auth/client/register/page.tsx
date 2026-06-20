@@ -3,7 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
 import { Eye, EyeOff, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { toArabicNumerals } from "@/lib/arabicNumerals";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { CIVILITE_OPTIONS, frontendToDb } from "@/lib/genderUtils";
 import { LOCATION, COUNTRIES, LOCATION_TO_PHONE_CODE } from "@/utils/constants";
@@ -16,6 +17,7 @@ export default function ClientRegisterPage() {
   const router = useRouter();
   const { signUp } = useAuth();
   const t = useTranslations();
+  const locale = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState({
@@ -236,7 +238,9 @@ export default function ClientRegisterPage() {
                     options={countryOptions}
                     value={mobileCountry}
                     onChange={setMobileCountry}
-                    placeholder="+213"
+                    placeholder={
+                      locale === "ar" ? toArabicNumerals("+213") : "+213"
+                    }
                     className="h-12"
                     disabled={isSubmitting}
                   />

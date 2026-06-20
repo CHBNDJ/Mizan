@@ -572,7 +572,9 @@ export default function LawyerRegisterPage() {
                 options={countryOptions}
                 value={selectedMobileCountry}
                 onChange={setSelectedMobileCountry}
-                placeholder="+213"
+                placeholder={
+                  locale === "ar" ? toArabicNumerals("+213") : "+213"
+                }
                 className="w-24 h-12"
                 disabled={isSubmitting}
               />
@@ -600,7 +602,9 @@ export default function LawyerRegisterPage() {
                 options={countryOptions}
                 value={selectedCountry}
                 onChange={setSelectedCountry}
-                placeholder="+213"
+                placeholder={
+                  locale === "ar" ? toArabicNumerals("+213") : "+213"
+                }
                 className="w-24 h-12"
                 disabled={isSubmitting}
               />

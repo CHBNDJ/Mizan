@@ -7,7 +7,7 @@ import React, {
   useLayoutEffect,
 } from "react";
 import { notFound, useRouter, useSearchParams } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   ArrowLeft,
   MapPin,
@@ -27,7 +27,8 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";
-import { getSpecialiteLabel } from "@/lib/i18nLabels";
+import { getSpecialiteLabel, getLangueLabel } from "@/lib/i18nLabels";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import { getInitials } from "@/lib/utils";
 import { AvocatData } from "@/types";
 import { createClient } from "@/lib/supabase/client";
@@ -262,6 +263,8 @@ export default function ProfilePage({
   const searchParams = useSearchParams();
   const { user, profile } = useAuth();
   const t = useTranslations();
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
   const [avocat, setAvocat] = useState<AvocatData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
@@ -560,11 +563,14 @@ export default function ProfilePage({
                       <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
                       <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-teal-600" />
                       <span className="text-sm text-slate-600 font-medium">
-                        {expAnnees} {t("lawyerProfile.experienceYears")}
+                        {ld(String(expAnnees))}{" "}
+                        {t("lawyerProfile.experienceYears")}
                       </span>
                       <span className="text-sm text-slate-400">
                         · {t("lawyerProfile.registeredIn")}{" "}
-                        {avocat.experience?.date_inscription || "N/A"}
+                        {avocat.experience?.date_inscription
+                          ? ld(avocat.experience.date_inscription)
+                          : "N/A"}
                       </span>
                     </div>
                     {avocat.langues && avocat.langues.length > 0 && (
@@ -572,7 +578,9 @@ export default function ProfilePage({
                         <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
                         <Languages className="w-3.5 h-3.5 flex-shrink-0 text-teal-600" />
                         <span className="text-sm text-slate-600 font-medium">
-                          {avocat.langues.join(" · ")}
+                          {avocat.langues
+                            .map((l) => getLangueLabel(l, t))
+                            .join(" · ")}
                         </span>
                       </div>
                     )}
@@ -586,7 +594,7 @@ export default function ProfilePage({
                             <div className="flex items-center gap-1">
                               <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                               <span className="text-sm font-semibold text-slate-700">
-                                {avocat.rating_google.toFixed(1)}
+                                {ld(avocat.rating_google.toFixed(1))}
                               </span>
                               <Image
                                 src="/google.png"
@@ -595,7 +603,7 @@ export default function ProfilePage({
                                 height={10}
                               />
                               <span className="text-sm text-slate-400">
-                                ({avocat.reviews_count_google})
+                                ({ld(String(avocat.reviews_count_google))})
                               </span>
                             </div>
                           )}
@@ -604,11 +612,11 @@ export default function ProfilePage({
                             <div className="flex items-center gap-1">
                               <Star className="w-3.5 h-3.5 fill-teal-500 text-teal-500" />
                               <span className="text-sm font-semibold text-slate-700">
-                                {avocat.rating_mizan.toFixed(1)}
+                                {ld(avocat.rating_mizan.toFixed(1))}
                               </span>
                               <Scale className="w-3.5 h-3.5 text-teal-600" />
                               <span className="text-sm text-slate-400">
-                                ({avocat.reviews_count_mizan})
+                                ({ld(String(avocat.reviews_count_mizan))})
                               </span>
                             </div>
                           )}
