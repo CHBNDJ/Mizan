@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { CIVILITE_OPTIONS, frontendToDb } from "@/lib/genderUtils";
 import { LOCATION, COUNTRIES, LOCATION_TO_PHONE_CODE } from "@/utils/constants";
+import { getCountryLabel } from "@/lib/i18nLabels";
 import { FormErrors } from "@/types";
 import { useAuth } from "@/hooks/useAuth";
 import { gsap } from "gsap";
@@ -58,7 +59,9 @@ export default function ClientRegisterPage() {
 
   const countryOptions = COUNTRIES.map((c) => ({
     value: c.code,
-    label: `${c.flag} +${c.code} ${c.name}`,
+    // \u200E (LRM) isole "+code" pour qu'il ne soit jamais réordonné par l'algorithme
+    // bidirectionnel quand le texte autour est en arabe (RTL)
+    label: `${c.flag} \u200E+${c.code}\u200E ${getCountryLabel(c.id, t)}`,
   }));
 
   const inputCls =

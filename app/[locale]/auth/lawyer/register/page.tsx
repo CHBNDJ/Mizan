@@ -16,7 +16,8 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { toArabicNumerals } from "@/lib/arabicNumerals";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 import { ExtendedLawyerSignupFormData, FormErrors } from "@/types";
 import { CIVILITE_OPTIONS, frontendToDb } from "@/lib/genderUtils";
@@ -56,6 +57,7 @@ export default function LawyerRegisterPage() {
   const router = useRouter();
   const { signUp } = useAuth();
   const t = useTranslations();
+  const locale = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
 
@@ -167,7 +169,7 @@ export default function LawyerRegisterPage() {
   }));
   const countryOptions = COUNTRIES.map((c) => ({
     value: c.code,
-    label: `${c.flag} +${c.code}`,
+    label: `${c.flag} \u200E+${c.code}\u200E`,
   }));
   const langueOptions = LANGUES.map((l) => ({ value: l, label: l }));
 
@@ -710,7 +712,9 @@ export default function LawyerRegisterPage() {
                     handleAddr(e);
                 }}
                 className={`${inputCls} placeholder:text-slate-400`}
-                placeholder="16000"
+                placeholder={
+                  locale === "ar" ? toArabicNumerals("16000") : "16000"
+                }
                 maxLength={5}
                 disabled={isSubmitting}
               />
@@ -953,7 +957,12 @@ export default function LawyerRegisterPage() {
           {currentStep > 0 && (
             <div className="mb-6">
               <span className="text-xs font-semibold text-teal-600 uppercase tracking-wide">
-                {t("auth.lawyerRegister.stepOf", { step: currentStep })}
+                {t("auth.lawyerRegister.stepOf", {
+                  step:
+                    locale === "ar"
+                      ? toArabicNumerals(String(currentStep))
+                      : currentStep,
+                })}
               </span>
               <h2 className="text-lg font-bold text-slate-900">
                 {stepMeta[currentStep]?.title}
