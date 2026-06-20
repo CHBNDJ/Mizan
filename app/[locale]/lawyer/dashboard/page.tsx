@@ -11,6 +11,7 @@ const PricingManager = dynamic(
 import { useState, useEffect, useRef } from "react";
 import FeedbackPopup from "@/components/FeedbackPopup";
 import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -28,22 +29,31 @@ import {
   Calculator,
   RefreshCw,
 } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { gsap } from "gsap";
 import { PendingConsultations } from "@/components/dashboard/PendingConsultations";
 
-const PROF_LABELS: Record<string, { label: string; Icon: any }> = {
-  avocat: { label: "Avocat", Icon: CheckCircle },
-  notaire: { label: "Notaire", Icon: CheckCircle },
-  huissier: { label: "Huissier", Icon: CheckCircle },
-  comptable: { label: "Comptable", Icon: Calculator },
-  "expert-comptable": { label: "Expert Comptable", Icon: TrendingUp },
+const PROF_KEY: Record<string, string> = {
+  avocat: "avocat",
+  notaire: "notaire",
+  huissier: "huissier",
+  comptable: "comptable",
+  "expert-comptable": "expertComptable",
+};
+const PROF_ICONS: Record<string, any> = {
+  avocat: CheckCircle,
+  notaire: CheckCircle,
+  huissier: CheckCircle,
+  comptable: Calculator,
+  "expert-comptable": TrendingUp,
 };
 
 export default function LawyerDashboardPage() {
   const supabase = createClient();
   const { profile, user, isAuthenticated, loading, lawyerProfile } = useAuth();
   const router = useRouter();
+  const t = useTranslations();
+  const locale = useLocale();
   const ref = useRef<HTMLDivElement>(null);
 
   const [activeProfession, setActiveProfession] = useState<string>("");
@@ -64,8 +74,9 @@ export default function LawyerDashboardPage() {
     (profile as any)?.profession || "avocat",
   ];
   const isMultiProfession = professions.length > 1;
-  const currentProfConfig = PROF_LABELS[activeProfession] || PROF_LABELS.avocat;
-  const ProfIcon = currentProfConfig.Icon;
+  const profKey = PROF_KEY[activeProfession] || "avocat";
+  const ProfIcon = PROF_ICONS[activeProfession] || CheckCircle;
+  const profLabel = t(`professions.${profKey}.label`);
   const initials =
     `${profile?.first_name?.[0] || ""}${profile?.last_name?.[0] || ""}`.toUpperCase();
 
@@ -214,12 +225,12 @@ export default function LawyerDashboardPage() {
     setActiveProfession(next);
   };
 
-  const planLabel = (p: string | null) =>
-    ({ "3mois": "3 mois", "6mois": "6 mois", "12mois": "12 mois" })[p || ""] ||
-    p;
+  const planLabel = (p: string | null) => (p ? t(`durations.${p}`) : p);
+  const dateLocale =
+    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-DZ";
   const fmtDate = (d: string | null) =>
     d
-      ? new Date(d).toLocaleDateString("fr-DZ", {
+      ? new Date(d).toLocaleDateString(dateLocale, {
           day: "numeric",
           month: "short",
           year: "numeric",
@@ -237,24 +248,24 @@ export default function LawyerDashboardPage() {
   const ACTIONS = [
     {
       icon: MessageSquare,
-      label: "Consultations",
+      label: t("dashboard.actionConsultations"),
       sub:
         stats.pending > 0
-          ? `${stats.pending} message${stats.pending > 1 ? "s" : ""} non lu${stats.pending > 1 ? "s" : ""}`
-          : "Aucun message en attente",
+          ? t("dashboard.unreadMessage", { count: stats.pending })
+          : t("dashboard.noUnreadMessages"),
       href: "/lawyer/consultations",
       badge: stats.pending,
     },
     {
       icon: Edit,
-      label: "Modifier mon profil",
-      sub: "Spécialités · Langues · Adresse",
+      label: t("dashboard.actionEditProfile"),
+      sub: t("dashboard.actionEditProfileSub"),
       href: "/profile",
     },
     {
       icon: Eye,
-      label: "Profil public",
-      sub: "Tel que les clients vous voient",
+      label: t("dashboard.actionPublicProfile"),
+      sub: t("dashboard.actionPublicProfileSub"),
       href: `/lawyers/${user?.id}`,
     },
   ];
@@ -285,25 +296,25 @@ export default function LawyerDashboardPage() {
                   <div className="flex items-center gap-1">
                     <ProfIcon className="w-3 h-3 text-teal-600" />
                     <span className="text-xs text-teal-600 font-medium">
-                      {currentProfConfig.label}
+                      {profLabel}
                     </span>
                   </div>
                   {isVerified ? (
                     <span className="inline-flex items-center gap-1 text-xs text-teal-600 font-medium">
                       <CheckCircle className="w-3 h-3" />
-                      Vérifiée
+                      {t("dashboard.verified")}
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 text-xs text-amber-600 font-medium">
                       <Clock className="w-3 h-3" />
-                      En cours
+                      {t("dashboard.pending")}
                     </span>
                   )}
                   <span className="text-teal-300">·</span>
                   <span className="text-xs text-teal-500">
                     {subStatus === "active"
-                      ? `Plan ${planLabel(subPlan)}`
-                      : "Lancement gratuit"}
+                      ? t("dashboard.planLabel", { plan: planLabel(subPlan) })
+                      : t("dashboard.freeLaunch")}
                   </span>
                 </div>
               </div>
@@ -317,8 +328,8 @@ export default function LawyerDashboardPage() {
                   <RefreshCw className="w-3.5 h-3.5" />
                   {professions.find((p) => p !== activeProfession) ===
                   "comptable"
-                    ? "Profil Comptable"
-                    : "Profil Expert Comptable"}
+                    ? t("dashboard.switchToComptable")
+                    : t("dashboard.switchToExpertComptable")}
                 </button>
               )}
               <button
@@ -335,15 +346,15 @@ export default function LawyerDashboardPage() {
               <Camera className="w-4 h-4 text-amber-500 flex-shrink-0" />
               <div className="flex-1">
                 <p className="text-sm font-semibold text-amber-800">
-                  Ajoutez votre photo
+                  {t("dashboard.addPhotoTitle")}
                 </p>
                 <p className="text-xs text-amber-600 mt-0.5">
-                  3× plus de demandes avec une photo professionnelle
+                  {t("dashboard.addPhotoDesc")}
                 </p>
               </div>
               <Link href="/profile">
                 <button className="text-xs font-semibold text-amber-700 hover:text-amber-900 cursor-pointer whitespace-nowrap">
-                  Ajouter →
+                  {t("dashboard.addAction")}
                 </button>
               </Link>
             </div>
@@ -354,10 +365,10 @@ export default function LawyerDashboardPage() {
               <Clock className="w-4 h-4 text-teal-500 flex-shrink-0" />
               <div>
                 <p className="text-sm font-semibold text-teal-800">
-                  Vérification en cours · 24-48h
+                  {t("dashboard.verificationPending")}
                 </p>
                 <p className="text-xs text-teal-600 mt-0.5">
-                  Email de confirmation à venir.
+                  {t("dashboard.verificationDesc")}
                 </p>
               </div>
             </div>
@@ -374,7 +385,7 @@ export default function LawyerDashboardPage() {
                 )}
               </div>
               <p className="text-[11px] text-teal-500 font-semibold uppercase tracking-wide mb-1">
-                Demandes
+                {t("dashboard.statRequests")}
               </p>
               <p className="text-3xl font-bold text-teal-900 leading-none">
                 {loadingStats ? (
@@ -389,7 +400,7 @@ export default function LawyerDashboardPage() {
                 <CheckCircle className="w-4 h-4 text-teal-400" />
               </div>
               <p className="text-[11px] text-teal-500 font-semibold uppercase tracking-wide mb-1">
-                Répondues
+                {t("dashboard.statAnswered")}
               </p>
               <p className="text-3xl font-bold text-teal-900 leading-none">
                 {loadingStats ? (
@@ -409,7 +420,7 @@ export default function LawyerDashboardPage() {
                 <Eye className="w-4 h-4 text-teal-400" />
               </div>
               <p className="text-[11px] text-teal-500 font-semibold uppercase tracking-wide mb-1">
-                Vues profil
+                {t("dashboard.statViews")}
               </p>
               <p className="text-3xl font-bold text-teal-900 leading-none">
                 {loadingStats ? (
@@ -424,21 +435,21 @@ export default function LawyerDashboardPage() {
                 <Settings className="w-4 h-4 text-teal-300" />
               </div>
               <p className="text-[11px] text-teal-300 font-semibold uppercase tracking-wide mb-1">
-                Abonnement
+                {t("dashboard.statSubscription")}
               </p>
               <p className="text-sm font-bold text-white leading-tight">
                 {subStatus === "active"
-                  ? `Plan ${planLabel(subPlan)}`
-                  : "Lancement gratuit"}
+                  ? t("dashboard.planLabel", { plan: planLabel(subPlan) })
+                  : t("dashboard.freeLaunch")}
               </p>
               {subStatus === "active" && subEnd && (
                 <p className="text-[10px] text-teal-300 mt-1">
-                  jusqu'au {fmtDate(subEnd)}
+                  {t("dashboard.until", { date: fmtDate(subEnd) })}
                 </p>
               )}
               {subStatus !== "active" && (
                 <p className="text-[10px] text-teal-400 mt-1">
-                  Paiement bientôt
+                  {t("dashboard.paymentSoon")}
                 </p>
               )}
             </div>
@@ -478,7 +489,7 @@ export default function LawyerDashboardPage() {
               <div className="px-5 py-4 border-b border-teal-50 flex items-center gap-2">
                 <MessageSquare className="w-4 h-4 text-teal-600" />
                 <p className="text-sm font-bold text-teal-900">
-                  Tarifs — {currentProfConfig.label}
+                  {t("dashboard.pricingTitle", { profession: profLabel })}
                 </p>
               </div>
               <div className="p-5">
@@ -494,7 +505,7 @@ export default function LawyerDashboardPage() {
                 <div className="px-5 py-4 border-b border-teal-50 flex items-center gap-2">
                   <CalendarDays className="w-4 h-4 text-teal-600" />
                   <p className="text-sm font-bold text-teal-900">
-                    Mes disponibilités
+                    {t("dashboard.availabilityTitle")}
                   </p>
                 </div>
                 <div className="p-5">
@@ -506,16 +517,18 @@ export default function LawyerDashboardPage() {
 
           <div className="d-fade flex items-center justify-between bg-white border border-teal-100 rounded-2xl px-5 py-4">
             <div>
-              <p className="text-sm font-bold text-teal-900">Besoin d'aide ?</p>
+              <p className="text-sm font-bold text-teal-900">
+                {t("dashboard.helpTitle")}
+              </p>
               <p className="text-xs text-teal-500 mt-0.5">
-                support@mizan-dz.com · Réponse sous 24h
+                {t("dashboard.helpSub")}
               </p>
             </div>
             <a
               href="mailto:support@mizan-dz.com"
               className="text-xs font-semibold text-teal-600 hover:text-teal-800 cursor-pointer transition-colors"
             >
-              Contacter →
+              {t("dashboard.contactAction")}
             </a>
           </div>
         </div>

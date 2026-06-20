@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import {
   User,
   Mail,
@@ -33,46 +34,24 @@ import { SPECIALITES, WILAYAS, LOCATION, LANGUES } from "@/utils/constants";
 import { COMMUNES_PAR_WILAYA } from "@/utils/communes";
 import { DOMAINES_PAR_PROFESSION } from "@/lib/avocatsData";
 import { getInitials } from "@/lib/utils";
+import { getSpecialiteLabel, getWilayaLabel } from "@/lib/i18nLabels";
 import ImageCropModal from "@/components/ImageCropModal";
 import { gsap } from "gsap";
 
-const PROF_LABELS: Record<
-  string,
-  { label: string; numLabel: string; numPlaceholder: string; Icon: any }
-> = {
-  avocat: {
-    label: "Avocat",
-    numLabel: "Numéro de barreau",
-    numPlaceholder: "ex: ALG2024-001",
-    Icon: Scale,
-  },
-  notaire: {
-    label: "Notaire",
-    numLabel: "N° chambre des notaires",
-    numPlaceholder: "ex: NOT-2024-001",
-    Icon: FileText,
-  },
-  huissier: {
-    label: "Huissier",
-    numLabel: "N° huissier de justice",
-    numPlaceholder: "ex: HUI-2024-001",
-    Icon: Briefcase,
-  },
-  comptable: {
-    label: "Comptable",
-    numLabel: "N° ONEC / ONCA",
-    numPlaceholder: "ex: ONEC-2024-001",
-    Icon: Calculator,
-  },
-  "expert-comptable": {
-    label: "Expert Comptable",
-    numLabel: "N° ONEC",
-    numPlaceholder: "ex: ONEC-2024-001",
-    Icon: TrendingUp,
-  },
+const PROF_KEY: Record<string, string> = {
+  avocat: "avocat",
+  notaire: "notaire",
+  huissier: "huissier",
+  comptable: "comptable",
+  "expert-comptable": "expertComptable",
 };
-const getProfLabel = (profession?: string) =>
-  PROF_LABELS[profession || "avocat"] || PROF_LABELS.avocat;
+const PROF_ICONS: Record<string, any> = {
+  avocat: Scale,
+  notaire: FileText,
+  huissier: Briefcase,
+  comptable: Calculator,
+  "expert-comptable": TrendingUp,
+};
 
 const cap = (str: string) =>
   str
@@ -85,6 +64,7 @@ const cap = (str: string) =>
 function ProfilePageContent() {
   const supabase = createClient();
   const { user, profile, lawyerProfile, loading, refreshProfile } = useAuth();
+  const t = useTranslations();
   const containerRef = useRef<HTMLDivElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -134,14 +114,18 @@ function ProfilePageContent() {
 
   const profession =
     activeProfession || (profile as any)?.profession || "avocat";
-  const profInfo = getProfLabel(profession);
+  const profKey = PROF_KEY[profession] || "avocat";
+  const ProfIcon = PROF_ICONS[profession] || Scale;
+  const profLabel = t(`professions.${profKey}.label`);
+  const profNumLabel = t(`myProfile.numLabels.${profKey}`);
+  const profNumPlaceholder = t(`myProfile.numPlaceholders.${profKey}`);
   const isCourtSupreme = !!(lawyerProfile as any)?.is_cour_supreme;
 
   const domaineOptions = (
     DOMAINES_PAR_PROFESSION[profession] || SPECIALITES
   ).map((s) => ({
     value: s.toLowerCase().replace(/\s+/g, "-"),
-    label: s,
+    label: getSpecialiteLabel(s, t),
   }));
 
   useEffect(() => {
@@ -199,7 +183,7 @@ function ProfilePageContent() {
 
   const wilayaOptions = WILAYAS.map((w) => ({
     value: w.toLowerCase().replace(/\s+/g, "-"),
-    label: w,
+    label: getWilayaLabel(w, t),
   }));
   const langueOptions = LANGUES.map((l) => ({ value: l, label: l }));
 
@@ -297,7 +281,7 @@ function ProfilePageContent() {
     setSaveError("");
     const timeoutId = setTimeout(() => {
       setIsSaving(false);
-      setSaveError("Timeout — Vérifiez votre connexion");
+      setSaveError(t("myProfile.timeoutError"));
     }, 8000);
     try {
       const userData: any = {
@@ -348,7 +332,11 @@ function ProfilePageContent() {
       setIsEditing(false);
     } catch (error: any) {
       clearTimeout(timeoutId);
-      setSaveError(`Erreur: ${String(error?.message || error || "Inconnue")}`);
+      setSaveError(
+        t("myProfile.saveError", {
+          msg: String(error?.message || error || "?"),
+        })
+      );
     }
     setIsSaving(false);
   };
@@ -385,12 +373,14 @@ function ProfilePageContent() {
   };
 
   const getFullAddress = () => {
-    const wilayaDisplay = addressData.wilaya ? cap(addressData.wilaya) : "";
+    const wilayaDisplay = addressData.wilaya
+      ? getWilayaLabel(cap(addressData.wilaya), t)
+      : "";
     const cityDisplay = addressData.city ? cap(addressData.city) : "";
     return (
       [addressData.street, addressData.postalCode, cityDisplay, wilayaDisplay]
         .filter(Boolean)
-        .join(", ") || "Non renseignée"
+        .join(", ") || t("myProfile.notProvidedF")
     );
   };
 
@@ -404,10 +394,10 @@ function ProfilePageContent() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
             <h1 className="page-header text-2xl sm:text-3xl font-bold text-slate-800">
-              Mon profil
+              {t("myProfile.title")}
             </h1>
             <p className="page-subtitle text-slate-600 mt-1 sm:mt-2 text-sm sm:text-base">
-              Gérez vos informations personnelles
+              {t("myProfile.subtitle")}
             </p>
           </div>
           <div className="action-buttons flex gap-2 flex-shrink-0">
@@ -415,14 +405,14 @@ function ProfilePageContent() {
               onClick={() => refreshProfile()}
               className="flex-1 sm:flex-none px-3 sm:px-4 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 cursor-pointer text-sm sm:text-base"
             >
-              Actualiser
+              {t("myProfile.refresh")}
             </button>
             {!isEditing && (
               <button
                 onClick={() => setIsEditing(true)}
                 className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-teal-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-teal-700 cursor-pointer text-sm sm:text-base"
               >
-                <Edit className="w-4 h-4" /> Modifier
+                <Edit className="w-4 h-4" /> {t("myProfile.edit")}
               </button>
             )}
           </div>
@@ -490,7 +480,7 @@ function ProfilePageContent() {
                       >
                         <Camera className="w-8 h-8 text-white mb-1" />
                         <span className="text-xs text-white font-medium">
-                          Ajouter
+                          {t("myProfile.addPhoto")}
                         </span>
                         <input
                           id="avatar-upload-initial"
@@ -510,43 +500,52 @@ function ProfilePageContent() {
                   )}
                 </div>
                 <h2 className="text-xl font-semibold text-slate-800 mt-4">
-                  {formData.firstName || profile?.first_name || "Prénom"}{" "}
-                  {formData.lastName || profile?.last_name || "Nom"}
+                  {formData.firstName ||
+                    profile?.first_name ||
+                    t("myProfile.firstNameFallback")}{" "}
+                  {formData.lastName ||
+                    profile?.last_name ||
+                    t("myProfile.lastNameFallback")}
                 </h2>
                 <p className="text-slate-600 flex items-center justify-center gap-1.5 mt-1">
-                  <profInfo.Icon className="w-4 h-4 text-teal-600" />
-                  {profile?.user_type === "lawyer" ? profInfo.label : "Client"}
+                  <ProfIcon className="w-4 h-4 text-teal-600" />
+                  {profile?.user_type === "lawyer"
+                    ? profLabel
+                    : t("myProfile.clientFallback")}
                 </p>
                 {isCourtSupreme && (
                   <div className="mt-2 inline-flex items-center gap-1 text-xs text-amber-700 font-medium bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
-                    <CheckCircle className="w-3 h-3" /> Agréé Cour Suprême
+                    <CheckCircle className="w-3 h-3" />{" "}
+                    {t("myProfile.courSupremeBadge")}
                   </div>
                 )}
                 {profile?.user_type === "client" && (
                   <div className="mt-4 text-sm text-slate-600">
                     <p className="flex items-center justify-center gap-1">
                       <MapPin className="w-3 h-3" />
-                      {cap(
-                        formData.location ||
-                          profile?.location ||
-                          "Non renseigné"
-                      )}
+                      {formData.location || profile?.location
+                        ? t(
+                            `location.${formData.location || profile?.location}`
+                          )
+                        : t("myProfile.notProvided")}
                     </p>
                   </div>
                 )}
                 {profile?.user_type === "lawyer" && (
                   <div className="mt-4 text-sm text-slate-600">
                     <p>
-                      {lawyerFormData.experienceYears ||
-                        lawyerProfile?.experience_years ||
-                        0}{" "}
-                      ans d'expérience
+                      {t("myProfile.yearsExperience", {
+                        years:
+                          lawyerFormData.experienceYears ||
+                          lawyerProfile?.experience_years ||
+                          0,
+                      })}
                     </p>
                     <p className="mt-1">
-                      {profInfo.numLabel} :{" "}
+                      {profNumLabel} :{" "}
                       {lawyerFormData.barNumber ||
                         lawyerProfile?.bar_number ||
-                        "Non renseigné"}
+                        t("myProfile.notProvided")}
                     </p>
                     <div className="mt-2 flex items-start justify-center gap-1">
                       <span className="text-xs text-center leading-tight">
@@ -563,7 +562,7 @@ function ProfilePageContent() {
             <div className="info-card bg-white rounded-lg p-6 shadow-sm border">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <h3 className="text-lg font-semibold text-slate-800">
-                  Informations personnelles
+                  {t("myProfile.personalInfoTitle")}
                 </h3>
                 {isEditing && (
                   <div className="flex gap-2 flex-shrink-0">
@@ -573,14 +572,14 @@ function ProfilePageContent() {
                       className="cursor-pointer flex-1 sm:flex-none flex items-center justify-center gap-2 bg-teal-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-teal-700 disabled:opacity-50 text-sm sm:text-base"
                     >
                       <Save className="w-4 h-4" />
-                      {isSaving ? "Sauvegarde..." : "Enregistrer"}
+                      {isSaving ? t("myProfile.saving") : t("myProfile.save")}
                     </button>
                     <button
                       onClick={handleCancel}
                       disabled={isSaving}
                       className="cursor-pointer flex-1 sm:flex-none flex items-center justify-center gap-2 border border-slate-300 text-slate-600 px-3 sm:px-4 py-2 rounded-lg hover:bg-slate-50 disabled:opacity-50 text-sm sm:text-base"
                     >
-                      <X className="w-4 h-4" /> Annuler
+                      <X className="w-4 h-4" /> {t("myProfile.cancel")}
                     </button>
                   </div>
                 )}
@@ -590,7 +589,7 @@ function ProfilePageContent() {
                 {profile?.user_type === "lawyer" && (
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Civilité
+                      {t("myProfile.civilite")}
                     </label>
                     {isEditing ? (
                       <div className="relative z-20">
@@ -600,7 +599,7 @@ function ProfilePageContent() {
                           onChange={(v) =>
                             setLawyerFormData((p) => ({ ...p, gender: v }))
                           }
-                          placeholder="Sélectionnez"
+                          placeholder={t("myProfile.select")}
                           className="h-12"
                         />
                       </div>
@@ -611,7 +610,7 @@ function ProfilePageContent() {
                             ? CIVILITE_OPTIONS.find(
                                 (g) => g.value === lawyerFormData.gender
                               )?.label
-                            : "Non renseigné"}
+                            : t("myProfile.notProvided")}
                         </span>
                       </div>
                     )}
@@ -619,7 +618,7 @@ function ProfilePageContent() {
                 )}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Prénom
+                    {t("myProfile.firstName")}
                   </label>
                   {isEditing ? (
                     <input
@@ -632,7 +631,7 @@ function ProfilePageContent() {
                         }))
                       }
                       className={inputCls}
-                      placeholder="Votre prénom"
+                      placeholder={t("myProfile.firstNamePh")}
                     />
                   ) : (
                     <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
@@ -640,14 +639,14 @@ function ProfilePageContent() {
                       <span className="text-slate-800">
                         {formData.firstName ||
                           profile?.first_name ||
-                          "Non renseigné"}
+                          t("myProfile.notProvided")}
                       </span>
                     </div>
                   )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Nom
+                    {t("myProfile.lastName")}
                   </label>
                   {isEditing ? (
                     <input
@@ -660,7 +659,7 @@ function ProfilePageContent() {
                         }))
                       }
                       className={inputCls}
-                      placeholder="Votre nom"
+                      placeholder={t("myProfile.lastNamePh")}
                     />
                   ) : (
                     <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
@@ -668,14 +667,14 @@ function ProfilePageContent() {
                       <span className="text-slate-800">
                         {formData.lastName ||
                           profile?.last_name ||
-                          "Non renseigné"}
+                          t("myProfile.notProvided")}
                       </span>
                     </div>
                   )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Email
+                    {t("myProfile.email")}
                   </label>
                   <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
                     <Mail className="w-5 h-5 text-slate-400" />
@@ -686,7 +685,7 @@ function ProfilePageContent() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Téléphone fixe
+                    {t("myProfile.fixedPhone")}
                   </label>
                   {isEditing ? (
                     <input
@@ -696,20 +695,22 @@ function ProfilePageContent() {
                         setFormData((p) => ({ ...p, phone: e.target.value }))
                       }
                       className={inputCls}
-                      placeholder="+213 21 123 456"
+                      placeholder={t("myProfile.fixedPhonePh")}
                     />
                   ) : (
                     <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
                       <Phone className="w-5 h-5 text-slate-400" />
                       <span className="text-slate-800">
-                        {formData.phone || profile?.phone || "Non renseigné"}
+                        {formData.phone ||
+                          profile?.phone ||
+                          t("myProfile.notProvided")}
                       </span>
                     </div>
                   )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Mobile
+                    {t("myProfile.mobile")}
                   </label>
                   {isEditing ? (
                     <input
@@ -719,13 +720,15 @@ function ProfilePageContent() {
                         setFormData((p) => ({ ...p, mobile: e.target.value }))
                       }
                       className={inputCls}
-                      placeholder="+213 555 123 456"
+                      placeholder={t("myProfile.mobilePh")}
                     />
                   ) : (
                     <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
                       <Smartphone className="w-5 h-5 text-slate-400" />
                       <span className="text-slate-800">
-                        {formData.mobile || profile?.mobile || "Non renseigné"}
+                        {formData.mobile ||
+                          profile?.mobile ||
+                          t("myProfile.notProvided")}
                       </span>
                     </div>
                   )}
@@ -733,7 +736,7 @@ function ProfilePageContent() {
                 {profile?.user_type === "lawyer" && (
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Site web (optionnel)
+                      {t("myProfile.website")}
                     </label>
                     {isEditing ? (
                       <input
@@ -746,7 +749,7 @@ function ProfilePageContent() {
                           }))
                         }
                         className={inputCls}
-                        placeholder="https://votre-cabinet.com"
+                        placeholder={t("myProfile.websitePh")}
                       />
                     ) : (
                       <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
@@ -754,7 +757,7 @@ function ProfilePageContent() {
                         <span className="text-slate-800">
                           {formData.website ||
                             profile?.website ||
-                            "Non renseigné"}
+                            t("myProfile.notProvided")}
                         </span>
                       </div>
                     )}
@@ -763,27 +766,30 @@ function ProfilePageContent() {
                 {profile?.user_type === "client" && (
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Lieu de résidence
+                      {t("myProfile.location")}
                     </label>
                     {isEditing ? (
                       <CustomSelect
-                        options={LOCATION}
+                        options={LOCATION.map((l) => ({
+                          value: l.value,
+                          label: t(`location.${l.value}`),
+                        }))}
                         value={formData.location}
                         onChange={(v) =>
                           setFormData((p) => ({ ...p, location: v }))
                         }
-                        placeholder="Sélectionnez"
+                        placeholder={t("myProfile.select")}
                         className="h-12"
                       />
                     ) : (
                       <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
                         <MapPin className="w-5 h-5 text-slate-400" />
                         <span className="text-slate-800">
-                          {cap(
-                            formData.location ||
-                              profile?.location ||
-                              "Non renseigné"
-                          )}
+                          {formData.location || profile?.location
+                            ? t(
+                                `location.${formData.location || profile?.location}`
+                              )
+                            : t("myProfile.notProvided")}
                         </span>
                       </div>
                     )}
@@ -792,7 +798,7 @@ function ProfilePageContent() {
                 {profile?.user_type === "lawyer" && (
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Adresse du cabinet
+                      {t("myProfile.officeAddress")}
                     </label>
                     {isEditing ? (
                       <div className="space-y-3 p-4 border border-slate-200 rounded-lg">
@@ -806,7 +812,7 @@ function ProfilePageContent() {
                             }))
                           }
                           className={inputCls}
-                          placeholder="Rue"
+                          placeholder={t("myProfile.street")}
                         />
                         <CustomSelect
                           options={wilayaOptions}
@@ -818,7 +824,7 @@ function ProfilePageContent() {
                               city: "",
                             }))
                           }
-                          placeholder="Wilaya"
+                          placeholder={t("myProfile.wilaya")}
                           className="h-12"
                         />
                         <CustomSelect
@@ -829,8 +835,8 @@ function ProfilePageContent() {
                           }
                           placeholder={
                             addressData.wilaya
-                              ? "Commune"
-                              : "Choisir d'abord une wilaya"
+                              ? t("myProfile.commune")
+                              : t("myProfile.chooseWilayaFirst")
                           }
                           className="h-12"
                           disabled={!addressData.wilaya}
@@ -849,7 +855,7 @@ function ProfilePageContent() {
                               }));
                           }}
                           className={inputCls}
-                          placeholder="Code postal"
+                          placeholder={t("myProfile.postalCode")}
                           maxLength={5}
                         />
                       </div>
@@ -866,13 +872,13 @@ function ProfilePageContent() {
                 {profile?.user_type === "lawyer" && (
                   <div className="border-t border-slate-200 pt-6">
                     <h4 className="text-lg font-medium text-slate-800 mb-4 flex items-center gap-2">
-                      <profInfo.Icon className="w-5 h-5 text-teal-600" />{" "}
-                      Informations professionnelles
+                      <ProfIcon className="w-5 h-5 text-teal-600" />{" "}
+                      {t("myProfile.professionalInfoTitle")}
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                       <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">
-                          {profInfo.numLabel}
+                          {profNumLabel}
                         </label>
                         {isEditing ? (
                           <input
@@ -885,21 +891,21 @@ function ProfilePageContent() {
                               }))
                             }
                             className={inputCls}
-                            placeholder={profInfo.numPlaceholder}
+                            placeholder={profNumPlaceholder}
                           />
                         ) : (
                           <div className="p-3 bg-slate-50 rounded-lg">
                             <span className="text-slate-800">
                               {lawyerFormData.barNumber ||
                                 lawyerProfile?.bar_number ||
-                                "Non renseigné"}
+                                t("myProfile.notProvided")}
                             </span>
                           </div>
                         )}
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">
-                          Expérience (années)
+                          {t("myProfile.experienceYears")}
                         </label>
                         {isEditing ? (
                           <input
@@ -918,7 +924,8 @@ function ProfilePageContent() {
                         ) : (
                           <div className="p-3 bg-slate-50 rounded-lg">
                             <span className="text-slate-800">
-                              {lawyerFormData.experienceYears || 0} ans
+                              {lawyerFormData.experienceYears || 0}{" "}
+                              {t("myProfile.yearsShort")}
                             </span>
                           </div>
                         )}
@@ -926,23 +933,23 @@ function ProfilePageContent() {
                     </div>
                     <div className="mb-4">
                       <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Tarif de consultation
+                        {t("myProfile.consultationPrice")}
                       </label>
                       <div className="p-3 bg-slate-50 rounded-lg">
                         <span className="text-slate-500 text-sm italic">
-                          Tarif sur demande
+                          {t("myProfile.priceOnRequest")}
                         </span>
                       </div>
                     </div>
                     <div className="mb-4">
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         {profession === "avocat"
-                          ? "Spécialités"
-                          : "Domaines d'intervention"}
+                          ? t("myProfile.specialitiesAvocat")
+                          : t("myProfile.specialitiesOther")}
                       </label>
                       {isEditing ? (
                         <MultiSelectWithCheckboxes
-                          placeholder="Sélectionner..."
+                          placeholder={t("myProfile.selectPlaceholder")}
                           options={domaineOptions}
                           value={lawyerFormData.specializations}
                           onChange={(v) =>
@@ -964,14 +971,14 @@ function ProfilePageContent() {
                                     key={i}
                                     className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm"
                                   >
-                                    {cap(s)}
+                                    {getSpecialiteLabel(s, t)}
                                   </span>
                                 )
                               )}
                             </div>
                           ) : (
                             <span className="text-slate-600">
-                              Aucun domaine renseigné
+                              {t("myProfile.noSpecialities")}
                             </span>
                           )}
                         </div>
@@ -979,12 +986,12 @@ function ProfilePageContent() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Langues parlées
+                        {t("myProfile.languagesSpoken")}
                       </label>
                       {isEditing ? (
                         <div className="relative z-10">
                           <MultiSelectWithCheckboxes
-                            placeholder="Sélectionner..."
+                            placeholder={t("myProfile.selectPlaceholder")}
                             options={langueOptions}
                             value={lawyerFormData.languages}
                             onChange={(v) =>
@@ -1004,14 +1011,14 @@ function ProfilePageContent() {
                                     key={i}
                                     className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm"
                                   >
-                                    {l.charAt(0).toUpperCase() + l.slice(1)}
+                                    {t(`langues.${l}`)}
                                   </span>
                                 )
                               )}
                             </div>
                           ) : (
                             <span className="text-slate-600">
-                              Aucune langue renseignée
+                              {t("myProfile.noLanguages")}
                             </span>
                           )}
                         </div>

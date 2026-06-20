@@ -1,71 +1,94 @@
 "use client";
 import { useState } from "react";
 import { Check } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 
-const PLANS = [
+const PLANS_RAW = [
   {
     id: "3mois",
-    duration: "3 mois",
     price: 18000,
     monthly: 6000,
-    badge: null,
-    savings: null,
-
+    badge: null as null | "mostChosen",
+    savings: null as null | number,
     features: [
-      { label: "Profil public visible", included: true },
-      { label: "Accès aux demandes clients", included: true },
-      { label: "Messagerie intégrée", included: true },
-      { label: "Avis clients vérifiés", included: true },
-      { label: "Support prioritaire", included: true },
-      { label: "Badge « Mis en avant »", included: false },
-      { label: "Priorité dans la recherche", included: false },
-      { label: "Statistiques de visibilité", included: false },
+      { key: "publicProfile", included: true },
+      { key: "clientRequests", included: true },
+      { key: "messaging", included: true },
+      { key: "verifiedReviews", included: true },
+      { key: "prioritySupport", included: true },
+      { key: "featuredBadge", included: false },
+      { key: "searchPriority", included: false },
+      { key: "visibilityStats", included: false },
     ],
   },
   {
     id: "6mois",
-    duration: "6 mois",
     price: 33000,
     monthly: 5500,
-    badge: "Le plus choisi",
-    savings: "Économisez 3 000 DZD",
-
+    badge: "mostChosen" as const,
+    savings: 3000,
     features: [
-      { label: "Profil public visible", included: true },
-      { label: "Accès aux demandes clients", included: true },
-      { label: "Messagerie intégrée", included: true },
-      { label: "Avis clients vérifiés", included: true },
-      { label: "Support prioritaire", included: true },
-      { label: "Badge « Mis en avant »", included: true },
-      { label: "Priorité dans la recherche", included: false },
-      { label: "Statistiques de visibilité", included: false },
+      { key: "publicProfile", included: true },
+      { key: "clientRequests", included: true },
+      { key: "messaging", included: true },
+      { key: "verifiedReviews", included: true },
+      { key: "prioritySupport", included: true },
+      { key: "featuredBadge", included: true },
+      { key: "searchPriority", included: false },
+      { key: "visibilityStats", included: false },
     ],
   },
   {
     id: "12mois",
-    duration: "12 mois",
     price: 60000,
     monthly: 5000,
-    badge: "Meilleure offre",
-    savings: "Économisez 12 000 DZD",
-
+    badge: "bestOffer" as const,
+    savings: 12000,
     features: [
-      { label: "Profil public visible", included: true },
-      { label: "Accès aux demandes clients", included: true },
-      { label: "Messagerie intégrée", included: true },
-      { label: "Avis clients vérifiés", included: true },
-      { label: "Support prioritaire", included: true },
-      { label: "Badge « Mis en avant »", included: true },
-      { label: "Priorité dans la recherche", included: true },
-      { label: "Statistiques de visibilité", included: true },
+      { key: "publicProfile", included: true },
+      { key: "clientRequests", included: true },
+      { key: "messaging", included: true },
+      { key: "verifiedReviews", included: true },
+      { key: "prioritySupport", included: true },
+      { key: "featuredBadge", included: true },
+      { key: "searchPriority", included: true },
+      { key: "visibilityStats", included: true },
     ],
   },
 ];
 
-const fmt = (n: number) => n.toLocaleString("fr-DZ") + " DZD";
-
 export default function AbonnementsPage() {
   const [selected, setSelected] = useState("6mois");
+  const t = useTranslations();
+  const locale = useLocale();
+  const numLocale =
+    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-DZ";
+
+  const fmt = (n: number) =>
+    n.toLocaleString(numLocale) +
+    " " +
+    t("subscriptionPlans.perMonth").split("/")[0];
+
+  const PLANS = PLANS_RAW.map((p) => ({
+    ...p,
+    duration: t(`durations.${p.id}`),
+    badgeLabel:
+      p.badge === "mostChosen"
+        ? t("subscriptionPlans.badgeMostChosen")
+        : p.badge === "bestOffer"
+          ? t("subscriptionPlans.badgeBestOffer")
+          : null,
+    savingsLabel:
+      p.savings != null
+        ? t("subscriptionPlans.savings", {
+            amount: p.savings.toLocaleString(numLocale),
+          })
+        : null,
+    features: p.features.map((f) => ({
+      ...f,
+      label: t(`subscriptionPlans.features.${f.key}`),
+    })),
+  }));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 pt-16">
@@ -90,15 +113,17 @@ export default function AbonnementsPage() {
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
             <span>⏳</span>
-            Paiement en ligne bientôt disponible
+            {t("subscriptionPlans.paymentSoonBadge")}
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight leading-tight mb-3">
-            Rejoignez Mizan.
+            {t("subscriptionPlans.heroTitle1")}
             <br />
-            <span className="text-teal-600">Visibilité garantie.</span>
+            <span className="text-teal-600">
+              {t("subscriptionPlans.heroTitle2")}
+            </span>
           </h1>
           <p className="text-slate-500 text-base max-w-xs mx-auto">
-            Abonnement fixe. Zéro commission.
+            {t("subscriptionPlans.heroSubtitle")}
           </p>
         </div>
 
@@ -129,7 +154,7 @@ export default function AbonnementsPage() {
                 boxShadow: "0 12px 36px rgba(13,148,136,0.3)",
               }}
             >
-              {p.badge && (
+              {p.badgeLabel && (
                 <div
                   className={`inline-flex mb-4 px-3 py-1 rounded-full text-xs font-bold ${
                     p.id === "6mois"
@@ -137,21 +162,23 @@ export default function AbonnementsPage() {
                       : "bg-amber-400 text-amber-900"
                   }`}
                 >
-                  {p.badge}
+                  {p.badgeLabel}
                 </div>
               )}
               <div className="mb-1">
                 <span className="text-5xl font-bold tracking-tight text-white leading-none">
-                  {p.monthly.toLocaleString("fr-DZ")}
+                  {p.monthly.toLocaleString(numLocale)}
                 </span>
-                <span className="text-sm ml-2 text-white/50">DZD/mois</span>
+                <span className="text-sm ml-2 text-white/50">
+                  {t("subscriptionPlans.perMonth")}
+                </span>
               </div>
               <div className="text-sm text-white/40 mb-2">
-                {fmt(p.price)} total · paiement unique
+                {t("subscriptionPlans.totalOnce", { price: fmt(p.price) })}
               </div>
-              {p.savings && (
+              {p.savingsLabel && (
                 <div className="inline-flex text-xs font-bold px-3 py-1.5 rounded-full mb-4 bg-white/15 text-teal-100">
-                  ✓ {p.savings}
+                  ✓ {p.savingsLabel}
                 </div>
               )}
 
@@ -159,7 +186,7 @@ export default function AbonnementsPage() {
               <ul className="space-y-3">
                 {p.features.map((f) => (
                   <li
-                    key={f.label}
+                    key={f.key}
                     className={`flex items-center gap-3 text-sm ${f.included ? "text-white/80" : "text-white/25 line-through"}`}
                   >
                     <div
@@ -197,7 +224,7 @@ export default function AbonnementsPage() {
                 }`}
                 onClick={() => setSelected(p.id)}
               >
-                {p.badge && (
+                {p.badgeLabel && (
                   <div
                     className={`absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap ${
                       p.id === "6mois"
@@ -205,7 +232,7 @@ export default function AbonnementsPage() {
                         : "bg-amber-400 text-amber-900"
                     }`}
                   >
-                    {p.badge}
+                    {p.badgeLabel}
                   </div>
                 )}
 
@@ -219,22 +246,22 @@ export default function AbonnementsPage() {
                   <span
                     className={`card-price text-5xl font-bold tracking-tight leading-none ${on ? "text-white" : "text-slate-900"}`}
                   >
-                    {p.monthly.toLocaleString("fr-DZ")}
+                    {p.monthly.toLocaleString(numLocale)}
                   </span>
                   <span
                     className={`card-unit text-sm ml-2 ${on ? "text-white/45" : "text-slate-400"}`}
                   >
-                    DZD/mois
+                    {t("subscriptionPlans.perMonth")}
                   </span>
                 </div>
 
                 <div
                   className={`card-total text-sm mb-2 ${on ? "text-white/40" : "text-slate-400"}`}
                 >
-                  {fmt(p.price)} total · paiement unique
+                  {t("subscriptionPlans.totalOnce", { price: fmt(p.price) })}
                 </div>
 
-                {p.savings ? (
+                {p.savingsLabel ? (
                   <div
                     className={`savings-pill inline-flex self-start text-xs font-bold px-3 py-1.5 rounded-full mb-5 ${
                       on
@@ -242,7 +269,7 @@ export default function AbonnementsPage() {
                         : "bg-teal-50 text-teal-700"
                     }`}
                   >
-                    ✓ {p.savings}
+                    ✓ {p.savingsLabel}
                   </div>
                 ) : (
                   <div className="mb-5 h-7" />
@@ -255,7 +282,7 @@ export default function AbonnementsPage() {
                 <ul className="space-y-3 flex-1">
                   {p.features.map((f) => (
                     <li
-                      key={f.label}
+                      key={f.key}
                       className={`flex items-center gap-3 text-sm ${
                         f.included
                           ? on

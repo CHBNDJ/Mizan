@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { ToastState } from "@/types";
 import ChangePasswordModal from "@/components/settings/ChangePasswordModal";
@@ -50,7 +51,7 @@ const Toast = ({
   }[type];
   return (
     <div
-      className={`fixed top-20 right-4 ${bg} text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg shadow-lg flex items-center gap-2 z-50 text-sm sm:text-base max-w-[90vw] sm:max-w-md`}
+      className={`fixed top-20 end-4 ${bg} text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg shadow-lg flex items-center gap-2 z-50 text-sm sm:text-base max-w-[90vw] sm:max-w-md`}
     >
       {icon}
       <span className="truncate">{message}</span>
@@ -62,6 +63,7 @@ export default function SettingsPage() {
   const supabase = createClient();
   const { signOut, user, profile } = useAuth();
   const router = useRouter();
+  const t = useTranslations("settingsPage");
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [toast, setToast] = useState<ToastState>({
@@ -105,10 +107,10 @@ export default function SettingsPage() {
   const handleSignOut = async () => {
     try {
       await signOut();
-      showToast("Déconnexion réussie", "success");
+      showToast(t("toasts.logoutSuccess"), "success");
       setTimeout(() => router.push("/"), 1000);
     } catch {
-      showToast("Erreur lors de la déconnexion", "error");
+      showToast(t("toasts.logoutError"), "error");
     }
   };
 
@@ -116,7 +118,7 @@ export default function SettingsPage() {
     if (!user) return;
     setIsDeleting(true);
     try {
-      showToast("Suppression en cours...", "warning");
+      showToast(t("toasts.deleting"), "warning");
       const { data: session } = await supabase.auth.getSession();
       if (!session?.session) throw new Error("Session invalide");
       const userId = user.id,
@@ -156,7 +158,7 @@ export default function SettingsPage() {
         });
       } catch {}
       await signOut();
-      showToast("Compte supprimé avec succès", "success");
+      showToast(t("toasts.deleteSuccess"), "success");
       try {
         await fetch("/api/admin/notify", {
           method: "POST",
@@ -173,8 +175,8 @@ export default function SettingsPage() {
         window.location.href = "/";
       }, 1500);
     } catch (error: unknown) {
-      const msg = error instanceof Error ? error.message : "Erreur inconnue";
-      showToast(`Erreur: ${msg}`, "error");
+      const msg = error instanceof Error ? error.message : "?";
+      showToast(t("toasts.deleteError", { msg }), "error");
       setIsDeleting(false);
       setDeleteStep(0);
     }
@@ -199,10 +201,10 @@ export default function SettingsPage() {
       </div>
       <div
         className="relative inline-flex items-center opacity-60 cursor-not-allowed"
-        title="Activées par défaut — ne peuvent pas être désactivées"
+        title={t("notifLockedNote")}
       >
         <div className="w-11 h-6 bg-teal-600 rounded-full relative">
-          <div className="absolute top-[2px] right-[2px] bg-white rounded-full h-5 w-5" />
+          <div className="absolute top-[2px] end-[2px] bg-white rounded-full h-5 w-5" />
         </div>
       </div>
     </div>
@@ -228,67 +230,66 @@ export default function SettingsPage() {
 
           <div className="mb-6 sm:mb-8">
             <h1 className="page-header text-2xl sm:text-3xl font-bold text-slate-800">
-              Paramètres
+              {t("title")}
             </h1>
             <p className="page-subtitle text-slate-600 mt-1 text-sm sm:text-base">
-              Gérez vos préférences et paramètres de compte
+              {t("subtitle")}
             </p>
           </div>
 
           <div className="settings-section bg-white rounded-lg shadow-sm border p-4 sm:p-6 mb-4 sm:mb-6">
             <h2 className="text-lg sm:text-xl font-semibold text-slate-800 flex items-center gap-2 mb-4">
-              <Bell className="w-5 h-5 text-teal-600" /> Notifications
+              <Bell className="w-5 h-5 text-teal-600" />{" "}
+              {t("notificationsTitle")}
             </h2>
             <div className="space-y-3 sm:space-y-4">
               <Toggle
-                label="Notifications par email"
-                description="Email à chaque nouveau message ou consultation"
+                label={t("emailNotifTitle")}
+                description={t("emailNotifDesc")}
               />
               <Toggle
-                label="Notifications push"
-                description="Alertes instantanées sur votre appareil"
+                label={t("pushNotifTitle")}
+                description={t("pushNotifDesc")}
               />
             </div>
             <p className="text-xs text-slate-400 mt-3">
-              Ces notifications sont essentielles au bon fonctionnement de la
-              plateforme et ne peuvent pas être désactivées.
+              {t("notifEssentialNote")}
             </p>
           </div>
 
           <div className="settings-section bg-white rounded-lg shadow-sm border p-4 sm:p-6 mb-4 sm:mb-6">
             <h2 className="text-lg sm:text-xl font-semibold text-slate-800 mb-4 flex items-center gap-2">
-              <Shield className="w-5 h-5 text-green-600" /> Confidentialité et
-              sécurité
+              <Shield className="w-5 h-5 text-green-600" /> {t("privacyTitle")}
             </h2>
             <div className="space-y-3 sm:space-y-4">
               <button
                 onClick={() => setIsPasswordModalOpen(true)}
-                className="cursor-pointer w-full flex flex-col sm:flex-row sm:items-center gap-2 p-3 sm:p-4 border border-slate-200 rounded-lg hover:bg-slate-50 text-left group"
+                className="cursor-pointer w-full flex flex-col sm:flex-row sm:items-center gap-2 p-3 sm:p-4 border border-slate-200 rounded-lg hover:bg-slate-50 text-start group"
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <Key className="w-5 h-5 text-slate-500 group-hover:text-teal-600 flex-shrink-0" />
                   <div>
                     <h3 className="font-medium text-slate-700 group-hover:text-teal-700 text-sm sm:text-base">
-                      Changer le mot de passe
+                      {t("changePasswordTitle")}
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-500">
-                      Modifier votre mot de passe de connexion
+                      {t("changePasswordDesc")}
                     </p>
                   </div>
                 </div>
               </button>
               <button
                 onClick={() => setIsEmailModalOpen(true)}
-                className="cursor-pointer w-full flex flex-col sm:flex-row sm:items-center gap-2 p-3 sm:p-4 border border-slate-200 rounded-lg hover:bg-slate-50 text-left group"
+                className="cursor-pointer w-full flex flex-col sm:flex-row sm:items-center gap-2 p-3 sm:p-4 border border-slate-200 rounded-lg hover:bg-slate-50 text-start group"
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <Mail className="w-5 h-5 text-slate-500 group-hover:text-teal-600 flex-shrink-0" />
                   <div>
                     <h3 className="font-medium text-slate-700 group-hover:text-teal-700 text-sm sm:text-base">
-                      Modifier l'email
+                      {t("changeEmailTitle")}
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-500">
-                      Changer votre adresse email de connexion
+                      {t("changeEmailDesc")}
                     </p>
                   </div>
                 </div>
@@ -298,47 +299,46 @@ export default function SettingsPage() {
 
           <div className="settings-section bg-white rounded-lg shadow-sm border border-red-200 p-4 sm:p-6">
             <h2 className="text-lg sm:text-xl font-semibold text-red-600 mb-4">
-              Zone de danger
+              {t("dangerZoneTitle")}
             </h2>
             <div className="space-y-3 sm:space-y-4">
               <div className="p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
                 <h3 className="font-medium text-red-800 mb-2 text-sm sm:text-base">
-                  Déconnexion
+                  {t("logoutTitle")}
                 </h3>
                 <p className="text-xs sm:text-sm text-red-600 mb-3">
-                  Se déconnecter de votre compte sur cet appareil.
+                  {t("logoutDesc")}
                 </p>
                 <button
                   onClick={handleSignOut}
                   className="cursor-pointer flex items-center justify-center gap-2 bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-red-700 text-sm sm:text-base w-full sm:w-auto"
                 >
-                  <LogOut className="w-4 h-4" /> Se déconnecter
+                  <LogOut className="w-4 h-4" /> {t("logoutAction")}
                 </button>
               </div>
               <div className="p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
                 <h3 className="font-medium text-red-800 mb-2 text-sm sm:text-base">
-                  Supprimer le compte
+                  {t("deleteAccountTitle")}
                 </h3>
                 {deleteStep === 0 ? (
                   <>
                     <p className="text-xs sm:text-sm text-red-600 mb-3">
-                      Supprimer définitivement votre compte. Cette action est
-                      irréversible.
+                      {t("deleteAccountDesc")}
                     </p>
                     <button
                       onClick={() => setDeleteStep(1)}
                       className="cursor-pointer flex items-center justify-center gap-2 bg-red-700 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-red-800 text-sm sm:text-base w-full sm:w-auto"
                     >
-                      <Trash2 className="w-4 h-4" /> Supprimer le compte
+                      <Trash2 className="w-4 h-4" /> {t("deleteAccountAction")}
                     </button>
                   </>
                 ) : (
                   <div className="space-y-3">
                     <p className="text-xs sm:text-sm text-red-700 font-medium">
-                      ⚠️ Êtes-vous absolument sûr ?
+                      {t("confirmTitle")}
                     </p>
                     <p className="text-xs sm:text-sm text-red-600">
-                      Cette action supprimera définitivement toutes vos données.
+                      {t("confirmDesc")}
                     </p>
                     <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                       <button
@@ -349,10 +349,10 @@ export default function SettingsPage() {
                         {isDeleting ? (
                           <>
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                            Suppression...
+                            {t("deleting")}
                           </>
                         ) : (
-                          "Oui, supprimer"
+                          t("confirmYes")
                         )}
                       </button>
                       <button
@@ -363,7 +363,7 @@ export default function SettingsPage() {
                         disabled={isDeleting}
                         className="cursor-pointer bg-slate-500 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-slate-600 text-sm flex-1 sm:flex-none"
                       >
-                        Annuler
+                        {t("confirmCancel")}
                       </button>
                     </div>
                   </div>
@@ -374,7 +374,7 @@ export default function SettingsPage() {
 
           <div className="mt-6 text-center">
             <p className="text-slate-600 text-xs sm:text-sm">
-              Besoin d'aide ?{" "}
+              {t("helpText")}{" "}
               <a
                 href="mailto:support@mizan-dz.com"
                 className="text-teal-600 hover:underline"
