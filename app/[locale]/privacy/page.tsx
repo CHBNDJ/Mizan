@@ -1,13 +1,17 @@
 "use client";
 import { Shield, ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 export default function PrivacyPolicyPage() {
   const router = useRouter();
+  const t = useTranslations("privacyPage");
+  const locale = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (!containerRef.current) return;
     gsap.fromTo(
@@ -24,6 +28,9 @@ export default function PrivacyPolicyPage() {
     );
   }, []);
 
+  const dateLocale =
+    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-FR";
+
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <div className="max-w-4xl mx-auto px-4 py-12" ref={containerRef}>
@@ -32,287 +39,199 @@ export default function PrivacyPolicyPage() {
           className="animate-section inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 mb-8 cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          Retour
+          {t("back")}
         </button>
         <div className="bg-white rounded-2xl border border-slate-200 p-8 md:p-12">
           <div className="animate-section flex items-center gap-3 mb-6">
             <Shield className="w-8 h-8 text-teal-600" />
-            <h1 className="text-3xl font-bold text-slate-900">
-              Politique de Confidentialité
-            </h1>
+            <h1 className="text-3xl font-bold text-slate-900">{t("title")}</h1>
           </div>
           <p className="animate-section text-slate-600 mb-8">
-            Dernière mise à jour : {new Date().toLocaleDateString("fr-FR")}
+            {t("lastUpdate", {
+              date: new Date().toLocaleDateString(dateLocale),
+            })}
           </p>
 
           <div className="prose prose-slate max-w-none space-y-8">
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                1. Introduction
+                {t("s1.title")}
               </h2>
-              <p className="text-slate-700 leading-relaxed">
-                MIZAN s'engage à protéger la confidentialité et la sécurité de
-                vos données personnelles. Cette politique explique comment nous
-                collectons, utilisons et protégeons vos informations.
-              </p>
+              <p className="text-slate-700 leading-relaxed">{t("s1.p1")}</p>
               <p className="text-slate-700 leading-relaxed mt-3">
-                MIZAN s'efforce de respecter la législation algérienne en
-                matière de protection des données personnelles, notamment la loi
-                n° 18-07 du 10 juin 2018 relative à la protection des personnes
-                physiques dans le traitement des données à caractère personnel.
+                {t("s1.p2")}
               </p>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                2. Données publiques des professionnels (source externe)
+                {t("s2.title")}
               </h2>
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <h3 className="font-semibold text-blue-900 mb-3">
-                  📋 Collecte de données professionnelles publiques
+                  📋 {t("s2.boxTitle")}
                 </h3>
                 <p className="text-blue-800 leading-relaxed mb-3">
-                  MIZAN collecte et publie des informations professionnelles
-                  concernant des avocats, notaires, huissiers et comptables
-                  exerçant en Algérie. Ces informations proviennent
-                  exclusivement de{" "}
-                  <strong>sources publiques et accessibles librement</strong>{" "}
-                  sur internet, notamment :
+                  {t("s2.p1")}
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-blue-800">
-                  <li>
-                    Sites web officiels des cabinets d'avocats et études
-                    notariales
-                  </li>
-                  <li>
-                    Pages professionnelles publiques (Google My Business,
-                    LinkedIn, etc.)
-                  </li>
-                  <li>Annuaires professionnels publics en ligne</li>
-                  <li>Réseaux sociaux professionnels publics</li>
-                  <li>Publications professionnelles accessibles au public</li>
+                  {t.raw("s2.sources").map((item: string, i: number) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
                 <h3 className="font-semibold text-blue-900 mt-5 mb-3">
-                  🔍 Nature des informations collectées
+                  🔍 {t("s2.natureTitle")}
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-blue-800">
-                  <li>Nom et prénom du professionnel</li>
-                  <li>Adresse du cabinet ou de l'étude</li>
-                  <li>Numéro de téléphone professionnel</li>
-                  <li>Adresse email professionnelle</li>
-                  <li>Domaines de compétence (si disponibles)</li>
-                  <li>Langues parlées (si disponibles)</li>
-                  <li>
-                    Numéro professionnel (barreau, chambre des notaires,
-                    huissier, ONEC/ONCA si disponible)
-                  </li>
+                  {t.raw("s2.nature").map((item: string, i: number) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
                 <h3 className="font-semibold text-blue-900 mt-5 mb-3">
-                  ✅ Utilisation et finalité
+                  ✅ {t("s2.useTitle")}
                 </h3>
-                <p className="text-blue-800 leading-relaxed">
-                  Ces données sont utilisées uniquement dans le cadre d'un
-                  service d'annuaire professionnel et de mise en relation entre
-                  clients et professionnels. Elles ne font l'objet d'aucune
-                  exploitation commerciale non autorisée.
-                </p>
+                <p className="text-blue-800 leading-relaxed">{t("s2.useP")}</p>
                 <h3 className="font-semibold text-blue-900 mt-5 mb-3">
-                  📧 Information des professionnels concernés
+                  📧 {t("s2.infoTitle")}
                 </h3>
-                <p className="text-blue-800 leading-relaxed">
-                  MIZAN s'engage à informer chaque professionnel dont les
-                  coordonnées sont publiées sur le site. Les professionnels sont
-                  contactés par email ou téléphone pour les informer de la
-                  présence de leurs informations sur la plateforme.
-                </p>
+                <p className="text-blue-800 leading-relaxed">{t("s2.infoP")}</p>
                 <div className="mt-4 p-4 bg-blue-100 border border-blue-300 rounded">
                   <p className="text-blue-900 font-semibold mb-2">
-                    🛡️ Droits des professionnels concernant leurs données
+                    🛡️ {t("s2.rightsTitle")}
                   </p>
                   <p className="text-blue-800 text-sm mb-2">
-                    Tout professionnel figurant sur MIZAN dispose des droits
-                    suivants, qu'il peut exercer à tout moment et gratuitement :
+                    {t("s2.rightsP")}
                   </p>
                   <ul className="list-disc list-inside space-y-1 text-blue-800 text-sm">
-                    <li>
-                      <strong>Droit de rectification :</strong> Corriger toute
-                      information incorrecte ou obsolète
-                    </li>
-                    <li>
-                      <strong>Droit de suppression :</strong> Demander le
-                      retrait complet de son profil du site
-                    </li>
-                    <li>
-                      <strong>Droit d'opposition :</strong> S'opposer à
-                      l'utilisation de ses données pour la mise en relation
-                    </li>
-                    <li>
-                      <strong>Droit d'accès :</strong> Consulter l'ensemble des
-                      données publiées le concernant
-                    </li>
+                    <li>{t("s2.rightRectif")}</li>
+                    <li>{t("s2.rightDelete")}</li>
+                    <li>{t("s2.rightOppose")}</li>
+                    <li>{t("s2.rightAccess")}</li>
                   </ul>
                   <p className="text-blue-800 text-sm mt-3">
-                    <strong>Contact :</strong>{" "}
+                    <strong>{t("s2.contact")}</strong>{" "}
                     <a
                       href="mailto:professionnel@mizan-dz.com"
                       className="underline font-medium"
                     >
                       professionnel@mizan-dz.com
                     </a>{" "}
-                    — Délai de traitement : 15 jours ouvrés maximum.
+                    — {t("s2.delay")}
                   </p>
                 </div>
                 <p className="text-blue-800 leading-relaxed mt-4 text-sm">
-                  <strong>Note importante :</strong> Les professionnels qui
-                  créent un compte sur MIZAN et revendiquent leur profil
-                  bénéficient d'un contrôle total sur leurs informations et
-                  peuvent les modifier directement depuis leur espace personnel.
+                  {t("s2.note")}
                 </p>
               </div>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                3. Données collectées pour les utilisateurs inscrits
+                {t("s3.title")}
               </h2>
               <div className="space-y-3">
                 <h3 className="font-semibold text-slate-800">
-                  Pour tous les utilisateurs inscrits :
+                  {t("s3.allTitle")}
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-slate-700">
-                  <li>Nom et prénom</li>
-                  <li>Adresse email</li>
-                  <li>Mot de passe (crypté)</li>
-                  <li>Date de création du compte</li>
+                  {t.raw("s3.all").map((item: string, i: number) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
                 <h3 className="font-semibold text-slate-800 mt-4">
-                  Pour les clients :
+                  {t("s3.clientsTitle")}
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-slate-700">
-                  <li>Localisation (wilaya ou pays)</li>
-                  <li>Historique des consultations</li>
-                  <li>Avis publiés</li>
+                  {t.raw("s3.clients").map((item: string, i: number) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
                 <h3 className="font-semibold text-slate-800 mt-4">
-                  Pour les professionnels inscrits (avocats, notaires,
-                  huissiers, comptables) :
+                  {t("s3.prosTitle")}
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-slate-700">
-                  <li>
-                    Numéro professionnel (barreau / chambre des notaires /
-                    huissier / ONEC-ONCA)
-                  </li>
-                  <li>Domaines d'intervention</li>
-                  <li>
-                    Coordonnées professionnelles (téléphone, adresse cabinet)
-                  </li>
-                  <li>Documents de vérification (carte professionnelle)</li>
-                  <li>Informations bancaires (pour paiements futurs)</li>
+                  {t.raw("s3.pros").map((item: string, i: number) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
               </div>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                4. Utilisation des données
+                {t("s4.title")}
               </h2>
               <p className="text-slate-700 leading-relaxed mb-3">
-                Vos données sont utilisées uniquement pour :
+                {t("s4.p1")}
               </p>
               <ul className="list-disc list-inside space-y-2 text-slate-700">
-                <li>Créer et gérer votre compte</li>
-                <li>
-                  Faciliter la mise en relation entre clients et professionnels
-                </li>
-                <li>
-                  Envoyer des notifications importantes (réponses aux
-                  consultations)
-                </li>
-                <li>
-                  Vérifier l'identité et les qualifications des professionnels
-                  inscrits
-                </li>
-                <li>Améliorer nos services</li>
-                <li>Respecter nos obligations légales</li>
+                {t.raw("s4.items").map((item: string, i: number) => (
+                  <li key={i}>{item}</li>
+                ))}
               </ul>
               <p className="text-slate-700 leading-relaxed mt-4 font-semibold">
-                Nous ne vendons jamais vos données personnelles à des tiers.
+                {t("s4.neverSell")}
               </p>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                5. Partage des données
+                {t("s5.title")}
               </h2>
               <ul className="list-disc list-inside space-y-2 text-slate-700">
                 <li>
-                  <strong>Entre utilisateurs :</strong> Les clients voient les
-                  informations publiques des profils professionnels. Les
-                  professionnels voient le nom et email des clients qui les
-                  contactent.
+                  <strong>{t("s5.between")}</strong> {t("s5.betweenP")}
                 </li>
                 <li>
-                  <strong>Prestataires techniques :</strong> Nous utilisons des
-                  prestataires d'hébergement certifiés pour le stockage sécurisé
-                  des données.
+                  <strong>{t("s5.providers")}</strong> {t("s5.providersP")}
                 </li>
                 <li>
-                  <strong>Obligations légales :</strong> En cas de demande
-                  judiciaire ou administrative légale.
+                  <strong>{t("s5.legal")}</strong> {t("s5.legalP")}
                 </li>
               </ul>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                6. Sécurité des données
+                {t("s6.title")}
               </h2>
               <ul className="list-disc list-inside space-y-2 text-slate-700">
-                <li>Cryptage des mots de passe</li>
-                <li>Connexion sécurisée HTTPS</li>
-                <li>Hébergement sur serveurs sécurisés certifiés</li>
-                <li>Accès limité aux données personnelles</li>
-                <li>Sauvegardes régulières</li>
+                {t.raw("s6.items").map((item: string, i: number) => (
+                  <li key={i}>{item}</li>
+                ))}
               </ul>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                7. Cookies
+                {t("s7.title")}
               </h2>
-              <p className="text-slate-700 leading-relaxed">
-                Le site MIZAN utilise des cookies essentiels pour son
-                fonctionnement (authentification, préférences). Nous n'utilisons
-                pas de cookies publicitaires ou de tracking tiers.
-              </p>
+              <p className="text-slate-700 leading-relaxed">{t("s7.p1")}</p>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                8. Vos droits (utilisateurs inscrits)
+                {t("s8.title")}
               </h2>
               <ul className="list-disc list-inside space-y-2 text-slate-700">
                 <li>
-                  <strong>Droit d'accès :</strong> Consulter vos données
-                  personnelles
+                  <strong>{t("s8.access")}</strong> {t("s8.accessP")}
                 </li>
                 <li>
-                  <strong>Droit de rectification :</strong> Corriger vos
-                  informations
+                  <strong>{t("s8.rectif")}</strong> {t("s8.rectifP")}
                 </li>
                 <li>
-                  <strong>Droit à l'effacement :</strong> Supprimer votre compte
+                  <strong>{t("s8.erase")}</strong> {t("s8.eraseP")}
                 </li>
                 <li>
-                  <strong>Droit de portabilité :</strong> Récupérer vos données
+                  <strong>{t("s8.portability")}</strong> {t("s8.portabilityP")}
                 </li>
                 <li>
-                  <strong>Droit d'opposition :</strong> Refuser certaines
-                  utilisations
+                  <strong>{t("s8.oppose")}</strong> {t("s8.opposeP")}
                 </li>
               </ul>
               <p className="text-slate-700 leading-relaxed mt-3">
-                Pour exercer ces droits :{" "}
+                {t("s8.exercise")}{" "}
                 <a
                   href="mailto:contact@mizan-dz.com"
                   className="text-teal-600 hover:underline font-medium"
@@ -324,42 +243,35 @@ export default function PrivacyPolicyPage() {
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                9. Conservation des données
+                {t("s9.title")}
               </h2>
               <ul className="list-disc list-inside space-y-2 text-slate-700">
                 <li>
-                  <strong>Comptes actifs :</strong> Données conservées tant que
-                  le compte existe
+                  <strong>{t("s9.active")}</strong> {t("s9.activeP")}
                 </li>
                 <li>
-                  <strong>Comptes supprimés :</strong> Données effacées sous 30
-                  jours, sauf obligations légales
+                  <strong>{t("s9.deleted")}</strong> {t("s9.deletedP")}
                 </li>
                 <li>
-                  <strong>Avis publiés :</strong> Conservés de manière
-                  anonymisée après suppression du compte
+                  <strong>{t("s9.reviews")}</strong> {t("s9.reviewsP")}
                 </li>
                 <li>
-                  <strong>Données de professionnels non inscrits :</strong>{" "}
-                  Conservées tant que le professionnel n'a pas demandé leur
-                  suppression
+                  <strong>{t("s9.unregistered")}</strong>{" "}
+                  {t("s9.unregisteredP")}
                 </li>
               </ul>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                10. Modifications
+                {t("s10.title")}
               </h2>
-              <p className="text-slate-700 leading-relaxed">
-                Nous pouvons modifier cette politique. Les modifications
-                importantes vous seront notifiées par email.
-              </p>
+              <p className="text-slate-700 leading-relaxed">{t("s10.p1")}</p>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                11. Contact
+                {t("s11.title")}
               </h2>
               <a
                 href="mailto:contact@mizan-dz.com?subject=Question sur la confidentialité"
@@ -368,15 +280,15 @@ export default function PrivacyPolicyPage() {
                 contact@mizan-dz.com
               </a>
               <p className="text-slate-700 leading-relaxed mt-2">
-                Téléphone : +33 6 60 25 35 70
+                {t("s11.phone")}
               </p>
               <p className="text-slate-600 mt-4">
-                Pour d'autres demandes :{" "}
+                {t("s11.otherRequests")}{" "}
                 <Link
                   href="/contact"
                   className="text-teal-600 hover:underline font-medium"
                 >
-                  page de contact
+                  {t("s11.contactPage")}
                 </Link>
                 .
               </p>

@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";
+import { getSpecialiteLabel } from "@/lib/i18nlabels";
 import { getInitials } from "@/lib/utils";
 import { AvocatData } from "@/types";
 import { createClient } from "@/lib/supabase/client";
@@ -666,7 +667,7 @@ export default function ProfilePage({
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 text-teal-700 rounded-full text-xs font-medium border border-teal-100 hover:bg-teal-100 transition-all"
                     >
                       <span className="w-1.5 h-1.5 bg-teal-600 rounded-full" />
-                      {spec}
+                      {getSpecialiteLabel(spec, t)}
                     </span>
                   ))}
                 </div>

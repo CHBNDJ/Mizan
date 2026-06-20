@@ -817,57 +817,853 @@
     "r4": "Plus de 8 000 DA"
   },
   "countries": {
-    "Algérie": "Algérie",
-    "France": "France",
-    "Belgique": "Belgique",
-    "Suisse": "Suisse",
-    "Luxembourg": "Luxembourg",
-    "Canada": "Canada",
-    "États-Unis": "États-Unis",
-    "Royaume-Uni": "Royaume-Uni",
-    "Allemagne": "Allemagne",
-    "Espagne": "Espagne",
-    "Italie": "Italie",
-    "Pays-Bas": "Pays-Bas",
-    "Portugal": "Portugal",
-    "Suède": "Suède",
-    "Norvège": "Norvège",
-    "Danemark": "Danemark",
-    "Finlande": "Finlande",
-    "Autriche": "Autriche",
-    "Grèce": "Grèce",
-    "Pologne": "Pologne",
-    "Maroc": "Maroc",
-    "Tunisie": "Tunisie",
-    "Libye": "Libye",
-    "Égypte": "Égypte",
-    "Mauritanie": "Mauritanie",
-    "Sénégal": "Sénégal",
-    "Côte d'Ivoire": "Côte d'Ivoire",
-    "Cameroun": "Cameroun",
-    "RD Congo": "RD Congo",
-    "Congo": "Congo",
-    "Gabon": "Gabon",
-    "Nigéria": "Nigéria",
-    "Ghana": "Ghana",
-    "Arabie Saoudite": "Arabie Saoudite",
-    "Émirats Arabes Unis": "Émirats Arabes Unis",
-    "Qatar": "Qatar",
-    "Koweït": "Koweït",
-    "Bahreïn": "Bahreïn",
-    "Oman": "Oman",
-    "Jordanie": "Jordanie",
-    "Liban": "Liban",
-    "Syrie": "Syrie",
-    "Irak": "Irak",
-    "Turquie": "Turquie",
-    "Russie": "Russie",
-    "Chine": "Chine",
-    "Japon": "Japon",
-    "Inde": "Inde",
-    "Brésil": "Brésil",
-    "Mexique": "Mexique",
-    "Australie": "Australie",
-    "Afrique du Sud": "Afrique du Sud"
+    "dz": "Algérie",
+    "fr": "France",
+    "be": "Belgique",
+    "ch": "Suisse",
+    "lu": "Luxembourg",
+    "ca": "Canada",
+    "us": "États-Unis",
+    "gb": "Royaume-Uni",
+    "de": "Allemagne",
+    "es": "Espagne",
+    "it": "Italie",
+    "nl": "Pays-Bas",
+    "pt": "Portugal",
+    "se": "Suède",
+    "no": "Norvège",
+    "dk": "Danemark",
+    "fi": "Finlande",
+    "at": "Autriche",
+    "gr": "Grèce",
+    "pl": "Pologne",
+    "ma": "Maroc",
+    "tn": "Tunisie",
+    "ly": "Libye",
+    "eg": "Égypte",
+    "mr": "Mauritanie",
+    "sn": "Sénégal",
+    "ci": "Côte d'Ivoire",
+    "cm": "Cameroun",
+    "cd": "RD Congo",
+    "cg": "Congo",
+    "ga": "Gabon",
+    "ng": "Nigéria",
+    "gh": "Ghana",
+    "sa": "Arabie Saoudite",
+    "ae": "Émirats Arabes Unis",
+    "qa": "Qatar",
+    "kw": "Koweït",
+    "bh": "Bahreïn",
+    "om": "Oman",
+    "jo": "Jordanie",
+    "lb": "Liban",
+    "sy": "Syrie",
+    "iq": "Irak",
+    "tr": "Turquie",
+    "ru": "Russie",
+    "cn": "Chine",
+    "jp": "Japon",
+    "in": "Inde",
+    "br": "Brésil",
+    "mx": "Mexique",
+    "au": "Australie",
+    "za": "Afrique du Sud"
+  },
+  "location": {
+    "algerie": "Algérie",
+    "afghanistan": "Afghanistan",
+    "afrique-du-sud": "Afrique du Sud",
+    "albanie": "Albanie",
+    "allemagne": "Allemagne",
+    "andorre": "Andorre",
+    "angola": "Angola",
+    "antigua-et-barbuda": "Antigua-et-Barbuda",
+    "arabie-saoudite": "Arabie Saoudite",
+    "argentine": "Argentine",
+    "armenie": "Arménie",
+    "australie": "Australie",
+    "autriche": "Autriche",
+    "azerbaidjan": "Azerbaïdjan",
+    "bahamas": "Bahamas",
+    "bahrein": "Bahreïn",
+    "bangladesh": "Bangladesh",
+    "barbade": "Barbade",
+    "belarus": "Bélarus",
+    "belgique": "Belgique",
+    "belize": "Belize",
+    "benin": "Bénin",
+    "bhoutan": "Bhoutan",
+    "bolivie": "Bolivie",
+    "bosnie-herzegovine": "Bosnie-Herzégovine",
+    "botswana": "Botswana",
+    "bresil": "Brésil",
+    "brunei": "Brunéi",
+    "bulgarie": "Bulgarie",
+    "burkina-faso": "Burkina Faso",
+    "burundi": "Burundi",
+    "cabo-verde": "Cabo Verde",
+    "cambodge": "Cambodge",
+    "cameroun": "Cameroun",
+    "canada": "Canada",
+    "chili": "Chili",
+    "chine": "Chine",
+    "chypre": "Chypre",
+    "colombie": "Colombie",
+    "comores": "Comores",
+    "congo": "Congo",
+    "costa-rica": "Costa Rica",
+    "cote-divoire": "Côte d'Ivoire",
+    "croatie": "Croatie",
+    "cuba": "Cuba",
+    "danemark": "Danemark",
+    "djibouti": "Djibouti",
+    "dominique": "Dominique",
+    "egypte": "Égypte",
+    "emirats-arabes-unis": "Émirats Arabes Unis",
+    "equateur": "Équateur",
+    "erythree": "Érythrée",
+    "espagne": "Espagne",
+    "eswatini": "Eswatini",
+    "estonie": "Estonie",
+    "etats-unis": "États-Unis",
+    "ethiopie": "Éthiopie",
+    "fidji": "Fidji",
+    "finlande": "Finlande",
+    "france": "France",
+    "gabon": "Gabon",
+    "gambie": "Gambie",
+    "georgie": "Géorgie",
+    "ghana": "Ghana",
+    "grece": "Grèce",
+    "grenade": "Grenade",
+    "guatemala": "Guatemala",
+    "guinee": "Guinée",
+    "guinee-bissau": "Guinée-Bissau",
+    "guinee-equatoriale": "Guinée Équatoriale",
+    "guyana": "Guyana",
+    "haiti": "Haïti",
+    "honduras": "Honduras",
+    "hongrie": "Hongrie",
+    "inde": "Inde",
+    "indonesie": "Indonésie",
+    "irak": "Irak",
+    "iran": "Iran",
+    "irlande": "Irlande",
+    "islande": "Islande",
+    "italie": "Italie",
+    "jamaique": "Jamaïque",
+    "japon": "Japon",
+    "jordanie": "Jordanie",
+    "kazakhstan": "Kazakhstan",
+    "kenya": "Kenya",
+    "kirghizistan": "Kirghizistan",
+    "kiribati": "Kiribati",
+    "koweit": "Koweït",
+    "laos": "Laos",
+    "lesotho": "Lesotho",
+    "lettonie": "Lettonie",
+    "liban": "Liban",
+    "liberia": "Libéria",
+    "libye": "Libye",
+    "liechtenstein": "Liechtenstein",
+    "lituanie": "Lituanie",
+    "luxembourg": "Luxembourg",
+    "macedoine-du-nord": "Macédoine du Nord",
+    "madagascar": "Madagascar",
+    "malaisie": "Malaisie",
+    "malawi": "Malawi",
+    "maldives": "Maldives",
+    "mali": "Mali",
+    "malte": "Malte",
+    "maroc": "Maroc",
+    "marshall": "Îles Marshall",
+    "maurice": "Maurice",
+    "mauritanie": "Mauritanie",
+    "mexique": "Mexique",
+    "micronesie": "Micronésie",
+    "moldavie": "Moldavie",
+    "monaco": "Monaco",
+    "mongolie": "Mongolie",
+    "montenegro": "Monténégro",
+    "mozambique": "Mozambique",
+    "myanmar": "Myanmar",
+    "namibie": "Namibie",
+    "nauru": "Nauru",
+    "nepal": "Népal",
+    "nicaragua": "Nicaragua",
+    "niger": "Niger",
+    "nigeria": "Nigéria",
+    "norvege": "Norvège",
+    "nouvelle-zelande": "Nouvelle-Zélande",
+    "oman": "Oman",
+    "ouganda": "Ouganda",
+    "ouzbekistan": "Ouzbékistan",
+    "pakistan": "Pakistan",
+    "palestine": "Palestine",
+    "palaos": "Palaos",
+    "panama": "Panama",
+    "papouasie-nouvelle-guinee": "Papouasie-Nouvelle-Guinée",
+    "paraguay": "Paraguay",
+    "pays-bas": "Pays-Bas",
+    "perou": "Pérou",
+    "philippines": "Philippines",
+    "pologne": "Pologne",
+    "portugal": "Portugal",
+    "qatar": "Qatar",
+    "republique-centrafricaine": "République Centrafricaine",
+    "republique-democratique-du-congo": "République Démocratique du Congo",
+    "republique-dominicaine": "République Dominicaine",
+    "republique-tcheque": "République Tchèque",
+    "roumanie": "Roumanie",
+    "royaume-uni": "Royaume-Uni",
+    "russie": "Russie",
+    "rwanda": "Rwanda",
+    "saint-christophe-et-nieves": "Saint-Christophe-et-Niévès",
+    "saint-marin": "Saint-Marin",
+    "saint-vincent-et-grenadines": "Saint-Vincent-et-les-Grenadines",
+    "sainte-lucie": "Sainte-Lucie",
+    "salomon": "Îles Salomon",
+    "salvador": "Salvador",
+    "samoa": "Samoa",
+    "sao-tome-et-principe": "Sao Tomé-et-Principe",
+    "senegal": "Sénégal",
+    "serbie": "Serbie",
+    "seychelles": "Seychelles",
+    "sierra-leone": "Sierra Leone",
+    "singapour": "Singapour",
+    "slovaquie": "Slovaquie",
+    "slovenie": "Slovénie",
+    "somalie": "Somalie",
+    "soudan": "Soudan",
+    "soudan-du-sud": "Soudan du Sud",
+    "sri-lanka": "Sri Lanka",
+    "suede": "Suède",
+    "suisse": "Suisse",
+    "suriname": "Suriname",
+    "syrie": "Syrie",
+    "tadjikistan": "Tadjikistan",
+    "tanzanie": "Tanzanie",
+    "tchad": "Tchad",
+    "thailande": "Thaïlande",
+    "timor-oriental": "Timor Oriental",
+    "togo": "Togo",
+    "tonga": "Tonga",
+    "trinite-et-tobago": "Trinité-et-Tobago",
+    "tunisie": "Tunisie",
+    "turkmenistan": "Turkménistan",
+    "turquie": "Turquie",
+    "tuvalu": "Tuvalu",
+    "ukraine": "Ukraine",
+    "uruguay": "Uruguay",
+    "vanuatu": "Vanuatu",
+    "venezuela": "Venezuela",
+    "vietnam": "Viêt Nam",
+    "yemen": "Yémen",
+    "zambie": "Zambie",
+    "zimbabwe": "Zimbabwe"
+  },
+  "contact": {
+    "back": "Retour",
+    "title": "Contact",
+    "subtitle": "Pour toute question, notre équipe est à votre disposition. Choisissez le service adapté à votre demande.",
+    "technical": {
+      "title": "Support Technique",
+      "desc": "Pour tous vos problèmes techniques, bugs ou questions sur l'utilisation de la plateforme.",
+      "delay": "Réponse sous 24 heures"
+    },
+    "general": {
+      "title": "Contact Général",
+      "desc": "Questions générales, partenariats, presse, suggestions d'amélioration de la plateforme.",
+      "delay": "Réponse sous 48 heures"
+    },
+    "professional": {
+      "title": "Support Professionnels",
+      "badge": "Avocats · Notaires · Huissiers · Comptables",
+      "desc": "Service dédié aux professionnels pour la gestion de profil, réclamations et consultations.",
+      "delay": "Réponse prioritaire sous 12 heures"
+    },
+    "faqTitle": "Questions Fréquentes",
+    "faqDesc": "Avant de nous contacter, consultez notre FAQ. Vous y trouverez peut-être déjà la réponse à votre question.",
+    "faqLink": "Consulter la FAQ"
+  },
+  "feedback": {
+    "loading": "Chargement...",
+    "thanksTitle": "Merci pour votre feedback !",
+    "redirecting": "Redirection en cours...",
+    "title": "Votre avis nous intéresse",
+    "types": {
+      "testimonial": "Expérience",
+      "suggestion": "Amélioration",
+      "bug": "Bug"
+    },
+    "placeholders": {
+      "bug": "Décrivez le problème...",
+      "suggestion": "Quelle fonctionnalité aimeriez-vous ?",
+      "testimonial": "Partagez votre expérience..."
+    },
+    "messageLabel": "Votre message",
+    "charCount": "{count}/1000 caractères",
+    "sending": "Envoi en cours...",
+    "send": "Envoyer",
+    "errorSend": "Erreur lors de l'envoi",
+    "errorGeneric": "Une erreur est survenue"
+  },
+  "faqPage": {
+    "title": "Questions Fréquentes",
+    "subtitle": "Trouvez rapidement les réponses à vos questions",
+    "noAnswerTitle": "Vous ne trouvez pas votre réponse ?",
+    "noAnswerDesc": "Notre équipe est là pour vous aider rapidement",
+    "contactCta": "Contactez-nous",
+    "tabExpertComptable": "Expert-comptable",
+    "categories": {
+      "general": {
+        "label": "Général",
+        "questions": [
+          {
+            "q": "Qu'est-ce que Mizan ?",
+            "a": "Mizan est une plateforme en ligne qui met en relation des clients avec des professionnels du droit et du chiffre vérifiés en Algérie : avocats, notaires, huissiers de justice, comptables et experts-comptables. Simple, direct, sans intermédiaire."
+          },
+          {
+            "q": "L'utilisation de Mizan est-elle gratuite ?",
+            "a": "Oui, l'inscription et la recherche de professionnels sont entièrement gratuites pour les clients."
+          },
+          {
+            "q": "Quels professionnels puis-je trouver ?",
+            "a": "Avocats inscrits au barreau, notaires agréés par la chambre des notaires, huissiers de justice assermentés, comptables agréés ONCA et experts-comptables agréés ONEC."
+          },
+          {
+            "q": "Les professionnels sont-ils vérifiés ?",
+            "a": "Oui. Chaque professionnel est vérifié par notre équipe avant activation. Nous contrôlons leur inscription officielle (barreau, chambre des notaires, numéro d'huissier, agrément ONEC/ONCA)."
+          },
+          {
+            "q": "Comment contacter le support ?",
+            "a": "Vous pouvez nous contacter à support@mizan-dz.com pour toute question technique, ou professionnel@mizan-dz.com pour les questions liées aux profils professionnels."
+          }
+        ]
+      },
+      "clients": {
+        "label": "Pour les clients",
+        "questions": [
+          {
+            "q": "Comment trouver un professionnel ?",
+            "a": "Choisissez la catégorie d'expert depuis la page d'accueil, puis filtrez par wilaya et domaine d'intervention sur la page de recherche."
+          },
+          {
+            "q": "Puis-je consulter depuis l'étranger ?",
+            "a": "Oui, la messagerie Mizan fonctionne depuis n'importe quel pays. La diaspora algérienne peut contacter un avocat, notaire, comptable ou expert-comptable depuis la France, le Canada ou ailleurs."
+          },
+          {
+            "q": "Quelle différence entre un notaire et un avocat ?",
+            "a": "L'avocat représente et conseille en justice. Le notaire établit des actes officiels — immobilier, successions, mariages, contrats. Les deux sont accessibles via Mizan."
+          },
+          {
+            "q": "À quoi sert un huissier ?",
+            "a": "Le huissier intervient pour les constats officiels, l'exécution des jugements, le recouvrement de créances et les significations d'actes."
+          },
+          {
+            "q": "Quelle différence entre comptable et expert-comptable ?",
+            "a": "Le comptable agréé (ONCA) gère la comptabilité courante, les déclarations et les bulletins de paie. L'expert-comptable (ONEC) peut en plus signer des bilans officiels, réaliser des audits légaux et exercer le commissariat aux comptes."
+          },
+          {
+            "q": "Quand faire appel à un expert-comptable ?",
+            "a": "Pour les audits légaux, l'évaluation d'entreprise, la due diligence, la consolidation des comptes ou des missions de conseil fiscal avancé."
+          },
+          {
+            "q": "Les avis sont-ils fiables ?",
+            "a": "Tous les avis Mizan sont soumis à modération avant publication. Les avis Google proviennent de Google Business et sont affichés tels quels."
+          },
+          {
+            "q": "Puis-je contacter plusieurs professionnels ?",
+            "a": "Oui, vous pouvez envoyer des demandes à plusieurs professionnels en parallèle. Chaque conversation est indépendante et privée."
+          }
+        ]
+      },
+      "avocats": {
+        "label": "Pour les avocats",
+        "questions": [
+          {
+            "q": "Comment réclamer mon profil ?",
+            "a": "Si vous trouvez votre profil sur Mizan, cliquez sur 'Réclamer ce profil'. Vous recevrez un code de vérification sur votre email professionnel inscrit au barreau."
+          },
+          {
+            "q": "L'inscription est-elle payante ?",
+            "a": "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité dans les résultats de recherche."
+          },
+          {
+            "q": "Comment modifier mon profil ?",
+            "a": "Depuis votre espace personnel, vous pouvez modifier vos informations, spécialités, langues et coordonnées à tout moment."
+          },
+          {
+            "q": "Comment recevoir des demandes ?",
+            "a": "Les clients vous contactent via la messagerie intégrée. Vous recevez une notification email à chaque nouvelle demande."
+          },
+          {
+            "q": "La publicité est-elle autorisée ?",
+            "a": "Figurer dans un annuaire numérique vérifié est légalement autorisé et conforme à la déontologie du barreau algérien — il ne s'agit pas de publicité personnelle au sens de l'article 47 de la loi 13-07."
+          },
+          {
+            "q": "Quelles spécialités puis-je afficher ?",
+            "a": "Toutes les branches du droit : civil, pénal, commercial, famille, immobilier, travail, administratif, international, médical... Vous choisissez vos domaines depuis votre profil."
+          },
+          {
+            "q": "Mon profil est-il visible à l'étranger ?",
+            "a": "Oui. Mizan est accessible depuis la France, le Canada, et toute la diaspora. Votre profil est visible pour tous les clients connectés, où qu'ils soient."
+          }
+        ]
+      },
+      "notaires": {
+        "label": "Notaires",
+        "questions": [
+          {
+            "q": "Puis-je m'inscrire en tant que notaire ?",
+            "a": "Oui. Votre numéro de chambre des notaires sera requis pour vérification. Votre profil apparaît dans les résultats après validation sous 24-48h."
+          },
+          {
+            "q": "Quels actes puis-je proposer sur Mizan ?",
+            "a": "Actes immobiliers (vente, hypothèque), successions et héritages, contrats de mariage, donations, procurations, création d'entreprise, légalisations."
+          },
+          {
+            "q": "La diaspora peut-elle me contacter ?",
+            "a": "Oui, c'est l'un des cas d'usage les plus fréquents. La diaspora a besoin de notaires pour successions, actes immobiliers en Algérie, procurations. Mizan vous rend visible depuis l'étranger."
+          },
+          {
+            "q": "La publicité est-elle autorisée pour les notaires ?",
+            "a": "Figurer dans un annuaire numérique vérifié est autorisé et conforme à la déontologie notariale. Il ne s'agit pas d'une publicité personnelle mais d'un référencement professionnel."
+          },
+          {
+            "q": "Les clients peuvent-ils envoyer des documents ?",
+            "a": "Oui, via la messagerie Mizan. Les clients peuvent joindre des titres de propriété, actes de naissance ou autres documents à leurs demandes."
+          },
+          {
+            "q": "Mon numéro de chambre est-il affiché publiquement ?",
+            "a": "Oui, il apparaît sur votre profil public comme preuve de votre inscription officielle. Cela renforce la confiance des clients."
+          }
+        ]
+      },
+      "huissiers": {
+        "label": "Huissiers",
+        "questions": [
+          {
+            "q": "Puis-je m'inscrire en tant que huissier de justice ?",
+            "a": "Oui. Votre numéro officiel d'huissier de justice sera requis. Votre profil apparaît après validation sous 24-48h."
+          },
+          {
+            "q": "Quels services puis-je proposer ?",
+            "a": "Constats officiels, exécution de jugements, significations d'actes, recouvrement de créances, saisies, procès-verbaux."
+          },
+          {
+            "q": "Des demandes d'urgence sont-elles possibles ?",
+            "a": "Oui. La messagerie Mizan permet aux clients d'indiquer l'urgence de leur demande. Vous gérez ensuite les priorités depuis votre tableau de bord."
+          },
+          {
+            "q": "Quelle est ma zone de compétence sur Mizan ?",
+            "a": "Vous définissez votre wilaya de compétence dans votre profil. Les clients filtrent par wilaya, donc vous apparaissez uniquement pour votre zone d'intervention."
+          },
+          {
+            "q": "Des entreprises peuvent-elles me contacter ?",
+            "a": "Oui. Particuliers et entreprises utilisent Mizan. Les entreprises recherchent notamment des huissiers pour le recouvrement de créances et les constats commerciaux."
+          },
+          {
+            "q": "L'inscription est-elle payante ?",
+            "a": "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité dans les résultats de recherche."
+          }
+        ]
+      },
+      "comptables": {
+        "label": "Comptables",
+        "questions": [
+          {
+            "q": "Expert-comptable ou comptable agréé — quelle différence ?",
+            "a": "L'expert-comptable (ONEC) peut signer des bilans officiels et faire du commissariat aux comptes. Le comptable agréé (ONCA) gère la comptabilité courante, les déclarations et les bulletins de paie. Les deux peuvent s'inscrire sur Mizan."
+          },
+          {
+            "q": "Quel numéro est requis pour l'inscription ?",
+            "a": "Votre numéro d'agrément ONEC ou ONCA selon votre statut."
+          },
+          {
+            "q": "Quels services puis-je proposer ?",
+            "a": "Création d'entreprise (EURL, SARL, SPA), déclarations IFU/G50/IBS, bilan annuel, paie et cotisations sociales, conseil fiscal, comptabilité générale."
+          },
+          {
+            "q": "La diaspora est-elle une cible pertinente ?",
+            "a": "Absolument. Les Algériens de l'étranger qui créent une EURL ou SARL en Algérie ont besoin d'un comptable local. Mizan vous rend visible depuis la France, le Canada ou ailleurs."
+          },
+          {
+            "q": "Les missions peuvent-elles se faire à distance ?",
+            "a": "Oui. La plupart des missions comptables se font par échange de documents et messagerie. Mizan facilite ce flux dès le premier contact."
+          },
+          {
+            "q": "L'inscription est-elle payante ?",
+            "a": "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité dans les résultats de recherche."
+          }
+        ]
+      },
+      "expertComptable": {
+        "label": "Expert Comptable",
+        "questions": [
+          {
+            "q": "Quelle différence avec le comptable agréé ?",
+            "a": "L'expert-comptable (ONEC) peut signer des bilans officiels, réaliser des audits légaux et exercer le commissariat aux comptes. Le comptable agréé (ONCA) gère la comptabilité courante. Deux métiers distincts, tous deux présents sur Mizan."
+          },
+          {
+            "q": "Quel numéro est requis pour l'inscription ?",
+            "a": "Votre numéro d'agrément ONEC (Ordre National des Experts-Comptables)."
+          },
+          {
+            "q": "Quels services puis-je proposer ?",
+            "a": "Audit légal et contractuel, consolidation des comptes, évaluation d'entreprise, due diligence financière, restructuration financière, commissariat aux comptes, conseil fiscal avancé."
+          },
+          {
+            "q": "La diaspora est-elle une cible pertinente ?",
+            "a": "Absolument. Les Algériens de l'étranger ont besoin d'experts-comptables pour auditer leurs sociétés algériennes, évaluer des acquisitions ou réaliser des due diligences. Mizan vous rend visible depuis l'étranger."
+          },
+          {
+            "q": "Les missions peuvent-elles se faire à distance ?",
+            "a": "Oui pour la majorité des missions. L'échange de documents via la messagerie Mizan facilite le flux dès le premier contact."
+          },
+          {
+            "q": "La publicité est-elle autorisée ?",
+            "a": "Figurer dans un annuaire vérifié est autorisé et conforme à la déontologie ONEC. Ce n'est pas une publicité personnelle mais un référencement professionnel."
+          },
+          {
+            "q": "L'inscription est-elle payante ?",
+            "a": "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité dans les résultats de recherche."
+          }
+        ]
+      }
+    }
+  },
+  "cguPage": {
+    "back": "Retour",
+    "title": "Conditions Générales d'Utilisation",
+    "lastUpdate": "Dernière mise à jour : {date}",
+    "s1": {
+      "title": "1. Objet et nature du site",
+      "p1": "MIZAN est une plateforme en ligne qui met en relation des clients avec des experts juridiques et comptables vérifiés en Algérie : avocats, notaires, huissiers de justice et comptables. La plateforme facilite la recherche, la consultation et la communication entre les parties, sans se substituer aux professionnels dans l'exercice de leur profession.",
+      "boxTitle": "Distinction avec les registres officiels",
+      "boxP1": "Important : MIZAN n'est pas le tableau officiel de l'Ordre des avocats tel que prévu par la loi n° 13-07 du 29 juillet 2013. MIZAN ne prétend pas remplacer les registres officiels des ordres professionnels algériens (barreau, chambre des notaires, ordre des huissiers, ONEC/ONCA).",
+      "boxP2": "Les informations publiées sur MIZAN constituent un service complémentaire d'annuaire et ne sauraient avoir la même valeur juridique que les registres officiels."
+    },
+    "s2": {
+      "title": "2. Acceptation des conditions",
+      "p1": "L'utilisation de MIZAN implique l'acceptation pleine et entière des présentes conditions générales. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser la plateforme."
+    },
+    "s3": {
+      "title": "3. Inscription et compte utilisateur",
+      "clientsTitle": "Pour les clients :",
+      "clients": [
+        "L'inscription est gratuite et libre",
+        "Vous devez fournir des informations exactes et à jour",
+        "Vous êtes responsable de la confidentialité de votre mot de passe"
+      ],
+      "prosTitle": "Pour les professionnels (avocats, notaires, huissiers, comptables) :",
+      "pros": [
+        "Vous devez exercer légalement votre profession en Algérie",
+        "Vous devez fournir les documents prouvant votre qualité professionnelle (numéro de barreau, chambre des notaires, N° d'huissier ou agrément ONEC/ONCA)",
+        "Votre profil sera vérifié avant activation",
+        "Vous vous engagez à respecter la déontologie et les règles de votre profession"
+      ]
+    },
+    "s4": {
+      "title": "4. Services proposés",
+      "items": [
+        "Recherche de professionnels par domaine d'intervention et wilaya",
+        "Consultation des profils professionnels vérifiés",
+        "Envoi de demandes de consultation",
+        "Système de messagerie sécurisée",
+        "Publication d'avis clients (soumis à modération)"
+      ]
+    },
+    "s5": {
+      "title": "5. Nature et origine des informations publiées",
+      "boxTitle": "Collecte de données professionnelles publiques",
+      "p1": "Les coordonnées et informations des professionnels publiées sur MIZAN proviennent de deux sources :",
+      "aTitle": "A. Professionnels inscrits sur la plateforme",
+      "aP": "Les professionnels qui créent un compte sur MIZAN fournissent volontairement leurs informations et disposent d'un contrôle total sur leur profil.",
+      "bTitle": "B. Données provenant de sources publiques",
+      "bP": "Certaines informations proviennent de sources publiques et accessibles librement sur internet : sites web officiels de cabinets, Google My Business, LinkedIn, annuaires professionnels publics.",
+      "infoTitle": "Information des professionnels",
+      "infoP": "MIZAN s'engage à informer chaque professionnel dont les coordonnées sont publiées, par email ou téléphone."
+    },
+    "s6": {
+      "title": "6. Droits des professionnels concernant leurs données",
+      "p1": "Tout professionnel figurant sur MIZAN dispose des droits suivants, qu'il peut exercer à tout moment, gratuitement et sans justification :",
+      "rectifTitle": "Droit de rectification",
+      "rectifP": "Tout professionnel peut demander la correction de ses informations si elles sont inexactes ou obsolètes.",
+      "deleteTitle": "Droit de suppression",
+      "deleteP": "Tout professionnel peut demander le retrait immédiat et complet de ses coordonnées du site, sans justification.",
+      "opposeTitle": "Droit d'opposition",
+      "opposeP": "Tout professionnel peut s'opposer à l'utilisation de ses données pour la mise en relation.",
+      "accessTitle": "Droit d'accès",
+      "accessP": "Tout professionnel peut consulter l'ensemble des informations publiées le concernant sur MIZAN.",
+      "howTitle": "Comment exercer ces droits ?",
+      "email": "Email :",
+      "phone": "Téléphone :",
+      "delay": "Délai de traitement :",
+      "delayValue": "Maximum 15 jours ouvrés"
+    },
+    "s7": {
+      "title": "7. Exactitude et mise à jour",
+      "items": [
+        "La disponibilité des professionnels peut évoluer",
+        "Les coordonnées professionnelles peuvent changer",
+        "Les domaines d'intervention peuvent être mis à jour"
+      ],
+      "p1": "Les utilisateurs sont invités à vérifier directement auprès des professionnels concernés toute information critique avant d'engager une démarche juridique ou comptable."
+    },
+    "s8": {
+      "title": "8. Responsabilités",
+      "commitTitle": "MIZAN s'engage à :",
+      "commit": [
+        "Vérifier les qualifications et l'inscription officielle des professionnels",
+        "Maintenir la plateforme en bon état de fonctionnement",
+        "Protéger les données personnelles des utilisateurs",
+        "Modérer les avis publiés",
+        "Traiter rapidement les demandes de rectification ou suppression",
+        "Informer les professionnels de la publication de leurs données"
+      ],
+      "declineTitle": "MIZAN décline toute responsabilité concernant :",
+      "decline": [
+        "La qualité des services fournis par les professionnels",
+        "Les conseils juridiques, notariaux ou comptables donnés",
+        "Les honoraires pratiqués",
+        "Les résultats des procédures entreprises",
+        "Les litiges entre clients et professionnels"
+      ],
+      "importantP": "Important : Le site agit uniquement comme intermédiaire de mise en relation. MIZAN ne sélectionne pas, ne recommande pas et n'évalue pas les professionnels. Chaque utilisateur est responsable de son choix de professionnel."
+    },
+    "s9": {
+      "title": "9. Utilisation du site",
+      "items": [
+        "Utiliser le site de manière loyale et conforme à son objet",
+        "Ne pas tenter d'extraire massivement les données du site (scraping)",
+        "Ne pas utiliser les coordonnées des professionnels à des fins de spam ou de harcèlement",
+        "Respecter la propriété intellectuelle du site",
+        "Ne pas publier de faux avis ou d'avis diffamatoires"
+      ]
+    },
+    "s10": {
+      "title": "10. Propriété intellectuelle",
+      "p1": "L'ensemble des éléments de la plateforme (logo, design, contenu éditorial) sont la propriété exclusive de MIZAN. Toute reproduction, même partielle, est strictement interdite sans autorisation préalable."
+    },
+    "s11": {
+      "title": "11. Modification et résiliation",
+      "p1": "MIZAN se réserve le droit de modifier les présentes conditions à tout moment. Les utilisateurs seront informés par email des modifications importantes. Vous pouvez supprimer votre compte à tout moment depuis les paramètres."
+    },
+    "s12": {
+      "title": "12. Droit applicable et juridiction",
+      "p1": "Les présentes conditions sont régies par le droit algérien. En cas de litige, les tribunaux algériens seront seuls compétents."
+    },
+    "s13": {
+      "title": "13. Contact",
+      "phone": "Téléphone : +33 6 60 25 35 70",
+      "otherRequests": "Pour d'autres demandes :",
+      "contactPage": "page de contact"
+    }
+  },
+  "privacyPage": {
+    "back": "Retour",
+    "title": "Politique de Confidentialité",
+    "lastUpdate": "Dernière mise à jour : {date}",
+    "s1": {
+      "title": "1. Introduction",
+      "p1": "MIZAN s'engage à protéger la confidentialité et la sécurité de vos données personnelles. Cette politique explique comment nous collectons, utilisons et protégeons vos informations.",
+      "p2": "MIZAN s'efforce de respecter la législation algérienne en matière de protection des données personnelles, notamment la loi n° 18-07 du 10 juin 2018 relative à la protection des personnes physiques dans le traitement des données à caractère personnel."
+    },
+    "s2": {
+      "title": "2. Données publiques des professionnels (source externe)",
+      "boxTitle": "Collecte de données professionnelles publiques",
+      "p1": "MIZAN collecte et publie des informations professionnelles concernant des avocats, notaires, huissiers et comptables exerçant en Algérie. Ces informations proviennent exclusivement de sources publiques et accessibles librement sur internet, notamment :",
+      "sources": [
+        "Sites web officiels des cabinets d'avocats et études notariales",
+        "Pages professionnelles publiques (Google My Business, LinkedIn, etc.)",
+        "Annuaires professionnels publics en ligne",
+        "Réseaux sociaux professionnels publics",
+        "Publications professionnelles accessibles au public"
+      ],
+      "natureTitle": "Nature des informations collectées",
+      "nature": [
+        "Nom et prénom du professionnel",
+        "Adresse du cabinet ou de l'étude",
+        "Numéro de téléphone professionnel",
+        "Adresse email professionnelle",
+        "Domaines de compétence (si disponibles)",
+        "Langues parlées (si disponibles)",
+        "Numéro professionnel (barreau, chambre des notaires, huissier, ONEC/ONCA si disponible)"
+      ],
+      "useTitle": "Utilisation et finalité",
+      "useP": "Ces données sont utilisées uniquement dans le cadre d'un service d'annuaire professionnel et de mise en relation entre clients et professionnels. Elles ne font l'objet d'aucune exploitation commerciale non autorisée.",
+      "infoTitle": "Information des professionnels concernés",
+      "infoP": "MIZAN s'engage à informer chaque professionnel dont les coordonnées sont publiées sur le site. Les professionnels sont contactés par email ou téléphone pour les informer de la présence de leurs informations sur la plateforme.",
+      "rightsTitle": "Droits des professionnels concernant leurs données",
+      "rightsP": "Tout professionnel figurant sur MIZAN dispose des droits suivants, qu'il peut exercer à tout moment et gratuitement :",
+      "rightRectif": "Droit de rectification : Corriger toute information incorrecte ou obsolète",
+      "rightDelete": "Droit de suppression : Demander le retrait complet de son profil du site",
+      "rightOppose": "Droit d'opposition : S'opposer à l'utilisation de ses données pour la mise en relation",
+      "rightAccess": "Droit d'accès : Consulter l'ensemble des données publiées le concernant",
+      "contact": "Contact :",
+      "delay": "Délai de traitement : 15 jours ouvrés maximum.",
+      "note": "Note importante : Les professionnels qui créent un compte sur MIZAN et revendiquent leur profil bénéficient d'un contrôle total sur leurs informations et peuvent les modifier directement depuis leur espace personnel."
+    },
+    "s3": {
+      "title": "3. Données collectées pour les utilisateurs inscrits",
+      "allTitle": "Pour tous les utilisateurs inscrits :",
+      "all": [
+        "Nom et prénom",
+        "Adresse email",
+        "Mot de passe (crypté)",
+        "Date de création du compte"
+      ],
+      "clientsTitle": "Pour les clients :",
+      "clients": [
+        "Localisation (wilaya ou pays)",
+        "Historique des consultations",
+        "Avis publiés"
+      ],
+      "prosTitle": "Pour les professionnels inscrits (avocats, notaires, huissiers, comptables) :",
+      "pros": [
+        "Numéro professionnel (barreau / chambre des notaires / huissier / ONEC-ONCA)",
+        "Domaines d'intervention",
+        "Coordonnées professionnelles (téléphone, adresse cabinet)",
+        "Documents de vérification (carte professionnelle)",
+        "Informations bancaires (pour paiements futurs)"
+      ]
+    },
+    "s4": {
+      "title": "4. Utilisation des données",
+      "p1": "Vos données sont utilisées uniquement pour :",
+      "items": [
+        "Créer et gérer votre compte",
+        "Faciliter la mise en relation entre clients et professionnels",
+        "Envoyer des notifications importantes (réponses aux consultations)",
+        "Vérifier l'identité et les qualifications des professionnels inscrits",
+        "Améliorer nos services",
+        "Respecter nos obligations légales"
+      ],
+      "neverSell": "Nous ne vendons jamais vos données personnelles à des tiers."
+    },
+    "s5": {
+      "title": "5. Partage des données",
+      "between": "Entre utilisateurs :",
+      "betweenP": "Les clients voient les informations publiques des profils professionnels. Les professionnels voient le nom et email des clients qui les contactent.",
+      "providers": "Prestataires techniques :",
+      "providersP": "Nous utilisons des prestataires d'hébergement certifiés pour le stockage sécurisé des données.",
+      "legal": "Obligations légales :",
+      "legalP": "En cas de demande judiciaire ou administrative légale."
+    },
+    "s6": {
+      "title": "6. Sécurité des données",
+      "items": [
+        "Cryptage des mots de passe",
+        "Connexion sécurisée HTTPS",
+        "Hébergement sur serveurs sécurisés certifiés",
+        "Accès limité aux données personnelles",
+        "Sauvegardes régulières"
+      ]
+    },
+    "s7": {
+      "title": "7. Cookies",
+      "p1": "Le site MIZAN utilise des cookies essentiels pour son fonctionnement (authentification, préférences). Nous n'utilisons pas de cookies publicitaires ou de tracking tiers."
+    },
+    "s8": {
+      "title": "8. Vos droits (utilisateurs inscrits)",
+      "access": "Droit d'accès :",
+      "accessP": "Consulter vos données personnelles",
+      "rectif": "Droit de rectification :",
+      "rectifP": "Corriger vos informations",
+      "erase": "Droit à l'effacement :",
+      "eraseP": "Supprimer votre compte",
+      "portability": "Droit de portabilité :",
+      "portabilityP": "Récupérer vos données",
+      "oppose": "Droit d'opposition :",
+      "opposeP": "Refuser certaines utilisations",
+      "exercise": "Pour exercer ces droits :"
+    },
+    "s9": {
+      "title": "9. Conservation des données",
+      "active": "Comptes actifs :",
+      "activeP": "Données conservées tant que le compte existe",
+      "deleted": "Comptes supprimés :",
+      "deletedP": "Données effacées sous 30 jours, sauf obligations légales",
+      "reviews": "Avis publiés :",
+      "reviewsP": "Conservés de manière anonymisée après suppression du compte",
+      "unregistered": "Données de professionnels non inscrits :",
+      "unregisteredP": "Conservées tant que le professionnel n'a pas demandé leur suppression"
+    },
+    "s10": {
+      "title": "10. Modifications",
+      "p1": "Nous pouvons modifier cette politique. Les modifications importantes vous seront notifiées par email."
+    },
+    "s11": {
+      "title": "11. Contact",
+      "phone": "Téléphone : +33 6 60 25 35 70",
+      "otherRequests": "Pour d'autres demandes :",
+      "contactPage": "page de contact"
+    }
+  },
+  "legalPage": {
+    "back": "Retour",
+    "title": "Mentions Légales",
+    "lastUpdate": "Dernière mise à jour : {date}",
+    "warningTitle": "Projet en phase de lancement",
+    "warningP": "MIZAN est actuellement exploité par Chabane Nadji en tant que développeur indépendant. Une structure juridique formelle (SARL algérienne) sera créée prochainement. Cette page sera mise à jour avec les informations d'immatriculation complètes.",
+    "s1": {
+      "title": "1. Éditeur et exploitant du site",
+      "projectName": "Nom du projet :",
+      "operator": "Exploitant :",
+      "status": "Statut actuel :",
+      "statusValue": "Développeur indépendant / Autoentrepreneur",
+      "contactEmail": "Email de contact :",
+      "personalEmail": "Email personnel :",
+      "phone": "Téléphone :",
+      "regNote": "Immatriculation commerciale en cours : Les informations légales complètes (forme juridique, RC, NIF, capital social) seront publiées dès la création officielle de la SARL en Algérie."
+    },
+    "s1b": {
+      "title": "1.5. Nature du site",
+      "p1": "MIZAN est un annuaire en ligne et une plateforme de mise en relation entre particuliers et professionnels du droit et du chiffre exerçant en Algérie : avocats, notaires, huissiers de justice et comptables.",
+      "p2": "Important : Ce site n'est pas le tableau officiel de l'Ordre des avocats tel que prévu par la loi n° 13-07 du 29 juillet 2013. MIZAN ne prétend pas remplacer ni reproduire le tableau officiel tenu par l'Ordre des avocats d'Algérie, ni les registres officiels de la chambre des notaires ou de l'ordre des huissiers.",
+      "p3": "Les informations présentées constituent un service complémentaire d'annuaire professionnel et ne sauraient se substituer aux documents officiels des ordres professionnels."
+    },
+    "s2": {
+      "title": "2. Responsable de la publication",
+      "role": "Développeur et fondateur du projet MIZAN",
+      "email": "Email :"
+    },
+    "s3": {
+      "title": "3. Hébergement",
+      "host": "Hébergeur :",
+      "hostValue": "Prestataire d'hébergement cloud certifié, serveurs sécurisés."
+    },
+    "s4": {
+      "title": "4. Propriété intellectuelle",
+      "p1": "L'ensemble de ce site relève de la législation algérienne et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés.",
+      "p2": "La reproduction de tout ou partie de ce site sur un support électronique est formellement interdite sauf autorisation expresse de MIZAN.",
+      "p3": "Les informations professionnelles des avocats, notaires, huissiers et comptables (noms, coordonnées, domaines) restent la propriété de ces derniers et sont publiées dans un but informatif d'annuaire professionnel uniquement."
+    },
+    "s5": {
+      "title": "5. Données personnelles",
+      "p1": "Les informations recueillies sur ce site font l'objet d'un traitement informatique destiné à faciliter la mise en relation entre clients et professionnels. Pour plus d'informations :",
+      "link": "Politique de Confidentialité"
+    },
+    "s6": {
+      "title": "6. Cookies",
+      "p1": "Le site MIZAN utilise des cookies essentiels pour son fonctionnement (authentification, préférences). En naviguant sur ce site, vous acceptez l'utilisation de ces cookies techniques nécessaires."
+    },
+    "s7": {
+      "title": "7. Limitation de responsabilité",
+      "p1": "MIZAN met tout en œuvre pour offrir des informations vérifiées, mais ne saurait être tenue pour responsable des erreurs ou de l'absence de disponibilité des informations.",
+      "p2": "MIZAN ne saurait être tenue responsable de la qualité des services fournis par les professionnels inscrits sur la plateforme."
+    },
+    "s8": {
+      "title": "8. Droit applicable",
+      "p1": "Les présentes mentions légales sont régies par le droit algérien. Tout litige est soumis au droit algérien et relève de la compétence exclusive des tribunaux algériens."
+    },
+    "s9": {
+      "title": "9. Contact",
+      "otherRequests": "Pour d'autres demandes :",
+      "contactPage": "page de contact"
+    },
+    "footerNote": "MIZAN — Plateforme de mise en relation avec des experts juridiques en Algérie"
   }
 }

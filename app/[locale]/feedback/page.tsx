@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { MessageCircle, Lightbulb, Bug, Send } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function FeedbackPage() {
   const { user, profile, isAuthenticated, loading } = useAuth();
+  const t = useTranslations("feedback");
   const [type, setType] = useState("testimonial");
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
@@ -41,7 +43,7 @@ export default function FeedbackPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Erreur lors de l'envoi");
+        throw new Error(data.error || t("errorSend"));
       }
 
       setSuccess(true);
@@ -52,7 +54,7 @@ export default function FeedbackPage() {
       }, 2500);
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Une erreur est survenue");
+      setError(err.message || t("errorGeneric"));
     } finally {
       setSending(false);
     }
@@ -62,26 +64,25 @@ export default function FeedbackPage() {
     {
       value: "testimonial",
       icon: MessageCircle,
-      label: "Expérience",
+      label: t("types.testimonial"),
     },
-    {
-      value: "suggestion",
-      icon: Lightbulb,
-      label: "Amélioration",
-    },
-    {
-      value: "bug",
-      icon: Bug,
-      label: "Bug",
-    },
+    { value: "suggestion", icon: Lightbulb, label: t("types.suggestion") },
+    { value: "bug", icon: Bug, label: t("types.bug") },
   ];
+
+  const placeholder =
+    type === "bug"
+      ? t("placeholders.bug")
+      : type === "suggestion"
+        ? t("placeholders.suggestion")
+        : t("placeholders.testimonial");
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-100 via-white to-teal-100">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
-          <p className="text-slate-600">Chargement...</p>
+          <p className="text-slate-600">{t("loading")}</p>
         </div>
       </div>
     );
@@ -112,15 +113,15 @@ export default function FeedbackPage() {
               </svg>
             </div>
             <h2 className="text-2xl font-semibold text-slate-900 mb-2">
-              Merci pour votre feedback !
+              {t("thanksTitle")}
             </h2>
-            <p className="text-slate-600">Redirection en cours...</p>
+            <p className="text-slate-600">{t("redirecting")}</p>
           </div>
         ) : (
           <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
             <div className="p-6 border-b border-slate-100">
               <h1 className="text-2xl font-semibold text-slate-900">
-                Votre avis nous intéresse
+                {t("title")}
               </h1>
             </div>
 
@@ -176,23 +177,17 @@ export default function FeedbackPage() {
 
               <div className="mb-5">
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Votre message
+                  {t("messageLabel")}
                 </label>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder={
-                    type === "bug"
-                      ? "Décrivez le problème..."
-                      : type === "suggestion"
-                        ? "Quelle fonctionnalité aimeriez-vous ?"
-                        : "Partagez votre expérience..."
-                  }
+                  placeholder={placeholder}
                   className="w-full h-32 px-4 py-3 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700 resize-none"
                   maxLength={1000}
                 />
                 <p className="text-xs text-slate-500 mt-2">
-                  {message.length}/1000 caractères
+                  {t("charCount", { count: message.length })}
                 </p>
               </div>
 
@@ -204,12 +199,12 @@ export default function FeedbackPage() {
                 {sending ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                    Envoi en cours...
+                    {t("sending")}
                   </>
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    Envoyer
+                    {t("send")}
                   </>
                 )}
               </button>

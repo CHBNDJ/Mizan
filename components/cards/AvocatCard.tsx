@@ -2,6 +2,7 @@
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { getSpecialiteLabel, getWilayaLabel } from "@/lib/i18nlabels";
 import { AvocatData } from "@/types";
 import { MapPin, Star, Scale } from "lucide-react";
 import { getInitials } from "@/lib/utils";
@@ -48,7 +49,9 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
         </div>
         <div className="flex items-center justify-center gap-1.5 mb-1 w-full">
           <span className="text-[11px] text-slate-500 truncate">
-            {specialites[0] || t("professions.avocat.label")}
+            {specialites[0]
+              ? getSpecialiteLabel(specialites[0], t)
+              : t("professions.avocat.label")}
           </span>
           {autresSpecialites > 0 && (
             <span className="flex-shrink-0 bg-teal-100 text-teal-700 text-[10px] font-medium px-1.5 py-0.5 rounded">
@@ -58,7 +61,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
         </div>
         <div className="flex items-center justify-center gap-1 text-[11px] text-slate-500 mb-2 w-full">
           <MapPin className="w-3 h-3 flex-shrink-0" />
-          <span className="truncate">{avocat.wilaya}</span>
+          <span className="truncate">{getWilayaLabel(avocat.wilaya, t)}</span>
         </div>
         <div className="mt-auto space-y-1 w-full">
           {hasGoogleRating && (
@@ -115,7 +118,9 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
         </div>
         <div className="flex items-center gap-1.5 mb-2 min-h-[20px] flex-shrink-0">
           <div className="text-xs text-slate-600 truncate flex-1">
-            {specialites[0] || t("professions.avocat.label")}
+            {specialites[0]
+              ? getSpecialiteLabel(specialites[0], t)
+              : t("professions.avocat.label")}
           </div>
           {autresSpecialites > 0 && (
             <div className="flex-shrink-0 bg-teal-100 text-teal-700 text-[10px] font-medium px-1.5 py-0.5 rounded">
@@ -125,7 +130,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
         </div>
         <div className="flex items-center gap-1 text-xs text-slate-500 mb-2 flex-shrink-0">
           <MapPin className="w-3 h-3 flex-shrink-0" />
-          <span className="truncate">{avocat.wilaya}</span>
+          <span className="truncate">{getWilayaLabel(avocat.wilaya, t)}</span>
         </div>
         <div className="mt-auto space-y-1 h-[44px]">
           {hasGoogleRating && (

@@ -813,57 +813,853 @@
     "r4": "More than 8,000 DA"
   },
   "countries": {
-    "Algérie": "Algeria",
-    "France": "France",
-    "Belgique": "Belgium",
-    "Suisse": "Switzerland",
-    "Luxembourg": "Luxembourg",
-    "Canada": "Canada",
-    "États-Unis": "United States",
-    "Royaume-Uni": "United Kingdom",
-    "Allemagne": "Germany",
-    "Espagne": "Spain",
-    "Italie": "Italy",
-    "Pays-Bas": "Netherlands",
-    "Portugal": "Portugal",
-    "Suède": "Sweden",
-    "Norvège": "Norway",
-    "Danemark": "Denmark",
-    "Finlande": "Finland",
-    "Autriche": "Austria",
-    "Grèce": "Greece",
-    "Pologne": "Poland",
-    "Maroc": "Morocco",
-    "Tunisie": "Tunisia",
-    "Libye": "Libya",
-    "Égypte": "Egypt",
-    "Mauritanie": "Mauritania",
-    "Sénégal": "Senegal",
-    "Côte d'Ivoire": "Ivory Coast",
-    "Cameroun": "Cameroon",
-    "RD Congo": "DR Congo",
-    "Congo": "Congo",
-    "Gabon": "Gabon",
-    "Nigéria": "Nigeria",
-    "Ghana": "Ghana",
-    "Arabie Saoudite": "Saudi Arabia",
-    "Émirats Arabes Unis": "United Arab Emirates",
-    "Qatar": "Qatar",
-    "Koweït": "Kuwait",
-    "Bahreïn": "Bahrain",
-    "Oman": "Oman",
-    "Jordanie": "Jordan",
-    "Liban": "Lebanon",
-    "Syrie": "Syria",
-    "Irak": "Iraq",
-    "Turquie": "Turkey",
-    "Russie": "Russia",
-    "Chine": "China",
-    "Japon": "Japan",
-    "Inde": "India",
-    "Brésil": "Brazil",
-    "Mexique": "Mexico",
-    "Australie": "Australia",
-    "Afrique du Sud": "South Africa"
+    "dz": "Algeria",
+    "fr": "France",
+    "be": "Belgium",
+    "ch": "Switzerland",
+    "lu": "Luxembourg",
+    "ca": "Canada",
+    "us": "United States",
+    "gb": "United Kingdom",
+    "de": "Germany",
+    "es": "Spain",
+    "it": "Italy",
+    "nl": "Netherlands",
+    "pt": "Portugal",
+    "se": "Sweden",
+    "no": "Norway",
+    "dk": "Denmark",
+    "fi": "Finland",
+    "at": "Austria",
+    "gr": "Greece",
+    "pl": "Poland",
+    "ma": "Morocco",
+    "tn": "Tunisia",
+    "ly": "Libya",
+    "eg": "Egypt",
+    "mr": "Mauritania",
+    "sn": "Senegal",
+    "ci": "Ivory Coast",
+    "cm": "Cameroon",
+    "cd": "DR Congo",
+    "cg": "Congo",
+    "ga": "Gabon",
+    "ng": "Nigeria",
+    "gh": "Ghana",
+    "sa": "Saudi Arabia",
+    "ae": "United Arab Emirates",
+    "qa": "Qatar",
+    "kw": "Kuwait",
+    "bh": "Bahrain",
+    "om": "Oman",
+    "jo": "Jordan",
+    "lb": "Lebanon",
+    "sy": "Syria",
+    "iq": "Iraq",
+    "tr": "Turkey",
+    "ru": "Russia",
+    "cn": "China",
+    "jp": "Japan",
+    "in": "India",
+    "br": "Brazil",
+    "mx": "Mexico",
+    "au": "Australia",
+    "za": "South Africa"
+  },
+  "location": {
+    "algerie": "Algeria",
+    "afghanistan": "Afghanistan",
+    "afrique-du-sud": "South Africa",
+    "albanie": "Albania",
+    "allemagne": "Germany",
+    "andorre": "Andorra",
+    "angola": "Angola",
+    "antigua-et-barbuda": "Antigua and Barbuda",
+    "arabie-saoudite": "Saudi Arabia",
+    "argentine": "Argentina",
+    "armenie": "Armenia",
+    "australie": "Australia",
+    "autriche": "Austria",
+    "azerbaidjan": "Azerbaijan",
+    "bahamas": "Bahamas",
+    "bahrein": "Bahrain",
+    "bangladesh": "Bangladesh",
+    "barbade": "Barbados",
+    "belarus": "Belarus",
+    "belgique": "Belgium",
+    "belize": "Belize",
+    "benin": "Benin",
+    "bhoutan": "Bhutan",
+    "bolivie": "Bolivia",
+    "bosnie-herzegovine": "Bosnia and Herzegovina",
+    "botswana": "Botswana",
+    "bresil": "Brazil",
+    "brunei": "Brunei",
+    "bulgarie": "Bulgaria",
+    "burkina-faso": "Burkina Faso",
+    "burundi": "Burundi",
+    "cabo-verde": "Cabo Verde",
+    "cambodge": "Cambodia",
+    "cameroun": "Cameroon",
+    "canada": "Canada",
+    "chili": "Chile",
+    "chine": "China",
+    "chypre": "Cyprus",
+    "colombie": "Colombia",
+    "comores": "Comoros",
+    "congo": "Congo",
+    "costa-rica": "Costa Rica",
+    "cote-divoire": "Ivory Coast",
+    "croatie": "Croatia",
+    "cuba": "Cuba",
+    "danemark": "Denmark",
+    "djibouti": "Djibouti",
+    "dominique": "Dominica",
+    "egypte": "Egypt",
+    "emirats-arabes-unis": "United Arab Emirates",
+    "equateur": "Ecuador",
+    "erythree": "Eritrea",
+    "espagne": "Spain",
+    "eswatini": "Eswatini",
+    "estonie": "Estonia",
+    "etats-unis": "United States",
+    "ethiopie": "Ethiopia",
+    "fidji": "Fiji",
+    "finlande": "Finland",
+    "france": "France",
+    "gabon": "Gabon",
+    "gambie": "Gambia",
+    "georgie": "Georgia",
+    "ghana": "Ghana",
+    "grece": "Greece",
+    "grenade": "Grenada",
+    "guatemala": "Guatemala",
+    "guinee": "Guinea",
+    "guinee-bissau": "Guinea-Bissau",
+    "guinee-equatoriale": "Equatorial Guinea",
+    "guyana": "Guyana",
+    "haiti": "Haiti",
+    "honduras": "Honduras",
+    "hongrie": "Hungary",
+    "inde": "India",
+    "indonesie": "Indonesia",
+    "irak": "Iraq",
+    "iran": "Iran",
+    "irlande": "Ireland",
+    "islande": "Iceland",
+    "italie": "Italy",
+    "jamaique": "Jamaica",
+    "japon": "Japan",
+    "jordanie": "Jordan",
+    "kazakhstan": "Kazakhstan",
+    "kenya": "Kenya",
+    "kirghizistan": "Kyrgyzstan",
+    "kiribati": "Kiribati",
+    "koweit": "Kuwait",
+    "laos": "Laos",
+    "lesotho": "Lesotho",
+    "lettonie": "Latvia",
+    "liban": "Lebanon",
+    "liberia": "Liberia",
+    "libye": "Libya",
+    "liechtenstein": "Liechtenstein",
+    "lituanie": "Lithuania",
+    "luxembourg": "Luxembourg",
+    "macedoine-du-nord": "North Macedonia",
+    "madagascar": "Madagascar",
+    "malaisie": "Malaysia",
+    "malawi": "Malawi",
+    "maldives": "Maldives",
+    "mali": "Mali",
+    "malte": "Malta",
+    "maroc": "Morocco",
+    "marshall": "Marshall Islands",
+    "maurice": "Mauritius",
+    "mauritanie": "Mauritania",
+    "mexique": "Mexico",
+    "micronesie": "Micronesia",
+    "moldavie": "Moldova",
+    "monaco": "Monaco",
+    "mongolie": "Mongolia",
+    "montenegro": "Montenegro",
+    "mozambique": "Mozambique",
+    "myanmar": "Myanmar",
+    "namibie": "Namibia",
+    "nauru": "Nauru",
+    "nepal": "Nepal",
+    "nicaragua": "Nicaragua",
+    "niger": "Niger",
+    "nigeria": "Nigeria",
+    "norvege": "Norway",
+    "nouvelle-zelande": "New Zealand",
+    "oman": "Oman",
+    "ouganda": "Uganda",
+    "ouzbekistan": "Uzbekistan",
+    "pakistan": "Pakistan",
+    "palestine": "Palestine",
+    "palaos": "Palau",
+    "panama": "Panama",
+    "papouasie-nouvelle-guinee": "Papua New Guinea",
+    "paraguay": "Paraguay",
+    "pays-bas": "Netherlands",
+    "perou": "Peru",
+    "philippines": "Philippines",
+    "pologne": "Poland",
+    "portugal": "Portugal",
+    "qatar": "Qatar",
+    "republique-centrafricaine": "Central African Republic",
+    "republique-democratique-du-congo": "Democratic Republic of the Congo",
+    "republique-dominicaine": "Dominican Republic",
+    "republique-tcheque": "Czech Republic",
+    "roumanie": "Romania",
+    "royaume-uni": "United Kingdom",
+    "russie": "Russia",
+    "rwanda": "Rwanda",
+    "saint-christophe-et-nieves": "Saint Kitts and Nevis",
+    "saint-marin": "San Marino",
+    "saint-vincent-et-grenadines": "Saint Vincent and the Grenadines",
+    "sainte-lucie": "Saint Lucia",
+    "salomon": "Solomon Islands",
+    "salvador": "El Salvador",
+    "samoa": "Samoa",
+    "sao-tome-et-principe": "Sao Tome and Principe",
+    "senegal": "Senegal",
+    "serbie": "Serbia",
+    "seychelles": "Seychelles",
+    "sierra-leone": "Sierra Leone",
+    "singapour": "Singapore",
+    "slovaquie": "Slovakia",
+    "slovenie": "Slovenia",
+    "somalie": "Somalia",
+    "soudan": "Sudan",
+    "soudan-du-sud": "South Sudan",
+    "sri-lanka": "Sri Lanka",
+    "suede": "Sweden",
+    "suisse": "Switzerland",
+    "suriname": "Suriname",
+    "syrie": "Syria",
+    "tadjikistan": "Tajikistan",
+    "tanzanie": "Tanzania",
+    "tchad": "Chad",
+    "thailande": "Thailand",
+    "timor-oriental": "East Timor",
+    "togo": "Togo",
+    "tonga": "Tonga",
+    "trinite-et-tobago": "Trinidad and Tobago",
+    "tunisie": "Tunisia",
+    "turkmenistan": "Turkmenistan",
+    "turquie": "Turkey",
+    "tuvalu": "Tuvalu",
+    "ukraine": "Ukraine",
+    "uruguay": "Uruguay",
+    "vanuatu": "Vanuatu",
+    "venezuela": "Venezuela",
+    "vietnam": "Vietnam",
+    "yemen": "Yemen",
+    "zambie": "Zambia",
+    "zimbabwe": "Zimbabwe"
+  },
+  "contact": {
+    "back": "Back",
+    "title": "Contact",
+    "subtitle": "For any question, our team is at your disposal. Choose the service that fits your request.",
+    "technical": {
+      "title": "Technical Support",
+      "desc": "For all your technical issues, bugs or questions about using the platform.",
+      "delay": "Response within 24 hours"
+    },
+    "general": {
+      "title": "General Contact",
+      "desc": "General questions, partnerships, press, suggestions for improving the platform.",
+      "delay": "Response within 48 hours"
+    },
+    "professional": {
+      "title": "Professional Support",
+      "badge": "Lawyers · Notaries · Bailiffs · Accountants",
+      "desc": "Dedicated service for professionals for profile management, claims and consultations.",
+      "delay": "Priority response within 12 hours"
+    },
+    "faqTitle": "Frequently Asked Questions",
+    "faqDesc": "Before contacting us, check our FAQ. You might already find the answer to your question there.",
+    "faqLink": "View the FAQ"
+  },
+  "feedback": {
+    "loading": "Loading...",
+    "thanksTitle": "Thank you for your feedback!",
+    "redirecting": "Redirecting...",
+    "title": "We'd love your feedback",
+    "types": {
+      "testimonial": "Experience",
+      "suggestion": "Improvement",
+      "bug": "Bug"
+    },
+    "placeholders": {
+      "bug": "Describe the issue...",
+      "suggestion": "What feature would you like?",
+      "testimonial": "Share your experience..."
+    },
+    "messageLabel": "Your message",
+    "charCount": "{count}/1000 characters",
+    "sending": "Sending...",
+    "send": "Send",
+    "errorSend": "Error sending",
+    "errorGeneric": "An error occurred"
+  },
+  "faqPage": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Quickly find answers to your questions",
+    "noAnswerTitle": "Can't find your answer?",
+    "noAnswerDesc": "Our team is here to help you quickly",
+    "contactCta": "Contact us",
+    "tabExpertComptable": "Chartered accountant",
+    "categories": {
+      "general": {
+        "label": "General",
+        "questions": [
+          {
+            "q": "What is Mizan?",
+            "a": "Mizan is an online platform connecting clients with verified legal and accounting professionals in Algeria: lawyers, notaries, bailiffs, accountants and chartered accountants. Simple, direct, no middleman."
+          },
+          {
+            "q": "Is using Mizan free?",
+            "a": "Yes, registration and searching for professionals are entirely free for clients."
+          },
+          {
+            "q": "What professionals can I find?",
+            "a": "Bar-registered lawyers, notaries accredited by the chamber of notaries, sworn bailiffs, ONCA-accredited accountants and ONEC-accredited chartered accountants."
+          },
+          {
+            "q": "Are professionals verified?",
+            "a": "Yes. Every professional is verified by our team before activation. We check their official registration (bar, chamber of notaries, bailiff number, ONEC/ONCA accreditation)."
+          },
+          {
+            "q": "How do I contact support?",
+            "a": "You can reach us at support@mizan-dz.com for any technical question, or professionnel@mizan-dz.com for questions related to professional profiles."
+          }
+        ]
+      },
+      "clients": {
+        "label": "For clients",
+        "questions": [
+          {
+            "q": "How do I find a professional?",
+            "a": "Choose the expert category from the homepage, then filter by wilaya and area of practice on the search page."
+          },
+          {
+            "q": "Can I consult from abroad?",
+            "a": "Yes, Mizan messaging works from any country. The Algerian diaspora can contact a lawyer, notary, accountant or chartered accountant from France, Canada or elsewhere."
+          },
+          {
+            "q": "What's the difference between a notary and a lawyer?",
+            "a": "A lawyer represents and advises in court. A notary draws up official deeds — real estate, inheritance, marriages, contracts. Both are accessible via Mizan."
+          },
+          {
+            "q": "What is a bailiff for?",
+            "a": "A bailiff handles official reports, enforcement of judgments, debt collection and service of legal documents."
+          },
+          {
+            "q": "What's the difference between an accountant and a chartered accountant?",
+            "a": "An accredited accountant (ONCA) handles day-to-day bookkeeping, filings and payslips. A chartered accountant (ONEC) can also sign official financial statements, perform statutory audits and act as a statutory auditor."
+          },
+          {
+            "q": "When should I use a chartered accountant?",
+            "a": "For statutory audits, business valuation, due diligence, account consolidation or advanced tax advisory work."
+          },
+          {
+            "q": "Are reviews reliable?",
+            "a": "All Mizan reviews are moderated before publication. Google reviews come from Google Business and are displayed as-is."
+          },
+          {
+            "q": "Can I contact several professionals?",
+            "a": "Yes, you can send requests to several professionals in parallel. Each conversation is independent and private."
+          }
+        ]
+      },
+      "avocats": {
+        "label": "For lawyers",
+        "questions": [
+          {
+            "q": "How do I claim my profile?",
+            "a": "If you find your profile on Mizan, click 'Claim this profile'. You'll receive a verification code on your professional email registered with the bar."
+          },
+          {
+            "q": "Is registration paid?",
+            "a": "Registration is free. An optional subscription improves your visibility in search results."
+          },
+          {
+            "q": "How do I edit my profile?",
+            "a": "From your personal space, you can edit your information, specialties, languages and contact details at any time."
+          },
+          {
+            "q": "How do I receive requests?",
+            "a": "Clients contact you via the built-in messaging. You get an email notification for every new request."
+          },
+          {
+            "q": "Is advertising allowed?",
+            "a": "Appearing on a verified digital directory is legally authorized and compliant with the Algerian bar's ethics rules — it is not personal advertising within the meaning of Article 47 of Law 13-07."
+          },
+          {
+            "q": "What specialties can I display?",
+            "a": "All branches of law: civil, criminal, commercial, family, real estate, labor, administrative, international, medical... You choose your areas from your profile."
+          },
+          {
+            "q": "Is my profile visible abroad?",
+            "a": "Yes. Mizan is accessible from France, Canada, and the entire diaspora. Your profile is visible to all logged-in clients, wherever they are."
+          }
+        ]
+      },
+      "notaires": {
+        "label": "Notaries",
+        "questions": [
+          {
+            "q": "Can I register as a notary?",
+            "a": "Yes. Your chamber of notaries number will be required for verification. Your profile appears in results after validation within 24-48h."
+          },
+          {
+            "q": "What deeds can I offer on Mizan?",
+            "a": "Real estate deeds (sale, mortgage), inheritance, marriage contracts, donations, powers of attorney, company formation, legalizations."
+          },
+          {
+            "q": "Can the diaspora contact me?",
+            "a": "Yes, it's one of the most frequent use cases. The diaspora needs notaries for inheritance, real estate deeds in Algeria, powers of attorney. Mizan makes you visible from abroad."
+          },
+          {
+            "q": "Is advertising allowed for notaries?",
+            "a": "Appearing on a verified digital directory is authorized and compliant with notarial ethics. It is not personal advertising but professional referencing."
+          },
+          {
+            "q": "Can clients send documents?",
+            "a": "Yes, via Mizan messaging. Clients can attach property titles, birth certificates or other documents to their requests."
+          },
+          {
+            "q": "Is my chamber number displayed publicly?",
+            "a": "Yes, it appears on your public profile as proof of your official registration. This strengthens client trust."
+          }
+        ]
+      },
+      "huissiers": {
+        "label": "Bailiffs",
+        "questions": [
+          {
+            "q": "Can I register as a bailiff?",
+            "a": "Yes. Your official bailiff number will be required. Your profile appears after validation within 24-48h."
+          },
+          {
+            "q": "What services can I offer?",
+            "a": "Official reports, enforcement of judgments, service of legal documents, debt collection, seizures, official statements."
+          },
+          {
+            "q": "Are urgent requests possible?",
+            "a": "Yes. Mizan messaging lets clients indicate the urgency of their request. You then manage priorities from your dashboard."
+          },
+          {
+            "q": "What is my area of jurisdiction on Mizan?",
+            "a": "You set your wilaya of jurisdiction in your profile. Clients filter by wilaya, so you only appear for your area of practice."
+          },
+          {
+            "q": "Can businesses contact me?",
+            "a": "Yes. Individuals and businesses use Mizan. Businesses particularly look for bailiffs for debt collection and commercial reports."
+          },
+          {
+            "q": "Is registration paid?",
+            "a": "Registration is free. An optional subscription improves your visibility in search results."
+          }
+        ]
+      },
+      "comptables": {
+        "label": "Accountants",
+        "questions": [
+          {
+            "q": "Chartered accountant or accredited accountant — what's the difference?",
+            "a": "The chartered accountant (ONEC) can sign official financial statements and act as statutory auditor. The accredited accountant (ONCA) handles day-to-day bookkeeping, filings and payslips. Both can register on Mizan."
+          },
+          {
+            "q": "What number is required for registration?",
+            "a": "Your ONEC or ONCA accreditation number depending on your status."
+          },
+          {
+            "q": "What services can I offer?",
+            "a": "Company formation (EURL, SARL, SPA), IFU/G50/IBS filings, annual balance sheet, payroll and social contributions, tax advice, general bookkeeping."
+          },
+          {
+            "q": "Is the diaspora a relevant target?",
+            "a": "Absolutely. Algerians abroad setting up an EURL or SARL in Algeria need a local accountant. Mizan makes you visible from France, Canada or elsewhere."
+          },
+          {
+            "q": "Can assignments be done remotely?",
+            "a": "Yes. Most accounting assignments are done through document exchange and messaging. Mizan facilitates this flow from first contact."
+          },
+          {
+            "q": "Is registration paid?",
+            "a": "Registration is free. An optional subscription improves your visibility in search results."
+          }
+        ]
+      },
+      "expertComptable": {
+        "label": "Chartered Accountant",
+        "questions": [
+          {
+            "q": "What's the difference with an accredited accountant?",
+            "a": "The chartered accountant (ONEC) can sign official financial statements, perform statutory audits and act as statutory auditor. The accredited accountant (ONCA) handles day-to-day bookkeeping. Two distinct professions, both present on Mizan."
+          },
+          {
+            "q": "What number is required for registration?",
+            "a": "Your ONEC (National Order of Chartered Accountants) accreditation number."
+          },
+          {
+            "q": "What services can I offer?",
+            "a": "Statutory and contractual audit, account consolidation, business valuation, financial due diligence, financial restructuring, statutory auditing, advanced tax advisory."
+          },
+          {
+            "q": "Is the diaspora a relevant target?",
+            "a": "Absolutely. Algerians abroad need chartered accountants to audit their Algerian companies, evaluate acquisitions or perform due diligence. Mizan makes you visible from abroad."
+          },
+          {
+            "q": "Can assignments be done remotely?",
+            "a": "Yes for most assignments. Document exchange via Mizan messaging facilitates the flow from first contact."
+          },
+          {
+            "q": "Is advertising allowed?",
+            "a": "Appearing in a verified directory is authorized and compliant with ONEC ethics. It is not personal advertising but professional referencing."
+          },
+          {
+            "q": "Is registration paid?",
+            "a": "Registration is free. An optional subscription improves your visibility in search results."
+          }
+        ]
+      }
+    }
+  },
+  "cguPage": {
+    "back": "Back",
+    "title": "Terms of Use",
+    "lastUpdate": "Last updated: {date}",
+    "s1": {
+      "title": "1. Purpose and nature of the site",
+      "p1": "MIZAN is an online platform connecting clients with verified legal and accounting experts in Algeria: lawyers, notaries, bailiffs and accountants. The platform facilitates search, consultation and communication between parties, without substituting for professionals in the practice of their profession.",
+      "boxTitle": "Distinction from official registers",
+      "boxP1": "Important: MIZAN is not the official roll of the Bar Association as provided for by Law No. 13-07 of July 29, 2013. MIZAN does not claim to replace the official registers of Algerian professional orders (bar, chamber of notaries, order of bailiffs, ONEC/ONCA).",
+      "boxP2": "The information published on MIZAN constitutes a complementary directory service and cannot have the same legal value as official registers."
+    },
+    "s2": {
+      "title": "2. Acceptance of terms",
+      "p1": "Using MIZAN implies full acceptance of these terms of use. If you do not accept these terms, please do not use the platform."
+    },
+    "s3": {
+      "title": "3. Registration and user account",
+      "clientsTitle": "For clients:",
+      "clients": [
+        "Registration is free and open",
+        "You must provide accurate and up-to-date information",
+        "You are responsible for the confidentiality of your password"
+      ],
+      "prosTitle": "For professionals (lawyers, notaries, bailiffs, accountants):",
+      "pros": [
+        "You must legally practice your profession in Algeria",
+        "You must provide documents proving your professional status (bar number, chamber of notaries, bailiff number or ONEC/ONCA accreditation)",
+        "Your profile will be verified before activation",
+        "You agree to comply with the ethics and rules of your profession"
+      ]
+    },
+    "s4": {
+      "title": "4. Services offered",
+      "items": [
+        "Search for professionals by area of practice and wilaya",
+        "View verified professional profiles",
+        "Send consultation requests",
+        "Secure messaging system",
+        "Publication of client reviews (subject to moderation)"
+      ]
+    },
+    "s5": {
+      "title": "5. Nature and origin of published information",
+      "boxTitle": "Collection of public professional data",
+      "p1": "The contact details and information of professionals published on MIZAN come from two sources:",
+      "aTitle": "A. Professionals registered on the platform",
+      "aP": "Professionals who create an account on MIZAN voluntarily provide their information and have full control over their profile.",
+      "bTitle": "B. Data from public sources",
+      "bP": "Some information comes from public sources freely accessible on the internet: official firm websites, Google My Business, LinkedIn, public professional directories.",
+      "infoTitle": "Informing professionals",
+      "infoP": "MIZAN undertakes to inform each professional whose contact details are published, by email or phone."
+    },
+    "s6": {
+      "title": "6. Professionals' rights regarding their data",
+      "p1": "Every professional listed on MIZAN has the following rights, which they can exercise at any time, free of charge and without justification:",
+      "rectifTitle": "Right to rectification",
+      "rectifP": "Any professional may request correction of their information if it is inaccurate or outdated.",
+      "deleteTitle": "Right to deletion",
+      "deleteP": "Any professional may request the immediate and complete removal of their contact details from the site, without justification.",
+      "opposeTitle": "Right to object",
+      "opposeP": "Any professional may object to the use of their data for matchmaking purposes.",
+      "accessTitle": "Right of access",
+      "accessP": "Any professional may view all information published about them on MIZAN.",
+      "howTitle": "How to exercise these rights?",
+      "email": "Email:",
+      "phone": "Phone:",
+      "delay": "Processing time:",
+      "delayValue": "Maximum 15 business days"
+    },
+    "s7": {
+      "title": "7. Accuracy and updates",
+      "items": [
+        "Professional availability may change",
+        "Professional contact details may change",
+        "Areas of practice may be updated"
+      ],
+      "p1": "Users are invited to verify directly with the relevant professionals any critical information before undertaking a legal or accounting procedure."
+    },
+    "s8": {
+      "title": "8. Responsibilities",
+      "commitTitle": "MIZAN undertakes to:",
+      "commit": [
+        "Verify the qualifications and official registration of professionals",
+        "Maintain the platform in good working order",
+        "Protect users' personal data",
+        "Moderate published reviews",
+        "Promptly process rectification or deletion requests",
+        "Inform professionals of the publication of their data"
+      ],
+      "declineTitle": "MIZAN disclaims all responsibility regarding:",
+      "decline": [
+        "The quality of services provided by professionals",
+        "Legal, notarial or accounting advice given",
+        "Fees charged",
+        "The outcome of procedures undertaken",
+        "Disputes between clients and professionals"
+      ],
+      "importantP": "Important: The site acts solely as a matchmaking intermediary. MIZAN does not select, recommend or evaluate professionals. Each user is responsible for their choice of professional."
+    },
+    "s9": {
+      "title": "9. Use of the site",
+      "items": [
+        "Use the site fairly and in accordance with its purpose",
+        "Not attempt to massively extract data from the site (scraping)",
+        "Not use professionals' contact details for spam or harassment purposes",
+        "Respect the site's intellectual property",
+        "Not publish false or defamatory reviews"
+      ]
+    },
+    "s10": {
+      "title": "10. Intellectual property",
+      "p1": "All elements of the platform (logo, design, editorial content) are the exclusive property of MIZAN. Any reproduction, even partial, is strictly prohibited without prior authorization."
+    },
+    "s11": {
+      "title": "11. Modification and termination",
+      "p1": "MIZAN reserves the right to modify these terms at any time. Users will be informed by email of significant changes. You may delete your account at any time from settings."
+    },
+    "s12": {
+      "title": "12. Applicable law and jurisdiction",
+      "p1": "These terms are governed by Algerian law. In the event of a dispute, only Algerian courts shall have jurisdiction."
+    },
+    "s13": {
+      "title": "13. Contact",
+      "phone": "Phone: +33 6 60 25 35 70",
+      "otherRequests": "For other requests:",
+      "contactPage": "contact page"
+    }
+  },
+  "privacyPage": {
+    "back": "Back",
+    "title": "Privacy Policy",
+    "lastUpdate": "Last updated: {date}",
+    "s1": {
+      "title": "1. Introduction",
+      "p1": "MIZAN is committed to protecting the confidentiality and security of your personal data. This policy explains how we collect, use and protect your information.",
+      "p2": "MIZAN strives to comply with Algerian legislation on personal data protection, in particular Law No. 18-07 of June 10, 2018 on the protection of individuals in the processing of personal data."
+    },
+    "s2": {
+      "title": "2. Public professional data (external source)",
+      "boxTitle": "Collection of public professional data",
+      "p1": "MIZAN collects and publishes professional information concerning lawyers, notaries, bailiffs and accountants practicing in Algeria. This information comes exclusively from public sources freely accessible on the internet, in particular:",
+      "sources": [
+        "Official websites of law firms and notarial offices",
+        "Public professional pages (Google My Business, LinkedIn, etc.)",
+        "Public online professional directories",
+        "Public professional social networks",
+        "Publicly accessible professional publications"
+      ],
+      "natureTitle": "Nature of information collected",
+      "nature": [
+        "Professional's first and last name",
+        "Office address",
+        "Professional phone number",
+        "Professional email address",
+        "Areas of expertise (if available)",
+        "Languages spoken (if available)",
+        "Professional number (bar, chamber of notaries, bailiff, ONEC/ONCA if available)"
+      ],
+      "useTitle": "Use and purpose",
+      "useP": "This data is used solely within the framework of a professional directory and matchmaking service between clients and professionals. It is not subject to any unauthorized commercial exploitation.",
+      "infoTitle": "Informing the professionals concerned",
+      "infoP": "MIZAN undertakes to inform each professional whose contact details are published on the site. Professionals are contacted by email or phone to inform them of the presence of their information on the platform.",
+      "rightsTitle": "Professionals' rights regarding their data",
+      "rightsP": "Every professional listed on MIZAN has the following rights, which they can exercise at any time and free of charge:",
+      "rightRectif": "Right to rectification: Correct any incorrect or outdated information",
+      "rightDelete": "Right to deletion: Request complete removal of their profile from the site",
+      "rightOppose": "Right to object: Object to the use of their data for matchmaking purposes",
+      "rightAccess": "Right of access: View all data published about them",
+      "contact": "Contact:",
+      "delay": "Processing time: Maximum 15 business days.",
+      "note": "Important note: Professionals who create an account on MIZAN and claim their profile benefit from full control over their information and can edit it directly from their personal space."
+    },
+    "s3": {
+      "title": "3. Data collected for registered users",
+      "allTitle": "For all registered users:",
+      "all": [
+        "First and last name",
+        "Email address",
+        "Password (encrypted)",
+        "Account creation date"
+      ],
+      "clientsTitle": "For clients:",
+      "clients": [
+        "Location (wilaya or country)",
+        "Consultation history",
+        "Published reviews"
+      ],
+      "prosTitle": "For registered professionals (lawyers, notaries, bailiffs, accountants):",
+      "pros": [
+        "Professional number (bar / chamber of notaries / bailiff / ONEC-ONCA)",
+        "Areas of practice",
+        "Professional contact details (phone, office address)",
+        "Verification documents (professional card)",
+        "Banking information (for future payments)"
+      ]
+    },
+    "s4": {
+      "title": "4. Use of data",
+      "p1": "Your data is used solely to:",
+      "items": [
+        "Create and manage your account",
+        "Facilitate matchmaking between clients and professionals",
+        "Send important notifications (responses to consultations)",
+        "Verify the identity and qualifications of registered professionals",
+        "Improve our services",
+        "Comply with our legal obligations"
+      ],
+      "neverSell": "We never sell your personal data to third parties."
+    },
+    "s5": {
+      "title": "5. Data sharing",
+      "between": "Between users:",
+      "betweenP": "Clients see public information from professional profiles. Professionals see the name and email of clients who contact them.",
+      "providers": "Technical providers:",
+      "providersP": "We use certified hosting providers for secure data storage.",
+      "legal": "Legal obligations:",
+      "legalP": "In the event of a legal judicial or administrative request."
+    },
+    "s6": {
+      "title": "6. Data security",
+      "items": [
+        "Password encryption",
+        "Secure HTTPS connection",
+        "Hosting on certified secure servers",
+        "Limited access to personal data",
+        "Regular backups"
+      ]
+    },
+    "s7": {
+      "title": "7. Cookies",
+      "p1": "The MIZAN site uses essential cookies for its operation (authentication, preferences). We do not use advertising or third-party tracking cookies."
+    },
+    "s8": {
+      "title": "8. Your rights (registered users)",
+      "access": "Right of access:",
+      "accessP": "View your personal data",
+      "rectif": "Right to rectification:",
+      "rectifP": "Correct your information",
+      "erase": "Right to erasure:",
+      "eraseP": "Delete your account",
+      "portability": "Right to portability:",
+      "portabilityP": "Retrieve your data",
+      "oppose": "Right to object:",
+      "opposeP": "Refuse certain uses",
+      "exercise": "To exercise these rights:"
+    },
+    "s9": {
+      "title": "9. Data retention",
+      "active": "Active accounts:",
+      "activeP": "Data retained as long as the account exists",
+      "deleted": "Deleted accounts:",
+      "deletedP": "Data erased within 30 days, except for legal obligations",
+      "reviews": "Published reviews:",
+      "reviewsP": "Retained in anonymized form after account deletion",
+      "unregistered": "Data of unregistered professionals:",
+      "unregisteredP": "Retained until the professional requests its deletion"
+    },
+    "s10": {
+      "title": "10. Modifications",
+      "p1": "We may modify this policy. Significant changes will be notified to you by email."
+    },
+    "s11": {
+      "title": "11. Contact",
+      "phone": "Phone: +33 6 60 25 35 70",
+      "otherRequests": "For other requests:",
+      "contactPage": "contact page"
+    }
+  },
+  "legalPage": {
+    "back": "Back",
+    "title": "Legal Notice",
+    "lastUpdate": "Last updated: {date}",
+    "warningTitle": "Project in launch phase",
+    "warningP": "MIZAN is currently operated by Chabane Nadji as an independent developer. A formal legal structure (Algerian SARL) will be created shortly. This page will be updated with complete registration information.",
+    "s1": {
+      "title": "1. Publisher and operator of the site",
+      "projectName": "Project name:",
+      "operator": "Operator:",
+      "status": "Current status:",
+      "statusValue": "Independent developer / Sole proprietor",
+      "contactEmail": "Contact email:",
+      "personalEmail": "Personal email:",
+      "phone": "Phone:",
+      "regNote": "Commercial registration in progress: Complete legal information (legal form, trade register, tax ID, share capital) will be published as soon as the SARL is officially created in Algeria."
+    },
+    "s1b": {
+      "title": "1.5. Nature of the site",
+      "p1": "MIZAN is an online directory and matchmaking platform between individuals and legal and accounting professionals practicing in Algeria: lawyers, notaries, bailiffs and accountants.",
+      "p2": "Important: This site is not the official roll of the Bar Association as provided for by Law No. 13-07 of July 29, 2013. MIZAN does not claim to replace or reproduce the official roll maintained by the Algerian Bar Association, nor the official registers of the chamber of notaries or the order of bailiffs.",
+      "p3": "The information presented constitutes a complementary professional directory service and cannot substitute for the official documents of professional orders."
+    },
+    "s2": {
+      "title": "2. Person responsible for publication",
+      "role": "Developer and founder of the MIZAN project",
+      "email": "Email:"
+    },
+    "s3": {
+      "title": "3. Hosting",
+      "host": "Host:",
+      "hostValue": "Certified cloud hosting provider, secure servers."
+    },
+    "s4": {
+      "title": "4. Intellectual property",
+      "p1": "This entire site is subject to Algerian and international legislation on copyright and intellectual property. All reproduction rights are reserved.",
+      "p2": "Reproduction of all or part of this site on an electronic medium is strictly prohibited without express authorization from MIZAN.",
+      "p3": "The professional information of lawyers, notaries, bailiffs and accountants (names, contact details, areas of practice) remains the property of the latter and is published for informational professional directory purposes only."
+    },
+    "s5": {
+      "title": "5. Personal data",
+      "p1": "The information collected on this site is subject to data processing intended to facilitate matchmaking between clients and professionals. For more information:",
+      "link": "Privacy Policy"
+    },
+    "s6": {
+      "title": "6. Cookies",
+      "p1": "The MIZAN site uses essential cookies for its operation (authentication, preferences). By browsing this site, you accept the use of these necessary technical cookies."
+    },
+    "s7": {
+      "title": "7. Limitation of liability",
+      "p1": "MIZAN does everything possible to provide verified information, but cannot be held responsible for errors or unavailability of information.",
+      "p2": "MIZAN cannot be held responsible for the quality of services provided by professionals registered on the platform."
+    },
+    "s8": {
+      "title": "8. Applicable law",
+      "p1": "This legal notice is governed by Algerian law. Any dispute is subject to Algerian law and falls under the exclusive jurisdiction of Algerian courts."
+    },
+    "s9": {
+      "title": "9. Contact",
+      "otherRequests": "For other requests:",
+      "contactPage": "contact page"
+    },
+    "footerNote": "MIZAN — Platform connecting you with legal experts in Algeria"
   }
 }

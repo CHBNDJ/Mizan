@@ -1,13 +1,17 @@
 "use client";
 import { Scale, ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 export default function CGUPage() {
   const router = useRouter();
+  const t = useTranslations("cguPage");
+  const locale = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (!containerRef.current) return;
     gsap.fromTo(
@@ -24,6 +28,9 @@ export default function CGUPage() {
     );
   }, []);
 
+  const dateLocale =
+    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-FR";
+
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <div className="max-w-4xl mx-auto px-4 py-12" ref={containerRef}>
@@ -32,219 +39,156 @@ export default function CGUPage() {
           className="animate-section inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 mb-8 cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          Retour
+          {t("back")}
         </button>
         <div className="bg-white rounded-2xl border border-slate-200 p-8 md:p-12">
           <div className="animate-section flex items-center gap-3 mb-6">
             <Scale className="w-8 h-8 text-teal-600" />
-            <h1 className="text-3xl font-bold text-slate-900">
-              Conditions Générales d'Utilisation
-            </h1>
+            <h1 className="text-3xl font-bold text-slate-900">{t("title")}</h1>
           </div>
           <p className="animate-section text-slate-600 mb-8">
-            Dernière mise à jour : {new Date().toLocaleDateString("fr-FR")}
+            {t("lastUpdate", {
+              date: new Date().toLocaleDateString(dateLocale),
+            })}
           </p>
 
           <div className="prose prose-slate max-w-none space-y-8">
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                1. Objet et nature du site
+                {t("s1.title")}
               </h2>
               <p className="text-slate-700 leading-relaxed mb-4">
-                MIZAN est une plateforme en ligne qui met en relation des
-                clients avec des experts juridiques et comptables vérifiés en
-                Algérie : avocats, notaires, huissiers de justice et comptables.
-                La plateforme facilite la recherche, la consultation et la
-                communication entre les parties, sans se substituer aux
-                professionnels dans l'exercice de leur profession.
+                {t("s1.p1")}
               </p>
               <div className="bg-teal-50 border border-teal-200 rounded-lg p-5">
                 <h3 className="font-semibold text-teal-900 mb-2">
-                  ⚖️ Distinction avec les registres officiels
+                  ⚖️ {t("s1.boxTitle")}
                 </h3>
                 <p className="text-teal-800 leading-relaxed">
-                  <strong>Important :</strong> MIZAN n'est pas le tableau
-                  officiel de l'Ordre des avocats tel que prévu par la loi n°
-                  13-07 du 29 juillet 2013. MIZAN ne prétend pas remplacer les
-                  registres officiels des ordres professionnels algériens
-                  (barreau, chambre des notaires, ordre des huissiers,
-                  ONEC/ONCA).
+                  <strong>{t("s1.boxP1").split(":")[0]}:</strong>
+                  {t("s1.boxP1").split(":").slice(1).join(":")}
                 </p>
                 <p className="text-teal-800 leading-relaxed mt-2">
-                  Les informations publiées sur MIZAN constituent un service
-                  complémentaire d'annuaire et ne sauraient avoir la même valeur
-                  juridique que les registres officiels.
+                  {t("s1.boxP2")}
                 </p>
               </div>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                2. Acceptation des conditions
+                {t("s2.title")}
               </h2>
-              <p className="text-slate-700 leading-relaxed">
-                L'utilisation de MIZAN implique l'acceptation pleine et entière
-                des présentes conditions générales. Si vous n'acceptez pas ces
-                conditions, veuillez ne pas utiliser la plateforme.
-              </p>
+              <p className="text-slate-700 leading-relaxed">{t("s2.p1")}</p>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                3. Inscription et compte utilisateur
+                {t("s3.title")}
               </h2>
               <div className="space-y-3">
                 <h3 className="font-semibold text-slate-800">
-                  Pour les clients :
+                  {t("s3.clientsTitle")}
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-slate-700">
-                  <li>L'inscription est gratuite et libre</li>
-                  <li>Vous devez fournir des informations exactes et à jour</li>
-                  <li>
-                    Vous êtes responsable de la confidentialité de votre mot de
-                    passe
-                  </li>
+                  {t.raw("s3.clients").map((item: string, i: number) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
                 <h3 className="font-semibold text-slate-800 mt-4">
-                  Pour les professionnels (avocats, notaires, huissiers,
-                  comptables) :
+                  {t("s3.prosTitle")}
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-slate-700">
-                  <li>
-                    Vous devez exercer légalement votre profession en Algérie
-                  </li>
-                  <li>
-                    Vous devez fournir les documents prouvant votre qualité
-                    professionnelle (numéro de barreau, chambre des notaires, N°
-                    d'huissier ou agrément ONEC/ONCA)
-                  </li>
-                  <li>Votre profil sera vérifié avant activation</li>
-                  <li>
-                    Vous vous engagez à respecter la déontologie et les règles
-                    de votre profession
-                  </li>
+                  {t.raw("s3.pros").map((item: string, i: number) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
               </div>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                4. Services proposés
+                {t("s4.title")}
               </h2>
               <ul className="list-disc list-inside space-y-2 text-slate-700">
-                <li>
-                  Recherche de professionnels par domaine d'intervention et
-                  wilaya
-                </li>
-                <li>Consultation des profils professionnels vérifiés</li>
-                <li>Envoi de demandes de consultation</li>
-                <li>Système de messagerie sécurisée</li>
-                <li>Publication d'avis clients (soumis à modération)</li>
+                {t.raw("s4.items").map((item: string, i: number) => (
+                  <li key={i}>{item}</li>
+                ))}
               </ul>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                5. Nature et origine des informations publiées
+                {t("s5.title")}
               </h2>
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-5">
                 <h3 className="font-semibold text-blue-900 mb-3">
-                  📋 Collecte de données professionnelles publiques
+                  📋 {t("s5.boxTitle")}
                 </h3>
                 <p className="text-blue-800 leading-relaxed mb-3">
-                  Les coordonnées et informations des professionnels publiées
-                  sur MIZAN proviennent de deux sources :
+                  {t("s5.p1")}
                 </p>
                 <div className="space-y-3">
                   <div>
                     <h4 className="font-semibold text-blue-900">
-                      A. Professionnels inscrits sur la plateforme
+                      {t("s5.aTitle")}
                     </h4>
-                    <p className="text-blue-800 text-sm">
-                      Les professionnels qui créent un compte sur MIZAN
-                      fournissent volontairement leurs informations et disposent
-                      d'un contrôle total sur leur profil.
-                    </p>
+                    <p className="text-blue-800 text-sm">{t("s5.aP")}</p>
                   </div>
                   <div>
                     <h4 className="font-semibold text-blue-900">
-                      B. Données provenant de sources publiques
+                      {t("s5.bTitle")}
                     </h4>
-                    <p className="text-blue-800 text-sm mb-2">
-                      Certaines informations proviennent de{" "}
-                      <strong>
-                        sources publiques et accessibles librement
-                      </strong>{" "}
-                      sur internet : sites web officiels de cabinets, Google My
-                      Business, LinkedIn, annuaires professionnels publics.
-                    </p>
+                    <p className="text-blue-800 text-sm mb-2">{t("s5.bP")}</p>
                   </div>
                 </div>
                 <h3 className="font-semibold text-blue-900 mt-4 mb-2">
-                  📧 Information des professionnels
+                  📧 {t("s5.infoTitle")}
                 </h3>
-                <p className="text-blue-800 text-sm">
-                  MIZAN s'engage à informer chaque professionnel dont les
-                  coordonnées sont publiées, par email ou téléphone.
-                </p>
+                <p className="text-blue-800 text-sm">{t("s5.infoP")}</p>
               </div>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                6. Droits des professionnels concernant leurs données
+                {t("s6.title")}
               </h2>
               <div className="bg-green-50 border border-green-200 rounded-lg p-5">
                 <p className="text-green-800 leading-relaxed mb-4">
-                  Tout professionnel figurant sur MIZAN dispose des droits
-                  suivants, qu'il peut exercer à tout moment,{" "}
-                  <strong>gratuitement et sans justification</strong> :
+                  {t("s6.p1")}
                 </p>
                 <div className="space-y-3">
                   <div>
                     <h3 className="font-semibold text-green-900">
-                      ✏️ Droit de rectification
+                      ✏️ {t("s6.rectifTitle")}
                     </h3>
-                    <p className="text-green-800 text-sm">
-                      Tout professionnel peut demander la correction de ses
-                      informations si elles sont inexactes ou obsolètes.
-                    </p>
+                    <p className="text-green-800 text-sm">{t("s6.rectifP")}</p>
                   </div>
                   <div>
                     <h3 className="font-semibold text-green-900">
-                      🗑️ Droit de suppression
+                      🗑️ {t("s6.deleteTitle")}
                     </h3>
-                    <p className="text-green-800 text-sm">
-                      Tout professionnel peut demander le retrait immédiat et
-                      complet de ses coordonnées du site, sans justification.
-                    </p>
+                    <p className="text-green-800 text-sm">{t("s6.deleteP")}</p>
                   </div>
                   <div>
                     <h3 className="font-semibold text-green-900">
-                      🚫 Droit d'opposition
+                      🚫 {t("s6.opposeTitle")}
                     </h3>
-                    <p className="text-green-800 text-sm">
-                      Tout professionnel peut s'opposer à l'utilisation de ses
-                      données pour la mise en relation.
-                    </p>
+                    <p className="text-green-800 text-sm">{t("s6.opposeP")}</p>
                   </div>
                   <div>
                     <h3 className="font-semibold text-green-900">
-                      👁️ Droit d'accès
+                      👁️ {t("s6.accessTitle")}
                     </h3>
-                    <p className="text-green-800 text-sm">
-                      Tout professionnel peut consulter l'ensemble des
-                      informations publiées le concernant sur MIZAN.
-                    </p>
+                    <p className="text-green-800 text-sm">{t("s6.accessP")}</p>
                   </div>
                 </div>
                 <div className="mt-5 p-4 bg-green-100 border border-green-300 rounded">
                   <h3 className="font-semibold text-green-900 mb-2">
-                    📞 Comment exercer ces droits ?
+                    📞 {t("s6.howTitle")}
                   </h3>
                   <ul className="space-y-1 text-green-800 text-sm">
                     <li>
-                      <strong>Email :</strong>{" "}
+                      <strong>{t("s6.email")}</strong>{" "}
                       <a
                         href="mailto:professionnel@mizan-dz.com"
                         className="underline"
@@ -253,11 +197,10 @@ export default function CGUPage() {
                       </a>
                     </li>
                     <li>
-                      <strong>Téléphone :</strong> +33 6 60 25 35 70
+                      <strong>{t("s6.phone")}</strong> +33 6 60 25 35 70
                     </li>
                     <li>
-                      <strong>Délai de traitement :</strong> Maximum 15 jours
-                      ouvrés
+                      <strong>{t("s6.delay")}</strong> {t("s6.delayValue")}
                     </li>
                   </ul>
                 </div>
@@ -266,126 +209,81 @@ export default function CGUPage() {
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                7. Exactitude et mise à jour
+                {t("s7.title")}
               </h2>
               <ul className="list-disc list-inside space-y-2 text-slate-700">
-                <li>La disponibilité des professionnels peut évoluer</li>
-                <li>Les coordonnées professionnelles peuvent changer</li>
-                <li>Les domaines d'intervention peuvent être mis à jour</li>
+                {t.raw("s7.items").map((item: string, i: number) => (
+                  <li key={i}>{item}</li>
+                ))}
               </ul>
               <p className="text-slate-700 leading-relaxed mt-3">
-                Les utilisateurs sont invités à vérifier directement auprès des
-                professionnels concernés toute information critique avant
-                d'engager une démarche juridique ou comptable.
+                {t("s7.p1")}
               </p>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                8. Responsabilités
+                {t("s8.title")}
               </h2>
               <div className="space-y-3">
                 <h3 className="font-semibold text-slate-800">
-                  MIZAN s'engage à :
+                  {t("s8.commitTitle")}
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-slate-700">
-                  <li>
-                    Vérifier les qualifications et l'inscription officielle des
-                    professionnels
-                  </li>
-                  <li>Maintenir la plateforme en bon état de fonctionnement</li>
-                  <li>Protéger les données personnelles des utilisateurs</li>
-                  <li>Modérer les avis publiés</li>
-                  <li>
-                    Traiter rapidement les demandes de rectification ou
-                    suppression
-                  </li>
-                  <li>
-                    Informer les professionnels de la publication de leurs
-                    données
-                  </li>
+                  {t.raw("s8.commit").map((item: string, i: number) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
                 <h3 className="font-semibold text-slate-800 mt-4">
-                  MIZAN décline toute responsabilité concernant :
+                  {t("s8.declineTitle")}
                 </h3>
                 <ul className="list-disc list-inside space-y-2 text-slate-700">
-                  <li>
-                    La qualité des services fournis par les professionnels
-                  </li>
-                  <li>
-                    Les conseils juridiques, notariaux ou comptables donnés
-                  </li>
-                  <li>Les honoraires pratiqués</li>
-                  <li>Les résultats des procédures entreprises</li>
-                  <li>Les litiges entre clients et professionnels</li>
+                  {t.raw("s8.decline").map((item: string, i: number) => (
+                    <li key={i}>{item}</li>
+                  ))}
                 </ul>
                 <p className="text-slate-700 leading-relaxed mt-4 bg-amber-50 border border-amber-200 rounded p-3">
-                  <strong>⚠️ Important :</strong> Le site agit uniquement comme
-                  intermédiaire de mise en relation. MIZAN ne sélectionne pas,
-                  ne recommande pas et n'évalue pas les professionnels. Chaque
-                  utilisateur est responsable de son choix de professionnel.
+                  <strong>⚠️ {t("s8.importantP").split(":")[0]}:</strong>
+                  {t("s8.importantP").split(":").slice(1).join(":")}
                 </p>
               </div>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                9. Utilisation du site
+                {t("s9.title")}
               </h2>
               <ul className="list-disc list-inside space-y-2 text-slate-700">
-                <li>
-                  Utiliser le site de manière loyale et conforme à son objet
-                </li>
-                <li>
-                  Ne pas tenter d'extraire massivement les données du site
-                  (scraping)
-                </li>
-                <li>
-                  Ne pas utiliser les coordonnées des professionnels à des fins
-                  de spam ou de harcèlement
-                </li>
-                <li>Respecter la propriété intellectuelle du site</li>
-                <li>Ne pas publier de faux avis ou d'avis diffamatoires</li>
+                {t.raw("s9.items").map((item: string, i: number) => (
+                  <li key={i}>{item}</li>
+                ))}
               </ul>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                10. Propriété intellectuelle
+                {t("s10.title")}
               </h2>
-              <p className="text-slate-700 leading-relaxed">
-                L'ensemble des éléments de la plateforme (logo, design, contenu
-                éditorial) sont la propriété exclusive de MIZAN. Toute
-                reproduction, même partielle, est strictement interdite sans
-                autorisation préalable.
-              </p>
+              <p className="text-slate-700 leading-relaxed">{t("s10.p1")}</p>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                11. Modification et résiliation
+                {t("s11.title")}
               </h2>
-              <p className="text-slate-700 leading-relaxed">
-                MIZAN se réserve le droit de modifier les présentes conditions à
-                tout moment. Les utilisateurs seront informés par email des
-                modifications importantes. Vous pouvez supprimer votre compte à
-                tout moment depuis les paramètres.
-              </p>
+              <p className="text-slate-700 leading-relaxed">{t("s11.p1")}</p>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                12. Droit applicable et juridiction
+                {t("s12.title")}
               </h2>
-              <p className="text-slate-700 leading-relaxed">
-                Les présentes conditions sont régies par le droit algérien. En
-                cas de litige, les tribunaux algériens seront seuls compétents.
-              </p>
+              <p className="text-slate-700 leading-relaxed">{t("s12.p1")}</p>
             </section>
 
             <section className="animate-section">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                13. Contact
+                {t("s13.title")}
               </h2>
               <a
                 href="mailto:contact@mizan-dz.com?subject=Question sur les CGU"
@@ -394,15 +292,15 @@ export default function CGUPage() {
                 contact@mizan-dz.com
               </a>
               <p className="text-slate-700 leading-relaxed mt-2">
-                Téléphone : +33 6 60 25 35 70
+                {t("s13.phone")}
               </p>
               <p className="text-slate-600 mt-4">
-                Pour d'autres demandes :{" "}
+                {t("s13.otherRequests")}{" "}
                 <Link
                   href="/contact"
                   className="text-teal-600 hover:underline font-medium"
                 >
-                  page de contact
+                  {t("s13.contactPage")}
                 </Link>
                 .
               </p>

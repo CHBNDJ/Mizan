@@ -1,12 +1,14 @@
 "use client";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 export default function ContactPage() {
   const router = useRouter();
+  const t = useTranslations("contact");
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -53,96 +55,89 @@ export default function ContactPage() {
           className="back-btn inline-flex items-center gap-2 text-teal-600 transition-all mb-10 text-[0.95rem] cursor-pointer"
         >
           <ArrowLeft size={16} />
-          <span>Retour</span>
+          <span>{t("back")}</span>
         </button>
 
         <div className="border-b-[3px] border-teal-600 pb-10 mb-16">
           <h1 className="header-title text-6xl font-light tracking-tight mb-5 text-slate-900">
-            Contact
+            {t("title")}
           </h1>
           <p className="header-desc text-xl text-slate-600 max-w-2xl leading-relaxed">
-            Pour toute question, notre équipe est à votre disposition.
-            Choisissez le service adapté à votre demande.
+            {t("subtitle")}
           </p>
         </div>
 
         <ul className="list-none mb-20">
           <li className="contact-item border-b border-slate-200 py-10">
             <h2 className="text-3xl font-normal mb-3 text-slate-900">
-              Support Technique
+              {t("technical.title")}
             </h2>
             <p className="text-slate-600 mb-5 text-lg leading-relaxed">
-              Pour tous vos problèmes techniques, bugs ou questions sur
-              l'utilisation de la plateforme.
+              {t("technical.desc")}
             </p>
             <a
               href="mailto:support@mizan-dz.com?subject=Support technique"
-              className="inline-block text-teal-600 text-xl font-mono relative pb-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal-600 after:transition-all hover:after:w-full"
+              className="inline-block text-teal-600 text-xl font-mono relative pb-1 after:content-[''] after:absolute after:bottom-0 after:start-0 after:w-0 after:h-0.5 after:bg-teal-600 after:transition-all hover:after:w-full"
             >
               support@mizan-dz.com
             </a>
-            <span className="inline-block text-sm text-slate-400 italic ml-5">
-              Réponse sous 24 heures
+            <span className="inline-block text-sm text-slate-400 italic ms-5">
+              {t("technical.delay")}
             </span>
           </li>
 
           <li className="contact-item border-b border-slate-200 py-10">
             <h2 className="text-3xl font-normal mb-3 text-slate-900">
-              Contact Général
+              {t("general.title")}
             </h2>
             <p className="text-slate-600 mb-5 text-lg leading-relaxed">
-              Questions générales, partenariats, presse, suggestions
-              d'amélioration de la plateforme.
+              {t("general.desc")}
             </p>
             <a
               href="mailto:contact@mizan-dz.com?subject=Contact"
-              className="inline-block text-teal-600 text-xl font-mono relative pb-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal-600 after:transition-all hover:after:w-full"
+              className="inline-block text-teal-600 text-xl font-mono relative pb-1 after:content-[''] after:absolute after:bottom-0 after:start-0 after:w-0 after:h-0.5 after:bg-teal-600 after:transition-all hover:after:w-full"
             >
               contact@mizan-dz.com
             </a>
-            <span className="inline-block text-sm text-slate-400 italic ml-5">
-              Réponse sous 48 heures
+            <span className="inline-block text-sm text-slate-400 italic ms-5">
+              {t("general.delay")}
             </span>
           </li>
 
           <li className="contact-item border-b border-slate-200 py-10">
             <div className="flex items-center gap-3 mb-3">
               <h2 className="text-3xl font-normal text-slate-900">
-                Support Professionnels
+                {t("professional.title")}
               </h2>
               <span className="px-2 py-0.5 bg-slate-100 text-slate-600 text-xs font-medium rounded-md border border-slate-200">
-                Avocats · Notaires · Huissiers · Comptables
+                {t("professional.badge")}
               </span>
             </div>
             <p className="text-slate-600 mb-5 text-lg leading-relaxed">
-              Service dédié aux professionnels pour la gestion de profil,
-              réclamations et consultations.
+              {t("professional.desc")}
             </p>
             <a
               href="mailto:professionnel@mizan-dz.com?subject=Question professionnel"
-              className="inline-block text-teal-600 text-xl font-mono relative pb-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal-600 after:transition-all hover:after:w-full"
+              className="inline-block text-teal-600 text-xl font-mono relative pb-1 after:content-[''] after:absolute after:bottom-0 after:start-0 after:w-0 after:h-0.5 after:bg-teal-600 after:transition-all hover:after:w-full"
             >
               professionnel@mizan-dz.com
             </a>
-            <span className="inline-block text-sm text-slate-400 italic ml-5">
-              Réponse prioritaire sous 12 heures
+            <span className="inline-block text-sm text-slate-400 italic ms-5">
+              {t("professional.delay")}
             </span>
           </li>
         </ul>
 
         <div className="faq-block">
           <h3 className="text-2xl font-normal mb-5 text-slate-900">
-            Questions Fréquentes
+            {t("faqTitle")}
           </h3>
-          <p className="text-slate-600 mb-5 leading-relaxed">
-            Avant de nous contacter, consultez notre FAQ. Vous y trouverez
-            peut-être déjà la réponse à votre question.
-          </p>
+          <p className="text-slate-600 mb-5 leading-relaxed">{t("faqDesc")}</p>
           <Link
             href="/faq"
             className="inline-block mt-5 px-6 py-3 border-2 border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white transition-all rounded-full"
           >
-            Consulter la FAQ
+            {t("faqLink")}
           </Link>
         </div>
       </div>
