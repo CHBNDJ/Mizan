@@ -225,17 +225,18 @@ export default function LawyerDashboardPage() {
     setActiveProfession(next);
   };
 
-  const planLabel = (p: string | null) => (p ? t(`durations.${p}`) : p);
+  const planLabel = (p: string | null): string =>
+    p ? t(`durations.${p}`) : "";
   const dateLocale =
     locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-DZ";
-  const fmtDate = (d: string | null) =>
+  const fmtDate = (d: string | null): string =>
     d
       ? new Date(d).toLocaleDateString(dateLocale, {
           day: "numeric",
           month: "short",
           year: "numeric",
         })
-      : null;
+      : "";
 
   if (loading)
     return (
