@@ -2000,5 +2000,301 @@
       "activationError": "Error during activation",
       "activationErrorGeneric": "Error activating account"
     }
+  },
+  "filterPanel": {
+    "title": "Filters",
+    "subtitleEmpty": "Refine your search",
+    "subtitleActive": "{n} active",
+    "show": "Show",
+    "hide": "Hide",
+    "languageLabel": "Language spoken",
+    "languageAll": "All languages",
+    "civiliteLabel": "Title",
+    "civiliteAll": "All",
+    "experienceLabel": "Minimum experience",
+    "experienceAll": "Any experience",
+    "experienceOption": "{n}+ years of experience",
+    "specialitesCount": "{n} specialty(ies)"
+  },
+  "testimonials": {
+    "tag": "Testimonials",
+    "title": "What our users say",
+    "subtitle": "Clients and professionals who trust Mizan",
+    "verifiedPro": "Verified professional",
+    "client": "Mizan client"
+  },
+  "consultShared": {
+    "tabs": {
+      "active": "Active",
+      "archived": "Archived",
+      "all": "All"
+    },
+    "noArchived": "No archived consultations",
+    "noActive": "No active consultations",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "videoLabel": "Video",
+    "archivedLabel": "Archived",
+    "noMessages": "No messages",
+    "fileTooBig": "The file must not exceed 10MB",
+    "fileNotAllowed": "File type not allowed",
+    "attachedFile": "(Attached file)",
+    "attachedFileFallback": "Attached file",
+    "sendError": "Error sending message.",
+    "loadError": "Error loading consultations.",
+    "messagePlaceholder": "Write your message...",
+    "atConnector": "at",
+    "image": "Image"
+  },
+  "mesConsultations": {
+    "title": "My consultations",
+    "subtitle": "Track your questions and your lawyers' responses",
+    "emptyTitle": "No consultations",
+    "emptyDesc": "You haven't asked a lawyer a question yet",
+    "findLawyer": "Find a lawyer",
+    "selectPrompt": "Select a consultation to view the conversation",
+    "lawyerTyping": "The lawyer is typing...",
+    "lawyerPrefix": "Mr./Mrs."
+  },
+  "lawyerConsultations": {
+    "title": "My consultations",
+    "subtitle": "Manage your clients' questions and provide your answers",
+    "emptyTitle": "No consultations",
+    "emptyDesc": "You haven't received any consultation yet",
+    "selectPrompt": "Select a consultation to get started",
+    "clientTyping": "The client is typing...",
+    "phoneLabel": "📞 Phone",
+    "closedLabel": "Closed",
+    "consultationClosed": "This consultation is closed",
+    "declineConfirm": "Decline and notify the client?",
+    "closeConfirm": "Close and notify the client?",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "decline": "Decline",
+    "close": "Close",
+    "actionError": "Error performing action.",
+    "autoMessages": {
+      "decline": "❌ Request declined\n\n{lawyerName} is unable to handle your request at this time.\n\nWe invite you to consult other available lawyers on Mizan.",
+      "close": "✅ Consultation closed\n\n{lawyerName} has marked this consultation as completed.\n\nThank you for your trust."
+    }
+  },
+  "pendingConsultations": {
+    "title": "Pending consultations",
+    "seeAll": "See all →",
+    "statusPending": "Pending",
+    "statusAccepted": "Accepted",
+    "statusInProgress": "In progress",
+    "consultationFallback": "Consultation",
+    "minutesAgo": "{n} min ago",
+    "hoursAgo": "{n}h ago",
+    "daysAgo": "{n}d ago",
+    "declineReasonPh": "Reason (optional)...",
+    "confirmDecline": "Confirm decline",
+    "cancel": "Cancel",
+    "accept": "Accept",
+    "refuse": "Decline",
+    "messaging": "Messaging"
+  },
+  "blogPage": {
+    "home": "Home",
+    "legalBlog": "Legal blog",
+    "title": "Legal advice in Algeria",
+    "subtitle": "Practical guides and legal advice for individuals and businesses in Algeria. Written to be accessible, verified by legal professionals.",
+    "readArticle": "Read the article",
+    "ctaTitle": "Do you have a legal question?",
+    "ctaDesc": "Find a bar-registered lawyer, check their profile and reviews, and contact them directly via Mizan.",
+    "ctaAction": "Find a lawyer",
+    "categories": {
+      "famille": "Family law",
+      "commercial": "Commercial law",
+      "immobilier": "Real estate law",
+      "travail": "Labor law"
+    },
+    "articles": {
+      "comment-divorcer-en-algerie": {
+        "titre": "How to divorce in Algeria: the steps to follow",
+        "resume": "Divorce in Algeria is governed by the Family Code. Discover the different procedures, timeframes and rights of each party."
+      },
+      "creer-sarl-algerie": {
+        "titre": "Setting up an SARL in Algeria: complete 2025 guide",
+        "resume": "Share capital, articles of association, trade register registration — everything you need to know to set up your limited liability company in Algeria."
+      },
+      "succession-algerie-depuis-etranger": {
+        "titre": "Managing an inheritance in Algeria from abroad",
+        "resume": "Living in France, Canada or Belgium and need to settle an inheritance in Algeria? Here are the steps, documents and pitfalls to avoid."
+      },
+      "droits-locataire-algerie": {
+        "titre": "Tenant rights in Algeria",
+        "resume": "Security deposit, notice period, charges, eviction — know your rights as a tenant in Algeria under current legislation."
+      },
+      "licenciement-algerie": {
+        "titre": "Dismissal in Algeria: rights and remedies",
+        "resume": "What are the legal conditions for dismissal in Algeria? Compensation, notice period, recourse to labor court — a practical guide for employees."
+      },
+      "acheter-bien-immobilier-algerie": {
+        "titre": "Buying property in Algeria: what you need to know",
+        "resume": "Deed of sale, taxes, verifying the title deed — everything to check before buying property in Algeria."
+      }
+    }
+  },
+  "feedbackPopup": {
+    "thanksTitle": "Thank you for your feedback!",
+    "thanksDesc": "Your message has been sent successfully.",
+    "title": "We'd love your feedback",
+    "subtitle": "Help us improve your experience on Mizan",
+    "types": {
+      "testimonial": "Share my experience",
+      "suggestion": "Suggest an improvement",
+      "bug": "Report a bug"
+    },
+    "messageLabel": "Your message",
+    "placeholders": {
+      "bug": "Describe the issue...",
+      "suggestion": "What feature would you like?",
+      "testimonial": "Share your experience..."
+    },
+    "later": "Later",
+    "sending": "Sending...",
+    "send": "Send",
+    "errorSend": "Error sending",
+    "errorGeneric": "An error occurred"
+  },
+  "wilayaPage": {
+    "backHome": "Back to home",
+    "title": "Lawyers in {wilaya}",
+    "desc": "Find a qualified lawyer in the wilaya of {wilaya}. All our lawyers are verified and specialized in various areas of law.",
+    "available": "{count, plural, one {Lawyer available} other {Lawyers available}}",
+    "statLawyers": "Lawyers",
+    "statVerified": "Verified",
+    "statExperience": "Avg. years of experience",
+    "statRating": "Average rating",
+    "noRating": "N/A",
+    "citiesCovered": "Cities covered in {wilaya}"
+  },
+  "professionLanding": {
+    "specialitiesPlaceholder": "Choose specialties...",
+    "domainsPlaceholder": "Choose areas...",
+    "wilayaLabel": "Wilaya",
+    "allWilayas": "All wilayas",
+    "topRatedTitle": "Top rated {plural}",
+    "topRatedSubtitle": "Recommended by our community · Verified by Mizan",
+    "seeAllPlural": "See all {plural}",
+    "seeButton": "See {plural}",
+    "whyChoose": "Why choose a {label}?",
+    "whyChooseDesc": "Official role, duties and Algerian legal framework.",
+    "learnMore": "Learn more",
+    "ctaTitle": "Are you a {label} in Algeria?",
+    "ctaDesc": "Free registration, verification within 24-48h.",
+    "ctaAction": "Create my profile",
+    "professions": {
+      "avocat": {
+        "domainLabel": "Specialty",
+        "hero": "Find your lawyer in Algeria",
+        "sub": "Filter by specialty and wilaya. Client reviews, experience, direct contact — from Algeria or the diaspora.",
+        "searchLabel": "Find a lawyer",
+        "steps": [
+          {
+            "title": "Choose your specialty",
+            "desc": "Specify your need: civil, criminal, family, business law..."
+          },
+          {
+            "title": "Select your wilaya",
+            "desc": "On the interactive map or via the menu — synchronized in real time."
+          },
+          {
+            "title": "Contact directly",
+            "desc": "Secure messaging. Free client registration."
+          }
+        ]
+      },
+      "notaire": {
+        "domainLabel": "Area",
+        "hero": "Find a notary in Algeria",
+        "sub": "Real estate deeds, inheritance, marriages, donations — our verified notaries from anywhere.",
+        "searchLabel": "Find a notary",
+        "steps": [
+          {
+            "title": "Specify your need",
+            "desc": "Inheritance, real estate, marriage — each notary has their specialties."
+          },
+          {
+            "title": "Choose the wilaya",
+            "desc": "The notary must be competent in the wilaya of the property or deed."
+          },
+          {
+            "title": "Get in touch",
+            "desc": "Describe your situation, the notary responds directly."
+          }
+        ]
+      },
+      "huissier": {
+        "domainLabel": "Type of intervention",
+        "hero": "Find a bailiff in Algeria",
+        "sub": "Official reports, enforcement of judgments, debt collection — throughout Algeria.",
+        "searchLabel": "Find a bailiff",
+        "steps": [
+          {
+            "title": "Type of action",
+            "desc": "Report, service of process, debt collection — specify your need."
+          },
+          {
+            "title": "Identify the wilaya",
+            "desc": "The bailiff operates within their territorial jurisdiction."
+          },
+          {
+            "title": "Quick contact",
+            "desc": "Some interventions are urgent. Contact directly."
+          }
+        ]
+      },
+      "comptable": {
+        "domainLabel": "Area",
+        "hero": "Find an accountant in Algeria",
+        "sub": "Company formation, balance sheets, tax filings — for resident entrepreneurs and the diaspora.",
+        "searchLabel": "Find an accountant",
+        "steps": [
+          {
+            "title": "Specify your need",
+            "desc": "Balance sheet, IFU/G50 filings, EURL formation — each has their specialty."
+          },
+          {
+            "title": "Choose the wilaya",
+            "desc": "A local accountant knows the requirements of the Algerian administration."
+          },
+          {
+            "title": "Remote consultation",
+            "desc": "Most assignments are done via messaging and documents."
+          }
+        ]
+      },
+      "expertComptable": {
+        "domainLabel": "Area",
+        "hero": "Find a chartered accountant in Algeria",
+        "sub": "Audit, business valuation, consolidation, due diligence — for companies and the diaspora.",
+        "searchLabel": "Find a chartered accountant",
+        "steps": [
+          {
+            "title": "Specify your assignment",
+            "desc": "Statutory audit, valuation, due diligence, consolidation — each expert has their specialties."
+          },
+          {
+            "title": "Choose the wilaya",
+            "desc": "A local chartered accountant knows the Algerian tax and regulatory environment."
+          },
+          {
+            "title": "Remote consultation",
+            "desc": "Most expert assignments are done remotely through document exchange."
+          }
+        ]
+      }
+    }
+  },
+  "professionsPage": {
+    "tag": "Professions guide",
+    "title": "Legal professionals in Algeria",
+    "subtitle": "Lawyer, notary, bailiff, accountant — each professional has a specific role defined by Algerian law. Understand who to contact based on your situation.",
+    "ctaTitle": "Find the right professional",
+    "ctaDesc": "All verified by Mizan before activation.",
+    "ctaAction": "Search for a professional"
   }
 }

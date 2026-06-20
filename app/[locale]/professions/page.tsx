@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import {
   Scale,
   FileText,
@@ -7,6 +7,7 @@ import {
   TrendingUp,
   ChevronRight,
 } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import { PROFESSIONS_DATA, PROFESSIONS_LIST } from "@/lib/professionsData";
 
 const PROF_ICONS: Record<string, any> = {
@@ -24,21 +25,21 @@ export const metadata = {
   alternates: { canonical: "https://mizan-dz.com/professions" },
 };
 
-export default function ProfessionsPage() {
+export default async function ProfessionsPage() {
+  const t = await getTranslations("professionsPage");
+
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="text-center mb-10">
           <p className="text-xs font-semibold text-teal-600 uppercase tracking-widest mb-3">
-            Guide des professions
+            {t("tag")}
           </p>
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 mb-4 leading-tight">
-            Les professionnels du droit en Algérie
+            {t("title")}
           </h1>
           <p className="text-slate-500 text-base max-w-xl mx-auto leading-relaxed">
-            Avocat, notaire, huissier, comptable — chaque professionnel a un
-            rôle précis défini par la loi algérienne. Comprenez qui contacter
-            selon votre situation.
+            {t("subtitle")}
           </p>
         </div>
 
@@ -83,15 +84,11 @@ export default function ProfessionsPage() {
         </div>
 
         <div className="mt-10 bg-teal-600 rounded-2xl p-7 text-center">
-          <h2 className="text-lg font-bold text-white mb-2">
-            Trouvez le bon professionnel
-          </h2>
-          <p className="text-teal-100 text-sm mb-5">
-            Tous vérifiés par Mizan avant activation.
-          </p>
+          <h2 className="text-lg font-bold text-white mb-2">{t("ctaTitle")}</h2>
+          <p className="text-teal-100 text-sm mb-5">{t("ctaDesc")}</p>
           <Link href="/search">
             <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold text-sm rounded-xl cursor-pointer transition-all">
-              Rechercher un professionnel <ChevronRight className="w-4 h-4" />
+              {t("ctaAction")} <ChevronRight className="w-4 h-4" />
             </button>
           </Link>
         </div>

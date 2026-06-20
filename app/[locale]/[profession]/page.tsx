@@ -2,6 +2,7 @@
 import React from "react";
 import { useState, useLayoutEffect, useEffect } from "react";
 import { notFound, useRouter, useParams } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import {
   ChevronRight,
   ArrowLeft,
@@ -19,9 +20,11 @@ import {
   getTopRatedAvocats,
   DOMAINES_PAR_PROFESSION,
 } from "@/lib/avocatsData";
+import { getWilayaLabel } from "@/lib/i18nLabels";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 gsap.registerPlugin(ScrollTrigger);
 
 type ProfId =
@@ -39,138 +42,24 @@ const PROF_ICONS: Record<ProfId, any> = {
   "expert-comptable": Calculator,
 };
 
-const PROFESSIONS: Record<
-  ProfId,
-  {
-    label: string;
-    labelPlural: string;
-    hero: string;
-    sub: string;
-    searchLabel: string;
-    domainLabel: string;
-    steps: { title: string; desc: string }[];
-  }
-> = {
-  avocat: {
-    label: "Avocat",
-    labelPlural: "avocats",
-    hero: "Trouvez votre avocat en Algérie",
-    sub: "Filtrez par spécialité et wilaya. Avis clients, expérience, contact direct — depuis l'Algérie ou la diaspora.",
-    searchLabel: "Rechercher un avocat",
-    domainLabel: "Spécialité",
-    steps: [
-      {
-        title: "Choisissez votre spécialité",
-        desc: "Précisez votre besoin : droit civil, pénal, famille, affaires...",
-      },
-      {
-        title: "Sélectionnez votre wilaya",
-        desc: "Sur la carte interactive ou via le menu — synchronisés en temps réel.",
-      },
-      {
-        title: "Contactez directement",
-        desc: "Messagerie sécurisée. Inscription client gratuite.",
-      },
-    ],
-  },
-  notaire: {
-    label: "Notaire",
-    labelPlural: "notaires",
-    hero: "Trouvez un notaire en Algérie",
-    sub: "Actes immobiliers, successions, mariages, donations — nos notaires vérifiés depuis n'importe où.",
-    searchLabel: "Rechercher un notaire",
-    domainLabel: "Domaine",
-    steps: [
-      {
-        title: "Précisez votre besoin",
-        desc: "Succession, immobilier, mariage — chaque notaire a ses spécialités.",
-      },
-      {
-        title: "Choisissez la wilaya",
-        desc: "Le notaire doit être compétent dans la wilaya du bien ou de l'acte.",
-      },
-      {
-        title: "Prenez contact",
-        desc: "Décrivez votre situation, le notaire vous répond directement.",
-      },
-    ],
-  },
-  huissier: {
-    label: "Huissier",
-    labelPlural: "huissiers",
-    hero: "Trouvez un huissier en Algérie",
-    sub: "Constats officiels, exécution de jugements, recouvrement de créances — partout en Algérie.",
-    searchLabel: "Rechercher un huissier",
-    domainLabel: "Type d'intervention",
-    steps: [
-      {
-        title: "Type d'acte",
-        desc: "Constat, signification, recouvrement — précisez votre besoin.",
-      },
-      {
-        title: "Identifiez la wilaya",
-        desc: "L'huissier intervient dans sa zone de compétence territoriale.",
-      },
-      {
-        title: "Contact rapide",
-        desc: "Certaines interventions sont urgentes. Contactez directement.",
-      },
-    ],
-  },
-  comptable: {
-    label: "Comptable",
-    labelPlural: "comptables",
-    hero: "Trouvez un comptable en Algérie",
-    sub: "Création d'entreprise, bilans, déclarations fiscales — pour entrepreneurs résidents et diaspora.",
-    searchLabel: "Rechercher un comptable",
-    domainLabel: "Domaine",
-    steps: [
-      {
-        title: "Précisez votre besoin",
-        desc: "Bilan, déclarations IFU/G50, création EURL — chacun sa spécialité.",
-      },
-      {
-        title: "Choisissez la wilaya",
-        desc: "Un comptable local connaît les exigences de l'administration algérienne.",
-      },
-      {
-        title: "Consultation à distance",
-        desc: "La plupart des missions se font par messagerie et documents.",
-      },
-    ],
-  },
-  "expert-comptable": {
-    label: "Expert Comptable",
-    labelPlural: "experts comptables",
-    hero: "Trouvez un expert-comptable en Algérie",
-    sub: "Audit, évaluation d'entreprise, consolidation, due diligence — pour entreprises et diaspora.",
-    searchLabel: "Rechercher un expert-comptable",
-    domainLabel: "Domaine",
-    steps: [
-      {
-        title: "Précisez votre mission",
-        desc: "Audit légal, évaluation, due diligence, consolidation — chaque expert a ses spécialités.",
-      },
-      {
-        title: "Choisissez la wilaya",
-        desc: "Un expert-comptable local connaît l'environnement fiscal et réglementaire algérien.",
-      },
-      {
-        title: "Consultation à distance",
-        desc: "La majorité des missions d'expertise se font à distance par échange de documents.",
-      },
-    ],
-  },
+const PROF_KEY: Record<ProfId, string> = {
+  avocat: "avocat",
+  notaire: "notaire",
+  huissier: "huissier",
+  comptable: "comptable",
+  "expert-comptable": "expertComptable",
 };
 
 function TopProsSection({
   topPros,
-  prof,
+  plural,
   handleSearch,
+  t,
 }: {
   topPros: any[];
-  prof: { labelPlural: string };
+  plural: string;
   handleSearch: () => void;
+  t: any;
 }) {
   useLayoutEffect(() => {
     if (!topPros.length) return;
@@ -187,12 +76,12 @@ function TopProsSection({
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-7 sm:mb-8">
           <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">
-            {prof.labelPlural.charAt(0).toUpperCase() +
-              prof.labelPlural.slice(1)}{" "}
-            les mieux notés
+            {t("professionLanding.topRatedTitle", {
+              plural: plural.charAt(0).toUpperCase() + plural.slice(1),
+            })}
           </h2>
           <p className="text-slate-500 text-sm">
-            Recommandés par notre communauté · Vérifiés par Mizan
+            {t("professionLanding.topRatedSubtitle")}
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
@@ -207,7 +96,7 @@ function TopProsSection({
             onClick={handleSearch}
             className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium cursor-pointer text-sm"
           >
-            Voir tous les {prof.labelPlural}{" "}
+            {t("professionLanding.seeAllPlural", { plural })}{" "}
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -218,8 +107,24 @@ function TopProsSection({
 
 function ProfessionContent({ profId }: { profId: ProfId }) {
   const router = useRouter();
-  const prof = PROFESSIONS[profId]!;
+  const t = useTranslations();
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
+  const profKey = PROF_KEY[profId];
   const ProfIcon = PROF_ICONS[profId] || Scale;
+
+  const label = t(`professions.${profKey}.label`);
+  const labelPlural = t(`professions.${profKey}.plural`);
+  const prof = {
+    domainLabel: t(`professionLanding.professions.${profKey}.domainLabel`),
+    hero: t(`professionLanding.professions.${profKey}.hero`),
+    sub: t(`professionLanding.professions.${profKey}.sub`),
+    searchLabel: t(`professionLanding.professions.${profKey}.searchLabel`),
+    steps: t.raw(`professionLanding.professions.${profKey}.steps`) as {
+      title: string;
+      desc: string;
+    }[],
+  };
 
   const [selectedWilaya, setSelectedWilaya] = useState("");
   const [selectedDomaines, setSelectedDomaines] = useState<string[]>([]);
@@ -232,11 +137,17 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
     label: d,
   }));
   const wilayaOptions = React.useMemo(() => {
-    const opts = wilayas.map((w) => ({ value: w, label: w }));
+    const opts = wilayas.map((w) => ({
+      value: w,
+      label: getWilayaLabel(w, t),
+    }));
     if (selectedWilaya && !opts.find((o) => o.value === selectedWilaya))
-      opts.unshift({ value: selectedWilaya, label: selectedWilaya });
+      opts.unshift({
+        value: selectedWilaya,
+        label: getWilayaLabel(selectedWilaya, t),
+      });
     return opts;
-  }, [wilayas, selectedWilaya]);
+  }, [wilayas, selectedWilaya, locale]);
 
   useEffect(() => {
     getWilayas().then((w) => {
@@ -303,10 +214,10 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
           </Link>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             <div>
-              <h1 className="ph-title text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 sm:mb-5 leading-tight text-center lg:text-left">
+              <h1 className="ph-title text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 sm:mb-5 leading-tight text-center lg:text-start">
                 {prof.hero}
               </h1>
-              <p className="ph-sub text-sm sm:text-lg text-slate-600 mb-6 sm:mb-8 leading-relaxed text-center lg:text-left">
+              <p className="ph-sub text-sm sm:text-lg text-slate-600 mb-6 sm:mb-8 leading-relaxed text-center lg:text-start">
                 {prof.sub}
               </p>
               <div
@@ -320,8 +231,8 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                   <MultiSelectWithCheckboxes
                     placeholder={
                       profId === "avocat"
-                        ? "Choisir des spécialités..."
-                        : "Choisir des domaines..."
+                        ? t("professionLanding.specialitiesPlaceholder")
+                        : t("professionLanding.domainsPlaceholder")
                     }
                     options={domaineOptions}
                     value={selectedDomaines}
@@ -332,13 +243,13 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                 </div>
                 <div className="relative" style={{ zIndex: 10 }}>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
-                    Wilaya
+                    {t("professionLanding.wilayaLabel")}
                   </label>
                   {loadingWilayas ? (
                     <div className="h-12 bg-slate-100 rounded-lg animate-pulse" />
                   ) : (
                     <CustomSelect
-                      placeholder="Toutes les wilayas"
+                      placeholder={t("professionLanding.allWilayas")}
                       options={wilayaOptions}
                       value={selectedWilaya}
                       onChange={setSelectedWilaya}
@@ -350,14 +261,14 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                   onClick={handleSearch}
                   className="w-full h-12 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl flex items-center justify-center transition-all cursor-pointer text-sm sm:text-base"
                 >
-                  {"Voir les " + prof.labelPlural}
+                  {t("professionLanding.seeButton", { plural: labelPlural })}
                 </button>
               </div>
               <div className="mt-8 space-y-4 relative" style={{ zIndex: 1 }}>
                 {prof.steps.map((step, i) => (
                   <div key={i} className="ph-step flex gap-3">
                     <div className="w-7 h-7 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-xs font-bold text-teal-700 flex-shrink-0 mt-0.5">
-                      {i + 1}
+                      {ld(String(i + 1))}
                     </div>
                     <div>
                       <div className="text-sm font-semibold text-slate-800 mb-0.5">
@@ -384,14 +295,17 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                       <ProfIcon className="w-4 h-4 text-white" />
                     </div>
                     <p className="text-sm font-bold text-teal-900 leading-snug">
-                      Pourquoi choisir un {prof.label.toLowerCase()} ?
+                      {t("professionLanding.whyChoose", {
+                        label: label.toLowerCase(),
+                      })}
                     </p>
                   </div>
                   <p className="text-xs text-teal-700 leading-relaxed mb-3">
-                    Rôle officiel, missions et cadre légal algérien.
+                    {t("professionLanding.whyChooseDesc")}
                   </p>
                   <span className="inline-flex items-center gap-1 text-xs font-semibold text-teal-600 group-hover:text-teal-700">
-                    En savoir plus <ChevronRight className="w-3.5 h-3.5" />
+                    {t("professionLanding.learnMore")}{" "}
+                    <ChevronRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
               </Link>
@@ -403,22 +317,24 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
       {topPros.length > 0 && (
         <TopProsSection
           topPros={topPros}
-          prof={prof}
+          plural={labelPlural}
           handleSearch={handleSearch}
+          t={t}
         />
       )}
 
       <section className="py-12 px-4 bg-teal-600">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-xl sm:text-2xl font-bold text-white mb-3">
-            Vous êtes {prof.label.toLowerCase()} en Algérie ?
+            {t("professionLanding.ctaTitle", { label: label.toLowerCase() })}
           </h2>
           <p className="text-teal-100 mb-6 leading-relaxed text-sm sm:text-base">
-            Inscription gratuite, vérification sous 24-48h.
+            {t("professionLanding.ctaDesc")}
           </p>
           <Link href="/auth/lawyer/register">
             <button className="inline-flex items-center gap-2 px-7 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl cursor-pointer shadow-sm text-sm sm:text-base">
-              Créer mon profil <ChevronRight className="w-4 h-4" />
+              {t("professionLanding.ctaAction")}{" "}
+              <ChevronRight className="w-4 h-4" />
             </button>
           </Link>
         </div>
@@ -430,8 +346,15 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
 export default function ProfessionLandingPage() {
   const params = useParams();
   const profId = params?.profession as ProfId;
+  const validIds: ProfId[] = [
+    "avocat",
+    "notaire",
+    "huissier",
+    "comptable",
+    "expert-comptable",
+  ];
 
-  if (!profId || !PROFESSIONS[profId]) {
+  if (!profId || !validIds.includes(profId)) {
     return notFound();
   }
 
