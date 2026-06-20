@@ -40,9 +40,6 @@ const PROF_KEY: Record<string, string> = {
 
 export function Navigation() {
   const pathname = usePathname();
-  const hiddenPaths = ["/auth/verify-email", "/lawyer/onboarding"];
-  if (hiddenPaths.some((p) => pathname.startsWith(p))) return null;
-
   const router = useRouter();
   const supabase = createClient();
   const t = useTranslations();
@@ -50,6 +47,9 @@ export function Navigation() {
   const [activeTab, setActiveTab] = useState("login");
   const { user, profile, signOut, isAuthenticated } = useAuth();
   const [unreadCount, setUnreadCount] = useState(0);
+
+  const hiddenPaths = ["/auth/verify-email", "/lawyer/onboarding"];
+  const isHidden = hiddenPaths.some((p) => pathname.startsWith(p));
 
   const loadUnreadCount = async () => {
     if (!user || !profile) return;
@@ -190,6 +190,8 @@ export function Navigation() {
       router.push("/");
     }
   };
+
+  if (isHidden) return null;
 
   return (
     <>
