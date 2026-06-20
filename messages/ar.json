@@ -258,7 +258,7 @@
       "mobile": "رقم الهاتف النقال",
       "mobilePh": "٥٥٥ ١٢٣ ٤٥٦",
       "email": "البريد الإلكتروني",
-      "emailPh": "ahmed@gmail.com",
+      "emailPh": "أحمد@gmail.com",
       "password": "كلمة المرور",
       "passwordPh": "٨ أحرف على الأقل",
       "confirmPassword": "تأكيد كلمة المرور",
@@ -327,7 +327,7 @@
       "specialitiesPhOther": "اختر مجالاتك...",
       "experience": "الخبرة (بالسنوات)",
       "email": "البريد الإلكتروني",
-      "emailPh": "ahmed@gmail.com",
+      "emailPh": "أحمد@gmail.com",
       "password": "كلمة المرور",
       "passwordPh": "٨ أحرف على الأقل",
       "confirmPassword": "تأكيد كلمة المرور",
@@ -361,7 +361,7 @@
       "title": "تسجيل دخول العميل",
       "subtitle": "الوصول إلى مساحتك الشخصية",
       "email": "البريد الإلكتروني",
-      "emailPh": "ahmed@gmail.com",
+      "emailPh": "أحمد@gmail.com",
       "password": "كلمة المرور",
       "passwordPh": "كلمة مرورك",
       "rememberMe": "تذكرني",
@@ -375,7 +375,7 @@
       "title": "تسجيل دخول المختص",
       "subtitle": "الوصول إلى مساحتك المهنية",
       "email": "البريد الإلكتروني",
-      "emailPh": "ahmed@gmail.com",
+      "emailPh": "أحمد@gmail.com",
       "password": "كلمة المرور",
       "passwordPh": "كلمة مرورك",
       "rememberMe": "تذكرني",
@@ -1956,5 +1956,175 @@
       "activationError": "خطأ أثناء التفعيل",
       "activationErrorGeneric": "خطأ أثناء تفعيل الحساب"
     }
+  },
+  "filterPanel": {
+    "title": "الفلاتر",
+    "subtitleEmpty": "تصفية بحثك",
+    "subtitleActive": "{n} نشط",
+    "show": "عرض",
+    "hide": "إخفاء",
+    "languageLabel": "اللغة المتحدّث بها",
+    "languageAll": "جميع اللغات",
+    "civiliteLabel": "اللقب",
+    "civiliteAll": "الكل",
+    "experienceLabel": "الحد الأدنى للخبرة",
+    "experienceAll": "كل مستويات الخبرة",
+    "experienceOption": "{n}+ سنوات خبرة",
+    "specialitesCount": "{n} تخصص"
+  },
+  "testimonials": {
+    "tag": "الشهادات",
+    "title": "ما يقوله مستخدمونا",
+    "subtitle": "عملاء ومختصون يثقون بميزان",
+    "verifiedPro": "مختص موثّق",
+    "client": "عميل ميزان"
+  },
+  "consultShared": {
+    "tabs": {
+      "active": "جارية",
+      "archived": "مؤرشفة",
+      "all": "الكل"
+    },
+    "noArchived": "لا توجد استشارات مؤرشفة",
+    "noActive": "لا توجد استشارات جارية",
+    "archive": "أرشفة",
+    "unarchive": "إلغاء الأرشفة",
+    "videoLabel": "فيديو",
+    "archivedLabel": "مؤرشفة",
+    "noMessages": "لا توجد رسائل",
+    "fileTooBig": "يجب ألا يتجاوز الملف 10 ميغابايت",
+    "fileNotAllowed": "نوع الملف غير مسموح",
+    "attachedFile": "(ملف مرفق)",
+    "attachedFileFallback": "ملف مرفق",
+    "sendError": "خطأ أثناء الإرسال.",
+    "loadError": "خطأ أثناء تحميل الاستشارات.",
+    "messagePlaceholder": "اكتب رسالتك...",
+    "atConnector": "في",
+    "image": "صورة"
+  },
+  "mesConsultations": {
+    "title": "استشاراتي",
+    "subtitle": "تابع أسئلتك وردود محاميك",
+    "emptyTitle": "لا توجد استشارات",
+    "emptyDesc": "لم تطرح بعد أي سؤال على محامٍ",
+    "findLawyer": "البحث عن محامٍ",
+    "selectPrompt": "اختر استشارة لعرض المحادثة",
+    "lawyerTyping": "المحامي يكتب الآن...",
+    "lawyerPrefix": "الأستاذ"
+  },
+  "lawyerConsultations": {
+    "title": "استشاراتي",
+    "subtitle": "أدر أسئلة عملائك وقدّم ردودك",
+    "emptyTitle": "لا توجد استشارات",
+    "emptyDesc": "لم تستلم أي استشارة بعد",
+    "selectPrompt": "اختر استشارة للبدء",
+    "clientTyping": "العميل يكتب الآن...",
+    "phoneLabel": "📞 هاتف",
+    "closedLabel": "مغلقة",
+    "consultationClosed": "هذه الاستشارة مغلقة",
+    "declineConfirm": "رفض وإخبار العميل؟",
+    "closeConfirm": "إغلاق وإخبار العميل؟",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "decline": "رفض",
+    "close": "إغلاق",
+    "actionError": "خطأ أثناء تنفيذ الإجراء.",
+    "autoMessages": {
+      "decline": "❌ تم رفض الطلب\n\n{lawyerName} غير قادر على تولي طلبك حاليًا.\n\nندعوك للتواصل مع محامين آخرين متاحين على ميزان.",
+      "close": "✅ تم إغلاق الاستشارة\n\nقام {lawyerName} بتعليم هذه الاستشارة كمنتهية.\n\nشكرًا لثقتك."
+    }
+  },
+  "pendingConsultations": {
+    "title": "استشارات قيد الانتظار",
+    "seeAll": "عرض الكل ←",
+    "statusPending": "قيد الانتظار",
+    "statusAccepted": "مقبولة",
+    "statusInProgress": "جارية",
+    "consultationFallback": "استشارة",
+    "minutesAgo": "منذ {n} دقيقة",
+    "hoursAgo": "منذ {n} ساعة",
+    "daysAgo": "منذ {n} يوم",
+    "declineReasonPh": "السبب (اختياري)...",
+    "confirmDecline": "تأكيد الرفض",
+    "cancel": "إلغاء",
+    "accept": "قبول",
+    "refuse": "رفض",
+    "messaging": "المراسلة"
+  },
+  "blogPage": {
+    "home": "الرئيسية",
+    "legalBlog": "المدونة القانونية",
+    "title": "نصائح قانونية في الجزائر",
+    "subtitle": "أدلة عملية ونصائح قانونية للأفراد والشركات في الجزائر. مكتوبة لتكون سهلة الفهم، ومراجعة من قبل مختصين في القانون.",
+    "readArticle": "قراءة المقال",
+    "ctaTitle": "لديك سؤال قانوني؟",
+    "ctaDesc": "اعثر على محامٍ مسجَّل في النقابة، راجع ملفه وتقييماته، وتواصل معه مباشرة عبر ميزان.",
+    "ctaAction": "البحث عن محامٍ",
+    "categories": {
+      "famille": "قانون الأسرة",
+      "commercial": "القانون التجاري",
+      "immobilier": "القانون العقاري",
+      "travail": "قانون العمل"
+    },
+    "articles": {
+      "comment-divorcer-en-algerie": {
+        "titre": "كيفية الطلاق في الجزائر: الخطوات المتبعة",
+        "resume": "ينظّم قانون الأسرة الطلاق في الجزائر. اكتشف الإجراءات المختلفة والآجال وحقوق كل طرف."
+      },
+      "creer-sarl-algerie": {
+        "titre": "تأسيس شركة ذات مسؤولية محدودة في الجزائر: دليل شامل 2025",
+        "resume": "رأس المال، القانون الأساسي، التسجيل في السجل التجاري — كل ما تحتاج معرفته لتأسيس شركتك ذات المسؤولية المحدودة في الجزائر."
+      },
+      "succession-algerie-depuis-etranger": {
+        "titre": "إدارة تركة في الجزائر من الخارج",
+        "resume": "تعيش في فرنسا أو كندا أو بلجيكا وتحتاج لتسوية تركة في الجزائر؟ هذه هي الإجراءات والمستندات والأخطاء التي يجب تجنبها."
+      },
+      "droits-locataire-algerie": {
+        "titre": "حقوق المستأجر في الجزائر",
+        "resume": "مبلغ الضمان، الإشعار المسبق، الأعباء، الإخلاء — تعرّف على حقوقك كمستأجر في الجزائر وفقًا للتشريع المعمول به."
+      },
+      "licenciement-algerie": {
+        "titre": "التسريح من العمل في الجزائر: الحقوق والطعون",
+        "resume": "ما هي الشروط القانونية للتسريح من العمل في الجزائر؟ التعويضات، الإشعار المسبق، اللجوء إلى محكمة العمل — دليل عملي للعمال."
+      },
+      "acheter-bien-immobilier-algerie": {
+        "titre": "شراء عقار في الجزائر: ما يجب معرفته",
+        "resume": "عقد البيع، الضرائب، التحقق من سند الملكية — كل ما يجب التحقق منه قبل شراء عقار في الجزائر."
+      }
+    }
+  },
+  "feedbackPopup": {
+    "thanksTitle": "شكرًا على ملاحظاتك!",
+    "thanksDesc": "تم إرسال رسالتك بنجاح.",
+    "title": "رأيك يهمّنا",
+    "subtitle": "ساعدنا على تحسين تجربتك على ميزان",
+    "types": {
+      "testimonial": "مشاركة تجربتي",
+      "suggestion": "اقتراح تحسين",
+      "bug": "الإبلاغ عن خلل"
+    },
+    "messageLabel": "رسالتك",
+    "placeholders": {
+      "bug": "صف المشكلة...",
+      "suggestion": "ما الميزة التي تريدها؟",
+      "testimonial": "شارك تجربتك..."
+    },
+    "later": "ليس الآن",
+    "sending": "جارٍ الإرسال...",
+    "send": "إرسال",
+    "errorSend": "خطأ أثناء الإرسال",
+    "errorGeneric": "حدث خطأ ما"
+  },
+  "wilayaPage": {
+    "backHome": "العودة إلى الرئيسية",
+    "title": "محامون في {wilaya}",
+    "desc": "اعثر على محامٍ مؤهّل في ولاية {wilaya}. جميع محامينا موثّقون ومتخصصون في مجالات قانونية مختلفة.",
+    "available": "{count} محامٍ متاح",
+    "statLawyers": "المحامون",
+    "statVerified": "موثّقون",
+    "statExperience": "متوسط سنوات الخبرة",
+    "statRating": "التقييم المتوسط",
+    "noRating": "غير متوفر",
+    "citiesCovered": "المدن المغطاة في {wilaya}"
   }
 }

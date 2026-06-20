@@ -18,6 +18,7 @@ import { AvocatCard } from "@/components/cards/AvocatCard";
 import { SearchFilters, AvocatData } from "@/types";
 import { searchAvocats } from "@/lib/avocatsData";
 import { Link } from "@/i18n/navigation";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import { gsap } from "gsap";
 
 const PROF_KEY: Record<string, string> = {
@@ -49,6 +50,7 @@ function SearchResults() {
   const router = useRouter();
   const t = useTranslations();
   const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
 
   const [avocats, setAvocats] = useState<AvocatData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -324,7 +326,7 @@ function SearchResults() {
           <div className="flex items-center justify-between gap-2 flex-wrap">
             <div className="flex items-center gap-1.5 flex-wrap">
               <span className="text-xs sm:text-sm text-slate-500">
-                {avocats.length} {currentProf.plural}{" "}
+                {ld(String(avocats.length))} {currentProf.plural}{" "}
                 {t("search.found", { count: avocats.length })}
               </span>
               {filters.wilaya && (
@@ -421,8 +423,8 @@ function SearchResults() {
                 {hasMore && (
                   <div className="flex flex-col items-center mt-8 gap-2">
                     <p className="text-xs text-slate-400">
-                      {displayed.length} {t("search.of")} {avocatsTries.length}{" "}
-                      {currentProf.plural}
+                      {ld(String(displayed.length))} {t("search.of")}{" "}
+                      {ld(String(avocatsTries.length))} {currentProf.plural}
                     </p>
                     <button
                       onClick={() => setPage((p) => p + 1)}

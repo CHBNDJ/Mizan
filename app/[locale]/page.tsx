@@ -2,7 +2,8 @@
 import { useLayoutEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import {
   ArrowRight,
   ChevronRight,
@@ -91,6 +92,8 @@ function ProfCardHorizontal({ id, Icon, label, desc }: any) {
 export default function HomePage() {
   const router = useRouter();
   const t = useTranslations();
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
   const [topAvocats, setTopAvocats] = useState<any[]>([]);
   const [wilayas, setWilayas] = useState<string[]>([]);
   const [stats, setStats] = useState<any>({
@@ -314,7 +317,7 @@ export default function HomePage() {
                   className={`flex gap-4 ${i < 2 ? "md:border-e md:border-slate-100 md:pe-10 pb-6 md:pb-0 border-b md:border-b-0 border-slate-100" : ""}`}
                 >
                   <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-sm font-bold text-teal-700 flex-shrink-0 mt-0.5">
-                    {i + 1}
+                    {ld(String(i + 1))}
                   </div>
                   <div>
                     <div className="text-sm sm:text-base font-semibold text-slate-800 mb-1.5">

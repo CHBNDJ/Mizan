@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { useLocale } from "next-intl";
+import { localizedDigits } from "@/lib/arabicNumerals";
 
 interface AnimatedCounterProps {
   end: number;
@@ -16,6 +18,7 @@ export function AnimatedCounter({
   className = "",
 }: AnimatedCounterProps) {
   const [count, setCount] = useState(0);
+  const locale = useLocale();
   const { ref, inView } = useInView({
     threshold: 0.3,
     triggerOnce: true,
@@ -50,7 +53,7 @@ export function AnimatedCounter({
 
   return (
     <div ref={ref} className={className}>
-      {count}
+      {localizedDigits(String(count), locale)}
       {suffix}
     </div>
   );
