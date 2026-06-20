@@ -1863,5 +1863,28 @@
       "deleteSuccess": "Compte supprimé avec succès",
       "deleteError": "Erreur : {msg}"
     }
+  },
+  "reviewSection": {
+    "title": "Avis des clients",
+    "noReviewsTitle": "Aucun avis pour le moment",
+    "noReviewsDesc": "Soyez le premier à partager votre expérience",
+    "noComment": "Note laissée sans commentaire",
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
+    "daysAgo": "Il y a {n} jours",
+    "weeksAgo": "Il y a {n} semaines",
+    "monthsAgo": "Il y a {n} mois",
+    "yearsAgo": "Il y a {n} ans",
+    "shareTitle": "Partagez votre expérience",
+    "loginToReview": "Connectez-vous en tant que client pour laisser un avis.",
+    "yourRating": "Votre note :",
+    "yourComment": "Votre commentaire",
+    "commentPlaceholder": "Décrivez votre expérience (facultatif)",
+    "submit": "Publier mon avis",
+    "submitting": "Envoi en cours...",
+    "errorMustBeLoggedIn": "Vous devez être connecté pour laisser un avis",
+    "errorSubmit": "Erreur lors de l'envoi de l'avis",
+    "clientFallback": "Client",
+    "initialFallback": "M"
   }
 }

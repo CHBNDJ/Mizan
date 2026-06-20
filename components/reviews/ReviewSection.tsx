@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { Star, Quote } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import { ReviewSectionProps } from "@/types";
 
 interface Review {
@@ -23,6 +25,9 @@ export default function ReviewSection({
 }: ReviewSectionProps) {
   const supabase = createClient();
   const { user, profile } = useAuth();
+  const t = useTranslations("reviewSection");
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -75,8 +80,8 @@ export default function ReviewSection({
           comment: review.comment,
           created_at: review.created_at,
           client: {
-            first_name: client?.first_name || "Client",
-            last_name: client?.last_name?.[0] || "M",
+            first_name: client?.first_name || t("clientFallback"),
+            last_name: client?.last_name?.[0] || t("initialFallback"),
           },
         };
       });
@@ -95,19 +100,19 @@ export default function ReviewSection({
     const diffTime = Math.abs(now.getTime() - date.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) return "Aujourd'hui";
-    if (diffDays === 1) return "Hier";
-    if (diffDays < 7) return `Il y a ${diffDays} jours`;
-    if (diffDays < 30) return `Il y a ${Math.floor(diffDays / 7)} semaines`;
-    if (diffDays < 365) return `Il y a ${Math.floor(diffDays / 30)} mois`;
-    return `Il y a ${Math.floor(diffDays / 365)} ans`;
+    if (diffDays === 0) return t("today");
+    if (diffDays === 1) return t("yesterday");
+    if (diffDays < 7) return t("daysAgo", { n: diffDays });
+    if (diffDays < 30) return t("weeksAgo", { n: Math.floor(diffDays / 7) });
+    if (diffDays < 365) return t("monthsAgo", { n: Math.floor(diffDays / 30) });
+    return t("yearsAgo", { n: Math.floor(diffDays / 365) });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!user) {
-      alert("Vous devez être connecté pour laisser un avis");
+      alert(t("errorMustBeLoggedIn"));
       return;
     }
 
@@ -149,7 +154,7 @@ export default function ReviewSection({
       setNewReview({ rating: 5, comment: "" });
     } catch (error: any) {
       console.error("Erreur soumission avis:", error);
-      alert("Erreur lors de l'envoi de l'avis");
+      alert(t("errorSubmit"));
     } finally {
       setSubmitting(false);
     }
@@ -165,15 +170,13 @@ export default function ReviewSection({
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-8">
-      <h2 className="text-3xl font-bold text-slate-800">Avis des clients</h2>
+      <h2 className="text-3xl font-bold text-slate-800">{t("title")}</h2>
       {reviews.length === 0 ? (
         <div className="text-center py-12 bg-slate-50 rounded-lg border border-teal-100">
           <p className="text-slate-800 text-lg font-medium">
-            Aucun avis pour le moment
+            {t("noReviewsTitle")}
           </p>
-          <p className="text-sm text-slate-500 mt-2">
-            Soyez le premier à partager votre expérience
-          </p>
+          <p className="text-sm text-slate-500 mt-2">{t("noReviewsDesc")}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -194,7 +197,7 @@ export default function ReviewSection({
               ) : (
                 <div className="mb-4">
                   <p className="text-slate-500 italic text-sm">
-                    Note laissée sans commentaire
+                    {t("noComment")}
                   </p>
                 </div>
               )}
@@ -205,7 +208,7 @@ export default function ReviewSection({
                     {review.client.first_name} {review.client.last_name}.
                   </div>
                   <div className="text-xs text-slate-500 mt-1">
-                    {formatDate(review.created_at)}
+                    {ld(formatDate(review.created_at))}
                   </div>
                 </div>
                 <div className="flex gap-0.5">
@@ -229,17 +232,15 @@ export default function ReviewSection({
       {(!profile || profile.user_type === "client") && (
         <div className="bg-gradient-to-br from-teal-50 to-white rounded-xl p-8 border border-teal-100 shadow-sm">
           <h3 className="text-2xl font-semibold text-slate-800 mb-6">
-            Partagez votre expérience
+            {t("shareTitle")}
           </h3>
           {!user ? (
-            <p className="text-slate-600 text-base">
-              Connectez-vous en tant que client pour laisser un avis.
-            </p>
+            <p className="text-slate-600 text-base">{t("loginToReview")}</p>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="flex items-center gap-3">
                 <span className="text-base font-medium text-slate-700">
-                  Votre note :
+                  {t("yourRating")}
                 </span>
                 <div className="flex gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -266,7 +267,7 @@ export default function ReviewSection({
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Votre commentaire
+                  {t("yourComment")}
                 </label>
                 <textarea
                   value={newReview.comment}
@@ -276,7 +277,7 @@ export default function ReviewSection({
                   rows={4}
                   disabled={submitting}
                   className="w-full py-4 px-5 text-base border border-slate-300 rounded-xl bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-400 outline-none transition-all duration-200 text-slate-700 disabled:opacity-50 resize-none"
-                  placeholder="Décrivez votre expérience (facultatif)"
+                  placeholder={t("commentPlaceholder")}
                 />
               </div>
 
@@ -288,10 +289,10 @@ export default function ReviewSection({
                 {submitting ? (
                   <>
                     <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-                    Envoi en cours...
+                    {t("submitting")}
                   </>
                 ) : (
-                  "Publier mon avis"
+                  t("submit")
                 )}
               </button>
             </form>

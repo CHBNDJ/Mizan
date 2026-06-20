@@ -1859,5 +1859,28 @@
       "deleteSuccess": "Account successfully deleted",
       "deleteError": "Error: {msg}"
     }
+  },
+  "reviewSection": {
+    "title": "Client reviews",
+    "noReviewsTitle": "No reviews yet",
+    "noReviewsDesc": "Be the first to share your experience",
+    "noComment": "Rating left without comment",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{n} days ago",
+    "weeksAgo": "{n} weeks ago",
+    "monthsAgo": "{n} months ago",
+    "yearsAgo": "{n} years ago",
+    "shareTitle": "Share your experience",
+    "loginToReview": "Log in as a client to leave a review.",
+    "yourRating": "Your rating:",
+    "yourComment": "Your comment",
+    "commentPlaceholder": "Describe your experience (optional)",
+    "submit": "Post my review",
+    "submitting": "Sending...",
+    "errorMustBeLoggedIn": "You must be logged in to leave a review",
+    "errorSubmit": "Error sending review",
+    "clientFallback": "Client",
+    "initialFallback": "M"
   }
 }

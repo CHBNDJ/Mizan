@@ -1815,5 +1815,28 @@
       "deleteSuccess": "تم حذف الحساب بنجاح",
       "deleteError": "خطأ: {msg}"
     }
+  },
+  "reviewSection": {
+    "title": "تقييمات العملاء",
+    "noReviewsTitle": "لا توجد تقييمات حتى الآن",
+    "noReviewsDesc": "كن أول من يشارك تجربته",
+    "noComment": "تقييم بدون تعليق",
+    "today": "اليوم",
+    "yesterday": "أمس",
+    "daysAgo": "منذ {n} أيام",
+    "weeksAgo": "منذ {n} أسابيع",
+    "monthsAgo": "منذ {n} أشهر",
+    "yearsAgo": "منذ {n} سنوات",
+    "shareTitle": "شارك تجربتك",
+    "loginToReview": "سجّل الدخول كعميل لترك تقييم.",
+    "yourRating": "تقييمك:",
+    "yourComment": "تعليقك",
+    "commentPlaceholder": "صف تجربتك (اختياري)",
+    "submit": "نشر تقييمي",
+    "submitting": "جارٍ الإرسال...",
+    "errorMustBeLoggedIn": "يجب تسجيل الدخول لترك تقييم",
+    "errorSubmit": "خطأ أثناء إرسال التقييم",
+    "clientFallback": "عميل",
+    "initialFallback": "م"
   }
 }

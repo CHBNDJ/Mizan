@@ -40,6 +40,25 @@ interface AuthContextType extends AuthState {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Le trigger Supabase qui crée la ligne `users` après auth.signUp() peut prendre
+// jusqu'à ~2.5s (voir le délai explicite dans signUp() ci-dessous). Le listener
+// onAuthStateChange se déclenche lui presque instantanément après signUp().
+// On retente donc une seconde fois avant de conclure "profil supprimé" et de
+// déconnecter l'utilisateur — sinon on déconnecte un compte qui vient juste
+// d'être créé, ce qui provoquait le crash juste après l'inscription.
+const fetchProfileWithRetry = async (userId: string) => {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const { data: profile } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", userId)
+      .maybeSingle();
+    if (profile) return profile;
+    if (attempt === 0) await new Promise((r) => setTimeout(r, 2000));
+  }
+  return null;
+};
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({
     user: null,
@@ -363,11 +382,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setTimeout(async () => {
           if (!mounted) return;
           try {
-            const { data: profile } = await supabase
-              .from("users")
-              .select("*")
-              .eq("id", session.user.id)
-              .single();
+            // fetchProfileWithRetry utilise .maybeSingle() + une seconde tentative
+            // après 2s, pour laisser le temps au trigger Supabase qui crée la ligne
+            // `users` juste après l'inscription (sinon on déconnecte un compte tout
+            // juste créé, croyant à tort qu'il a été supprimé).
+            const profile = await fetchProfileWithRetry(session.user.id);
             if (!profile) {
               await supabase.auth.signOut();
               setState({
