@@ -2,7 +2,7 @@
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { getSpecialiteLabel, getWilayaLabel } from "@/lib/i18nLabels";
+import { getSpecialiteLabel, getWilayaLabel } from "@/lib/i18nlabels";
 import { AvocatData } from "@/types";
 import { MapPin, Star, Scale } from "lucide-react";
 import { getInitials } from "@/lib/utils";
