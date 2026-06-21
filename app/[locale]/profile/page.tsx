@@ -34,7 +34,7 @@ import { SPECIALITES, WILAYAS, LOCATION, LANGUES } from "@/utils/constants";
 import { COMMUNES_PAR_WILAYA } from "@/utils/communes";
 import { DOMAINES_PAR_PROFESSION } from "@/lib/avocatsData";
 import { getInitials } from "@/lib/utils";
-import { getSpecialiteLabel, getWilayaLabel } from "@/lib/i18nlabels";
+import { getSpecialiteLabel, getWilayaLabel } from "@/lib/i18nLabels";
 import ImageCropModal from "@/components/ImageCropModal";
 import { gsap } from "gsap";
 

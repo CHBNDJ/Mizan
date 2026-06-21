@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";
-import { getSpecialiteLabel, getLangueLabel } from "@/lib/i18nlabels";
+import { getSpecialiteLabel, getLangueLabel } from "@/lib/i18nLabels";
 import { localizedDigits } from "@/lib/arabicNumerals";
 import { getInitials } from "@/lib/utils";
 import { AvocatData } from "@/types";

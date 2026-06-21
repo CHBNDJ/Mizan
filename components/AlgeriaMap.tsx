@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslations } from "next-intl";
-import { getWilayaLabel } from "@/lib/i18nlabels";
+import { getWilayaLabel } from "@/lib/i18nLabels";
 
 const WILAYA_NAMES: Record<string, string> = {
   "01": "Adrar",

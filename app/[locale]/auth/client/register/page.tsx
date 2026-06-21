@@ -8,7 +8,7 @@ import { toArabicNumerals } from "@/lib/arabicNumerals";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { CIVILITE_OPTIONS, frontendToDb } from "@/lib/genderUtils";
 import { LOCATION, COUNTRIES, LOCATION_TO_PHONE_CODE } from "@/utils/constants";
-import { getCountryLabel } from "@/lib/i18nlabels";
+import { getCountryLabel } from "@/lib/i18nLabels";
 import { FormErrors } from "@/types";
 import { useAuth } from "@/hooks/useAuth";
 import { gsap } from "gsap";
