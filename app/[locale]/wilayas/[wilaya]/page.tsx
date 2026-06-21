@@ -6,7 +6,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { ArrowLeft, MapPin } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { getAvocatsByWilaya, getVillesByWilaya } from "@/lib/avocatsData";
-import { getWilayaLabel } from "@/lib/i18nLabels";
+import { getWilayaLabel } from "@/lib/i18nlabels";
 import { localizedDigits } from "@/lib/arabicNumerals";
 import { gsap } from "gsap";
 
