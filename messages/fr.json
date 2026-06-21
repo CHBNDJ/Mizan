@@ -2602,7 +2602,7 @@
         }
       ]
     },
-    "expert-comptable": {
+    "expertComptable": {
       "label": "Expert Comptable",
       "labelPlural": "Experts Comptables",
       "tagline": "L'expert en audit, évaluation et conseil financier avancé",

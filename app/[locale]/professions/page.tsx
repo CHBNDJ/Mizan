@@ -8,7 +8,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { PROFESSIONS_DATA, PROFESSIONS_LIST } from "@/lib/professionsData";
+import { PROFESSIONS_LIST, ProfessionSlug } from "@/lib/professionsData";
 
 const PROF_ICONS: Record<string, any> = {
   avocat: Scale,
@@ -16,6 +16,14 @@ const PROF_ICONS: Record<string, any> = {
   huissier: Briefcase,
   comptable: Calculator,
   "expert-comptable": TrendingUp,
+};
+
+const PROF_KEY: Record<ProfessionSlug, string> = {
+  avocat: "avocat",
+  notaire: "notaire",
+  huissier: "huissier",
+  comptable: "comptable",
+  "expert-comptable": "expertComptable",
 };
 
 export const metadata = {
@@ -26,26 +34,36 @@ export const metadata = {
 };
 
 export default async function ProfessionsPage() {
-  const t = await getTranslations("professionsPage");
+  const t = await getTranslations();
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="text-center mb-10">
           <p className="text-xs font-semibold text-teal-600 uppercase tracking-widest mb-3">
-            {t("tag")}
+            {t("professionsPage.tag")}
           </p>
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 mb-4 leading-tight">
-            {t("title")}
+            {t("professionsPage.title")}
           </h1>
           <p className="text-slate-500 text-base max-w-xl mx-auto leading-relaxed">
-            {t("subtitle")}
+            {t("professionsPage.subtitle")}
           </p>
         </div>
 
         <div className="space-y-4">
           {PROFESSIONS_LIST.map((slug) => {
-            const data = PROFESSIONS_DATA[slug];
+            const key = PROF_KEY[slug];
+            const data = {
+              label: t(`professionsData.${key}.label`),
+              tagline: t(`professionsData.${key}.tagline`),
+              intro: t(`professionsData.${key}.intro`),
+              missions: t.raw(`professionsData.${key}.missions`) as {
+                emoji: string;
+                title: string;
+                desc: string;
+              }[],
+            };
             const Icon = PROF_ICONS[slug] || Scale;
             return (
               <Link key={slug} href={`/professions/${slug}`}>
@@ -84,11 +102,16 @@ export default async function ProfessionsPage() {
         </div>
 
         <div className="mt-10 bg-teal-600 rounded-2xl p-7 text-center">
-          <h2 className="text-lg font-bold text-white mb-2">{t("ctaTitle")}</h2>
-          <p className="text-teal-100 text-sm mb-5">{t("ctaDesc")}</p>
+          <h2 className="text-lg font-bold text-white mb-2">
+            {t("professionsPage.ctaTitle")}
+          </h2>
+          <p className="text-teal-100 text-sm mb-5">
+            {t("professionsPage.ctaDesc")}
+          </p>
           <Link href="/search">
             <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold text-sm rounded-xl cursor-pointer transition-all">
-              {t("ctaAction")} <ChevronRight className="w-4 h-4" />
+              {t("professionsPage.ctaAction")}{" "}
+              <ChevronRight className="w-4 h-4" />
             </button>
           </Link>
         </div>

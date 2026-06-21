@@ -2296,5 +2296,382 @@
     "ctaTitle": "Find the right professional",
     "ctaDesc": "All verified by Mizan before activation.",
     "ctaAction": "Search for a professional"
+  },
+  "professionsData": {
+    "avocat": {
+      "label": "Lawyer",
+      "labelPlural": "Lawyers",
+      "tagline": "The defender of your rights before Algerian courts",
+      "intro": "A lawyer is an officer of the court registered with the bar of their wilaya. They are the only professional authorized to represent and defend parties before Algerian courts — tribunals, courts of appeal, the Council of State and the Supreme Court. They can also advise, draft contracts and assist with any legal matter, whether you are in Algeria or abroad.",
+      "cadreJuridique": "Lawyers practice under Law No. 13-07 of October 29, 2013 on the organization of the legal profession (Official Gazette No. 55 of October 30, 2013, page 3). They must be registered on the roll of the bar of their wilaya, under the supervision of the National Union of Algerian Bar Associations (UNOA). Under Article 9 of this law, the guiding principles are independence, integrity, loyalty, disinterestedness, courtesy and fraternity. Professional secrecy is absolute.",
+      "missions": [
+        {
+          "emoji": "⚖️",
+          "title": "Representation in court",
+          "desc": "They plead before the tribunal, court of appeal, Supreme Court or Council of State. Without a lawyer, you cannot be validly represented in most civil, criminal or administrative proceedings."
+        },
+        {
+          "emoji": "📋",
+          "title": "Legal advice",
+          "desc": "They analyze your situation, identify your rights and obligations, and advise you on the steps to take — even before a dispute arises. Often less costly than waiting for litigation."
+        },
+        {
+          "emoji": "📝",
+          "title": "Drafting contracts and private agreements",
+          "desc": "They draft employment contracts, partner agreements, commercial leases, memoranda of understanding, or any document that does not require a notary."
+        },
+        {
+          "emoji": "🏢",
+          "title": "Business law",
+          "desc": "Company formation, commercial disputes, debt collection, tax litigation, labor law — the lawyer supports entrepreneurs at every step."
+        },
+        {
+          "emoji": "👨‍👩‍👧",
+          "title": "Family law",
+          "desc": "Divorce, child custody, alimony, contested inheritance, kafala — these matters require a lawyer once they are disputed or complex."
+        },
+        {
+          "emoji": "🌍",
+          "title": "Diaspora and international law",
+          "desc": "For anything related to Algerian law from abroad: inheritance, property acquisition, disputes, nationality — a lawyer based in Algeria is essential."
+        }
+      ],
+      "quandFaireAppel": [
+        {
+          "situation": "You received a court summons",
+          "detail": "Whether civil or criminal, contact a lawyer immediately. They will represent and defend you."
+        },
+        {
+          "situation": "You want to set up a company",
+          "detail": "A lawyer can draft the bylaws and secure the relationships between partners, complementing the notary for official deeds."
+        },
+        {
+          "situation": "An important contract is at stake",
+          "detail": "Before signing, have it reviewed by a lawyer. Especially for commercial leases, business transfers, and partnership agreements."
+        },
+        {
+          "situation": "A dispute with a third party",
+          "detail": "Neighbor, employer, business partner, administration — as soon as a conflict emerges, a lawyer can often resolve it before going to court."
+        },
+        {
+          "situation": "You live abroad and have affairs in Algeria",
+          "detail": "To follow a case in your absence, a lawyer can act under power of attorney and represent you at all hearings."
+        }
+      ],
+      "differences": [
+        {
+          "avec": "Notary",
+          "distinction": "The notary draws up official deeds with executory force (property sales, inheritances). The lawyer represents and defends in disputes. Both may be needed: a notary for the inheritance, a lawyer if it is contested."
+        },
+        {
+          "avec": "Bailiff",
+          "distinction": "The bailiff enforces court decisions. The lawyer obtains them. After a favorable judgment, the bailiff is responsible for enforcing it."
+        },
+        {
+          "avec": "Chartered accountant",
+          "distinction": "For tax or labor disputes, the chartered accountant prepares the figures, while the tax lawyer argues the case before the competent courts."
+        }
+      ]
+    },
+    "notaire": {
+      "label": "Notary",
+      "labelPlural": "Notaries",
+      "tagline": "The public officer who secures your most important deeds",
+      "intro": "A notary is a ministerial public officer appointed by the Algerian state. They authenticate the most important legal acts in life — property sales, inheritances, marriages, donations, company formation. Their signature gives these deeds a legal force that ordinary contracts lack: they are unchallengeable, enforceable and permanently archived.",
+      "cadreJuridique": "Notaries practice under Law No. 06-02 of February 20, 2006 on the organization of the notary profession. They are appointed by presidential decree, attached to the Chamber of Notaries of their wilaya and supervised by the National Union of Algerian Notaries (UNNA). Their deeds are authentic — they have the same value as a final judgment and can be enforced directly.",
+      "missions": [
+        {
+          "emoji": "🏠",
+          "title": "Real estate transactions",
+          "desc": "Any sale, purchase, donation or exchange of property in Algeria must go through a notary. They draft the deed, verify property titles, collect registration fees and handle the transcription with the land registry."
+        },
+        {
+          "emoji": "👨‍👩‍👧‍👦",
+          "title": "Inheritance and estates",
+          "desc": "They draw up the certificate of inheritance that officially recognizes the heirs, distribute assets according to Algerian law and Islamic legal rules, and ensure the transcription of property transfers to heirs."
+        },
+        {
+          "emoji": "💍",
+          "title": "Marriage deeds and marital contracts",
+          "desc": "They authenticate marriage certificates, draft separation-of-property or community-property contracts, and register deeds affecting the couple's estate."
+        },
+        {
+          "emoji": "🎁",
+          "title": "Donations and gifts",
+          "desc": "Any donation of real estate or significant value must be notarized to be valid. They secure the transfer and ensure the rights of reserved heirs are respected."
+        },
+        {
+          "emoji": "🏢",
+          "title": "Company formation and transfer",
+          "desc": "Articles of association for SARL, EURL or SPA, transfer of shares, capital increases, company dissolution — founding deeds often require notary involvement."
+        },
+        {
+          "emoji": "✅",
+          "title": "Official powers of attorney",
+          "desc": "To legally represent someone in Algeria, particularly for the diaspora managing assets remotely, the notary draws up authentic powers of attorney recognized by all administrations."
+        }
+      ],
+      "quandFaireAppel": [
+        {
+          "situation": "You are buying or selling property",
+          "detail": "Mandatory. No real estate transaction in Algeria is valid without a notarized deed. This is a legal requirement, not a choice."
+        },
+        {
+          "situation": "You are an heir to property in Algeria",
+          "detail": "The notary draws up the certificate of inheritance and organizes the distribution of the estate, even if you live abroad. They can act via power of attorney."
+        },
+        {
+          "situation": "You want to make a donation to your children",
+          "detail": "To avoid future disputes, a notarized donation is the only secure solution, especially for real estate."
+        },
+        {
+          "situation": "You are setting up a formal company",
+          "detail": "For SPA and certain SARL deeds, notary involvement is mandatory. They guarantee the legality of the articles of association."
+        },
+        {
+          "situation": "You live abroad and need to act in Algeria",
+          "detail": "The notary draws up an authentic power of attorney allowing you to delegate the management of a property or estate to a trusted person in Algeria."
+        }
+      ],
+      "differences": [
+        {
+          "avec": "Lawyer",
+          "distinction": "The lawyer defends and advises. The notary authenticates and secures. For a contested inheritance, you need both: the notary for the official distribution, the lawyer if an heir contests it."
+        },
+        {
+          "avec": "Bailiff",
+          "distinction": "The notary creates official deeds. The bailiff enforces decisions or records facts. They intervene at different stages."
+        },
+        {
+          "avec": "Lawyer for contracts",
+          "distinction": "A contract drafted by a lawyer is a private agreement. A notarized deed is authentic — it has executory force without prior judgment."
+        }
+      ]
+    },
+    "huissier": {
+      "label": "Bailiff",
+      "labelPlural": "Bailiffs",
+      "tagline": "The legal officer who records, serves and enforces",
+      "intro": "A bailiff (huissier de justice) is a sworn ministerial officer whose role is to act wherever decisions and facts must be officially recorded or enforced. They are the enforcement arm of justice — serving judicial documents, enforcing judgments, and drawing up reports that serve as evidence before any court.",
+      "cadreJuridique": "Bailiffs practice under Law No. 06-03 of February 20, 2006 on the organization of the bailiff profession (Official Gazette No. 14), amended and supplemented by Law No. 23-13 of August 5, 2023 (Official Gazette No. 52), which redefines their practice conditions, duties and obligations — and now incorporates auctioneer responsibilities into the profession (Art. 10). Under Article 4 of Law 06-03, they are a public officer mandated by public authority, appointed by order of the Minister of Justice. Their four official duties are defined in Article 12: service of documents and writs, enforcement of civil court decisions, amicable or judicial debt collection, and official reports. They are placed under the supervision of the public prosecutor and overseen by the National Chamber of Bailiffs.",
+      "missions": [
+        {
+          "emoji": "📬",
+          "title": "Service of judicial documents",
+          "desc": "They officially notify summonses, judgments, formal notices and procedural documents to the parties concerned. Without service by a bailiff, a judicial document is not legally enforceable against a party."
+        },
+        {
+          "emoji": "🔨",
+          "title": "Enforcement of judgments",
+          "desc": "When a court orders someone to pay or do something, the bailiff is responsible for enforcing the decision: bank account seizure, vehicle seizure, eviction, etc."
+        },
+        {
+          "emoji": "📸",
+          "title": "Official reports",
+          "desc": "They draw up official reports that serve as evidence in court: condition of a rented property, construction defects, unauthorized advertising, website content, contradictory property inspection."
+        },
+        {
+          "emoji": "💰",
+          "title": "Debt collection",
+          "desc": "For unpaid rent, commercial invoices, loans between individuals — the bailiff can initiate a payment order procedure and proceed with seizures if necessary."
+        },
+        {
+          "emoji": "📋",
+          "title": "Inventories and valuations",
+          "desc": "They draw up the official inventory of assets for an estate, judicial liquidation or seizure. Their valuation serves as the reference for distribution."
+        },
+        {
+          "emoji": "🏢",
+          "title": "Commercial reports",
+          "desc": "For businesses: reports on unfair competition, counterfeiting, breach of contract, site conditions — the bailiff's official report is the strongest evidence."
+        }
+      ],
+      "quandFaireAppel": [
+        {
+          "situation": "You have a favorable judgment that isn't being respected",
+          "detail": "The bailiff is responsible for enforcement. They carry out seizures and enforcement measures to recover what you are owed."
+        },
+        {
+          "situation": "You have a tenant who has stopped paying",
+          "detail": "The bailiff issues the formal notice, initiates the payment order procedure and can proceed with eviction after judgment."
+        },
+        {
+          "situation": "You have an unpaid commercial invoice",
+          "detail": "For undisputed debts, the bailiff can quickly obtain a payment order without lengthy proceedings, then seize the debtor's assets."
+        },
+        {
+          "situation": "You need to prove a fact irrefutably",
+          "detail": "A bailiff's report is the strongest evidence in court: condition of a property before renovation, content of an email or website, breach of a contractual obligation."
+        },
+        {
+          "situation": "You received a judicial document",
+          "detail": "Check that it was properly served by a bailiff — this is the condition for legal appeal deadlines to start running."
+        }
+      ],
+      "differences": [
+        {
+          "avec": "Lawyer",
+          "distinction": "The lawyer obtains court decisions. The bailiff enforces them. After winning in court, it's the bailiff who enforces the judgment."
+        },
+        {
+          "avec": "Notary",
+          "distinction": "The notary creates deeds preventively to secure rights. The bailiff intervenes afterward to record or enforce."
+        },
+        {
+          "avec": "Police and justice",
+          "distinction": "The bailiff is not a state agent — they are an independent ministerial officer. They act on judicial mandate or at an individual's request for official reports."
+        }
+      ]
+    },
+    "comptable": {
+      "label": "Chartered Bookkeeper",
+      "labelPlural": "Chartered Bookkeepers",
+      "tagline": "The manager of your daily accounting and tax obligations",
+      "intro": "A chartered bookkeeper (comptable agréé) is a professional registered with the National Order of Chartered Bookkeepers (ONCA). They handle the company's day-to-day accounting, prepare mandatory tax and social filings, and ensure your compliance with the Algerian administration. For any Algerian business, having a chartered bookkeeper is the first sound management decision.",
+      "cadreJuridique": "Chartered bookkeepers practice under Law No. 10-01 of June 29, 2010 on the professions of chartered accountant, statutory auditor and chartered bookkeeper. They are registered on the roll of the National Organization of Chartered Bookkeepers (ONCA), governed by Executive Decree No. 11-27 of January 27, 2011, which oversees the practice of the profession and defines the applicable code of ethics.",
+      "missions": [
+        {
+          "emoji": "📊",
+          "title": "Bookkeeping",
+          "desc": "They record all of the company's financial transactions according to the Algerian Financial Accounting System (SCF): purchases, sales, salaries, expenses, depreciation. This is the foundation for everything else."
+        },
+        {
+          "emoji": "🧾",
+          "title": "Tax filings",
+          "desc": "They prepare and file all mandatory returns: TAP (Professional Activity Tax), IBS (Corporate Income Tax), IFU (Single Flat-Rate Tax), monthly G50, VAT. A delay or error exposes you to penalties."
+        },
+        {
+          "emoji": "👥",
+          "title": "Payroll and social contributions",
+          "desc": "They calculate salaries, prepare payslips, declare CNAS and CASNOS contributions, and ensure the company's social compliance."
+        },
+        {
+          "emoji": "📅",
+          "title": "Annual balance sheet",
+          "desc": "At year-end closing, they prepare the balance sheet, income statement and notes — mandatory documents for any EURL or SARL. These financial statements are also used for bank loan applications."
+        },
+        {
+          "emoji": "🏢",
+          "title": "Company formation",
+          "desc": "They assist you with the formalities of setting up an EURL or SARL: registered address, trade register registration, opening a business account, choosing the tax regime."
+        },
+        {
+          "emoji": "📋",
+          "title": "CASNOS declaration",
+          "desc": "For self-employed individuals and non-salaried managers, the annual CASNOS declaration is mandatory. The bookkeeper prepares it and helps you avoid late penalties."
+        }
+      ],
+      "quandFaireAppel": [
+        {
+          "situation": "You have just set up your EURL or SARL",
+          "detail": "From the moment of formation, a chartered bookkeeper is essential to keep the legal books and file your first returns on time."
+        },
+        {
+          "situation": "You received a tax audit notice",
+          "detail": "A well-informed bookkeeper prepares your file, responds to administration requests and represents you in meetings with the auditor."
+        },
+        {
+          "situation": "You have employees",
+          "detail": "Managing payroll, CNAS filings and employment contracts requires the accounting and social expertise that a chartered bookkeeper has."
+        },
+        {
+          "situation": "You are applying for a bank loan",
+          "detail": "The bank requires a certified balance sheet for any business financing. The bookkeeper prepares the financial statements supporting your application."
+        },
+        {
+          "situation": "You are part of the diaspora managing a business in Algeria remotely",
+          "detail": "A trusted chartered bookkeeper manages your tax and administrative obligations in your absence, helping you avoid fines and penalties."
+        }
+      ],
+      "differences": [
+        {
+          "avec": "Chartered accountant",
+          "distinction": "The chartered bookkeeper handles day-to-day accounting and tax filings. The chartered accountant can additionally certify balance sheets for third parties, conduct audits and business valuations. For a standard small business, a chartered bookkeeper is often sufficient."
+        },
+        {
+          "avec": "In-house manager",
+          "distinction": "An employee accountant is not chartered and does not carry professional liability. A chartered bookkeeper is regulated, insured, and criminally and civilly liable for their work."
+        },
+        {
+          "avec": "Tax expert",
+          "distinction": "For complex tax litigation before the courts, a tax lawyer is required. The bookkeeper handles filings; the lawyer argues disputes."
+        }
+      ]
+    },
+    "expertComptable": {
+      "label": "Chartered Accountant",
+      "labelPlural": "Chartered Accountants",
+      "tagline": "The expert in audit, valuation and advanced financial advice",
+      "intro": "A chartered accountant (expert-comptable) represents the highest level of the accounting profession in Algeria. Registered with the National Order of Chartered Accountants (ONEC), they master not only accounting and taxation but also statutory audit, business valuation, account consolidation and financial due diligence. They step in where financial complexity goes beyond day-to-day management.",
+      "cadreJuridique": "Chartered accountants practice under Law No. 10-01 of June 29, 2010. They are registered on the roll of the National Order of Chartered Accountants (ONEC), after lengthy training capped by a state diploma and professional internship. Their title is protected — only an ONEC member may use the title of chartered accountant. The same Law No. 10-01 also creates the National Chamber of Statutory Auditors (CNCC), a separate body overseeing the practice of statutory auditing. ONEC has been a member of IFAC (International Federation of Accountants) since 2017 and of the IASB since 2024. In 2026, the Higher Institute for Accounting Professions (IESPC) is opening its first class of chartered accountants. They may also act as a statutory auditor after specific accreditation.",
+      "missions": [
+        {
+          "emoji": "🔍",
+          "title": "Statutory and contractual audit",
+          "desc": "They independently examine a company's accounts and issue an opinion on their accuracy and regularity. Contractual audits are commissioned by management or shareholders to support a strategic decision."
+        },
+        {
+          "emoji": "💼",
+          "title": "Business valuation",
+          "desc": "For a sale, capital entry, merger or inheritance, the chartered accountant determines the company's value using recognized methods: sector multiples, discounted cash flows, revalued net assets."
+        },
+        {
+          "emoji": "📊",
+          "title": "Account consolidation",
+          "desc": "For groups of companies, they prepare consolidated accounts giving an overall view of the group's financial position, in accordance with applicable standards."
+        },
+        {
+          "emoji": "🔎",
+          "title": "Financial due diligence",
+          "desc": "Before an acquisition or investment, they scrutinize historical accounts, identify hidden risks, and verify the quality of assets and liabilities."
+        },
+        {
+          "emoji": "🏗️",
+          "title": "Financial restructuring",
+          "desc": "For companies in difficulty or undergoing transformation, they diagnose the financial situation, propose a restructuring plan and support its implementation."
+        },
+        {
+          "emoji": "📋",
+          "title": "Advanced tax advice",
+          "desc": "Legal tax optimization, tax-legal structuring, assistance during complex tax audits, appeals before tax appeal commissions."
+        }
+      ],
+      "quandFaireAppel": [
+        {
+          "situation": "You want to sell or buy a business",
+          "detail": "The chartered accountant values the target company, examines its accounts and gives you a solid figures-based foundation for negotiation."
+        },
+        {
+          "situation": "You have investors or shareholders",
+          "detail": "They will require accounts certified by a chartered accountant. This is a standard requirement for any institutional investor or investment fund."
+        },
+        {
+          "situation": "You face a serious tax audit",
+          "detail": "For significant adjustments, the chartered accountant prepares your figures-based defense and accompanies you before appeal commissions."
+        },
+        {
+          "situation": "You manage a group of companies",
+          "detail": "Account consolidation and financial monitoring of a group require the expertise of an ONEC professional."
+        },
+        {
+          "situation": "You are seeking significant financing",
+          "detail": "For fundraising, bond loans or structured financing, a chartered accountant's report is required by banks and markets."
+        }
+      ],
+      "differences": [
+        {
+          "avec": "Chartered bookkeeper",
+          "distinction": "The chartered bookkeeper handles day-to-day accounting and tax filings. The chartered accountant can certify balance sheets for third parties, value companies and conduct audits — assignments that carry far broader professional liability."
+        },
+        {
+          "avec": "Statutory auditor",
+          "distinction": "The chartered accountant works for the client who hires them. The statutory auditor is appointed by shareholders to oversee management — independent of leadership. The same professional cannot hold both roles for the same company."
+        },
+        {
+          "avec": "Tax lawyer",
+          "distinction": "The chartered accountant prepares and quantifies the tax defense. The tax lawyer argues it before the courts. The two often work together on complex cases."
+        }
+      ]
+    }
   }
 }
