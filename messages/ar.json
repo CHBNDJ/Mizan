@@ -2629,5 +2629,25 @@
         }
       ]
     }
+  },
+  "algeriaMap": {
+    "clickToSearch": "اضغط على ولاية للبحث",
+    "selectWilaya": "اختر ولاية",
+    "goSearch": "← البحث",
+    "clear": "مسح ✕",
+    "clickToFilter": "اضغط على ولاية للتصفية"
+  },
+  "professionDetailPage": {
+    "regulatedTag": "مهنة منظَّمة · الجزائر",
+    "othersBadge": "+{n} أخرى",
+    "legalFrameworkTitle": "الإطار القانوني في الجزائر",
+    "missionsTitle": "المهام والدور الفعلي",
+    "whenToCallTitle": "متى تتوجّه إلى {label}؟",
+    "vsOthersTitle": "{label} مقابل مهن أخرى",
+    "vsLabel": "{label} مقابل {avec}",
+    "ctaTitle": "اعثر على {label} موثّق في الجزائر",
+    "ctaDesc": "جميع المختصين على ميزان موثّقون قبل التفعيل.",
+    "ctaAction": "البحث عن {label}",
+    "otherProfessions": "مهن أخرى على ميزان"
   }
 }

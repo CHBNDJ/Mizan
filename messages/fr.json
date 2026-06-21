@@ -2677,5 +2677,25 @@
         }
       ]
     }
+  },
+  "algeriaMap": {
+    "clickToSearch": "Cliquez sur une wilaya pour rechercher",
+    "selectWilaya": "Sélectionnez une wilaya",
+    "goSearch": "→ rechercher",
+    "clear": "Effacer ✕",
+    "clickToFilter": "Cliquez sur une wilaya pour filtrer"
+  },
+  "professionDetailPage": {
+    "regulatedTag": "Profession réglementée · Algérie",
+    "othersBadge": "+{n} autres",
+    "legalFrameworkTitle": "Cadre juridique en Algérie",
+    "missionsTitle": "Missions et rôle concret",
+    "whenToCallTitle": "Quand faire appel à un {label} ?",
+    "vsOthersTitle": "{label} vs autres professionnels",
+    "vsLabel": "{label} vs {avec}",
+    "ctaTitle": "Trouvez un {label} vérifié en Algérie",
+    "ctaDesc": "Tous les professionnels sur Mizan sont vérifiés avant activation.",
+    "ctaAction": "Trouver un {label}",
+    "otherProfessions": "Autres professions sur Mizan"
   }
 }

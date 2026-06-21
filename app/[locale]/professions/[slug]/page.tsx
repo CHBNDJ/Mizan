@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { notFound, useRouter, useParams } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import {
   ArrowLeft,
   CheckCircle,
@@ -12,11 +13,8 @@ import {
   Calculator,
   TrendingUp,
 } from "lucide-react";
-import {
-  PROFESSIONS_DATA,
-  PROFESSIONS_LIST,
-  ProfessionSlug,
-} from "@/lib/professionsData";
+import { PROFESSIONS_LIST, ProfessionSlug } from "@/lib/professionsData";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
@@ -29,12 +27,42 @@ const PROF_ICONS: Record<string, any> = {
   "expert-comptable": TrendingUp,
 };
 
+const PROF_KEY: Record<ProfessionSlug, string> = {
+  avocat: "avocat",
+  notaire: "notaire",
+  huissier: "huissier",
+  comptable: "comptable",
+  "expert-comptable": "expertComptable",
+};
+
+interface ProfessionDataShape {
+  label: string;
+  tagline: string;
+  cadreJuridique: string;
+  missions: { emoji: string; title: string; desc: string }[];
+  quandFaireAppel: { situation: string; detail: string }[];
+  differences: { avec: string; distinction: string }[];
+}
+
 export default function ProfessionPage() {
   const params = useParams();
   const router = useRouter();
+  const t = useTranslations();
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
   const slug = (params?.slug as ProfessionSlug) || "avocat";
-  const data = PROFESSIONS_DATA[slug];
-  if (!data) notFound();
+
+  if (!PROF_KEY[slug]) notFound();
+  const profKey = PROF_KEY[slug];
+
+  const data: ProfessionDataShape = {
+    label: t(`professionsData.${profKey}.label`),
+    tagline: t(`professionsData.${profKey}.tagline`),
+    cadreJuridique: t(`professionsData.${profKey}.cadreJuridique`),
+    missions: t.raw(`professionsData.${profKey}.missions`),
+    quandFaireAppel: t.raw(`professionsData.${profKey}.quandFaireAppel`),
+    differences: t.raw(`professionsData.${profKey}.differences`),
+  };
 
   const Icon = PROF_ICONS[slug] || Scale;
   const ref = useRef<HTMLDivElement>(null);
@@ -97,7 +125,7 @@ export default function ProfessionPage() {
             </div>
             <div>
               <p className="text-teal-200 text-xs font-semibold uppercase tracking-widest mb-1">
-                Profession réglementée · Algérie
+                {t("professionDetailPage.regulatedTag")}
               </p>
               <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
                 {data.label}
@@ -123,7 +151,9 @@ export default function ProfessionPage() {
             {data.missions.length > 4 && (
               <div className="flex items-center gap-1 bg-white/10 px-3 py-1.5 rounded-full">
                 <span className="text-xs text-teal-100">
-                  +{data.missions.length - 4} autres
+                  {t("professionDetailPage.othersBadge", {
+                    n: ld(String(data.missions.length - 4)),
+                  })}
                 </span>
               </div>
             )}
@@ -135,7 +165,7 @@ export default function ProfessionPage() {
             <span className="w-6 h-6 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center text-xs">
               ⚖️
             </span>
-            Cadre juridique en Algérie
+            {t("professionDetailPage.legalFrameworkTitle")}
           </h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             {data.cadreJuridique}
@@ -144,7 +174,7 @@ export default function ProfessionPage() {
 
         <div className="pf-section bg-white border border-slate-200 rounded-2xl p-6 mb-4 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 mb-5">
-            Missions et rôle concret
+            {t("professionDetailPage.missionsTitle")}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {data.missions.map((m, i) => (
@@ -165,7 +195,9 @@ export default function ProfessionPage() {
 
         <div className="pf-section bg-teal-50 border border-teal-100 rounded-2xl p-6 mb-4">
           <h2 className="text-sm font-bold text-teal-900 mb-4">
-            Quand faire appel à un {data.label.toLowerCase()} ?
+            {t("professionDetailPage.whenToCallTitle", {
+              label: data.label.toLowerCase(),
+            })}
           </h2>
           <div className="space-y-3">
             {data.quandFaireAppel.map((q, i) => (
@@ -189,16 +221,19 @@ export default function ProfessionPage() {
 
         <div className="pf-section bg-white border border-slate-200 rounded-2xl p-6 mb-7 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 mb-4">
-            {data.label} vs autres professionnels
+            {t("professionDetailPage.vsOthersTitle", { label: data.label })}
           </h2>
           <div className="space-y-3">
             {data.differences.map((d, i) => (
               <div
                 key={i}
-                className="p-4 bg-slate-50 border-l-4 border-teal-400 rounded-r-xl"
+                className="p-4 bg-slate-50 border-s-4 border-teal-400 rounded-e-xl"
               >
                 <p className="text-xs font-bold text-teal-700 uppercase tracking-wide mb-1">
-                  {data.label} vs {d.avec}
+                  {t("professionDetailPage.vsLabel", {
+                    label: data.label,
+                    avec: d.avec,
+                  })}
                 </p>
                 <p className="text-sm text-slate-600 leading-relaxed">
                   {d.distinction}
@@ -210,14 +245,18 @@ export default function ProfessionPage() {
 
         <div className="pf-cta bg-teal-600 rounded-2xl p-7 text-center mb-8">
           <h2 className="text-lg font-bold text-white mb-2">
-            Trouvez un {data.label.toLowerCase()} vérifié en Algérie
+            {t("professionDetailPage.ctaTitle", {
+              label: data.label.toLowerCase(),
+            })}
           </h2>
           <p className="text-teal-100 text-sm mb-5">
-            Tous les professionnels sur Mizan sont vérifiés avant activation.
+            {t("professionDetailPage.ctaDesc")}
           </p>
-          <Link href={`/${data.searchProfession}`}>
+          <Link href={`/${slug}`}>
             <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold text-sm rounded-xl cursor-pointer transition-all">
-              Trouver un {data.label.toLowerCase()}{" "}
+              {t("professionDetailPage.ctaAction", {
+                label: data.label.toLowerCase(),
+              })}{" "}
               <ChevronRight className="w-4 h-4" />
             </button>
           </Link>
@@ -225,11 +264,12 @@ export default function ProfessionPage() {
 
         <div className="pf-section">
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">
-            Autres professions sur Mizan
+            {t("professionDetailPage.otherProfessions")}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {otherProfs.map((p) => {
-              const d = PROFESSIONS_DATA[p];
+              const otherKey = PROF_KEY[p];
+              const otherLabel = t(`professionsData.${otherKey}.label`);
               const OtherIcon = PROF_ICONS[p];
               return (
                 <Link key={p} href={`/professions/${p}`}>
@@ -238,7 +278,7 @@ export default function ProfessionPage() {
                       <OtherIcon className="w-4 h-4 text-teal-600" />
                     </div>
                     <p className="text-xs font-semibold text-slate-700">
-                      {d.label}
+                      {otherLabel}
                     </p>
                   </div>
                 </Link>

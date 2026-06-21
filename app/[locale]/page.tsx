@@ -26,7 +26,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
-// Mappe l'id de profession (avec tiret) vers la clé de traduction (camelCase)
 const PROF_KEY: Record<string, string> = {
   avocat: "avocat",
   notaire: "notaire",

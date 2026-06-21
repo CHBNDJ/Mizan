@@ -2673,5 +2673,25 @@
         }
       ]
     }
+  },
+  "algeriaMap": {
+    "clickToSearch": "Click a wilaya to search",
+    "selectWilaya": "Select a wilaya",
+    "goSearch": "→ search",
+    "clear": "Clear ✕",
+    "clickToFilter": "Click a wilaya to filter"
+  },
+  "professionDetailPage": {
+    "regulatedTag": "Regulated profession · Algeria",
+    "othersBadge": "+{n} more",
+    "legalFrameworkTitle": "Legal framework in Algeria",
+    "missionsTitle": "Duties and practical role",
+    "whenToCallTitle": "When to call a {label}?",
+    "vsOthersTitle": "{label} vs other professionals",
+    "vsLabel": "{label} vs {avec}",
+    "ctaTitle": "Find a verified {label} in Algeria",
+    "ctaDesc": "All professionals on Mizan are verified before activation.",
+    "ctaAction": "Find a {label}",
+    "otherProfessions": "Other professions on Mizan"
   }
 }

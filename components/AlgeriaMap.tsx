@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useTranslations } from "next-intl";
+import { getWilayaLabel } from "@/lib/i18nlabels";
 
 const WILAYA_NAMES: Record<string, string> = {
   "01": "Adrar",
@@ -86,6 +88,7 @@ export function AlgeriaMap({
   onSelectAndSearch,
   hideBar,
 }: Props) {
+  const t = useTranslations();
   const containerRef = useRef<HTMLDivElement>(null);
   const [svgContent, setSvgContent] = useState("");
   const [hovered, setHovered] = useState<string | null>(null);
@@ -142,8 +145,8 @@ export function AlgeriaMap({
     <div className="w-full select-none">
       <p className="text-xs font-semibold text-slate-600 mb-2">
         {isLanding
-          ? "Cliquez sur une wilaya pour rechercher"
-          : "Sélectionnez une wilaya"}
+          ? t("algeriaMap.clickToSearch")
+          : t("algeriaMap.selectWilaya")}
       </p>
 
       <div
@@ -202,10 +205,10 @@ export function AlgeriaMap({
               top: Math.max(tooltipPos.y - 36, 4),
             }}
           >
-            {WILAYA_NAMES[hovered]}
+            {getWilayaLabel(WILAYA_NAMES[hovered], t)}
             {isLanding && (
-              <span className="ml-1 text-teal-400 text-[10px]">
-                → rechercher
+              <span className="ms-1 text-teal-400 text-[10px]">
+                {t("algeriaMap.goSearch")}
               </span>
             )}
           </div>
@@ -219,19 +222,19 @@ export function AlgeriaMap({
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-teal-600" />
               <span className="text-sm font-semibold text-teal-700">
-                {selectedWilaya}
+                {getWilayaLabel(selectedWilaya, t)}
               </span>
             </div>
             <button
               onClick={() => onSelect("")}
               className="text-xs text-teal-400 hover:text-teal-600 cursor-pointer font-medium"
             >
-              Effacer ✕
+              {t("algeriaMap.clear")}
             </button>
           </div>
         ) : (
           <p className="text-xs text-slate-400 text-center mt-2">
-            Cliquez sur une wilaya pour filtrer
+            {t("algeriaMap.clickToFilter")}
           </p>
         ))}
     </div>
