@@ -153,23 +153,34 @@ function MesConsultationsContent() {
         },
         (payload) => {
           const newMsg = payload.new as Message;
-          supabase
-            .from("users")
-            .select("first_name, last_name")
-            .eq("id", newMsg.sender_id)
-            .single()
-            .then(({ data }) => {
-              setMessages((prev) => [
-                ...prev,
-                {
-                  ...newMsg,
-                  sender: {
-                    first_name: data?.first_name || "",
-                    last_name: data?.last_name || "",
-                  },
+          Promise.all([
+            supabase
+              .from("users")
+              .select("first_name, last_name")
+              .eq("id", newMsg.sender_id)
+              .single(),
+            newMsg.attachment_url
+              ? supabase.storage
+                  .from("consultation-attachments")
+                  .createSignedUrl(
+                    extractStoragePath(newMsg.attachment_url),
+                    3600
+                  )
+              : Promise.resolve({ data: null }),
+          ]).then(([{ data }, signedRes]) => {
+            setMessages((prev) => [
+              ...prev,
+              {
+                ...newMsg,
+                attachment_url:
+                  signedRes?.data?.signedUrl || newMsg.attachment_url,
+                sender: {
+                  first_name: data?.first_name || "",
+                  last_name: data?.last_name || "",
                 },
-              ]);
-            });
+              },
+            ]);
+          });
         }
       )
       .subscribe();
@@ -252,6 +263,12 @@ function MesConsultationsContent() {
     }
   };
 
+  const extractStoragePath = (attachmentUrl: string): string => {
+    const marker = "consultation-attachments/";
+    const idx = attachmentUrl.indexOf(marker);
+    return idx >= 0 ? attachmentUrl.slice(idx + marker.length) : attachmentUrl;
+  };
+
   const loadMessages = async (consultationId: string) => {
     try {
       const { data, error: err } = await supabase
@@ -262,7 +279,20 @@ function MesConsultationsContent() {
         .eq("consultation_id", consultationId)
         .order("created_at", { ascending: true });
       if (err) throw err;
-      setMessages(data || []);
+
+      const withSignedUrls = await Promise.all(
+        (data || []).map(async (msg) => {
+          if (!msg.attachment_url) return msg;
+          const path = extractStoragePath(msg.attachment_url);
+          const { data: signed } = await supabase.storage
+            .from("consultation-attachments")
+            .createSignedUrl(path, 3600);
+          return signed?.signedUrl
+            ? { ...msg, attachment_url: signed.signedUrl }
+            : msg;
+        })
+      );
+      setMessages(withSignedUrls);
     } catch {}
   };
 
@@ -307,10 +337,7 @@ function MesConsultationsContent() {
       .from("consultation-attachments")
       .upload(fileName, file);
     if (error) throw error;
-    const { data: urlData } = supabase.storage
-      .from("consultation-attachments")
-      .getPublicUrl(fileName);
-    return urlData.publicUrl;
+    return fileName;
   };
 
   const handleSendMessage = async () => {
@@ -355,22 +382,10 @@ function MesConsultationsContent() {
 
   const markMessagesAsRead = async (consultationId: string) => {
     if (!user) return;
-    const { data } = await supabase
-      .from("consultation_messages")
-      .select("id")
-      .eq("consultation_id", consultationId)
-      .eq("is_read", false)
-      .neq("sender_id", user.id);
-    if (data && data.length > 0) {
-      await supabase
-        .from("consultation_messages")
-        .update({ is_read: true })
-        .in(
-          "id",
-          data.map((m) => m.id)
-        );
-      await loadConsultations();
-    }
+    await supabase.rpc("mark_consultation_messages_as_read", {
+      p_consultation_id: consultationId,
+    });
+    await loadConsultations();
   };
 
   const handleSelectConsultation = async (consultation: ClientConsultation) => {
