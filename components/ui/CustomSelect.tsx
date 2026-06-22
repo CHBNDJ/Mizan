@@ -1,12 +1,13 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Option, CustomSelectProps } from "@/types";
 
 export function CustomSelect({
   options,
-  placeholder = "Sélectionner...",
+  placeholder,
   value,
   onChange,
   className,
@@ -14,6 +15,7 @@ export function CustomSelect({
   disabled = false,
   size = "default",
 }: CustomSelectProps) {
+  const t = useTranslations("customSelect");
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const selectRef = useRef<HTMLDivElement>(null);
@@ -66,6 +68,8 @@ export function CustomSelect({
     }
   };
 
+  const resolvedPlaceholder = placeholder ?? t("defaultPlaceholder");
+
   return (
     <div className="w-full">
       {label && (
@@ -91,7 +95,7 @@ export function CustomSelect({
               type="text"
               value={searchTerm}
               onChange={handleInputChange}
-              placeholder="Rechercher..."
+              placeholder={t("searchPlaceholder")}
               className={cn(
                 "w-full outline-none bg-transparent placeholder-slate-400",
                 size === "large"
@@ -109,13 +113,13 @@ export function CustomSelect({
                 selectedOption && "text-slate-700 font-normal"
               )}
             >
-              {selectedOption ? selectedOption.label : placeholder}
+              {selectedOption ? selectedOption.label : resolvedPlaceholder}
             </span>
           )}
 
           <ChevronDown
             className={cn(
-              "w-5 h-5 text-slate-400 ml-2 flex-shrink-0",
+              "w-5 h-5 text-slate-400 ms-2 flex-shrink-0",
               isOpen && "rotate-180 text-teal-500"
             )}
           />
@@ -126,7 +130,7 @@ export function CustomSelect({
             <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-300 scrollbar-track-slate-100">
               {filteredOptions.length === 0 ? (
                 <div className="px-4 py-3 text-sm text-slate-500 bg-slate-50">
-                  Aucun résultat trouvé pour "{searchTerm}"
+                  {t("noResults", { term: searchTerm })}
                 </div>
               ) : (
                 filteredOptions.map((option, index) => (
@@ -145,7 +149,7 @@ export function CustomSelect({
                       {option.label}
                     </span>
                     {value === option.value && (
-                      <Check className="w-4 h-4 text-teal-600 ml-2 flex-shrink-0" />
+                      <Check className="w-4 h-4 text-teal-600 ms-2 flex-shrink-0" />
                     )}
                   </div>
                 ))

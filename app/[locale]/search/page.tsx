@@ -19,6 +19,7 @@ import { SearchFilters, AvocatData } from "@/types";
 import { searchAvocats } from "@/lib/avocatsData";
 import { Link } from "@/i18n/navigation";
 import { localizedDigits } from "@/lib/arabicNumerals";
+import { getSpecialiteLabel } from "@/lib/i18nLabels";
 import { gsap } from "gsap";
 
 const PROF_KEY: Record<string, string> = {
@@ -346,7 +347,7 @@ function SearchResults() {
                   key={s}
                   className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full text-xs font-medium"
                 >
-                  {s}
+                  {getSpecialiteLabel(s, t)}
                 </span>
               ))}
             </div>

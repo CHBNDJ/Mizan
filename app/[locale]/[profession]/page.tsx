@@ -20,7 +20,7 @@ import {
   getTopRatedAvocats,
   DOMAINES_PAR_PROFESSION,
 } from "@/lib/avocatsData";
-import { getWilayaLabel } from "@/lib/i18nLabels";
+import { getWilayaLabel, getSpecialiteLabel } from "@/lib/i18nLabels";
 import { localizedDigits } from "@/lib/arabicNumerals";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -134,7 +134,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
 
   const domaineOptions = (DOMAINES_PAR_PROFESSION[profId] || []).map((d) => ({
     value: d,
-    label: d,
+    label: getSpecialiteLabel(d, t),
   }));
   const wilayaOptions = React.useMemo(() => {
     const opts = wilayas.map((w) => ({

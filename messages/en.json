@@ -2693,5 +2693,10 @@
     "ctaDesc": "All professionals on Mizan are verified before activation.",
     "ctaAction": "Find a {label}",
     "otherProfessions": "Other professions on Mizan"
+  },
+  "customSelect": {
+    "defaultPlaceholder": "Select...",
+    "searchPlaceholder": "Search...",
+    "noResults": "No results found for \"{term}\""
   }
 }

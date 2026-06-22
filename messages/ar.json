@@ -2649,5 +2649,10 @@
     "ctaDesc": "جميع المختصين على ميزان موثّقون قبل التفعيل.",
     "ctaAction": "البحث عن {label}",
     "otherProfessions": "مهن أخرى على ميزان"
+  },
+  "customSelect": {
+    "defaultPlaceholder": "اختر...",
+    "searchPlaceholder": "بحث...",
+    "noResults": "لا توجد نتائج لـ \"{term}\""
   }
 }

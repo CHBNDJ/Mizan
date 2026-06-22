@@ -29,6 +29,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { gsap } from "gsap";
 import { createClient } from "@/lib/supabase/client";
 import { DOMAINES_PAR_PROFESSION } from "@/lib/avocatsData";
+import { getSpecialiteLabel } from "@/lib/i18nLabels";
 
 type Profession =
   | "avocat"
@@ -106,7 +107,7 @@ export default function LawyerRegisterPage() {
   const domaineOptions = primaryProfession
     ? (DOMAINES_PAR_PROFESSION[primaryProfession] || []).map((d) => ({
         value: d.toLowerCase().replace(/\s+/g, "-"),
-        label: d,
+        label: getSpecialiteLabel(d, t),
       }))
     : [];
 
