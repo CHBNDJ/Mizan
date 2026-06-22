@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Eye, EyeOff, Key, X, AlertTriangle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { ChangePasswordModalProps } from "@/types";
 
@@ -11,6 +12,7 @@ export default function ChangePasswordModal({
   showToast,
 }: ChangePasswordModalProps) {
   const supabase = createClient();
+  const t = useTranslations("changePasswordModal");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -25,19 +27,17 @@ export default function ChangePasswordModal({
     setError("");
 
     if (newPassword.length < 8) {
-      setError("Le nouveau mot de passe doit contenir au moins 8 caractères.");
+      setError(t("minLength"));
       return;
     }
 
     if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(newPassword)) {
-      setError(
-        "Le mot de passe doit contenir majuscule, minuscule et chiffre."
-      );
+      setError(t("complexity"));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError("Les mots de passe ne correspondent pas.");
+      setError(t("mismatch"));
       return;
     }
 
@@ -46,7 +46,7 @@ export default function ChangePasswordModal({
     try {
       const { data: userData } = await supabase.auth.getUser();
       if (!userData.user?.email) {
-        throw new Error("Utilisateur non trouvé");
+        throw new Error(t("userNotFound"));
       }
 
       const { error: signInError } = await supabase.auth.signInWithPassword({
@@ -55,7 +55,7 @@ export default function ChangePasswordModal({
       });
 
       if (signInError) {
-        setError("Mot de passe actuel incorrect.");
+        setError(t("wrongPassword"));
         setIsSubmitting(false);
         return;
       }
@@ -65,19 +65,19 @@ export default function ChangePasswordModal({
       });
 
       if (updateError) {
-        setError("Erreur lors du changement : " + updateError.message);
+        setError(t("errorPrefix", { msg: updateError.message }));
         setIsSubmitting(false);
         return;
       }
 
-      showToast("Mot de passe modifié avec succès !", "success");
+      showToast(t("successToast"), "success");
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
       onClose();
     } catch (err: any) {
       console.error("Erreur changement mot de passe:", err);
-      setError(err.message || "Une erreur est survenue");
+      setError(err.message || t("genericError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -93,7 +93,7 @@ export default function ChangePasswordModal({
             <div className="p-2 bg-teal-100 rounded-lg">
               <Key className="w-5 h-5 text-teal-600" />
             </div>
-            Changer le mot de passe
+            {t("title")}
           </h3>
           <button
             onClick={onClose}
@@ -113,7 +113,7 @@ export default function ChangePasswordModal({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Mot de passe actuel *
+              {t("currentPasswordLabel")}
             </label>
             <div className="relative">
               <input
@@ -127,7 +127,7 @@ export default function ChangePasswordModal({
               <button
                 type="button"
                 onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                className="cursor-pointer absolute end-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
               >
                 {showCurrentPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -140,7 +140,7 @@ export default function ChangePasswordModal({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Nouveau mot de passe *
+              {t("newPasswordLabel")}
             </label>
             <div className="relative">
               <input
@@ -148,14 +148,14 @@ export default function ChangePasswordModal({
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
-                placeholder="Minimum 8 caractères"
+                placeholder={t("newPasswordPh")}
                 required
                 disabled={isSubmitting}
               />
               <button
                 type="button"
                 onClick={() => setShowNewPassword(!showNewPassword)}
-                className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                className="cursor-pointer absolute end-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
               >
                 {showNewPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -165,13 +165,13 @@ export default function ChangePasswordModal({
               </button>
             </div>
             <p className="text-xs text-slate-500 mt-1">
-              Doit contenir: majuscule, minuscule et chiffre
+              {t("newPasswordHint")}
             </p>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Confirmer nouveau mot de passe *
+              {t("confirmPasswordLabel")}
             </label>
             <div className="relative">
               <input
@@ -179,14 +179,14 @@ export default function ChangePasswordModal({
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
-                placeholder="Répétez le mot de passe"
+                placeholder={t("confirmPasswordPh")}
                 required
                 disabled={isSubmitting}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                className="cursor-pointer absolute end-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -206,10 +206,10 @@ export default function ChangePasswordModal({
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                  Modification...
+                  {t("submitting")}
                 </span>
               ) : (
-                "Modifier"
+                t("submit")
               )}
             </button>
             <button
@@ -218,7 +218,7 @@ export default function ChangePasswordModal({
               disabled={isSubmitting}
               className="cursor-pointer flex-1 border-2 border-slate-300 text-slate-600 py-3 rounded-lg hover:bg-slate-50 transition-colors font-medium"
             >
-              Annuler
+              {t("cancel")}
             </button>
           </div>
         </form>

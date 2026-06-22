@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { EmailConfirmationModalProps } from "@/types";
 
 export default function EmailConfirmationModal({
@@ -8,6 +9,7 @@ export default function EmailConfirmationModal({
   onClose,
   email,
 }: EmailConfirmationModalProps) {
+  const t = useTranslations("emailConfirmationModal");
   if (!isOpen) return null;
 
   return (
@@ -19,12 +21,10 @@ export default function EmailConfirmationModal({
           </div>
 
           <h3 className="text-xl font-semibold text-slate-800 mb-2">
-            Email de confirmation envoyé !
+            {t("title")}
           </h3>
 
-          <p className="text-slate-600 text-sm mb-4">
-            Un email a été envoyé à :
-          </p>
+          <p className="text-slate-600 text-sm mb-4">{t("sentTo")}</p>
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 mb-4">
             <p className="text-blue-800 font-medium text-sm">{email}</p>
@@ -32,15 +32,15 @@ export default function EmailConfirmationModal({
 
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-left w-full">
             <p className="text-amber-800 text-sm mb-2 font-medium">
-              📧 Étapes suivantes :
+              {t("nextSteps")}
             </p>
             <ol className="text-amber-700 text-xs space-y-1 list-decimal list-inside">
-              <li>Ouvrez votre boîte mail</li>
-              <li>Cliquez sur le lien de confirmation</li>
-              <li>Votre email sera modifié après confirmation</li>
+              <li>{t("step1")}</li>
+              <li>{t("step2")}</li>
+              <li>{t("step3")}</li>
             </ol>
             <p className="text-amber-600 text-xs mt-2 italic">
-              Pensez à vérifier vos spams si vous ne recevez rien.
+              {t("checkSpam")}
             </p>
           </div>
 
@@ -48,7 +48,7 @@ export default function EmailConfirmationModal({
             onClick={onClose}
             className="cursor-pointer w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700 transition-colors font-medium"
           >
-            J'ai compris
+            {t("gotIt")}
           </button>
         </div>
       </div>

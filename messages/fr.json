@@ -2702,5 +2702,226 @@
     "defaultPlaceholder": "Sélectionner...",
     "searchPlaceholder": "Rechercher...",
     "noResults": "Aucun résultat trouvé pour \"{term}\""
+  },
+  "changeEmailModal": {
+    "title": "Modifier l'email",
+    "invalidFormat": "Format d'email invalide.",
+    "userNotFound": "Utilisateur non trouvé",
+    "wrongPassword": "Mot de passe incorrect.",
+    "errorPrefix": "Erreur : {msg}",
+    "genericError": "Une erreur est survenue",
+    "newEmailLabel": "Nouvel email *",
+    "newEmailPh": "nouveau@email.com",
+    "currentPasswordLabel": "Mot de passe actuel *",
+    "passwordPh": "Votre mot de passe",
+    "sending": "Envoi...",
+    "submit": "Modifier",
+    "cancel": "Annuler"
+  },
+  "changePasswordModal": {
+    "title": "Changer le mot de passe",
+    "minLength": "Le nouveau mot de passe doit contenir au moins 8 caractères.",
+    "complexity": "Le mot de passe doit contenir majuscule, minuscule et chiffre.",
+    "mismatch": "Les mots de passe ne correspondent pas.",
+    "userNotFound": "Utilisateur non trouvé",
+    "wrongPassword": "Mot de passe actuel incorrect.",
+    "errorPrefix": "Erreur lors du changement : {msg}",
+    "genericError": "Une erreur est survenue",
+    "successToast": "Mot de passe modifié avec succès !",
+    "currentPasswordLabel": "Mot de passe actuel *",
+    "newPasswordLabel": "Nouveau mot de passe *",
+    "newPasswordPh": "Minimum 8 caractères",
+    "newPasswordHint": "Doit contenir: majuscule, minuscule et chiffre",
+    "confirmPasswordLabel": "Confirmer nouveau mot de passe *",
+    "confirmPasswordPh": "Répétez le mot de passe",
+    "submitting": "Modification...",
+    "submit": "Modifier",
+    "cancel": "Annuler"
+  },
+  "imageCropModal": {
+    "title": "Ajuster la photo",
+    "zoom": "Zoom",
+    "cancel": "Annuler",
+    "validate": "Valider"
+  },
+  "emailConfirmationModal": {
+    "title": "Email de confirmation envoyé !",
+    "sentTo": "Un email a été envoyé à :",
+    "nextSteps": "📧 Étapes suivantes :",
+    "step1": "Ouvrez votre boîte mail",
+    "step2": "Cliquez sur le lien de confirmation",
+    "step3": "Votre email sera modifié après confirmation",
+    "checkSpam": "Pensez à vérifier vos spams si vous ne recevez rien.",
+    "gotIt": "J'ai compris"
+  },
+  "joinCallButton": {
+    "joinAudio": "Rejoindre l'appel audio",
+    "joinVideo": "Rejoindre la vidéo"
+  },
+  "multiSelect": {
+    "othersCount": "+{n} autres"
+  },
+  "pricingManager": {
+    "canaux": {
+      "message": {
+        "label": "Message écrit",
+        "desc": "Réponse par messagerie sous 24-48h"
+      },
+      "phone": {
+        "label": "Téléphonique",
+        "desc": "Appel vocal — 30 min"
+      },
+      "video_30": {
+        "label": "Vidéo 30 min",
+        "desc": "Consultation vidéo"
+      },
+      "video_60": {
+        "label": "Vidéo 1h",
+        "desc": "Consultation vidéo"
+      },
+      "email": {
+        "label": "Email",
+        "desc": "Échange email sécurisé sous 48h"
+      }
+    },
+    "intro": "Tarifs pour votre profil {profession}. Laissez vide pour \"Tarif sur demande\".",
+    "pricePh": "Sur demande",
+    "currency": "DA",
+    "saved": "Enregistré",
+    "saving": "Sauvegarde...",
+    "save": "Enregistrer les tarifs"
+  },
+  "availabilityManager": {
+    "days": [
+      "Dimanche",
+      "Lundi",
+      "Mardi",
+      "Mercredi",
+      "Jeudi",
+      "Vendredi",
+      "Samedi"
+    ],
+    "tabSchedule": "Mes horaires",
+    "tabBlocks": "Jours bloqués",
+    "addSlotTitle": "Ajouter une plage horaire",
+    "dayLabel": "Jour",
+    "startLabel": "Début",
+    "endLabel": "Fin",
+    "slotDurationLabel": "Durée créneau",
+    "minutesShort": "{n} min",
+    "added": "Ajouté",
+    "add": "Ajouter",
+    "perSlot": "{n} min/créneau",
+    "deactivate": "Désactiver",
+    "activate": "Activer",
+    "noSlots": "Aucune plage horaire configurée. Ajoutez vos disponibilités pour recevoir des rendez-vous.",
+    "blockDateTitle": "Bloquer une date",
+    "dateLabel": "Date *",
+    "allDay": "Journée entière",
+    "fromLabel": "De",
+    "toLabel": "À",
+    "reasonLabel": "Raison (optionnel)",
+    "reasonPh": "Congé, déplacement...",
+    "blockThisDate": "Bloquer cette date",
+    "upcomingBlocked": "Dates bloquées à venir",
+    "allDayLabel": "Journée entière"
+  },
+  "bookingModal": {
+    "daysShort": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+    "daysFull": [
+      "Dimanche",
+      "Lundi",
+      "Mardi",
+      "Mercredi",
+      "Jeudi",
+      "Vendredi",
+      "Samedi"
+    ],
+    "months": [
+      "Janvier",
+      "Février",
+      "Mars",
+      "Avril",
+      "Mai",
+      "Juin",
+      "Juillet",
+      "Août",
+      "Septembre",
+      "Octobre",
+      "Novembre",
+      "Décembre"
+    ],
+    "stepChooseDate": "Choisir une date",
+    "stepChooseSlot": "Choisir un créneau",
+    "stepConfirm": "Confirmer le rendez-vous",
+    "stepDone": "Rendez-vous demandé",
+    "noSlotsToday": "Aucun créneau disponible ce jour.",
+    "chooseAnotherDate": "Choisir une autre date",
+    "continue": "Continuer →",
+    "subjectLabel": "Objet du rendez-vous *",
+    "subjectPh": "Ex : Acte de vente, succession, création de société...",
+    "phoneLabel": "Votre téléphone (recommandé)",
+    "phonePh": "+213 6XX XXX XXX",
+    "sending": "Envoi...",
+    "confirmAppointment": "Confirmer le rendez-vous",
+    "doneTitle": "Rendez-vous demandé",
+    "doneDesc": "{lawyerName} confirmera votre rendez-vous sous 24h.",
+    "atConnector": "à"
+  },
+  "blogArticleDetail": {
+    "home": "Accueil",
+    "blog": "Blog",
+    "ctaTitle": "Besoin d'un avocat spécialisé ?",
+    "ctaDesc": "Trouvez et contactez directement un avocat inscrit au barreau via Mizan.",
+    "ctaAction": "Trouver un avocat spécialisé",
+    "relatedArticles": "Articles liés",
+    "read": "Lire"
+  },
+  "blogArticles": {
+    "comment-divorcer-en-algerie": {
+      "titre": "Comment divorcer en Algérie : les étapes à suivre",
+      "resume": "Le divorce en Algérie est régi par le Code de la famille. Découvrez les différentes procédures, les délais et les droits de chaque partie.",
+      "contenu": "\n## Les formes de divorce en Algérie\n\nEn Algérie, le Code de la famille prévoit plusieurs formes de divorce.\n\n**Le divorce judiciaire** est la procédure la plus courante. L'un des époux saisit le tribunal de famille compétent. Le juge tente une conciliation avant de prononcer le divorce.\n\n**Le divorce par consentement mutuel** est possible lorsque les deux époux s'accordent sur toutes les conditions : garde des enfants, pension alimentaire, partage des biens.\n\n**Le khol'** permet à la femme de demander le divorce en contrepartie d'une compensation financière versée au mari.\n\n## Les étapes de la procédure\n\n1. **Dépôt de la requête** auprès du tribunal de famille du lieu de résidence du foyer conjugal.\n2. **Tentative de conciliation** obligatoire — deux séances minimum espacées de 30 jours.\n3. **Audience de jugement** si la conciliation échoue.\n4. **Prononcé du divorce** et fixation des mesures : garde, pension, logement.\n5. **Transcription** à l'état civil.\n\n## La garde des enfants\n\nLa garde (hadana) est généralement accordée à la mère pour les jeunes enfants. Le père conserve la tutelle légale (wilaya) dans tous les cas.\n\n## La pension alimentaire\n\nLe mari verse une pension alimentaire pendant la période de viduité (idda) de 3 mois après le divorce, et subvient aux besoins des enfants jusqu'à leur majorité.\n"
+    },
+    "creer-sarl-algerie": {
+      "titre": "Créer une SARL en Algérie : guide complet 2026",
+      "resume": "Capital social, statuts, inscription au registre du commerce — tout ce qu'il faut savoir pour créer votre société à responsabilité limitée en Algérie.",
+      "contenu": "\n## SARL ou EURL : quelle différence ?\n\nL'unique différence est le nombre d'associés. L'EURL (Entreprise Unipersonnelle à Responsabilité Limitée) est pour un seul associé. La SARL est pour 2 à 50 associés. Les démarches, le capital minimum, et la fiscalité sont identiques. Si vous créez seul, choisissez l'EURL. Si vous créez à plusieurs, choisissez la SARL.\n\n## Capital social\n\nLe capital minimum recommandé est de 100 000 DZD. Bien que l'obligation légale ait été supprimée, ce montant reste exigé par les banques et partenaires.\n\n## Les étapes au CNRC\n\n1. **Réservation de la dénomination** via la plateforme Sijilcom du CNRC — prévoyez 3 à 4 noms alternatifs.\n2. **Rédaction et authentification des statuts** chez un notaire — coût entre 15 000 et 50 000 DZD. Attention : le CNRC rejette environ 1 dossier sur 3 pour des mentions obligatoires manquantes dans les statuts.\n3. **Dépôt du capital** sur un compte bancaire bloqué — obtention de l'attestation de blocage.\n4. **Publication au BOAL** (Bulletin Officiel des Annonces Légales) — coût entre 3 000 et 6 000 DZD.\n5. **Immatriculation au CNRC** — délai de 7 à 15 jours.\n6. **Obtention du NIF** à la Direction des Impôts — 48 à 72h. Le capital bloqué est alors débloqué.\n7. **Obtention du NIS** auprès de l'ONS — 2 à 4 jours.\n\n## La domiciliation — adresse obligatoire en Algérie\n\nLa SARL ou l'EURL doit avoir une adresse physique en Algérie. Trois options : local commercial, domicile du gérant (pour les activités sans accueil de clientèle), ou société de domiciliation commerciale (2 000 à 8 000 DZD/mois à Alger).\n\n## Documents requis pour l'immatriculation au CNRC\n\n- Demande signée sur formulaire fourni par le CNRC\n- Justificatif du local : titre de propriété, bail de location, concession de terrain, ou acte d'affectation délivré par un organisme public\n- Un exemplaire des statuts authentifiés par le notaire\n- Copie de l'avis d'insertion des statuts au BOAL\n- Quittance de timbre fiscal (4 000 DA)\n- Reçu de versement des droits d'immatriculation au registre du commerce\n- Copie de l'autorisation ou agrément provisoire — uniquement pour les activités réglementées\n\nAprès immatriculation au CNRC : obtenir le NIF à la Direction des Impôts (48-72h) et le NIS auprès de l'ONS (2-4 jours).\n\n## Coût total\n\nEntre 150 000 et 300 000 DZD (environ 1 000 à 2 000€), incluant notaire, capital, frais CNRC et publication BOAL.\n"
+    },
+    "succession-algerie-depuis-etranger": {
+      "titre": "Gérer une succession en Algérie depuis l'étranger",
+      "resume": "Vous habitez en France, au Canada ou en Belgique et vous devez régler une succession en Algérie ? Voici les démarches, documents et pièges à éviter.",
+      "contenu": "\n## La loi applicable\n\nPour les biens immobiliers situés en Algérie, le droit algérien s'applique obligatoirement (lex situs), quel que soit le lieu de résidence du défunt ou des héritiers. La succession est régie par les articles 126 à 201 du Code de la famille algérien.\n\n## La Fredha\n\nLa Fredha est l'acte de succession algérien équivalent de l'acte de notoriété français. Elle est délivrée par le notaire algérien du lieu de résidence ou d'inhumation du défunt. Elle désigne les héritiers et leurs parts. C'est le document central — sans elle, aucune démarche sur le bien n'est possible.\n\n## Les étapes principales\n\n1. **Obtenir l'acte de décès algérien** — depuis la France, le consulat algérien compétent peut aider.\n2. **Contacter un notaire algérien** pour établir la Fredha.\n3. **Inventaire des biens** : immobilier, comptes bancaires, véhicules.\n4. **Partage notarié** si tous les héritiers sont d'accord.\n5. **Mutation du titre de propriété** à la Conservation foncière.\n\n## Documents à préparer\n\n- Acte de décès traduit en arabe et légalisé\n- Actes de naissance de tous les héritiers\n- Livret de famille du défunt\n- Procuration légalisée si vous mandatez un représentant en Algérie\n"
+    },
+    "droits-locataire-algerie": {
+      "titre": "Les droits du locataire en Algérie",
+      "resume": "Dépôt de garantie, préavis, charges, expulsion — connaissez vos droits en tant que locataire en Algérie selon la législation en vigueur.",
+      "contenu": "\n## Le contrat de location\n\nEn Algérie, la location immobilière est régie par la loi 07-05. Tout contrat doit être établi par écrit et enregistré auprès des services fiscaux pour être opposable aux tiers.\n\n## Le dépôt de garantie\n\nGénéralement équivalent à un ou deux mois de loyer. Il doit être restitué dans un délai raisonnable après la fin du bail, déduction faite des dommages constatés.\n\n## Le préavis\n\nUn mois pour les locations meublées, trois mois pour les locations vides. Le propriétaire doit également respecter un préavis pour récupérer son bien.\n\n## Les charges\n\nLes charges récupérables doivent être définies dans le contrat. Les grosses réparations (toiture, structure) restent à la charge du propriétaire.\n\n## En cas de litige\n\nSaisir le tribunal de première instance compétent. Un avocat spécialisé en droit immobilier peut vous représenter.\n"
+    },
+    "licenciement-algerie": {
+      "titre": "Licenciement en Algérie : droits et recours",
+      "resume": "Quelles sont les conditions légales d'un licenciement en Algérie ? Indemnités, préavis, recours — guide pratique pour les salariés.",
+      "contenu": "\n## Le licenciement en Algérie\n\nLe droit du travail est régi par la loi 90-11. Tout licenciement doit être motivé et respecter une procédure précise.\n\n## Les motifs légaux\n\n- **Faute grave** : abandon de poste, vol, violence, manquement grave\n- **Insuffisance professionnelle** dûment constatée\n- **Raisons économiques** : restructuration, difficultés économiques avérées\n\n## La procédure\n\n1. Convocation à un entretien préalable par lettre recommandée.\n2. Entretien préalable — le salarié peut se faire assister.\n3. Notification du licenciement avec motifs précis.\n4. Respect du préavis selon l'ancienneté.\n\n## Les indemnités\n\nGénéralement un mois de salaire par année d'ancienneté. En cas de licenciement abusif, le tribunal peut ordonner la réintégration ou une indemnisation supplémentaire.\n\n## Recours\n\nSaisir l'inspection du travail, puis le tribunal de première instance (chambre sociale) en cas de licenciement abusif.\n"
+    },
+    "acheter-bien-immobilier-algerie": {
+      "titre": "Acheter un bien immobilier en Algérie : ce qu'il faut savoir",
+      "resume": "Acte de vente, taxes, vérification du titre de propriété — tout ce qu'il faut vérifier avant d'acheter un bien immobilier en Algérie.",
+      "contenu": "\n## Vérifier le titre de propriété\n\nAvant tout achat, vérifiez que le vendeur est bien le propriétaire légal. Consultez le titre foncier à la Conservation foncière compétente. Vérifiez l'absence d'hypothèques, saisies, ou litiges en cours. Exigez toujours un prix 100% déclaré au notaire — refusez tout paiement partiel \"au noir\".\n\n## Les étapes de la transaction\n\n1. **Compromis de vente** — engage les deux parties.\n2. **Versement d'un acompte** (généralement 10 à 20% du prix).\n3. **Acte de vente définitif** devant notaire algérien.\n4. **Enregistrement et publication foncière** à la Conservation foncière — délai 1 à 3 mois.\n\n## Les frais\n\nFrais de notaire entre 2 et 5% du prix, droits d'enregistrement, et frais de conservation foncière.\n\n## Depuis l'étranger\n\nProcuration établie au consulat algérien de votre pays de résidence, reconnue directement par les notaires algériens. Les non-résidents bénéficient d'exonérations fiscales sur certaines transactions.\n"
+    },
+    "creer-entreprise-algerie-diaspora": {
+      "titre": "Créer une entreprise en Algérie depuis la diaspora : le guide complet 2026",
+      "resume": "Vous vivez en France, en Belgique, au Canada ou en Suisse et vous voulez lancer votre projet en Algérie ? Ce guide vous explique les trois statuts possibles et les démarches exactes.",
+      "contenu": "\n## Les trois statuts disponibles\n\nEn Algérie, trois formes juridiques s'adaptent à la majorité des projets de la diaspora : l'auto-entrepreneur via l'ANAE, l'EURL, et la SARL.\n\n## Statut 1 — Auto-entrepreneur via l'ANAE\n\nCréé par la loi 22-23 du 18 décembre 2022, ce statut s'obtient exclusivement en ligne sur anae.dz. Aucun registre de commerce n'est requis.\n\nDocuments requis : CNI recto/verso, justificatif de domicile de moins de 3 mois, photo d'identité fond blanc. Aucun casier judiciaire demandé.\n\nPlafonds de chiffre d'affaires : 5 millions de DZD pour les services, 10 millions de DZD pour le commerce. Taux d'imposition : IFU à 0,5% libératoire. Affiliation obligatoire à la CASNOS sous 10 jours (cotisations environ 32 000 DZD/an). Ce statut ne permet pas d'embaucher des salariés.\n\nDélai : 2 à 5 jours de validation, puis retrait de la carte au bureau de poste sur notification SMS (coût : 1 200 DZD). Délai total moyen : 7 à 15 jours.\n\nIdéal pour : freelances, consultants, prestataires de services, petits commerces en ligne.\n\n## Statut 2 — EURL (Entreprise Unipersonnelle à Responsabilité Limitée)\n\nL'EURL est la forme société pour un associé unique. Si vous créez seul, c'est le statut naturel. Les démarches sont identiques à une SARL et passent par le CNRC.\n\n## Statut 3 — SARL (Société à Responsabilité Limitée)\n\nLa SARL est pour 2 à 50 associés. Si vous avez des partenaires ou prévoyez d'en avoir, choisissez directement la SARL plutôt qu'une EURL à transformer plus tard.\n\n## Les démarches EURL/SARL via le CNRC\n\nPour créer une EURL ou une SARL, toutes les démarches passent par le CNRC (Centre National du Registre du Commerce).\n\n1. **Réservation de la dénomination** via Sijilcom (plateforme en ligne du CNRC) — prévoyez 3 à 4 noms alternatifs.\n2. **Rédaction et authentification des statuts** chez un notaire — coût entre 15 000 et 50 000 DZD. Attention : le CNRC rejette environ 1 dossier sur 3 pour des mentions manquantes dans les statuts.\n3. **Dépôt du capital** sur un compte bancaire bloqué (minimum recommandé : 100 000 DZD) — attestation de blocage requise.\n4. **Publication au BOAL** (Bulletin Officiel des Annonces Légales) — coût entre 3 000 et 6 000 DZD.\n5. **Immatriculation au CNRC** — extrait RC délivré en 7 à 15 jours.\n6. **Obtention du NIF** à la Direction des Impôts — 48 à 72h.\n7. **Obtention du NIS** auprès de l'ONS — 2 à 4 jours.\n8. **Ouverture du compte bancaire professionnel** — le capital bloqué est débloqué après obtention du NIF.\n\nCoût total EURL/SARL : entre 150 000 et 300 000 DZD (environ 1 000 à 2 000€).\n\n## La domiciliation — adresse obligatoire en Algérie\n\nToute entreprise doit avoir une adresse en Algérie, physique ou virtuelle.\n\n**Local commercial** : solution idéale pour les activités avec accueil de clientèle ou stockage.\n\n**Domicile du gérant** : accepté pour les activités sans accueil de clientèle. Fournir un justificatif de domicile algérien.\n\n**Société de domiciliation commerciale** : adresse professionnelle sans bureau physique, entre 2 000 et 8 000 DZD/mois à Alger. Solution idéale pour les activités 100% en ligne ou les porteurs de projet non encore installés en Algérie.\n\n## Quel statut choisir ?\n\nSeul, CA < 5M DZD, pas de salariés → auto-entrepreneur ANAE. Seul, CA > 5M DZD ou besoin de salariés → EURL via CNRC. Plusieurs associés → SARL via CNRC.\n\n## Questions fréquentes\n\n**Peut-on tout faire à distance ?**\nPour l'ANAE : inscription 100% en ligne, mais la carte se retire physiquement en bureau de poste en Algérie. Pour l'EURL/SARL : certaines étapes nécessitent une présence physique ou un mandataire sur place via procuration consulaire.\n"
+    },
+    "heriter-bien-immobilier-algerie-france": {
+      "titre": "Comment hériter d'un bien immobilier en Algérie depuis la France : guide complet 2026",
+      "resume": "Un parent vient de décéder en Algérie et vous vivez en France ? Voici toutes les démarches concrètes pour hériter d'un appartement, d'une maison ou d'un terrain algérien.",
+      "contenu": "\n## La loi applicable\n\nPour tout bien immobilier situé en Algérie, le droit algérien s'applique obligatoirement (lex situs), quelle que soit votre nationalité ou votre lieu de résidence. C'est confirmé par le Consulat de France à Alger. La succession est régie par les articles 126 à 201 du Code de la famille algérien.\n\n## La Fredha — document central\n\nLa Fredha est l'acte de succession algérien, équivalent de l'acte de notoriété français. Elle est délivrée par le notaire algérien du lieu de résidence ou d'inhumation du défunt. Elle désigne tous les héritiers et leurs parts. Sans la Fredha, aucune démarche sur le bien immobilier n'est possible.\n\n## Les étapes depuis la France\n\n**Étape 1 — Obtenir l'acte de décès algérien**\n\nSi le décès a eu lieu en France, contactez le consulat algérien compétent pour les démarches de déclaration et d'obtention de l'acte.\n\n**Étape 2 — Contacter un notaire algérien**\n\nLe notaire établit la Fredha sur la base des actes d'état civil de tous les héritiers. Si vous ne pouvez pas vous déplacer, donnez une procuration à un proche ou un avocat en Algérie.\n\n**Étape 3 — La fiscalité**\n\nIl n'existe pas de droits de succession au sens strict en Algérie. Des frais de mutation s'appliquent lors du transfert de propriété. En France, si le défunt était résident français, une déclaration de succession doit être déposée dans les 6 mois (12 mois si le décès a eu lieu à l'étranger). La convention franco-algérienne de 1999 évite la double imposition.\n\n**Étape 4 — Le partage**\n\nSi tous les héritiers s'accordent, un acte notarié de partage est rédigé. En cas de désaccord ou d'héritier introuvable, un partage judiciaire peut être demandé au tribunal algérien — un avocat est alors indispensable.\n\n**Étape 5 — La mutation du titre**\n\nLe notaire procède à la mutation du titre de propriété à la Conservation foncière au nom des nouveaux propriétaires.\n\n## Documents nécessaires\n\n- Acte de décès (traduit en arabe si établi en France)\n- Actes de naissance de tous les héritiers\n- Livret de famille du défunt\n- Titre de propriété du bien si disponible\n- Procuration légalisée si vous mandatez un représentant\n\n## Les situations difficiles\n\n**Bien non titré** : regularisez d'abord le titre à la Conservation foncière — sans acte notarié authentique, aucune succession n'est possible.\n\n**Ne rien faire** : la succession reste en indivision, aucun héritier ne peut vendre seul, et la situation se complique à chaque génération.\n\n## Questions fréquentes\n\n**Faut-il se déplacer en Algérie ?**\nPas obligatoirement — une procuration à un avocat ou un proche suffit pour la plupart des démarches.\n\n**Y a-t-il des droits de succession en Algérie ?**\nNon au sens strict. Seulement des frais de mutation lors du transfert de propriété.\n"
+    },
+    "vendre-appartement-algerie-etranger": {
+      "titre": "Comment vendre un appartement en Algérie depuis l'étranger : guide complet 2026",
+      "resume": "Vous avez un appartement en Algérie et souhaitez le vendre depuis la France, la Belgique ou le Canada ? Voici le guide complet, étape par étape.",
+      "contenu": "\n## Peut-on vendre sans se déplacer ?\n\nOui, grâce à la procuration consulaire. Vous mandatez un proche ou un avocat en Algérie pour signer l'acte de vente en votre nom. Cette procuration est établie au consulat algérien de votre ville de résidence — elle est reconnue directement par les notaires algériens.\n\n## Conditions préalables à la vente\n\n**Titre de propriété valide** : vous devez disposer d'un acte notarié authentique enregistré à la Conservation foncière. Sans titre authentique, aucune vente légale n'est possible.\n\n**Absence d'indivision bloquante** : si le bien est en indivision, tous les copropriétaires ou héritiers doivent consentir à la vente.\n\n**Absence de charges** : vérifiez à la Conservation foncière l'absence d'hypothèque ou de saisie.\n\n## Les étapes\n\n**Étape 1 — La procuration consulaire**\n\nRendez-vous au consulat algérien avec votre pièce d'identité algérienne. Le consulat établit la procuration autorisant votre mandataire à signer tous les actes. Ce document est légalisé et reconnu directement par les notaires algériens.\n\n**Étape 2 — Estimation et mise en vente**\n\nMandatez un agent immobilier ou un avocat en Algérie pour évaluer le bien. Exigez toujours un prix 100% déclaré au notaire — refusez tout paiement partiel \"au noir\".\n\n**Étape 3 — Compromis de vente**\n\nVotre mandataire signe le compromis avec l'acheteur. Un avocat peut sécuriser cette étape.\n\n**Étape 4 — Acte notarié définitif**\n\nL'acte est signé chez le notaire algérien par votre mandataire et l'acheteur. Enregistrement et publication foncière suivent. Délai entre compromis et acte : 1 à 6 mois.\n\n**Étape 5 — Frais et taxes**\n\nFrais de notaire entre 2 et 5% du prix. Une taxe sur la plus-value peut s'appliquer. Si vous êtes résident fiscal en France, la plus-value peut également être imposable en France — consultez un fiscaliste avant de vendre.\n\n## Le rapatriement des fonds\n\nLes transferts de dinars depuis l'Algérie vers l'étranger sont réglementés par la Banque d'Algérie. Les non-résidents ayant acquis leur bien via un transfert légal en devises ont droit au rapatriement dans les mêmes devises. Pour les biens hérités ou acquis en dinars, les conditions sont différentes. Consultez un avocat algérien spécialisé avant de vendre.\n\n## Risques à éviter\n\nNe vendez jamais sans passer par un notaire. Ne donnez la procuration qu'à une personne de confiance absolue ou un avocat professionnel. Refusez toute transaction avec une partie du prix en espèces non déclarées.\n\n## Questions fréquentes\n\n**Combien de temps prend une vente ?**\nEntre 1 et 6 mois selon la complexité du dossier.\n\n**Peut-on vendre un bien hérité ?**\nOui, une fois la Fredha établie et le bien en votre nom ou en indivision avec accord de tous les héritiers.\n\n**Faut-il payer des impôts en France ?**\nPotentiellement oui si vous êtes résident fiscal français. Consultez un fiscaliste avant de vendre.\n"
+    }
   }
 }

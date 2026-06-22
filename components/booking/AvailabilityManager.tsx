@@ -1,18 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Clock, Plus, Trash2, CheckCircle, Calendar, X } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { localizedDigits } from "@/lib/arabicNumerals";
 
-const DAYS = [
-  "Dimanche",
-  "Lundi",
-  "Mardi",
-  "Mercredi",
-  "Jeudi",
-  "Vendredi",
-  "Samedi",
-];
 const DURATIONS = [15, 30, 45, 60];
 
 interface Slot {
@@ -34,6 +27,12 @@ interface Block {
 export default function AvailabilityManager() {
   const supabase = createClient();
   const { user } = useAuth();
+  const t = useTranslations("availabilityManager");
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
+  const dateLocale =
+    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-DZ";
+  const DAYS = t.raw("days") as string[];
 
   const [slots, setSlots] = useState<Slot[]>([]);
   const [blocks, setBlocks] = useState<Block[]>([]);
@@ -157,14 +156,14 @@ export default function AvailabilityManager() {
   return (
     <div className="space-y-4">
       <div className="flex gap-2">
-        {(["schedule", "blocks"] as const).map((t) => (
+        {(["schedule", "blocks"] as const).map((tb) => (
           <button
-            key={t}
-            onClick={() => setTab(t)}
+            key={tb}
+            onClick={() => setTab(tb)}
             className={`px-4 py-2 rounded-xl text-sm font-semibold cursor-pointer transition-all
-              ${tab === t ? "bg-teal-600 text-white" : "bg-white border border-slate-200 text-slate-600 hover:border-teal-300"}`}
+              ${tab === tb ? "bg-teal-600 text-white" : "bg-white border border-slate-200 text-slate-600 hover:border-teal-300"}`}
           >
-            {t === "schedule" ? "Mes horaires" : "Jours bloqués"}
+            {tb === "schedule" ? t("tabSchedule") : t("tabBlocks")}
           </button>
         ))}
       </div>
@@ -173,12 +172,12 @@ export default function AvailabilityManager() {
         <div className="space-y-4">
           <div className="bg-white border border-slate-200 rounded-2xl p-4">
             <p className="text-sm font-bold text-slate-800 mb-3">
-              Ajouter une plage horaire
+              {t("addSlotTitle")}
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
               <div>
                 <label className="block text-xs text-slate-500 mb-1">
-                  Jour
+                  {t("dayLabel")}
                 </label>
                 <select
                   value={newDay}
@@ -194,7 +193,7 @@ export default function AvailabilityManager() {
               </div>
               <div>
                 <label className="block text-xs text-slate-500 mb-1">
-                  Début
+                  {t("startLabel")}
                 </label>
                 <input
                   type="time"
@@ -204,7 +203,9 @@ export default function AvailabilityManager() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-1">Fin</label>
+                <label className="block text-xs text-slate-500 mb-1">
+                  {t("endLabel")}
+                </label>
                 <input
                   type="time"
                   value={newEnd}
@@ -214,7 +215,7 @@ export default function AvailabilityManager() {
               </div>
               <div>
                 <label className="block text-xs text-slate-500 mb-1">
-                  Durée créneau
+                  {t("slotDurationLabel")}
                 </label>
                 <select
                   value={newDur}
@@ -223,7 +224,7 @@ export default function AvailabilityManager() {
                 >
                   {DURATIONS.map((d) => (
                     <option key={d} value={d}>
-                      {d} min
+                      {t("minutesShort", { n: ld(String(d)) })}
                     </option>
                   ))}
                 </select>
@@ -236,11 +237,11 @@ export default function AvailabilityManager() {
             >
               {saved ? (
                 <>
-                  <CheckCircle className="w-4 h-4" /> Ajouté
+                  <CheckCircle className="w-4 h-4" /> {t("added")}
                 </>
               ) : (
                 <>
-                  <Plus className="w-4 h-4" /> Ajouter
+                  <Plus className="w-4 h-4" /> {t("add")}
                 </>
               )}
             </button>
@@ -264,10 +265,11 @@ export default function AvailabilityManager() {
                       <div className="flex items-center gap-3">
                         <Clock className="w-4 h-4 text-teal-600" />
                         <span className="text-sm font-medium text-slate-800">
-                          {s.start_time.slice(0, 5)} – {s.end_time.slice(0, 5)}
+                          {ld(s.start_time.slice(0, 5))} –{" "}
+                          {ld(s.end_time.slice(0, 5))}
                         </span>
                         <span className="text-xs text-teal-600 bg-white border border-teal-100 px-2 py-0.5 rounded-full">
-                          {s.duration_min} min/créneau
+                          {t("perSlot", { n: ld(String(s.duration_min)) })}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
@@ -276,7 +278,7 @@ export default function AvailabilityManager() {
                           className={`text-xs px-2.5 py-1 rounded-lg font-medium cursor-pointer transition-all
                           ${s.is_active ? "bg-white border border-slate-200 text-slate-500 hover:text-slate-700" : "bg-teal-600 text-white"}`}
                         >
-                          {s.is_active ? "Désactiver" : "Activer"}
+                          {s.is_active ? t("deactivate") : t("activate")}
                         </button>
                         <button
                           onClick={() => deleteSlot(s.id)}
@@ -293,8 +295,7 @@ export default function AvailabilityManager() {
 
           {slots.length === 0 && (
             <div className="text-center py-8 text-sm text-slate-400">
-              Aucune plage horaire configurée. Ajoutez vos disponibilités pour
-              recevoir des rendez-vous.
+              {t("noSlots")}
             </div>
           )}
         </div>
@@ -304,13 +305,13 @@ export default function AvailabilityManager() {
         <div className="space-y-4">
           <div className="bg-white border border-slate-200 rounded-2xl p-4">
             <p className="text-sm font-bold text-slate-800 mb-3">
-              Bloquer une date
+              {t("blockDateTitle")}
             </p>
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="block text-xs text-slate-500 mb-1">
-                    Date *
+                    {t("dateLabel")}
                   </label>
                   <input
                     type="date"
@@ -329,7 +330,7 @@ export default function AvailabilityManager() {
                       className="w-4 h-4 accent-teal-600"
                     />
                     <span className="text-sm text-slate-600">
-                      Journée entière
+                      {t("allDay")}
                     </span>
                   </label>
                 </div>
@@ -338,7 +339,7 @@ export default function AvailabilityManager() {
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">
-                      De
+                      {t("fromLabel")}
                     </label>
                     <input
                       type="time"
@@ -349,7 +350,7 @@ export default function AvailabilityManager() {
                   </div>
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">
-                      À
+                      {t("toLabel")}
                     </label>
                     <input
                       type="time"
@@ -362,13 +363,13 @@ export default function AvailabilityManager() {
               )}
               <div>
                 <label className="block text-xs text-slate-500 mb-1">
-                  Raison (optionnel)
+                  {t("reasonLabel")}
                 </label>
                 <input
                   type="text"
                   value={blockReason}
                   onChange={(e) => setBlockReason(e.target.value)}
-                  placeholder="Congé, déplacement..."
+                  placeholder={t("reasonPh")}
                   className={inp}
                 />
               </div>
@@ -377,7 +378,7 @@ export default function AvailabilityManager() {
                 disabled={!blockDate || saving}
                 className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white rounded-xl text-sm font-semibold cursor-pointer transition-all"
               >
-                <Plus className="w-4 h-4" /> Bloquer cette date
+                <Plus className="w-4 h-4" /> {t("blockThisDate")}
               </button>
             </div>
           </div>
@@ -386,7 +387,7 @@ export default function AvailabilityManager() {
             <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
               <div className="px-4 py-3 border-b border-slate-100">
                 <p className="text-sm font-bold text-slate-800">
-                  Dates bloquées à venir
+                  {t("upcomingBlocked")}
                 </p>
               </div>
               {blocks.map((b) => (
@@ -398,16 +399,19 @@ export default function AvailabilityManager() {
                     <Calendar className="w-4 h-4 text-amber-500" />
                     <div>
                       <p className="text-sm font-medium text-slate-800">
-                        {new Date(b.blocked_date).toLocaleDateString("fr-DZ", {
-                          weekday: "long",
-                          day: "numeric",
-                          month: "long",
-                        })}
+                        {new Date(b.blocked_date).toLocaleDateString(
+                          dateLocale,
+                          {
+                            weekday: "long",
+                            day: "numeric",
+                            month: "long",
+                          }
+                        )}
                       </p>
                       <p className="text-xs text-slate-400">
                         {!b.start_time
-                          ? "Journée entière"
-                          : `${b.start_time?.slice(0, 5)} – ${b.end_time?.slice(0, 5)}`}
+                          ? t("allDayLabel")
+                          : `${ld(b.start_time?.slice(0, 5) || "")} – ${ld(b.end_time?.slice(0, 5) || "")}`}
                         {b.reason ? ` · ${b.reason}` : ""}
                       </p>
                     </div>

@@ -8,8 +8,10 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { localizedDigits } from "@/lib/arabicNumerals";
 
 interface Props {
   isOpen: boolean;
@@ -19,31 +21,6 @@ interface Props {
   profession: string;
   onSuccess?: () => void;
 }
-
-const DAYS_FR = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
-const DAYS_FULL = [
-  "Dimanche",
-  "Lundi",
-  "Mardi",
-  "Mercredi",
-  "Jeudi",
-  "Vendredi",
-  "Samedi",
-];
-const MONTHS_FR = [
-  "Janvier",
-  "Février",
-  "Mars",
-  "Avril",
-  "Mai",
-  "Juin",
-  "Juillet",
-  "Août",
-  "Septembre",
-  "Octobre",
-  "Novembre",
-  "Décembre",
-];
 
 function addMinutes(time: string, mins: number): string {
   const [h, m] = time.split(":").map(Number);
@@ -66,6 +43,12 @@ export default function BookingModal({
 }: Props) {
   const supabase = createClient();
   const { user } = useAuth();
+  const t = useTranslations("bookingModal");
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
+  const DAYS_FR = t.raw("daysShort") as string[];
+  const DAYS_FULL = t.raw("daysFull") as string[];
+  const MONTHS_FR = t.raw("months") as string[];
 
   const [step, setStep] = useState<"date" | "time" | "form" | "done">("date");
   const [weekOffset, setWeekOffset] = useState(0);
@@ -238,12 +221,12 @@ export default function BookingModal({
             <Calendar className="w-4 h-4 text-teal-600" />
             <span className="text-sm font-bold text-slate-900">
               {step === "date"
-                ? "Choisir une date"
+                ? t("stepChooseDate")
                 : step === "time"
-                  ? "Choisir un créneau"
+                  ? t("stepChooseSlot")
                   : step === "form"
-                    ? "Confirmer le rendez-vous"
-                    : "Rendez-vous demandé"}
+                    ? t("stepConfirm")
+                    : t("stepDone")}
             </span>
           </div>
           <button
@@ -271,7 +254,7 @@ export default function BookingModal({
                 </button>
                 <span className="text-sm font-semibold text-slate-700">
                   {MONTHS_FR[weekDays[0].getMonth()]}{" "}
-                  {weekDays[0].getFullYear()}
+                  {ld(String(weekDays[0].getFullYear()))}
                 </span>
                 <button
                   onClick={() => setWeekOffset((w) => w + 1)}
@@ -316,7 +299,7 @@ export default function BookingModal({
                       <span className="text-[10px] text-inherit opacity-70">
                         {DAYS_FR[date.getDay()]}
                       </span>
-                      <span>{date.getDate()}</span>
+                      <span>{ld(String(date.getDate()))}</span>
                     </button>
                   );
                 })}
@@ -327,7 +310,8 @@ export default function BookingModal({
           {step === "time" && selectedDate && (
             <div>
               <p className="text-sm font-semibold text-slate-700 mb-4">
-                {DAYS_FULL[selectedDate.getDay()]} {selectedDate.getDate()}{" "}
+                {DAYS_FULL[selectedDate.getDay()]}{" "}
+                {ld(String(selectedDate.getDate()))}{" "}
                 {MONTHS_FR[selectedDate.getMonth()]}
               </p>
               {loadingSlots ? (
@@ -337,14 +321,12 @@ export default function BookingModal({
               ) : slots.length === 0 ? (
                 <div className="text-center py-10">
                   <Clock className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-                  <p className="text-sm text-slate-500">
-                    Aucun créneau disponible ce jour.
-                  </p>
+                  <p className="text-sm text-slate-500">{t("noSlotsToday")}</p>
                   <button
                     onClick={() => setStep("date")}
                     className="mt-3 text-xs text-teal-600 font-medium cursor-pointer"
                   >
-                    Choisir une autre date
+                    {t("chooseAnotherDate")}
                   </button>
                 </div>
               ) : (
@@ -361,7 +343,7 @@ export default function BookingModal({
                               : "border-slate-200 text-slate-700 hover:border-teal-300 hover:text-teal-700"
                           }`}
                       >
-                        {slot}
+                        {ld(slot)}
                       </button>
                     ))}
                   </div>
@@ -370,7 +352,7 @@ export default function BookingModal({
                     disabled={!selectedSlot}
                     className="mt-4 w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white py-3 rounded-xl font-semibold text-sm cursor-pointer transition-all"
                   >
-                    Continuer →
+                    {t("continue")}
                   </button>
                 </>
               )}
@@ -383,8 +365,10 @@ export default function BookingModal({
                 <Calendar className="w-4 h-4 text-teal-600 flex-shrink-0" />
                 <div>
                   <p className="text-sm font-semibold text-teal-800">
-                    {DAYS_FULL[selectedDate.getDay()]} {selectedDate.getDate()}{" "}
-                    {MONTHS_FR[selectedDate.getMonth()]} à {selectedSlot}
+                    {DAYS_FULL[selectedDate.getDay()]}{" "}
+                    {ld(String(selectedDate.getDate()))}{" "}
+                    {MONTHS_FR[selectedDate.getMonth()]} {t("atConnector")}{" "}
+                    {ld(selectedSlot)}
                   </p>
                   <p className="text-xs text-teal-600">{lawyerName}</p>
                 </div>
@@ -392,25 +376,25 @@ export default function BookingModal({
               <div className="space-y-3">
                 <div>
                   <label className="block text-xs font-medium text-slate-600 mb-1">
-                    Objet du rendez-vous *
+                    {t("subjectLabel")}
                   </label>
                   <textarea
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
                     rows={3}
-                    placeholder="Ex : Acte de vente, succession, création de société..."
+                    placeholder={t("subjectPh")}
                     className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:border-teal-400 outline-none transition-all resize-none"
                   />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-600 mb-1">
-                    Votre téléphone (recommandé)
+                    {t("phoneLabel")}
                   </label>
                   <input
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+213 6XX XXX XXX"
+                    placeholder={t("phonePh")}
                     className={inp}
                   />
                 </div>
@@ -423,12 +407,12 @@ export default function BookingModal({
                 {sending ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                    Envoi...
+                    {t("sending")}
                   </>
                 ) : (
                   <>
                     <Calendar className="w-4 h-4" />
-                    Confirmer le rendez-vous
+                    {t("confirmAppointment")}
                   </>
                 )}
               </button>
@@ -441,10 +425,10 @@ export default function BookingModal({
                 <CheckCircle className="w-7 h-7 text-teal-600" />
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-1">
-                Rendez-vous demandé
+                {t("doneTitle")}
               </h3>
               <p className="text-sm text-slate-500">
-                {lawyerName} confirmera votre rendez-vous sous 24h.
+                {t("doneDesc", { lawyerName })}
               </p>
             </div>
           )}

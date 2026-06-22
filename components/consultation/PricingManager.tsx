@@ -8,45 +8,16 @@ import {
   Save,
   CheckCircle,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
-const CANAUX = [
-  {
-    type: "message",
-    icon: MessageSquare,
-    label: "Message écrit",
-    desc: "Réponse par messagerie sous 24-48h",
-    duration: null,
-  },
-  {
-    type: "phone",
-    icon: Phone,
-    label: "Téléphonique",
-    desc: "Appel vocal — 30 min",
-    duration: "30 min",
-  },
-  {
-    type: "video_30",
-    icon: Video,
-    label: "Vidéo 30 min",
-    desc: "Consultation vidéo",
-    duration: "30 min",
-  },
-  {
-    type: "video_60",
-    icon: Video,
-    label: "Vidéo 1h",
-    desc: "Consultation vidéo",
-    duration: "1h",
-  },
-  {
-    type: "email",
-    icon: Mail,
-    label: "Email",
-    desc: "Échange email sécurisé sous 48h",
-    duration: null,
-  },
+const CANAL_TYPES = [
+  { type: "message", icon: MessageSquare, duration: null },
+  { type: "phone", icon: Phone, duration: "30 min" },
+  { type: "video_30", icon: Video, duration: "30 min" },
+  { type: "video_60", icon: Video, duration: "1h" },
+  { type: "email", icon: Mail, duration: null },
 ];
 
 interface Props {
@@ -56,11 +27,18 @@ interface Props {
 export default function PricingManager({ profession }: Props) {
   const supabase = createClient();
   const { user } = useAuth();
+  const t = useTranslations("pricingManager");
   const [prices, setPrices] = useState<Record<string, string>>({});
   const [ids, setIds] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  const CANAUX = CANAL_TYPES.map((c) => ({
+    ...c,
+    label: t(`canaux.${c.type}.label`),
+    desc: t(`canaux.${c.type}.desc`),
+  }));
 
   const activeProfession =
     profession ||
@@ -78,7 +56,7 @@ export default function PricingManager({ profession }: Props) {
       .then(({ data }) => {
         const p: Record<string, string> = {};
         const i: Record<string, string> = {};
-        CANAUX.forEach((c) => {
+        CANAL_TYPES.forEach((c) => {
           const row = data?.find((d) => d.type === c.type);
           p[c.type] = row?.base_price?.toString() || "";
           if (row?.id) i[c.type] = row.id;
@@ -134,15 +112,14 @@ export default function PricingManager({ profession }: Props) {
   return (
     <div className="space-y-3">
       <p className="text-xs text-slate-500 mb-4">
-        Tarifs pour votre profil{" "}
-        <strong>
-          {activeProfession === "expert-comptable"
-            ? "Expert Comptable"
-            : activeProfession === "comptable"
-              ? "Comptable"
-              : activeProfession}
-        </strong>
-        . Laissez vide pour "Tarif sur demande".
+        {t("intro", {
+          profession:
+            activeProfession === "expert-comptable"
+              ? "Expert Comptable"
+              : activeProfession === "comptable"
+                ? "Comptable"
+                : activeProfession,
+        })}
       </p>
       {CANAUX.map((c) => {
         const Icon = c.icon;
@@ -174,10 +151,12 @@ export default function PricingManager({ profession }: Props) {
                 onChange={(e) =>
                   setPrices((p) => ({ ...p, [c.type]: e.target.value }))
                 }
-                placeholder="Sur demande"
-                className="w-32 h-9 px-3 text-sm border border-teal-200 rounded-lg bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none text-right text-slate-800 placeholder:text-slate-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                placeholder={t("pricePh")}
+                className="w-32 h-9 px-3 text-sm border border-teal-200 rounded-lg bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none text-end text-slate-800 placeholder:text-slate-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
-              <span className="text-xs text-slate-600 font-medium">DA</span>
+              <span className="text-xs text-slate-600 font-medium">
+                {t("currency")}
+              </span>
             </div>
           </div>
         );
@@ -190,17 +169,17 @@ export default function PricingManager({ profession }: Props) {
         {saved ? (
           <>
             <CheckCircle className="w-4 h-4" />
-            Enregistré
+            {t("saved")}
           </>
         ) : saving ? (
           <>
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-            Sauvegarde...
+            {t("saving")}
           </>
         ) : (
           <>
             <Save className="w-4 h-4" />
-            Enregistrer les tarifs
+            {t("save")}
           </>
         )}
       </button>

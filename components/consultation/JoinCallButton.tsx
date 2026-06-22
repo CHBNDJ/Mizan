@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Video, Mic } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface Props {
   consultationId: string;
@@ -9,6 +10,7 @@ interface Props {
 
 export function JoinCallButton({ consultationId, canal }: Props) {
   const router = useRouter();
+  const t = useTranslations("joinCallButton");
 
   const isVideo = canal.startsWith("video");
   const isAudio = canal === "phone";
@@ -16,7 +18,7 @@ export function JoinCallButton({ consultationId, canal }: Props) {
   if (!isVideo && !isAudio) return null;
 
   const mode = isAudio ? "audio" : "video";
-  const label = isAudio ? "Rejoindre l'appel audio" : "Rejoindre la vidéo";
+  const label = isAudio ? t("joinAudio") : t("joinVideo");
   const Icon = isAudio ? Mic : Video;
 
   return (

@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import Cropper from "react-easy-crop";
 import { X, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Area, ImageCropModalProps } from "@/types";
 
 const createImage = (url: string): Promise<HTMLImageElement> =>
@@ -56,6 +57,7 @@ export default function ImageCropModal({
   onComplete,
   onCancel,
 }: ImageCropModalProps) {
+  const t = useTranslations("imageCropModal");
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
@@ -85,7 +87,7 @@ export default function ImageCropModal({
       <div className="bg-white/95 backdrop-blur-3xl rounded-[28px] max-w-md w-full shadow-[0_20px_60px_rgba(0,0,0,0.15)] overflow-hidden">
         <div className="px-5 pt-5 pb-3 flex items-center justify-between border-b border-gray-200/60">
           <h3 className="text-lg font-semibold text-gray-900 tracking-tight">
-            Ajuster la photo
+            {t("title")}
           </h3>
           <button
             onClick={onCancel}
@@ -114,7 +116,9 @@ export default function ImageCropModal({
         <div className="px-5 pb-5 space-y-5">
           <div className="space-y-2">
             <div className="flex items-center justify-between px-1">
-              <span className="text-sm font-medium text-gray-600">Zoom</span>
+              <span className="text-sm font-medium text-gray-600">
+                {t("zoom")}
+              </span>
               <span className="text-sm font-semibold text-teal-600 tabular-nums">
                 {Math.round(zoom * 100)}%
               </span>
@@ -144,7 +148,7 @@ export default function ImageCropModal({
               onClick={onCancel}
               className="cursor-pointer flex-1 h-[50px] rounded-[14px] bg-gray-100 text-gray-900 font-semibold text-[17px] hover:bg-gray-200 active:bg-gray-300 transition-colors duration-150"
             >
-              Annuler
+              {t("cancel")}
             </button>
             <button
               onClick={handleValidate}
@@ -152,7 +156,7 @@ export default function ImageCropModal({
               className="cursor-pointer flex-1 h-[50px] rounded-[14px] bg-teal-500 text-white font-semibold text-[17px] hover:bg-teal-600 active:bg-teal-700 transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <Check className="w-5 h-5" strokeWidth={2.5} />
-              Valider
+              {t("validate")}
             </button>
           </div>
         </div>

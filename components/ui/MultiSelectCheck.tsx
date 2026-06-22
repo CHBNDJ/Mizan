@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { MultiSelectWithCheckboxesProps } from "@/types";
 
@@ -14,6 +15,7 @@ export function MultiSelectWithCheckboxes({
   placeholderClassName = "text-slate-400 font-medium",
   disabled = false,
 }: MultiSelectWithCheckboxesProps) {
+  const t = useTranslations("multiSelect");
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -111,7 +113,7 @@ export function MultiSelectWithCheckboxes({
                 })}
                 {value.length > 1 && (
                   <span className="text-xs text-slate-500 font-medium whitespace-nowrap">
-                    +{value.length - 1} autres
+                    {t("othersCount", { n: value.length - 1 })}
                   </span>
                 )}
               </div>
@@ -119,7 +121,7 @@ export function MultiSelectWithCheckboxes({
           </div>
           <ChevronDown
             className={cn(
-              "w-5 h-5 transition-all duration-200 ml-2 flex-shrink-0",
+              "w-5 h-5 transition-all duration-200 ms-2 flex-shrink-0",
               disabled
                 ? "text-slate-300"
                 : cn(
@@ -144,7 +146,7 @@ export function MultiSelectWithCheckboxes({
                   )}
                   onClick={() => handleToggle(option.value)}
                 >
-                  <span className="text-slate-700 pr-4">{option.label}</span>
+                  <span className="text-slate-700 pe-4">{option.label}</span>
                   <div className="relative">
                     <input
                       type="checkbox"
@@ -154,7 +156,7 @@ export function MultiSelectWithCheckboxes({
                     />
                     {value.includes(option.value) && (
                       <svg
-                        className="absolute top-0.5 left-0.5 w-4 h-4 text-white pointer-events-none"
+                        className="absolute top-0.5 start-0.5 w-4 h-4 text-white pointer-events-none"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >

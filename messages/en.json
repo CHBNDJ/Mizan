@@ -2698,5 +2698,226 @@
     "defaultPlaceholder": "Select...",
     "searchPlaceholder": "Search...",
     "noResults": "No results found for \"{term}\""
+  },
+  "changeEmailModal": {
+    "title": "Change email",
+    "invalidFormat": "Invalid email format.",
+    "userNotFound": "User not found",
+    "wrongPassword": "Incorrect password.",
+    "errorPrefix": "Error: {msg}",
+    "genericError": "An error occurred",
+    "newEmailLabel": "New email *",
+    "newEmailPh": "new@email.com",
+    "currentPasswordLabel": "Current password *",
+    "passwordPh": "Your password",
+    "sending": "Sending...",
+    "submit": "Update",
+    "cancel": "Cancel"
+  },
+  "changePasswordModal": {
+    "title": "Change password",
+    "minLength": "The new password must contain at least 8 characters.",
+    "complexity": "Password must contain an uppercase letter, lowercase letter and digit.",
+    "mismatch": "Passwords do not match.",
+    "userNotFound": "User not found",
+    "wrongPassword": "Incorrect current password.",
+    "errorPrefix": "Error during change: {msg}",
+    "genericError": "An error occurred",
+    "successToast": "Password successfully changed!",
+    "currentPasswordLabel": "Current password *",
+    "newPasswordLabel": "New password *",
+    "newPasswordPh": "Minimum 8 characters",
+    "newPasswordHint": "Must contain: uppercase, lowercase and digit",
+    "confirmPasswordLabel": "Confirm new password *",
+    "confirmPasswordPh": "Repeat password",
+    "submitting": "Updating...",
+    "submit": "Update",
+    "cancel": "Cancel"
+  },
+  "imageCropModal": {
+    "title": "Adjust photo",
+    "zoom": "Zoom",
+    "cancel": "Cancel",
+    "validate": "Confirm"
+  },
+  "emailConfirmationModal": {
+    "title": "Confirmation email sent!",
+    "sentTo": "An email has been sent to:",
+    "nextSteps": "📧 Next steps:",
+    "step1": "Open your inbox",
+    "step2": "Click the confirmation link",
+    "step3": "Your email will be updated after confirmation",
+    "checkSpam": "Check your spam folder if you don't receive anything.",
+    "gotIt": "Got it"
+  },
+  "joinCallButton": {
+    "joinAudio": "Join audio call",
+    "joinVideo": "Join video call"
+  },
+  "multiSelect": {
+    "othersCount": "+{n} more"
+  },
+  "pricingManager": {
+    "canaux": {
+      "message": {
+        "label": "Written message",
+        "desc": "Reply by messaging within 24-48h"
+      },
+      "phone": {
+        "label": "Phone",
+        "desc": "Voice call — 30 min"
+      },
+      "video_30": {
+        "label": "Video 30 min",
+        "desc": "Video consultation"
+      },
+      "video_60": {
+        "label": "Video 1h",
+        "desc": "Video consultation"
+      },
+      "email": {
+        "label": "Email",
+        "desc": "Secure email exchange within 48h"
+      }
+    },
+    "intro": "Pricing for your {profession} profile. Leave blank for \"Price on request\".",
+    "pricePh": "On request",
+    "currency": "DZD",
+    "saved": "Saved",
+    "saving": "Saving...",
+    "save": "Save pricing"
+  },
+  "availabilityManager": {
+    "days": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "tabSchedule": "My hours",
+    "tabBlocks": "Blocked days",
+    "addSlotTitle": "Add a time slot",
+    "dayLabel": "Day",
+    "startLabel": "Start",
+    "endLabel": "End",
+    "slotDurationLabel": "Slot duration",
+    "minutesShort": "{n} min",
+    "added": "Added",
+    "add": "Add",
+    "perSlot": "{n} min/slot",
+    "deactivate": "Deactivate",
+    "activate": "Activate",
+    "noSlots": "No time slots configured. Add your availability to receive appointments.",
+    "blockDateTitle": "Block a date",
+    "dateLabel": "Date *",
+    "allDay": "All day",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "reasonLabel": "Reason (optional)",
+    "reasonPh": "Leave, travel...",
+    "blockThisDate": "Block this date",
+    "upcomingBlocked": "Upcoming blocked dates",
+    "allDayLabel": "All day"
+  },
+  "bookingModal": {
+    "daysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "daysFull": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+    "stepChooseDate": "Choose a date",
+    "stepChooseSlot": "Choose a time slot",
+    "stepConfirm": "Confirm appointment",
+    "stepDone": "Appointment requested",
+    "noSlotsToday": "No time slots available this day.",
+    "chooseAnotherDate": "Choose another date",
+    "continue": "Continue →",
+    "subjectLabel": "Appointment subject *",
+    "subjectPh": "E.g.: Sales deed, inheritance, company formation...",
+    "phoneLabel": "Your phone (recommended)",
+    "phonePh": "+213 6XX XXX XXX",
+    "sending": "Sending...",
+    "confirmAppointment": "Confirm appointment",
+    "doneTitle": "Appointment requested",
+    "doneDesc": "{lawyerName} will confirm your appointment within 24h.",
+    "atConnector": "at"
+  },
+  "blogArticleDetail": {
+    "home": "Home",
+    "blog": "Blog",
+    "ctaTitle": "Need a specialized lawyer?",
+    "ctaDesc": "Find and contact a bar-registered lawyer directly via Mizan.",
+    "ctaAction": "Find a specialized lawyer",
+    "relatedArticles": "Related articles",
+    "read": "Read"
+  },
+  "blogArticles": {
+    "comment-divorcer-en-algerie": {
+      "titre": "How to divorce in Algeria: the steps to follow",
+      "resume": "Divorce in Algeria is governed by the Family Code. Discover the different procedures, timeframes and rights of each party.",
+      "contenu": "\n## Forms of divorce in Algeria\n\nIn Algeria, the Family Code provides for several forms of divorce.\n\n**Judicial divorce** is the most common procedure. One spouse files with the competent family court. The judge attempts conciliation before pronouncing the divorce.\n\n**Divorce by mutual consent** is possible when both spouses agree on all conditions: child custody, alimony, division of assets.\n\n**Khol'** allows the wife to request divorce in exchange for financial compensation paid to the husband.\n\n## Steps of the procedure\n\n1. **Filing the petition** with the family court of the marital home's place of residence.\n2. **Mandatory conciliation attempt** — at least two sessions spaced 30 days apart.\n3. **Judgment hearing** if conciliation fails.\n4. **Divorce pronouncement** and setting of measures: custody, alimony, housing.\n5. **Registration** with civil status records.\n\n## Child custody\n\nCustody (hadana) is generally granted to the mother for young children. The father retains legal guardianship (wilaya) in all cases.\n\n## Alimony\n\nThe husband pays alimony during the 3-month waiting period (idda) after the divorce, and provides for the children's needs until they reach adulthood.\n"
+    },
+    "creer-sarl-algerie": {
+      "titre": "Setting up an SARL in Algeria: complete 2026 guide",
+      "resume": "Share capital, articles of association, trade register registration — everything you need to know to set up your limited liability company in Algeria.",
+      "contenu": "\n## SARL or EURL: what's the difference?\n\nThe only difference is the number of partners. The EURL (Single-Member Limited Liability Company) is for one partner. The SARL is for 2 to 50 partners. The procedures, minimum capital, and taxation are identical. If you're setting up alone, choose the EURL. If you have partners, choose the SARL.\n\n## Share capital\n\nThe recommended minimum capital is 100,000 DZD. Although the legal requirement has been removed, this amount is still required by banks and partners.\n\n## Steps at the CNRC\n\n1. **Reserve the company name** via the CNRC's Sijilcom platform — prepare 3 to 4 alternative names.\n2. **Draft and authenticate the articles of association** with a notary — cost between 15,000 and 50,000 DZD. Note: the CNRC rejects about 1 in 3 applications for missing mandatory clauses in the articles.\n3. **Deposit the capital** in a blocked bank account — obtain the blocking certificate.\n4. **Publication in the BOAL** (Official Bulletin of Legal Notices) — cost between 3,000 and 6,000 DZD.\n5. **Registration with the CNRC** — 7 to 15 days.\n6. **Obtain the NIF** (tax ID) from the Tax Directorate — 48 to 72h. The blocked capital is then released.\n7. **Obtain the NIS** (statistical ID) from the ONS — 2 to 4 days.\n\n## Registered office — mandatory address in Algeria\n\nThe SARL or EURL must have a physical address in Algeria. Three options: commercial premises, the manager's home (for activities without client visits), or a commercial registered-office service (2,000 to 8,000 DZD/month in Algiers).\n\n## Documents required for CNRC registration\n\n- Signed application on the form provided by the CNRC\n- Proof of premises: property title, lease, land concession, or allocation deed issued by a public body\n- A copy of the articles of association authenticated by the notary\n- Copy of the BOAL publication notice for the articles\n- Tax stamp receipt (4,000 DZD)\n- Receipt for trade register registration fees\n- Copy of the authorization or provisional approval — only for regulated activities\n\nAfter CNRC registration: obtain the NIF from the Tax Directorate (48-72h) and the NIS from the ONS (2-4 days).\n\n## Total cost\n\nBetween 150,000 and 300,000 DZD (about €1,000 to €2,000), including notary, capital, CNRC fees and BOAL publication.\n"
+    },
+    "succession-algerie-depuis-etranger": {
+      "titre": "Managing an inheritance in Algeria from abroad",
+      "resume": "Living in France, Canada or Belgium and need to settle an inheritance in Algeria? Here are the steps, documents and pitfalls to avoid.",
+      "contenu": "\n## The applicable law\n\nFor real estate located in Algeria, Algerian law applies mandatorily (lex situs), regardless of the place of residence of the deceased or the heirs. The estate is governed by Articles 126 to 201 of the Algerian Family Code.\n\n## The Fredha\n\nThe Fredha is the Algerian certificate of inheritance, equivalent to the French certificate of heirship. It is issued by the Algerian notary of the place of residence or burial of the deceased. It designates the heirs and their shares. It is the central document — without it, no action on the property is possible.\n\n## The main steps\n\n1. **Obtain the Algerian death certificate** — from France, the competent Algerian consulate can help.\n2. **Contact an Algerian notary** to draw up the Fredha.\n3. **Inventory of assets**: real estate, bank accounts, vehicles.\n4. **Notarized distribution** if all heirs agree.\n5. **Transfer of the property title** at the land registry.\n\n## Documents to prepare\n\n- Death certificate translated into Arabic and legalized\n- Birth certificates of all heirs\n- Family record book of the deceased\n- Legalized power of attorney if you appoint a representative in Algeria\n"
+    },
+    "droits-locataire-algerie": {
+      "titre": "Tenant rights in Algeria",
+      "resume": "Security deposit, notice period, charges, eviction — know your rights as a tenant in Algeria under current legislation.",
+      "contenu": "\n## The lease agreement\n\nIn Algeria, residential leasing is governed by Law 07-05. Every contract must be in writing and registered with the tax authorities to be enforceable against third parties.\n\n## The security deposit\n\nGenerally equivalent to one or two months' rent. It must be returned within a reasonable period after the end of the lease, minus any documented damages.\n\n## Notice period\n\nOne month for furnished rentals, three months for unfurnished rentals. The landlord must also give notice to reclaim the property.\n\n## Charges\n\nRecoverable charges must be defined in the contract. Major repairs (roofing, structure) remain the landlord's responsibility.\n\n## In case of dispute\n\nFile with the competent court of first instance. A lawyer specialized in real estate law can represent you.\n"
+    },
+    "licenciement-algerie": {
+      "titre": "Dismissal in Algeria: rights and remedies",
+      "resume": "What are the legal conditions for dismissal in Algeria? Compensation, notice period, remedies — a practical guide for employees.",
+      "contenu": "\n## Dismissal in Algeria\n\nLabor law is governed by Law 90-11. Any dismissal must be justified and follow a precise procedure.\n\n## Legal grounds\n\n- **Serious misconduct**: job abandonment, theft, violence, serious breach\n- **Duly established professional inadequacy**\n- **Economic reasons**: restructuring, proven economic difficulties\n\n## The procedure\n\n1. Summons to a preliminary interview by registered letter.\n2. Preliminary interview — the employee may be assisted.\n3. Notice of dismissal with precise grounds.\n4. Compliance with the notice period based on seniority.\n\n## Compensation\n\nGenerally one month's salary per year of seniority. In case of wrongful dismissal, the court may order reinstatement or additional compensation.\n\n## Remedies\n\nFile with the labor inspectorate, then the court of first instance (labor chamber) in case of wrongful dismissal.\n"
+    },
+    "acheter-bien-immobilier-algerie": {
+      "titre": "Buying property in Algeria: what you need to know",
+      "resume": "Deed of sale, taxes, verifying the title deed — everything to check before buying property in Algeria.",
+      "contenu": "\n## Verifying the title deed\n\nBefore any purchase, verify that the seller is indeed the legal owner. Check the land title at the relevant land registry. Verify the absence of mortgages, seizures, or ongoing disputes. Always insist on a price 100% declared to the notary — refuse any partial \"off the books\" payment.\n\n## Steps of the transaction\n\n1. **Preliminary sales agreement** — binds both parties.\n2. **Payment of a deposit** (generally 10 to 20% of the price).\n3. **Final deed of sale** before an Algerian notary.\n4. **Registration and land publication** at the land registry — 1 to 3 months.\n\n## The fees\n\nNotary fees between 2 and 5% of the price, registration fees, and land registry fees.\n\n## From abroad\n\nPower of attorney drawn up at the Algerian consulate in your country of residence, recognized directly by Algerian notaries. Non-residents benefit from tax exemptions on certain transactions.\n"
+    },
+    "creer-entreprise-algerie-diaspora": {
+      "titre": "Setting up a business in Algeria from the diaspora: the complete 2026 guide",
+      "resume": "Living in France, Belgium, Canada or Switzerland and want to launch your project in Algeria? This guide explains the three possible statuses and the exact steps.",
+      "contenu": "\n## The three available statuses\n\nIn Algeria, three legal forms suit most diaspora projects: the ANAE self-employed status, the EURL, and the SARL.\n\n## Status 1 — Self-employed via ANAE\n\nCreated by Law 22-23 of December 18, 2022, this status is obtained exclusively online at anae.dz. No trade register is required.\n\nRequired documents: front/back national ID card, proof of address less than 3 months old, white-background ID photo. No criminal record requested.\n\nRevenue caps: 5 million DZD for services, 10 million DZD for trade. Tax rate: 0.5% flat-rate final tax (IFU). Mandatory CASNOS affiliation within 10 days (contributions around 32,000 DZD/year). This status does not allow hiring employees.\n\nTimeline: 2 to 5 days for validation, then card pickup at the post office upon SMS notification (cost: 1,200 DZD). Average total time: 7 to 15 days.\n\nIdeal for: freelancers, consultants, service providers, small online businesses.\n\n## Status 2 — EURL (Single-Member Limited Liability Company)\n\nThe EURL is the company form for a sole partner. If you're setting up alone, it's the natural status. The procedures are identical to an SARL and go through the CNRC.\n\n## Status 3 — SARL (Limited Liability Company)\n\nThe SARL is for 2 to 50 partners. If you have partners or plan to, choose the SARL directly rather than an EURL to be converted later.\n\n## EURL/SARL procedures via the CNRC\n\nTo set up an EURL or SARL, all procedures go through the CNRC (National Trade Register Center).\n\n1. **Reserve the company name** via Sijilcom (CNRC's online platform) — prepare 3 to 4 alternative names.\n2. **Draft and authenticate the articles of association** with a notary — cost between 15,000 and 50,000 DZD. Note: the CNRC rejects about 1 in 3 applications for missing clauses in the articles.\n3. **Deposit the capital** in a blocked bank account (recommended minimum: 100,000 DZD) — blocking certificate required.\n4. **Publication in the BOAL** (Official Bulletin of Legal Notices) — cost between 3,000 and 6,000 DZD.\n5. **Registration with the CNRC** — trade register extract issued in 7 to 15 days.\n6. **Obtain the NIF** from the Tax Directorate — 48 to 72h.\n7. **Obtain the NIS** from the ONS — 2 to 4 days.\n8. **Open the business bank account** — the blocked capital is released after obtaining the NIF.\n\nTotal EURL/SARL cost: between 150,000 and 300,000 DZD (about €1,000 to €2,000).\n\n## Registered office — mandatory address in Algeria\n\nEvery company must have an address in Algeria, physical or virtual.\n\n**Commercial premises**: ideal solution for activities involving client visits or storage.\n\n**Manager's home**: accepted for activities without client visits. Algerian proof of address must be provided.\n\n**Commercial registered-office service**: professional address without physical office, between 2,000 and 8,000 DZD/month in Algiers. Ideal solution for 100% online activities or project owners not yet settled in Algeria.\n\n## Which status to choose?\n\nAlone, revenue < 5M DZD, no employees → ANAE self-employed. Alone, revenue > 5M DZD or need for employees → EURL via CNRC. Multiple partners → SARL via CNRC.\n\n## Frequently asked questions\n\n**Can everything be done remotely?**\nFor ANAE: 100% online registration, but the card is physically collected at a post office in Algeria. For EURL/SARL: some steps require physical presence or a representative on-site via consular power of attorney.\n"
+    },
+    "heriter-bien-immobilier-algerie-france": {
+      "titre": "How to inherit property in Algeria from France: complete 2026 guide",
+      "resume": "A parent recently passed away in Algeria and you live in France? Here are all the concrete steps to inherit an apartment, house, or land in Algeria.",
+      "contenu": "\n## The applicable law\n\nFor any real estate located in Algeria, Algerian law applies mandatorily (lex situs), regardless of your nationality or place of residence. This is confirmed by the French Consulate in Algiers. The estate is governed by Articles 126 to 201 of the Algerian Family Code.\n\n## The Fredha — the central document\n\nThe Fredha is the Algerian certificate of inheritance, equivalent to the French certificate of heirship. It is issued by the Algerian notary of the place of residence or burial of the deceased. It designates all heirs and their shares. Without the Fredha, no action on the property is possible.\n\n## Steps from France\n\n**Step 1 — Obtain the Algerian death certificate**\n\nIf the death occurred in France, contact the competent Algerian consulate for the declaration procedures and to obtain the certificate.\n\n**Step 2 — Contact an Algerian notary**\n\nThe notary draws up the Fredha based on the civil status documents of all heirs. If you cannot travel, give power of attorney to a relative or a lawyer in Algeria.\n\n**Step 3 — Taxation**\n\nThere are no inheritance taxes in the strict sense in Algeria. Transfer fees apply when ownership is transferred. In France, if the deceased was a French resident, an estate declaration must be filed within 6 months (12 months if the death occurred abroad). The 1999 France-Algeria treaty avoids double taxation.\n\n**Step 4 — Distribution**\n\nIf all heirs agree, a notarized distribution deed is drawn up. In case of disagreement or an untraceable heir, a judicial distribution can be requested from the Algerian court — a lawyer then becomes essential.\n\n**Step 5 — Title transfer**\n\nThe notary transfers the property title at the land registry in the name of the new owners.\n\n## Required documents\n\n- Death certificate (translated into Arabic if issued in France)\n- Birth certificates of all heirs\n- Family record book of the deceased\n- Property title if available\n- Legalized power of attorney if you appoint a representative\n\n## Difficult situations\n\n**Untitled property**: first regularize the title at the land registry — without an authentic notarized deed, no inheritance is possible.\n\n**Doing nothing**: the estate remains undivided, no heir can sell alone, and the situation becomes more complex with each generation.\n\n## Frequently asked questions\n\n**Do I need to travel to Algeria?**\nNot necessarily — a power of attorney to a lawyer or relative is enough for most procedures.\n\n**Are there inheritance taxes in Algeria?**\nNot in the strict sense. Only transfer fees when ownership changes.\n"
+    },
+    "vendre-appartement-algerie-etranger": {
+      "titre": "How to sell an apartment in Algeria from abroad: complete 2026 guide",
+      "resume": "You have an apartment in Algeria and want to sell it from France, Belgium or Canada? Here is the complete, step-by-step guide.",
+      "contenu": "\n## Can you sell without traveling?\n\nYes, thanks to consular power of attorney. You appoint a relative or a lawyer in Algeria to sign the deed of sale on your behalf. This power of attorney is drawn up at the Algerian consulate of your city of residence — it is recognized directly by Algerian notaries.\n\n## Prerequisites for the sale\n\n**Valid title deed**: you must have an authentic notarized deed registered at the land registry. Without an authentic title, no legal sale is possible.\n\n**No blocking joint ownership**: if the property is jointly owned, all co-owners or heirs must consent to the sale.\n\n**No outstanding charges**: check at the land registry that there is no mortgage or seizure.\n\n## The steps\n\n**Step 1 — Consular power of attorney**\n\nGo to the Algerian consulate with your Algerian ID. The consulate draws up the power of attorney authorizing your representative to sign all documents. This document is legalized and recognized directly by Algerian notaries.\n\n**Step 2 — Valuation and listing**\n\nAppoint a real estate agent or a lawyer in Algeria to value the property. Always insist on a price 100% declared to the notary — refuse any partial \"off the books\" payment.\n\n**Step 3 — Preliminary sales agreement**\n\nYour representative signs the preliminary agreement with the buyer. A lawyer can secure this step.\n\n**Step 4 — Final notarized deed**\n\nThe deed is signed at the Algerian notary's office by your representative and the buyer. Registration and land publication follow. Time between agreement and deed: 1 to 6 months.\n\n**Step 5 — Fees and taxes**\n\nNotary fees between 2 and 5% of the price. A capital gains tax may apply. If you are a French tax resident, the capital gain may also be taxable in France — consult a tax advisor before selling.\n\n## Repatriating funds\n\nTransfers of dinars from Algeria abroad are regulated by the Bank of Algeria. Non-residents who acquired their property via a legal foreign currency transfer are entitled to repatriate funds in the same currency. For inherited properties or those acquired in dinars, conditions differ. Consult a specialized Algerian lawyer before selling.\n\n## Risks to avoid\n\nNever sell without going through a notary. Only grant power of attorney to someone of absolute trust or a professional lawyer. Refuse any transaction involving part of the price in undeclared cash.\n\n## Frequently asked questions\n\n**How long does a sale take?**\nBetween 1 and 6 months depending on the complexity of the file.\n\n**Can an inherited property be sold?**\nYes, once the Fredha is established and the property is in your name or jointly owned with the agreement of all heirs.\n\n**Do I need to pay taxes in France?**\nPotentially yes if you are a French tax resident. Consult a tax advisor before selling.\n"
+    }
   }
 }

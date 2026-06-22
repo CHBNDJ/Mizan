@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Eye, EyeOff, Mail, X, AlertTriangle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { ChangeEmailModalProps } from "@/types";
 
@@ -12,6 +13,7 @@ export default function ChangeEmailModal({
   onSuccess,
 }: ChangeEmailModalProps) {
   const supabase = createClient();
+  const t = useTranslations("changeEmailModal");
   const [newEmail, setNewEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +25,7 @@ export default function ChangeEmailModal({
     setError("");
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
-      setError("Format d'email invalide.");
+      setError(t("invalidFormat"));
       return;
     }
 
@@ -32,7 +34,7 @@ export default function ChangeEmailModal({
     try {
       const { data: userData } = await supabase.auth.getUser();
       if (!userData.user?.email) {
-        throw new Error("Utilisateur non trouvé");
+        throw new Error(t("userNotFound"));
       }
 
       const { error: signInError } = await supabase.auth.signInWithPassword({
@@ -41,7 +43,7 @@ export default function ChangeEmailModal({
       });
 
       if (signInError) {
-        setError("Mot de passe incorrect.");
+        setError(t("wrongPassword"));
         setIsSubmitting(false);
         return;
       }
@@ -51,7 +53,7 @@ export default function ChangeEmailModal({
       });
 
       if (updateError) {
-        setError("Erreur : " + updateError.message);
+        setError(t("errorPrefix", { msg: updateError.message }));
         setIsSubmitting(false);
         return;
       }
@@ -62,7 +64,7 @@ export default function ChangeEmailModal({
       onSuccess(newEmail);
     } catch (err: any) {
       console.error("Erreur changement email:", err);
-      setError(err.message || "Une erreur est survenue");
+      setError(err.message || t("genericError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -78,7 +80,7 @@ export default function ChangeEmailModal({
             <div className="p-2 bg-teal-100 rounded-lg">
               <Mail className="w-5 h-5 text-teal-600" />
             </div>
-            Modifier l'email
+            {t("title")}
           </h3>
           <button
             onClick={onClose}
@@ -98,14 +100,14 @@ export default function ChangeEmailModal({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Nouvel email *
+              {t("newEmailLabel")}
             </label>
             <input
               type="email"
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
               className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
-              placeholder="nouveau@email.com"
+              placeholder={t("newEmailPh")}
               required
               disabled={isSubmitting}
             />
@@ -113,7 +115,7 @@ export default function ChangeEmailModal({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Mot de passe actuel *
+              {t("currentPasswordLabel")}
             </label>
             <div className="relative">
               <input
@@ -121,14 +123,14 @@ export default function ChangeEmailModal({
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
-                placeholder="Votre mot de passe"
+                placeholder={t("passwordPh")}
                 required
                 disabled={isSubmitting}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                className="cursor-pointer absolute end-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
               >
                 {showPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -148,10 +150,10 @@ export default function ChangeEmailModal({
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                  Envoi...
+                  {t("sending")}
                 </span>
               ) : (
-                "Modifier"
+                t("submit")
               )}
             </button>
             <button
@@ -160,7 +162,7 @@ export default function ChangeEmailModal({
               disabled={isSubmitting}
               className="cursor-pointer flex-1 border-2 border-slate-300 text-slate-600 py-3 rounded-lg hover:bg-slate-50 transition-colors font-medium"
             >
-              Annuler
+              {t("cancel")}
             </button>
           </div>
         </form>
