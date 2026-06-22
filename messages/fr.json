@@ -2923,5 +2923,21 @@
       "resume": "Vous avez un appartement en Algérie et souhaitez le vendre depuis la France, la Belgique ou le Canada ? Voici le guide complet, étape par étape.",
       "contenu": "\n## Peut-on vendre sans se déplacer ?\n\nOui, grâce à la procuration consulaire. Vous mandatez un proche ou un avocat en Algérie pour signer l'acte de vente en votre nom. Cette procuration est établie au consulat algérien de votre ville de résidence — elle est reconnue directement par les notaires algériens.\n\n## Conditions préalables à la vente\n\n**Titre de propriété valide** : vous devez disposer d'un acte notarié authentique enregistré à la Conservation foncière. Sans titre authentique, aucune vente légale n'est possible.\n\n**Absence d'indivision bloquante** : si le bien est en indivision, tous les copropriétaires ou héritiers doivent consentir à la vente.\n\n**Absence de charges** : vérifiez à la Conservation foncière l'absence d'hypothèque ou de saisie.\n\n## Les étapes\n\n**Étape 1 — La procuration consulaire**\n\nRendez-vous au consulat algérien avec votre pièce d'identité algérienne. Le consulat établit la procuration autorisant votre mandataire à signer tous les actes. Ce document est légalisé et reconnu directement par les notaires algériens.\n\n**Étape 2 — Estimation et mise en vente**\n\nMandatez un agent immobilier ou un avocat en Algérie pour évaluer le bien. Exigez toujours un prix 100% déclaré au notaire — refusez tout paiement partiel \"au noir\".\n\n**Étape 3 — Compromis de vente**\n\nVotre mandataire signe le compromis avec l'acheteur. Un avocat peut sécuriser cette étape.\n\n**Étape 4 — Acte notarié définitif**\n\nL'acte est signé chez le notaire algérien par votre mandataire et l'acheteur. Enregistrement et publication foncière suivent. Délai entre compromis et acte : 1 à 6 mois.\n\n**Étape 5 — Frais et taxes**\n\nFrais de notaire entre 2 et 5% du prix. Une taxe sur la plus-value peut s'appliquer. Si vous êtes résident fiscal en France, la plus-value peut également être imposable en France — consultez un fiscaliste avant de vendre.\n\n## Le rapatriement des fonds\n\nLes transferts de dinars depuis l'Algérie vers l'étranger sont réglementés par la Banque d'Algérie. Les non-résidents ayant acquis leur bien via un transfert légal en devises ont droit au rapatriement dans les mêmes devises. Pour les biens hérités ou acquis en dinars, les conditions sont différentes. Consultez un avocat algérien spécialisé avant de vendre.\n\n## Risques à éviter\n\nNe vendez jamais sans passer par un notaire. Ne donnez la procuration qu'à une personne de confiance absolue ou un avocat professionnel. Refusez toute transaction avec une partie du prix en espèces non déclarées.\n\n## Questions fréquentes\n\n**Combien de temps prend une vente ?**\nEntre 1 et 6 mois selon la complexité du dossier.\n\n**Peut-on vendre un bien hérité ?**\nOui, une fois la Fredha établie et le bien en votre nom ou en indivision avec accord de tous les héritiers.\n\n**Faut-il payer des impôts en France ?**\nPotentiellement oui si vous êtes résident fiscal français. Consultez un fiscaliste avant de vendre.\n"
     }
+  },
+  "videoConsultation": {
+    "loginRequired": "Connexion requise",
+    "connecting": "Connexion à la salle vidéo...",
+    "notFound": "Consultation introuvable",
+    "unauthorized": "Accès non autorisé",
+    "loadError": "Erreur lors du chargement",
+    "backToConsultations": "Retour aux consultations",
+    "title": "Consultation vidéo",
+    "end": "Terminer",
+    "participantFallback": "Participant",
+    "readyToJoin": "Prêt à rejoindre ?",
+    "consultationWith": "Consultation avec",
+    "joinConsultation": "Rejoindre la consultation",
+    "cameraMicNote": "Votre caméra et micro seront activés",
+    "roomLoadError": "Impossible de charger la salle vidéo"
   }
 }

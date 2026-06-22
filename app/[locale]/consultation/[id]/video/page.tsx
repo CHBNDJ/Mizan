@@ -1,6 +1,7 @@
 "use client";
 import { use, useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Video, X, Phone } from "lucide-react";
@@ -14,6 +15,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
   const router = useRouter();
   const { user } = useAuth();
   const supabase = createClient();
+  const t = useTranslations("videoConsultation");
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const [consultation, setConsultation] = useState<any>(null);
@@ -38,7 +40,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
         .single();
 
       if (err || !consult) {
-        setError("Consultation introuvable");
+        setError(t("notFound"));
         setLoading(false);
         return;
       }
@@ -46,7 +48,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
         !user ||
         (user.id !== consult.lawyer_id && user.id !== consult.client_id)
       ) {
-        setError("Accès non autorisé");
+        setError(t("unauthorized"));
         setLoading(false);
         return;
       }
@@ -55,7 +57,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
       const room = await getOrCreateDailyRoom(id);
       setRoomUrl(room);
     } catch {
-      setError("Erreur lors du chargement");
+      setError(t("loadError"));
     } finally {
       setLoading(false);
     }
@@ -91,7 +93,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
   if (!user)
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <p className="text-white">Connexion requise</p>
+        <p className="text-white">{t("loginRequired")}</p>
       </div>
     );
 
@@ -100,9 +102,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-2 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-300 text-sm">
-            Connexion à la salle vidéo...
-          </p>
+          <p className="text-slate-300 text-sm">{t("connecting")}</p>
         </div>
       </div>
     );
@@ -119,7 +119,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
             onClick={() => router.push("/mes-consultations")}
             className="mt-4 bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-xl text-sm font-medium cursor-pointer"
           >
-            Retour aux consultations
+            {t("backToConsultations")}
           </button>
         </div>
       </div>
@@ -129,7 +129,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
   const otherPerson = isLawyer ? consultation?.client : consultation?.lawyer;
   const otherName = otherPerson
     ? `${otherPerson.first_name} ${otherPerson.last_name}`
-    : "Participant";
+    : t("participantFallback");
 
   return (
     <div className="min-h-screen bg-slate-900 flex flex-col">
@@ -139,9 +139,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
             <Video className="w-4 h-4 text-white" />
           </div>
           <div>
-            <p className="text-white font-semibold text-sm">
-              Consultation vidéo
-            </p>
+            <p className="text-white font-semibold text-sm">{t("title")}</p>
             <p className="text-slate-400 text-xs">{otherName}</p>
           </div>
         </div>
@@ -150,7 +148,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
           className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm font-medium cursor-pointer"
         >
           <Phone className="w-4 h-4 rotate-[135deg]" />
-          <span className="hidden sm:inline">Terminer</span>
+          <span className="hidden sm:inline">{t("end")}</span>
         </button>
       </div>
 
@@ -162,20 +160,20 @@ export default function VideoConsultationPage({ params }: PageProps) {
                 <Video className="w-8 h-8 text-teal-400" />
               </div>
               <p className="text-white font-semibold text-lg mb-2">
-                Prêt à rejoindre ?
+                {t("readyToJoin")}
               </p>
               <p className="text-slate-400 text-sm mb-6">
-                Consultation avec{" "}
+                {t("consultationWith")}{" "}
                 <span className="text-white font-medium">{otherName}</span>
               </p>
               <button
                 onClick={() => setJoined(true)}
                 className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold text-sm cursor-pointer"
               >
-                Rejoindre la consultation
+                {t("joinConsultation")}
               </button>
               <p className="text-slate-500 text-xs mt-4">
-                Votre caméra et micro seront activés
+                {t("cameraMicNote")}
               </p>
             </div>
           </div>
@@ -189,9 +187,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <p className="text-slate-400">
-              Impossible de charger la salle vidéo
-            </p>
+            <p className="text-slate-400">{t("roomLoadError")}</p>
           </div>
         )}
       </div>

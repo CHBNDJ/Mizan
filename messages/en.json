@@ -2919,5 +2919,21 @@
       "resume": "You have an apartment in Algeria and want to sell it from France, Belgium or Canada? Here is the complete, step-by-step guide.",
       "contenu": "\n## Can you sell without traveling?\n\nYes, thanks to consular power of attorney. You appoint a relative or a lawyer in Algeria to sign the deed of sale on your behalf. This power of attorney is drawn up at the Algerian consulate of your city of residence — it is recognized directly by Algerian notaries.\n\n## Prerequisites for the sale\n\n**Valid title deed**: you must have an authentic notarized deed registered at the land registry. Without an authentic title, no legal sale is possible.\n\n**No blocking joint ownership**: if the property is jointly owned, all co-owners or heirs must consent to the sale.\n\n**No outstanding charges**: check at the land registry that there is no mortgage or seizure.\n\n## The steps\n\n**Step 1 — Consular power of attorney**\n\nGo to the Algerian consulate with your Algerian ID. The consulate draws up the power of attorney authorizing your representative to sign all documents. This document is legalized and recognized directly by Algerian notaries.\n\n**Step 2 — Valuation and listing**\n\nAppoint a real estate agent or a lawyer in Algeria to value the property. Always insist on a price 100% declared to the notary — refuse any partial \"off the books\" payment.\n\n**Step 3 — Preliminary sales agreement**\n\nYour representative signs the preliminary agreement with the buyer. A lawyer can secure this step.\n\n**Step 4 — Final notarized deed**\n\nThe deed is signed at the Algerian notary's office by your representative and the buyer. Registration and land publication follow. Time between agreement and deed: 1 to 6 months.\n\n**Step 5 — Fees and taxes**\n\nNotary fees between 2 and 5% of the price. A capital gains tax may apply. If you are a French tax resident, the capital gain may also be taxable in France — consult a tax advisor before selling.\n\n## Repatriating funds\n\nTransfers of dinars from Algeria abroad are regulated by the Bank of Algeria. Non-residents who acquired their property via a legal foreign currency transfer are entitled to repatriate funds in the same currency. For inherited properties or those acquired in dinars, conditions differ. Consult a specialized Algerian lawyer before selling.\n\n## Risks to avoid\n\nNever sell without going through a notary. Only grant power of attorney to someone of absolute trust or a professional lawyer. Refuse any transaction involving part of the price in undeclared cash.\n\n## Frequently asked questions\n\n**How long does a sale take?**\nBetween 1 and 6 months depending on the complexity of the file.\n\n**Can an inherited property be sold?**\nYes, once the Fredha is established and the property is in your name or jointly owned with the agreement of all heirs.\n\n**Do I need to pay taxes in France?**\nPotentially yes if you are a French tax resident. Consult a tax advisor before selling.\n"
     }
+  },
+  "videoConsultation": {
+    "loginRequired": "Login required",
+    "connecting": "Connecting to video room...",
+    "notFound": "Consultation not found",
+    "unauthorized": "Unauthorized access",
+    "loadError": "Error loading",
+    "backToConsultations": "Back to consultations",
+    "title": "Video consultation",
+    "end": "End",
+    "participantFallback": "Participant",
+    "readyToJoin": "Ready to join?",
+    "consultationWith": "Consultation with",
+    "joinConsultation": "Join consultation",
+    "cameraMicNote": "Your camera and microphone will be activated",
+    "roomLoadError": "Unable to load video room"
   }
 }
