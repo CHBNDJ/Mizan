@@ -28,10 +28,12 @@ import {
   TrendingUp,
   Calculator,
   RefreshCw,
+  Zap,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { gsap } from "gsap";
 import { PendingConsultations } from "@/components/dashboard/PendingConsultations";
+import { localizedDigits } from "@/lib/arabicNumerals";
 
 const PROF_KEY: Record<string, string> = {
   avocat: "avocat",
@@ -48,12 +50,16 @@ const PROF_ICONS: Record<string, any> = {
   "expert-comptable": TrendingUp,
 };
 
+const CHECKIN_REMINDER_MS = 2 * 60 * 60 * 1000;
+const AUTO_OFF_AFTER_IGNORED_MS = 4 * 60 * 60 * 1000;
+
 export default function LawyerDashboardPage() {
   const supabase = createClient();
   const { profile, user, isAuthenticated, loading, lawyerProfile } = useAuth();
   const router = useRouter();
   const t = useTranslations();
   const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
   const ref = useRef<HTMLDivElement>(null);
 
   const [activeProfession, setActiveProfession] = useState<string>("");
@@ -69,6 +75,11 @@ export default function LawyerDashboardPage() {
   const [subPlan, setSubPlan] = useState<string | null>(null);
   const [subEnd, setSubEnd] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
+
+  const [availableNow, setAvailableNow] = useState(false);
+  const [availableSince, setAvailableSince] = useState<string | null>(null);
+  const [elapsedMin, setElapsedMin] = useState(0);
+  const [showCheckIn, setShowCheckIn] = useState(false);
 
   const professions: string[] = (lawyerProfile as any)?.professions || [
     (profile as any)?.profession || "avocat",
@@ -111,6 +122,7 @@ export default function LawyerDashboardPage() {
       loadStats();
       checkVerif();
       loadSub();
+      loadAvailableNow();
     }
   }, [user, profile]);
 
@@ -152,6 +164,63 @@ export default function LawyerDashboardPage() {
       supabase.removeChannel(ch);
     };
   }, [user]);
+
+  useEffect(() => {
+    if (!availableNow || !availableSince) {
+      setElapsedMin(0);
+      setShowCheckIn(false);
+      return;
+    }
+    const tick = () => {
+      const elapsed = Date.now() - new Date(availableSince).getTime();
+      setElapsedMin(Math.floor(elapsed / 60000));
+      if (elapsed >= AUTO_OFF_AFTER_IGNORED_MS) {
+        toggleAvailableNow(false);
+        setShowCheckIn(false);
+      } else if (elapsed >= CHECKIN_REMINDER_MS) {
+        setShowCheckIn(true);
+      }
+    };
+    tick();
+    const interval = setInterval(tick, 30000);
+    return () => clearInterval(interval);
+  }, [availableNow, availableSince]);
+
+  const loadAvailableNow = async () => {
+    if (!user) return;
+    const { data } = await supabase
+      .from("lawyers")
+      .select("available_now, available_now_since")
+      .eq("id", user.id)
+      .single();
+    if (data) {
+      setAvailableNow(!!data.available_now);
+      setAvailableSince(data.available_now_since);
+    }
+  };
+
+  const toggleAvailableNow = async (next: boolean) => {
+    if (!user) return;
+    const since = next ? new Date().toISOString() : null;
+    setAvailableNow(next);
+    setAvailableSince(since);
+    setShowCheckIn(false);
+    await supabase
+      .from("lawyers")
+      .update({ available_now: next, available_now_since: since })
+      .eq("id", user.id);
+  };
+
+  const confirmStillAvailable = async () => {
+    if (!user) return;
+    const since = new Date().toISOString();
+    setAvailableSince(since);
+    setShowCheckIn(false);
+    await supabase
+      .from("lawyers")
+      .update({ available_now_since: since })
+      .eq("id", user.id);
+  };
 
   const checkVerif = async () => {
     if (!user) return;
@@ -374,6 +443,70 @@ export default function LawyerDashboardPage() {
               </div>
             </div>
           )}
+
+          {/* Disponible maintenant */}
+          <div className="d-fade mb-5 bg-white border border-teal-100 rounded-2xl px-5 py-4">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
+                  <Zap className="w-4 h-4 text-teal-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-teal-900">
+                    {t("dashboard.availableNowTitle")}
+                  </p>
+                  <p className="text-xs text-teal-500 mt-0.5">
+                    {t("dashboard.availableNowDesc")}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => toggleAvailableNow(!availableNow)}
+                className="relative w-11 h-6 rounded-full flex-shrink-0 cursor-pointer transition-colors"
+                style={{ background: availableNow ? "#0D9488" : "#CBD5E1" }}
+              >
+                <span
+                  className="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all"
+                  style={{ insetInlineStart: availableNow ? "22px" : "2px" }}
+                />
+              </button>
+            </div>
+            {availableNow && (
+              <div className="mt-3 pt-3 border-t border-teal-50 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-500" />
+                <p className="text-xs text-teal-700">
+                  {elapsedMin < 60
+                    ? t("dashboard.availableSince", {
+                        n: ld(String(elapsedMin)),
+                      })
+                    : t("dashboard.availableSinceHours", {
+                        n: ld(String(Math.floor(elapsedMin / 60))),
+                      })}
+                </p>
+              </div>
+            )}
+            {showCheckIn && (
+              <div className="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-center justify-between gap-3 flex-wrap">
+                <p className="text-xs font-semibold text-amber-800">
+                  {t("dashboard.stillAvailableQuestion")}
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={confirmStillAvailable}
+                    className="text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white px-3 py-1.5 rounded-lg cursor-pointer"
+                  >
+                    {t("dashboard.stillAvailableYes")}
+                  </button>
+                  <button
+                    onClick={() => toggleAvailableNow(false)}
+                    className="text-xs font-medium bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 px-3 py-1.5 rounded-lg cursor-pointer"
+                  >
+                    {t("dashboard.stillAvailableNo")}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="d-fade grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
             <div className="bg-white border border-teal-100 rounded-2xl p-4">
