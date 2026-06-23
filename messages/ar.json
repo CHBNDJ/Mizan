@@ -241,7 +241,8 @@
       "linkedinProfile": "عرض الملف",
       "facebookPage": "عرض الصفحة",
       "instagramProfile": "عرض الملف"
-    }
+    },
+    "availableNowBadge": "متاح الآن"
   },
   "auth": {
     "clientRegister": {

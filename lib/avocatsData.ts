@@ -168,6 +168,8 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     },
     langues,
     verified: lawyer.is_verified || false,
+    available_now: lawyer.available_now || false,
+    available_now_since: lawyer.available_now_since || null,
     rating_google: lawyer.rating_google ? Number(lawyer.rating_google) : null,
     reviews_count_google: lawyer.reviews_count_google || 0,
     rating_mizan: lawyer.rating_mizan ? Number(lawyer.rating_mizan) : null,
@@ -343,7 +345,7 @@ export async function getAvocatById(
     const { data: lawyer } = await supabase
       .from("lawyers")
       .select(
-        "id, slug, bar_number, specializations, experience_years, consultation_price, is_verified, is_claimed, claimed_at, rating_google, reviews_count_google, rating_mizan, reviews_count_mizan, updated_at, created_at, profession, professions, is_cour_supreme, bio"
+        "id, slug, bar_number, specializations, experience_years, consultation_price, is_verified, is_claimed, claimed_at, rating_google, reviews_count_google, rating_mizan, reviews_count_mizan, available_now, available_now_since, updated_at, created_at, profession, professions, is_cour_supreme, bio"
       )
       .eq(isUUID ? "id" : "slug", idOrSlug)
       .eq("is_verified", true)

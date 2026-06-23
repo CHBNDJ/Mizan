@@ -35,6 +35,8 @@ export interface AvocatData {
   langues?: string[];
   verified?: boolean;
   is_cour_supreme?: boolean;
+  available_now?: boolean;
+  available_now_since?: string | null;
 
   rating_google?: number | null;
   reviews_count_google?: number;
@@ -326,23 +328,6 @@ export interface Message {
   sender: {
     first_name: string;
     last_name: string;
-  };
-}
-
-export interface Consultation {
-  id: string;
-  status: "pending" | "answered" | "closed";
-  created_at: string;
-  client_id: string;
-  lawyer_id?: string;
-  question?: string;
-  response?: string;
-  answered_at?: string;
-  client: {
-    first_name: string;
-    last_name: string;
-    email: string;
-    location: string;
   };
 }
 

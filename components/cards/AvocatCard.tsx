@@ -27,21 +27,27 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
     avocat.rating_google && (avocat.reviews_count_google ?? 0) > 0;
   const hasMizanRating =
     avocat.rating_mizan && (avocat.reviews_count_mizan ?? 0) > 0;
+  const isAvailableNow = !!avocat.available_now;
 
   return (
     <Link href={getProfileUrl()} className="h-full">
       <div className="sm:hidden h-full bg-white border border-slate-200 rounded-xl p-3 cursor-pointer transition-all duration-200 hover:border-slate-300 hover:-translate-y-1 hover:shadow-md flex flex-col items-center text-center">
-        <div className="w-16 h-16 rounded-full mb-2 flex-shrink-0 overflow-hidden bg-teal-100 flex items-center justify-center font-medium text-base text-teal-700 relative">
-          {avocat.avatar_url ? (
-            <Image
-              src={avocat.avatar_url}
-              alt={`${avocat.prenom} ${avocat.nom}`}
-              fill
-              className="object-cover"
-              sizes="64px"
-            />
-          ) : (
-            getInitials(avocat.prenom, avocat.nom)
+        <div className="relative w-16 h-16 mb-2 flex-shrink-0">
+          <div className="w-16 h-16 rounded-full overflow-hidden bg-teal-100 flex items-center justify-center font-medium text-base text-teal-700">
+            {avocat.avatar_url ? (
+              <Image
+                src={avocat.avatar_url}
+                alt={`${avocat.prenom} ${avocat.nom}`}
+                fill
+                className="object-cover"
+                sizes="64px"
+              />
+            ) : (
+              getInitials(avocat.prenom, avocat.nom)
+            )}
+          </div>
+          {isAvailableNow && (
+            <span className="absolute bottom-0 end-0 w-3.5 h-3.5 rounded-full bg-teal-500 border-2 border-white" />
           )}
         </div>
         <div className="text-[13px] font-medium text-slate-800 mb-1 w-full truncate">
@@ -111,6 +117,9 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
             <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center font-medium text-base text-teal-700">
               {getInitials(avocat.prenom, avocat.nom)}
             </div>
+          )}
+          {isAvailableNow && (
+            <span className="absolute bottom-0 end-0 w-3.5 h-3.5 rounded-full bg-teal-500 border-2 border-white" />
           )}
         </div>
         <div className="text-[15px] font-medium text-slate-800 mb-1 truncate flex-shrink-0">

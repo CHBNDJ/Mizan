@@ -241,7 +241,8 @@
       "linkedinProfile": "Voir le profil",
       "facebookPage": "Voir la page",
       "instagramProfile": "Voir le profil"
-    }
+    },
+    "availableNowBadge": "Disponible maintenant"
   },
   "auth": {
     "clientRegister": {

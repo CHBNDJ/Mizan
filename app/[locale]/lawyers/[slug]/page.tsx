@@ -637,6 +637,12 @@ export default function ProfilePage({
                       {t("lawyerProfile.courSupremeBadge")}
                     </div>
                   )}
+                  {avocat.available_now && (
+                    <div className="flex items-center gap-1.5 text-[11px] text-teal-700 font-medium bg-teal-50 border border-teal-200 px-2 py-0.5 rounded-full">
+                      <span className="w-1.5 h-1.5 rounded-full bg-teal-500" />
+                      {t("lawyerProfile.availableNowBadge")}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="hero-right opacity-0 invisible bg-gradient-to-b from-teal-500 to-teal-800 flex items-center justify-center relative order-first sm:order-last min-h-[260px] sm:min-h-0">
