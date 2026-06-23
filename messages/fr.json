@@ -1740,7 +1740,14 @@
     "availabilityTitle": "Mes disponibilités",
     "helpTitle": "Besoin d'aide ?",
     "helpSub": "support@mizan-dz.com · Réponse sous 24h",
-    "contactAction": "Contacter →"
+    "contactAction": "Contacter →",
+    "availableNowTitle": "Disponible maintenant",
+    "availableNowDesc": "Les clients peuvent vous contacter instantanément",
+    "availableSince": "Actif depuis {n} min",
+    "availableSinceHours": "Actif depuis {n}h",
+    "stillAvailableQuestion": "Toujours disponible ?",
+    "stillAvailableYes": "Oui, je continue",
+    "stillAvailableNo": "Désactiver"
   },
   "subscriptionPlans": {
     "paymentSoonBadge": "Paiement en ligne bientôt disponible",
@@ -2097,7 +2104,8 @@
     "cancel": "Annuler",
     "accept": "Accepter",
     "refuse": "Refuser",
-    "messaging": "Messagerie"
+    "messaging": "Messagerie",
+    "respond": "Répondre"
   },
   "blogPage": {
     "home": "Accueil",
@@ -2864,8 +2872,8 @@
     "phonePh": "+213 6XX XXX XXX",
     "sending": "Envoi...",
     "confirmAppointment": "Confirmer le rendez-vous",
-    "doneTitle": "Rendez-vous demandé",
-    "doneDesc": "{lawyerName} confirmera votre rendez-vous sous 24h.",
+    "doneTitle": "Rendez-vous confirmé !",
+    "doneDesc": "Vous recevrez un rappel 30 minutes avant votre rendez-vous avec {lawyerName}.",
     "atConnector": "à"
   },
   "blogArticleDetail": {

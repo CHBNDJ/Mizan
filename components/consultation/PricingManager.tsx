@@ -1,13 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import {
-  MessageSquare,
-  Phone,
-  Video,
-  Mail,
-  Save,
-  CheckCircle,
-} from "lucide-react";
+import { MessageSquare, Phone, Video, Save, CheckCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -17,7 +10,6 @@ const CANAL_TYPES = [
   { type: "phone", icon: Phone, duration: "30 min" },
   { type: "video_30", icon: Video, duration: "30 min" },
   { type: "video_60", icon: Video, duration: "1h" },
-  { type: "email", icon: Mail, duration: null },
 ];
 
 interface Props {

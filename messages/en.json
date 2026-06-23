@@ -1736,7 +1736,14 @@
     "availabilityTitle": "My availability",
     "helpTitle": "Need help?",
     "helpSub": "support@mizan-dz.com · Response within 24h",
-    "contactAction": "Contact →"
+    "contactAction": "Contact →",
+    "availableNowTitle": "Available now",
+    "availableNowDesc": "Clients can contact you instantly",
+    "availableSince": "Active for {n} min",
+    "availableSinceHours": "Active for {n}h",
+    "stillAvailableQuestion": "Still available?",
+    "stillAvailableYes": "Yes, continue",
+    "stillAvailableNo": "Turn off"
   },
   "subscriptionPlans": {
     "paymentSoonBadge": "Online payment coming soon",
@@ -2093,7 +2100,8 @@
     "cancel": "Cancel",
     "accept": "Accept",
     "refuse": "Decline",
-    "messaging": "Messaging"
+    "messaging": "Messaging",
+    "respond": "Reply"
   },
   "blogPage": {
     "home": "Home",
@@ -2860,8 +2868,8 @@
     "phonePh": "+213 6XX XXX XXX",
     "sending": "Sending...",
     "confirmAppointment": "Confirm appointment",
-    "doneTitle": "Appointment requested",
-    "doneDesc": "{lawyerName} will confirm your appointment within 24h.",
+    "doneTitle": "Appointment confirmed!",
+    "doneDesc": "You will receive a reminder 30 minutes before your appointment with {lawyerName}.",
     "atConnector": "at"
   },
   "blogArticleDetail": {

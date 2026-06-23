@@ -1692,7 +1692,14 @@
     "availabilityTitle": "أوقات توفّري",
     "helpTitle": "تحتاج مساعدة؟",
     "helpSub": "support@mizan-dz.com · الرد خلال ٢٤ ساعة",
-    "contactAction": "اتصل بنا ←"
+    "contactAction": "اتصل بنا ←",
+    "availableNowTitle": "متاح الآن",
+    "availableNowDesc": "يمكن للعملاء التواصل معك فورًا",
+    "availableSince": "نشط منذ {n} د",
+    "availableSinceHours": "نشط منذ {n} س",
+    "stillAvailableQuestion": "ما زلت متاحًا؟",
+    "stillAvailableYes": "نعم، أستمر",
+    "stillAvailableNo": "إيقاف"
   },
   "subscriptionPlans": {
     "paymentSoonBadge": "الدفع عبر الإنترنت قريبًا",
@@ -2049,7 +2056,8 @@
     "cancel": "إلغاء",
     "accept": "قبول",
     "refuse": "رفض",
-    "messaging": "المراسلة"
+    "messaging": "المراسلة",
+    "respond": "الرد"
   },
   "blogPage": {
     "home": "الرئيسية",
@@ -2816,8 +2824,8 @@
     "phonePh": "+213 6XX XXX XXX",
     "sending": "جارٍ الإرسال...",
     "confirmAppointment": "تأكيد الموعد",
-    "doneTitle": "تم طلب الموعد",
-    "doneDesc": "سيؤكد {lawyerName} موعدك خلال 24 ساعة.",
+    "doneTitle": "تم تأكيد الموعد!",
+    "doneDesc": "ستتلقى تذكيرًا قبل 30 دقيقة من موعدك مع {lawyerName}.",
     "atConnector": "في"
   },
   "blogArticleDetail": {
