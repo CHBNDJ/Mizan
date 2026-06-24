@@ -66,7 +66,7 @@ export const SPECIALITES = [
   "Droit commercial et des affaires",
   "Droit de la consommation",
   "Droit de la famille",
-  "Droit de la propriété intellectuelle",
+  "Droit de la propriété intellectuelle et industrielle",
   "Droit de l'environnement",
   "Droit de l'immobilier",
   "Droit des assurances",
