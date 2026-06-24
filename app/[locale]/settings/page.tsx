@@ -189,18 +189,20 @@ export default function SettingsPage() {
     label: string;
     description: string;
   }) => (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 bg-slate-50 rounded-lg">
-      <div className="flex items-center gap-3 flex-1 min-w-0">
+    <div className="flex items-center justify-between gap-3 p-3 sm:p-4 bg-slate-50 rounded-lg">
+      <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
         <Bell className="w-5 h-5 text-teal-600 flex-shrink-0" />
         <div className="min-w-0 flex-1">
-          <h3 className="font-medium text-slate-700 text-sm sm:text-base">
+          <h3 className="font-medium text-slate-700 text-sm sm:text-base truncate">
             {label}
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500">{description}</p>
+          <p className="text-xs sm:text-sm text-slate-500 truncate">
+            {description}
+          </p>
         </div>
       </div>
       <div
-        className="relative inline-flex items-center opacity-60 cursor-not-allowed"
+        className="relative inline-flex items-center opacity-60 cursor-not-allowed flex-shrink-0"
         title={t("notifLockedNote")}
       >
         <div className="w-11 h-6 bg-teal-600 rounded-full relative">
