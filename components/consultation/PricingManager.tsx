@@ -118,23 +118,25 @@ export default function PricingManager({ profession }: Props) {
         return (
           <div
             key={c.type}
-            className="flex items-center gap-4 p-4 bg-teal-50 border border-teal-100 rounded-xl"
+            className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-4 bg-teal-50 border border-teal-100 rounded-xl"
           >
-            <div className="w-9 h-9 rounded-lg bg-teal-600 flex items-center justify-center flex-shrink-0">
-              <Icon className="w-4 h-4 text-white" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="text-sm font-semibold text-slate-800">
-                  {c.label}
-                </p>
-                {c.duration && (
-                  <span className="text-[10px] text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-full">
-                    {c.duration}
-                  </span>
-                )}
+            <div className="flex items-center gap-3 sm:contents">
+              <div className="w-9 h-9 rounded-lg bg-teal-600 flex items-center justify-center flex-shrink-0">
+                <Icon className="w-4 h-4 text-white" />
               </div>
-              <p className="text-xs text-slate-500">{c.desc}</p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-semibold text-slate-800">
+                    {c.label}
+                  </p>
+                  {c.duration && (
+                    <span className="text-[10px] text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-full">
+                      {c.duration}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-slate-500">{c.desc}</p>
+              </div>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
               <input
@@ -144,7 +146,7 @@ export default function PricingManager({ profession }: Props) {
                   setPrices((p) => ({ ...p, [c.type]: e.target.value }))
                 }
                 placeholder={t("pricePh")}
-                className="w-32 h-9 px-3 text-sm border border-teal-200 rounded-lg bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none text-end text-slate-800 placeholder:text-slate-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className="flex-1 sm:flex-initial sm:w-32 h-9 px-3 text-sm border border-teal-200 rounded-lg bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none text-end text-slate-800 placeholder:text-slate-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
               <span className="text-xs text-slate-600 font-medium">
                 {t("currency")}
