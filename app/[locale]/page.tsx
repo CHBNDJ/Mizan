@@ -695,7 +695,7 @@ export default function HomePage() {
   }, [topAvocats]);
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-gradient-to-tr dark:from-black dark:to-[#0a3d22] dark:bg-fixed overflow-x-hidden">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-gradient-to-tr dark:from-black dark:via-black dark:to-[#0a3d22] dark:bg-fixed overflow-x-hidden">
       <style>{`
         .hero-title,.hero-sub,.prof-card,.stat-card,.steps-section,.avocat-card,.cta-section,.prof-roles-link,.testimonials-section,.feedback-cta { opacity:0; }
         .prof-card-btn { transition:all 0.2s ease; }
