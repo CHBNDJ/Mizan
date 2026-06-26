@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type NavLink = {
   href: string;
@@ -234,6 +235,7 @@ export function Navigation() {
             </div>
 
             <div className="hidden lg:flex items-center justify-end gap-2 flex-shrink-0">
+              <ThemeToggle />
               {isAuthenticated ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -371,16 +373,19 @@ export function Navigation() {
               <LanguageSwitcher />
             </div>
 
-            <button
-              className="cursor-pointer lg:hidden p-2 text-slate-700 rounded-lg"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {isOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
+            <div className="flex items-center gap-1 lg:hidden">
+              <ThemeToggle />
+              <button
+                className="cursor-pointer p-2 text-slate-700 rounded-lg"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                {isOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </nav>
