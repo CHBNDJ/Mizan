@@ -1124,206 +1124,46 @@ export function Navigation() {
             )}
           </div>
 
-          <div className="flex items-center gap-1 lg:hidden">
+          <div className="flex items-center gap-1.5 lg:hidden">
             <LanguageSwitcher />
             <ThemeToggle />
-            <button
-              className="cursor-pointer p-2 text-slate-700 rounded-full"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {isOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </button>
           </div>
         </div>
       </nav>
 
-      {isOpen && (
-        <div className="fixed top-20 start-4 end-4 z-[9999] lg:hidden border border-slate-200/70 rounded-3xl bg-white/90 shadow-2xl backdrop-blur-xl overflow-hidden">
-          <div className="py-4 space-y-4">
-            {allNavLinks.map((link) => (
+      <div className="lg:hidden fixed top-[68px] left-0 right-0 z-[998] flex justify-center px-4">
+        <div className="w-full max-w-4xl flex items-center justify-center gap-1.5 overflow-x-auto rounded-full border border-slate-200/70 bg-white/70 backdrop-blur-xl shadow-lg shadow-slate-900/5 px-2 py-1.5">
+          {allNavLinks.map((link) => {
+            const active = pathname === link.href;
+            return (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "block px-4 py-3 text-sm font-medium rounded-lg mx-2 transition-colors relative",
-                  pathname === link.href
-                    ? "text-teal-600 bg-white/60"
-                    : "text-slate-600 hover:bg-white/40"
+                  "whitespace-nowrap text-xs font-medium transition-all px-3 py-1.5 rounded-full flex-shrink-0",
+                  active
+                    ? "bg-teal-600 text-white"
+                    : "text-slate-600 hover:bg-teal-50"
                 )}
-                onClick={() => setIsOpen(false)}
               >
-                <span className="relative inline-flex items-center">
-                  {link.label}
-                  {link.hasNotification && link.notificationCount ? (
-                    <span className="ms-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                      {link.notificationCount > 9
-                        ? "9+"
-                        : link.notificationCount}
-                    </span>
-                  ) : null}
-                </span>
+                {link.label}
               </Link>
-            ))}
-
-            <div className="px-4 space-y-4 border-t border-slate-200/50 pt-4">
-              {isAuthenticated ? (
-                <>
-                  <div className="flex items-center gap-3 p-3 bg-white/70 rounded-lg shadow-sm">
-                    <div className="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center">
-                      <span className="text-white font-medium">
-                        {getUserInitial()}
-                      </span>
-                    </div>
-                    <div>
-                      <div className="font-medium text-sm text-slate-900">
-                        {getUserDisplayName()}
-                      </div>
-                      <div className="text-xs text-slate-500">
-                        {getProfessionLabel()}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    {profile?.user_type === "lawyer" && (
-                      <>
-                        <button
-                          onClick={() => {
-                            router.push("/lawyer/dashboard");
-                            setIsOpen(false);
-                          }}
-                          className="w-full flex items-center gap-3 px-3 py-2 text-start hover:bg-white/60 rounded-lg"
-                        >
-                          <Scale className="w-4 h-4 text-slate-600" />
-                          <span className="text-sm font-medium text-slate-900">
-                            {t("nav.dashboard")}
-                          </span>
-                        </button>
-                        <button
-                          onClick={() => {
-                            router.push("/lawyer/abonnements");
-                            setIsOpen(false);
-                          }}
-                          className="w-full flex items-center gap-3 px-3 py-2 text-start hover:bg-white/60 rounded-lg"
-                        >
-                          <CreditCard className="w-4 h-4 text-slate-600" />
-                          <span className="text-sm font-medium text-slate-900">
-                            {t("nav.mySubscription")}
-                          </span>
-                        </button>
-                      </>
-                    )}
-                    <button
-                      onClick={() => {
-                        router.push("/profile");
-                        setIsOpen(false);
-                      }}
-                      className="w-full flex items-center gap-3 px-3 py-2 text-start hover:bg-white/60 rounded-lg"
-                    >
-                      <User className="w-4 h-4 text-slate-600" />
-                      <span className="text-sm font-medium text-slate-900">
-                        {t("nav.myProfile")}
-                      </span>
-                    </button>
-                    <button
-                      onClick={() => {
-                        router.push("/settings");
-                        setIsOpen(false);
-                      }}
-                      className="w-full flex items-center gap-3 px-3 py-2 text-start hover:bg-white/60 rounded-lg"
-                    >
-                      <Settings className="w-4 h-4 text-slate-600" />
-                      <span className="text-sm font-medium text-slate-900">
-                        {t("nav.settings")}
-                      </span>
-                    </button>
-                    <button
-                      onClick={handleSignOut}
-                      className="w-full flex items-center gap-3 px-3 py-2 text-start hover:bg-red-50/80 text-red-600 rounded-lg"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      <span className="text-sm font-medium">
-                        {t("nav.logout")}
-                      </span>
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <div className="m-4">
-                  <div className="flex bg-teal-50 rounded-lg p-1">
-                    {(["login", "signup"] as const).map((tab) => (
-                      <button
-                        key={tab}
-                        onClick={() => setActiveTab(tab)}
-                        className={cn(
-                          "cursor-pointer flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all",
-                          activeTab === tab
-                            ? "bg-white text-slate-900 shadow-sm"
-                            : "text-slate-600 hover:text-slate-700"
-                        )}
-                      >
-                        {tab === "login"
-                          ? t("nav.loginTab")
-                          : t("nav.signupTab")}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="mt-4 space-y-2">
-                    {[
-                      {
-                        href:
-                          activeTab === "login"
-                            ? "/auth/client/login"
-                            : "/auth/client/register",
-                        label: t("nav.client"),
-                        sub:
-                          activeTab === "login"
-                            ? t("nav.accessAccount")
-                            : t("nav.createAccount"),
-                        icon: User,
-                      },
-                      {
-                        href:
-                          activeTab === "login"
-                            ? "/auth/lawyer/login"
-                            : "/auth/lawyer/register",
-                        label: t("nav.professional"),
-                        sub:
-                          activeTab === "login"
-                            ? t("nav.professionalSpace")
-                            : t("nav.joinPlatform"),
-                        icon: Scale,
-                      },
-                    ].map(({ href, label, sub, icon: Icon }) => (
-                      <Link
-                        key={href}
-                        href={href}
-                        onClick={() => setIsOpen(false)}
-                        className="block w-full p-3 border border-slate-200 bg-white/90 rounded-lg hover:border-teal-500 hover:bg-white shadow-sm transition-all"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
-                            <Icon className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <div className="text-sm font-medium text-slate-900">
-                              {label}
-                            </div>
-                            <div className="text-xs text-slate-500">{sub}</div>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+            );
+          })}
+          <Link
+            href="/auth/client/login"
+            className="text-xs font-medium text-teal-600 px-3 py-1.5 rounded-full flex-shrink-0 whitespace-nowrap"
+          >
+            {t("nav.login")}
+          </Link>
+          <Link
+            href="/auth/client/register"
+            className="text-xs font-semibold bg-teal-600 text-white px-4 py-1.5 rounded-full flex-shrink-0 whitespace-nowrap"
+          >
+            {t("nav.signup")}
+          </Link>
         </div>
-      )}
+      </div>
     </>
   );
 }
