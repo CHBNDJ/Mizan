@@ -12,7 +12,6 @@ import {
   ArrowLeft,
   MapPin,
   Phone,
-  Globe,
   Star,
   CheckCircle,
   Calendar,
@@ -21,7 +20,6 @@ import {
   MessageCircle,
   Scale,
   ChevronRight,
-  Linkedin,
   Mail,
   Eye,
 } from "lucide-react";
@@ -36,7 +34,6 @@ import BookingModal from "@/components/booking/BookingModal";
 import ReviewSection from "@/components/reviews/ReviewSection";
 import { ConsultationPanel } from "@/components/consultation/ConsultationPanel";
 import { Link } from "@/i18n/navigation";
-import { formatPhoneNumber, detectPhoneType } from "@/lib/phoneFormatter";
 import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
 import { toCivilite } from "@/lib/genderUtils";
@@ -63,20 +60,6 @@ const getMapsQuery = (a: AvocatData) =>
 const getGoogleMapsUrl = (a: AvocatData) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getMapsQuery(a))}`;
 
-const flag = (p: string) => {
-  const n = p.replace(/\s/g, "");
-  if (n.startsWith("+213")) return "🇩🇿";
-  if (n.startsWith("+33")) return "🇫🇷";
-  if (n.startsWith("+32")) return "🇧🇪";
-  if (n.startsWith("+41")) return "🇨🇭";
-  if (n.startsWith("+44")) return "🇬🇧";
-  if (n.startsWith("+1")) return "🇺🇸";
-  if (n.startsWith("+212")) return "🇲🇦";
-  if (n.startsWith("+216")) return "🇹🇳";
-  return "🌍";
-};
-const waUrl = (p: string) =>
-  `https://wa.me/${p.replace(/[\s\-\(\)]/g, "").replace("+", "")}`;
 const gridClass = (n: number) => {
   if (n === 1) return "grid-cols-1";
   if (n === 2 || n === 4) return "grid-cols-2";
@@ -284,28 +267,6 @@ export default function ProfilePage({
     };
   };
 
-  const getSiteLabel = (url: string) => {
-    if (url.includes("linkedin.com"))
-      return {
-        label: "LinkedIn",
-        sublabel: t("lawyerProfile.contact.linkedinProfile"),
-      };
-    if (url.includes("facebook.com"))
-      return {
-        label: "Facebook",
-        sublabel: t("lawyerProfile.contact.facebookPage"),
-      };
-    if (url.includes("instagram.com"))
-      return {
-        label: "Instagram",
-        sublabel: t("lawyerProfile.contact.instagramProfile"),
-      };
-    return {
-      label: t("lawyerProfile.contact.website"),
-      sublabel: t("lawyerProfile.contact.visitSite"),
-    };
-  };
-
   useEffect(() => {
     getAvocatById(slug)
       .then((data) => {
@@ -397,13 +358,6 @@ export default function ProfilePage({
       .catch(() => {});
   }, [avocat?.id]);
 
-  const parsePhones = (s: string) =>
-    s
-      ? s
-          .split(",")
-          .map((n) => n.trim())
-          .filter(Boolean)
-      : [];
   const reloadAvocat = async () => {
     await new Promise((r) => setTimeout(r, 2000));
     getAvocatById(slug)
@@ -426,20 +380,8 @@ export default function ProfilePage({
 
   const profInfo = getProfLabel(avocat.profession);
   const expAnnees = avocat.experience?.annees || 0;
-  const telephones = parsePhones(avocat.contact?.telephone || "");
-  const mobiles = parsePhones(avocat.contact?.mobile || "");
-  const allPhones = [
-    ...telephones.map((p) => ({ number: p, type: detectPhoneType(p) })),
-    ...mobiles.map((p) => ({ number: p, type: detectPhoneType(p) })),
-  ];
-  const showContact = isOwnProfile;
+  const showContact = false;
   const rawSiteUrl = avocat.contact?.site_web?.trim();
-  const validSiteUrl = rawSiteUrl
-    ? rawSiteUrl.startsWith("http")
-      ? rawSiteUrl
-      : `https://${rawSiteUrl}`
-    : undefined;
-  const siteInfo = validSiteUrl ? getSiteLabel(validSiteUrl) : null;
   const hasAddress = !!(
     avocat.adresse?.rue ||
     avocat.adresse?.ville ||
@@ -450,44 +392,7 @@ export default function ProfilePage({
       ? (avocat as any).professions
       : [avocat.profession || "avocat"];
 
-  const infoItems: InfoItem[] = [
-    ...(showContact
-      ? allPhones.map((p) => ({
-          icon: (
-            <span className="text-base leading-none">{flag(p.number)}</span>
-          ),
-          label:
-            p.type === "mobile"
-              ? t("lawyerProfile.contact.mobile")
-              : t("lawyerProfile.contact.fixed"),
-          value: formatPhoneNumber(p.number),
-          sublabel:
-            p.type === "mobile"
-              ? t("lawyerProfile.contact.callWhatsapp")
-              : t("lawyerProfile.contact.call"),
-          href: `tel:${p.number.replace(/\s/g, "")}`,
-          whatsappHref: p.type === "mobile" ? waUrl(p.number) : undefined,
-        }))
-      : []),
-    ...(showContact && validSiteUrl && siteInfo
-      ? [
-          {
-            icon:
-              siteInfo.label === "LinkedIn" ? (
-                <Linkedin className="w-3.5 h-3.5 text-teal-600" />
-              ) : (
-                <Globe className="w-3.5 h-3.5 text-teal-600" />
-              ),
-            label: siteInfo.label,
-            value: siteInfo.sublabel,
-            sublabel: validSiteUrl
-              .replace(/^https?:\/\/(www\.)?/, "")
-              .split("/")[0],
-            href: validSiteUrl,
-          },
-        ]
-      : []),
-  ];
+  const infoItems: InfoItem[] = [];
   const claimItem: InfoItem | null = !avocat.is_claimed
     ? {
         icon: <CheckCircle className="w-3.5 h-3.5 text-teal-600" />,
