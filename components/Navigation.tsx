@@ -776,6 +776,15 @@ export function Navigation() {
     }
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      document.body.classList.add("has-bottom-tabs");
+    } else {
+      document.body.classList.remove("has-bottom-tabs");
+    }
+    return () => document.body.classList.remove("has-bottom-tabs");
+  }, [isAuthenticated]);
+
   if (isHidden) return null;
 
   if (isAuthenticated) {
@@ -851,6 +860,7 @@ export function Navigation() {
           </nav>
 
           <div className="flex flex-col items-center gap-2 flex-shrink-0">
+            <LanguageSwitcher />
             <ThemeToggle />
             <button
               onClick={handleSignOut}
@@ -871,7 +881,10 @@ export function Navigation() {
             >
               <Scale className="h-4 w-4 text-white" />
             </Link>
-            <ThemeToggle />
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher />
+              <ThemeToggle />
+            </div>
           </div>
         </div>
 
