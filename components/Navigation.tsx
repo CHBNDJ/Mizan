@@ -860,7 +860,6 @@ export function Navigation() {
           </nav>
 
           <div className="flex flex-col items-center gap-2 flex-shrink-0">
-            <LanguageSwitcher />
             <ThemeToggle />
             <button
               onClick={handleSignOut}
@@ -871,6 +870,11 @@ export function Navigation() {
             </button>
           </div>
         </aside>
+
+        {/* Langue flottante en haut à droite, hors sidebar */}
+        <div className="hidden lg:block fixed top-4 end-4 z-[999]">
+          <LanguageSwitcher />
+        </div>
 
         {/* Mini barre mobile : logo + mode sombre */}
         <div className="lg:hidden fixed top-3 left-0 right-0 z-[999] flex justify-center px-4">
@@ -935,7 +939,7 @@ export function Navigation() {
   return (
     <>
       <nav className="fixed top-3 left-0 right-0 z-[999] flex justify-center px-4">
-        <div className="w-full max-w-4xl flex items-center justify-between gap-4 rounded-full border border-slate-200/70 bg-white/70 backdrop-blur-xl shadow-lg shadow-slate-900/5 px-3 py-2 lg:px-4">
+        <div className="w-full max-w-4xl flex items-center justify-between gap-4 px-3 py-2 lg:px-4">
           <Link
             href="/"
             className="flex items-center gap-2.5 group flex-shrink-0"
@@ -1116,6 +1120,7 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center gap-1 lg:hidden">
+            <LanguageSwitcher />
             <ThemeToggle />
             <button
               className="cursor-pointer p-2 text-slate-700 rounded-full"
@@ -1134,10 +1139,6 @@ export function Navigation() {
       {isOpen && (
         <div className="fixed top-20 start-4 end-4 z-[9999] lg:hidden border border-slate-200/70 rounded-3xl bg-white/90 shadow-2xl backdrop-blur-xl overflow-hidden">
           <div className="py-4 space-y-4">
-            <div className="px-4 flex justify-center">
-              <LanguageSwitcher />
-            </div>
-
             {allNavLinks.map((link) => (
               <Link
                 key={link.href}
