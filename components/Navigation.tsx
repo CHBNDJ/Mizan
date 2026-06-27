@@ -887,6 +887,13 @@ export function Navigation() {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <ThemeToggle />
+            <button
+              onClick={handleSignOut}
+              title={t("nav.logout")}
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-500 hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
