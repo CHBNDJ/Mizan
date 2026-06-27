@@ -878,7 +878,7 @@ export function Navigation() {
 
         {/* Mini barre mobile : logo + mode sombre */}
         <div className="lg:hidden fixed top-3 left-0 right-0 z-[999] flex justify-center px-4">
-          <div className="w-full max-w-xs flex items-center justify-between rounded-full border border-slate-200/70 bg-white/80 backdrop-blur-xl shadow-lg shadow-slate-900/5 px-3 py-2">
+          <div className="w-full max-w-xs flex items-center justify-between px-3 py-2">
             <Link
               href="/"
               className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center"
@@ -939,7 +939,7 @@ export function Navigation() {
   return (
     <>
       <nav className="fixed top-3 left-0 right-0 z-[999] flex justify-center px-4">
-        <div className="w-full max-w-4xl flex items-center justify-between gap-4 px-3 py-2 lg:px-4">
+        <div className="w-full max-w-4xl flex items-center justify-between gap-4 rounded-full border border-slate-200/70 bg-white/70 backdrop-blur-xl shadow-lg shadow-slate-900/5 px-3 py-2 lg:px-4">
           <Link
             href="/"
             className="flex items-center gap-2.5 group flex-shrink-0"
