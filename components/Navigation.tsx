@@ -877,18 +877,16 @@ export function Navigation() {
         </div>
 
         {/* Mini barre mobile : logo + mode sombre */}
-        <div className="lg:hidden fixed top-3 left-0 right-0 z-[999] flex justify-center px-4">
-          <div className="w-full max-w-xs flex items-center justify-between px-3 py-2">
-            <Link
-              href="/"
-              className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center"
-            >
-              <Scale className="h-4 w-4 text-white" />
-            </Link>
-            <div className="flex items-center gap-2">
-              <LanguageSwitcher />
-              <ThemeToggle />
-            </div>
+        <div className="lg:hidden fixed top-3 left-0 right-0 z-[999] flex items-center justify-between px-5">
+          <Link
+            href="/"
+            className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center"
+          >
+            <Scale className="h-4 w-4 text-white" />
+          </Link>
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <ThemeToggle />
           </div>
         </div>
 
