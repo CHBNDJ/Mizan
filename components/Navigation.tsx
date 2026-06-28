@@ -25,7 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-// import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type NavLink = {
   href: string;
@@ -257,7 +257,7 @@ export function Navigation() {
             })}
           </nav>
 
-          {/* <div className="flex flex-col items-center gap-2 flex-shrink-0">
+          <div className="flex flex-col items-center gap-2 flex-shrink-0">
             <ThemeToggle />
             <button
               onClick={handleSignOut}
@@ -266,14 +266,14 @@ export function Navigation() {
             >
               <LogOut className="w-5 h-5" />
             </button>
-          </div> */}
+          </div>
         </aside>
 
         <div className="hidden lg:block fixed top-4 end-4 z-[999]">
           <LanguageSwitcher />
         </div>
 
-        {/* <div className="lg:hidden fixed top-0 left-0 right-0 h-20 z-[999] flex items-center justify-between px-5 backdrop-blur-md">
+        <div className="lg:hidden fixed top-0 left-0 right-0 h-20 z-[999] flex items-center justify-between px-5 backdrop-blur-md">
           <Link
             href="/"
             className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center"
@@ -291,7 +291,7 @@ export function Navigation() {
               <LogOut className="w-4 h-4" />
             </button>
           </div>
-        </div> */}
+        </div>
 
         <nav className="lg:hidden fixed bottom-0 start-0 end-0 z-[999] border-t border-slate-200 bg-white/90 backdrop-blur-xl">
           <div className="flex items-center justify-around py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
