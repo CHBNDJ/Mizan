@@ -454,7 +454,7 @@ export function Navigation() {
               <>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="group flex items-center gap-1.5 px-3 py-2 rounded-md border-2 border-teal-700 transition-all text-slate-700 hover:bg-teal-50 cursor-pointer text-sm font-medium">
+                    <button className="group flex items-center gap-1.5 px-3 py-2 rounded-md border border-teal-800 text-teal-800 transition-all hover:bg-teal-50 cursor-pointer text-sm font-medium">
                       {t("nav.client")}{" "}
                       <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                     </button>
