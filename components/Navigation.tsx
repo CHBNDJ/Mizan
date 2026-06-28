@@ -454,8 +454,8 @@ export function Navigation() {
               <>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="group flex items-center gap-1.5 px-3 py-2 rounded-full transition-all text-teal-600 hover:bg-teal-50 cursor-pointer text-sm font-medium">
-                      {t("nav.login")}{" "}
+                    <button className="group flex items-center gap-1.5 px-3 py-2 rounded-full transition-all text-slate-700 hover:bg-teal-50 cursor-pointer text-sm font-medium">
+                      {t("nav.client")}{" "}
                       <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                     </button>
                   </DropdownMenuTrigger>
@@ -465,15 +465,15 @@ export function Navigation() {
                         href="/auth/client/login"
                         className="w-full hover:bg-teal-50 text-sm py-2"
                       >
-                        {t("nav.client")}
+                        {t("nav.loginTab")}
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link
-                        href="/auth/lawyer/login"
+                        href="/auth/client/register"
                         className="w-full hover:bg-teal-50 text-sm py-2"
                       >
-                        {t("nav.professional")}
+                        {t("nav.signupTab")}
                       </Link>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -482,7 +482,7 @@ export function Navigation() {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="group rounded-full py-2 flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 cursor-pointer shadow-sm text-sm font-semibold transition-colors">
-                      {t("nav.signup")}{" "}
+                      {t("nav.professional")}{" "}
                       <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                     </button>
                   </DropdownMenuTrigger>
@@ -493,10 +493,10 @@ export function Navigation() {
                   >
                     <DropdownMenuItem asChild>
                       <Link
-                        href="/auth/client/register"
+                        href="/auth/lawyer/login"
                         className="w-full hover:bg-teal-50 text-sm py-2"
                       >
-                        {t("nav.client")}
+                        {t("nav.loginTab")}
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
@@ -504,7 +504,7 @@ export function Navigation() {
                         href="/auth/lawyer/register"
                         className="w-full hover:bg-teal-50 text-sm py-2"
                       >
-                        {t("nav.professional")}
+                        {t("nav.signupTab")}
                       </Link>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -583,7 +583,7 @@ export function Navigation() {
 
           <div className="px-4 space-y-4 border-t border-slate-200/70 pt-4">
             <div className="m-4">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+              <p className="text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
                 {t("nav.youAre")}
               </p>
               <div className="grid grid-cols-2 gap-2 mb-3">
