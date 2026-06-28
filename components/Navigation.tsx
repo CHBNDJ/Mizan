@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   CreditCard,
   MessageCircle,
+  Briefcase,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -47,6 +48,9 @@ export function Navigation() {
   const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
+  const [selectedProfile, setSelectedProfile] = useState<
+    "client" | "professional"
+  >("client");
   const { user, profile, signOut, isAuthenticated } = useAuth();
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -540,7 +544,7 @@ export function Navigation() {
 
       <div
         className={cn(
-          "lg:hidden fixed top-0 right-0 h-screen w-[82%] max-w-sm z-[9999] bg-white shadow-2xl transition-transform duration-300 ease-out overflow-y-auto",
+          "lg:hidden fixed top-0 right-0 h-screen w-[82%] max-w-sm z-[9999] bg-gradient-to-br from-teal-100 via-white to-teal-100 shadow-2xl transition-transform duration-300 ease-out overflow-y-auto",
           isOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
         )}
       >
@@ -579,70 +583,91 @@ export function Navigation() {
 
           <div className="px-4 space-y-4 border-t border-slate-200/70 pt-4">
             <div className="m-4">
-              <div className="flex bg-teal-50 rounded-lg p-1">
-                {(["login", "signup"] as const).map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                {t("nav.youAre")}
+              </p>
+              <div className="grid grid-cols-2 gap-2 mb-3">
+                <button
+                  onClick={() => setSelectedProfile("client")}
+                  className={cn(
+                    "flex flex-col items-center gap-1.5 py-3 rounded-lg border transition-all cursor-pointer",
+                    selectedProfile === "client"
+                      ? "border-teal-500 bg-teal-50"
+                      : "border-slate-200 bg-white"
+                  )}
+                >
+                  <User
                     className={cn(
-                      "cursor-pointer flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all",
-                      activeTab === tab
-                        ? "bg-white text-slate-900 shadow-sm"
-                        : "text-slate-600 hover:text-slate-700"
+                      "w-5 h-5",
+                      selectedProfile === "client"
+                        ? "text-teal-600"
+                        : "text-slate-400"
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "text-xs font-medium",
+                      selectedProfile === "client"
+                        ? "text-teal-700"
+                        : "text-slate-600"
                     )}
                   >
-                    {tab === "login" ? t("nav.loginTab") : t("nav.signupTab")}
-                  </button>
-                ))}
-              </div>
-              <div className="mt-4 space-y-2">
-                {[
-                  {
-                    href:
-                      activeTab === "login"
-                        ? "/auth/client/login"
-                        : "/auth/client/register",
-                    label: t("nav.client"),
-                    sub:
-                      activeTab === "login"
-                        ? t("nav.accessAccount")
-                        : t("nav.createAccount"),
-                    icon: User,
-                  },
-                  {
-                    href:
-                      activeTab === "login"
-                        ? "/auth/lawyer/login"
-                        : "/auth/lawyer/register",
-                    label: t("nav.professional"),
-                    sub:
-                      activeTab === "login"
-                        ? t("nav.professionalSpace")
-                        : t("nav.joinPlatform"),
-                    icon: Scale,
-                  },
-                ].map(({ href, label, sub, icon: Icon }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    onClick={() => setIsOpen(false)}
-                    className="block w-full p-2 border border-slate-200 bg-white rounded-lg hover:border-teal-500 hover:bg-teal-50/30 shadow-sm transition-all"
+                    {t("nav.client")}
+                  </span>
+                </button>
+                <button
+                  onClick={() => setSelectedProfile("professional")}
+                  className={cn(
+                    "flex flex-col items-center gap-1.5 py-3 rounded-lg border transition-all cursor-pointer",
+                    selectedProfile === "professional"
+                      ? "border-teal-500 bg-teal-50"
+                      : "border-slate-200 bg-white"
+                  )}
+                >
+                  <Briefcase
+                    className={cn(
+                      "w-5 h-5",
+                      selectedProfile === "professional"
+                        ? "text-teal-600"
+                        : "text-slate-400"
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "text-xs font-medium",
+                      selectedProfile === "professional"
+                        ? "text-teal-700"
+                        : "text-slate-600"
+                    )}
                   >
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-3.5 h-3.5" />
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium text-slate-900 leading-tight">
-                          {label}
-                        </div>
-                        <div className="text-[11px] text-slate-500 leading-tight">
-                          {sub}
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
+                    {t("nav.professional")}
+                  </span>
+                </button>
+              </div>
+
+              <div className="flex gap-2">
+                <Link
+                  href={
+                    selectedProfile === "client"
+                      ? "/auth/client/login"
+                      : "/auth/lawyer/login"
+                  }
+                  onClick={() => setIsOpen(false)}
+                  className="flex-1 text-center py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold transition-all"
+                >
+                  {t("nav.loginTab")}
+                </Link>
+                <Link
+                  href={
+                    selectedProfile === "client"
+                      ? "/auth/client/register"
+                      : "/auth/lawyer/register"
+                  }
+                  onClick={() => setIsOpen(false)}
+                  className="flex-1 text-center py-2.5 rounded-lg border border-slate-200 bg-white hover:border-teal-500 hover:bg-teal-50/30 text-slate-700 text-sm font-semibold transition-all"
+                >
+                  {t("nav.signupTab")}
+                </Link>
               </div>
             </div>
           </div>

@@ -698,7 +698,8 @@
     "createAccount": "Create my account",
     "professionalSpace": "Professional space",
     "joinPlatform": "Join the platform",
-    "defaultUser": "User"
+    "defaultUser": "User",
+    "youAre": "You are"
   },
   "footer": {
     "cgu": "Terms",
@@ -775,7 +776,7 @@
     "Droit commercial et des affaires": "Commercial and business law",
     "Droit de la consommation": "Consumer law",
     "Droit de la famille": "Family law",
-    "Droit de la propriété intellectuelle et industrielle": "Intellectual property law",
+    "Droit de la propriété intellectuelle": "Intellectual property law",
     "Droit de l'environnement": "Environmental law",
     "Droit de l'immobilier": "Real estate law",
     "Droit des assurances": "Insurance law",
@@ -2944,5 +2945,8 @@
     "joinConsultation": "Join consultation",
     "cameraMicNote": "Your camera and microphone will be activated",
     "roomLoadError": "Unable to load video room"
+  },
+  "phoneCallButton": {
+    "call": "Call"
   }
 }
