@@ -1104,24 +1104,43 @@ export function Navigation() {
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 lg:hidden overflow-x-auto max-w-[60%] [&::-webkit-scrollbar]:hidden">
+          <div className="flex items-center gap-2 lg:hidden">
+            <LanguageSwitcher />
+            <ThemeToggle />
+            <button
+              className="cursor-pointer p-2 text-slate-700"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {isOpen && (
+        <div className="lg:hidden fixed top-20 start-4 end-4 z-[9999] border border-slate-200/70 rounded-2xl bg-white shadow-2xl overflow-hidden">
+          <div className="py-3">
             <Link
               href="/auth/client/login"
-              className="text-xs font-medium text-teal-600 px-2 whitespace-nowrap"
+              onClick={() => setIsOpen(false)}
+              className="block px-4 py-3 text-sm font-medium text-teal-600 hover:bg-teal-50"
             >
               {t("nav.login")}
             </Link>
             <Link
               href="/auth/client/register"
-              className="text-xs font-semibold bg-teal-600 text-white px-3.5 py-2 rounded-full whitespace-nowrap"
+              onClick={() => setIsOpen(false)}
+              className="block px-4 py-3 text-sm font-semibold text-teal-600 hover:bg-teal-50"
             >
               {t("nav.signup")}
             </Link>
-            <LanguageSwitcher />
-            <ThemeToggle />
           </div>
         </div>
-      </nav>
+      )}
     </>
   );
 }
