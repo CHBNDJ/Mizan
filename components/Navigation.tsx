@@ -922,47 +922,51 @@ export function Navigation() {
     <>
       <nav className="fixed top-0 left-0 right-0 z-[999] h-20 flex items-center">
         <div className="w-full flex items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center group flex-shrink-0">
-            <div className="w-9 h-9 rounded-xl bg-teal-600 flex items-center justify-center transition-transform group-hover:rotate-12">
-              <Scale className="h-5 w-5 text-white" />
-            </div>
-          </Link>
+          <div className="flex items-center gap-6">
+            <Link href="/" className="flex items-center group flex-shrink-0">
+              <div className="w-9 h-9 rounded-xl bg-teal-600 flex items-center justify-center transition-transform group-hover:rotate-12">
+                <Scale className="h-5 w-5 text-white" />
+              </div>
+            </Link>
 
-          <div className="hidden lg:flex items-center gap-1">
-            {allNavLinks.map((link) => {
-              const active = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    "relative whitespace-nowrap text-sm font-medium transition-all px-4 py-2 rounded-full",
-                    active
-                      ? "bg-teal-600 text-white shadow-sm"
-                      : "text-slate-600 hover:bg-teal-50 hover:text-teal-700"
-                  )}
-                >
-                  <span className="relative inline-flex items-center">
-                    {link.label}
-                    {link.hasNotification && link.notificationCount ? (
-                      <span className="absolute -top-2 -end-4 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold animate-pulse">
-                        {link.notificationCount > 9
-                          ? "9+"
-                          : link.notificationCount}
-                      </span>
-                    ) : null}
-                  </span>
-                </Link>
-              );
-            })}
+            <Link
+              href="/howitworks"
+              className="lg:hidden text-xs font-medium text-slate-600 whitespace-nowrap"
+            >
+              {t("nav.howItWorks")}
+            </Link>
+
+            <div className="hidden lg:flex items-center gap-1">
+              {allNavLinks.map((link) => {
+                const active = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={cn(
+                      "relative whitespace-nowrap text-sm font-medium transition-all px-4 py-2 rounded-full",
+                      active
+                        ? "bg-teal-600 text-white shadow-sm"
+                        : "text-slate-600 hover:bg-teal-50 hover:text-teal-700"
+                    )}
+                  >
+                    <span className="relative inline-flex items-center">
+                      {link.label}
+                      {link.hasNotification && link.notificationCount ? (
+                        <span className="absolute -top-2 -end-4 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold animate-pulse">
+                          {link.notificationCount > 9
+                            ? "9+"
+                            : link.notificationCount}
+                        </span>
+                      ) : null}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
 
           <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
-            <div className="flex items-center gap-2 rounded-full border border-slate-200 px-2.5 py-1.5">
-              <ThemeToggle />
-              <span className="w-px h-3.5 bg-slate-200" />
-              <LanguageSwitcher />
-            </div>
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -1093,17 +1097,14 @@ export function Navigation() {
                 </DropdownMenu>
               </>
             )}
+            <div className="flex items-center gap-2 rounded-full border border-slate-200 px-2.5 py-1.5">
+              <LanguageSwitcher />
+              <span className="w-px h-3.5 bg-slate-200" />
+              <ThemeToggle />
+            </div>
           </div>
 
-          <div className="flex items-center gap-1.5 lg:hidden overflow-x-auto max-w-[70%] [&::-webkit-scrollbar]:hidden">
-            <Link
-              href="/howitworks"
-              className="text-xs font-medium text-slate-600 px-1.5 whitespace-nowrap"
-            >
-              {t("nav.howItWorks")}
-            </Link>
-            <LanguageSwitcher />
-            <ThemeToggle />
+          <div className="flex items-center gap-1.5 lg:hidden overflow-x-auto max-w-[60%] [&::-webkit-scrollbar]:hidden">
             <Link
               href="/auth/client/login"
               className="text-xs font-medium text-teal-600 px-2 whitespace-nowrap"
@@ -1116,6 +1117,8 @@ export function Navigation() {
             >
               {t("nav.signup")}
             </Link>
+            <LanguageSwitcher />
+            <ThemeToggle />
           </div>
         </div>
       </nav>
