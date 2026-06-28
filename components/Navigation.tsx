@@ -219,7 +219,6 @@ export function Navigation() {
 
     return (
       <>
-        {/* Sidebar desktop */}
         <aside className="hidden lg:flex fixed top-0 start-0 h-screen w-20 flex-col items-center py-6 z-[999] border-e border-slate-200 bg-white/80 backdrop-blur-xl">
           <Link
             href="/"
@@ -511,13 +510,13 @@ export function Navigation() {
             <div className="flex items-center gap-2 rounded-full border border-slate-200 px-2.5 py-1.5">
               <LanguageSwitcher />
               <span className="w-px h-3.5 bg-slate-200" />
-              {/* <ThemeToggle /> */}
+              <ThemeToggle />
             </div>
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
             <LanguageSwitcher />
-            {/* <ThemeToggle /> */}
+            <ThemeToggle />
             <button
               className="cursor-pointer p-2 text-slate-700"
               onClick={() => setIsOpen(!isOpen)}
