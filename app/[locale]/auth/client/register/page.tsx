@@ -376,9 +376,9 @@ export default function ClientRegisterPage() {
             </button>
           </form>
 
-          <div className="flex items-center justify-between mt-6">
+          <div className="flex items-center justify-center gap-1.5 mt-6">
             <span className="text-sm text-slate-600">
-              {t("auth.clientRegister.hasAccount")}{" "}
+              {t("auth.clientRegister.hasAccount")}
             </span>
             <Link
               href="/auth/client/login"
