@@ -532,105 +532,122 @@ export function Navigation() {
       </nav>
 
       {isOpen && (
-        <div className="lg:hidden fixed top-20 start-0 end-0 z-[9999] border-t border-slate-200 bg-white/60 shadow-2xl backdrop-blur-xl">
-          <div className="py-4 space-y-4">
-            {allNavLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "block px-4 py-3 text-sm font-medium rounded-lg mx-2 transition-colors relative",
-                  pathname === link.href
-                    ? "text-teal-600 bg-white/60"
-                    : "text-slate-600 hover:bg-white/40"
-                )}
-                onClick={() => setIsOpen(false)}
-              >
-                <span className="relative inline-flex items-center">
-                  {link.label}
-                  {link.hasNotification && link.notificationCount ? (
-                    <span className="ms-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                      {link.notificationCount > 9
-                        ? "9+"
-                        : link.notificationCount}
-                    </span>
-                  ) : null}
-                </span>
-              </Link>
-            ))}
+        <div
+          className="lg:hidden fixed inset-0 z-[9998] bg-slate-900/20 backdrop-blur-sm"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
 
-            <div className="px-4 space-y-4 border-t border-slate-200/50 pt-4">
-              <div className="m-4">
-                <div className="flex bg-teal-50 rounded-lg p-1">
-                  {(["login", "signup"] as const).map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setActiveTab(tab)}
-                      className={cn(
-                        "cursor-pointer flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all",
-                        activeTab === tab
-                          ? "bg-white text-slate-900 shadow-sm"
-                          : "text-slate-600 hover:text-slate-700"
-                      )}
-                    >
-                      {tab === "login" ? t("nav.loginTab") : t("nav.signupTab")}
-                    </button>
-                  ))}
-                </div>
-                <div className="mt-4 space-y-2">
-                  {[
-                    {
-                      href:
-                        activeTab === "login"
-                          ? "/auth/client/login"
-                          : "/auth/client/register",
-                      label: t("nav.client"),
-                      sub:
-                        activeTab === "login"
-                          ? t("nav.accessAccount")
-                          : t("nav.createAccount"),
-                      icon: User,
-                    },
-                    {
-                      href:
-                        activeTab === "login"
-                          ? "/auth/lawyer/login"
-                          : "/auth/lawyer/register",
-                      label: t("nav.professional"),
-                      sub:
-                        activeTab === "login"
-                          ? t("nav.professionalSpace")
-                          : t("nav.joinPlatform"),
-                      icon: Scale,
-                    },
-                  ].map(({ href, label, sub, icon: Icon }) => (
-                    <Link
-                      key={href}
-                      href={href}
-                      onClick={() => setIsOpen(false)}
-                      className="block w-full p-2 border border-slate-200 bg-white/90 rounded-lg hover:border-teal-500 hover:bg-white shadow-sm transition-all"
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center flex-shrink-0">
-                          <Icon className="w-3.5 h-3.5" />
+      <div
+        className={cn(
+          "lg:hidden fixed top-0 right-0 h-screen w-[82%] max-w-sm z-[9999] bg-white shadow-2xl transition-transform duration-300 ease-out overflow-y-auto",
+          isOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
+        )}
+      >
+        <div className="flex items-center justify-end p-4">
+          <button
+            className="cursor-pointer p-2 text-slate-700"
+            onClick={() => setIsOpen(false)}
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="px-2 space-y-4 pb-8">
+          {allNavLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={cn(
+                "block px-4 py-3 text-sm font-medium rounded-lg mx-2 transition-colors relative",
+                pathname === link.href
+                  ? "text-teal-600 bg-teal-50"
+                  : "text-slate-600 hover:bg-slate-50"
+              )}
+              onClick={() => setIsOpen(false)}
+            >
+              <span className="relative inline-flex items-center">
+                {link.label}
+                {link.hasNotification && link.notificationCount ? (
+                  <span className="ms-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                    {link.notificationCount > 9 ? "9+" : link.notificationCount}
+                  </span>
+                ) : null}
+              </span>
+            </Link>
+          ))}
+
+          <div className="px-4 space-y-4 border-t border-slate-200/70 pt-4">
+            <div className="m-4">
+              <div className="flex bg-teal-50 rounded-lg p-1">
+                {(["login", "signup"] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={cn(
+                      "cursor-pointer flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all",
+                      activeTab === tab
+                        ? "bg-white text-slate-900 shadow-sm"
+                        : "text-slate-600 hover:text-slate-700"
+                    )}
+                  >
+                    {tab === "login" ? t("nav.loginTab") : t("nav.signupTab")}
+                  </button>
+                ))}
+              </div>
+              <div className="mt-4 space-y-2">
+                {[
+                  {
+                    href:
+                      activeTab === "login"
+                        ? "/auth/client/login"
+                        : "/auth/client/register",
+                    label: t("nav.client"),
+                    sub:
+                      activeTab === "login"
+                        ? t("nav.accessAccount")
+                        : t("nav.createAccount"),
+                    icon: User,
+                  },
+                  {
+                    href:
+                      activeTab === "login"
+                        ? "/auth/lawyer/login"
+                        : "/auth/lawyer/register",
+                    label: t("nav.professional"),
+                    sub:
+                      activeTab === "login"
+                        ? t("nav.professionalSpace")
+                        : t("nav.joinPlatform"),
+                    icon: Scale,
+                  },
+                ].map(({ href, label, sub, icon: Icon }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setIsOpen(false)}
+                    className="block w-full p-2 border border-slate-200 bg-white rounded-lg hover:border-teal-500 hover:bg-teal-50/30 shadow-sm transition-all"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-3.5 h-3.5" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-medium text-slate-900 leading-tight">
+                          {label}
                         </div>
-                        <div>
-                          <div className="text-sm font-medium text-slate-900 leading-tight">
-                            {label}
-                          </div>
-                          <div className="text-[11px] text-slate-500 leading-tight">
-                            {sub}
-                          </div>
+                        <div className="text-[11px] text-slate-500 leading-tight">
+                          {sub}
                         </div>
                       </div>
-                    </Link>
-                  ))}
-                </div>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 }
