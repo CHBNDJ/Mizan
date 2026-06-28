@@ -33,7 +33,7 @@ export function LanguageSwitcher() {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label="Changer de langue"
-        className="h-9 px-3 rounded-lg bg-teal-600 hover:bg-teal-700 flex items-center gap-1.5 cursor-pointer transition-all"
+        className="h-9 px-3 rounded-lg bg-teal-600 hover:shadow-lg hover:shadow-teal-600/30 hover:-translate-y-0.5 flex items-center gap-1.5 cursor-pointer transition-all"
       >
         <svg
           className="w-4 h-4 text-white flex-shrink-0"
