@@ -46,7 +46,7 @@ function ProfCard({ id, Icon, label, desc, size = "normal" }: any) {
   return (
     <Link href={`/${id}`}>
       <div
-        className={`prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer h-full flex flex-col items-center text-center hover:border-teal-400 hover:shadow-md transition-all ${size === "big" ? "px-6 py-6 gap-3" : "px-4 py-4 gap-2"}`}
+        className={`prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer h-full flex flex-col items-center text-center hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:shadow-md transition-all ${size === "big" ? "px-6 py-6 gap-3" : "px-4 py-4 gap-2"}`}
       >
         <div
           className={`flex-shrink-0 rounded-xl bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] flex items-center justify-center ${size === "big" ? "w-12 h-12" : "w-9 h-9"}`}
@@ -73,7 +73,7 @@ function ProfCard({ id, Icon, label, desc, size = "normal" }: any) {
 function ProfCardHorizontal({ id, Icon, label, desc }: any) {
   return (
     <Link href={`/${id}`}>
-      <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer flex items-center gap-4 px-4 py-4 hover:border-teal-400 hover:shadow-md transition-all">
+      <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer flex items-center gap-4 px-4 py-4 hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:shadow-md transition-all">
         <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] flex items-center justify-center">
           <Icon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
         </div>
@@ -277,7 +277,7 @@ export default function HomePage() {
       <section className="px-4 pb-4 pt-0">
         <div className="max-w-5xl mx-auto text-center">
           <Link href="/professions" className="prof-roles-link inline-block">
-            <span className="text-xs font-medium text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] cursor-pointer transition-colors">
+            <span className="text-xs font-medium text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] cursor-pointer transition-colors">
               {t("home.profLink")}
             </span>
           </Link>
@@ -289,7 +289,7 @@ export default function HomePage() {
           {statsData.map((s) => (
             <div
               key={s.label}
-              className="stat-card bg-white dark:bg-[#0b1210] rounded-2xl shadow dark:shadow-none-sm border border-slate-100 dark:border-[#1c2220] p-4 md:p-6 flex flex-col items-center text-center"
+              className="stat-card bg-white dark:bg-[#0b1210] rounded-2xl shadow-sm dark:shadow-none border border-slate-100 dark:border-[#1c2220] p-4 md:p-6 flex flex-col items-center text-center"
             >
               <AnimatedCounter
                 end={s.end}
@@ -307,7 +307,7 @@ export default function HomePage() {
 
       <section className="steps-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow dark:shadow-none-sm p-6 sm:p-10">
+          <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow-sm dark:shadow-none p-6 sm:p-10">
             <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-6 md:mb-10 text-center">
               {t("home.howItWorks.title")}
             </h2>
@@ -356,7 +356,7 @@ export default function HomePage() {
             <div className="text-center">
               <button
                 onClick={() => router.push("/search")}
-                className="text-teal-600 dark:text-[#6fcf9f] inline-flex items-center gap-1.5 hover:text-teal-700 dark:text-[#6fcf9f] cursor-pointer text-sm font-medium"
+                className="text-teal-600 dark:text-[#6fcf9f] inline-flex items-center gap-1.5 hover:text-teal-700 dark:hover:text-[#5db98a] cursor-pointer text-sm font-medium"
               >
                 {t("home.topRated.seeAll")} <ArrowRight className="w-4 h-4" />
               </button>
@@ -425,7 +425,7 @@ export default function HomePage() {
 
       <section className="cta-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
-          <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow dark:shadow-none-sm p-7 sm:p-10 flex flex-col text-center sm:text-start">
+          <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow-sm dark:shadow-none p-7 sm:p-10 flex flex-col text-center sm:text-start">
             <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-3">
               {t("home.ctaClient.title")}
             </h3>
@@ -435,23 +435,23 @@ export default function HomePage() {
             <div className="mt-auto flex justify-center sm:justify-start">
               <button
                 onClick={() => router.push("/search")}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white font-semibold rounded-xl cursor-pointer"
               >
                 {t("home.ctaClient.action")}{" "}
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
           </div>
-          <div className="bg-teal-600 rounded-2xl p-7 sm:p-10 flex flex-col text-center sm:text-start">
+          <div className="bg-teal-600 dark:bg-[#0F6E56] rounded-2xl p-7 sm:p-10 flex flex-col text-center sm:text-start">
             <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
               {t("home.ctaLawyer.title")}
             </h3>
-            <p className="text-teal-100 leading-relaxed mb-8 text-sm sm:text-base">
+            <p className="text-teal-100 dark:text-[#9FE1CB] leading-relaxed mb-8 text-sm sm:text-base">
               {t("home.ctaLawyer.desc")}
             </p>
             <div className="mt-auto flex justify-center sm:justify-start">
               <Link href="/auth/lawyer/register">
-                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 dark:bg-[#1F3D2E] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer">
+                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 dark:bg-[#1F3D2E] dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer">
                   {t("home.ctaLawyer.action")}{" "}
                   <ChevronRight className="w-4 h-4" />
                 </button>

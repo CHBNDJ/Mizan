@@ -305,7 +305,7 @@ function SearchResults() {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
           <div className="flex items-center gap-1.5 sm:gap-2 mb-2 flex-wrap">
             <Link href={`/${professionParam}`}>
-              <button className="flex items-center gap-1 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] text-xs sm:text-sm font-medium cursor-pointer me-1 sm:me-2">
+              <button className="flex items-center gap-1 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] text-xs sm:text-sm font-medium cursor-pointer me-1 sm:me-2">
                 <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span className="hidden sm:inline capitalize">
                   {currentProf.label}
@@ -317,7 +317,7 @@ function SearchResults() {
               <button
                 key={p.id}
                 onClick={() => handleProfessionSwitch(p.id)}
-                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${professionParam === p.id ? "bg-teal-600 text-white" : "text-slate-500 dark:text-[#A8A8A6] hover:bg-slate-100"}`}
+                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${professionParam === p.id ? "bg-teal-600 dark:bg-[#0F6E56] text-white" : "text-slate-500 dark:text-[#A8A8A6] hover:bg-slate-100"}`}
               >
                 <p.Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 <span>{p.label}</span>
@@ -331,7 +331,7 @@ function SearchResults() {
                 {t("search.found", { count: avocats.length })}
               </span>
               {filters.wilaya && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-600 text-white rounded-full text-xs font-semibold">
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-600 dark:bg-[#0F6E56] text-white rounded-full text-xs font-semibold">
                   <MapPinSmall />
                   {formatWilaya(filters.wilaya)}
                   <button
@@ -354,7 +354,7 @@ function SearchResults() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowMobileFilters(!showMobileFilters)}
-                className="lg:hidden flex items-center gap-1 px-2.5 py-1.5 bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] rounded-lg text-xs font-medium text-slate-600 dark:text-[#E8E8E6] cursor-pointer"
+                className="lg:hidden flex items-center gap-1 px-2.5 py-1.5 bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-lg text-xs font-medium text-slate-600 dark:text-[#E8E8E6] cursor-pointer"
               >
                 <SlidersHorizontal className="w-3.5 h-3.5" />{" "}
                 {t("search.filters")}
@@ -429,7 +429,7 @@ function SearchResults() {
                     </p>
                     <button
                       onClick={() => setPage((p) => p + 1)}
-                      className="flex items-center gap-2 px-6 py-3 bg-white border border-teal-200 dark:border-[#1F3D2E] text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:bg-[#1F3D2E] hover:border-teal-400 rounded-xl font-semibold text-sm cursor-pointer transition-all"
+                      className="flex items-center gap-2 px-6 py-3 bg-white border border-teal-200 dark:border-[#1F3D2E] text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:bg-[#1F3D2E] dark:hover:bg-[#26492f] hover:border-teal-400 dark:hover:border-[#6fcf9f] rounded-xl font-semibold text-sm cursor-pointer transition-all"
                     >
                       <ChevronDown className="w-4 h-4" />
                       {t("search.showMore")}
@@ -457,7 +457,7 @@ function SearchResults() {
                     </Button>
                   )}
                   <Link href={`/${professionParam}`}>
-                    <Button className="bg-teal-600 hover:bg-teal-700 text-white">
+                    <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white">
                       {t("search.changeWilaya")}
                     </Button>
                   </Link>

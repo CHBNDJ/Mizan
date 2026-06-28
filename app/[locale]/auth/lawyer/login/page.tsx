@@ -1,23 +1,40 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { toArabicNumerals } from "@/lib/arabicNumerals";
+import { CustomSelect } from "@/components/ui/CustomSelect";
+import { CIVILITE_OPTIONS, frontendToDb } from "@/lib/genderUtils";
+import { LOCATION, COUNTRIES, LOCATION_TO_PHONE_CODE } from "@/utils/constants";
+import { getCountryLabel } from "@/lib/i18nLabels";
 import { FormErrors } from "@/types";
-import { createClient } from "@/lib/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import { gsap } from "gsap";
 
-export default function LawyerLoginPage() {
+export default function ClientRegisterPage() {
   const router = useRouter();
-  const supabase = createClient();
+  const { signUp } = useAuth();
   const t = useTranslations();
+  const locale = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    mobile: "",
+    location: "",
+    gender: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [mobileCountry, setMobileCountry] = useState("213");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -35,86 +52,84 @@ export default function LawyerLoginPage() {
         "-=0.4"
       )
       .fromTo(
-        ".login-form",
+        ".register-form",
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
         "-=0.3"
-      )
-      .fromTo(
-        ".form-footer",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-        "-=0.2"
       );
   }, []);
 
-  const inputCls =
-    "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all text-slate-700";
-  const errCls = "text-red-500 text-xs mt-1";
+  const countryOptions = COUNTRIES.map((c) => ({
+    value: c.code,
+    label: `${c.flag} \u200E+${c.code}\u200E ${getCountryLabel(c.id, t)}`,
+  }));
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((p) => ({ ...p, [name]: value }));
-    if (errors[name as keyof FormErrors])
-      setErrors((p) => ({ ...p, [name]: undefined, general: undefined }));
+  const inputCls =
+    "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white dark:bg-[#0b1210] hover:border-teal-300 dark:text-[#F5F5F4] focus:border-teal-300 focus:border-2 outline-none transition-all duration-200 text-slate-700";
+  const errCls = "text-red-500 text-xs mt-1";
+  const cap = (s: string) =>
+    s
+      ? s
+          .split(" ")
+          .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+          .join(" ")
+      : s;
+
+  const handleCap = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setFormData((p) => ({ ...p, [e.target.name]: cap(e.target.value) }));
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
+
+  const handleLocationChange = (v: string) => {
+    setFormData((p) => ({ ...p, location: v }));
+    const code = LOCATION_TO_PHONE_CODE[v];
+    if (code) setMobileCountry(code);
   };
 
-  const validate = (): boolean => {
+  const validateForm = (): boolean => {
     const e: FormErrors = {};
+    if (!formData.firstName.trim())
+      e.firstName = t("validation.required.firstName");
+    if (!formData.lastName.trim())
+      e.lastName = t("validation.required.lastName");
     if (!formData.email.trim()) e.email = t("validation.required.email");
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
       e.email = t("validation.invalid.email");
-    if (!formData.password.trim())
-      e.password = t("validation.required.password");
+    if (!formData.password) e.password = t("validation.required.password");
+    else if (formData.password.length < 8)
+      e.password = t("validation.invalid.passwordLength");
+    else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password))
+      e.password = t("validation.invalid.passwordComplexity");
+    if (formData.password !== formData.confirmPassword)
+      e.confirmPassword = t("validation.invalid.passwordMismatch");
+    if (!formData.mobile.trim()) e.mobile = t("validation.required.mobile");
+    else if (formData.mobile.length < 7)
+      e.mobile = t("validation.invalid.mobileTooShort");
+    if (!formData.location) e.location = t("validation.required.location");
+    if (!formData.gender) e.gender = t("validation.required.civilite");
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validateForm()) return;
     setIsSubmitting(true);
     setErrors({});
     try {
-      const { data: auth, error: authErr } =
-        await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password,
-        });
-      if (authErr) throw authErr;
-
-      const { data: profile, error: profErr } = await supabase
-        .from("users")
-        .select("user_type, verified")
-        .eq("id", auth.user.id)
-        .single();
-      if (profErr) throw profErr;
-
-      if (profile.user_type !== "lawyer") {
-        await supabase.auth.signOut();
-        throw new Error("notLawyerAccount");
-      }
-      if (!profile.verified) {
-        await supabase.auth.signOut();
-        setErrors({
-          general: t("validation.general.pendingVerification"),
-        });
-        setIsSubmitting(false);
-        return;
-      }
-      router.push("/lawyer/dashboard");
-    } catch (err: any) {
-      let msg = t("validation.general.wrongCredentials");
-      if (err.message?.includes("Invalid login credentials"))
-        msg = t("validation.general.wrongCredentials");
-      else if (err.message?.includes("Too many requests"))
-        msg = t("validation.general.tooManyAttemptsShort");
-      else if (err.message === "notLawyerAccount")
-        msg = t("validation.general.notLawyerAccount");
-      else if (err.message?.includes("User not found"))
-        msg = t("validation.general.userNotFound");
-      else if (err.message?.includes("Email not confirmed"))
-        msg = t("validation.general.emailNotConfirmedShort");
+      const result = await signUp(formData.email, formData.password, {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        mobile: `+${mobileCountry}${formData.mobile}`,
+        userType: "client" as const,
+        location: formData.location,
+        gender: frontendToDb(formData.gender),
+      });
+      router.push(result.redirectPath || "/");
+    } catch (error: any) {
+      let msg = t("validation.general.genericError");
+      if (error.message?.includes("already registered"))
+        msg = t("validation.general.emailTaken");
       setErrors({ general: msg });
     } finally {
       setIsSubmitting(false);
@@ -123,18 +138,18 @@ export default function LawyerLoginPage() {
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
-      <style>{`.page-title,.page-subtitle,.login-form,.form-footer{opacity:0;}`}</style>
+      <style>{`.page-title,.page-subtitle,.register-form{opacity:0;}`}</style>
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
           <h1 className="page-title text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
-            {t("auth.lawyerLogin.title")}
+            {t("auth.clientRegister.title")}
           </h1>
           <p className="page-subtitle text-slate-600 dark:text-[#E8E8E6]">
-            {t("auth.lawyerLogin.subtitle")}
+            {t("auth.clientRegister.subtitle")}
           </p>
         </div>
 
-        <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow dark:shadow-none-lg p-6 border border-slate-100 dark:border-[#1c2220]">
+        <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow-lg dark:shadow-none p-6 border border-slate-100 dark:border-[#1c2220]">
           {errors.general && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-600 text-sm">{errors.general}</p>
@@ -142,42 +157,140 @@ export default function LawyerLoginPage() {
           )}
           <form
             onSubmit={handleSubmit}
-            className="login-form space-y-6"
+            className="register-form space-y-4"
             noValidate
           >
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                {t("auth.lawyerLogin.email")}
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                {t("auth.clientRegister.civilite")} *
+              </label>
+              <CustomSelect
+                options={CIVILITE_OPTIONS}
+                value={formData.gender}
+                onChange={(v) => setFormData((p) => ({ ...p, gender: v }))}
+                placeholder={t("auth.clientRegister.select")}
+                className="h-12"
+                disabled={isSubmitting}
+              />
+              {errors.gender && <p className={errCls}>{errors.gender}</p>}
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  {t("auth.clientRegister.firstName")} *
+                </label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleCap}
+                  className={inputCls}
+                  placeholder={t("auth.clientRegister.firstNamePh")}
+                  disabled={isSubmitting}
+                />
+                {errors.firstName && (
+                  <p className={errCls}>{errors.firstName}</p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  {t("auth.clientRegister.lastName")} *
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleCap}
+                  className={inputCls}
+                  placeholder={t("auth.clientRegister.lastNamePh")}
+                  disabled={isSubmitting}
+                />
+                {errors.lastName && <p className={errCls}>{errors.lastName}</p>}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                {t("auth.clientRegister.location")} *
+              </label>
+              <CustomSelect
+                options={LOCATION}
+                value={formData.location}
+                onChange={handleLocationChange}
+                placeholder={t("auth.clientRegister.locationPh")}
+                className="h-12"
+                disabled={isSubmitting}
+              />
+              {errors.location && <p className={errCls}>{errors.location}</p>}
+            </div>
+
+            <div>
+              <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
+                <Smartphone className="w-4 h-4" />{" "}
+                {t("auth.clientRegister.mobile")} *
+              </label>
+              <div className="flex gap-2">
+                <div className="w-44 flex-shrink-0">
+                  <CustomSelect
+                    options={countryOptions}
+                    value={mobileCountry}
+                    onChange={setMobileCountry}
+                    placeholder={
+                      locale === "ar" ? toArabicNumerals("+213") : "+213"
+                    }
+                    className="h-12"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <input
+                  type="tel"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={(e) => {
+                    if (/^\d*$/.test(e.target.value)) handleInput(e);
+                  }}
+                  className={inputCls}
+                  placeholder={t("auth.clientRegister.mobilePh")}
+                  disabled={isSubmitting}
+                />
+              </div>
+              {errors.mobile && <p className={errCls}>{errors.mobile}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                {t("auth.clientRegister.email")} *
               </label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
-                onChange={handleChange}
+                onChange={handleInput}
                 className={`${inputCls} placeholder:text-slate-400 dark:text-[#7A7A78]`}
-                placeholder={t("auth.lawyerLogin.emailPh")}
+                placeholder={t("auth.clientRegister.emailPh")}
                 disabled={isSubmitting}
               />
               {errors.email && <p className={errCls}>{errors.email}</p>}
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                {t("auth.lawyerLogin.password")}
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                {t("auth.clientRegister.password")} *
               </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
-                  onChange={handleChange}
-                  className={`${inputCls} pe-12 placeholder:text-slate-400 dark:text-[#7A7A78]`}
-                  placeholder={t("auth.lawyerLogin.passwordPh")}
+                  onChange={handleInput}
+                  className={`${inputCls} pe-12`}
+                  placeholder={t("auth.clientRegister.passwordPh")}
                   disabled={isSubmitting}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  disabled={isSubmitting}
                   className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6]"
                 >
                   {showPassword ? (
@@ -189,49 +302,93 @@ export default function LawyerLoginPage() {
               </div>
               {errors.password && <p className={errCls}>{errors.password}</p>}
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row items-center sm:justify-between">
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  disabled={isSubmitting}
-                  className="w-4 h-4 border-slate-300 rounded"
-                  style={{ accentColor: "#0d9488" }}
-                />
-                <span className="ms-2 text-sm text-slate-600 dark:text-[#E8E8E6] select-none">
-                  {t("auth.lawyerLogin.rememberMe")}
-                </span>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                {t("auth.clientRegister.confirmPassword")} *
               </label>
-              <Link
-                href="/auth/lawyer/forgot-password"
-                className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] font-medium"
-              >
-                {t("auth.lawyerLogin.forgotPassword")}
-              </Link>
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInput}
+                  className={`${inputCls} pe-12`}
+                  placeholder={t("auth.clientRegister.confirmPasswordPh")}
+                  disabled={isSubmitting}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6]"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+              {errors.confirmPassword && (
+                <p className={errCls}>{errors.confirmPassword}</p>
+              )}
             </div>
+
+            <div className="flex items-start space-x-3">
+              <input
+                type="checkbox"
+                id="terms"
+                className="cursor-pointer w-6 h-6 border-slate-300 rounded mt-1"
+                style={{ accentColor: "#0d9488" }}
+                required
+                disabled={isSubmitting}
+              />
+              <label
+                htmlFor="terms"
+                className="text-sm text-slate-600 dark:text-[#E8E8E6] cursor-pointer"
+              >
+                {t("auth.clientRegister.termsPrefix")}{" "}
+                <Link
+                  href="/cgu"
+                  className="text-teal-600 dark:text-[#6fcf9f] hover:underline"
+                >
+                  {t("auth.clientRegister.termsCgu")}
+                </Link>{" "}
+                {t("auth.clientRegister.termsAnd")}{" "}
+                <Link
+                  href="/privacy"
+                  className="text-teal-600 dark:text-[#6fcf9f] hover:underline"
+                >
+                  {t("auth.clientRegister.termsPrivacy")}
+                </Link>
+              </label>
+            </div>
+
             <button
               type="submit"
               disabled={isSubmitting}
-              className="cursor-pointer w-full bg-teal-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 flex items-center justify-center"
+              className="cursor-pointer w-full h-12 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 outline-none transition-all duration-200 mt-6 disabled:opacity-50 flex items-center justify-center"
             >
               {isSubmitting ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white me-2" />{" "}
-                  {t("auth.lawyerLogin.submitting")}
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white me-2" />
+                  {t("auth.clientRegister.submitting")}
                 </>
               ) : (
-                t("auth.lawyerLogin.submit")
+                t("auth.clientRegister.submit")
               )}
             </button>
           </form>
-          <div className="form-footer text-center mt-6 pt-6 border-t border-slate-100 dark:border-[#1c2220]">
+
+          <div className="flex items-center justify-center gap-1.5 mt-6">
             <span className="text-sm text-slate-600 dark:text-[#E8E8E6]">
-              {t("auth.lawyerLogin.newHere")}{" "}
+              {t("auth.clientRegister.hasAccount")}
             </span>
             <Link
-              href="/auth/lawyer/register"
-              className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] font-medium"
+              href="/auth/client/login"
+              className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] font-medium"
             >
-              {t("auth.lawyerLogin.createAccount")}
+              {t("auth.clientRegister.login")}
             </Link>
           </div>
         </div>

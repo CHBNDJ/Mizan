@@ -413,7 +413,7 @@ export default function ProfilePage({
       <div className="max-w-3xl mx-auto px-4 py-8">
         <button
           onClick={() => router.push(`/search?${searchParams.toString()}`)}
-          className="back-button opacity-0 invisible flex items-center gap-2 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] cursor-pointer mb-6 text-sm font-medium"
+          className="back-button opacity-0 invisible flex items-center gap-2 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] cursor-pointer mb-6 text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="hidden sm:inline">{t("lawyerProfile.back")}</span>
@@ -442,7 +442,7 @@ export default function ProfilePage({
         )}
 
         <div className="space-y-4">
-          <div className="bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] rounded-2xl overflow-hidden shadow-sm">
+          <div className="bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-2xl overflow-hidden shadow-sm">
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[320px]">
               <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
                 <div>
@@ -468,7 +468,7 @@ export default function ProfilePage({
                   <div className="w-10 h-0.5 bg-teal-600 mb-4" />
                   <div className="space-y-1.5 mb-4">
                     <div className="flex items-center gap-1.5">
-                      <div className="w-1 h-1 rounded-full bg-teal-50 dark:bg-[#1F3D2E]0 flex-shrink-0" />
+                      <div className="w-1 h-1 rounded-full bg-teal-500 dark:bg-[#6fcf9f] flex-shrink-0" />
                       <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-teal-600 dark:text-[#6fcf9f]" />
                       <span className="text-sm text-slate-600 dark:text-[#E8E8E6] font-medium">
                         {ld(String(expAnnees))}{" "}
@@ -483,7 +483,7 @@ export default function ProfilePage({
                     </div>
                     {avocat.langues && avocat.langues.length > 0 && (
                       <div className="flex items-center gap-1.5">
-                        <div className="w-1 h-1 rounded-full bg-teal-50 dark:bg-[#1F3D2E]0 flex-shrink-0" />
+                        <div className="w-1 h-1 rounded-full bg-teal-500 dark:bg-[#6fcf9f] flex-shrink-0" />
                         <Languages className="w-3.5 h-3.5 flex-shrink-0 text-teal-600 dark:text-[#6fcf9f]" />
                         <span className="text-sm text-slate-600 dark:text-[#E8E8E6] font-medium">
                           {avocat.langues
@@ -547,7 +547,7 @@ export default function ProfilePage({
                   )}
                   {avocat.available_now && (
                     <div className="flex items-center gap-1.5 text-[11px] text-teal-700 dark:text-[#6fcf9f] font-medium bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] px-2 py-0.5 rounded-full">
-                      <span className="w-1.5 h-1.5 rounded-full bg-teal-50 dark:bg-[#1F3D2E]0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-teal-500 dark:bg-[#6fcf9f]" />
                       {t("lawyerProfile.availableNowBadge")}
                     </div>
                   )}
@@ -597,7 +597,7 @@ export default function ProfilePage({
           )}
 
           {showConsultPanel && (
-            <div className="content-card opacity-0 invisible bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] rounded-2xl p-5 shadow-sm relative overflow-hidden">
+            <div className="content-card opacity-0 invisible bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-5 shadow-sm relative overflow-hidden">
               {isOwnProfile && (
                 <div className="absolute inset-0 z-10 bg-white/80 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center gap-2">
                   <div className="flex items-center gap-2 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] text-teal-800 text-xs font-medium px-4 py-2 rounded-full">
@@ -649,7 +649,7 @@ export default function ProfilePage({
           )}
 
           {hasAddress && (
-            <div className="content-card opacity-0 invisible bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] rounded-2xl overflow-hidden shadow-sm">
+            <div className="content-card opacity-0 invisible bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-2xl overflow-hidden shadow-sm">
               <LawyerMap
                 address={[
                   avocat.adresse?.rue,

@@ -149,7 +149,7 @@ export default function ClientRegisterPage() {
           </p>
         </div>
 
-        <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow dark:shadow-none-lg p-6 border border-slate-100 dark:border-[#1c2220]">
+        <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow-lg dark:shadow-none p-6 border border-slate-100 dark:border-[#1c2220]">
           {errors.general && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-600 text-sm">{errors.general}</p>
@@ -386,7 +386,7 @@ export default function ClientRegisterPage() {
             </span>
             <Link
               href="/auth/client/login"
-              className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] font-medium"
+              className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] font-medium"
             >
               {t("auth.clientRegister.login")}
             </Link>

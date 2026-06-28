@@ -962,7 +962,7 @@ export default function LawyerRegisterPage() {
           </p>
         </div>
 
-        <div className="register-form bg-white dark:bg-[#0b1210] rounded-2xl shadow dark:shadow-none-lg p-6 border border-slate-100 dark:border-[#1c2220]">
+        <div className="register-form bg-white dark:bg-[#0b1210] rounded-2xl shadow-lg dark:shadow-none p-6 border border-slate-100 dark:border-[#1c2220]">
           {currentStep > 0 && <StepIndicator />}
           {currentStep > 0 && (
             <div className="mb-6">
@@ -1035,7 +1035,7 @@ export default function LawyerRegisterPage() {
           </span>
           <Link
             href="/auth/lawyer/login"
-            className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] font-medium"
+            className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] font-medium"
           >
             {t("auth.lawyerRegister.login")}
           </Link>

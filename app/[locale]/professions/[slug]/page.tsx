@@ -113,7 +113,7 @@ export default function ProfessionPage() {
       <div className="max-w-3xl mx-auto px-4 py-10">
         <button
           onClick={() => router.back()}
-          className="inline-flex items-center gap-1.5 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] mb-8 text-sm font-medium cursor-pointer transition-colors"
+          className="inline-flex items-center gap-1.5 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] mb-8 text-sm font-medium cursor-pointer transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
         </button>
@@ -160,7 +160,7 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        <div className="pf-section bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] rounded-2xl p-6 mb-4 shadow-sm">
+        <div className="pf-section bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-6 mb-4 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 dark:text-[#F5F5F4] mb-3 flex items-center gap-2">
             <span className="w-6 h-6 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-lg flex items-center justify-center text-xs">
               ⚖️
@@ -172,7 +172,7 @@ export default function ProfessionPage() {
           </p>
         </div>
 
-        <div className="pf-section bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] rounded-2xl p-6 mb-4 shadow-sm">
+        <div className="pf-section bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-6 mb-4 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 dark:text-[#F5F5F4] mb-5">
             {t("professionDetailPage.missionsTitle")}
           </h2>
@@ -219,7 +219,7 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        <div className="pf-section bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] rounded-2xl p-6 mb-7 shadow-sm">
+        <div className="pf-section bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-6 mb-7 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 dark:text-[#F5F5F4] mb-4">
             {t("professionDetailPage.vsOthersTitle", { label: data.label })}
           </h2>
@@ -273,7 +273,7 @@ export default function ProfessionPage() {
               const OtherIcon = PROF_ICONS[p];
               return (
                 <Link key={p} href={`/professions/${p}`}>
-                  <div className="bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] hover:border-teal-200 dark:border-[#1F3D2E] rounded-xl p-3 text-center cursor-pointer transition-all hover:shadow-sm">
+                  <div className="bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] hover:border-teal-200 dark:border-[#1F3D2E] rounded-xl p-3 text-center cursor-pointer transition-all hover:shadow-sm">
                     <div className="w-9 h-9 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-lg flex items-center justify-center mx-auto mb-2">
                       <OtherIcon className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
                     </div>
