@@ -590,9 +590,9 @@ export function Navigation() {
                 <button
                   onClick={() => setSelectedProfile("client")}
                   className={cn(
-                    "flex flex-col items-center gap-1.5 py-3 rounded-lg border transition-all cursor-pointer",
+                    "flex flex-col items-center gap-1.5 py-3 rounded-none border transition-all cursor-pointer",
                     selectedProfile === "client"
-                      ? "border-teal-500 bg-teal-50"
+                      ? "border-teal-700 bg-teal-50"
                       : "border-slate-200 bg-white"
                   )}
                 >
@@ -618,7 +618,7 @@ export function Navigation() {
                 <button
                   onClick={() => setSelectedProfile("professional")}
                   className={cn(
-                    "flex flex-col items-center gap-1.5 py-3 rounded-lg border transition-all cursor-pointer",
+                    "flex flex-col items-center gap-1.5 py-3 rounded-none border transition-all cursor-pointer",
                     selectedProfile === "professional"
                       ? "border-teal-500 bg-teal-50"
                       : "border-slate-200 bg-white"
