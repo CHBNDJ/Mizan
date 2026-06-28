@@ -361,7 +361,7 @@ export function Navigation() {
                       "relative whitespace-nowrap text-sm font-medium transition-all px-4 py-2 rounded-full",
                       active
                         ? "bg-teal-600 text-white shadow-sm"
-                        : "text-slate-600 hover:bg-teal-50 hover:text-teal-700"
+                        : "text-slate-600 hover:shadow-md hover:shadow-teal-600/15 hover:-translate-y-0.5"
                     )}
                   >
                     <span className="relative inline-flex items-center">
@@ -454,7 +454,7 @@ export function Navigation() {
               <>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="group flex items-center gap-1.5 px-3 py-2 rounded-md border border-teal-600 text-teal-600 transition-all hover:bg-teal-50 cursor-pointer text-sm font-medium">
+                    <button className="group flex items-center gap-1.5 px-3 py-2 rounded-md border border-teal-600 text-teal-600 hover:shadow-md hover:shadow-teal-600/20 hover:-translate-y-0.5 transition-all cursor-pointer text-sm font-medium">
                       {t("nav.client")}{" "}
                       <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                     </button>
