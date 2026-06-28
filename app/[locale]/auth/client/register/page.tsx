@@ -61,13 +61,11 @@ export default function ClientRegisterPage() {
 
   const countryOptions = COUNTRIES.map((c) => ({
     value: c.code,
-    // \u200E (LRM) isole "+code" pour qu'il ne soit jamais réordonné par l'algorithme
-    // bidirectionnel quand le texte autour est en arabe (RTL)
     label: `${c.flag} \u200E+${c.code}\u200E ${getCountryLabel(c.id, t)}`,
   }));
 
   const inputCls =
-    "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white hover:border-teal-300 focus:border-teal-300 focus:border-2 outline-none transition-all duration-200 text-slate-700";
+    "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white dark:bg-[#0b1210] hover:border-teal-300 dark:text-[#F5F5F4] focus:border-teal-300 focus:border-2 outline-none transition-all duration-200 text-slate-700";
   const errCls = "text-red-500 text-xs mt-1";
   const cap = (s: string) =>
     s
@@ -139,19 +137,19 @@ export default function ClientRegisterPage() {
   };
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent">
       <style>{`.page-title,.page-subtitle,.register-form{opacity:0;}`}</style>
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
-          <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
+          <h1 className="page-title text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
             {t("auth.clientRegister.title")}
           </h1>
-          <p className="page-subtitle text-slate-600">
+          <p className="page-subtitle text-slate-600 dark:text-[#E8E8E6]">
             {t("auth.clientRegister.subtitle")}
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-100">
+        <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow dark:shadow-none-lg p-6 border border-slate-100 dark:border-[#1c2220]">
           {errors.general && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-600 text-sm">{errors.general}</p>
@@ -269,7 +267,7 @@ export default function ClientRegisterPage() {
                 name="email"
                 value={formData.email}
                 onChange={handleInput}
-                className={`${inputCls} placeholder:text-slate-400`}
+                className={`${inputCls} placeholder:text-slate-400 dark:text-[#7A7A78]`}
                 placeholder={t("auth.clientRegister.emailPh")}
                 disabled={isSubmitting}
               />
@@ -293,7 +291,7 @@ export default function ClientRegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6]"
                 >
                   {showPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -322,7 +320,7 @@ export default function ClientRegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6]"
                 >
                   {showConfirmPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -347,14 +345,14 @@ export default function ClientRegisterPage() {
               />
               <label
                 htmlFor="terms"
-                className="text-sm text-slate-600 cursor-pointer"
+                className="text-sm text-slate-600 dark:text-[#E8E8E6] cursor-pointer"
               >
                 {t("auth.clientRegister.termsPrefix")}{" "}
-                <Link href="/cgu" className="text-teal-600 hover:underline">
+                <Link href="/cgu" className="text-teal-600 dark:text-[#6fcf9f] hover:underline">
                   {t("auth.clientRegister.termsCgu")}
                 </Link>{" "}
                 {t("auth.clientRegister.termsAnd")}{" "}
-                <Link href="/privacy" className="text-teal-600 hover:underline">
+                <Link href="/privacy" className="text-teal-600 dark:text-[#6fcf9f] hover:underline">
                   {t("auth.clientRegister.termsPrivacy")}
                 </Link>
               </label>
@@ -377,12 +375,12 @@ export default function ClientRegisterPage() {
           </form>
 
           <div className="flex items-center justify-center gap-1.5 mt-6">
-            <span className="text-sm text-slate-600">
+            <span className="text-sm text-slate-600 dark:text-[#E8E8E6]">
               {t("auth.clientRegister.hasAccount")}
             </span>
             <Link
               href="/auth/client/login"
-              className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+              className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] font-medium"
             >
               {t("auth.clientRegister.login")}
             </Link>

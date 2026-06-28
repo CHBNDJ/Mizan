@@ -126,7 +126,7 @@ export default function ClientLoginPage() {
   };
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent">
       <style>{`
         .page-title,
         .page-subtitle,
@@ -138,15 +138,15 @@ export default function ClientLoginPage() {
 
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
-          <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
+          <h1 className="page-title text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
             {t("auth.clientLogin.title")}
           </h1>
-          <p className="page-subtitle text-slate-600">
+          <p className="page-subtitle text-slate-600 dark:text-[#E8E8E6]">
             {t("auth.clientLogin.subtitle")}
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-100">
+        <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow dark:shadow-none-lg p-6 border border-slate-100 dark:border-[#1c2220]">
           {errors.general && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-600 text-sm">{errors.general}</p>
@@ -167,7 +167,7 @@ export default function ClientLoginPage() {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`${inputBaseClass} placeholder:text-slate-400`}
+                className={`${inputBaseClass} placeholder:text-slate-400 dark:text-[#7A7A78]`}
                 placeholder={t("auth.clientLogin.emailPh")}
                 required
                 disabled={isSubmitting}
@@ -185,7 +185,7 @@ export default function ClientLoginPage() {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`${inputBaseClass} pe-12 placeholder:text-slate-400`}
+                  className={`${inputBaseClass} pe-12 placeholder:text-slate-400 dark:text-[#7A7A78]`}
                   placeholder={t("auth.clientLogin.passwordPh")}
                   required
                   disabled={isSubmitting}
@@ -194,7 +194,7 @@ export default function ClientLoginPage() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   disabled={isSubmitting}
-                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6] transition-colors disabled:opacity-50"
                 >
                   {showPassword ? (
                     <EyeOff className="w-5 h-5" />
@@ -216,13 +216,13 @@ export default function ClientLoginPage() {
                   className="w-4 h-4 border-slate-300 rounded focus:ring-teal-500 accent-teal-600 disabled:opacity-50"
                   style={{ accentColor: "#0d9488" }}
                 />
-                <span className="ms-2 text-sm text-slate-600 select-none">
+                <span className="ms-2 text-sm text-slate-600 dark:text-[#E8E8E6] select-none">
                   {t("auth.clientLogin.rememberMe")}
                 </span>
               </label>
               <Link
                 href="/auth/client/forgot-password"
-                className="text-sm text-teal-600 hover:text-teal-700 transition-colors font-medium text-start sm:text-end"
+                className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] transition-colors font-medium text-start sm:text-end"
               >
                 {t("auth.clientLogin.forgotPassword")}
               </Link>
@@ -244,14 +244,14 @@ export default function ClientLoginPage() {
             </button>
           </form>
 
-          <div className="form-footer text-center mt-6 pt-6 border-t border-slate-100">
+          <div className="form-footer text-center mt-6 pt-6 border-t border-slate-100 dark:border-[#1c2220]">
             <div className="flex flex-col gap-2 sm:block">
-              <span className="text-sm text-slate-600">
+              <span className="text-sm text-slate-600 dark:text-[#E8E8E6]">
                 {t("auth.clientLogin.newHere")}
               </span>
               <Link
                 href="/auth/client/register"
-                className="text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors sm:ms-1"
+                className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] font-medium transition-colors sm:ms-1"
               >
                 {t("auth.clientLogin.createAccount")}
               </Link>

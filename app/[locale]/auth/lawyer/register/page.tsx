@@ -91,7 +91,6 @@ export default function LawyerRegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
 
-  // Tableau des professions entièrement traduit (label, numLabel, numPlaceholder)
   const PROFESSIONS = PROFESSION_ICONS.map((p) => {
     const key = PROF_KEY[p.id];
     return {
@@ -175,7 +174,7 @@ export default function LawyerRegisterPage() {
   const langueOptions = LANGUES.map((l) => ({ value: l, label: l }));
 
   const inputCls =
-    "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white hover:border-teal-300 focus:border-teal-300 focus:border-2 outline-none transition-all duration-200 text-slate-700";
+    "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white dark:bg-[#0b1210] hover:border-teal-300 dark:text-[#F5F5F4] focus:border-teal-300 focus:border-2 outline-none transition-all duration-200 text-slate-700";
   const errCls = "text-red-500 text-xs mt-1";
 
   const cap = (s: string) =>
@@ -346,18 +345,18 @@ export default function LawyerRegisterPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            subject: `🚨 Nouveau ${currentProf?.label} inscrit`,
+            subject: `Nouveau ${currentProf?.label} inscrit`,
             title: `Nouveau professionnel sur Mizan`,
             message: `
-              <p>👤 <strong>Nom :</strong> ${formData.firstName} ${formData.lastName}</p>
-              <p>📧 <strong>Email :</strong> ${formData.email}</p>
-              <p>📱 <strong>Mobile :</strong> +${selectedMobileCountry}${formData.mobile}</p>
-              <p>💼 <strong>Professions :</strong> ${professions.join(", ")}</p>
-              <p>📋 <strong>${currentProf?.numLabel} :</strong> ${formData.barNumber}</p>
-              <p>📍 <strong>Ville :</strong> ${formData.address.city}, ${formData.address.wilaya}</p>
-              <p>⚖️ <strong>Spécialités :</strong> ${formData.specializations.map((s) => domaineOptions.find((o) => o.value === s)?.label || s).join(", ")}</p>
-              <p>🗣️ <strong>Langues :</strong> ${formData.languages.join(", ")}</p>
-              <p>📅 <strong>Expérience :</strong> ${formData.experience} ans</p>
+              <p><strong>Nom :</strong> ${formData.firstName} ${formData.lastName}</p>
+              <p><strong>Email :</strong> ${formData.email}</p>
+              <p><strong>Mobile :</strong> +${selectedMobileCountry}${formData.mobile}</p>
+              <p><strong>Professions :</strong> ${professions.join(", ")}</p>
+              <p><strong>${currentProf?.numLabel} :</strong> ${formData.barNumber}</p>
+              <p><strong>Ville :</strong> ${formData.address.city}, ${formData.address.wilaya}</p>
+              <p><strong>Spécialités :</strong> ${formData.specializations.map((s) => domaineOptions.find((o) => o.value === s)?.label || s).join(", ")}</p>
+              <p><strong>Langues :</strong> ${formData.languages.join(", ")}</p>
+              <p><strong>Expérience :</strong> ${formData.experience} ans</p>
             `,
             priority: "high",
           }),
@@ -390,7 +389,7 @@ export default function LawyerRegisterPage() {
         <div key={step.id} className="flex items-center flex-1 last:flex-none">
           <div className="flex flex-col items-center gap-1.5">
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${step.id < currentStep ? "bg-teal-600 text-white" : step.id === currentStep ? "bg-teal-600 text-white ring-4 ring-teal-100" : "bg-slate-100 text-slate-400"}`}
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${step.id < currentStep ? "bg-teal-600 text-white" : step.id === currentStep ? "bg-teal-600 text-white ring-4 ring-teal-100" : "bg-slate-100 text-slate-400 dark:text-[#7A7A78]"}`}
             >
               {step.id < currentStep ? (
                 <CheckCircle className="w-4 h-4" />
@@ -399,7 +398,7 @@ export default function LawyerRegisterPage() {
               )}
             </div>
             <span
-              className={`text-xs font-medium whitespace-nowrap ${step.id === currentStep ? "text-teal-600" : "text-slate-400"}`}
+              className={`text-xs font-medium whitespace-nowrap ${step.id === currentStep ? "text-teal-600 dark:text-[#6fcf9f]" : "text-slate-400 dark:text-[#7A7A78]"}`}
             >
               {step.label}
             </span>
@@ -442,10 +441,10 @@ export default function LawyerRegisterPage() {
     if (currentStep === 0)
       return (
         <div>
-          <h3 className="text-base font-bold text-slate-800 mb-2">
+          <h3 className="text-base font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
             {t("auth.lawyerRegister.step0Title")}
           </h3>
-          <p className="text-sm text-slate-500 mb-6">
+          <p className="text-sm text-slate-500 dark:text-[#A8A8A6] mb-6">
             {t("auth.lawyerRegister.step0Subtitle")}
           </p>
           <div className="grid grid-cols-2 gap-3 mb-3">
@@ -456,13 +455,13 @@ export default function LawyerRegisterPage() {
                   key={p.id}
                   type="button"
                   onClick={() => handleProfessionSelect(p.id)}
-                  className={`p-4 border-2 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer relative ${isSelected ? "border-teal-600 bg-teal-50" : "border-slate-200 bg-white hover:border-teal-300"}`}
+                  className={`p-4 border-2 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer relative ${isSelected ? "border-teal-600 bg-teal-50 dark:bg-[#1F3D2E]" : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#0b1210] hover:border-teal-300 dark:text-[#F5F5F4]"}`}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
-                    <p.Icon className="w-5 h-5 text-teal-600" />
+                  <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] flex items-center justify-center">
+                    <p.Icon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
                   </div>
                   <span
-                    className={`text-sm font-semibold ${isSelected ? "text-teal-700" : "text-slate-700"}`}
+                    className={`text-sm font-semibold ${isSelected ? "text-teal-700 dark:text-[#6fcf9f]" : "text-slate-700"}`}
                   >
                     {p.label}
                   </span>
@@ -483,13 +482,13 @@ export default function LawyerRegisterPage() {
                 <button
                   type="button"
                   onClick={() => handleProfessionSelect(p.id)}
-                  className={`w-[calc(50%-6px)] p-4 border-2 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer relative ${isSelected ? "border-teal-600 bg-teal-50" : "border-slate-200 bg-white hover:border-teal-300"}`}
+                  className={`w-[calc(50%-6px)] p-4 border-2 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer relative ${isSelected ? "border-teal-600 bg-teal-50 dark:bg-[#1F3D2E]" : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#0b1210] hover:border-teal-300 dark:text-[#F5F5F4]"}`}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
-                    <p.Icon className="w-5 h-5 text-teal-600" />
+                  <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] flex items-center justify-center">
+                    <p.Icon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
                   </div>
                   <span
-                    className={`text-sm font-semibold ${isSelected ? "text-teal-700" : "text-slate-700"}`}
+                    className={`text-sm font-semibold ${isSelected ? "text-teal-700 dark:text-[#6fcf9f]" : "text-slate-700"}`}
                   >
                     {p.label}
                   </span>
@@ -504,9 +503,9 @@ export default function LawyerRegisterPage() {
           </div>
 
           {professions[0] === "expert-comptable" && (
-            <div className="mt-4 bg-teal-50 border border-teal-100 rounded-xl px-4 py-3 flex items-start gap-2">
-              <CheckCircle className="w-4 h-4 text-teal-600 flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-teal-700">
+            <div className="mt-4 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-xl px-4 py-3 flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-teal-700 dark:text-[#6fcf9f]">
                 {t("auth.lawyerRegister.expertComptableNote")}
               </p>
             </div>
@@ -586,7 +585,7 @@ export default function LawyerRegisterPage() {
                 onChange={(e) => {
                   if (/^\d*$/.test(e.target.value)) handleInput(e);
                 }}
-                className={`${inputCls} placeholder:text-slate-400`}
+                className={`${inputCls} placeholder:text-slate-400 dark:text-[#7A7A78]`}
                 placeholder={t("auth.lawyerRegister.mobilePh")}
                 disabled={isSubmitting}
               />
@@ -616,7 +615,7 @@ export default function LawyerRegisterPage() {
                 onChange={(e) => {
                   if (/^\d*$/.test(e.target.value)) handleInput(e);
                 }}
-                className={`${inputCls} placeholder:text-slate-400`}
+                className={`${inputCls} placeholder:text-slate-400 dark:text-[#7A7A78]`}
                 placeholder={t("auth.lawyerRegister.fixedPhonePh")}
                 disabled={isSubmitting}
               />
@@ -632,7 +631,7 @@ export default function LawyerRegisterPage() {
               value={formData.languages}
               onChange={(v) => setFormData((p) => ({ ...p, languages: v }))}
               className="h-12"
-              placeholderClassName="text-slate-400 font-medium text-sm"
+              placeholderClassName="text-slate-400 dark:text-[#7A7A78] font-medium text-sm"
               disabled={isSubmitting}
             />
             {errors.languages && <p className={errCls}>{errors.languages}</p>}
@@ -652,7 +651,7 @@ export default function LawyerRegisterPage() {
               name="address.street"
               value={formData.address.street}
               onChange={handleAddr}
-              className={`${inputCls} placeholder:text-slate-400`}
+              className={`${inputCls} placeholder:text-slate-400 dark:text-[#7A7A78]`}
               placeholder={t("auth.lawyerRegister.addressPh")}
               disabled={isSubmitting}
             />
@@ -716,7 +715,7 @@ export default function LawyerRegisterPage() {
                   )
                     handleAddr(e);
                 }}
-                className={`${inputCls} placeholder:text-slate-400`}
+                className={`${inputCls} placeholder:text-slate-400 dark:text-[#7A7A78]`}
                 placeholder={
                   locale === "ar" ? toArabicNumerals("16000") : "16000"
                 }
@@ -773,7 +772,7 @@ export default function LawyerRegisterPage() {
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
               {t("auth.lawyerRegister.website")}{" "}
-              <span className="text-slate-400 font-normal text-xs">
+              <span className="text-slate-400 dark:text-[#7A7A78] font-normal text-xs">
                 {t("auth.lawyerRegister.websiteOptional")}
               </span>
             </label>
@@ -784,11 +783,11 @@ export default function LawyerRegisterPage() {
               onChange={(e) =>
                 setFormData((p) => ({ ...p, website: e.target.value }))
               }
-              className={`${inputCls} placeholder:text-slate-400`}
+              className={`${inputCls} placeholder:text-slate-400 dark:text-[#7A7A78]`}
               placeholder={t("auth.lawyerRegister.websitePh")}
               disabled={isSubmitting}
             />
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-400 dark:text-[#7A7A78] mt-1">
               {t("auth.lawyerRegister.websiteNote")}
             </p>
           </div>
@@ -817,7 +816,7 @@ export default function LawyerRegisterPage() {
                 setFormData((p) => ({ ...p, specializations: v }))
               }
               className="h-12"
-              placeholderClassName="text-slate-400 font-medium text-sm"
+              placeholderClassName="text-slate-400 dark:text-[#7A7A78] font-medium text-sm"
               disabled={isSubmitting}
             />
             {errors.specializations && (
@@ -835,7 +834,7 @@ export default function LawyerRegisterPage() {
               onChange={(e) => {
                 if (/^\d*$/.test(e.target.value)) handleInput(e);
               }}
-              className={`${inputCls} placeholder:text-slate-400`}
+              className={`${inputCls} placeholder:text-slate-400 dark:text-[#7A7A78]`}
               placeholder="5"
               disabled={isSubmitting}
             />
@@ -856,7 +855,7 @@ export default function LawyerRegisterPage() {
               name="email"
               value={formData.email}
               onChange={handleInput}
-              className={`${inputCls} placeholder:text-slate-400`}
+              className={`${inputCls} placeholder:text-slate-400 dark:text-[#7A7A78]`}
               placeholder={t("auth.lawyerRegister.emailPh")}
               disabled={isSubmitting}
             />
@@ -879,7 +878,7 @@ export default function LawyerRegisterPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6]"
               >
                 {showPassword ? (
                   <EyeOff className="w-4 h-4" />
@@ -907,7 +906,7 @@ export default function LawyerRegisterPage() {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6]"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="w-4 h-4" />
@@ -920,15 +919,15 @@ export default function LawyerRegisterPage() {
               <p className={errCls}>{errors.confirmPassword}</p>
             )}
           </div>
-          <div className="bg-slate-50 rounded-xl p-4 text-xs text-slate-500 leading-relaxed">
+          <div className="bg-slate-50 rounded-xl p-4 text-xs text-slate-500 dark:text-[#A8A8A6] leading-relaxed">
             {t.rich("auth.lawyerRegister.termsNote", {
               cgu: (chunks) => (
-                <Link href="/cgu" className="text-teal-600 hover:underline">
+                <Link href="/cgu" className="text-teal-600 dark:text-[#6fcf9f] hover:underline">
                   {chunks}
                 </Link>
               ),
               privacy: (chunks) => (
-                <Link href="/privacy" className="text-teal-600 hover:underline">
+                <Link href="/privacy" className="text-teal-600 dark:text-[#6fcf9f] hover:underline">
                   {chunks}
                 </Link>
               ),
@@ -940,28 +939,28 @@ export default function LawyerRegisterPage() {
   };
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent">
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
-          <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
+          <h1 className="page-title text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
             {professions.length > 0
               ? t("auth.lawyerRegister.registerTitle", {
                   profession: currentProf?.label || "",
                 })
               : t("auth.lawyerRegister.joinTitle")}
           </h1>
-          <p className="page-subtitle text-slate-600">
+          <p className="page-subtitle text-slate-600 dark:text-[#E8E8E6]">
             {professions.length > 0
               ? t("auth.lawyerRegister.registerSubtitle")
               : t("auth.lawyerRegister.joinSubtitle")}
           </p>
         </div>
 
-        <div className="register-form bg-white rounded-2xl shadow-lg p-6 border border-slate-100">
+        <div className="register-form bg-white dark:bg-[#0b1210] rounded-2xl shadow dark:shadow-none-lg p-6 border border-slate-100 dark:border-[#1c2220]">
           {currentStep > 0 && <StepIndicator />}
           {currentStep > 0 && (
             <div className="mb-6">
-              <span className="text-xs font-semibold text-teal-600 uppercase tracking-wide">
+              <span className="text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] uppercase tracking-wide">
                 {t("auth.lawyerRegister.stepOf", {
                   step:
                     locale === "ar"
@@ -969,10 +968,10 @@ export default function LawyerRegisterPage() {
                       : currentStep,
                 })}
               </span>
-              <h2 className="text-lg font-bold text-slate-900">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-[#F5F5F4]">
                 {stepMeta[currentStep]?.title}
               </h2>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-500 dark:text-[#A8A8A6]">
                 {stepMeta[currentStep]?.sub}
               </p>
             </div>
@@ -987,7 +986,7 @@ export default function LawyerRegisterPage() {
             <button
               type="button"
               onClick={handleBack}
-              className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-medium border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all cursor-pointer ${currentStep === 0 ? "invisible pointer-events-none" : ""}`}
+              className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-medium border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] hover:bg-slate-50 transition-all cursor-pointer ${currentStep === 0 ? "invisible pointer-events-none" : ""}`}
             >
               <ChevronLeft className="w-4 h-4" />{" "}
               {t("auth.lawyerRegister.back")}
@@ -1025,12 +1024,12 @@ export default function LawyerRegisterPage() {
           </div>
         </div>
         <div className="text-center mt-4">
-          <span className="text-sm text-slate-600">
+          <span className="text-sm text-slate-600 dark:text-[#E8E8E6]">
             {t("auth.lawyerRegister.hasAccount")}{" "}
           </span>
           <Link
             href="/auth/lawyer/login"
-            className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+            className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] font-medium"
           >
             {t("auth.lawyerRegister.login")}
           </Link>

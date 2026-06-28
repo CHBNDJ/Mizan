@@ -106,14 +106,14 @@ export default function ProfessionPage() {
 
   return (
     <div
-      className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100"
+      className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent"
       ref={ref}
     >
       <style>{`.pf-hero,.pf-section,.pf-cta{opacity:0;}`}</style>
       <div className="max-w-3xl mx-auto px-4 py-10">
         <button
           onClick={() => router.back()}
-          className="inline-flex items-center gap-1.5 text-teal-600 hover:text-teal-700 mb-8 text-sm font-medium cursor-pointer transition-colors"
+          className="inline-flex items-center gap-1.5 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] mb-8 text-sm font-medium cursor-pointer transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
         </button>
@@ -160,20 +160,20 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        <div className="pf-section bg-white border border-slate-200 rounded-2xl p-6 mb-4 shadow-sm">
-          <h2 className="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
-            <span className="w-6 h-6 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center text-xs">
+        <div className="pf-section bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] rounded-2xl p-6 mb-4 shadow-sm">
+          <h2 className="text-sm font-bold text-slate-900 dark:text-[#F5F5F4] mb-3 flex items-center gap-2">
+            <span className="w-6 h-6 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-lg flex items-center justify-center text-xs">
               ⚖️
             </span>
             {t("professionDetailPage.legalFrameworkTitle")}
           </h2>
-          <p className="text-sm text-slate-600 leading-relaxed">
+          <p className="text-sm text-slate-600 dark:text-[#E8E8E6] leading-relaxed">
             {data.cadreJuridique}
           </p>
         </div>
 
-        <div className="pf-section bg-white border border-slate-200 rounded-2xl p-6 mb-4 shadow-sm">
-          <h2 className="text-sm font-bold text-slate-900 mb-5">
+        <div className="pf-section bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] rounded-2xl p-6 mb-4 shadow-sm">
+          <h2 className="text-sm font-bold text-slate-900 dark:text-[#F5F5F4] mb-5">
             {t("professionDetailPage.missionsTitle")}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -181,10 +181,10 @@ export default function ProfessionPage() {
               <div key={i} className="flex gap-3 p-4 bg-slate-50 rounded-xl">
                 <span className="text-lg flex-shrink-0">{m.emoji}</span>
                 <div>
-                  <p className="text-xs font-semibold text-slate-800 mb-1">
+                  <p className="text-xs font-semibold text-slate-800 dark:text-[#F5F5F4] mb-1">
                     {m.title}
                   </p>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-slate-500 dark:text-[#A8A8A6] leading-relaxed">
                     {m.desc}
                   </p>
                 </div>
@@ -193,7 +193,7 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        <div className="pf-section bg-teal-50 border border-teal-100 rounded-2xl p-6 mb-4">
+        <div className="pf-section bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-2xl p-6 mb-4">
           <h2 className="text-sm font-bold text-teal-900 mb-4">
             {t("professionDetailPage.whenToCallTitle", {
               label: data.label.toLowerCase(),
@@ -207,10 +207,10 @@ export default function ProfessionPage() {
               >
                 <CheckCircle className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-xs font-semibold text-slate-800 mb-0.5">
+                  <p className="text-xs font-semibold text-slate-800 dark:text-[#F5F5F4] mb-0.5">
                     {q.situation}
                   </p>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-slate-500 dark:text-[#A8A8A6] leading-relaxed">
                     {q.detail}
                   </p>
                 </div>
@@ -219,8 +219,8 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        <div className="pf-section bg-white border border-slate-200 rounded-2xl p-6 mb-7 shadow-sm">
-          <h2 className="text-sm font-bold text-slate-900 mb-4">
+        <div className="pf-section bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] rounded-2xl p-6 mb-7 shadow-sm">
+          <h2 className="text-sm font-bold text-slate-900 dark:text-[#F5F5F4] mb-4">
             {t("professionDetailPage.vsOthersTitle", { label: data.label })}
           </h2>
           <div className="space-y-3">
@@ -229,13 +229,13 @@ export default function ProfessionPage() {
                 key={i}
                 className="p-4 bg-slate-50 border-s-4 border-teal-400 rounded-e-xl"
               >
-                <p className="text-xs font-bold text-teal-700 uppercase tracking-wide mb-1">
+                <p className="text-xs font-bold text-teal-700 dark:text-[#6fcf9f] uppercase tracking-wide mb-1">
                   {t("professionDetailPage.vsLabel", {
                     label: data.label,
                     avec: d.avec,
                   })}
                 </p>
-                <p className="text-sm text-slate-600 leading-relaxed">
+                <p className="text-sm text-slate-600 dark:text-[#E8E8E6] leading-relaxed">
                   {d.distinction}
                 </p>
               </div>
@@ -253,7 +253,7 @@ export default function ProfessionPage() {
             {t("professionDetailPage.ctaDesc")}
           </p>
           <Link href={`/${slug}`}>
-            <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold text-sm rounded-xl cursor-pointer transition-all">
+            <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 dark:bg-[#1F3D2E] text-teal-600 dark:text-[#6fcf9f] font-semibold text-sm rounded-xl cursor-pointer transition-all">
               {t("professionDetailPage.ctaAction", {
                 label: data.label.toLowerCase(),
               })}{" "}
@@ -263,7 +263,7 @@ export default function ProfessionPage() {
         </div>
 
         <div className="pf-section">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">
+          <p className="text-xs font-semibold text-slate-400 dark:text-[#7A7A78] uppercase tracking-widest mb-3">
             {t("professionDetailPage.otherProfessions")}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -273,9 +273,9 @@ export default function ProfessionPage() {
               const OtherIcon = PROF_ICONS[p];
               return (
                 <Link key={p} href={`/professions/${p}`}>
-                  <div className="bg-white border border-slate-200 hover:border-teal-200 rounded-xl p-3 text-center cursor-pointer transition-all hover:shadow-sm">
-                    <div className="w-9 h-9 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-                      <OtherIcon className="w-4 h-4 text-teal-600" />
+                  <div className="bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] hover:border-teal-200 dark:border-[#1F3D2E] rounded-xl p-3 text-center cursor-pointer transition-all hover:shadow-sm">
+                    <div className="w-9 h-9 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-lg flex items-center justify-center mx-auto mb-2">
+                      <OtherIcon className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
                     </div>
                     <p className="text-xs font-semibold text-slate-700">
                       {otherLabel}

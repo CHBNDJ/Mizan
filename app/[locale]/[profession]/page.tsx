@@ -75,12 +75,12 @@ function TopProsSection({
     <section className="ph-pros-section pb-14 sm:pb-16 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-7 sm:mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
             {t("professionLanding.topRatedTitle", {
               plural: plural.charAt(0).toUpperCase() + plural.slice(1),
             })}
           </h2>
-          <p className="text-slate-500 text-sm">
+          <p className="text-slate-500 dark:text-[#A8A8A6] text-sm">
             {t("professionLanding.topRatedSubtitle")}
           </p>
         </div>
@@ -94,7 +94,7 @@ function TopProsSection({
         <div className="text-center">
           <button
             onClick={handleSearch}
-            className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium cursor-pointer text-sm"
+            className="inline-flex items-center gap-2 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] font-medium cursor-pointer text-sm"
           >
             {t("professionLanding.seeAllPlural", { plural })}{" "}
             <ChevronRight className="w-4 h-4" />
@@ -202,30 +202,30 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
   };
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent">
       <style>{`.ph-title,.ph-sub,.ph-form,.ph-map,.ph-step { opacity:0; }`}</style>
 
       <section className="px-4 py-10 sm:py-14">
         <div className="max-w-6xl mx-auto">
           <Link href="/">
-            <button className="inline-flex items-center gap-1.5 text-teal-600 hover:text-teal-700 text-sm font-medium mb-6 sm:mb-8 cursor-pointer transition-colors">
+            <button className="inline-flex items-center gap-1.5 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:text-[#6fcf9f] text-sm font-medium mb-6 sm:mb-8 cursor-pointer transition-colors">
               <ArrowLeft className="w-4 h-4" />
             </button>
           </Link>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             <div>
-              <h1 className="ph-title text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 sm:mb-5 leading-tight text-center lg:text-start">
+              <h1 className="ph-title text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-4 sm:mb-5 leading-tight text-center lg:text-start">
                 {prof.hero}
               </h1>
-              <p className="ph-sub text-sm sm:text-lg text-slate-600 mb-6 sm:mb-8 leading-relaxed text-center lg:text-start">
+              <p className="ph-sub text-sm sm:text-lg text-slate-600 dark:text-[#E8E8E6] mb-6 sm:mb-8 leading-relaxed text-center lg:text-start">
                 {prof.sub}
               </p>
               <div
-                className="ph-form bg-white rounded-2xl shadow-md p-5 sm:p-6 space-y-4 relative"
+                className="ph-form bg-white dark:bg-[#0b1210] rounded-2xl shadow dark:shadow-none-md p-5 sm:p-6 space-y-4 relative"
                 style={{ zIndex: 50 }}
               >
                 <div className="relative" style={{ zIndex: 20 }}>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-[#A8A8A6] uppercase tracking-wide mb-2">
                     {prof.domainLabel}
                   </label>
                   <MultiSelectWithCheckboxes
@@ -238,11 +238,11 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                     value={selectedDomaines}
                     onChange={setSelectedDomaines}
                     className="h-12"
-                    placeholderClassName="text-slate-400 font-medium text-sm"
+                    placeholderClassName="text-slate-400 dark:text-[#7A7A78] font-medium text-sm"
                   />
                 </div>
                 <div className="relative" style={{ zIndex: 10 }}>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-[#A8A8A6] uppercase tracking-wide mb-2">
                     {t("professionLanding.wilayaLabel")}
                   </label>
                   {loadingWilayas ? (
@@ -267,14 +267,14 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
               <div className="mt-8 space-y-4 relative" style={{ zIndex: 1 }}>
                 {prof.steps.map((step, i) => (
                   <div key={i} className="ph-step flex gap-3">
-                    <div className="w-7 h-7 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-xs font-bold text-teal-700 flex-shrink-0 mt-0.5">
+                    <div className="w-7 h-7 rounded-full bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] flex items-center justify-center text-xs font-bold text-teal-700 dark:text-[#6fcf9f] flex-shrink-0 mt-0.5">
                       {ld(String(i + 1))}
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-slate-800 mb-0.5">
+                      <div className="text-sm font-semibold text-slate-800 dark:text-[#F5F5F4] mb-0.5">
                         {step.title}
                       </div>
-                      <div className="text-sm text-slate-500 leading-relaxed">
+                      <div className="text-sm text-slate-500 dark:text-[#A8A8A6] leading-relaxed">
                         {step.desc}
                       </div>
                     </div>
@@ -289,7 +289,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                 hideBar
               />
               <Link href={"/professions/" + profId}>
-                <div className="bg-teal-50 border border-teal-200 hover:border-teal-400 rounded-2xl p-5 cursor-pointer transition-all hover:shadow-sm group">
+                <div className="bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] hover:border-teal-400 rounded-2xl p-5 cursor-pointer transition-all hover:shadow-sm group">
                   <div className="flex items-center gap-3 mb-2.5">
                     <div className="w-9 h-9 bg-teal-600 rounded-xl flex items-center justify-center flex-shrink-0">
                       <ProfIcon className="w-4 h-4 text-white" />
@@ -300,10 +300,10 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                       })}
                     </p>
                   </div>
-                  <p className="text-xs text-teal-700 leading-relaxed mb-3">
+                  <p className="text-xs text-teal-700 dark:text-[#6fcf9f] leading-relaxed mb-3">
                     {t("professionLanding.whyChooseDesc")}
                   </p>
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-teal-600 group-hover:text-teal-700">
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] group-hover:text-teal-700 dark:text-[#6fcf9f]">
                     {t("professionLanding.learnMore")}{" "}
                     <ChevronRight className="w-3.5 h-3.5" />
                   </span>
@@ -332,7 +332,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
             {t("professionLanding.ctaDesc")}
           </p>
           <Link href="/auth/lawyer/register">
-            <button className="inline-flex items-center gap-2 px-7 py-3 bg-white hover:bg-teal-50 text-teal-600 font-semibold rounded-xl cursor-pointer shadow-sm text-sm sm:text-base">
+            <button className="inline-flex items-center gap-2 px-7 py-3 bg-white hover:bg-teal-50 dark:bg-[#1F3D2E] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer shadow-sm text-sm sm:text-base">
               {t("professionLanding.ctaAction")}{" "}
               <ChevronRight className="w-4 h-4" />
             </button>
