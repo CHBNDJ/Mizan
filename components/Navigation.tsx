@@ -921,7 +921,7 @@ export function Navigation() {
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-[999] h-20 flex items-center">
-        <div className="w-full flex items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center group flex-shrink-0">
               <div className="w-9 h-9 rounded-xl bg-teal-600 flex items-center justify-center transition-transform group-hover:rotate-12">
