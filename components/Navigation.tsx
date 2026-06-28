@@ -608,17 +608,19 @@ export function Navigation() {
                       key={href}
                       href={href}
                       onClick={() => setIsOpen(false)}
-                      className="block w-full p-3 border border-slate-200 bg-white/90 rounded-lg hover:border-teal-500 hover:bg-white shadow-sm transition-all"
+                      className="block w-full p-2 border border-slate-200 bg-white/90 rounded-lg hover:border-teal-500 hover:bg-white shadow-sm transition-all"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
-                          <Icon className="w-4 h-4" />
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center flex-shrink-0">
+                          <Icon className="w-3.5 h-3.5" />
                         </div>
                         <div>
-                          <div className="text-sm font-medium text-slate-900">
+                          <div className="text-sm font-medium text-slate-900 leading-tight">
                             {label}
                           </div>
-                          <div className="text-xs text-slate-500">{sub}</div>
+                          <div className="text-[11px] text-slate-500 leading-tight">
+                            {sub}
+                          </div>
                         </div>
                       </div>
                     </Link>
