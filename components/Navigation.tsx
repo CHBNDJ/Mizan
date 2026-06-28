@@ -532,7 +532,7 @@ export function Navigation() {
       </nav>
 
       {isOpen && (
-        <div className="lg:hidden fixed top-20 start-0 end-0 z-[9999] border-t border-slate-200 bg-gradient-to-br from-teal-100 via-white to-teal-100 shadow-2xl backdrop-blur-lg">
+        <div className="lg:hidden fixed top-20 start-0 end-0 z-[9999] border-t border-slate-200 bg-gradient-to-br from-teal-100/80 via-white/80 to-teal-100/80 shadow-2xl backdrop-blur-lg">
           <div className="py-4 space-y-4">
             {allNavLinks.map((link) => (
               <Link
