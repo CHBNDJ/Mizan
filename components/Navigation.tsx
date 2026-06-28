@@ -922,16 +922,10 @@ export function Navigation() {
     <>
       <nav className="fixed top-3 left-0 right-0 z-[999] flex justify-center px-4">
         <div className="w-full max-w-4xl flex items-center justify-between gap-4 rounded-full border border-slate-200/70 bg-white/70 backdrop-blur-xl shadow-lg shadow-slate-900/5 px-3 py-2 lg:px-4">
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 group flex-shrink-0"
-          >
+          <Link href="/" className="flex items-center group flex-shrink-0">
             <div className="w-9 h-9 rounded-xl bg-teal-600 flex items-center justify-center transition-transform group-hover:rotate-12">
               <Scale className="h-5 w-5 text-white" />
             </div>
-            <span className="hidden sm:inline text-lg font-bold text-slate-800">
-              MIZAN
-            </span>
           </Link>
 
           <div className="hidden lg:flex items-center gap-1">
