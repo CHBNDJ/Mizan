@@ -1127,43 +1127,21 @@ export function Navigation() {
           <div className="flex items-center gap-1.5 lg:hidden">
             <LanguageSwitcher />
             <ThemeToggle />
+            <Link
+              href="/auth/client/login"
+              className="text-xs font-medium text-teal-600 px-2 whitespace-nowrap"
+            >
+              {t("nav.login")}
+            </Link>
+            <Link
+              href="/auth/client/register"
+              className="text-xs font-semibold bg-teal-600 text-white px-3.5 py-2 rounded-full whitespace-nowrap"
+            >
+              {t("nav.signup")}
+            </Link>
           </div>
         </div>
       </nav>
-
-      <div className="lg:hidden fixed top-[68px] left-0 right-0 z-[998] flex justify-center px-4">
-        <div className="w-full max-w-4xl flex items-center justify-center gap-1.5 overflow-x-auto rounded-full border border-slate-200/70 bg-white/70 backdrop-blur-xl shadow-lg shadow-slate-900/5 px-2 py-1.5">
-          {allNavLinks.map((link) => {
-            const active = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "whitespace-nowrap text-xs font-medium transition-all px-3 py-1.5 rounded-full flex-shrink-0",
-                  active
-                    ? "bg-teal-600 text-white"
-                    : "text-slate-600 hover:bg-teal-50"
-                )}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-          <Link
-            href="/auth/client/login"
-            className="text-xs font-medium text-teal-600 px-3 py-1.5 rounded-full flex-shrink-0 whitespace-nowrap"
-          >
-            {t("nav.login")}
-          </Link>
-          <Link
-            href="/auth/client/register"
-            className="text-xs font-semibold bg-teal-600 text-white px-4 py-1.5 rounded-full flex-shrink-0 whitespace-nowrap"
-          >
-            {t("nav.signup")}
-          </Link>
-        </div>
-      </div>
     </>
   );
 }
