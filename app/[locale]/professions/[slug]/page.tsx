@@ -106,7 +106,7 @@ export default function ProfessionPage() {
 
   return (
     <div
-      className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent"
+      className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none"
       ref={ref}
     >
       <style>{`.pf-hero,.pf-section,.pf-cta{opacity:0;}`}</style>

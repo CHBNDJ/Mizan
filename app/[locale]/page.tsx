@@ -78,7 +78,9 @@ function ProfCardHorizontal({ id, Icon, label, desc }: any) {
           <Icon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
         </div>
         <div className="text-start">
-          <div className="font-bold text-slate-800 dark:text-[#F5F5F4] text-sm">{label}</div>
+          <div className="font-bold text-slate-800 dark:text-[#F5F5F4] text-sm">
+            {label}
+          </div>
           <div className="text-xs text-slate-400 dark:text-[#7A7A78] mt-0.5 leading-relaxed">
             {desc}
           </div>
@@ -110,7 +112,9 @@ export default function HomePage() {
     <>
       {t("home.hero.title1")}
       <br className="hidden sm:block" />{" "}
-      <span className="text-teal-600 dark:text-[#6fcf9f]">{t("home.hero.title2")}</span>
+      <span className="text-teal-600 dark:text-[#6fcf9f]">
+        {t("home.hero.title2")}
+      </span>
     </>
   );
 
@@ -225,7 +229,7 @@ export default function HomePage() {
   }, [topAvocats]);
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent overflow-x-hidden">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none overflow-x-hidden">
       <style>{`
         .hero-title,.hero-sub,.prof-card,.stat-card,.steps-section,.avocat-card,.cta-section,.prof-roles-link,.testimonials-section,.feedback-cta { opacity:0; }
         .prof-card-btn { transition:all 0.2s ease; }

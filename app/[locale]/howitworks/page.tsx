@@ -136,7 +136,7 @@ export default function HowItWorksPage() {
   }, [userType, profType]);
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <style>{`.hero-title,.hero-sub,.tabs-row,.step-card,.faq-card,.cta-section{opacity:0;}`}</style>
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">

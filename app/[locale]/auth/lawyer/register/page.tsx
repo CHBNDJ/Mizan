@@ -922,12 +922,18 @@ export default function LawyerRegisterPage() {
           <div className="bg-slate-50 rounded-xl p-4 text-xs text-slate-500 dark:text-[#A8A8A6] leading-relaxed">
             {t.rich("auth.lawyerRegister.termsNote", {
               cgu: (chunks) => (
-                <Link href="/cgu" className="text-teal-600 dark:text-[#6fcf9f] hover:underline">
+                <Link
+                  href="/cgu"
+                  className="text-teal-600 dark:text-[#6fcf9f] hover:underline"
+                >
                   {chunks}
                 </Link>
               ),
               privacy: (chunks) => (
-                <Link href="/privacy" className="text-teal-600 dark:text-[#6fcf9f] hover:underline">
+                <Link
+                  href="/privacy"
+                  className="text-teal-600 dark:text-[#6fcf9f] hover:underline"
+                >
                   {chunks}
                 </Link>
               ),
@@ -939,7 +945,7 @@ export default function LawyerRegisterPage() {
   };
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
           <h1 className="page-title text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">

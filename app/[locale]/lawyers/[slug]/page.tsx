@@ -111,7 +111,9 @@ const InfoCardMobile = ({
           {value}
         </div>
         {sublabel && !whatsappHref && (
-          <div className="text-xs text-slate-400 dark:text-[#7A7A78] mt-0.5">{sublabel}</div>
+          <div className="text-xs text-slate-400 dark:text-[#7A7A78] mt-0.5">
+            {sublabel}
+          </div>
         )}
       </div>
       <ChevronRight
@@ -369,7 +371,7 @@ export default function ProfilePage({
 
   if (loading)
     return (
-      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent">
+      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
         <div className="max-w-5xl mx-auto px-4 py-8 space-y-4">
           <div className="h-80 bg-slate-200 rounded-2xl animate-pulse" />
           <div className="h-32 bg-slate-200 rounded-xl animate-pulse" />
@@ -395,7 +397,9 @@ export default function ProfilePage({
   const infoItems: InfoItem[] = [];
   const claimItem: InfoItem | null = !avocat.is_claimed
     ? {
-        icon: <CheckCircle className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f]" />,
+        icon: (
+          <CheckCircle className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f]" />
+        ),
         label: t("lawyerProfile.claimQuestion"),
         value: t("lawyerProfile.claimAction"),
         href: `/claim-profile/${avocat.id}`,
@@ -405,7 +409,7 @@ export default function ProfilePage({
   const allInfoItems = [...infoItems, ...(claimItem ? [claimItem] : [])];
 
   return (
-    <div className="min-h-screen pt-16 pb-24 lg:pb-8 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent overflow-x-hidden w-full">
+    <div className="min-h-screen pt-16 pb-24 lg:pb-8 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none overflow-x-hidden w-full">
       <div className="max-w-3xl mx-auto px-4 py-8">
         <button
           onClick={() => router.push(`/search?${searchParams.toString()}`)}

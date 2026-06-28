@@ -137,7 +137,7 @@ export default function ClientRegisterPage() {
   };
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <style>{`.page-title,.page-subtitle,.register-form{opacity:0;}`}</style>
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
@@ -348,11 +348,17 @@ export default function ClientRegisterPage() {
                 className="text-sm text-slate-600 dark:text-[#E8E8E6] cursor-pointer"
               >
                 {t("auth.clientRegister.termsPrefix")}{" "}
-                <Link href="/cgu" className="text-teal-600 dark:text-[#6fcf9f] hover:underline">
+                <Link
+                  href="/cgu"
+                  className="text-teal-600 dark:text-[#6fcf9f] hover:underline"
+                >
                   {t("auth.clientRegister.termsCgu")}
                 </Link>{" "}
                 {t("auth.clientRegister.termsAnd")}{" "}
-                <Link href="/privacy" className="text-teal-600 dark:text-[#6fcf9f] hover:underline">
+                <Link
+                  href="/privacy"
+                  className="text-teal-600 dark:text-[#6fcf9f] hover:underline"
+                >
                   {t("auth.clientRegister.termsPrivacy")}
                 </Link>
               </label>

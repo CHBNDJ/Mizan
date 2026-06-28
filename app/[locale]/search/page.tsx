@@ -298,7 +298,7 @@ function SearchResults() {
   );
 
   return (
-    <div className="min-h-screen pt-20 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent">
+    <div className="min-h-screen pt-20 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <style>{`.search-header { opacity:0; } .search-avocat-card { opacity:0; }`}</style>
 
       <div className="search-header sticky top-20 z-50 border-b border-slate-200 dark:border-[#1c2220]/60 bg-white/90 backdrop-blur-sm">

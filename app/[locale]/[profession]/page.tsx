@@ -202,7 +202,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
   };
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <style>{`.ph-title,.ph-sub,.ph-form,.ph-map,.ph-step { opacity:0; }`}</style>
 
       <section className="px-4 py-10 sm:py-14">

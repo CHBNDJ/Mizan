@@ -126,7 +126,7 @@ export default function ClientLoginPage() {
   };
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <style>{`
         .page-title,
         .page-subtitle,

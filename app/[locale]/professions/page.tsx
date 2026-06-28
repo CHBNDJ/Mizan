@@ -37,7 +37,7 @@ export default async function ProfessionsPage() {
   const t = await getTranslations();
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-transparent">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="text-center mb-10">
           <p className="text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] uppercase tracking-widest mb-3">
