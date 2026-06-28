@@ -740,29 +740,6 @@ export function Navigation() {
   };
 
   const allNavLinks: NavLink[] = [
-    { href: "/", label: t("nav.home") },
-    ...(isAuthenticated && profile?.user_type === "client"
-      ? [
-          {
-            href: "/mes-consultations",
-            label: t("nav.myConsultations"),
-            hasNotification:
-              unreadCount > 0 && pathname !== "/mes-consultations",
-            notificationCount: unreadCount,
-          },
-        ]
-      : []),
-    ...(isAuthenticated && profile?.user_type === "lawyer"
-      ? [
-          {
-            href: "/lawyer/consultations",
-            label: t("nav.consultations"),
-            hasNotification:
-              unreadCount > 0 && pathname !== "/lawyer/consultations",
-            notificationCount: unreadCount,
-          },
-        ]
-      : []),
     { href: "/howitworks", label: t("nav.howItWorks") },
   ];
 

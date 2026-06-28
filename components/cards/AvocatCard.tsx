@@ -39,7 +39,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
                 src={avocat.avatar_url}
                 alt={`${avocat.prenom} ${avocat.nom}`}
                 fill
-                className="object-cover"
+                className="rounded-full object-cover"
                 sizes="64px"
               />
             ) : (
