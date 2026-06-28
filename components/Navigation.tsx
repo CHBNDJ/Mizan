@@ -1101,7 +1101,13 @@ export function Navigation() {
             )}
           </div>
 
-          <div className="flex items-center gap-1.5 lg:hidden">
+          <div className="flex items-center gap-1.5 lg:hidden overflow-x-auto max-w-[70%] [&::-webkit-scrollbar]:hidden">
+            <Link
+              href="/howitworks"
+              className="text-xs font-medium text-slate-600 px-1.5 whitespace-nowrap"
+            >
+              {t("nav.howItWorks")}
+            </Link>
             <LanguageSwitcher />
             <ThemeToggle />
             <Link
