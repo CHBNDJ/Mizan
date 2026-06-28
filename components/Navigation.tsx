@@ -454,7 +454,7 @@ export function Navigation() {
               <>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="group flex items-center gap-1.5 px-3 py-2 rounded-none border border-teal-700 transition-all text-slate-700 hover:bg-teal-50 cursor-pointer text-sm font-medium">
+                    <button className="group flex items-center gap-1.5 px-3 py-2 rounded-md border-2 border-teal-700 transition-all text-slate-700 hover:bg-teal-50 cursor-pointer text-sm font-medium">
                       {t("nav.client")}{" "}
                       <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                     </button>
@@ -481,7 +481,7 @@ export function Navigation() {
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="group rounded-none py-2 flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 cursor-pointer shadow-sm text-sm font-semibold transition-colors">
+                    <button className="group rounded-md py-2 flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 cursor-pointer shadow-sm text-sm font-semibold transition-colors">
                       {t("nav.professional")}{" "}
                       <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                     </button>
