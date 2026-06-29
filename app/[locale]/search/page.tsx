@@ -289,7 +289,7 @@ function SearchResults() {
       {hasLightFilters && (
         <button
           onClick={clearLightFilters}
-          className="w-full text-xs text-slate-500 dark:text-[#A8A8A6] hover:text-slate-700 py-2 px-3 border border-slate-200 dark:border-[#1c2220] rounded-lg bg-white hover:bg-slate-50 cursor-pointer font-medium"
+          className="w-full text-xs text-slate-500 dark:text-[#A8A8A6] hover:text-slate-700 dark:hover:text-[#E8E8E6] py-2 px-3 border border-slate-200 dark:border-[#1c2220] rounded-lg bg-white dark:bg-[#1c1c1e] hover:bg-slate-50 dark:hover:bg-[#1c2220] cursor-pointer font-medium"
         >
           {t("search.reset")}
         </button>
@@ -381,7 +381,7 @@ function SearchResults() {
           </div>
         </div>
         {showMobileFilters && (
-          <div className="lg:hidden border-t border-slate-200 dark:border-[#1c2220] bg-white px-4 py-4">
+          <div className="lg:hidden border-t border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e] px-4 py-4">
             <LightFilters />
           </div>
         )}
@@ -439,10 +439,10 @@ function SearchResults() {
               </>
             ) : (
               <div className="text-center py-16 sm:py-20">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-5 bg-slate-100 rounded-full flex items-center justify-center">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-5 bg-slate-100 dark:bg-[#1c1c1e] rounded-full flex items-center justify-center">
                   <Users className="w-7 h-7 sm:w-9 sm:h-9 text-slate-400 dark:text-[#7A7A78]" />
                 </div>
-                <h3 className="text-base sm:text-lg font-semibold text-slate-700 mb-2">
+                <h3 className="text-base sm:text-lg font-semibold text-slate-700 dark:text-[#E8E8E6] mb-2">
                   {t("search.noResultsTitle", {
                     profession: currentProf.label.toLowerCase(),
                   })}

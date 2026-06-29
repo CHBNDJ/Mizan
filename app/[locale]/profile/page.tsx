@@ -604,7 +604,7 @@ function ProfilePageContent() {
                         />
                       </div>
                     ) : (
-                      <div className="p-3 bg-slate-50 rounded-lg">
+                      <div className="p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                         <span className="text-slate-800 dark:text-[#F5F5F4]">
                           {lawyerFormData.gender
                             ? CIVILITE_OPTIONS.find(
@@ -634,7 +634,7 @@ function ProfilePageContent() {
                       placeholder={t("myProfile.firstNamePh")}
                     />
                   ) : (
-                    <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                    <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                       <User className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
                       <span className="text-slate-800 dark:text-[#F5F5F4]">
                         {formData.firstName ||
@@ -662,7 +662,7 @@ function ProfilePageContent() {
                       placeholder={t("myProfile.lastNamePh")}
                     />
                   ) : (
-                    <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                    <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                       <User className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
                       <span className="text-slate-800 dark:text-[#F5F5F4]">
                         {formData.lastName ||
@@ -676,7 +676,7 @@ function ProfilePageContent() {
                   <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                     {t("myProfile.email")}
                   </label>
-                  <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                  <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                     <Mail className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
                     <span className="text-slate-800 dark:text-[#F5F5F4] text-sm tracking-tight">
                       {user?.email}
@@ -698,7 +698,7 @@ function ProfilePageContent() {
                       placeholder={t("myProfile.fixedPhonePh")}
                     />
                   ) : (
-                    <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                    <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                       <Phone className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
                       <span className="text-slate-800 dark:text-[#F5F5F4]">
                         {formData.phone ||
@@ -723,7 +723,7 @@ function ProfilePageContent() {
                       placeholder={t("myProfile.mobilePh")}
                     />
                   ) : (
-                    <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                    <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                       <Smartphone className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
                       <span className="text-slate-800 dark:text-[#F5F5F4]">
                         {formData.mobile ||
@@ -752,7 +752,7 @@ function ProfilePageContent() {
                         placeholder={t("myProfile.websitePh")}
                       />
                     ) : (
-                      <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                      <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                         <Globe className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
                         <span className="text-slate-800 dark:text-[#F5F5F4]">
                           {formData.website ||
@@ -782,7 +782,7 @@ function ProfilePageContent() {
                         className="h-12"
                       />
                     ) : (
-                      <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                      <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                         <MapPin className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
                         <span className="text-slate-800 dark:text-[#F5F5F4]">
                           {formData.location || profile?.location
@@ -860,7 +860,7 @@ function ProfilePageContent() {
                         />
                       </div>
                     ) : (
-                      <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
+                      <div className="flex items-start gap-3 p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                         <Building className="w-5 h-5 text-slate-400 dark:text-[#7A7A78] mt-0.5" />
                         <span className="text-slate-800 dark:text-[#F5F5F4]">
                           {getFullAddress()}
@@ -894,7 +894,7 @@ function ProfilePageContent() {
                             placeholder={profNumPlaceholder}
                           />
                         ) : (
-                          <div className="p-3 bg-slate-50 rounded-lg">
+                          <div className="p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                             <span className="text-slate-800 dark:text-[#F5F5F4]">
                               {lawyerFormData.barNumber ||
                                 lawyerProfile?.bar_number ||
@@ -922,7 +922,7 @@ function ProfilePageContent() {
                             className={inputCls}
                           />
                         ) : (
-                          <div className="p-3 bg-slate-50 rounded-lg">
+                          <div className="p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                             <span className="text-slate-800 dark:text-[#F5F5F4]">
                               {lawyerFormData.experienceYears || 0}{" "}
                               {t("myProfile.yearsShort")}
@@ -935,7 +935,7 @@ function ProfilePageContent() {
                       <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                         {t("myProfile.consultationPrice")}
                       </label>
-                      <div className="p-3 bg-slate-50 rounded-lg">
+                      <div className="p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                         <span className="text-slate-500 dark:text-[#A8A8A6] text-sm italic">
                           {t("myProfile.priceOnRequest")}
                         </span>
@@ -962,14 +962,14 @@ function ProfilePageContent() {
                           placeholderClassName="text-slate-400 dark:text-[#7A7A78] font-medium text-sm"
                         />
                       ) : (
-                        <div className="p-3 bg-slate-50 rounded-lg">
+                        <div className="p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                           {lawyerFormData.specializations?.length > 0 ? (
                             <div className="flex flex-wrap gap-2">
                               {lawyerFormData.specializations.map(
                                 (s: string, i: number) => (
                                   <span
                                     key={i}
-                                    className="bg-teal-100 dark:bg-[#6fcf9f]/10 text-teal-800 px-3 py-1 rounded-full text-sm"
+                                    className="bg-teal-100 dark:bg-[#6fcf9f]/10 text-teal-800 dark:text-[#6fcf9f] px-3 py-1 rounded-full text-sm"
                                   >
                                     {getSpecialiteLabel(s, t)}
                                   </span>
@@ -1002,7 +1002,7 @@ function ProfilePageContent() {
                           />
                         </div>
                       ) : (
-                        <div className="p-3 bg-slate-50 rounded-lg">
+                        <div className="p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                           {lawyerFormData.languages?.length > 0 ? (
                             <div className="flex flex-wrap gap-2">
                               {lawyerFormData.languages.map(

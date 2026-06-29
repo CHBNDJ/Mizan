@@ -163,7 +163,7 @@ export default function AbonnementsPage() {
                 <div
                   className={`inline-flex mb-4 px-3 py-1 rounded-full text-xs font-bold ${
                     p.id === "6mois"
-                      ? "bg-white dark:bg-[#1c1c1e]/20 text-white"
+                      ? "bg-white/20 text-white"
                       : "bg-amber-400 text-amber-900"
                   }`}
                 >
@@ -182,12 +182,12 @@ export default function AbonnementsPage() {
                 {t("subscriptionPlans.totalOnce", { price: fmt(p.price) })}
               </div>
               {p.savingsLabel && (
-                <div className="inline-flex text-xs font-bold px-3 py-1.5 rounded-full mb-4 bg-white dark:bg-[#1c1c1e]/15 text-teal-100">
+                <div className="inline-flex text-xs font-bold px-3 py-1.5 rounded-full mb-4 bg-white/15 text-teal-100">
                   ✓ {p.savingsLabel}
                 </div>
               )}
 
-              <div className="h-px bg-white dark:bg-[#1c1c1e]/15 mb-5" />
+              <div className="h-px bg-white/15 mb-5" />
               <ul className="space-y-3">
                 {p.features.map((f) => (
                   <li
@@ -195,7 +195,7 @@ export default function AbonnementsPage() {
                     className={`flex items-center gap-3 text-sm ${f.included ? "text-white/80" : "text-white/25 line-through"}`}
                   >
                     <div
-                      className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${f.included ? "bg-white dark:bg-[#1c1c1e]/15" : "bg-transparent"}`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${f.included ? "bg-white/15" : "bg-transparent"}`}
                     >
                       {f.included ? (
                         <Check
@@ -269,7 +269,7 @@ export default function AbonnementsPage() {
                   <div
                     className={`savings-pill inline-flex self-start text-xs font-bold px-3 py-1.5 rounded-full mb-5 ${
                       on
-                        ? "bg-white dark:bg-[#1c1c1e]/15 text-teal-100"
+                        ? "bg-white/15 text-teal-100"
                         : "bg-teal-50 dark:bg-[#6fcf9f]/10 text-teal-700 dark:text-[#6fcf9f]"
                     }`}
                   >
@@ -280,7 +280,7 @@ export default function AbonnementsPage() {
                 )}
 
                 <div
-                  className={`card-divider h-px mb-6 ${on ? "bg-white dark:bg-[#1c1c1e]/15" : "bg-slate-100"}`}
+                  className={`card-divider h-px mb-6 ${on ? "bg-white/15" : "bg-slate-100 dark:bg-[#1c2220]"}`}
                 />
 
                 <ul className="space-y-3 flex-1">
@@ -294,14 +294,14 @@ export default function AbonnementsPage() {
                             : "feature-text text-slate-700 dark:text-[#E8E8E6]"
                           : on
                             ? "feature-off text-white/25 line-through"
-                            : "feature-off text-slate-300 line-through"
+                            : "feature-off text-slate-300 dark:text-[#5a5a5d] line-through"
                       }`}
                     >
                       <div
                         className={`feature-icon w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
                           f.included
                             ? on
-                              ? "bg-white dark:bg-[#1c1c1e]/15"
+                              ? "bg-white/15"
                               : "bg-teal-50 dark:bg-[#6fcf9f]/10"
                             : "bg-transparent"
                         }`}

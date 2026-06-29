@@ -278,9 +278,9 @@ export function Navigation() {
         <div className="lg:hidden fixed top-0 left-0 right-0 h-20 z-[999] flex items-center justify-between px-5 backdrop-blur-md">
           <Link
             href="/"
-            className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center"
+            className="w-8 h-8 rounded-lg bg-teal-600 dark:bg-[#1c1c1e] dark:border dark:border-[#6fcf9f]/40 flex items-center justify-center"
           >
-            <Scale className="h-4 w-4 text-white" />
+            <Scale className="h-4 w-4 text-white dark:text-[#6fcf9f]" />
           </Link>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
