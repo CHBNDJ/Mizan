@@ -419,7 +419,7 @@ export default function HomePage() {
             </div>
 
             <Link href="/feedback" className="flex-shrink-0">
-              <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#1D9E75] hover:bg-[#0F6E56] dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-[#E1F5EE] text-sm font-medium px-6 py-3 rounded-xl cursor-pointer transition-all">
+              <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#6fcf9f]/20 text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] hover:border-teal-400 dark:hover:border-[#6fcf9f] text-sm font-semibold px-6 py-3 rounded-xl cursor-pointer transition-all">
                 {t("home.feedbackCta.action")}{" "}
                 <ChevronRight className="w-4 h-4" />
               </button>

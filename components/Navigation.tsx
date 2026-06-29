@@ -521,9 +521,9 @@ export function Navigation() {
                 </DropdownMenu>
               </>
             )}
-            <div className="flex items-center gap-2 rounded-full border border-slate-200 px-2.5 py-1.5">
+            <div className="flex items-center gap-2 rounded-full border border-teal-600 dark:border-[#6fcf9f] px-2.5 py-1.5">
               <LanguageSwitcher />
-              <span className="w-px h-3.5 bg-slate-200" />
+              <span className="w-px h-3.5 bg-teal-600/30 dark:bg-[#6fcf9f]/30" />
               <ThemeToggle />
             </div>
           </div>

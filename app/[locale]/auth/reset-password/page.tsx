@@ -159,10 +159,12 @@ function ResetPasswordForm() {
 
   if (!isMounted || isLoading) {
     return (
-      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
+      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
-          <p className="text-slate-600">{t("checkingLink")}</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 dark:border-[#6fcf9f]"></div>
+          <p className="text-slate-600 dark:text-[#E8E8E6]">
+            {t("checkingLink")}
+          </p>
         </div>
       </div>
     );
@@ -170,21 +172,21 @@ function ResetPasswordForm() {
 
   if (!sessionReady) {
     return (
-      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
-        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full mx-4">
+      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none flex items-center justify-center">
+        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-lg dark:shadow-none p-8 max-w-md w-full mx-4">
           <div className="flex flex-col items-center text-center">
-            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
-              <AlertCircle className="w-8 h-8 text-red-600" />
+            <div className="w-16 h-16 bg-red-100 dark:bg-[#3D1F1F] rounded-full flex items-center justify-center mb-4">
+              <AlertCircle className="w-8 h-8 text-red-600 dark:text-[#E08585]" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-2">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
               {t("invalidLinkTitle")}
             </h2>
-            <p className="text-slate-600 mb-6">
+            <p className="text-slate-600 dark:text-[#E8E8E6] mb-6">
               {error || t("invalidLinkDesc")}
             </p>
             <button
               onClick={() => router.push(forgotPath)}
-              className="cursor-pointer w-full px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium"
+              className="cursor-pointer w-full px-6 py-3 bg-teal-600 dark:bg-[#0F6E56] text-white rounded-lg hover:bg-teal-700 dark:hover:bg-[#085041] transition-colors font-medium"
             >
               {t("resendLink")}
             </button>
@@ -196,17 +198,21 @@ function ResetPasswordForm() {
 
   if (success) {
     return (
-      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
-        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full mx-4">
+      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none flex items-center justify-center">
+        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-lg dark:shadow-none p-8 max-w-md w-full mx-4">
           <div className="flex flex-col items-center text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-              <CheckCircle className="w-8 h-8 text-green-600" />
+            <div className="w-16 h-16 bg-green-100 dark:bg-[#1F3D2A] rounded-full flex items-center justify-center mb-4">
+              <CheckCircle className="w-8 h-8 text-green-600 dark:text-[#7FD99F]" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-2">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
               {t("successTitle")}
             </h2>
-            <p className="text-slate-600 mb-4">{t("successDesc")}</p>
-            <p className="text-sm text-slate-500">{t("successRedirect")}</p>
+            <p className="text-slate-600 dark:text-[#E8E8E6] mb-4">
+              {t("successDesc")}
+            </p>
+            <p className="text-sm text-slate-500 dark:text-[#A8A8A6]">
+              {t("successRedirect")}
+            </p>
           </div>
         </div>
       </div>
@@ -214,29 +220,33 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <div className="max-w-md mx-auto px-4 py-24" ref={containerRef}>
         <div className="text-center mb-8">
-          <div className="icon-container w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Lock className="w-8 h-8 text-teal-600" />
+          <div className="icon-container w-16 h-16 bg-teal-100 dark:bg-[#6fcf9f]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Lock className="w-8 h-8 text-teal-600 dark:text-[#6fcf9f]" />
           </div>
-          <h1 className="page-title text-2xl font-bold text-slate-800 mb-2">
+          <h1 className="page-title text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
             {t("title")}
           </h1>
-          <p className="text-slate-600 text-sm">{t("subtitle")}</p>
+          <p className="text-slate-600 dark:text-[#E8E8E6] text-sm">
+            {t("subtitle")}
+          </p>
         </div>
 
-        <div className="form-card bg-white rounded-2xl shadow-lg p-6 border border-slate-100">
+        <div className="form-card bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-lg dark:shadow-none p-6 border border-slate-100 dark:border-[#1c2220]">
           {error && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-              <p className="text-red-600 text-sm">{error}</p>
+            <div className="mb-4 p-4 bg-red-50 dark:bg-[#3D1F1F] border border-red-200 dark:border-[#5A2A2A] rounded-lg flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-red-600 dark:text-[#E08585] flex-shrink-0 mt-0.5" />
+              <p className="text-red-600 dark:text-[#E08585] text-sm">
+                {error}
+              </p>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                 {t("newPassword")}
               </label>
               <div className="relative">
@@ -244,7 +254,7 @@ function ResetPasswordForm() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="text-slate-800 w-full h-12 px-4 text-sm border-2 border-slate-300 rounded-lg bg-white hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all duration-200"
+                  className="text-slate-800 dark:text-[#F5F5F4] w-full h-12 px-4 text-sm border-2 border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-300 dark:focus:border-[#6fcf9f] focus:ring-2 focus:ring-teal-500/20 dark:focus:ring-[#6fcf9f]/20 outline-none transition-all duration-200"
                   placeholder={t("passwordPh")}
                   required
                   disabled={isSubmitting}
@@ -253,7 +263,7 @@ function ResetPasswordForm() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:hover:text-[#E8E8E6] transition-colors"
                   disabled={isSubmitting}
                 >
                   {showPassword ? (
@@ -263,11 +273,13 @@ function ResetPasswordForm() {
                   )}
                 </button>
               </div>
-              <p className="text-xs text-slate-500 mt-2">{t("passwordHint")}</p>
+              <p className="text-xs text-slate-500 dark:text-[#A8A8A6] mt-2">
+                {t("passwordHint")}
+              </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                 {t("confirmPassword")}
               </label>
               <div className="relative">
@@ -275,7 +287,7 @@ function ResetPasswordForm() {
                   type={showConfirmPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="text-slate-800 w-full h-12 px-4 text-sm border-2 border-slate-300 rounded-lg bg-white hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all duration-200"
+                  className="text-slate-800 dark:text-[#F5F5F4] w-full h-12 px-4 text-sm border-2 border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-300 dark:focus:border-[#6fcf9f] focus:ring-2 focus:ring-teal-500/20 dark:focus:ring-[#6fcf9f]/20 outline-none transition-all duration-200"
                   placeholder={t("confirmPasswordPh")}
                   required
                   disabled={isSubmitting}
@@ -283,7 +295,7 @@ function ResetPasswordForm() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:hover:text-[#E8E8E6] transition-colors"
                   disabled={isSubmitting}
                 >
                   {showConfirmPassword ? (
@@ -298,7 +310,7 @@ function ResetPasswordForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="cursor-pointer w-full bg-teal-600 text-white py-3 rounded-lg font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="cursor-pointer w-full bg-teal-600 dark:bg-[#0F6E56] text-white py-3 rounded-lg font-medium hover:bg-teal-700 dark:hover:bg-[#085041] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <div className="flex items-center justify-center gap-2">
@@ -312,10 +324,10 @@ function ResetPasswordForm() {
           </form>
         </div>
 
-        <p className="text-center text-sm text-slate-500 mt-6">
+        <p className="text-center text-sm text-slate-500 dark:text-[#A8A8A6] mt-6">
           <button
             onClick={() => router.push(loginPath)}
-            className="text-teal-600 hover:text-teal-700 font-medium"
+            className="text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] font-medium"
           >
             {t("backToLogin")}
           </button>
@@ -329,8 +341,8 @@ export default function ResetPasswordPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+        <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 dark:border-[#6fcf9f]"></div>
         </div>
       }
     >

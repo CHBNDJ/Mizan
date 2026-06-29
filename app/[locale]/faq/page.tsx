@@ -81,14 +81,14 @@ export default function FAQPage() {
   const activeCategory = categories[activeTab];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100">
+    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <style>{`.main-title,.subtitle,.tabs-wrapper,.faq-item,.cta-block{opacity:0;}`}</style>
       <div className="max-w-4xl mx-auto px-5 py-16" ref={containerRef}>
         <div className="text-center mb-10">
-          <h1 className="main-title text-4xl sm:text-5xl font-bold text-slate-900 mb-3">
+          <h1 className="main-title text-4xl sm:text-5xl font-bold text-slate-900 dark:text-[#F5F5F4] mb-3">
             {t("title")}
           </h1>
-          <p className="subtitle text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="subtitle text-lg text-slate-600 dark:text-[#E8E8E6] max-w-2xl mx-auto">
             {t("subtitle")}
           </p>
         </div>
@@ -98,7 +98,7 @@ export default function FAQPage() {
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
-                className={`px-4 py-2 rounded-full font-medium text-sm transition-all cursor-pointer ${activeTab === key ? "bg-teal-600 text-white shadow-sm" : "bg-white border border-slate-200 text-slate-600 hover:border-teal-200 hover:text-teal-700"}`}
+                className={`px-4 py-2 rounded-full font-medium text-sm transition-all cursor-pointer ${activeTab === key ? "bg-teal-600 dark:bg-[#0F6E56] text-white shadow-sm dark:shadow-none" : "bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] hover:border-teal-200 dark:hover:border-[#6fcf9f]/50 hover:text-teal-700 dark:hover:text-[#6fcf9f]"}`}
               >
                 {key === "expertComptable"
                   ? t("tabExpertComptable")
@@ -113,23 +113,23 @@ export default function FAQPage() {
             return (
               <div
                 key={i}
-                className="faq-item bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-teal-200 transition-all"
+                className="faq-item bg-white dark:bg-[#1c1c1e] rounded-xl overflow-hidden border border-slate-200 dark:border-[#1c2220] hover:border-teal-200 dark:hover:border-[#6fcf9f]/50 transition-all"
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
-                  className="w-full px-6 py-4 flex items-center justify-between text-start hover:bg-slate-50 transition-colors cursor-pointer"
+                  className="w-full px-6 py-4 flex items-center justify-between text-start hover:bg-slate-50 dark:hover:bg-[#1c2220] transition-colors cursor-pointer"
                 >
-                  <span className="font-semibold text-slate-900 pe-4 text-sm md:text-base">
+                  <span className="font-semibold text-slate-900 dark:text-[#F5F5F4] pe-4 text-sm md:text-base">
                     {faq.q}
                   </span>
                   <ChevronDown
-                    className={`w-5 h-5 text-teal-600 transition-transform duration-300 flex-shrink-0 ${isOpen ? "rotate-180" : ""}`}
+                    className={`w-5 h-5 text-teal-600 dark:text-[#6fcf9f] transition-transform duration-300 flex-shrink-0 ${isOpen ? "rotate-180" : ""}`}
                   />
                 </button>
                 <div
                   className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-96" : "max-h-0"}`}
                 >
-                  <div className="px-6 pb-5 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-3">
+                  <div className="px-6 pb-5 text-slate-600 dark:text-[#A8A8A6] text-sm leading-relaxed border-t border-slate-100 dark:border-[#1c2220] pt-3">
                     {faq.a}
                   </div>
                 </div>
@@ -137,17 +137,19 @@ export default function FAQPage() {
             );
           })}
         </div>
-        <div className="cta-block mt-12 bg-white rounded-xl border border-slate-200 p-8">
+        <div className="cta-block mt-12 bg-white dark:bg-[#1c1c1e] rounded-xl border border-slate-200 dark:border-[#1c2220] p-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-start">
-              <h3 className="text-xl font-bold text-slate-900 mb-1">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-[#F5F5F4] mb-1">
                 {t("noAnswerTitle")}
               </h3>
-              <p className="text-slate-500 text-sm">{t("noAnswerDesc")}</p>
+              <p className="text-slate-500 dark:text-[#A8A8A6] text-sm">
+                {t("noAnswerDesc")}
+              </p>
             </div>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-sm rounded-xl transition-all whitespace-nowrap"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white font-semibold text-sm rounded-xl transition-all whitespace-nowrap"
             >
               {t("contactCta")}
             </Link>

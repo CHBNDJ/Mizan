@@ -189,7 +189,7 @@ export default function SettingsPage() {
     label: string;
     description: string;
   }) => (
-    <div className="flex items-center justify-between gap-3 p-3 sm:p-4 bg-slate-50 rounded-lg">
+    <div className="flex items-center justify-between gap-3 p-3 sm:p-4 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
       <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
         <Bell className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0" />
         <div className="min-w-0 flex-1">
@@ -299,16 +299,16 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          <div className="settings-section bg-white dark:bg-[#1c1c1e] rounded-lg shadow-sm dark:shadow-none border border-red-200 p-4 sm:p-6">
+          <div className="settings-section bg-white dark:bg-[#1c1c1e] rounded-lg shadow-sm dark:shadow-none border border-red-200 dark:border-[#5A2A2A] p-4 sm:p-6">
             <h2 className="text-lg sm:text-xl font-semibold text-red-600 mb-4">
               {t("dangerZoneTitle")}
             </h2>
             <div className="space-y-3 sm:space-y-4">
-              <div className="p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
-                <h3 className="font-medium text-red-800 mb-2 text-sm sm:text-base">
+              <div className="p-3 sm:p-4 bg-red-50 dark:bg-[#3D1F1F] border border-red-200 dark:border-[#5A2A2A] rounded-lg">
+                <h3 className="font-medium text-red-800 dark:text-[#E08585] mb-2 text-sm sm:text-base">
                   {t("logoutTitle")}
                 </h3>
-                <p className="text-xs sm:text-sm text-red-600 mb-3">
+                <p className="text-xs sm:text-sm text-red-600 dark:text-[#E08585] mb-3">
                   {t("logoutDesc")}
                 </p>
                 <button
@@ -318,13 +318,13 @@ export default function SettingsPage() {
                   <LogOut className="w-4 h-4" /> {t("logoutAction")}
                 </button>
               </div>
-              <div className="p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
-                <h3 className="font-medium text-red-800 mb-2 text-sm sm:text-base">
+              <div className="p-3 sm:p-4 bg-red-50 dark:bg-[#3D1F1F] border border-red-200 dark:border-[#5A2A2A] rounded-lg">
+                <h3 className="font-medium text-red-800 dark:text-[#E08585] mb-2 text-sm sm:text-base">
                   {t("deleteAccountTitle")}
                 </h3>
                 {deleteStep === 0 ? (
                   <>
-                    <p className="text-xs sm:text-sm text-red-600 mb-3">
+                    <p className="text-xs sm:text-sm text-red-600 dark:text-[#E08585] mb-3">
                       {t("deleteAccountDesc")}
                     </p>
                     <button
@@ -336,7 +336,7 @@ export default function SettingsPage() {
                   </>
                 ) : (
                   <div className="space-y-3">
-                    <p className="text-xs sm:text-sm text-red-700 font-medium">
+                    <p className="text-xs sm:text-sm text-red-700 dark:text-[#E08585] font-medium">
                       {t("confirmTitle")}
                     </p>
                     <p className="text-xs sm:text-sm text-red-600">
