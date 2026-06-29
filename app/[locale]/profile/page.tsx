@@ -385,32 +385,32 @@ function ProfilePageContent() {
   };
 
   const inputCls =
-    "w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400";
+    "w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 dark:text-[#F5F5F4] bg-white dark:bg-[#0b1210] border-2 border-slate-300 rounded-lg hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400 dark:text-[#7A7A78]";
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <style>{`.page-header,.page-subtitle,.action-buttons,.profile-card,.info-card{opacity:0;}`}</style>
       <div className="max-w-4xl mx-auto px-4 py-8" ref={containerRef}>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="page-header text-2xl sm:text-3xl font-bold text-slate-800">
+            <h1 className="page-header text-2xl sm:text-3xl font-bold text-slate-800 dark:text-[#F5F5F4]">
               {t("myProfile.title")}
             </h1>
-            <p className="page-subtitle text-slate-600 mt-1 sm:mt-2 text-sm sm:text-base">
+            <p className="page-subtitle text-slate-600 dark:text-[#E8E8E6] mt-1 sm:mt-2 text-sm sm:text-base">
               {t("myProfile.subtitle")}
             </p>
           </div>
           <div className="action-buttons flex gap-2 flex-shrink-0">
             <button
               onClick={() => refreshProfile()}
-              className="flex-1 sm:flex-none px-3 sm:px-4 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 cursor-pointer text-sm sm:text-base"
+              className="flex-1 sm:flex-none px-3 sm:px-4 py-2 border border-slate-300 text-slate-600 dark:text-[#E8E8E6] rounded-lg hover:bg-slate-50 cursor-pointer text-sm sm:text-base"
             >
               {t("myProfile.refresh")}
             </button>
             {!isEditing && (
               <button
                 onClick={() => setIsEditing(true)}
-                className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-teal-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-teal-700 cursor-pointer text-sm sm:text-base"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-teal-700 dark:hover:bg-[#085041] cursor-pointer text-sm sm:text-base"
               >
                 <Edit className="w-4 h-4" /> {t("myProfile.edit")}
               </button>
@@ -426,7 +426,7 @@ function ProfilePageContent() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
-            <div className="profile-card bg-white rounded-lg p-6 shadow-sm border">
+            <div className="profile-card bg-white dark:bg-[#0b1210] rounded-lg p-6 shadow-sm dark:shadow-none border">
               <div className="text-center">
                 <div className="relative w-24 h-24 mx-auto mb-2 group">
                   {avatarUrl ? (
@@ -439,12 +439,12 @@ function ProfilePageContent() {
                           setSelectedImage(avatarUrl);
                           setShowCropModal(true);
                         }}
-                        className="rounded-full object-cover border-4 border-teal-100 shadow-lg cursor-pointer hover:opacity-90 hover:scale-105 transition-all"
+                        className="rounded-full object-cover border-4 border-teal-100 dark:border-[#1F3D2E] shadow-lg dark:shadow-none cursor-pointer hover:opacity-90 hover:scale-105 transition-all"
                         sizes="96px"
                       />
                       <label
                         htmlFor="avatar-upload"
-                        className="absolute bottom-0 right-0 w-9 h-9 bg-teal-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-teal-700 shadow-lg border-2 border-white z-10"
+                        className="absolute bottom-0 right-0 w-9 h-9 bg-teal-600 dark:bg-[#0F6E56] rounded-full flex items-center justify-center cursor-pointer hover:bg-teal-700 dark:hover:bg-[#085041] shadow-lg dark:shadow-none border-2 border-white z-10"
                       >
                         <Camera className="w-4 h-4 text-white" />
                         <input
@@ -459,14 +459,14 @@ function ProfilePageContent() {
                       <button
                         onClick={handleRemoveAvatar}
                         disabled={isUploadingAvatar}
-                        className="absolute top-0 left-0 w-7 h-7 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-red-600 shadow-md z-10 cursor-pointer"
+                        className="absolute top-0 left-0 w-7 h-7 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-red-600 shadow-md dark:shadow-none z-10 cursor-pointer"
                       >
                         <X className="w-4 h-4 text-white" />
                       </button>
                     </>
                   ) : (
                     <>
-                      <div className="w-full h-full bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center">
+                      <div className="w-full h-full bg-gradient-to-br from-teal-500 to-teal-600 dark:from-[#0F6E56] dark:to-[#085041] rounded-full flex items-center justify-center">
                         <span className="text-white text-2xl font-bold">
                           {getInitials(
                             formData.firstName || profile?.first_name,
@@ -499,7 +499,7 @@ function ProfilePageContent() {
                     </div>
                   )}
                 </div>
-                <h2 className="text-xl font-semibold text-slate-800 mt-4">
+                <h2 className="text-xl font-semibold text-slate-800 dark:text-[#F5F5F4] mt-4">
                   {formData.firstName ||
                     profile?.first_name ||
                     t("myProfile.firstNameFallback")}{" "}
@@ -507,8 +507,8 @@ function ProfilePageContent() {
                     profile?.last_name ||
                     t("myProfile.lastNameFallback")}
                 </h2>
-                <p className="text-slate-600 flex items-center justify-center gap-1.5 mt-1">
-                  <ProfIcon className="w-4 h-4 text-teal-600" />
+                <p className="text-slate-600 dark:text-[#E8E8E6] flex items-center justify-center gap-1.5 mt-1">
+                  <ProfIcon className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
                   {profile?.user_type === "lawyer"
                     ? profLabel
                     : t("myProfile.clientFallback")}
@@ -520,7 +520,7 @@ function ProfilePageContent() {
                   </div>
                 )}
                 {profile?.user_type === "client" && (
-                  <div className="mt-4 text-sm text-slate-600">
+                  <div className="mt-4 text-sm text-slate-600 dark:text-[#E8E8E6]">
                     <p className="flex items-center justify-center gap-1">
                       <MapPin className="w-3 h-3" />
                       {formData.location || profile?.location
@@ -532,7 +532,7 @@ function ProfilePageContent() {
                   </div>
                 )}
                 {profile?.user_type === "lawyer" && (
-                  <div className="mt-4 text-sm text-slate-600">
+                  <div className="mt-4 text-sm text-slate-600 dark:text-[#E8E8E6]">
                     <p>
                       {t("myProfile.yearsExperience", {
                         years:
@@ -559,9 +559,9 @@ function ProfilePageContent() {
           </div>
 
           <div className="lg:col-span-2">
-            <div className="info-card bg-white rounded-lg p-6 shadow-sm border">
+            <div className="info-card bg-white dark:bg-[#0b1210] rounded-lg p-6 shadow-sm dark:shadow-none border">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                <h3 className="text-lg font-semibold text-slate-800">
+                <h3 className="text-lg font-semibold text-slate-800 dark:text-[#F5F5F4]">
                   {t("myProfile.personalInfoTitle")}
                 </h3>
                 {isEditing && (
@@ -569,7 +569,7 @@ function ProfilePageContent() {
                     <button
                       onClick={handleSave}
                       disabled={isSaving}
-                      className="cursor-pointer flex-1 sm:flex-none flex items-center justify-center gap-2 bg-teal-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-teal-700 disabled:opacity-50 text-sm sm:text-base"
+                      className="cursor-pointer flex-1 sm:flex-none flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-teal-700 dark:hover:bg-[#085041] disabled:opacity-50 text-sm sm:text-base"
                     >
                       <Save className="w-4 h-4" />
                       {isSaving ? t("myProfile.saving") : t("myProfile.save")}
@@ -577,7 +577,7 @@ function ProfilePageContent() {
                     <button
                       onClick={handleCancel}
                       disabled={isSaving}
-                      className="cursor-pointer flex-1 sm:flex-none flex items-center justify-center gap-2 border border-slate-300 text-slate-600 px-3 sm:px-4 py-2 rounded-lg hover:bg-slate-50 disabled:opacity-50 text-sm sm:text-base"
+                      className="cursor-pointer flex-1 sm:flex-none flex items-center justify-center gap-2 border border-slate-300 text-slate-600 dark:text-[#E8E8E6] px-3 sm:px-4 py-2 rounded-lg hover:bg-slate-50 disabled:opacity-50 text-sm sm:text-base"
                     >
                       <X className="w-4 h-4" /> {t("myProfile.cancel")}
                     </button>
@@ -588,7 +588,7 @@ function ProfilePageContent() {
               <div className="space-y-6">
                 {profile?.user_type === "lawyer" && (
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                       {t("myProfile.civilite")}
                     </label>
                     {isEditing ? (
@@ -605,7 +605,7 @@ function ProfilePageContent() {
                       </div>
                     ) : (
                       <div className="p-3 bg-slate-50 rounded-lg">
-                        <span className="text-slate-800">
+                        <span className="text-slate-800 dark:text-[#F5F5F4]">
                           {lawyerFormData.gender
                             ? CIVILITE_OPTIONS.find(
                                 (g) => g.value === lawyerFormData.gender
@@ -617,7 +617,7 @@ function ProfilePageContent() {
                   </div>
                 )}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                     {t("myProfile.firstName")}
                   </label>
                   {isEditing ? (
@@ -635,8 +635,8 @@ function ProfilePageContent() {
                     />
                   ) : (
                     <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                      <User className="w-5 h-5 text-slate-400" />
-                      <span className="text-slate-800">
+                      <User className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
+                      <span className="text-slate-800 dark:text-[#F5F5F4]">
                         {formData.firstName ||
                           profile?.first_name ||
                           t("myProfile.notProvided")}
@@ -645,7 +645,7 @@ function ProfilePageContent() {
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                     {t("myProfile.lastName")}
                   </label>
                   {isEditing ? (
@@ -663,8 +663,8 @@ function ProfilePageContent() {
                     />
                   ) : (
                     <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                      <User className="w-5 h-5 text-slate-400" />
-                      <span className="text-slate-800">
+                      <User className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
+                      <span className="text-slate-800 dark:text-[#F5F5F4]">
                         {formData.lastName ||
                           profile?.last_name ||
                           t("myProfile.notProvided")}
@@ -673,18 +673,18 @@ function ProfilePageContent() {
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                     {t("myProfile.email")}
                   </label>
                   <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                    <Mail className="w-5 h-5 text-slate-400" />
-                    <span className="text-slate-800 text-sm tracking-tight">
+                    <Mail className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
+                    <span className="text-slate-800 dark:text-[#F5F5F4] text-sm tracking-tight">
                       {user?.email}
                     </span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                     {t("myProfile.fixedPhone")}
                   </label>
                   {isEditing ? (
@@ -699,8 +699,8 @@ function ProfilePageContent() {
                     />
                   ) : (
                     <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                      <Phone className="w-5 h-5 text-slate-400" />
-                      <span className="text-slate-800">
+                      <Phone className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
+                      <span className="text-slate-800 dark:text-[#F5F5F4]">
                         {formData.phone ||
                           profile?.phone ||
                           t("myProfile.notProvided")}
@@ -709,7 +709,7 @@ function ProfilePageContent() {
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                     {t("myProfile.mobile")}
                   </label>
                   {isEditing ? (
@@ -724,8 +724,8 @@ function ProfilePageContent() {
                     />
                   ) : (
                     <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                      <Smartphone className="w-5 h-5 text-slate-400" />
-                      <span className="text-slate-800">
+                      <Smartphone className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
+                      <span className="text-slate-800 dark:text-[#F5F5F4]">
                         {formData.mobile ||
                           profile?.mobile ||
                           t("myProfile.notProvided")}
@@ -735,7 +735,7 @@ function ProfilePageContent() {
                 </div>
                 {profile?.user_type === "lawyer" && (
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                       {t("myProfile.website")}
                     </label>
                     {isEditing ? (
@@ -753,8 +753,8 @@ function ProfilePageContent() {
                       />
                     ) : (
                       <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                        <Globe className="w-5 h-5 text-slate-400" />
-                        <span className="text-slate-800">
+                        <Globe className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
+                        <span className="text-slate-800 dark:text-[#F5F5F4]">
                           {formData.website ||
                             profile?.website ||
                             t("myProfile.notProvided")}
@@ -765,7 +765,7 @@ function ProfilePageContent() {
                 )}
                 {profile?.user_type === "client" && (
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                       {t("myProfile.location")}
                     </label>
                     {isEditing ? (
@@ -783,8 +783,8 @@ function ProfilePageContent() {
                       />
                     ) : (
                       <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                        <MapPin className="w-5 h-5 text-slate-400" />
-                        <span className="text-slate-800">
+                        <MapPin className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
+                        <span className="text-slate-800 dark:text-[#F5F5F4]">
                           {formData.location || profile?.location
                             ? t(
                                 `location.${formData.location || profile?.location}`
@@ -797,11 +797,11 @@ function ProfilePageContent() {
                 )}
                 {profile?.user_type === "lawyer" && (
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                       {t("myProfile.officeAddress")}
                     </label>
                     {isEditing ? (
-                      <div className="space-y-3 p-4 border border-slate-200 rounded-lg">
+                      <div className="space-y-3 p-4 border border-slate-200 dark:border-[#1c2220] rounded-lg">
                         <input
                           type="text"
                           value={addressData.street}
@@ -861,8 +861,8 @@ function ProfilePageContent() {
                       </div>
                     ) : (
                       <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
-                        <Building className="w-5 h-5 text-slate-400 mt-0.5" />
-                        <span className="text-slate-800">
+                        <Building className="w-5 h-5 text-slate-400 dark:text-[#7A7A78] mt-0.5" />
+                        <span className="text-slate-800 dark:text-[#F5F5F4]">
                           {getFullAddress()}
                         </span>
                       </div>
@@ -870,14 +870,14 @@ function ProfilePageContent() {
                   </div>
                 )}
                 {profile?.user_type === "lawyer" && (
-                  <div className="border-t border-slate-200 pt-6">
-                    <h4 className="text-lg font-medium text-slate-800 mb-4 flex items-center gap-2">
-                      <ProfIcon className="w-5 h-5 text-teal-600" />{" "}
+                  <div className="border-t border-slate-200 dark:border-[#1c2220] pt-6">
+                    <h4 className="text-lg font-medium text-slate-800 dark:text-[#F5F5F4] mb-4 flex items-center gap-2">
+                      <ProfIcon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />{" "}
                       {t("myProfile.professionalInfoTitle")}
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                       <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                        <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                           {profNumLabel}
                         </label>
                         {isEditing ? (
@@ -895,7 +895,7 @@ function ProfilePageContent() {
                           />
                         ) : (
                           <div className="p-3 bg-slate-50 rounded-lg">
-                            <span className="text-slate-800">
+                            <span className="text-slate-800 dark:text-[#F5F5F4]">
                               {lawyerFormData.barNumber ||
                                 lawyerProfile?.bar_number ||
                                 t("myProfile.notProvided")}
@@ -904,7 +904,7 @@ function ProfilePageContent() {
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                        <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                           {t("myProfile.experienceYears")}
                         </label>
                         {isEditing ? (
@@ -923,7 +923,7 @@ function ProfilePageContent() {
                           />
                         ) : (
                           <div className="p-3 bg-slate-50 rounded-lg">
-                            <span className="text-slate-800">
+                            <span className="text-slate-800 dark:text-[#F5F5F4]">
                               {lawyerFormData.experienceYears || 0}{" "}
                               {t("myProfile.yearsShort")}
                             </span>
@@ -932,17 +932,17 @@ function ProfilePageContent() {
                       </div>
                     </div>
                     <div className="mb-4">
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                      <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                         {t("myProfile.consultationPrice")}
                       </label>
                       <div className="p-3 bg-slate-50 rounded-lg">
-                        <span className="text-slate-500 text-sm italic">
+                        <span className="text-slate-500 dark:text-[#A8A8A6] text-sm italic">
                           {t("myProfile.priceOnRequest")}
                         </span>
                       </div>
                     </div>
                     <div className="mb-4">
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                      <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                         {profession === "avocat"
                           ? t("myProfile.specialitiesAvocat")
                           : t("myProfile.specialitiesOther")}
@@ -959,7 +959,7 @@ function ProfilePageContent() {
                             }))
                           }
                           className="h-12"
-                          placeholderClassName="text-slate-400 font-medium text-sm"
+                          placeholderClassName="text-slate-400 dark:text-[#7A7A78] font-medium text-sm"
                         />
                       ) : (
                         <div className="p-3 bg-slate-50 rounded-lg">
@@ -969,7 +969,7 @@ function ProfilePageContent() {
                                 (s: string, i: number) => (
                                   <span
                                     key={i}
-                                    className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm"
+                                    className="bg-teal-100 dark:bg-[#1F3D2E] text-teal-800 px-3 py-1 rounded-full text-sm"
                                   >
                                     {getSpecialiteLabel(s, t)}
                                   </span>
@@ -977,7 +977,7 @@ function ProfilePageContent() {
                               )}
                             </div>
                           ) : (
-                            <span className="text-slate-600">
+                            <span className="text-slate-600 dark:text-[#E8E8E6]">
                               {t("myProfile.noSpecialities")}
                             </span>
                           )}
@@ -985,7 +985,7 @@ function ProfilePageContent() {
                       )}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                      <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                         {t("myProfile.languagesSpoken")}
                       </label>
                       {isEditing ? (
@@ -998,7 +998,7 @@ function ProfilePageContent() {
                               setLawyerFormData((p) => ({ ...p, languages: v }))
                             }
                             className="h-12"
-                            placeholderClassName="text-slate-400 font-medium text-sm"
+                            placeholderClassName="text-slate-400 dark:text-[#7A7A78] font-medium text-sm"
                           />
                         </div>
                       ) : (
@@ -1009,7 +1009,7 @@ function ProfilePageContent() {
                                 (l: string, i: number) => (
                                   <span
                                     key={i}
-                                    className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm"
+                                    className="bg-purple-100 dark:bg-[#3D1F4A] text-purple-800 dark:text-[#C9A8E0] px-3 py-1 rounded-full text-sm"
                                   >
                                     {t(`langues.${l}`)}
                                   </span>
@@ -1017,7 +1017,7 @@ function ProfilePageContent() {
                               )}
                             </div>
                           ) : (
-                            <span className="text-slate-600">
+                            <span className="text-slate-600 dark:text-[#E8E8E6]">
                               {t("myProfile.noLanguages")}
                             </span>
                           )}
@@ -1052,8 +1052,8 @@ export default function ProfilePage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-2 border-teal-600 border-t-transparent" />
+        <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-2 border-teal-600 dark:border-[#6fcf9f] border-t-transparent" />
         </div>
       }
     >

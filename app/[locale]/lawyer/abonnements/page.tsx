@@ -91,21 +91,27 @@ export default function AbonnementsPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none pt-16">
       <style>{`
         .plan-card {
           transition: all 0.22s cubic-bezier(.4,0,.2,1);
           cursor: pointer;
         }
         .plan-card:not(.selected):hover {
-          box-shadow: 0 12px 32px rgba(13,148,136,0.12) !important;
+          box-shadow dark:shadow-none: 0 12px 32px rgba(13,148,136,0.12) !important;
           border-color: rgba(13,148,136,0.3) !important;
           transform: translateY(-6px);
         }
         .plan-card.selected {
           background: #0D9488 !important;
-          box-shadow: 0 12px 36px rgba(13,148,136,0.25) !important;
+          box-shadow dark:shadow-none: 0 12px 36px rgba(13,148,136,0.25) !important;
           transform: translateY(-4px);
+        }
+        .dark .plan-card.selected {
+          background: #0F6E56 !important;
+        }
+        .dark .plan-card-mobile {
+          background: linear-gradient(135deg, #0F6E56 0%, #085041 100%) !important;
         }
       `}</style>
 
@@ -115,29 +121,28 @@ export default function AbonnementsPage() {
             <span>⏳</span>
             {t("subscriptionPlans.paymentSoonBadge")}
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight leading-tight mb-3">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-[#F5F5F4] tracking-tight leading-tight mb-3">
             {t("subscriptionPlans.heroTitle1")}
             <br />
-            <span className="text-teal-600">
+            <span className="text-teal-600 dark:text-[#6fcf9f]">
               {t("subscriptionPlans.heroTitle2")}
             </span>
           </h1>
-          <p className="text-slate-500 text-base max-w-xs mx-auto">
+          <p className="text-slate-500 dark:text-[#A8A8A6] text-base max-w-xs mx-auto">
             {t("subscriptionPlans.heroSubtitle")}
           </p>
         </div>
 
-        {/* Mobile/tablet : tabs + 1 card */}
         <div className="lg:hidden mb-8">
-          <div className="flex gap-2 bg-white/60 backdrop-blur-sm border border-slate-200 rounded-2xl p-1.5 mb-6">
+          <div className="flex gap-2 bg-white dark:bg-[#0b1210]/60 backdrop-blur-sm border border-slate-200 dark:border-[#1c2220] rounded-2xl p-1.5 mb-6">
             {PLANS.map((p) => (
               <button
                 key={p.id}
                 onClick={() => setSelected(p.id)}
                 className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer ${
                   selected === p.id
-                    ? "bg-teal-600 text-white shadow-md"
-                    : "text-slate-500 hover:text-teal-600"
+                    ? "bg-teal-600 dark:bg-[#0F6E56] text-white shadow-md dark:shadow-none"
+                    : "text-slate-500 dark:text-[#A8A8A6] hover:text-teal-600"
                 }`}
               >
                 {p.duration}
@@ -148,7 +153,7 @@ export default function AbonnementsPage() {
           {PLANS.filter((p) => p.id === selected).map((p) => (
             <div
               key={p.id}
-              className="rounded-3xl p-7 border-2 border-teal-500"
+              className="plan-card-mobile rounded-3xl p-7 border-2 border-teal-500 dark:border-[#6fcf9f]"
               style={{
                 background: "linear-gradient(135deg, #0D9488 0%, #0F766E 100%)",
                 boxShadow: "0 12px 36px rgba(13,148,136,0.3)",
@@ -158,7 +163,7 @@ export default function AbonnementsPage() {
                 <div
                   className={`inline-flex mb-4 px-3 py-1 rounded-full text-xs font-bold ${
                     p.id === "6mois"
-                      ? "bg-white/20 text-white"
+                      ? "bg-white dark:bg-[#0b1210]/20 text-white"
                       : "bg-amber-400 text-amber-900"
                   }`}
                 >
@@ -177,12 +182,12 @@ export default function AbonnementsPage() {
                 {t("subscriptionPlans.totalOnce", { price: fmt(p.price) })}
               </div>
               {p.savingsLabel && (
-                <div className="inline-flex text-xs font-bold px-3 py-1.5 rounded-full mb-4 bg-white/15 text-teal-100">
+                <div className="inline-flex text-xs font-bold px-3 py-1.5 rounded-full mb-4 bg-white dark:bg-[#0b1210]/15 text-teal-100">
                   ✓ {p.savingsLabel}
                 </div>
               )}
 
-              <div className="h-px bg-white/15 mb-5" />
+              <div className="h-px bg-white dark:bg-[#0b1210]/15 mb-5" />
               <ul className="space-y-3">
                 {p.features.map((f) => (
                   <li
@@ -190,7 +195,7 @@ export default function AbonnementsPage() {
                     className={`flex items-center gap-3 text-sm ${f.included ? "text-white/80" : "text-white/25 line-through"}`}
                   >
                     <div
-                      className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${f.included ? "bg-white/15" : "bg-transparent"}`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${f.included ? "bg-white dark:bg-[#0b1210]/15" : "bg-transparent"}`}
                     >
                       {f.included ? (
                         <Check
@@ -210,7 +215,6 @@ export default function AbonnementsPage() {
           ))}
         </div>
 
-        {/* Desktop : 3 colonnes */}
         <div className="hidden lg:grid lg:grid-cols-3 gap-5 mb-8 items-start">
           {PLANS.map((p) => {
             const on = selected === p.id;
@@ -219,8 +223,8 @@ export default function AbonnementsPage() {
                 key={p.id}
                 className={`plan-card relative rounded-3xl p-8 flex flex-col border-2 ${
                   on
-                    ? "selected shadow-lg shadow-teal-500/20"
-                    : "bg-white shadow-md shadow-slate-200/80"
+                    ? "selected shadow-lg dark:shadow-none shadow-teal-500/20"
+                    : "bg-white dark:bg-[#0b1210] shadow-md dark:shadow-none shadow-slate-200/80"
                 }`}
                 onClick={() => setSelected(p.id)}
               >
@@ -228,7 +232,7 @@ export default function AbonnementsPage() {
                   <div
                     className={`absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap ${
                       p.id === "6mois"
-                        ? "bg-teal-600 text-white"
+                        ? "bg-teal-600 dark:bg-[#0F6E56] text-white"
                         : "bg-amber-400 text-amber-900"
                     }`}
                   >
@@ -237,26 +241,26 @@ export default function AbonnementsPage() {
                 )}
 
                 <div
-                  className={`card-duration text-xs font-bold uppercase tracking-widest mb-5 ${on ? "text-white/50" : "text-slate-500"}`}
+                  className={`card-duration text-xs font-bold uppercase tracking-widest mb-5 ${on ? "text-white/50" : "text-slate-500 dark:text-[#A8A8A6]"}`}
                 >
                   {p.duration}
                 </div>
 
                 <div className="mb-2">
                   <span
-                    className={`card-price text-5xl font-bold tracking-tight leading-none ${on ? "text-white" : "text-slate-900"}`}
+                    className={`card-price text-5xl font-bold tracking-tight leading-none ${on ? "text-white" : "text-slate-900 dark:text-[#F5F5F4]"}`}
                   >
                     {p.monthly.toLocaleString(numLocale)}
                   </span>
                   <span
-                    className={`card-unit text-sm ml-2 ${on ? "text-white/45" : "text-slate-400"}`}
+                    className={`card-unit text-sm ml-2 ${on ? "text-white/45" : "text-slate-400 dark:text-[#7A7A78]"}`}
                   >
                     {t("subscriptionPlans.perMonth")}
                   </span>
                 </div>
 
                 <div
-                  className={`card-total text-sm mb-2 ${on ? "text-white/40" : "text-slate-400"}`}
+                  className={`card-total text-sm mb-2 ${on ? "text-white/40" : "text-slate-400 dark:text-[#7A7A78]"}`}
                 >
                   {t("subscriptionPlans.totalOnce", { price: fmt(p.price) })}
                 </div>
@@ -265,8 +269,8 @@ export default function AbonnementsPage() {
                   <div
                     className={`savings-pill inline-flex self-start text-xs font-bold px-3 py-1.5 rounded-full mb-5 ${
                       on
-                        ? "bg-white/15 text-teal-100"
-                        : "bg-teal-50 text-teal-700"
+                        ? "bg-white dark:bg-[#0b1210]/15 text-teal-100"
+                        : "bg-teal-50 dark:bg-[#1F3D2E] text-teal-700 dark:text-[#6fcf9f]"
                     }`}
                   >
                     ✓ {p.savingsLabel}
@@ -276,7 +280,7 @@ export default function AbonnementsPage() {
                 )}
 
                 <div
-                  className={`card-divider h-px mb-6 ${on ? "bg-white/15" : "bg-slate-100"}`}
+                  className={`card-divider h-px mb-6 ${on ? "bg-white dark:bg-[#0b1210]/15" : "bg-slate-100"}`}
                 />
 
                 <ul className="space-y-3 flex-1">
@@ -287,7 +291,7 @@ export default function AbonnementsPage() {
                         f.included
                           ? on
                             ? "feature-text text-white/80"
-                            : "feature-text text-slate-700"
+                            : "feature-text text-slate-700 dark:text-[#E8E8E6]"
                           : on
                             ? "feature-off text-white/25 line-through"
                             : "feature-off text-slate-300 line-through"
@@ -297,15 +301,19 @@ export default function AbonnementsPage() {
                         className={`feature-icon w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
                           f.included
                             ? on
-                              ? "bg-white/15"
-                              : "bg-teal-50"
+                              ? "bg-white dark:bg-[#0b1210]/15"
+                              : "bg-teal-50 dark:bg-[#1F3D2E]"
                             : "bg-transparent"
                         }`}
                       >
                         {f.included ? (
                           <Check
                             size={11}
-                            className={on ? "text-teal-100" : "text-teal-600"}
+                            className={
+                              on
+                                ? "text-teal-100"
+                                : "text-teal-600 dark:text-[#6fcf9f]"
+                            }
                             strokeWidth={3}
                           />
                         ) : (

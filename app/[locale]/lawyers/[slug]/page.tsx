@@ -413,7 +413,7 @@ export default function ProfilePage({
       <div className="max-w-3xl mx-auto px-4 py-8">
         <button
           onClick={() => router.push(`/search?${searchParams.toString()}`)}
-          className="back-button opacity-0 invisible flex items-center gap-2 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] cursor-pointer mb-6 text-sm font-medium"
+          className="back-button opacity-0 invisible flex items-center gap-2 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] cursor-pointer mb-6 text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="hidden sm:inline">{t("lawyerProfile.back")}</span>

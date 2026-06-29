@@ -219,6 +219,7 @@ export function Navigation() {
 
     return (
       <>
+        {/* Sidebar desktop */}
         <aside className="hidden lg:flex fixed top-0 start-0 h-screen w-20 flex-col items-center py-6 z-[999] border-e border-slate-200 bg-white/80 backdrop-blur-xl">
           <Link
             href="/"
@@ -239,8 +240,8 @@ export function Navigation() {
                   className={cn(
                     "relative w-12 h-12 rounded-xl flex items-center justify-center transition-all",
                     active
-                      ? "bg-teal-600 text-white shadow-sm"
-                      : "text-slate-500 hover:bg-teal-50 hover:text-teal-700"
+                      ? "bg-teal-600 dark:bg-[#0F6E56] text-white shadow-sm"
+                      : "text-slate-500 dark:text-[#A8A8A6] hover:bg-teal-50 dark:hover:bg-[#1F3D2E] hover:text-teal-700 dark:hover:text-[#6fcf9f]"
                   )}
                 >
                   <Icon className="w-5 h-5" />
@@ -268,10 +269,12 @@ export function Navigation() {
           </div>
         </aside>
 
+        {/* Langue flottante en haut à droite, hors sidebar */}
         <div className="hidden lg:block fixed top-4 end-4 z-[999]">
           <LanguageSwitcher />
         </div>
 
+        {/* Mini barre mobile : logo + mode sombre */}
         <div className="lg:hidden fixed top-0 left-0 right-0 h-20 z-[999] flex items-center justify-between px-5 backdrop-blur-md">
           <Link
             href="/"
@@ -292,6 +295,7 @@ export function Navigation() {
           </div>
         </div>
 
+        {/* Barre d'onglets mobile */}
         <nav className="lg:hidden fixed bottom-0 start-0 end-0 z-[999] border-t border-slate-200 bg-white/90 backdrop-blur-xl">
           <div className="flex items-center justify-around py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
             {sidebarItems
@@ -308,13 +312,17 @@ export function Navigation() {
                     <Icon
                       className={cn(
                         "w-5 h-5",
-                        active ? "text-teal-600" : "text-slate-400"
+                        active
+                          ? "text-teal-600 dark:text-[#6fcf9f]"
+                          : "text-slate-400 dark:text-[#7A7A78]"
                       )}
                     />
                     <span
                       className={cn(
                         "text-[10px] font-medium",
-                        active ? "text-teal-600" : "text-slate-400"
+                        active
+                          ? "text-teal-600 dark:text-[#6fcf9f]"
+                          : "text-slate-400 dark:text-[#7A7A78]"
                       )}
                     >
                       {item.label}
@@ -450,7 +458,7 @@ export function Navigation() {
               <>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="group flex items-center gap-1.5 px-3 py-2 rounded-md border border-teal-600 text-teal-600 hover:shadow-md hover:shadow-teal-600/20 hover:-translate-y-0.5 transition-all cursor-pointer text-sm font-medium">
+                    <button className="group flex items-center gap-1.5 px-3 py-2 rounded-md border border-teal-600 dark:border-[#6fcf9f] text-teal-600 dark:text-[#6fcf9f] hover:shadow-md hover:shadow-teal-600/20 dark:hover:shadow-[#6fcf9f]/20 hover:-translate-y-0.5 transition-all cursor-pointer text-sm font-medium">
                       {t("nav.client")}{" "}
                       <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                     </button>
@@ -540,7 +548,7 @@ export function Navigation() {
 
       <div
         className={cn(
-          "lg:hidden fixed top-0 right-0 h-screen w-[82%] max-w-sm z-[9999] bg-gradient-to-br from-teal-100 via-white to-teal-100 shadow-2xl transition-transform duration-300 ease-out overflow-y-auto",
+          "lg:hidden fixed top-0 right-0 h-screen w-[82%] max-w-sm z-[9999] bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none shadow-2xl dark:shadow-none transition-transform duration-300 ease-out overflow-y-auto",
           isOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
         )}
       >
@@ -561,8 +569,8 @@ export function Navigation() {
               className={cn(
                 "block px-4 py-3 text-sm font-medium rounded-lg mx-2 transition-colors relative",
                 pathname === link.href
-                  ? "text-teal-600 bg-teal-50"
-                  : "text-slate-600 hover:bg-slate-50"
+                  ? "text-teal-600 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E]"
+                  : "text-slate-600 dark:text-[#E8E8E6] hover:bg-slate-50 dark:hover:bg-[#1c2220]"
               )}
               onClick={() => setIsOpen(false)}
             >
@@ -579,7 +587,7 @@ export function Navigation() {
 
           <div className="px-4 space-y-4 border-t border-slate-200/70 pt-4">
             <div className="m-4">
-              <p className="text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
+              <p className="text-xs font-semibold text-slate-900 dark:text-[#F5F5F4] uppercase tracking-wide mb-2">
                 {t("nav.youAre")}
               </p>
               <div className="grid grid-cols-2 gap-2 mb-3">
@@ -588,24 +596,24 @@ export function Navigation() {
                   className={cn(
                     "flex flex-col items-center gap-1.5 py-3 rounded-lg border transition-all cursor-pointer",
                     selectedProfile === "client"
-                      ? "border-teal-500 bg-teal-50"
-                      : "border-slate-200 bg-white"
+                      ? "border-teal-500 dark:border-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E]"
+                      : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#0b1210]"
                   )}
                 >
                   <User
                     className={cn(
                       "w-5 h-5",
                       selectedProfile === "client"
-                        ? "text-teal-600"
-                        : "text-slate-400"
+                        ? "text-teal-600 dark:text-[#6fcf9f]"
+                        : "text-slate-400 dark:text-[#7A7A78]"
                     )}
                   />
                   <span
                     className={cn(
                       "text-xs font-medium",
                       selectedProfile === "client"
-                        ? "text-teal-700"
-                        : "text-slate-600"
+                        ? "text-teal-700 dark:text-[#6fcf9f]"
+                        : "text-slate-600 dark:text-[#E8E8E6]"
                     )}
                   >
                     {t("nav.client")}
@@ -616,24 +624,24 @@ export function Navigation() {
                   className={cn(
                     "flex flex-col items-center gap-1.5 py-3 rounded-lg border transition-all cursor-pointer",
                     selectedProfile === "professional"
-                      ? "border-teal-500 bg-teal-50"
-                      : "border-slate-200 bg-white"
+                      ? "border-teal-500 dark:border-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E]"
+                      : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#0b1210]"
                   )}
                 >
                   <Briefcase
                     className={cn(
                       "w-5 h-5",
                       selectedProfile === "professional"
-                        ? "text-teal-600"
-                        : "text-slate-400"
+                        ? "text-teal-600 dark:text-[#6fcf9f]"
+                        : "text-slate-400 dark:text-[#7A7A78]"
                     )}
                   />
                   <span
                     className={cn(
                       "text-xs font-medium",
                       selectedProfile === "professional"
-                        ? "text-teal-700"
-                        : "text-slate-600"
+                        ? "text-teal-700 dark:text-[#6fcf9f]"
+                        : "text-slate-600 dark:text-[#E8E8E6]"
                     )}
                   >
                     {t("nav.professional")}
@@ -649,7 +657,7 @@ export function Navigation() {
                       : "/auth/lawyer/login"
                   }
                   onClick={() => setIsOpen(false)}
-                  className="flex-1 text-center py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold transition-all"
+                  className="flex-1 text-center py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white text-sm font-semibold transition-all"
                 >
                   {t("nav.loginTab")}
                 </Link>
@@ -660,7 +668,7 @@ export function Navigation() {
                       : "/auth/lawyer/register"
                   }
                   onClick={() => setIsOpen(false)}
-                  className="flex-1 text-center py-2.5 rounded-lg border border-slate-200 bg-white hover:border-teal-500 hover:bg-teal-50/30 text-slate-700 text-sm font-semibold transition-all"
+                  className="flex-1 text-center py-2.5 rounded-lg border border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#0b1210] hover:border-teal-500 dark:hover:border-[#6fcf9f] hover:bg-teal-50/30 dark:hover:bg-[#1F3D2E] text-slate-700 dark:text-[#E8E8E6] text-sm font-semibold transition-all"
                 >
                   {t("nav.signupTab")}
                 </Link>

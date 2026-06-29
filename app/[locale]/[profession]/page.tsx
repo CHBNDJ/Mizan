@@ -94,7 +94,7 @@ function TopProsSection({
         <div className="text-center">
           <button
             onClick={handleSearch}
-            className="inline-flex items-center gap-2 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] font-medium cursor-pointer text-sm"
+            className="inline-flex items-center gap-2 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] font-medium cursor-pointer text-sm"
           >
             {t("professionLanding.seeAllPlural", { plural })}{" "}
             <ChevronRight className="w-4 h-4" />
@@ -208,7 +208,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
       <section className="px-4 py-10 sm:py-14">
         <div className="max-w-6xl mx-auto">
           <Link href="/">
-            <button className="inline-flex items-center gap-1.5 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] text-sm font-medium mb-6 sm:mb-8 cursor-pointer transition-colors">
+            <button className="inline-flex items-center gap-1.5 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] text-sm font-medium mb-6 sm:mb-8 cursor-pointer transition-colors">
               <ArrowLeft className="w-4 h-4" />
             </button>
           </Link>
@@ -303,7 +303,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                   <p className="text-xs text-teal-700 dark:text-[#6fcf9f] leading-relaxed mb-3">
                     {t("professionLanding.whyChooseDesc")}
                   </p>
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] group-hover:text-teal-700 dark:group-hover:text-[#5db98a]">
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] group-hover:text-teal-700 dark:group-hover:text-[#6fcf9f]">
                     {t("professionLanding.learnMore")}{" "}
                     <ChevronRight className="w-3.5 h-3.5" />
                   </span>

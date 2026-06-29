@@ -222,7 +222,7 @@ export default function ClientLoginPage() {
               </label>
               <Link
                 href="/auth/client/forgot-password"
-                className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] transition-colors font-medium text-start sm:text-end"
+                className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] transition-colors font-medium text-start sm:text-end"
               >
                 {t("auth.clientLogin.forgotPassword")}
               </Link>
@@ -251,7 +251,7 @@ export default function ClientLoginPage() {
               </span>
               <Link
                 href="/auth/client/register"
-                className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] font-medium transition-colors sm:ms-1"
+                className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] font-medium transition-colors sm:ms-1"
               >
                 {t("auth.clientLogin.createAccount")}
               </Link>

@@ -386,7 +386,7 @@ export default function ClientRegisterPage() {
             </span>
             <Link
               href="/auth/client/login"
-              className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] font-medium"
+              className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] font-medium"
             >
               {t("auth.clientRegister.login")}
             </Link>

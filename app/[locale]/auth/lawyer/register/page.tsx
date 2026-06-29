@@ -1035,7 +1035,7 @@ export default function LawyerRegisterPage() {
           </span>
           <Link
             href="/auth/lawyer/login"
-            className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] font-medium"
+            className="text-sm text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] font-medium"
           >
             {t("auth.lawyerRegister.login")}
           </Link>

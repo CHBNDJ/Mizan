@@ -440,7 +440,7 @@ function MesConsultationsContent() {
 
   if (loading)
     return (
-      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
         <div className="max-w-6xl mx-auto px-4 py-8 space-y-4">
           <div className="h-8 bg-slate-200 rounded-xl animate-pulse w-48" />
           {[...Array(3)].map((_, i) => (
@@ -454,25 +454,25 @@ function MesConsultationsContent() {
     );
 
   const ChatPanel = () => (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col h-[600px]">
-      <div className="p-5 bg-gradient-to-r from-teal-50 to-white border-b border-slate-200">
+    <div className="bg-white dark:bg-[#0b1210] rounded-xl shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220] flex flex-col h-[600px]">
+      <div className="p-5 bg-gradient-to-r from-teal-50 to-white border-b border-slate-200 dark:border-[#1c2220]">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowChat(false)}
             className="lg:hidden p-1.5 rounded-lg hover:bg-slate-100 cursor-pointer flex-shrink-0"
           >
-            <ArrowLeft className="w-5 h-5 text-slate-600" />
+            <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-[#E8E8E6]" />
           </button>
-          <div className="w-10 h-10 bg-teal-600 rounded-lg flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 bg-teal-600 dark:bg-[#0F6E56] rounded-lg flex items-center justify-center flex-shrink-0">
             <User className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-slate-900 truncate">
+            <h3 className="font-semibold text-slate-900 dark:text-[#F5F5F4] truncate">
               {t("mesConsultations.lawyerPrefix")}{" "}
               {selectedConsultation!.lawyer.first_name}{" "}
               {selectedConsultation!.lawyer.last_name}
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
               {formatDate(selectedConsultation!.created_at)}
             </p>
           </div>
@@ -491,7 +491,7 @@ function MesConsultationsContent() {
                 )
               }
               disabled={archiving === selectedConsultation!.id}
-              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 cursor-pointer"
+              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6] cursor-pointer"
               title={
                 (selectedConsultation as any).archived_at
                   ? t("consultShared.unarchive")
@@ -509,7 +509,7 @@ function MesConsultationsContent() {
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
               <MessageSquare className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-              <p className="text-slate-500 font-medium">
+              <p className="text-slate-500 dark:text-[#A8A8A6] font-medium">
                 {t("consultShared.noMessages")}
               </p>
             </div>
@@ -522,7 +522,7 @@ function MesConsultationsContent() {
                 className={`flex ${message.sender_type === "client" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[75%] rounded-xl p-3.5 ${message.sender_type === "client" ? "bg-teal-600 text-white" : "bg-slate-100 text-slate-900"}`}
+                  className={`max-w-[75%] rounded-xl p-3.5 ${message.sender_type === "client" ? "bg-teal-600 dark:bg-[#0F6E56] text-white" : "bg-slate-100 text-slate-900 dark:text-[#F5F5F4]"}`}
                 >
                   {message.message && (
                     <p className="text-sm whitespace-pre-wrap leading-relaxed">
@@ -547,7 +547,7 @@ function MesConsultationsContent() {
                           href={message.attachment_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-2 bg-white/10 rounded p-2 hover:bg-white/20"
+                          className="flex items-center gap-2 bg-white dark:bg-[#0b1210]/10 rounded p-2 hover:bg-white/20"
                         >
                           <span>📄</span>
                           <span className="text-sm underline">
@@ -560,7 +560,7 @@ function MesConsultationsContent() {
                   )}
                   <div className="flex items-center gap-1.5 justify-end mt-2 pt-1.5 border-t border-white/10">
                     <p
-                      className={`text-xs ${message.sender_type === "client" ? "text-teal-100" : "text-slate-500"}`}
+                      className={`text-xs ${message.sender_type === "client" ? "text-teal-100" : "text-slate-500 dark:text-[#A8A8A6]"}`}
                     >
                       {formatTime(message.created_at)}
                     </p>
@@ -589,7 +589,7 @@ function MesConsultationsContent() {
                       />
                     ))}
                   </div>
-                  <span className="text-xs text-slate-500">
+                  <span className="text-xs text-slate-500 dark:text-[#A8A8A6]">
                     {t("mesConsultations.lawyerTyping")}
                   </span>
                 </div>
@@ -600,7 +600,7 @@ function MesConsultationsContent() {
         )}
       </div>
 
-      <div className="p-4 border-t border-slate-200">
+      <div className="p-4 border-t border-slate-200 dark:border-[#1c2220]">
         {selectedFile && (
           <div className="mb-3 bg-slate-50 rounded-lg p-2.5 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -608,10 +608,10 @@ function MesConsultationsContent() {
                 {selectedFile.type.startsWith("image/") ? "🖼️" : "📄"}
               </span>
               <div>
-                <p className="text-xs font-medium text-slate-900">
+                <p className="text-xs font-medium text-slate-900 dark:text-[#F5F5F4]">
                   {selectedFile.name}
                 </p>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
                   {(selectedFile.size / 1024).toFixed(0)} KB
                 </p>
               </div>
@@ -634,7 +634,7 @@ function MesConsultationsContent() {
           />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="cursor-pointer px-3 border border-slate-200 rounded-lg hover:border-teal-400 hover:bg-teal-50"
+            className="cursor-pointer px-3 border border-slate-200 dark:border-[#1c2220] rounded-lg hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f]"
             disabled={isSending || uploading}
           >
             📎
@@ -667,7 +667,7 @@ function MesConsultationsContent() {
               }
             }}
             placeholder={t("consultShared.messagePlaceholder")}
-            className="w-full h-14 px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-300 outline-none text-slate-700 resize-none"
+            className="w-full h-14 px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white dark:bg-[#0b1210] focus:border-teal-300 outline-none text-slate-700 dark:text-[#E8E8E6] resize-none"
             rows={2}
           />
           <button
@@ -675,7 +675,7 @@ function MesConsultationsContent() {
             disabled={
               (!newMessage.trim() && !selectedFile) || isSending || uploading
             }
-            className="cursor-pointer px-4 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50"
+            className="cursor-pointer px-4 bg-teal-600 dark:bg-[#0F6E56] text-white rounded-lg hover:bg-teal-700 dark:hover:bg-[#085041] disabled:opacity-50"
           >
             {isSending || uploading ? (
               <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
@@ -689,14 +689,14 @@ function MesConsultationsContent() {
   );
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <style>{`.page-header,.page-subtitle,.consultations-list,.chat-container{opacity:0;}`}</style>
       <div className="max-w-6xl mx-auto px-4 py-8" ref={containerRef}>
         <div className="mb-6">
-          <h1 className="page-header text-2xl sm:text-3xl font-bold text-slate-900 mb-1">
+          <h1 className="page-header text-2xl sm:text-3xl font-bold text-slate-900 dark:text-[#F5F5F4] mb-1">
             {t("mesConsultations.title")}
           </h1>
-          <p className="page-subtitle text-slate-600 text-sm sm:text-base">
+          <p className="page-subtitle text-slate-600 dark:text-[#E8E8E6] text-sm sm:text-base">
             {t("mesConsultations.subtitle")}
           </p>
         </div>
@@ -709,17 +709,17 @@ function MesConsultationsContent() {
         )}
 
         {consultations.length === 0 ? (
-          <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-slate-200">
+          <div className="bg-white dark:bg-[#0b1210] rounded-2xl p-12 text-center shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220]">
             <MessageSquare className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-slate-800 mb-2">
+            <h3 className="text-xl font-semibold text-slate-800 dark:text-[#F5F5F4] mb-2">
               {t("mesConsultations.emptyTitle")}
             </h3>
-            <p className="text-slate-600 mb-6">
+            <p className="text-slate-600 dark:text-[#E8E8E6] mb-6">
               {t("mesConsultations.emptyDesc")}
             </p>
             <button
               onClick={() => router.push("/search")}
-              className="cursor-pointer bg-teal-600 text-white px-6 py-3 rounded-xl hover:bg-teal-700 font-medium text-sm"
+              className="cursor-pointer bg-teal-600 dark:bg-[#0F6E56] text-white px-6 py-3 rounded-xl hover:bg-teal-700 dark:hover:bg-[#085041] font-medium text-sm"
             >
               {t("mesConsultations.findLawyer")}
             </button>
@@ -752,12 +752,12 @@ function MesConsultationsContent() {
                   <button
                     key={tab.key}
                     onClick={() => setTabFilter(tab.key as TabFilter)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium cursor-pointer ${tabFilter === tab.key ? "bg-teal-600 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium cursor-pointer ${tabFilter === tab.key ? "bg-teal-600 dark:bg-[#0F6E56] text-white" : "bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] hover:bg-slate-50"}`}
                   >
                     <Icon className="w-3.5 h-3.5" />
                     {tab.label}
                     <span
-                      className={`text-xs px-1.5 py-0.5 rounded-full ${tabFilter === tab.key ? "bg-white/20" : "bg-slate-100"}`}
+                      className={`text-xs px-1.5 py-0.5 rounded-full ${tabFilter === tab.key ? "bg-white dark:bg-[#0b1210]/20" : "bg-slate-100"}`}
                     >
                       {tab.count}
                     </span>
@@ -771,9 +771,9 @@ function MesConsultationsContent() {
                 className={`consultations-list space-y-3 ${showChat ? "hidden lg:block" : "block"}`}
               >
                 {filteredConsultations.length === 0 ? (
-                  <div className="bg-white rounded-xl p-8 text-center border border-slate-200">
+                  <div className="bg-white dark:bg-[#0b1210] rounded-xl p-8 text-center border border-slate-200 dark:border-[#1c2220]">
                     <Archive className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-                    <p className="text-slate-500 text-sm">
+                    <p className="text-slate-500 dark:text-[#A8A8A6] text-sm">
                       {tabFilter === "archived"
                         ? t("consultShared.noArchived")
                         : t("consultShared.noActive")}
@@ -784,39 +784,39 @@ function MesConsultationsContent() {
                     <div
                       key={consultation.id}
                       onClick={() => handleSelectConsultation(consultation)}
-                      className={`cursor-pointer bg-white rounded-xl p-4 border-2 transition-all hover:shadow-md relative ${selectedConsultation?.id === consultation.id ? "border-teal-500 shadow-md" : "border-slate-200 hover:border-teal-300"} ${(consultation as any).archived_at ? "opacity-70" : ""}`}
+                      className={`cursor-pointer bg-white dark:bg-[#0b1210] rounded-xl p-4 border-2 transition-all hover:shadow-md relative ${selectedConsultation?.id === consultation.id ? "border-teal-500 shadow-md dark:shadow-none" : "border-slate-200 dark:border-[#1c2220] hover:border-teal-300 dark:hover:border-[#6fcf9f]"} ${(consultation as any).archived_at ? "opacity-70" : ""}`}
                     >
                       {(consultation.unread_count ?? 0) > 0 && (
-                        <div className="absolute -top-2 -end-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
+                        <div className="absolute -top-2 -end-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg dark:shadow-none">
                           {consultation.unread_count}
                         </div>
                       )}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 flex-1 min-w-0">
-                          <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <User className="w-5 h-5 text-teal-600" />
+                          <div className="w-10 h-10 bg-teal-100 dark:bg-[#1F3D2E] rounded-lg flex items-center justify-center flex-shrink-0">
+                            <User className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <h3 className="font-semibold text-slate-900 text-sm truncate">
+                            <h3 className="font-semibold text-slate-900 dark:text-[#F5F5F4] text-sm truncate">
                               {t("mesConsultations.lawyerPrefix")}{" "}
                               {consultation.lawyer.first_name}{" "}
                               {consultation.lawyer.last_name}
                             </h3>
                             <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                              <p className="text-xs text-slate-500 flex items-center gap-1">
+                              <p className="text-xs text-slate-500 dark:text-[#A8A8A6] flex items-center gap-1">
                                 <Calendar className="w-3 h-3" />
                                 {formatDate(consultation.created_at)}
                               </p>
                               {isVideoConsultation(
                                 (consultation as any).subject
                               ) && (
-                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 bg-teal-50 px-1.5 py-0.5 rounded-full border border-teal-100">
+                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E] px-1.5 py-0.5 rounded-full border border-teal-100 dark:border-[#1F3D2E]">
                                   <Video className="w-2.5 h-2.5" />{" "}
                                   {t("consultShared.videoLabel")}
                                 </span>
                               )}
                               {(consultation as any).archived_at && (
-                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-full">
+                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-500 dark:text-[#A8A8A6] bg-slate-100 px-1.5 py-0.5 rounded-full">
                                   <Archive className="w-2.5 h-2.5" />{" "}
                                   {t("consultShared.archivedLabel")}
                                 </span>
@@ -829,7 +829,7 @@ function MesConsultationsContent() {
                                 isPhoneConsultation(
                                   (consultation as any).subject
                                 )) && (
-                                <div className="flex items-center gap-1 mt-1.5 text-teal-700 bg-teal-50 border border-teal-100 rounded-lg px-2 py-1 w-fit">
+                                <div className="flex items-center gap-1 mt-1.5 text-teal-700 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-lg px-2 py-1 w-fit">
                                   <Calendar className="w-3 h-3 flex-shrink-0" />
                                   <span className="text-[11px] font-medium">
                                     {formatScheduled(
@@ -843,7 +843,7 @@ function MesConsultationsContent() {
                         <div className="flex items-center gap-2 flex-shrink-0 ms-2">
                           {consultation.status === "answered" &&
                             (consultation.unread_count ?? 0) === 0 && (
-                              <CheckCircle className="w-5 h-5 text-teal-600" />
+                              <CheckCircle className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
                             )}
                           <button
                             onClick={(e) => {
@@ -854,7 +854,7 @@ function MesConsultationsContent() {
                               );
                             }}
                             disabled={archiving === consultation.id}
-                            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 cursor-pointer"
+                            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6] cursor-pointer"
                           >
                             {archiving === consultation.id ? (
                               <div className="w-4 h-4 animate-spin rounded-full border-2 border-slate-400 border-t-transparent" />
@@ -877,7 +877,7 @@ function MesConsultationsContent() {
                 ) : (
                   <div className="hidden lg:flex bg-slate-50 rounded-xl p-12 text-center border-2 border-dashed border-slate-300 flex-col items-center">
                     <MessageSquare className="w-12 h-12 text-slate-300 mb-3" />
-                    <p className="text-slate-500 font-medium">
+                    <p className="text-slate-500 dark:text-[#A8A8A6] font-medium">
                       {t("mesConsultations.selectPrompt")}
                     </p>
                   </div>
@@ -898,7 +898,7 @@ export default function MesConsultationsPage() {
     <Suspense
       fallback={
         <div className="min-h-screen pt-16 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-teal-600" />
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-teal-600 dark:border-[#6fcf9f]" />
         </div>
       }
     >

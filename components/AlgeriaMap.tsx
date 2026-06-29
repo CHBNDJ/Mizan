@@ -143,7 +143,7 @@ export function AlgeriaMap({
 
   return (
     <div className="w-full select-none">
-      <p className="text-xs font-semibold text-slate-600 mb-2">
+      <p className="text-xs font-semibold text-slate-600 dark:text-[#E8E8E6] mb-2">
         {isLanding
           ? t("algeriaMap.clickToSearch")
           : t("algeriaMap.selectWilaya")}
@@ -151,7 +151,7 @@ export function AlgeriaMap({
 
       <div
         ref={containerRef}
-        className="relative w-full rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50"
+        className="relative w-full rounded-xl overflow-hidden border border-slate-200 dark:border-[#1c2220] shadow-sm dark:shadow-none bg-slate-50 dark:bg-[#0b1210]"
         style={{ paddingBottom: "97%" }}
         onMouseMove={onMouseMove}
         onMouseLeave={() => setHovered(null)}
@@ -159,7 +159,7 @@ export function AlgeriaMap({
       >
         {!loaded && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-teal-500 dark:border-[#6fcf9f] border-t-transparent rounded-full animate-spin" />
           </div>
         )}
         {loaded && svgContent && (
@@ -173,6 +173,9 @@ export function AlgeriaMap({
                 #algeria-real-map path {
                   fill: #d1fae5; stroke: #ffffff; stroke-width: 12;
                   transition: fill 0.12s ease;
+                }
+                .dark #algeria-real-map path {
+                  fill: #1F3D2E; stroke: #0a0e0d; stroke-width: 12;
                 }
               `}</style>
             </defs>
@@ -191,12 +194,14 @@ export function AlgeriaMap({
           <style>{`
             ${selId ? `${cssId(selId)}  { fill: #0d9488 !important; stroke: #0f766e !important; stroke-width: 18 !important; }` : ""}
             ${hovered && hovered !== selId ? `${cssId(hovered)} { fill: #5eead4 !important; }` : ""}
+            .dark ${selId ? `${cssId(selId)}  { fill: #6fcf9f !important; stroke: #0F6E56 !important; stroke-width: 18 !important; }` : ""}
+            .dark ${hovered && hovered !== selId ? `${cssId(hovered)} { fill: #6fcf9f !important; }` : ""}
           `}</style>
         )}
 
         {hovered && WILAYA_NAMES[hovered] && (
           <div
-            className="absolute pointer-events-none z-10 bg-white border border-teal-200 text-teal-800 text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow-md whitespace-nowrap"
+            className="absolute pointer-events-none z-10 bg-white dark:bg-[#0b1210] border border-teal-200 dark:border-[#1F3D2E] text-teal-800 dark:text-[#6fcf9f] text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow-md dark:shadow-none whitespace-nowrap"
             style={{
               left: Math.min(
                 tooltipPos.x + 12,
@@ -207,7 +212,7 @@ export function AlgeriaMap({
           >
             {getWilayaLabel(WILAYA_NAMES[hovered], t)}
             {isLanding && (
-              <span className="ms-1 text-teal-400 text-[10px]">
+              <span className="ms-1 text-teal-400 dark:text-[#6fcf9f] text-[10px]">
                 {t("algeriaMap.goSearch")}
               </span>
             )}
@@ -218,22 +223,22 @@ export function AlgeriaMap({
       {!isLanding &&
         !hideBar &&
         (selectedWilaya ? (
-          <div className="mt-2 flex items-center justify-between bg-teal-50 border border-teal-200 rounded-xl px-4 py-2.5">
+          <div className="mt-2 flex items-center justify-between bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] rounded-xl px-4 py-2.5">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-teal-600" />
-              <span className="text-sm font-semibold text-teal-700">
+              <div className="w-2 h-2 rounded-full bg-teal-600 dark:bg-[#6fcf9f]" />
+              <span className="text-sm font-semibold text-teal-700 dark:text-[#6fcf9f]">
                 {getWilayaLabel(selectedWilaya, t)}
               </span>
             </div>
             <button
               onClick={() => onSelect("")}
-              className="text-xs text-teal-400 hover:text-teal-600 cursor-pointer font-medium"
+              className="text-xs text-teal-400 dark:text-[#6fcf9f] hover:text-teal-600 dark:hover:text-[#6fcf9f] cursor-pointer font-medium"
             >
               {t("algeriaMap.clear")}
             </button>
           </div>
         ) : (
-          <p className="text-xs text-slate-400 text-center mt-2">
+          <p className="text-xs text-slate-400 dark:text-[#7A7A78] text-center mt-2">
             {t("algeriaMap.clickToFilter")}
           </p>
         ))}

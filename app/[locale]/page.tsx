@@ -277,7 +277,7 @@ export default function HomePage() {
       <section className="px-4 pb-4 pt-0">
         <div className="max-w-5xl mx-auto text-center">
           <Link href="/professions" className="prof-roles-link inline-block">
-            <span className="text-xs font-medium text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] cursor-pointer transition-colors">
+            <span className="text-xs font-medium text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] cursor-pointer transition-colors">
               {t("home.profLink")}
             </span>
           </Link>
@@ -356,7 +356,7 @@ export default function HomePage() {
             <div className="text-center">
               <button
                 onClick={() => router.push("/search")}
-                className="text-teal-600 dark:text-[#6fcf9f] inline-flex items-center gap-1.5 hover:text-teal-700 dark:hover:text-[#5db98a] cursor-pointer text-sm font-medium"
+                className="text-teal-600 dark:text-[#6fcf9f] inline-flex items-center gap-1.5 hover:text-teal-700 dark:hover:text-[#6fcf9f] cursor-pointer text-sm font-medium"
               >
                 {t("home.topRated.seeAll")} <ArrowRight className="w-4 h-4" />
               </button>

@@ -113,7 +113,7 @@ export default function ProfessionPage() {
       <div className="max-w-3xl mx-auto px-4 py-10">
         <button
           onClick={() => router.back()}
-          className="inline-flex items-center gap-1.5 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] mb-8 text-sm font-medium cursor-pointer transition-colors"
+          className="inline-flex items-center gap-1.5 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] mb-8 text-sm font-medium cursor-pointer transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
         </button>

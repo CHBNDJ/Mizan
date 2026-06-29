@@ -305,7 +305,7 @@ function SearchResults() {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
           <div className="flex items-center gap-1.5 sm:gap-2 mb-2 flex-wrap">
             <Link href={`/${professionParam}`}>
-              <button className="flex items-center gap-1 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#5db98a] text-xs sm:text-sm font-medium cursor-pointer me-1 sm:me-2">
+              <button className="flex items-center gap-1 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] text-xs sm:text-sm font-medium cursor-pointer me-1 sm:me-2">
                 <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span className="hidden sm:inline capitalize">
                   {currentProf.label}
