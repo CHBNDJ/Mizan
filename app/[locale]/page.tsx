@@ -440,7 +440,7 @@ export default function HomePage() {
             <div className="mt-auto flex justify-center sm:justify-start">
               <button
                 onClick={() => router.push("/search")}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white font-semibold rounded-xl cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] hover:border-teal-400 dark:hover:border-[#6fcf9f] font-semibold rounded-xl cursor-pointer transition-all text-sm"
               >
                 {t("home.ctaClient.action")}{" "}
                 <ChevronRight className="w-4 h-4" />
@@ -456,7 +456,7 @@ export default function HomePage() {
             </p>
             <div className="mt-auto flex justify-center sm:justify-start">
               <Link href="/auth/lawyer/register">
-                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 dark:bg-[#6fcf9f]/10 dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer">
+                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#6fcf9f]/20 text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] hover:border-teal-400 dark:hover:border-[#6fcf9f] font-semibold rounded-xl cursor-pointer transition-all text-sm">
                   {t("home.ctaLawyer.action")}{" "}
                   <ChevronRight className="w-4 h-4" />
                 </button>
