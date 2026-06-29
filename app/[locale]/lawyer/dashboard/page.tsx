@@ -464,11 +464,14 @@ export default function LawyerDashboardPage() {
               </div>
               <button
                 onClick={() => toggleAvailableNow(!availableNow)}
-                className="relative w-11 h-6 rounded-full flex-shrink-0 cursor-pointer transition-colors"
-                style={{ background: availableNow ? "#0D9488" : "#CBD5E1" }}
+                className={`relative w-11 h-6 rounded-full flex-shrink-0 cursor-pointer transition-colors ${
+                  availableNow
+                    ? "bg-teal-600 dark:bg-[#0F6E56]"
+                    : "bg-slate-300 dark:bg-[#3a3a3d]"
+                }`}
               >
                 <span
-                  className="absolute top-0.5 w-5 h-5 bg-white dark:bg-[#1c1c1e] rounded-full shadow dark:shadow-none transition-all"
+                  className="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all"
                   style={{ insetInlineStart: availableNow ? "22px" : "2px" }}
                 />
               </button>

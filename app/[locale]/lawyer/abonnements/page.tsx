@@ -98,17 +98,22 @@ export default function AbonnementsPage() {
           cursor: pointer;
         }
         .plan-card:not(.selected):hover {
-          box-shadow dark:shadow-none: 0 12px 32px rgba(13,148,136,0.12) !important;
+          box-shadow: 0 12px 32px rgba(13,148,136,0.12);
           border-color: rgba(13,148,136,0.3) !important;
           transform: translateY(-6px);
         }
+        .dark .plan-card:not(.selected):hover {
+          box-shadow: none;
+          border-color: rgba(111,207,159,0.4) !important;
+        }
         .plan-card.selected {
           background: #0D9488 !important;
-          box-shadow dark:shadow-none: 0 12px 36px rgba(13,148,136,0.25) !important;
+          box-shadow: 0 12px 36px rgba(13,148,136,0.25);
           transform: translateY(-4px);
         }
         .dark .plan-card.selected {
           background: #0F6E56 !important;
+          box-shadow: none;
         }
         .dark .plan-card-mobile {
           background: linear-gradient(135deg, #0F6E56 0%, #085041 100%) !important;
@@ -223,8 +228,8 @@ export default function AbonnementsPage() {
                 key={p.id}
                 className={`plan-card relative rounded-3xl p-8 flex flex-col border-2 ${
                   on
-                    ? "selected shadow-lg dark:shadow-none shadow-teal-500/20"
-                    : "bg-white dark:bg-[#1c1c1e] shadow-md dark:shadow-none shadow-slate-200/80"
+                    ? "selected border-teal-500 dark:border-[#6fcf9f] shadow-lg dark:shadow-none shadow-teal-500/20"
+                    : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e] shadow-md dark:shadow-none shadow-slate-200/80"
                 }`}
                 onClick={() => setSelected(p.id)}
               >

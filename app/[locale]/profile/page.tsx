@@ -426,7 +426,7 @@ function ProfilePageContent() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
-            <div className="profile-card bg-white dark:bg-[#1c1c1e] rounded-lg p-6 shadow-sm dark:shadow-none border">
+            <div className="profile-card bg-white dark:bg-[#1c1c1e] rounded-lg p-6 shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220]">
               <div className="text-center">
                 <div className="relative w-24 h-24 mx-auto mb-2 group">
                   {avatarUrl ? (
@@ -559,7 +559,7 @@ function ProfilePageContent() {
           </div>
 
           <div className="lg:col-span-2">
-            <div className="info-card bg-white dark:bg-[#1c1c1e] rounded-lg p-6 shadow-sm dark:shadow-none border">
+            <div className="info-card bg-white dark:bg-[#1c1c1e] rounded-lg p-6 shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220]">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <h3 className="text-lg font-semibold text-slate-800 dark:text-[#F5F5F4]">
                   {t("myProfile.personalInfoTitle")}

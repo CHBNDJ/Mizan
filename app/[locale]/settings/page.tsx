@@ -239,7 +239,7 @@ export default function SettingsPage() {
             </p>
           </div>
 
-          <div className="settings-section bg-white dark:bg-[#1c1c1e] rounded-lg shadow-sm dark:shadow-none border p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="settings-section bg-white dark:bg-[#1c1c1e] rounded-lg shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220] p-4 sm:p-6 mb-4 sm:mb-6">
             <h2 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-[#F5F5F4] flex items-center gap-2 mb-4">
               <Bell className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />{" "}
               {t("notificationsTitle")}
@@ -259,7 +259,7 @@ export default function SettingsPage() {
             </p>
           </div>
 
-          <div className="settings-section bg-white dark:bg-[#1c1c1e] rounded-lg shadow-sm dark:shadow-none border p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="settings-section bg-white dark:bg-[#1c1c1e] rounded-lg shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220] p-4 sm:p-6 mb-4 sm:mb-6">
             <h2 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-[#F5F5F4] mb-4 flex items-center gap-2">
               <Shield className="w-5 h-5 text-green-600" /> {t("privacyTitle")}
             </h2>
