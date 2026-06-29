@@ -1379,331 +1379,105 @@
   "cguPage": {
     "back": "Retour",
     "title": "Conditions Générales d'Utilisation",
-    "lastUpdate": "Dernière mise à jour : {date}",
     "s1": {
-      "title": "1. Objet et nature du site",
-      "p1": "MIZAN est une plateforme en ligne qui met en relation des clients avec des experts juridiques et comptables vérifiés en Algérie : avocats, notaires, huissiers de justice et comptables. La plateforme facilite la recherche, la consultation et la communication entre les parties, sans se substituer aux professionnels dans l'exercice de leur profession.",
-      "boxTitle": "Distinction avec les registres officiels",
-      "boxP1": "Important : MIZAN n'est pas le tableau officiel de l'Ordre des avocats tel que prévu par la loi n° 13-07 du 29 juillet 2013. MIZAN ne prétend pas remplacer les registres officiels des ordres professionnels algériens (barreau, chambre des notaires, ordre des huissiers, ONEC/ONCA).",
-      "boxP2": "Les informations publiées sur MIZAN constituent un service complémentaire d'annuaire et ne sauraient avoir la même valeur juridique que les registres officiels."
+      "title": "Objet",
+      "p1": "MIZAN est une plateforme qui met en relation des clients avec des avocats, notaires, huissiers et comptables en Algérie. MIZAN facilite la recherche et le contact entre les parties, sans se substituer aux professionnels dans l'exercice de leur métier.",
+      "box": "MIZAN n'est pas le tableau officiel de l'Ordre des avocats ni un registre officiel d'un ordre professionnel. C'est un service complémentaire de mise en relation."
     },
     "s2": {
-      "title": "2. Acceptation des conditions",
-      "p1": "L'utilisation de MIZAN implique l'acceptation pleine et entière des présentes conditions générales. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser la plateforme."
+      "title": "Inscription",
+      "p1": "L'inscription des clients est gratuite et libre. Les professionnels qui créent un profil doivent exercer légalement en Algérie et s'engagent à fournir des informations exactes. De nombreux professionnels présents sur MIZAN gèrent eux-mêmes leur profil et sont déjà en contact direct avec leurs clients en dehors de la plateforme."
     },
     "s3": {
-      "title": "3. Inscription et compte utilisateur",
-      "clientsTitle": "Pour les clients :",
-      "clients": [
-        "L'inscription est gratuite et libre",
-        "Vous devez fournir des informations exactes et à jour",
-        "Vous êtes responsable de la confidentialité de votre mot de passe"
-      ],
-      "prosTitle": "Pour les professionnels (avocats, notaires, huissiers, comptables) :",
-      "pros": [
-        "Vous devez exercer légalement votre profession en Algérie",
-        "Vous devez fournir les documents prouvant votre qualité professionnelle (numéro de barreau, chambre des notaires, N° d'huissier ou agrément ONEC/ONCA)",
-        "Votre profil sera vérifié avant activation",
-        "Vous vous engagez à respecter la déontologie et les règles de votre profession"
-      ]
+      "title": "Services proposés",
+      "p1": "Recherche de professionnels, consultation de profils, messagerie pour échanger directement, et possibilité de laisser un avis après une consultation."
     },
     "s4": {
-      "title": "4. Services proposés",
-      "items": [
-        "Recherche de professionnels par domaine d'intervention et wilaya",
-        "Consultation des profils professionnels vérifiés",
-        "Envoi de demandes de consultation",
-        "Système de messagerie sécurisée",
-        "Publication d'avis clients (soumis à modération)"
-      ]
+      "title": "Responsabilités",
+      "p1": "MIZAN agit uniquement comme intermédiaire de mise en relation. MIZAN ne sélectionne pas, ne recommande pas et n'évalue pas les professionnels, et ne peut être tenu responsable de la qualité des services rendus, des conseils donnés ou des honoraires pratiqués. Chaque utilisateur est responsable de son choix de professionnel."
     },
     "s5": {
-      "title": "5. Nature et origine des informations publiées",
-      "boxTitle": "Collecte de données professionnelles publiques",
-      "p1": "Les coordonnées et informations des professionnels publiées sur MIZAN proviennent de deux sources :",
-      "aTitle": "A. Professionnels inscrits sur la plateforme",
-      "aP": "Les professionnels qui créent un compte sur MIZAN fournissent volontairement leurs informations et disposent d'un contrôle total sur leur profil.",
-      "bTitle": "B. Données provenant de sources publiques",
-      "bP": "Certaines informations proviennent de sources publiques et accessibles librement sur internet : sites web officiels de cabinets, Google My Business, LinkedIn, annuaires professionnels publics.",
-      "infoTitle": "Information des professionnels",
-      "infoP": "MIZAN s'engage à informer chaque professionnel dont les coordonnées sont publiées, par email ou téléphone."
+      "title": "Bon usage du site",
+      "p1": "Vous vous engagez à utiliser MIZAN de bonne foi : pas d'extraction massive de données, pas d'utilisation des coordonnées à des fins de spam, et pas d'avis faux ou diffamatoires."
     },
     "s6": {
-      "title": "6. Droits des professionnels concernant leurs données",
-      "p1": "Tout professionnel figurant sur MIZAN dispose des droits suivants, qu'il peut exercer à tout moment, gratuitement et sans justification :",
-      "rectifTitle": "Droit de rectification",
-      "rectifP": "Tout professionnel peut demander la correction de ses informations si elles sont inexactes ou obsolètes.",
-      "deleteTitle": "Droit de suppression",
-      "deleteP": "Tout professionnel peut demander le retrait immédiat et complet de ses coordonnées du site, sans justification.",
-      "opposeTitle": "Droit d'opposition",
-      "opposeP": "Tout professionnel peut s'opposer à l'utilisation de ses données pour la mise en relation.",
-      "accessTitle": "Droit d'accès",
-      "accessP": "Tout professionnel peut consulter l'ensemble des informations publiées le concernant sur MIZAN.",
-      "howTitle": "Comment exercer ces droits ?",
-      "email": "Email :",
-      "phone": "Téléphone :",
-      "delay": "Délai de traitement :",
-      "delayValue": "Maximum 15 jours ouvrés"
+      "title": "Modification et suppression de compte",
+      "p1": "Vous pouvez supprimer votre compte à tout moment depuis vos paramètres. MIZAN peut faire évoluer ces conditions ; les changements importants vous seront notifiés par email."
     },
     "s7": {
-      "title": "7. Exactitude et mise à jour",
-      "items": [
-        "La disponibilité des professionnels peut évoluer",
-        "Les coordonnées professionnelles peuvent changer",
-        "Les domaines d'intervention peuvent être mis à jour"
-      ],
-      "p1": "Les utilisateurs sont invités à vérifier directement auprès des professionnels concernés toute information critique avant d'engager une démarche juridique ou comptable."
+      "title": "Droit applicable",
+      "p1": "Ces conditions sont régies par le droit algérien. Tout litige relève de la compétence exclusive des tribunaux algériens."
     },
     "s8": {
-      "title": "8. Responsabilités",
-      "commitTitle": "MIZAN s'engage à :",
-      "commit": [
-        "Vérifier les qualifications et l'inscription officielle des professionnels",
-        "Maintenir la plateforme en bon état de fonctionnement",
-        "Protéger les données personnelles des utilisateurs",
-        "Modérer les avis publiés",
-        "Traiter rapidement les demandes de rectification ou suppression",
-        "Informer les professionnels de la publication de leurs données"
-      ],
-      "declineTitle": "MIZAN décline toute responsabilité concernant :",
-      "decline": [
-        "La qualité des services fournis par les professionnels",
-        "Les conseils juridiques, notariaux ou comptables donnés",
-        "Les honoraires pratiqués",
-        "Les résultats des procédures entreprises",
-        "Les litiges entre clients et professionnels"
-      ],
-      "importantP": "Important : Le site agit uniquement comme intermédiaire de mise en relation. MIZAN ne sélectionne pas, ne recommande pas et n'évalue pas les professionnels. Chaque utilisateur est responsable de son choix de professionnel."
-    },
-    "s9": {
-      "title": "9. Utilisation du site",
-      "items": [
-        "Utiliser le site de manière loyale et conforme à son objet",
-        "Ne pas tenter d'extraire massivement les données du site (scraping)",
-        "Ne pas utiliser les coordonnées des professionnels à des fins de spam ou de harcèlement",
-        "Respecter la propriété intellectuelle du site",
-        "Ne pas publier de faux avis ou d'avis diffamatoires"
-      ]
-    },
-    "s10": {
-      "title": "10. Propriété intellectuelle",
-      "p1": "L'ensemble des éléments de la plateforme (logo, design, contenu éditorial) sont la propriété exclusive de MIZAN. Toute reproduction, même partielle, est strictement interdite sans autorisation préalable."
-    },
-    "s11": {
-      "title": "11. Modification et résiliation",
-      "p1": "MIZAN se réserve le droit de modifier les présentes conditions à tout moment. Les utilisateurs seront informés par email des modifications importantes. Vous pouvez supprimer votre compte à tout moment depuis les paramètres."
-    },
-    "s12": {
-      "title": "12. Droit applicable et juridiction",
-      "p1": "Les présentes conditions sont régies par le droit algérien. En cas de litige, les tribunaux algériens seront seuls compétents."
-    },
-    "s13": {
-      "title": "13. Contact",
-      "phone": "Téléphone : +33 6 60 25 35 70",
-      "otherRequests": "Pour d'autres demandes :",
+      "title": "Contact",
+      "otherRequests": "Pour toute autre demande, visitez notre",
       "contactPage": "page de contact"
     }
   },
   "privacyPage": {
     "back": "Retour",
     "title": "Politique de Confidentialité",
-    "lastUpdate": "Dernière mise à jour : {date}",
+    "intro": "MIZAN s'engage à protéger la confidentialité de vos données personnelles. Cette page résume simplement comment nous les utilisons.",
     "s1": {
-      "title": "1. Introduction",
-      "p1": "MIZAN s'engage à protéger la confidentialité et la sécurité de vos données personnelles. Cette politique explique comment nous collectons, utilisons et protégeons vos informations.",
-      "p2": "MIZAN s'efforce de respecter la législation algérienne en matière de protection des données personnelles, notamment la loi n° 18-07 du 10 juin 2018 relative à la protection des personnes physiques dans le traitement des données à caractère personnel."
+      "title": "Profils de professionnels",
+      "p1": "Certains profils d'avocats, notaires, huissiers et comptables affichés sur MIZAN proviennent d'informations publiques (sites professionnels, fiches publiques en ligne) ou sont créés directement par le professionnel concerné. Tout professionnel peut demander la correction ou la suppression de ses informations à tout moment, gratuitement, en nous écrivant à"
     },
     "s2": {
-      "title": "2. Données publiques des professionnels (source externe)",
-      "boxTitle": "Collecte de données professionnelles publiques",
-      "p1": "MIZAN collecte et publie des informations professionnelles concernant des avocats, notaires, huissiers et comptables exerçant en Algérie. Ces informations proviennent exclusivement de sources publiques et accessibles librement sur internet, notamment :",
-      "sources": [
-        "Sites web officiels des cabinets d'avocats et études notariales",
-        "Pages professionnelles publiques (Google My Business, LinkedIn, etc.)",
-        "Annuaires professionnels publics en ligne",
-        "Réseaux sociaux professionnels publics",
-        "Publications professionnelles accessibles au public"
-      ],
-      "natureTitle": "Nature des informations collectées",
-      "nature": [
-        "Nom et prénom du professionnel",
-        "Adresse du cabinet ou de l'étude",
-        "Numéro de téléphone professionnel",
-        "Adresse email professionnelle",
-        "Domaines de compétence (si disponibles)",
-        "Langues parlées (si disponibles)",
-        "Numéro professionnel (barreau, chambre des notaires, huissier, ONEC/ONCA si disponible)"
-      ],
-      "useTitle": "Utilisation et finalité",
-      "useP": "Ces données sont utilisées uniquement dans le cadre d'un service d'annuaire professionnel et de mise en relation entre clients et professionnels. Elles ne font l'objet d'aucune exploitation commerciale non autorisée.",
-      "infoTitle": "Information des professionnels concernés",
-      "infoP": "MIZAN s'engage à informer chaque professionnel dont les coordonnées sont publiées sur le site. Les professionnels sont contactés par email ou téléphone pour les informer de la présence de leurs informations sur la plateforme.",
-      "rightsTitle": "Droits des professionnels concernant leurs données",
-      "rightsP": "Tout professionnel figurant sur MIZAN dispose des droits suivants, qu'il peut exercer à tout moment et gratuitement :",
-      "rightRectif": "Droit de rectification : Corriger toute information incorrecte ou obsolète",
-      "rightDelete": "Droit de suppression : Demander le retrait complet de son profil du site",
-      "rightOppose": "Droit d'opposition : S'opposer à l'utilisation de ses données pour la mise en relation",
-      "rightAccess": "Droit d'accès : Consulter l'ensemble des données publiées le concernant",
-      "contact": "Contact :",
-      "delay": "Délai de traitement : 15 jours ouvrés maximum.",
-      "note": "Note importante : Les professionnels qui créent un compte sur MIZAN et revendiquent leur profil bénéficient d'un contrôle total sur leurs informations et peuvent les modifier directement depuis leur espace personnel."
+      "title": "Données des utilisateurs inscrits",
+      "p1": "Lorsque vous créez un compte (client ou professionnel), nous collectons votre nom, votre email et les informations nécessaires au bon fonctionnement de votre espace personnel (localisation, domaines d'intervention, coordonnées professionnelles pour les comptes professionnels)."
     },
     "s3": {
-      "title": "3. Données collectées pour les utilisateurs inscrits",
-      "allTitle": "Pour tous les utilisateurs inscrits :",
-      "all": [
-        "Nom et prénom",
-        "Adresse email",
-        "Mot de passe (crypté)",
-        "Date de création du compte"
-      ],
-      "clientsTitle": "Pour les clients :",
-      "clients": [
-        "Localisation (wilaya ou pays)",
-        "Historique des consultations",
-        "Avis publiés"
-      ],
-      "prosTitle": "Pour les professionnels inscrits (avocats, notaires, huissiers, comptables) :",
-      "pros": [
-        "Numéro professionnel (barreau / chambre des notaires / huissier / ONEC-ONCA)",
-        "Domaines d'intervention",
-        "Coordonnées professionnelles (téléphone, adresse cabinet)",
-        "Documents de vérification (carte professionnelle)",
-        "Informations bancaires (pour paiements futurs)"
-      ]
+      "title": "Utilisation des données",
+      "p1": "Vos données servent uniquement à faire fonctionner la plateforme : créer votre compte, faciliter la mise en relation entre clients et professionnels, et vous envoyer les notifications liées à vos consultations.",
+      "neverSell": "Nous ne vendons jamais vos données à des tiers."
     },
     "s4": {
-      "title": "4. Utilisation des données",
-      "p1": "Vos données sont utilisées uniquement pour :",
-      "items": [
-        "Créer et gérer votre compte",
-        "Faciliter la mise en relation entre clients et professionnels",
-        "Envoyer des notifications importantes (réponses aux consultations)",
-        "Vérifier l'identité et les qualifications des professionnels inscrits",
-        "Améliorer nos services",
-        "Respecter nos obligations légales"
-      ],
-      "neverSell": "Nous ne vendons jamais vos données personnelles à des tiers."
+      "title": "Sécurité",
+      "p1": "Vos mots de passe sont chiffrés, la connexion au site est sécurisée (HTTPS), et les données sont hébergées sur des serveurs sécurisés."
     },
     "s5": {
-      "title": "5. Partage des données",
-      "between": "Entre utilisateurs :",
-      "betweenP": "Les clients voient les informations publiques des profils professionnels. Les professionnels voient le nom et email des clients qui les contactent.",
-      "providers": "Prestataires techniques :",
-      "providersP": "Nous utilisons des prestataires d'hébergement certifiés pour le stockage sécurisé des données.",
-      "legal": "Obligations légales :",
-      "legalP": "En cas de demande judiciaire ou administrative légale."
+      "title": "Vos droits",
+      "p1": "Vous pouvez à tout moment consulter, corriger ou supprimer vos données en nous contactant à"
     },
     "s6": {
-      "title": "6. Sécurité des données",
-      "items": [
-        "Cryptage des mots de passe",
-        "Connexion sécurisée HTTPS",
-        "Hébergement sur serveurs sécurisés certifiés",
-        "Accès limité aux données personnelles",
-        "Sauvegardes régulières"
-      ]
-    },
-    "s7": {
-      "title": "7. Cookies",
-      "p1": "Le site MIZAN utilise des cookies essentiels pour son fonctionnement (authentification, préférences). Nous n'utilisons pas de cookies publicitaires ou de tracking tiers."
-    },
-    "s8": {
-      "title": "8. Vos droits (utilisateurs inscrits)",
-      "access": "Droit d'accès :",
-      "accessP": "Consulter vos données personnelles",
-      "rectif": "Droit de rectification :",
-      "rectifP": "Corriger vos informations",
-      "erase": "Droit à l'effacement :",
-      "eraseP": "Supprimer votre compte",
-      "portability": "Droit de portabilité :",
-      "portabilityP": "Récupérer vos données",
-      "oppose": "Droit d'opposition :",
-      "opposeP": "Refuser certaines utilisations",
-      "exercise": "Pour exercer ces droits :"
-    },
-    "s9": {
-      "title": "9. Conservation des données",
-      "active": "Comptes actifs :",
-      "activeP": "Données conservées tant que le compte existe",
-      "deleted": "Comptes supprimés :",
-      "deletedP": "Données effacées sous 30 jours, sauf obligations légales",
-      "reviews": "Avis publiés :",
-      "reviewsP": "Conservés de manière anonymisée après suppression du compte",
-      "unregistered": "Données de professionnels non inscrits :",
-      "unregisteredP": "Conservées tant que le professionnel n'a pas demandé leur suppression"
-    },
-    "s10": {
-      "title": "10. Modifications",
-      "p1": "Nous pouvons modifier cette politique. Les modifications importantes vous seront notifiées par email."
-    },
-    "s11": {
-      "title": "11. Contact",
-      "phone": "Téléphone : +33 6 60 25 35 70",
-      "otherRequests": "Pour d'autres demandes :",
+      "title": "Contact",
+      "otherRequests": "Pour toute autre demande, visitez notre",
       "contactPage": "page de contact"
     }
   },
   "legalPage": {
     "back": "Retour",
     "title": "Mentions Légales",
-    "lastUpdate": "Dernière mise à jour : {date}",
-    "warningTitle": "Projet en phase de lancement",
-    "warningP": "MIZAN est actuellement exploité par Chabane Nadji en tant que développeur indépendant. Une structure juridique formelle (SARL algérienne) sera créée prochainement. Cette page sera mise à jour avec les informations d'immatriculation complètes.",
+    "warning": "MIZAN est actuellement exploité à titre individuel. Une structure juridique formelle (SARL algérienne) sera créée prochainement, et ces mentions seront complétées en conséquence.",
     "s1": {
-      "title": "1. Éditeur et exploitant du site",
-      "projectName": "Nom du projet :",
-      "operator": "Exploitant :",
-      "status": "Statut actuel :",
-      "statusValue": "Développeur indépendant / Autoentrepreneur",
-      "contactEmail": "Email de contact :",
-      "personalEmail": "Email personnel :",
-      "phone": "Téléphone :",
-      "regNote": "Immatriculation commerciale en cours : Les informations légales complètes (forme juridique, RC, NIF, capital social) seront publiées dès la création officielle de la SARL en Algérie."
-    },
-    "s1b": {
-      "title": "1.5. Nature du site",
-      "p1": "MIZAN est un annuaire en ligne et une plateforme de mise en relation entre particuliers et professionnels du droit et du chiffre exerçant en Algérie : avocats, notaires, huissiers de justice et comptables.",
-      "p2": "Important : Ce site n'est pas le tableau officiel de l'Ordre des avocats tel que prévu par la loi n° 13-07 du 29 juillet 2013. MIZAN ne prétend pas remplacer ni reproduire le tableau officiel tenu par l'Ordre des avocats d'Algérie, ni les registres officiels de la chambre des notaires ou de l'ordre des huissiers.",
-      "p3": "Les informations présentées constituent un service complémentaire d'annuaire professionnel et ne sauraient se substituer aux documents officiels des ordres professionnels."
+      "title": "Éditeur du site",
+      "p1": "Le site MIZAN (mizan-dz.com) est édité par son fondateur, dans le cadre du développement de la plateforme.",
+      "contact": "Contact :"
     },
     "s2": {
-      "title": "2. Responsable de la publication",
-      "role": "Développeur et fondateur du projet MIZAN",
-      "email": "Email :"
+      "title": "Nature du site",
+      "p1": "MIZAN est un annuaire et une plateforme de mise en relation entre particuliers et professionnels du droit et du chiffre exerçant en Algérie. Ce site ne se substitue pas aux registres officiels des ordres professionnels (barreau, chambre des notaires, ordre des huissiers, ONEC/ONCA)."
     },
     "s3": {
-      "title": "3. Hébergement",
-      "host": "Hébergeur :",
-      "hostValue": "Prestataire d'hébergement cloud certifié, serveurs sécurisés."
+      "title": "Hébergement",
+      "p1": "Le site est hébergé par un prestataire d'hébergement cloud certifié, sur des serveurs sécurisés."
     },
     "s4": {
-      "title": "4. Propriété intellectuelle",
-      "p1": "L'ensemble de ce site relève de la législation algérienne et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés.",
-      "p2": "La reproduction de tout ou partie de ce site sur un support électronique est formellement interdite sauf autorisation expresse de MIZAN.",
-      "p3": "Les informations professionnelles des avocats, notaires, huissiers et comptables (noms, coordonnées, domaines) restent la propriété de ces derniers et sont publiées dans un but informatif d'annuaire professionnel uniquement."
+      "title": "Propriété intellectuelle",
+      "p1": "L'ensemble du site (logo, design, contenu) est la propriété de MIZAN. Toute reproduction est interdite sans autorisation. Les informations professionnelles des avocats, notaires, huissiers et comptables restent la propriété de ces derniers et sont publiées à titre d'annuaire professionnel uniquement."
     },
     "s5": {
-      "title": "5. Données personnelles",
-      "p1": "Les informations recueillies sur ce site font l'objet d'un traitement informatique destiné à faciliter la mise en relation entre clients et professionnels. Pour plus d'informations :",
+      "title": "Données personnelles",
+      "p1": "Pour toute information sur le traitement de vos données, consultez notre",
       "link": "Politique de Confidentialité"
     },
     "s6": {
-      "title": "6. Cookies",
-      "p1": "Le site MIZAN utilise des cookies essentiels pour son fonctionnement (authentification, préférences). En naviguant sur ce site, vous acceptez l'utilisation de ces cookies techniques nécessaires."
+      "title": "Droit applicable",
+      "p1": "Ces mentions légales sont régies par le droit algérien. Tout litige relève de la compétence exclusive des tribunaux algériens."
     },
     "s7": {
-      "title": "7. Limitation de responsabilité",
-      "p1": "MIZAN met tout en œuvre pour offrir des informations vérifiées, mais ne saurait être tenue pour responsable des erreurs ou de l'absence de disponibilité des informations.",
-      "p2": "MIZAN ne saurait être tenue responsable de la qualité des services fournis par les professionnels inscrits sur la plateforme."
-    },
-    "s8": {
-      "title": "8. Droit applicable",
-      "p1": "Les présentes mentions légales sont régies par le droit algérien. Tout litige est soumis au droit algérien et relève de la compétence exclusive des tribunaux algériens."
-    },
-    "s9": {
-      "title": "9. Contact",
-      "otherRequests": "Pour d'autres demandes :",
+      "title": "Contact",
+      "otherRequests": "Pour toute autre demande, visitez notre",
       "contactPage": "page de contact"
     },
     "footerNote": "MIZAN — Plateforme de mise en relation avec des experts juridiques en Algérie"

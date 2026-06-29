@@ -136,9 +136,9 @@ export default function AvailabilityManager() {
   };
 
   const inp =
-    "h-10 px-3 text-sm border border-slate-200 rounded-xl bg-white focus:border-teal-400 outline-none transition-all w-full";
+    "h-10 px-3 text-sm border border-slate-200 dark:border-[#1c2220] rounded-xl bg-white dark:bg-[#1c1c1e] focus:border-teal-400 dark:focus:border-[#6fcf9f] outline-none transition-all w-full text-slate-700 dark:text-[#E8E8E6]";
   const sel =
-    "h-10 px-3 text-sm border border-slate-200 rounded-xl bg-white focus:border-teal-400 outline-none transition-all cursor-pointer";
+    "h-10 px-3 text-sm border border-slate-200 dark:border-[#1c2220] rounded-xl bg-white dark:bg-[#1c1c1e] focus:border-teal-400 dark:focus:border-[#6fcf9f] outline-none transition-all cursor-pointer text-slate-700 dark:text-[#E8E8E6]";
 
   const slotsByDay = DAYS.map((_, i) => ({
     day: i,
@@ -149,7 +149,7 @@ export default function AvailabilityManager() {
   if (loading)
     return (
       <div className="flex items-center justify-center py-10">
-        <div className="animate-spin rounded-full h-6 w-6 border-2 border-teal-600 border-t-transparent" />
+        <div className="animate-spin rounded-full h-6 w-6 border-2 border-teal-600 dark:border-[#6fcf9f] border-t-transparent" />
       </div>
     );
 
@@ -161,7 +161,7 @@ export default function AvailabilityManager() {
             key={tb}
             onClick={() => setTab(tb)}
             className={`px-4 py-2 rounded-xl text-sm font-semibold cursor-pointer transition-all
-              ${tab === tb ? "bg-teal-600 text-white" : "bg-white border border-slate-200 text-slate-600 hover:border-teal-300"}`}
+              ${tab === tb ? "bg-teal-600 dark:bg-[#0F6E56] text-white" : "bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] hover:border-teal-300 dark:hover:border-[#6fcf9f]"}`}
           >
             {tb === "schedule" ? t("tabSchedule") : t("tabBlocks")}
           </button>
@@ -170,13 +170,13 @@ export default function AvailabilityManager() {
 
       {tab === "schedule" && (
         <div className="space-y-4">
-          <div className="bg-white border border-slate-200 rounded-2xl p-4">
-            <p className="text-sm font-bold text-slate-800 mb-3">
+          <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-4">
+            <p className="text-sm font-bold text-slate-800 dark:text-[#F5F5F4] mb-3">
               {t("addSlotTitle")}
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
               <div>
-                <label className="block text-xs text-slate-500 mb-1">
+                <label className="block text-xs text-slate-500 dark:text-[#A8A8A6] mb-1">
                   {t("dayLabel")}
                 </label>
                 <select
@@ -192,7 +192,7 @@ export default function AvailabilityManager() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-1">
+                <label className="block text-xs text-slate-500 dark:text-[#A8A8A6] mb-1">
                   {t("startLabel")}
                 </label>
                 <input
@@ -203,7 +203,7 @@ export default function AvailabilityManager() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-1">
+                <label className="block text-xs text-slate-500 dark:text-[#A8A8A6] mb-1">
                   {t("endLabel")}
                 </label>
                 <input
@@ -214,7 +214,7 @@ export default function AvailabilityManager() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-1">
+                <label className="block text-xs text-slate-500 dark:text-[#A8A8A6] mb-1">
                   {t("slotDurationLabel")}
                 </label>
                 <select
@@ -233,7 +233,7 @@ export default function AvailabilityManager() {
             <button
               onClick={addSlot}
               disabled={saving}
-              className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-sm font-semibold cursor-pointer transition-all disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white rounded-xl text-sm font-semibold cursor-pointer transition-all disabled:opacity-50"
             >
               {saved ? (
                 <>
@@ -252,23 +252,25 @@ export default function AvailabilityManager() {
             .map(({ day, label, slots: ds }) => (
               <div
                 key={day}
-                className="bg-white border border-slate-200 rounded-2xl p-4"
+                className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-4"
               >
-                <p className="text-sm font-bold text-slate-800 mb-3">{label}</p>
+                <p className="text-sm font-bold text-slate-800 dark:text-[#F5F5F4] mb-3">
+                  {label}
+                </p>
                 <div className="space-y-2">
                   {ds.map((s) => (
                     <div
                       key={s.id}
                       className={`flex items-center justify-between p-3 rounded-xl border transition-all
-                    ${s.is_active ? "bg-teal-50 border-teal-100" : "bg-slate-50 border-slate-200 opacity-60"}`}
+                    ${s.is_active ? "bg-teal-50 dark:bg-[#6fcf9f]/10 border-teal-100 dark:border-[#6fcf9f]/20" : "bg-slate-50 dark:bg-[#141415] border-slate-200 dark:border-[#1c2220] opacity-60"}`}
                     >
                       <div className="flex items-center gap-3">
-                        <Clock className="w-4 h-4 text-teal-600" />
-                        <span className="text-sm font-medium text-slate-800">
+                        <Clock className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
+                        <span className="text-sm font-medium text-slate-800 dark:text-[#F5F5F4]">
                           {ld(s.start_time.slice(0, 5))} –{" "}
                           {ld(s.end_time.slice(0, 5))}
                         </span>
-                        <span className="text-xs text-teal-600 bg-white border border-teal-100 px-2 py-0.5 rounded-full">
+                        <span className="text-xs text-teal-600 dark:text-[#6fcf9f] bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 px-2 py-0.5 rounded-full">
                           {t("perSlot", { n: ld(String(s.duration_min)) })}
                         </span>
                       </div>
@@ -276,13 +278,13 @@ export default function AvailabilityManager() {
                         <button
                           onClick={() => toggleSlot(s.id, s.is_active)}
                           className={`text-xs px-2.5 py-1 rounded-lg font-medium cursor-pointer transition-all
-                          ${s.is_active ? "bg-white border border-slate-200 text-slate-500 hover:text-slate-700" : "bg-teal-600 text-white"}`}
+                          ${s.is_active ? "bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] text-slate-500 dark:text-[#A8A8A6] hover:text-slate-700 dark:hover:text-[#E8E8E6]" : "bg-teal-600 dark:bg-[#0F6E56] text-white"}`}
                         >
                           {s.is_active ? t("deactivate") : t("activate")}
                         </button>
                         <button
                           onClick={() => deleteSlot(s.id)}
-                          className="w-7 h-7 rounded-lg hover:bg-red-50 flex items-center justify-center text-slate-400 hover:text-red-500 cursor-pointer transition-colors"
+                          className="w-7 h-7 rounded-lg hover:bg-red-50 dark:hover:bg-[#3D1F1F] flex items-center justify-center text-slate-400 dark:text-[#7A7A78] hover:text-red-500 dark:hover:text-[#E08585] cursor-pointer transition-colors"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -294,7 +296,7 @@ export default function AvailabilityManager() {
             ))}
 
           {slots.length === 0 && (
-            <div className="text-center py-8 text-sm text-slate-400">
+            <div className="text-center py-8 text-sm text-slate-400 dark:text-[#7A7A78]">
               {t("noSlots")}
             </div>
           )}
@@ -303,14 +305,14 @@ export default function AvailabilityManager() {
 
       {tab === "blocks" && (
         <div className="space-y-4">
-          <div className="bg-white border border-slate-200 rounded-2xl p-4">
-            <p className="text-sm font-bold text-slate-800 mb-3">
+          <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-4">
+            <p className="text-sm font-bold text-slate-800 dark:text-[#F5F5F4] mb-3">
               {t("blockDateTitle")}
             </p>
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">
+                  <label className="block text-xs text-slate-500 dark:text-[#A8A8A6] mb-1">
                     {t("dateLabel")}
                   </label>
                   <input
@@ -327,9 +329,9 @@ export default function AvailabilityManager() {
                       type="checkbox"
                       checked={allDay}
                       onChange={(e) => setAllDay(e.target.checked)}
-                      className="w-4 h-4 accent-teal-600"
+                      className="w-4 h-4 accent-teal-600 dark:accent-[#0F6E56]"
                     />
-                    <span className="text-sm text-slate-600">
+                    <span className="text-sm text-slate-600 dark:text-[#E8E8E6]">
                       {t("allDay")}
                     </span>
                   </label>
@@ -338,7 +340,7 @@ export default function AvailabilityManager() {
               {!allDay && (
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-xs text-slate-500 mb-1">
+                    <label className="block text-xs text-slate-500 dark:text-[#A8A8A6] mb-1">
                       {t("fromLabel")}
                     </label>
                     <input
@@ -349,7 +351,7 @@ export default function AvailabilityManager() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-slate-500 mb-1">
+                    <label className="block text-xs text-slate-500 dark:text-[#A8A8A6] mb-1">
                       {t("toLabel")}
                     </label>
                     <input
@@ -362,7 +364,7 @@ export default function AvailabilityManager() {
                 </div>
               )}
               <div>
-                <label className="block text-xs text-slate-500 mb-1">
+                <label className="block text-xs text-slate-500 dark:text-[#A8A8A6] mb-1">
                   {t("reasonLabel")}
                 </label>
                 <input
@@ -376,7 +378,7 @@ export default function AvailabilityManager() {
               <button
                 onClick={addBlock}
                 disabled={!blockDate || saving}
-                className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white rounded-xl text-sm font-semibold cursor-pointer transition-all"
+                className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] disabled:opacity-40 text-white rounded-xl text-sm font-semibold cursor-pointer transition-all"
               >
                 <Plus className="w-4 h-4" /> {t("blockThisDate")}
               </button>
@@ -384,21 +386,21 @@ export default function AvailabilityManager() {
           </div>
 
           {blocks.length > 0 && (
-            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
-              <div className="px-4 py-3 border-b border-slate-100">
-                <p className="text-sm font-bold text-slate-800">
+            <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl overflow-hidden">
+              <div className="px-4 py-3 border-b border-slate-100 dark:border-[#1c2220]">
+                <p className="text-sm font-bold text-slate-800 dark:text-[#F5F5F4]">
                   {t("upcomingBlocked")}
                 </p>
               </div>
               {blocks.map((b) => (
                 <div
                   key={b.id}
-                  className="flex items-center justify-between px-4 py-3 border-b border-slate-100 last:border-0"
+                  className="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-[#1c2220] last:border-0"
                 >
                   <div className="flex items-center gap-3">
-                    <Calendar className="w-4 h-4 text-amber-500" />
+                    <Calendar className="w-4 h-4 text-amber-500 dark:text-[#E0B568]" />
                     <div>
-                      <p className="text-sm font-medium text-slate-800">
+                      <p className="text-sm font-medium text-slate-800 dark:text-[#F5F5F4]">
                         {new Date(b.blocked_date).toLocaleDateString(
                           dateLocale,
                           {
@@ -408,7 +410,7 @@ export default function AvailabilityManager() {
                           }
                         )}
                       </p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-slate-400 dark:text-[#7A7A78]">
                         {!b.start_time
                           ? t("allDayLabel")
                           : `${ld(b.start_time?.slice(0, 5) || "")} – ${ld(b.end_time?.slice(0, 5) || "")}`}
@@ -418,7 +420,7 @@ export default function AvailabilityManager() {
                   </div>
                   <button
                     onClick={() => deleteBlock(b.id)}
-                    className="w-7 h-7 rounded-lg hover:bg-red-50 flex items-center justify-center text-slate-400 hover:text-red-500 cursor-pointer"
+                    className="w-7 h-7 rounded-lg hover:bg-red-50 dark:hover:bg-[#3D1F1F] flex items-center justify-center text-slate-400 dark:text-[#7A7A78] hover:text-red-500 dark:hover:text-[#E08585] cursor-pointer"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>

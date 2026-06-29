@@ -1375,331 +1375,105 @@
   "cguPage": {
     "back": "Back",
     "title": "Terms of Use",
-    "lastUpdate": "Last updated: {date}",
     "s1": {
-      "title": "1. Purpose and nature of the site",
-      "p1": "MIZAN is an online platform connecting clients with verified legal and accounting experts in Algeria: lawyers, notaries, bailiffs and accountants. The platform facilitates search, consultation and communication between parties, without substituting for professionals in the practice of their profession.",
-      "boxTitle": "Distinction from official registers",
-      "boxP1": "Important: MIZAN is not the official roll of the Bar Association as provided for by Law No. 13-07 of July 29, 2013. MIZAN does not claim to replace the official registers of Algerian professional orders (bar, chamber of notaries, order of bailiffs, ONEC/ONCA).",
-      "boxP2": "The information published on MIZAN constitutes a complementary directory service and cannot have the same legal value as official registers."
+      "title": "Purpose",
+      "p1": "MIZAN is a platform connecting clients with lawyers, notaries, bailiffs and accountants in Algeria. MIZAN facilitates search and contact between parties, without substituting for professionals in the practice of their profession.",
+      "box": "MIZAN is not the official roll of the Bar Association nor an official register of a professional order. It is a complementary matchmaking service."
     },
     "s2": {
-      "title": "2. Acceptance of terms",
-      "p1": "Using MIZAN implies full acceptance of these terms of use. If you do not accept these terms, please do not use the platform."
+      "title": "Registration",
+      "p1": "Client registration is free and open. Professionals who create a profile must legally practice in Algeria and agree to provide accurate information. Many professionals on MIZAN manage their own profile and are already in direct contact with their clients outside the platform."
     },
     "s3": {
-      "title": "3. Registration and user account",
-      "clientsTitle": "For clients:",
-      "clients": [
-        "Registration is free and open",
-        "You must provide accurate and up-to-date information",
-        "You are responsible for the confidentiality of your password"
-      ],
-      "prosTitle": "For professionals (lawyers, notaries, bailiffs, accountants):",
-      "pros": [
-        "You must legally practice your profession in Algeria",
-        "You must provide documents proving your professional status (bar number, chamber of notaries, bailiff number or ONEC/ONCA accreditation)",
-        "Your profile will be verified before activation",
-        "You agree to comply with the ethics and rules of your profession"
-      ]
+      "title": "Services offered",
+      "p1": "Search for professionals, view profiles, direct messaging, and the ability to leave a review after a consultation."
     },
     "s4": {
-      "title": "4. Services offered",
-      "items": [
-        "Search for professionals by area of practice and wilaya",
-        "View verified professional profiles",
-        "Send consultation requests",
-        "Secure messaging system",
-        "Publication of client reviews (subject to moderation)"
-      ]
+      "title": "Responsibilities",
+      "p1": "MIZAN acts solely as a matchmaking intermediary. MIZAN does not select, recommend or evaluate professionals, and cannot be held responsible for the quality of services rendered, advice given or fees charged. Each user is responsible for their choice of professional."
     },
     "s5": {
-      "title": "5. Nature and origin of published information",
-      "boxTitle": "Collection of public professional data",
-      "p1": "The contact details and information of professionals published on MIZAN come from two sources:",
-      "aTitle": "A. Professionals registered on the platform",
-      "aP": "Professionals who create an account on MIZAN voluntarily provide their information and have full control over their profile.",
-      "bTitle": "B. Data from public sources",
-      "bP": "Some information comes from public sources freely accessible on the internet: official firm websites, Google My Business, LinkedIn, public professional directories.",
-      "infoTitle": "Informing professionals",
-      "infoP": "MIZAN undertakes to inform each professional whose contact details are published, by email or phone."
+      "title": "Fair use of the site",
+      "p1": "You agree to use MIZAN in good faith: no mass data extraction, no use of contact details for spam, and no false or defamatory reviews."
     },
     "s6": {
-      "title": "6. Professionals' rights regarding their data",
-      "p1": "Every professional listed on MIZAN has the following rights, which they can exercise at any time, free of charge and without justification:",
-      "rectifTitle": "Right to rectification",
-      "rectifP": "Any professional may request correction of their information if it is inaccurate or outdated.",
-      "deleteTitle": "Right to deletion",
-      "deleteP": "Any professional may request the immediate and complete removal of their contact details from the site, without justification.",
-      "opposeTitle": "Right to object",
-      "opposeP": "Any professional may object to the use of their data for matchmaking purposes.",
-      "accessTitle": "Right of access",
-      "accessP": "Any professional may view all information published about them on MIZAN.",
-      "howTitle": "How to exercise these rights?",
-      "email": "Email:",
-      "phone": "Phone:",
-      "delay": "Processing time:",
-      "delayValue": "Maximum 15 business days"
+      "title": "Modification and account deletion",
+      "p1": "You can delete your account at any time from your settings. MIZAN may update these terms; significant changes will be notified to you by email."
     },
     "s7": {
-      "title": "7. Accuracy and updates",
-      "items": [
-        "Professional availability may change",
-        "Professional contact details may change",
-        "Areas of practice may be updated"
-      ],
-      "p1": "Users are invited to verify directly with the relevant professionals any critical information before undertaking a legal or accounting procedure."
+      "title": "Applicable law",
+      "p1": "These terms are governed by Algerian law. Any dispute falls under the exclusive jurisdiction of Algerian courts."
     },
     "s8": {
-      "title": "8. Responsibilities",
-      "commitTitle": "MIZAN undertakes to:",
-      "commit": [
-        "Verify the qualifications and official registration of professionals",
-        "Maintain the platform in good working order",
-        "Protect users' personal data",
-        "Moderate published reviews",
-        "Promptly process rectification or deletion requests",
-        "Inform professionals of the publication of their data"
-      ],
-      "declineTitle": "MIZAN disclaims all responsibility regarding:",
-      "decline": [
-        "The quality of services provided by professionals",
-        "Legal, notarial or accounting advice given",
-        "Fees charged",
-        "The outcome of procedures undertaken",
-        "Disputes between clients and professionals"
-      ],
-      "importantP": "Important: The site acts solely as a matchmaking intermediary. MIZAN does not select, recommend or evaluate professionals. Each user is responsible for their choice of professional."
-    },
-    "s9": {
-      "title": "9. Use of the site",
-      "items": [
-        "Use the site fairly and in accordance with its purpose",
-        "Not attempt to massively extract data from the site (scraping)",
-        "Not use professionals' contact details for spam or harassment purposes",
-        "Respect the site's intellectual property",
-        "Not publish false or defamatory reviews"
-      ]
-    },
-    "s10": {
-      "title": "10. Intellectual property",
-      "p1": "All elements of the platform (logo, design, editorial content) are the exclusive property of MIZAN. Any reproduction, even partial, is strictly prohibited without prior authorization."
-    },
-    "s11": {
-      "title": "11. Modification and termination",
-      "p1": "MIZAN reserves the right to modify these terms at any time. Users will be informed by email of significant changes. You may delete your account at any time from settings."
-    },
-    "s12": {
-      "title": "12. Applicable law and jurisdiction",
-      "p1": "These terms are governed by Algerian law. In the event of a dispute, only Algerian courts shall have jurisdiction."
-    },
-    "s13": {
-      "title": "13. Contact",
-      "phone": "Phone: +33 6 60 25 35 70",
-      "otherRequests": "For other requests:",
+      "title": "Contact",
+      "otherRequests": "For other requests, visit our",
       "contactPage": "contact page"
     }
   },
   "privacyPage": {
     "back": "Back",
     "title": "Privacy Policy",
-    "lastUpdate": "Last updated: {date}",
+    "intro": "MIZAN is committed to protecting the confidentiality of your personal data. This page simply summarizes how we use it.",
     "s1": {
-      "title": "1. Introduction",
-      "p1": "MIZAN is committed to protecting the confidentiality and security of your personal data. This policy explains how we collect, use and protect your information.",
-      "p2": "MIZAN strives to comply with Algerian legislation on personal data protection, in particular Law No. 18-07 of June 10, 2018 on the protection of individuals in the processing of personal data."
+      "title": "Professional profiles",
+      "p1": "Some lawyer, notary, bailiff and accountant profiles shown on MIZAN come from public information (professional websites, public online listings) or are created directly by the professional concerned. Any professional may request correction or deletion of their information at any time, free of charge, by writing to us at"
     },
     "s2": {
-      "title": "2. Public professional data (external source)",
-      "boxTitle": "Collection of public professional data",
-      "p1": "MIZAN collects and publishes professional information concerning lawyers, notaries, bailiffs and accountants practicing in Algeria. This information comes exclusively from public sources freely accessible on the internet, in particular:",
-      "sources": [
-        "Official websites of law firms and notarial offices",
-        "Public professional pages (Google My Business, LinkedIn, etc.)",
-        "Public online professional directories",
-        "Public professional social networks",
-        "Publicly accessible professional publications"
-      ],
-      "natureTitle": "Nature of information collected",
-      "nature": [
-        "Professional's first and last name",
-        "Office address",
-        "Professional phone number",
-        "Professional email address",
-        "Areas of expertise (if available)",
-        "Languages spoken (if available)",
-        "Professional number (bar, chamber of notaries, bailiff, ONEC/ONCA if available)"
-      ],
-      "useTitle": "Use and purpose",
-      "useP": "This data is used solely within the framework of a professional directory and matchmaking service between clients and professionals. It is not subject to any unauthorized commercial exploitation.",
-      "infoTitle": "Informing the professionals concerned",
-      "infoP": "MIZAN undertakes to inform each professional whose contact details are published on the site. Professionals are contacted by email or phone to inform them of the presence of their information on the platform.",
-      "rightsTitle": "Professionals' rights regarding their data",
-      "rightsP": "Every professional listed on MIZAN has the following rights, which they can exercise at any time and free of charge:",
-      "rightRectif": "Right to rectification: Correct any incorrect or outdated information",
-      "rightDelete": "Right to deletion: Request complete removal of their profile from the site",
-      "rightOppose": "Right to object: Object to the use of their data for matchmaking purposes",
-      "rightAccess": "Right of access: View all data published about them",
-      "contact": "Contact:",
-      "delay": "Processing time: Maximum 15 business days.",
-      "note": "Important note: Professionals who create an account on MIZAN and claim their profile benefit from full control over their information and can edit it directly from their personal space."
+      "title": "Data collected from registered users",
+      "p1": "When you create an account (client or professional), we collect your name, email and the information required for your personal space to work properly (location, areas of practice, professional contact details for professional accounts)."
     },
     "s3": {
-      "title": "3. Data collected for registered users",
-      "allTitle": "For all registered users:",
-      "all": [
-        "First and last name",
-        "Email address",
-        "Password (encrypted)",
-        "Account creation date"
-      ],
-      "clientsTitle": "For clients:",
-      "clients": [
-        "Location (wilaya or country)",
-        "Consultation history",
-        "Published reviews"
-      ],
-      "prosTitle": "For registered professionals (lawyers, notaries, bailiffs, accountants):",
-      "pros": [
-        "Professional number (bar / chamber of notaries / bailiff / ONEC-ONCA)",
-        "Areas of practice",
-        "Professional contact details (phone, office address)",
-        "Verification documents (professional card)",
-        "Banking information (for future payments)"
-      ]
+      "title": "Use of data",
+      "p1": "Your data is used solely to run the platform: create your account, facilitate matchmaking between clients and professionals, and send you notifications related to your consultations.",
+      "neverSell": "We never sell your data to third parties."
     },
     "s4": {
-      "title": "4. Use of data",
-      "p1": "Your data is used solely to:",
-      "items": [
-        "Create and manage your account",
-        "Facilitate matchmaking between clients and professionals",
-        "Send important notifications (responses to consultations)",
-        "Verify the identity and qualifications of registered professionals",
-        "Improve our services",
-        "Comply with our legal obligations"
-      ],
-      "neverSell": "We never sell your personal data to third parties."
+      "title": "Security",
+      "p1": "Your passwords are encrypted, the connection to the site is secure (HTTPS), and data is hosted on secure servers."
     },
     "s5": {
-      "title": "5. Data sharing",
-      "between": "Between users:",
-      "betweenP": "Clients see public information from professional profiles. Professionals see the name and email of clients who contact them.",
-      "providers": "Technical providers:",
-      "providersP": "We use certified hosting providers for secure data storage.",
-      "legal": "Legal obligations:",
-      "legalP": "In the event of a legal judicial or administrative request."
+      "title": "Your rights",
+      "p1": "You can view, correct or delete your data at any time by contacting us at"
     },
     "s6": {
-      "title": "6. Data security",
-      "items": [
-        "Password encryption",
-        "Secure HTTPS connection",
-        "Hosting on certified secure servers",
-        "Limited access to personal data",
-        "Regular backups"
-      ]
-    },
-    "s7": {
-      "title": "7. Cookies",
-      "p1": "The MIZAN site uses essential cookies for its operation (authentication, preferences). We do not use advertising or third-party tracking cookies."
-    },
-    "s8": {
-      "title": "8. Your rights (registered users)",
-      "access": "Right of access:",
-      "accessP": "View your personal data",
-      "rectif": "Right to rectification:",
-      "rectifP": "Correct your information",
-      "erase": "Right to erasure:",
-      "eraseP": "Delete your account",
-      "portability": "Right to portability:",
-      "portabilityP": "Retrieve your data",
-      "oppose": "Right to object:",
-      "opposeP": "Refuse certain uses",
-      "exercise": "To exercise these rights:"
-    },
-    "s9": {
-      "title": "9. Data retention",
-      "active": "Active accounts:",
-      "activeP": "Data retained as long as the account exists",
-      "deleted": "Deleted accounts:",
-      "deletedP": "Data erased within 30 days, except for legal obligations",
-      "reviews": "Published reviews:",
-      "reviewsP": "Retained in anonymized form after account deletion",
-      "unregistered": "Data of unregistered professionals:",
-      "unregisteredP": "Retained until the professional requests its deletion"
-    },
-    "s10": {
-      "title": "10. Modifications",
-      "p1": "We may modify this policy. Significant changes will be notified to you by email."
-    },
-    "s11": {
-      "title": "11. Contact",
-      "phone": "Phone: +33 6 60 25 35 70",
-      "otherRequests": "For other requests:",
+      "title": "Contact",
+      "otherRequests": "For other requests, visit our",
       "contactPage": "contact page"
     }
   },
   "legalPage": {
     "back": "Back",
     "title": "Legal Notice",
-    "lastUpdate": "Last updated: {date}",
-    "warningTitle": "Project in launch phase",
-    "warningP": "MIZAN is currently operated by Chabane Nadji as an independent developer. A formal legal structure (Algerian SARL) will be created shortly. This page will be updated with complete registration information.",
+    "warning": "MIZAN is currently operated on an individual basis. A formal legal structure (Algerian SARL) will be created soon, and this notice will be updated accordingly.",
     "s1": {
-      "title": "1. Publisher and operator of the site",
-      "projectName": "Project name:",
-      "operator": "Operator:",
-      "status": "Current status:",
-      "statusValue": "Independent developer / Sole proprietor",
-      "contactEmail": "Contact email:",
-      "personalEmail": "Personal email:",
-      "phone": "Phone:",
-      "regNote": "Commercial registration in progress: Complete legal information (legal form, trade register, tax ID, share capital) will be published as soon as the SARL is officially created in Algeria."
-    },
-    "s1b": {
-      "title": "1.5. Nature of the site",
-      "p1": "MIZAN is an online directory and matchmaking platform between individuals and legal and accounting professionals practicing in Algeria: lawyers, notaries, bailiffs and accountants.",
-      "p2": "Important: This site is not the official roll of the Bar Association as provided for by Law No. 13-07 of July 29, 2013. MIZAN does not claim to replace or reproduce the official roll maintained by the Algerian Bar Association, nor the official registers of the chamber of notaries or the order of bailiffs.",
-      "p3": "The information presented constitutes a complementary professional directory service and cannot substitute for the official documents of professional orders."
+      "title": "Site publisher",
+      "p1": "The MIZAN website (mizan-dz.com) is published by its founder, as part of the platform's development.",
+      "contact": "Contact:"
     },
     "s2": {
-      "title": "2. Person responsible for publication",
-      "role": "Developer and founder of the MIZAN project",
-      "email": "Email:"
+      "title": "Nature of the site",
+      "p1": "MIZAN is a directory and matchmaking platform between individuals and legal and accounting professionals practicing in Algeria. This site does not replace the official registers of professional orders (bar, chamber of notaries, order of bailiffs, ONEC/ONCA)."
     },
     "s3": {
-      "title": "3. Hosting",
-      "host": "Host:",
-      "hostValue": "Certified cloud hosting provider, secure servers."
+      "title": "Hosting",
+      "p1": "The site is hosted by a certified cloud hosting provider, on secure servers."
     },
     "s4": {
-      "title": "4. Intellectual property",
-      "p1": "This entire site is subject to Algerian and international legislation on copyright and intellectual property. All reproduction rights are reserved.",
-      "p2": "Reproduction of all or part of this site on an electronic medium is strictly prohibited without express authorization from MIZAN.",
-      "p3": "The professional information of lawyers, notaries, bailiffs and accountants (names, contact details, areas of practice) remains the property of the latter and is published for informational professional directory purposes only."
+      "title": "Intellectual property",
+      "p1": "The entire site (logo, design, content) is the property of MIZAN. Any reproduction is prohibited without authorization. The professional information of lawyers, notaries, bailiffs and accountants remains the property of the latter and is published for professional directory purposes only."
     },
     "s5": {
-      "title": "5. Personal data",
-      "p1": "The information collected on this site is subject to data processing intended to facilitate matchmaking between clients and professionals. For more information:",
+      "title": "Personal data",
+      "p1": "For information on how your data is processed, see our",
       "link": "Privacy Policy"
     },
     "s6": {
-      "title": "6. Cookies",
-      "p1": "The MIZAN site uses essential cookies for its operation (authentication, preferences). By browsing this site, you accept the use of these necessary technical cookies."
+      "title": "Applicable law",
+      "p1": "This legal notice is governed by Algerian law. Any dispute falls under the exclusive jurisdiction of Algerian courts."
     },
     "s7": {
-      "title": "7. Limitation of liability",
-      "p1": "MIZAN does everything possible to provide verified information, but cannot be held responsible for errors or unavailability of information.",
-      "p2": "MIZAN cannot be held responsible for the quality of services provided by professionals registered on the platform."
-    },
-    "s8": {
-      "title": "8. Applicable law",
-      "p1": "This legal notice is governed by Algerian law. Any dispute is subject to Algerian law and falls under the exclusive jurisdiction of Algerian courts."
-    },
-    "s9": {
-      "title": "9. Contact",
-      "otherRequests": "For other requests:",
+      "title": "Contact",
+      "otherRequests": "For other requests, visit our",
       "contactPage": "contact page"
     },
     "footerNote": "MIZAN — Platform connecting you with legal experts in Algeria"

@@ -157,7 +157,7 @@ export const DropdownMenuContent = ({
     <div
       ref={contentRef}
       className={cn(
-        "absolute top-full mt-2 z-50 overflow-hidden rounded-xl border border-slate-200/80 bg-white/95 backdrop-blur-sm py-2 text-slate-950 shadow-xl",
+        "absolute top-full mt-2 z-50 overflow-hidden rounded-xl border border-slate-200/80 dark:border-[#1c2220] bg-white/95 dark:bg-[#1c1c1e] backdrop-blur-sm py-2 text-slate-950 dark:text-[#F5F5F4] shadow-xl dark:shadow-none",
         "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200",
         alignmentClasses[align],
         className
@@ -210,7 +210,7 @@ export const DropdownMenuItem = ({
       onKeyDown: handleKeyDown,
       className: cn(
         "relative flex cursor-pointer select-none items-center px-3 py-2 text-sm font-medium outline-none transition-none",
-        "text-slate-700",
+        "text-slate-700 dark:text-[#E8E8E6]",
         disabled && "pointer-events-none opacity-50",
         className,
         (children.props as any).className
@@ -226,7 +226,7 @@ export const DropdownMenuItem = ({
       onKeyDown={handleKeyDown}
       className={cn(
         "relative flex cursor-pointer select-none items-center px-3 py-2 text-sm font-medium outline-none transition-none",
-        "text-slate-700",
+        "text-slate-700 dark:text-[#E8E8E6]",
         disabled && "pointer-events-none opacity-50",
         className
       )}
