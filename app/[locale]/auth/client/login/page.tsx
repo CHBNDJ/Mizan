@@ -56,8 +56,8 @@ export default function ClientLoginPage() {
   }, []);
 
   const inputBaseClass =
-    "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700";
-  const errorClass = "text-red-500 text-xs mt-1";
+    "w-full h-12 px-4 text-sm border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] focus:border-2 dark:focus:border-[#6fcf9f] hover:border-2 hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-300 outline-none transition-all duration-200 text-slate-700 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78]";
+  const errorClass = "text-red-500 dark:text-[#E08585] text-xs mt-1";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -146,10 +146,12 @@ export default function ClientLoginPage() {
           </p>
         </div>
 
-        <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow-lg dark:shadow-none p-6 border border-slate-100 dark:border-[#1c2220]">
+        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-lg dark:shadow-none p-6 border border-slate-100 dark:border-[#1c2220]">
           {errors.general && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-600 text-sm">{errors.general}</p>
+            <div className="mb-4 p-3 bg-red-50 dark:bg-[#3D1F1F] border border-red-200 dark:border-[#5A2A2A] rounded-lg">
+              <p className="text-red-600 dark:text-[#E08585] text-sm">
+                {errors.general}
+              </p>
             </div>
           )}
 
@@ -159,7 +161,7 @@ export default function ClientLoginPage() {
             noValidate
           >
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                 {t("auth.clientLogin.email")}
               </label>
               <input
@@ -167,7 +169,7 @@ export default function ClientLoginPage() {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`${inputBaseClass} placeholder:text-slate-400 dark:text-[#7A7A78]`}
+                className={`${inputBaseClass}`}
                 placeholder={t("auth.clientLogin.emailPh")}
                 required
                 disabled={isSubmitting}
@@ -176,7 +178,7 @@ export default function ClientLoginPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                 {t("auth.clientLogin.password")}
               </label>
               <div className="relative">
@@ -185,7 +187,7 @@ export default function ClientLoginPage() {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`${inputBaseClass} pe-12 placeholder:text-slate-400 dark:text-[#7A7A78]`}
+                  className={`${inputBaseClass} pe-12`}
                   placeholder={t("auth.clientLogin.passwordPh")}
                   required
                   disabled={isSubmitting}
@@ -194,7 +196,7 @@ export default function ClientLoginPage() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   disabled={isSubmitting}
-                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6] transition-colors disabled:opacity-50"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:hover:text-[#E8E8E6] transition-colors disabled:opacity-50"
                 >
                   {showPassword ? (
                     <EyeOff className="w-5 h-5" />
@@ -213,7 +215,7 @@ export default function ClientLoginPage() {
                 <input
                   type="checkbox"
                   disabled={isSubmitting}
-                  className="w-4 h-4 border-slate-300 rounded focus:ring-teal-500 accent-teal-600 disabled:opacity-50"
+                  className="w-4 h-4 border-slate-300 dark:border-[#3a3a3d] rounded focus:ring-teal-500 accent-teal-600 disabled:opacity-50"
                   style={{ accentColor: "#0d9488" }}
                 />
                 <span className="ms-2 text-sm text-slate-600 dark:text-[#E8E8E6] select-none">
@@ -231,7 +233,7 @@ export default function ClientLoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="cursor-pointer w-full bg-teal-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="cursor-pointer w-full bg-teal-600 dark:bg-[#0F6E56] text-white py-3 px-4 rounded-lg font-medium hover:bg-teal-700 dark:hover:bg-[#085041] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {isSubmitting ? (
                 <>
