@@ -206,7 +206,7 @@ export default function SettingsPage() {
         title={t("notifLockedNote")}
       >
         <div className="w-11 h-6 bg-teal-600 dark:bg-[#0F6E56] rounded-full relative">
-          <div className="absolute top-[2px] end-[2px] bg-white dark:bg-[#1c1c1e] rounded-full h-5 w-5" />
+          <div className="absolute top-[2px] end-[2px] bg-white rounded-full h-5 w-5" />
         </div>
       </div>
     </div>
