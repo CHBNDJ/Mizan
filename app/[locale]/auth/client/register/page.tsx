@@ -161,7 +161,7 @@ export default function ClientRegisterPage() {
             noValidate
           >
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
                 {t("auth.clientRegister.civilite")} *
               </label>
               <CustomSelect
@@ -177,7 +177,7 @@ export default function ClientRegisterPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
                   {t("auth.clientRegister.firstName")} *
                 </label>
                 <input
@@ -194,7 +194,7 @@ export default function ClientRegisterPage() {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
                   {t("auth.clientRegister.lastName")} *
                 </label>
                 <input
@@ -211,7 +211,7 @@ export default function ClientRegisterPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
                 {t("auth.clientRegister.location")} *
               </label>
               <CustomSelect
@@ -226,7 +226,7 @@ export default function ClientRegisterPage() {
             </div>
 
             <div>
-              <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1">
+              <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
                 <Smartphone className="w-4 h-4" />{" "}
                 {t("auth.clientRegister.mobile")} *
               </label>
@@ -259,7 +259,7 @@ export default function ClientRegisterPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
                 {t("auth.clientRegister.email")} *
               </label>
               <input
@@ -275,7 +275,7 @@ export default function ClientRegisterPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
                 {t("auth.clientRegister.password")} *
               </label>
               <div className="relative">
@@ -291,7 +291,7 @@ export default function ClientRegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6]"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:hover:text-[#E8E8E6]"
                 >
                   {showPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -304,7 +304,7 @@ export default function ClientRegisterPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
                 {t("auth.clientRegister.confirmPassword")} *
               </label>
               <div className="relative">
@@ -320,7 +320,7 @@ export default function ClientRegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6]"
+                  className="cursor-pointer absolute end-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:hover:text-[#E8E8E6]"
                 >
                   {showConfirmPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -338,8 +338,7 @@ export default function ClientRegisterPage() {
               <input
                 type="checkbox"
                 id="terms"
-                className="cursor-pointer w-6 h-6 border-slate-300 rounded mt-1"
-                style={{ accentColor: "#0d9488" }}
+                className="cursor-pointer w-6 h-6 border-slate-300 dark:border-[#3a3a3d] rounded mt-1 accent-teal-600 dark:accent-[#0F6E56]"
                 required
                 disabled={isSubmitting}
               />
@@ -367,7 +366,7 @@ export default function ClientRegisterPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="cursor-pointer w-full h-12 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 outline-none transition-all duration-200 mt-6 disabled:opacity-50 flex items-center justify-center"
+              className="cursor-pointer w-full h-12 bg-teal-600 dark:bg-[#0F6E56] text-white font-medium rounded-lg hover:bg-teal-700 dark:hover:bg-[#085041] outline-none transition-all duration-200 mt-6 disabled:opacity-50 flex items-center justify-center"
             >
               {isSubmitting ? (
                 <>

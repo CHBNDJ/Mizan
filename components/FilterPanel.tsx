@@ -156,7 +156,9 @@ export function FilterPanel({
             </p>
           </div>
         </div>
-        <Button>{isExpanded ? t("hide") : t("show")}</Button>
+        <Button className="dark:bg-[#0F6E56] dark:text-white dark:border-[#0F6E56] dark:hover:bg-[#085041]">
+          {isExpanded ? t("hide") : t("show")}
+        </Button>
       </div>
 
       {isExpanded && (

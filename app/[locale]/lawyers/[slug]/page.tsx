@@ -553,7 +553,7 @@ export default function ProfilePage({
                   )}
                 </div>
               </div>
-              <div className="hero-right opacity-0 invisible bg-gradient-to-b from-teal-500 to-teal-800 flex items-center justify-center relative order-first sm:order-last min-h-[260px] sm:min-h-0">
+              <div className="hero-right opacity-0 invisible bg-gradient-to-b from-teal-500 to-teal-800 dark:from-[#0F6E56] dark:to-[#1c1c1e] flex items-center justify-center relative order-first sm:order-last min-h-[260px] sm:min-h-0">
                 {avocat.avatar_url ? (
                   <Image
                     src={avocat.avatar_url}

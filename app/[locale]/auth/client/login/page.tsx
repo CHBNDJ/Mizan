@@ -215,8 +215,7 @@ export default function ClientLoginPage() {
                 <input
                   type="checkbox"
                   disabled={isSubmitting}
-                  className="w-4 h-4 border-slate-300 dark:border-[#3a3a3d] rounded focus:ring-teal-500 accent-teal-600 disabled:opacity-50"
-                  style={{ accentColor: "#0d9488" }}
+                  className="w-4 h-4 border-slate-300 dark:border-[#3a3a3d] rounded focus:ring-teal-500 accent-teal-600 dark:accent-[#0F6E56] disabled:opacity-50"
                 />
                 <span className="ms-2 text-sm text-slate-600 dark:text-[#E8E8E6] select-none">
                   {t("auth.clientLogin.rememberMe")}
