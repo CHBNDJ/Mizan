@@ -46,7 +46,7 @@ function ProfCard({ id, Icon, label, desc, size = "normal" }: any) {
   return (
     <Link href={`/${id}`}>
       <div
-        className={`prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer h-full flex flex-col items-center text-center hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:shadow-md transition-all ${size === "big" ? "px-6 py-6 gap-3" : "px-4 py-4 gap-2"}`}
+        className={`prof-card prof-card-btn bg-white dark:bg-[#1c1c1e] rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer h-full flex flex-col items-center text-center hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:shadow-md transition-all ${size === "big" ? "px-6 py-6 gap-3" : "px-4 py-4 gap-2"}`}
       >
         <div
           className={`flex-shrink-0 rounded-xl bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] flex items-center justify-center ${size === "big" ? "w-12 h-12" : "w-9 h-9"}`}
@@ -73,7 +73,7 @@ function ProfCard({ id, Icon, label, desc, size = "normal" }: any) {
 function ProfCardHorizontal({ id, Icon, label, desc }: any) {
   return (
     <Link href={`/${id}`}>
-      <div className="prof-card prof-card-btn bg-white rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer flex items-center gap-4 px-4 py-4 hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:shadow-md transition-all">
+      <div className="prof-card prof-card-btn bg-white dark:bg-[#1c1c1e] rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer flex items-center gap-4 px-4 py-4 hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:shadow-md transition-all">
         <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] flex items-center justify-center">
           <Icon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
         </div>
@@ -289,7 +289,7 @@ export default function HomePage() {
           {statsData.map((s) => (
             <div
               key={s.label}
-              className="stat-card bg-white dark:bg-[#0b1210] rounded-2xl shadow-sm dark:shadow-none border border-slate-100 dark:border-[#1c2220] p-4 md:p-6 flex flex-col items-center text-center"
+              className="stat-card bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm dark:shadow-none border border-slate-100 dark:border-[#1c2220] p-4 md:p-6 flex flex-col items-center text-center"
             >
               <AnimatedCounter
                 end={s.end}
@@ -307,7 +307,7 @@ export default function HomePage() {
 
       <section className="steps-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow-sm dark:shadow-none p-6 sm:p-10">
+          <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm dark:shadow-none p-6 sm:p-10">
             <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-6 md:mb-10 text-center">
               {t("home.howItWorks.title")}
             </h2>
@@ -425,7 +425,7 @@ export default function HomePage() {
 
       <section className="cta-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
-          <div className="bg-white dark:bg-[#0b1210] rounded-2xl shadow-sm dark:shadow-none p-7 sm:p-10 flex flex-col text-center sm:text-start">
+          <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-sm dark:shadow-none p-7 sm:p-10 flex flex-col text-center sm:text-start">
             <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-3">
               {t("home.ctaClient.title")}
             </h3>

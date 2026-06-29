@@ -300,7 +300,7 @@ main {
   --foreground: #f5f5f4;
   --foreground-secondary: #e8e8e6;
   --accent: #6fcf9f;
-  --card-bg: #0b1210;
+  --card-bg: #1c1c1e;
   --card-border: rgba(111, 207, 159, 0.25);
   --divider: #1c2220;
 }
@@ -312,7 +312,7 @@ body {
 }
 
 .dark body {
-  background: linear-gradient(to top right, #0a0e0d, #0b1210, #0a0e0d);
+  background: linear-gradient(to top right, #0a0e0d, #1c1c1e, #0a0e0d);
   background-attachment: fixed;
 }
 
@@ -330,9 +330,9 @@ input:-webkit-autofill:active {
 .dark input:-webkit-autofill:hover,
 .dark input:-webkit-autofill:focus,
 .dark input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #0b1210 inset !important;
+  -webkit-box-shadow: 0 0 0 30px #1c1c1e inset !important;
   -webkit-text-fill-color: #f5f5f4 !important;
-  background-color: #0b1210 !important;
+  background-color: #1c1c1e !important;
 }
 
 html,

@@ -597,7 +597,7 @@ export function Navigation() {
                     "flex flex-col items-center gap-1.5 py-3 rounded-lg border transition-all cursor-pointer",
                     selectedProfile === "client"
                       ? "border-teal-500 dark:border-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E]"
-                      : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#0b1210]"
+                      : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e]"
                   )}
                 >
                   <User
@@ -625,7 +625,7 @@ export function Navigation() {
                     "flex flex-col items-center gap-1.5 py-3 rounded-lg border transition-all cursor-pointer",
                     selectedProfile === "professional"
                       ? "border-teal-500 dark:border-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E]"
-                      : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#0b1210]"
+                      : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e]"
                   )}
                 >
                   <Briefcase
@@ -668,7 +668,7 @@ export function Navigation() {
                       : "/auth/lawyer/register"
                   }
                   onClick={() => setIsOpen(false)}
-                  className="flex-1 text-center py-2.5 rounded-lg border border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#0b1210] hover:border-teal-500 dark:hover:border-[#6fcf9f] hover:bg-teal-50/30 dark:hover:bg-[#1F3D2E] text-slate-700 dark:text-[#E8E8E6] text-sm font-semibold transition-all"
+                  className="flex-1 text-center py-2.5 rounded-lg border border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e] hover:border-teal-500 dark:hover:border-[#6fcf9f] hover:bg-teal-50/30 dark:hover:bg-[#1F3D2E] text-slate-700 dark:text-[#E8E8E6] text-sm font-semibold transition-all"
                 >
                   {t("nav.signupTab")}
                 </Link>

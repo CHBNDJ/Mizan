@@ -73,7 +73,7 @@ export function CustomSelect({
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-slate-700 mb-1">
+        <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
           {label}
         </label>
       )}
@@ -82,10 +82,12 @@ export function CustomSelect({
         <div
           onClick={toggleOpen}
           className={cn(
-            "w-full px-3 py-2 border border-slate-300 rounded-lg bg-white cursor-pointer flex items-center justify-between",
-            "hover:border-2 hover:border-teal-300",
-            disabled && "opacity-50 cursor-not-allowed bg-slate-50",
-            isOpen && "border-2 border-teal-300 shadow-md",
+            "w-full px-3 py-2 border border-slate-300 dark:border-[#1c2220] rounded-lg bg-white dark:bg-[#1c1c1e] cursor-pointer flex items-center justify-between",
+            "hover:border-2 hover:border-teal-300 dark:hover:border-[#6fcf9f]",
+            disabled &&
+              "opacity-50 cursor-not-allowed bg-slate-50 dark:bg-[#141415]",
+            isOpen &&
+              "border-2 border-teal-300 dark:border-[#6fcf9f] shadow-md dark:shadow-none",
             className
           )}
         >
@@ -97,10 +99,10 @@ export function CustomSelect({
               onChange={handleInputChange}
               placeholder={t("searchPlaceholder")}
               className={cn(
-                "w-full outline-none bg-transparent placeholder-slate-400",
+                "w-full outline-none bg-transparent placeholder-slate-400 dark:placeholder-[#7A7A78]",
                 size === "large"
-                  ? "text-base text-slate-700"
-                  : "text-sm text-slate-700"
+                  ? "text-base text-slate-700 dark:text-[#E8E8E6]"
+                  : "text-sm text-slate-700 dark:text-[#E8E8E6]"
               )}
               disabled={disabled}
             />
@@ -109,8 +111,10 @@ export function CustomSelect({
               className={cn(
                 "truncate",
                 size === "large" ? "text-base" : "text-sm",
-                !selectedOption && "text-slate-400 font-normal",
-                selectedOption && "text-slate-700 font-normal"
+                !selectedOption &&
+                  "text-slate-400 dark:text-[#7A7A78] font-normal",
+                selectedOption &&
+                  "text-slate-700 dark:text-[#E8E8E6] font-normal"
               )}
             >
               {selectedOption ? selectedOption.label : resolvedPlaceholder}
@@ -119,17 +123,17 @@ export function CustomSelect({
 
           <ChevronDown
             className={cn(
-              "w-5 h-5 text-slate-400 ms-2 flex-shrink-0",
-              isOpen && "rotate-180 text-teal-500"
+              "w-5 h-5 text-slate-400 dark:text-[#7A7A78] ms-2 flex-shrink-0",
+              isOpen && "rotate-180 text-teal-500 dark:text-[#6fcf9f]"
             )}
           />
         </div>
 
         {isOpen && !disabled && (
-          <div className="absolute z-[9999] w-full mt-2 bg-white border-2 border-teal-200 rounded-lg shadow-2xl max-h-64 overflow-hidden">
+          <div className="absolute z-[9999] w-full mt-2 bg-white dark:bg-[#1c1c1e] border-2 border-teal-200 dark:border-[#1F3D2E] rounded-lg shadow-2xl dark:shadow-none max-h-64 overflow-hidden">
             <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-300 scrollbar-track-slate-100">
               {filteredOptions.length === 0 ? (
-                <div className="px-4 py-3 text-sm text-slate-500 bg-slate-50">
+                <div className="px-4 py-3 text-sm text-slate-500 dark:text-[#A8A8A6] bg-slate-50 dark:bg-[#141415]">
                   {t("noResults", { term: searchTerm })}
                 </div>
               ) : (
@@ -139,17 +143,17 @@ export function CustomSelect({
                     onClick={() => handleSelect(option.value)}
                     className={cn(
                       "px-4 py-3 text-sm cursor-pointer flex items-center justify-between",
-                      "hover:bg-teal-50 active:bg-teal-100",
-                      "border-b border-slate-100 last:border-b-0",
+                      "hover:bg-teal-50 dark:hover:bg-[#1F3D2E] active:bg-teal-100 dark:active:bg-[#26492f]",
+                      "border-b border-slate-100 dark:border-[#1c2220] last:border-b-0",
                       value === option.value &&
-                        "bg-teal-100 text-teal-800 font-medium"
+                        "bg-teal-100 dark:bg-[#1F3D2E] text-teal-800 dark:text-[#6fcf9f] font-medium"
                     )}
                   >
-                    <span className="truncate text-slate-700">
+                    <span className="truncate text-slate-700 dark:text-[#E8E8E6]">
                       {option.label}
                     </span>
                     {value === option.value && (
-                      <Check className="w-4 h-4 text-teal-600 ms-2 flex-shrink-0" />
+                      <Check className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f] ms-2 flex-shrink-0" />
                     )}
                   </div>
                 ))
