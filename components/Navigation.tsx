@@ -312,17 +312,13 @@ export function Navigation() {
                     <Icon
                       className={cn(
                         "w-5 h-5",
-                        active
-                          ? "text-teal-600 dark:text-[#6fcf9f]"
-                          : "text-slate-400 dark:text-[#7A7A78]"
+                        active ? "text-teal-600 dark:text-[#6fcf9f]" : "text-slate-400 dark:text-[#7A7A78]"
                       )}
                     />
                     <span
                       className={cn(
                         "text-[10px] font-medium",
-                        active
-                          ? "text-teal-600 dark:text-[#6fcf9f]"
-                          : "text-slate-400 dark:text-[#7A7A78]"
+                        active ? "text-teal-600 dark:text-[#6fcf9f]" : "text-slate-400 dark:text-[#7A7A78]"
                       )}
                     >
                       {item.label}
@@ -388,27 +384,27 @@ export function Navigation() {
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="group flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full transition-all duration-200 hover:bg-teal-50 cursor-pointer">
-                    <div className="w-7 h-7 rounded-full bg-teal-600 flex items-center justify-center">
+                  <button className="group flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full transition-all duration-200 hover:bg-teal-50 dark:hover:bg-[#1F3D2E] cursor-pointer">
+                    <div className="w-7 h-7 rounded-full bg-teal-600 dark:bg-[#0F6E56] flex items-center justify-center">
                       <span className="text-white text-xs font-medium">
                         {getUserInitial()}
                       </span>
                     </div>
                     <div className="text-start">
-                      <div className="text-sm font-medium text-slate-700">
+                      <div className="text-sm font-medium text-slate-700 dark:text-[#E8E8E6]">
                         {getUserDisplayName()}
                       </div>
                     </div>
-                    <ChevronDown className="w-4 h-4 text-slate-400 transition-transform duration-200 group-aria-expanded:rotate-180" />
+                    <ChevronDown className="w-4 h-4 text-slate-400 dark:text-[#7A7A78] transition-transform duration-200 group-aria-expanded:rotate-180" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuContent align="end" className="w-56 bg-white dark:bg-[#1c1c1e] dark:border-[#1c2220]">
                   {profile?.user_type === "lawyer" && (
                     <>
                       <DropdownMenuItem asChild>
                         <Link
                           href="/lawyer/dashboard"
-                          className="w-full hover:bg-teal-50"
+                          className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6]"
                         >
                           <LayoutDashboard className="w-4 h-4 me-2" />
                           {t("nav.dashboard")}
@@ -417,7 +413,7 @@ export function Navigation() {
                       <DropdownMenuItem asChild>
                         <Link
                           href="/lawyer/abonnements"
-                          className="w-full hover:bg-teal-50"
+                          className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6]"
                         >
                           <CreditCard className="w-4 h-4 me-2" />
                           {t("nav.mySubscription")}
@@ -430,7 +426,7 @@ export function Navigation() {
                       router.push("/profile");
                       setIsOpen(false);
                     }}
-                    className="w-full hover:bg-teal-50 cursor-pointer"
+                    className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6] cursor-pointer"
                   >
                     <User className="w-4 h-4 me-2" />
                     {t("nav.myProfile")}
@@ -440,14 +436,14 @@ export function Navigation() {
                       router.push("/settings");
                       setIsOpen(false);
                     }}
-                    className="w-full hover:bg-teal-50 cursor-pointer"
+                    className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6] cursor-pointer"
                   >
                     <Settings className="w-4 h-4 me-2" />
                     {t("nav.settings")}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={handleSignOut}
-                    className="w-full hover:bg-red-100 text-red-600 cursor-pointer"
+                    className="w-full hover:bg-red-100 dark:hover:bg-[#3D1F1F] text-red-600 dark:text-[#E08585] cursor-pointer"
                   >
                     <LogOut className="w-4 h-4 me-2" />
                     {t("nav.logout")}
@@ -463,11 +459,11 @@ export function Navigation() {
                       <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="center" className="w-44">
+                  <DropdownMenuContent align="center" className="w-44 bg-white dark:bg-[#1c1c1e] dark:border-[#1c2220]">
                     <DropdownMenuItem asChild>
                       <Link
                         href="/auth/client/login"
-                        className="w-full hover:bg-teal-50 text-sm py-2"
+                        className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6] text-sm py-2"
                       >
                         {t("nav.loginTab")}
                       </Link>
@@ -475,7 +471,7 @@ export function Navigation() {
                     <DropdownMenuItem asChild>
                       <Link
                         href="/auth/client/register"
-                        className="w-full hover:bg-teal-50 text-sm py-2"
+                        className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6] text-sm py-2"
                       >
                         {t("nav.signupTab")}
                       </Link>
@@ -498,7 +494,7 @@ export function Navigation() {
                     <DropdownMenuItem asChild>
                       <Link
                         href="/auth/lawyer/login"
-                        className="w-full hover:bg-teal-50 text-sm py-2"
+                        className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6] text-sm py-2"
                       >
                         {t("nav.loginTab")}
                       </Link>
@@ -506,7 +502,7 @@ export function Navigation() {
                     <DropdownMenuItem asChild>
                       <Link
                         href="/auth/lawyer/register"
-                        className="w-full hover:bg-teal-50 text-sm py-2"
+                        className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6] text-sm py-2"
                       >
                         {t("nav.signupTab")}
                       </Link>
@@ -549,7 +545,9 @@ export function Navigation() {
       <div
         className={cn(
           "lg:hidden fixed top-0 right-0 h-screen w-[82%] max-w-sm z-[9999] bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none shadow-2xl dark:shadow-none transition-transform duration-300 ease-out overflow-y-auto",
-          isOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
+          isOpen
+            ? "translate-x-0"
+            : "translate-x-full pointer-events-none"
         )}
       >
         <div className="flex items-center justify-end p-4">
@@ -578,7 +576,9 @@ export function Navigation() {
                 {link.label}
                 {link.hasNotification && link.notificationCount ? (
                   <span className="ms-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                    {link.notificationCount > 9 ? "9+" : link.notificationCount}
+                    {link.notificationCount > 9
+                      ? "9+"
+                      : link.notificationCount}
                   </span>
                 ) : null}
               </span>

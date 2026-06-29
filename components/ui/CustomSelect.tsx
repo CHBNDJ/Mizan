@@ -82,7 +82,7 @@ export function CustomSelect({
         <div
           onClick={toggleOpen}
           className={cn(
-            "w-full px-3 py-2 border border-slate-300 dark:border-[#1c2220] rounded-lg bg-white dark:bg-[#1c1c1e] cursor-pointer flex items-center justify-between",
+            "w-full px-3 py-2 border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] cursor-pointer flex items-center justify-between",
             "hover:border-2 hover:border-teal-300 dark:hover:border-[#6fcf9f]",
             disabled &&
               "opacity-50 cursor-not-allowed bg-slate-50 dark:bg-[#141415]",

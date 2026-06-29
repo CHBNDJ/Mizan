@@ -59,7 +59,6 @@ export function ConsultationPanel({
   const needsSchedule = NEEDS_SCHEDULE.includes(selected || "");
   const today = new Date().toISOString().split("T")[0];
 
-  // 2. Plus de texte en dur ici — tout vient de tc("...")
   const ALL_CANAUX = [
     {
       type: "message",
@@ -184,18 +183,20 @@ export function ConsultationPanel({
   if (sent)
     return (
       <div className="text-center py-6">
-        <div className="w-12 h-12 bg-teal-50 border border-teal-100 rounded-full flex items-center justify-center mx-auto mb-3">
-          <CheckCircle className="w-6 h-6 text-teal-600" />
+        <div className="w-12 h-12 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-full flex items-center justify-center mx-auto mb-3">
+          <CheckCircle className="w-6 h-6 text-teal-600 dark:text-[#6fcf9f]" />
         </div>
-        <p className="text-sm font-bold text-slate-900 mb-1">
+        <p className="text-sm font-bold text-slate-900 dark:text-[#F5F5F4] mb-1">
           {tc("sentTitle")}
         </p>
-        <p className="text-xs text-slate-500">{tc("sentSubtitle")}</p>
+        <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
+          {tc("sentSubtitle")}
+        </p>
       </div>
     );
 
   const inp =
-    "w-full h-11 px-3 text-sm border border-slate-300 rounded-lg bg-white focus:border-teal-400 focus:border-2 outline-none transition-all text-slate-700";
+    "w-full h-11 px-3 text-sm border border-slate-300 rounded-lg bg-white dark:bg-[#1c1c1e] focus:border-teal-400 focus:border-2 outline-none transition-all text-slate-700 dark:text-[#E8E8E6]";
 
   return (
     <div>
@@ -211,47 +212,45 @@ export function ConsultationPanel({
                 setSelected(canal.type);
                 setError("");
               }}
-              // 3. text-left → text-start : s'inverse automatiquement en RTL
-              className={`w-full flex items-center justify-between gap-3 py-3 px-2 cursor-pointer transition-all text-start rounded-xl ${isSelected ? "bg-teal-50" : "hover:bg-slate-50"}`}
+              className={`w-full flex items-center justify-between gap-3 py-3 px-2 cursor-pointer transition-all text-start rounded-xl ${isSelected ? "bg-teal-50 dark:bg-[#1F3D2E]" : "hover:bg-slate-50"}`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div
-                  className={`w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${isSelected ? "border-teal-600 bg-teal-600" : "border-slate-300"}`}
+                  className={`w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${isSelected ? "border-teal-600 dark:border-[#6fcf9f] bg-teal-600 dark:bg-[#0F6E56]" : "border-slate-300"}`}
                 >
                   {isSelected && (
-                    <div className="w-1 h-1 bg-white rounded-full" />
+                    <div className="w-1 h-1 bg-white dark:bg-[#1c1c1e] rounded-full" />
                   )}
                 </div>
                 <div
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600" : "bg-teal-50 border border-teal-100"}`}
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600 dark:bg-[#0F6E56]" : "bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E]"}`}
                 >
                   <Icon
-                    className={`w-3.5 h-3.5 ${isSelected ? "text-white" : "text-teal-600"}`}
+                    className={`w-3.5 h-3.5 ${isSelected ? "text-white" : "text-teal-600 dark:text-[#6fcf9f]"}`}
                   />
                 </div>
                 <div className="min-w-0">
                   <span
-                    className={`text-sm font-medium ${isSelected ? "text-teal-800" : "text-slate-700"}`}
+                    className={`text-sm font-medium ${isSelected ? "text-teal-800" : "text-slate-700 dark:text-[#E8E8E6]"}`}
                   >
                     {canal.label}
                   </span>
                   {canal.duration && (
-                    // 4. ml-2 → ms-2 (margin-start) : à droite en LTR, à gauche en RTL
                     <span
-                      className={`ms-2 text-xs ${isSelected ? "text-teal-500" : "text-slate-400"}`}
+                      className={`ms-2 text-xs ${isSelected ? "text-teal-500 dark:text-[#6fcf9f]" : "text-slate-400 dark:text-[#7A7A78]"}`}
                     >
                       {canal.duration}
                     </span>
                   )}
                   <p
-                    className={`text-xs ${isSelected ? "text-teal-600" : "text-slate-400"}`}
+                    className={`text-xs ${isSelected ? "text-teal-600 dark:text-[#6fcf9f]" : "text-slate-400 dark:text-[#7A7A78]"}`}
                   >
                     {canal.desc}
                   </p>
                 </div>
               </div>
               <span
-                className={`text-xs font-semibold flex-shrink-0 ${isSelected ? "text-teal-600 bg-white px-2 py-0.5 rounded-full shadow-sm" : "text-slate-400"}`}
+                className={`text-xs font-semibold flex-shrink-0 ${isSelected ? "text-teal-600 dark:text-[#6fcf9f] bg-white dark:bg-[#1c1c1e] px-2 py-0.5 rounded-full shadow-sm dark:shadow-none" : "text-slate-400 dark:text-[#7A7A78]"}`}
               >
                 {canal.base_price
                   ? `${canal.base_price.toLocaleString()} DA`
@@ -263,17 +262,19 @@ export function ConsultationPanel({
       </div>
 
       {needsSchedule && (
-        <div className="mt-4 p-4 bg-teal-50 border border-teal-100 rounded-xl space-y-3">
+        <div className="mt-4 p-4 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-xl space-y-3">
           <div className="flex items-center gap-2 mb-1">
-            <Calendar className="w-4 h-4 text-teal-600" />
+            <Calendar className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
             <p className="text-xs font-semibold text-teal-800">
               {tc("schedule.title")}
             </p>
           </div>
-          <p className="text-[11px] text-teal-600">{tc("schedule.subtitle")}</p>
+          <p className="text-[11px] text-teal-600 dark:text-[#6fcf9f]">
+            {tc("schedule.subtitle")}
+          </p>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">
+              <label className="block text-xs font-medium text-slate-600 dark:text-[#E8E8E6] mb-1">
                 {tc("schedule.date")} *
               </label>
               <input
@@ -285,7 +286,7 @@ export function ConsultationPanel({
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">
+              <label className="block text-xs font-medium text-slate-600 dark:text-[#E8E8E6] mb-1">
                 {tc("schedule.time")} *
               </label>
               <input
@@ -309,7 +310,7 @@ export function ConsultationPanel({
             sending ||
             (needsSchedule && (!scheduledDate || !scheduledTime))
           }
-          className="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
+          className="w-full bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#085041] disabled:opacity-40 text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
         >
           {sending ? (
             <>
@@ -326,7 +327,7 @@ export function ConsultationPanel({
         {isAppointment && (
           <button
             onClick={onBooking}
-            className="w-full bg-white border border-teal-200 text-teal-700 hover:bg-teal-50 py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
+            className="w-full bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#1F3D2E] text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
           >
             <Calendar className="w-4 h-4" /> {tc("physicalAppointment")}
           </button>
@@ -349,7 +350,7 @@ export function ConsultationPanel({
           </span>
         </div>
 
-        <p className="text-[10px] text-slate-400 text-center">
+        <p className="text-[10px] text-slate-400 dark:text-[#7A7A78] text-center">
           {tc("priceDisclaimer")}
         </p>
       </div>

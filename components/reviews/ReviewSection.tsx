@@ -163,51 +163,55 @@ export default function ReviewSection({
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600 dark:border-[#6fcf9f]"></div>
       </div>
     );
   }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-8">
-      <h2 className="text-3xl font-bold text-slate-800">{t("title")}</h2>
+      <h2 className="text-3xl font-bold text-slate-800 dark:text-[#F5F5F4]">
+        {t("title")}
+      </h2>
       {reviews.length === 0 ? (
-        <div className="text-center py-12 bg-slate-50 rounded-lg border border-teal-100">
-          <p className="text-slate-800 text-lg font-medium">
+        <div className="text-center py-12 bg-slate-50 rounded-lg border border-teal-100 dark:border-[#1F3D2E]">
+          <p className="text-slate-800 dark:text-[#F5F5F4] text-lg font-medium">
             {t("noReviewsTitle")}
           </p>
-          <p className="text-sm text-slate-500 mt-2">{t("noReviewsDesc")}</p>
+          <p className="text-sm text-slate-500 dark:text-[#A8A8A6] mt-2">
+            {t("noReviewsDesc")}
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {reviews.map((review) => (
             <div
               key={review.id}
-              className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-lg transition-all duration-300"
+              className="bg-white dark:bg-[#1c1c1e] rounded-xl p-6 shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220] hover:shadow-lg transition-all duration-300"
             >
               {review.comment ? (
                 <div className="flex items-start gap-4 mb-4">
-                  <Quote className="w-6 h-6 text-teal-500 flex-shrink-0 mt-1" />
+                  <Quote className="w-6 h-6 text-teal-500 dark:text-[#6fcf9f] flex-shrink-0 mt-1" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-slate-700 italic leading-relaxed">
+                    <p className="text-slate-700 dark:text-[#E8E8E6] italic leading-relaxed">
                       "{review.comment}"
                     </p>
                   </div>
                 </div>
               ) : (
                 <div className="mb-4">
-                  <p className="text-slate-500 italic text-sm">
+                  <p className="text-slate-500 dark:text-[#A8A8A6] italic text-sm">
                     {t("noComment")}
                   </p>
                 </div>
               )}
 
-              <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-[#1c2220]">
                 <div>
-                  <div className="font-semibold text-slate-800 text-base">
+                  <div className="font-semibold text-slate-800 dark:text-[#F5F5F4] text-base">
                     {review.client.first_name} {review.client.last_name}.
                   </div>
-                  <div className="text-xs text-slate-500 mt-1">
+                  <div className="text-xs text-slate-500 dark:text-[#A8A8A6] mt-1">
                     {ld(formatDate(review.created_at))}
                   </div>
                 </div>
@@ -230,16 +234,18 @@ export default function ReviewSection({
       )}
 
       {(!profile || profile.user_type === "client") && (
-        <div className="bg-gradient-to-br from-teal-50 to-white rounded-xl p-8 border border-teal-100 shadow-sm">
-          <h3 className="text-2xl font-semibold text-slate-800 mb-6">
+        <div className="bg-gradient-to-br from-teal-50 to-white dark:from-[#1F3D2E] dark:to-[#1c1c1e] rounded-xl p-8 border border-teal-100 dark:border-[#1F3D2E] shadow-sm dark:shadow-none">
+          <h3 className="text-2xl font-semibold text-slate-800 dark:text-[#F5F5F4] mb-6">
             {t("shareTitle")}
           </h3>
           {!user ? (
-            <p className="text-slate-600 text-base">{t("loginToReview")}</p>
+            <p className="text-slate-600 dark:text-[#E8E8E6] text-base">
+              {t("loginToReview")}
+            </p>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="flex items-center gap-3">
-                <span className="text-base font-medium text-slate-700">
+                <span className="text-base font-medium text-slate-700 dark:text-[#E8E8E6]">
                   {t("yourRating")}
                 </span>
                 <div className="flex gap-2">
@@ -266,7 +272,7 @@ export default function ReviewSection({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                   {t("yourComment")}
                 </label>
                 <textarea
@@ -276,7 +282,7 @@ export default function ReviewSection({
                   }
                   rows={4}
                   disabled={submitting}
-                  className="w-full py-4 px-5 text-base border border-slate-300 rounded-xl bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-400 outline-none transition-all duration-200 text-slate-700 disabled:opacity-50 resize-none"
+                  className="w-full py-4 px-5 text-base border border-slate-300 rounded-xl bg-white dark:bg-[#1c1c1e] focus:border-2 hover:border-2 hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-400 outline-none transition-all duration-200 text-slate-700 dark:text-[#E8E8E6] disabled:opacity-50 resize-none"
                   placeholder={t("commentPlaceholder")}
                 />
               </div>
@@ -284,7 +290,7 @@ export default function ReviewSection({
               <button
                 type="submit"
                 disabled={submitting}
-                className="cursor-pointer w-full sm:w-auto bg-teal-600 text-white px-8 py-3.5 rounded-xl hover:bg-teal-700 transition-all duration-200 font-semibold text-base disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-100"
+                className="cursor-pointer w-full sm:w-auto bg-teal-600 dark:bg-[#0F6E56] text-white px-8 py-3.5 rounded-xl hover:bg-teal-700 dark:hover:bg-[#085041] transition-all duration-200 font-semibold text-base disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-md dark:shadow-none hover:shadow-lg hover:scale-[1.02] active:scale-100"
               >
                 {submitting ? (
                   <>

@@ -289,12 +289,12 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                 hideBar
               />
               <Link href={"/professions/" + profId}>
-                <div className="bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] hover:border-teal-400 rounded-2xl p-5 cursor-pointer transition-all hover:shadow-sm group">
+                <div className="bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#6fcf9f]/30 hover:border-teal-400 dark:hover:border-[#6fcf9f] rounded-2xl p-5 cursor-pointer transition-all hover:shadow-sm dark:hover:shadow-none group">
                   <div className="flex items-center gap-3 mb-2.5">
                     <div className="w-9 h-9 bg-teal-600 dark:bg-[#0F6E56] rounded-xl flex items-center justify-center flex-shrink-0">
                       <ProfIcon className="w-4 h-4 text-white" />
                     </div>
-                    <p className="text-sm font-bold text-teal-900 leading-snug">
+                    <p className="text-sm font-bold text-teal-900 dark:text-[#F5F5F4] leading-snug">
                       {t("professionLanding.whyChoose", {
                         label: label.toLowerCase(),
                       })}

@@ -301,7 +301,7 @@ function SearchResults() {
     <div className="min-h-screen pt-20 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <style>{`.search-header { opacity:0; } .search-avocat-card { opacity:0; }`}</style>
 
-      <div className="search-header sticky top-20 z-50 border-b border-slate-200 dark:border-[#1c2220]/60 bg-white/90 backdrop-blur-sm">
+      <div className="search-header sticky top-20 z-50 border-b border-slate-200 dark:border-[#1c2220] bg-white/90 dark:bg-[#1c1c1e]/95 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
           <div className="flex items-center gap-1.5 sm:gap-2 mb-2 flex-wrap">
             <Link href={`/${professionParam}`}>
@@ -354,7 +354,7 @@ function SearchResults() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowMobileFilters(!showMobileFilters)}
-                className="lg:hidden flex items-center gap-1 px-2.5 py-1.5 bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-lg text-xs font-medium text-slate-600 dark:text-[#E8E8E6] cursor-pointer"
+                className="lg:hidden flex items-center gap-1 px-2.5 py-1.5 bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-lg text-xs font-medium text-slate-600 dark:text-[#E8E8E6] cursor-pointer"
               >
                 <SlidersHorizontal className="w-3.5 h-3.5" />{" "}
                 {t("search.filters")}
@@ -390,7 +390,7 @@ function SearchResults() {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-5 sm:py-6">
         <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-5 sm:gap-6">
           <aside className="hidden lg:block lg:sticky lg:top-44 lg:self-start">
-            <div className="bg-white dark:bg-[#0b1210] shadow-sm dark:shadow-none rounded-xl p-4">
+            <div className="bg-white dark:bg-[#1c1c1e] shadow-sm dark:shadow-none rounded-xl p-4">
               <p className="text-xs font-semibold text-slate-500 dark:text-[#A8A8A6] uppercase tracking-wide mb-4">
                 {t("search.refine")}
               </p>

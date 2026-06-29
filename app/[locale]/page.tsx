@@ -370,8 +370,13 @@ export default function HomePage() {
       </div>
 
       <section className="feedback-cta px-4 py-10 sm:py-12">
+        <style>{`
+          .dark .fb-avatar-0 { background: #1F3D2E !important; color: #6fcf9f !important; }
+          .dark .fb-avatar-1 { background: #26492f !important; color: #9FE1CB !important; }
+          .dark .fb-avatar-2 { background: #0F6E56 !important; color: #E1F5EE !important; }
+        `}</style>
         <div className="max-w-6xl mx-auto">
-          <div className="bg-[#04342C] rounded-2xl px-6 py-7 sm:px-8 sm:py-7 flex flex-col sm:flex-row sm:items-center gap-5">
+          <div className="bg-[#04342C] dark:bg-[#1c1c1e] rounded-2xl px-6 py-7 sm:px-8 sm:py-7 flex flex-col sm:flex-row sm:items-center gap-5">
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="flex flex-shrink-0">
                 {[
@@ -381,7 +386,7 @@ export default function HomePage() {
                 ].map(([init, bg, color], i) => (
                   <div
                     key={init}
-                    className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-[3px] border-[#04342C] flex items-center justify-center text-[13px] font-medium flex-shrink-0"
+                    className={`fb-avatar-${i} w-10 h-10 sm:w-11 sm:h-11 rounded-full border-[3px] border-[#04342C] dark:border-[#1c1c1e] flex items-center justify-center text-[13px] font-medium flex-shrink-0`}
                     style={{
                       background: bg,
                       color,
@@ -395,26 +400,26 @@ export default function HomePage() {
                 ))}
               </div>
               <div className="sm:hidden">
-                <p className="text-[15px] font-medium text-[#E1F5EE] leading-tight mb-0.5">
+                <p className="text-[15px] font-medium text-[#E1F5EE] dark:text-[#F5F5F4] leading-tight mb-0.5">
                   {t("home.feedbackCta.title")}
                 </p>
-                <p className="text-[12px] text-[#5DCAA5]">
+                <p className="text-[12px] text-[#5DCAA5] dark:text-[#6fcf9f]">
                   {t("home.feedbackCta.subtitleShort")}
                 </p>
               </div>
             </div>
 
             <div className="hidden sm:block flex-1">
-              <p className="text-[17px] font-medium text-[#E1F5EE] mb-1">
+              <p className="text-[17px] font-medium text-[#E1F5EE] dark:text-[#F5F5F4] mb-1">
                 {t("home.feedbackCta.title")}
               </p>
-              <p className="text-[13px] text-[#5DCAA5]">
+              <p className="text-[13px] text-[#5DCAA5] dark:text-[#6fcf9f]">
                 {t("home.feedbackCta.subtitleLong")}
               </p>
             </div>
 
             <Link href="/feedback" className="flex-shrink-0">
-              <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#1D9E75] hover:bg-[#0F6E56] text-[#E1F5EE] text-sm font-medium px-6 py-3 rounded-xl cursor-pointer transition-all">
+              <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#1D9E75] hover:bg-[#0F6E56] dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-[#E1F5EE] text-sm font-medium px-6 py-3 rounded-xl cursor-pointer transition-all">
                 {t("home.feedbackCta.action")}{" "}
                 <ChevronRight className="w-4 h-4" />
               </button>

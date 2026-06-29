@@ -21,7 +21,7 @@ export default function LawyerMap({
 
   if (!key) {
     return (
-      <div className="flex items-center justify-center h-32 bg-slate-50 text-xs text-slate-400 border-t border-slate-100">
+      <div className="flex items-center justify-center h-32 bg-slate-50 text-xs text-slate-400 dark:text-[#7A7A78] border-t border-slate-100 dark:border-[#1c2220]">
         Clé Google Maps manquante
       </div>
     );
@@ -51,11 +51,10 @@ export default function LawyerMap({
           title="Localisation du cabinet"
         />
 
-        {/* Bouton plein écran */}
         <button
           onClick={handleFullscreen}
           title="Agrandir"
-          className="absolute top-2 right-2 w-8 h-8 bg-white border border-slate-200 rounded-lg shadow-sm flex items-center justify-center z-10 cursor-pointer hover:border-teal-300 hover:text-teal-600 transition-colors text-slate-500"
+          className="absolute top-2 right-2 w-8 h-8 bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-lg shadow-sm dark:shadow-none flex items-center justify-center z-10 cursor-pointer hover:border-teal-300 dark:hover:border-[#6fcf9f] hover:text-teal-600 transition-colors text-slate-500 dark:text-[#A8A8A6]"
         >
           <svg
             width="13"
@@ -75,13 +74,12 @@ export default function LawyerMap({
         </button>
       </div>
 
-      {/* Bouton bas */}
       {showContact && googleMapsUrl ? (
         <a
           href={googleMapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 py-3 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors border-t border-slate-100"
+          className="flex items-center justify-center gap-2 py-3 text-xs font-medium text-slate-600 dark:text-[#E8E8E6] hover:bg-slate-50 transition-colors border-t border-slate-100 dark:border-[#1c2220]"
         >
           <svg
             width="13"
@@ -102,7 +100,7 @@ export default function LawyerMap({
       ) : (
         <button
           onClick={onLockedClick}
-          className="w-full flex items-center justify-center gap-2 py-3 text-xs font-medium text-slate-400 hover:bg-slate-50 transition-colors border-t border-slate-100 cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 py-3 text-xs font-medium text-slate-400 dark:text-[#7A7A78] hover:bg-slate-50 transition-colors border-t border-slate-100 dark:border-[#1c2220] cursor-pointer"
         >
           <svg
             width="13"
