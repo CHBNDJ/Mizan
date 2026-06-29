@@ -206,7 +206,7 @@ export default function SettingsPage() {
         title={t("notifLockedNote")}
       >
         <div className="w-11 h-6 bg-teal-600 dark:bg-[#0F6E56] rounded-full relative">
-          <div className="absolute top-[2px] end-[2px] bg-white dark:bg-[#0b1210] rounded-full h-5 w-5" />
+          <div className="absolute top-[2px] end-[2px] bg-white dark:bg-[#1c1c1e] rounded-full h-5 w-5" />
         </div>
       </div>
     </div>
@@ -239,7 +239,7 @@ export default function SettingsPage() {
             </p>
           </div>
 
-          <div className="settings-section bg-white dark:bg-[#0b1210] rounded-lg shadow-sm dark:shadow-none border p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="settings-section bg-white dark:bg-[#1c1c1e] rounded-lg shadow-sm dark:shadow-none border p-4 sm:p-6 mb-4 sm:mb-6">
             <h2 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-[#F5F5F4] flex items-center gap-2 mb-4">
               <Bell className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />{" "}
               {t("notificationsTitle")}
@@ -259,14 +259,14 @@ export default function SettingsPage() {
             </p>
           </div>
 
-          <div className="settings-section bg-white dark:bg-[#0b1210] rounded-lg shadow-sm dark:shadow-none border p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="settings-section bg-white dark:bg-[#1c1c1e] rounded-lg shadow-sm dark:shadow-none border p-4 sm:p-6 mb-4 sm:mb-6">
             <h2 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-[#F5F5F4] mb-4 flex items-center gap-2">
               <Shield className="w-5 h-5 text-green-600" /> {t("privacyTitle")}
             </h2>
             <div className="space-y-3 sm:space-y-4">
               <button
                 onClick={() => setIsPasswordModalOpen(true)}
-                className="cursor-pointer w-full flex flex-col sm:flex-row sm:items-center gap-2 p-3 sm:p-4 border border-slate-200 dark:border-[#1c2220] rounded-lg hover:bg-slate-50 text-start group"
+                className="cursor-pointer w-full flex flex-col sm:flex-row sm:items-center gap-2 p-3 sm:p-4 border border-slate-200 dark:border-[#1c2220] rounded-lg hover:bg-slate-50 dark:hover:bg-[#1c2220] text-start group"
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <Key className="w-5 h-5 text-slate-500 dark:text-[#A8A8A6] group-hover:text-teal-600 flex-shrink-0" />
@@ -282,7 +282,7 @@ export default function SettingsPage() {
               </button>
               <button
                 onClick={() => setIsEmailModalOpen(true)}
-                className="cursor-pointer w-full flex flex-col sm:flex-row sm:items-center gap-2 p-3 sm:p-4 border border-slate-200 dark:border-[#1c2220] rounded-lg hover:bg-slate-50 text-start group"
+                className="cursor-pointer w-full flex flex-col sm:flex-row sm:items-center gap-2 p-3 sm:p-4 border border-slate-200 dark:border-[#1c2220] rounded-lg hover:bg-slate-50 dark:hover:bg-[#1c2220] text-start group"
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <Mail className="w-5 h-5 text-slate-500 dark:text-[#A8A8A6] group-hover:text-teal-600 flex-shrink-0" />
@@ -299,7 +299,7 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          <div className="settings-section bg-white dark:bg-[#0b1210] rounded-lg shadow-sm dark:shadow-none border border-red-200 p-4 sm:p-6">
+          <div className="settings-section bg-white dark:bg-[#1c1c1e] rounded-lg shadow-sm dark:shadow-none border border-red-200 p-4 sm:p-6">
             <h2 className="text-lg sm:text-xl font-semibold text-red-600 mb-4">
               {t("dangerZoneTitle")}
             </h2>

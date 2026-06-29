@@ -403,7 +403,7 @@ function ProfilePageContent() {
           <div className="action-buttons flex gap-2 flex-shrink-0">
             <button
               onClick={() => refreshProfile()}
-              className="flex-1 sm:flex-none px-3 sm:px-4 py-2 border border-slate-300 text-slate-600 dark:text-[#E8E8E6] rounded-lg hover:bg-slate-50 cursor-pointer text-sm sm:text-base"
+              className="flex-1 sm:flex-none px-3 sm:px-4 py-2 border border-slate-300 dark:border-[#3a3a3d] text-slate-600 dark:text-[#E8E8E6] rounded-lg hover:bg-slate-50 dark:hover:bg-[#1c2220] cursor-pointer text-sm sm:text-base"
             >
               {t("myProfile.refresh")}
             </button>
@@ -577,7 +577,7 @@ function ProfilePageContent() {
                     <button
                       onClick={handleCancel}
                       disabled={isSaving}
-                      className="cursor-pointer flex-1 sm:flex-none flex items-center justify-center gap-2 border border-slate-300 text-slate-600 dark:text-[#E8E8E6] px-3 sm:px-4 py-2 rounded-lg hover:bg-slate-50 disabled:opacity-50 text-sm sm:text-base"
+                      className="cursor-pointer flex-1 sm:flex-none flex items-center justify-center gap-2 border border-slate-300 dark:border-[#3a3a3d] text-slate-600 dark:text-[#E8E8E6] px-3 sm:px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1c2220] disabled:opacity-50 text-sm sm:text-base"
                     >
                       <X className="w-4 h-4" /> {t("myProfile.cancel")}
                     </button>

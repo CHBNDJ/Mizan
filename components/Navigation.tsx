@@ -220,12 +220,12 @@ export function Navigation() {
     return (
       <>
         {/* Sidebar desktop */}
-        <aside className="hidden lg:flex fixed top-0 start-0 h-screen w-20 flex-col items-center py-6 z-[999] border-e border-slate-200 bg-white/80 backdrop-blur-xl">
+        <aside className="hidden lg:flex fixed top-0 start-0 h-screen w-20 flex-col items-center py-6 z-[999] border-e border-slate-200 dark:border-[#1c2220] bg-white/80 dark:bg-[#1c1c1e]/95 backdrop-blur-xl">
           <Link
             href="/"
-            className="w-11 h-11 rounded-xl bg-teal-600 flex items-center justify-center mb-8 flex-shrink-0 hover:rotate-6 transition-transform"
+            className="w-11 h-11 rounded-xl bg-teal-600 dark:bg-[#1c1c1e] dark:border dark:border-[#6fcf9f]/40 flex items-center justify-center mb-8 flex-shrink-0 hover:rotate-6 transition-transform"
           >
-            <Scale className="h-6 w-6 text-white" />
+            <Scale className="h-6 w-6 text-white dark:text-[#6fcf9f]" />
           </Link>
 
           <nav className="flex flex-col items-center gap-2 flex-1">
@@ -296,7 +296,7 @@ export function Navigation() {
         </div>
 
         {/* Barre d'onglets mobile */}
-        <nav className="lg:hidden fixed bottom-0 start-0 end-0 z-[999] border-t border-slate-200 bg-white/90 backdrop-blur-xl">
+        <nav className="lg:hidden fixed bottom-0 start-0 end-0 z-[999] border-t border-slate-200 dark:border-[#1c2220] bg-white/90 dark:bg-[#1c1c1e]/95 backdrop-blur-xl">
           <div className="flex items-center justify-around py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
             {sidebarItems
               .filter((i) => i.href !== "/settings")
