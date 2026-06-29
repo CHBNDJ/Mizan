@@ -160,9 +160,9 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        <div className="pf-section bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-6 mb-4 shadow-sm">
+        <div className="pf-section bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-6 mb-4 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 dark:text-[#F5F5F4] mb-3 flex items-center gap-2">
-            <span className="w-6 h-6 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-lg flex items-center justify-center text-xs">
+            <span className="w-6 h-6 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-lg flex items-center justify-center text-xs">
               ⚖️
             </span>
             {t("professionDetailPage.legalFrameworkTitle")}
@@ -172,7 +172,7 @@ export default function ProfessionPage() {
           </p>
         </div>
 
-        <div className="pf-section bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-6 mb-4 shadow-sm">
+        <div className="pf-section bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-6 mb-4 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 dark:text-[#F5F5F4] mb-5">
             {t("professionDetailPage.missionsTitle")}
           </h2>
@@ -193,7 +193,7 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        <div className="pf-section bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-2xl p-6 mb-4">
+        <div className="pf-section bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl p-6 mb-4">
           <h2 className="text-sm font-bold text-teal-900 mb-4">
             {t("professionDetailPage.whenToCallTitle", {
               label: data.label.toLowerCase(),
@@ -219,7 +219,7 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        <div className="pf-section bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-6 mb-7 shadow-sm">
+        <div className="pf-section bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-6 mb-7 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900 dark:text-[#F5F5F4] mb-4">
             {t("professionDetailPage.vsOthersTitle", { label: data.label })}
           </h2>
@@ -253,7 +253,7 @@ export default function ProfessionPage() {
             {t("professionDetailPage.ctaDesc")}
           </p>
           <Link href={`/${slug}`}>
-            <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 dark:bg-[#1F3D2E] text-teal-600 dark:text-[#6fcf9f] font-semibold text-sm rounded-xl cursor-pointer transition-all">
+            <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 dark:bg-[#6fcf9f]/10 text-teal-600 dark:text-[#6fcf9f] font-semibold text-sm rounded-xl cursor-pointer transition-all">
               {t("professionDetailPage.ctaAction", {
                 label: data.label.toLowerCase(),
               })}{" "}
@@ -273,8 +273,8 @@ export default function ProfessionPage() {
               const OtherIcon = PROF_ICONS[p];
               return (
                 <Link key={p} href={`/professions/${p}`}>
-                  <div className="bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] hover:border-teal-200 dark:border-[#1F3D2E] rounded-xl p-3 text-center cursor-pointer transition-all hover:shadow-sm">
-                    <div className="w-9 h-9 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] hover:border-teal-200 dark:border-[#6fcf9f]/20 rounded-xl p-3 text-center cursor-pointer transition-all hover:shadow-sm">
+                    <div className="w-9 h-9 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-lg flex items-center justify-center mx-auto mb-2">
                       <OtherIcon className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
                     </div>
                     <p className="text-xs font-semibold text-slate-700">

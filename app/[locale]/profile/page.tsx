@@ -385,7 +385,7 @@ function ProfilePageContent() {
   };
 
   const inputCls =
-    "w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 dark:text-[#F5F5F4] bg-white dark:bg-[#0b1210] border-2 border-slate-300 rounded-lg hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400 dark:text-[#7A7A78]";
+    "w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 dark:text-[#F5F5F4] bg-white dark:bg-[#1c1c1e] border-2 border-slate-300 rounded-lg hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400 dark:text-[#7A7A78]";
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
@@ -426,7 +426,7 @@ function ProfilePageContent() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
-            <div className="profile-card bg-white dark:bg-[#0b1210] rounded-lg p-6 shadow-sm dark:shadow-none border">
+            <div className="profile-card bg-white dark:bg-[#1c1c1e] rounded-lg p-6 shadow-sm dark:shadow-none border">
               <div className="text-center">
                 <div className="relative w-24 h-24 mx-auto mb-2 group">
                   {avatarUrl ? (
@@ -439,7 +439,7 @@ function ProfilePageContent() {
                           setSelectedImage(avatarUrl);
                           setShowCropModal(true);
                         }}
-                        className="rounded-full object-cover border-4 border-teal-100 dark:border-[#1F3D2E] shadow-lg dark:shadow-none cursor-pointer hover:opacity-90 hover:scale-105 transition-all"
+                        className="rounded-full object-cover border-4 border-teal-100 dark:border-[#6fcf9f]/20 shadow-lg dark:shadow-none cursor-pointer hover:opacity-90 hover:scale-105 transition-all"
                         sizes="96px"
                       />
                       <label
@@ -559,7 +559,7 @@ function ProfilePageContent() {
           </div>
 
           <div className="lg:col-span-2">
-            <div className="info-card bg-white dark:bg-[#0b1210] rounded-lg p-6 shadow-sm dark:shadow-none border">
+            <div className="info-card bg-white dark:bg-[#1c1c1e] rounded-lg p-6 shadow-sm dark:shadow-none border">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <h3 className="text-lg font-semibold text-slate-800 dark:text-[#F5F5F4]">
                   {t("myProfile.personalInfoTitle")}
@@ -969,7 +969,7 @@ function ProfilePageContent() {
                                 (s: string, i: number) => (
                                   <span
                                     key={i}
-                                    className="bg-teal-100 dark:bg-[#1F3D2E] text-teal-800 px-3 py-1 rounded-full text-sm"
+                                    className="bg-teal-100 dark:bg-[#6fcf9f]/10 text-teal-800 px-3 py-1 rounded-full text-sm"
                                   >
                                     {getSpecialiteLabel(s, t)}
                                   </span>

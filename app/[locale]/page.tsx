@@ -49,7 +49,7 @@ function ProfCard({ id, Icon, label, desc, size = "normal" }: any) {
         className={`prof-card prof-card-btn bg-white dark:bg-[#1c1c1e] rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer h-full flex flex-col items-center text-center hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:shadow-md transition-all ${size === "big" ? "px-6 py-6 gap-3" : "px-4 py-4 gap-2"}`}
       >
         <div
-          className={`flex-shrink-0 rounded-xl bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] flex items-center justify-center ${size === "big" ? "w-12 h-12" : "w-9 h-9"}`}
+          className={`flex-shrink-0 rounded-xl bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 flex items-center justify-center ${size === "big" ? "w-12 h-12" : "w-9 h-9"}`}
         >
           <Icon
             className={`text-teal-600 dark:text-[#6fcf9f] ${size === "big" ? "w-6 h-6" : "w-4 h-4"}`}
@@ -74,7 +74,7 @@ function ProfCardHorizontal({ id, Icon, label, desc }: any) {
   return (
     <Link href={`/${id}`}>
       <div className="prof-card prof-card-btn bg-white dark:bg-[#1c1c1e] rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer flex items-center gap-4 px-4 py-4 hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:shadow-md transition-all">
-        <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] flex items-center justify-center">
+        <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 flex items-center justify-center">
           <Icon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
         </div>
         <div className="text-start">
@@ -317,7 +317,7 @@ export default function HomePage() {
                   key={s.title}
                   className={`flex gap-4 ${i < 2 ? "md:border-e md:border-slate-100 dark:border-[#1c2220] md:pe-10 pb-6 md:pb-0 border-b md:border-b-0 border-slate-100 dark:border-[#1c2220]" : ""}`}
                 >
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] flex items-center justify-center text-sm font-bold text-teal-700 dark:text-[#6fcf9f] flex-shrink-0 mt-0.5">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 flex items-center justify-center text-sm font-bold text-teal-700 dark:text-[#6fcf9f] flex-shrink-0 mt-0.5">
                     {ld(String(i + 1))}
                   </div>
                   <div>
@@ -371,7 +371,7 @@ export default function HomePage() {
 
       <section className="feedback-cta px-4 py-10 sm:py-12">
         <style>{`
-          .dark .fb-avatar-0 { background: #1F3D2E !important; color: #6fcf9f !important; }
+          .dark .fb-avatar-0 { background: rgba(111, 207, 159, 0.18) !important; color: #6fcf9f !important; }
           .dark .fb-avatar-1 { background: #26492f !important; color: #9FE1CB !important; }
           .dark .fb-avatar-2 { background: #0F6E56 !important; color: #E1F5EE !important; }
         `}</style>
@@ -456,7 +456,7 @@ export default function HomePage() {
             </p>
             <div className="mt-auto flex justify-center sm:justify-start">
               <Link href="/auth/lawyer/register">
-                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 dark:bg-[#1F3D2E] dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer">
+                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 dark:bg-[#6fcf9f]/10 dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer">
                   {t("home.ctaLawyer.action")}{" "}
                   <ChevronRight className="w-4 h-4" />
                 </button>

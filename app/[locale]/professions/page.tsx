@@ -67,8 +67,8 @@ export default async function ProfessionsPage() {
             const Icon = PROF_ICONS[slug] || Scale;
             return (
               <Link key={slug} href={`/professions/${slug}`}>
-                <div className="bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] dark:border-[#1c2220] hover:border-teal-300 rounded-2xl p-6 flex items-start gap-5 cursor-pointer transition-all hover:shadow-sm group">
-                  <div className="w-12 h-12 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] hover:border-teal-300 rounded-2xl p-6 flex items-start gap-5 cursor-pointer transition-all hover:shadow-sm group">
+                  <div className="w-12 h-12 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl flex items-center justify-center flex-shrink-0">
                     <Icon className="w-6 h-6 text-teal-600 dark:text-[#6fcf9f]" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -109,7 +109,7 @@ export default async function ProfessionsPage() {
             {t("professionsPage.ctaDesc")}
           </p>
           <Link href="/search">
-            <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 dark:bg-[#1F3D2E] text-teal-600 dark:text-[#6fcf9f] font-semibold text-sm rounded-xl cursor-pointer transition-all">
+            <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 dark:bg-[#6fcf9f]/10 text-teal-600 dark:text-[#6fcf9f] font-semibold text-sm rounded-xl cursor-pointer transition-all">
               {t("professionsPage.ctaAction")}{" "}
               <ChevronRight className="w-4 h-4" />
             </button>

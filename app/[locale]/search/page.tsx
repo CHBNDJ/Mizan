@@ -429,7 +429,7 @@ function SearchResults() {
                     </p>
                     <button
                       onClick={() => setPage((p) => p + 1)}
-                      className="flex items-center gap-2 px-6 py-3 bg-white border border-teal-200 dark:border-[#1F3D2E] text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:bg-[#1F3D2E] dark:hover:bg-[#26492f] hover:border-teal-400 dark:hover:border-[#6fcf9f] rounded-xl font-semibold text-sm cursor-pointer transition-all"
+                      className="flex items-center gap-2 px-6 py-3 bg-white border border-teal-200 dark:border-[#6fcf9f]/20 text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:bg-[#6fcf9f]/10 dark:hover:bg-[#26492f] hover:border-teal-400 dark:hover:border-[#6fcf9f] rounded-xl font-semibold text-sm cursor-pointer transition-all"
                     >
                       <ChevronDown className="w-4 h-4" />
                       {t("search.showMore")}

@@ -95,7 +95,7 @@ const InfoCardMobile = ({
   const body = (
     <div className="flex items-center gap-3 px-4 py-3.5">
       <div
-        className={`w-9 h-9 flex items-center justify-center flex-shrink-0 rounded-lg text-base ${teal ? "bg-white border border-teal-100 dark:border-[#1F3D2E]" : "bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E]"}`}
+        className={`w-9 h-9 flex items-center justify-center flex-shrink-0 rounded-lg text-base ${teal ? "bg-white border border-teal-100 dark:border-[#6fcf9f]/20" : "bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20"}`}
       >
         {icon}
       </div>
@@ -123,7 +123,7 @@ const InfoCardMobile = ({
   );
   return (
     <div
-      className={`rounded-xl border shadow-sm overflow-hidden ${teal ? "bg-teal-50 dark:bg-[#1F3D2E] border-teal-100 dark:border-[#1F3D2E]" : "bg-white border-slate-200 dark:border-[#1c2220]"}`}
+      className={`rounded-xl border shadow-sm overflow-hidden ${teal ? "bg-teal-50 dark:bg-[#6fcf9f]/10 border-teal-100 dark:border-[#6fcf9f]/20" : "bg-white border-slate-200 dark:border-[#1c2220]"}`}
     >
       {href && !whatsappHref ? (
         <a
@@ -171,11 +171,11 @@ const InfoCardDesktop = ({
   const t = useTranslations();
   const body = (
     <div
-      className={`rounded-xl border shadow-sm overflow-hidden flex flex-col h-full ${teal ? "bg-teal-50 dark:bg-[#1F3D2E] border-teal-100 dark:border-[#1F3D2E]" : "bg-white border-slate-200 dark:border-[#1c2220]"}`}
+      className={`rounded-xl border shadow-sm overflow-hidden flex flex-col h-full ${teal ? "bg-teal-50 dark:bg-[#6fcf9f]/10 border-teal-100 dark:border-[#6fcf9f]/20" : "bg-white border-slate-200 dark:border-[#1c2220]"}`}
     >
       <div className="flex items-start gap-3 p-4 flex-1">
         <div
-          className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-base ${teal ? "bg-white border border-teal-100 dark:border-[#1F3D2E]" : "bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E]"}`}
+          className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-base ${teal ? "bg-white border border-teal-100 dark:border-[#6fcf9f]/20" : "bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20"}`}
         >
           {icon}
         </div>
@@ -421,7 +421,7 @@ export default function ProfilePage({
         </button>
 
         {isOwnProfile && (
-          <div className="mb-4 flex items-center justify-between bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] rounded-xl px-4 py-3">
+          <div className="mb-4 flex items-center justify-between bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 rounded-xl px-4 py-3">
             <div className="flex items-center gap-2">
               <Eye className="w-4 h-4 text-teal-700 dark:text-[#6fcf9f]" />
               <div>
@@ -442,7 +442,7 @@ export default function ProfilePage({
         )}
 
         <div className="space-y-4">
-          <div className="bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-2xl overflow-hidden shadow-sm">
+          <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl overflow-hidden shadow-sm">
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[320px]">
               <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
                 <div>
@@ -450,7 +450,7 @@ export default function ProfilePage({
                     {avokatProfessions.map((p: string) => (
                       <span
                         key={p}
-                        className="text-[10px] font-semibold text-teal-600 dark:text-[#6fcf9f] uppercase tracking-widest bg-teal-50 dark:bg-[#1F3D2E] px-2 py-0.5 rounded-full border border-teal-100 dark:border-[#1F3D2E]"
+                        className="text-[10px] font-semibold text-teal-600 dark:text-[#6fcf9f] uppercase tracking-widest bg-teal-50 dark:bg-[#6fcf9f]/10 px-2 py-0.5 rounded-full border border-teal-100 dark:border-[#6fcf9f]/20"
                       >
                         {getProfLabel(p).label}
                       </span>
@@ -534,7 +534,7 @@ export default function ProfilePage({
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   {avocat.verified && (
-                    <div className="flex items-center gap-1 text-[11px] text-teal-600 dark:text-[#6fcf9f] font-medium bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] px-2 py-0.5 rounded-full">
+                    <div className="flex items-center gap-1 text-[11px] text-teal-600 dark:text-[#6fcf9f] font-medium bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 px-2 py-0.5 rounded-full">
                       <CheckCircle className="w-3 h-3" />{" "}
                       {t("lawyerProfile.verifiedBadge")}
                     </div>
@@ -546,7 +546,7 @@ export default function ProfilePage({
                     </div>
                   )}
                   {avocat.available_now && (
-                    <div className="flex items-center gap-1.5 text-[11px] text-teal-700 dark:text-[#6fcf9f] font-medium bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] px-2 py-0.5 rounded-full">
+                    <div className="flex items-center gap-1.5 text-[11px] text-teal-700 dark:text-[#6fcf9f] font-medium bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 px-2 py-0.5 rounded-full">
                       <span className="w-1.5 h-1.5 rounded-full bg-teal-500 dark:bg-[#6fcf9f]" />
                       {t("lawyerProfile.availableNowBadge")}
                     </div>
@@ -585,7 +585,7 @@ export default function ProfilePage({
                   {avocat.specialites.map((spec: string, i: number) => (
                     <span
                       key={i}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 dark:bg-[#1F3D2E] text-teal-700 dark:text-[#6fcf9f] rounded-full text-xs font-medium border border-teal-100 dark:border-[#1F3D2E] hover:bg-teal-100 transition-all"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 dark:bg-[#6fcf9f]/10 text-teal-700 dark:text-[#6fcf9f] rounded-full text-xs font-medium border border-teal-100 dark:border-[#6fcf9f]/20 hover:bg-teal-100 transition-all"
                     >
                       <span className="w-1.5 h-1.5 bg-teal-600 rounded-full" />
                       {getSpecialiteLabel(spec, t)}
@@ -597,10 +597,10 @@ export default function ProfilePage({
           )}
 
           {showConsultPanel && (
-            <div className="content-card opacity-0 invisible bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-5 shadow-sm relative overflow-hidden">
+            <div className="content-card opacity-0 invisible bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-5 shadow-sm relative overflow-hidden">
               {isOwnProfile && (
                 <div className="absolute inset-0 z-10 bg-white/80 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center gap-2">
-                  <div className="flex items-center gap-2 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] text-teal-800 text-xs font-medium px-4 py-2 rounded-full">
+                  <div className="flex items-center gap-2 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 text-teal-800 text-xs font-medium px-4 py-2 rounded-full">
                     <Eye className="w-3.5 h-3.5" />{" "}
                     {t("lawyerProfile.ownProfileOverlay")}
                   </div>
@@ -649,7 +649,7 @@ export default function ProfilePage({
           )}
 
           {hasAddress && (
-            <div className="content-card opacity-0 invisible bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] rounded-2xl overflow-hidden shadow-sm">
+            <div className="content-card opacity-0 invisible bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl overflow-hidden shadow-sm">
               <LawyerMap
                 address={[
                   avocat.adresse?.rue,

@@ -183,7 +183,7 @@ export function ConsultationPanel({
   if (sent)
     return (
       <div className="text-center py-6">
-        <div className="w-12 h-12 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-full flex items-center justify-center mx-auto mb-3">
+        <div className="w-12 h-12 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-full flex items-center justify-center mx-auto mb-3">
           <CheckCircle className="w-6 h-6 text-teal-600 dark:text-[#6fcf9f]" />
         </div>
         <p className="text-sm font-bold text-slate-900 dark:text-[#F5F5F4] mb-1">
@@ -212,7 +212,7 @@ export function ConsultationPanel({
                 setSelected(canal.type);
                 setError("");
               }}
-              className={`w-full flex items-center justify-between gap-3 py-3 px-2 cursor-pointer transition-all text-start rounded-xl ${isSelected ? "bg-teal-50 dark:bg-[#1F3D2E]" : "hover:bg-slate-50"}`}
+              className={`w-full flex items-center justify-between gap-3 py-3 px-2 cursor-pointer transition-all text-start rounded-xl ${isSelected ? "bg-teal-50 dark:bg-[#6fcf9f]/10" : "hover:bg-slate-50"}`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div
@@ -223,7 +223,7 @@ export function ConsultationPanel({
                   )}
                 </div>
                 <div
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600 dark:bg-[#0F6E56]" : "bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E]"}`}
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600 dark:bg-[#0F6E56]" : "bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20"}`}
                 >
                   <Icon
                     className={`w-3.5 h-3.5 ${isSelected ? "text-white" : "text-teal-600 dark:text-[#6fcf9f]"}`}
@@ -262,7 +262,7 @@ export function ConsultationPanel({
       </div>
 
       {needsSchedule && (
-        <div className="mt-4 p-4 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-xl space-y-3">
+        <div className="mt-4 p-4 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl space-y-3">
           <div className="flex items-center gap-2 mb-1">
             <Calendar className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
             <p className="text-xs font-semibold text-teal-800">
@@ -327,7 +327,7 @@ export function ConsultationPanel({
         {isAppointment && (
           <button
             onClick={onBooking}
-            className="w-full bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#1F3D2E] text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
+            className="w-full bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#6fcf9f]/20 text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
           >
             <Calendar className="w-4 h-4" /> {tc("physicalAppointment")}
           </button>

@@ -134,7 +134,7 @@ export default function AbonnementsPage() {
         </div>
 
         <div className="lg:hidden mb-8">
-          <div className="flex gap-2 bg-white dark:bg-[#0b1210]/60 backdrop-blur-sm border border-slate-200 dark:border-[#1c2220] rounded-2xl p-1.5 mb-6">
+          <div className="flex gap-2 bg-white dark:bg-[#1c1c1e]/60 backdrop-blur-sm border border-slate-200 dark:border-[#1c2220] rounded-2xl p-1.5 mb-6">
             {PLANS.map((p) => (
               <button
                 key={p.id}
@@ -163,7 +163,7 @@ export default function AbonnementsPage() {
                 <div
                   className={`inline-flex mb-4 px-3 py-1 rounded-full text-xs font-bold ${
                     p.id === "6mois"
-                      ? "bg-white dark:bg-[#0b1210]/20 text-white"
+                      ? "bg-white dark:bg-[#1c1c1e]/20 text-white"
                       : "bg-amber-400 text-amber-900"
                   }`}
                 >
@@ -182,12 +182,12 @@ export default function AbonnementsPage() {
                 {t("subscriptionPlans.totalOnce", { price: fmt(p.price) })}
               </div>
               {p.savingsLabel && (
-                <div className="inline-flex text-xs font-bold px-3 py-1.5 rounded-full mb-4 bg-white dark:bg-[#0b1210]/15 text-teal-100">
+                <div className="inline-flex text-xs font-bold px-3 py-1.5 rounded-full mb-4 bg-white dark:bg-[#1c1c1e]/15 text-teal-100">
                   ✓ {p.savingsLabel}
                 </div>
               )}
 
-              <div className="h-px bg-white dark:bg-[#0b1210]/15 mb-5" />
+              <div className="h-px bg-white dark:bg-[#1c1c1e]/15 mb-5" />
               <ul className="space-y-3">
                 {p.features.map((f) => (
                   <li
@@ -195,7 +195,7 @@ export default function AbonnementsPage() {
                     className={`flex items-center gap-3 text-sm ${f.included ? "text-white/80" : "text-white/25 line-through"}`}
                   >
                     <div
-                      className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${f.included ? "bg-white dark:bg-[#0b1210]/15" : "bg-transparent"}`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${f.included ? "bg-white dark:bg-[#1c1c1e]/15" : "bg-transparent"}`}
                     >
                       {f.included ? (
                         <Check
@@ -224,7 +224,7 @@ export default function AbonnementsPage() {
                 className={`plan-card relative rounded-3xl p-8 flex flex-col border-2 ${
                   on
                     ? "selected shadow-lg dark:shadow-none shadow-teal-500/20"
-                    : "bg-white dark:bg-[#0b1210] shadow-md dark:shadow-none shadow-slate-200/80"
+                    : "bg-white dark:bg-[#1c1c1e] shadow-md dark:shadow-none shadow-slate-200/80"
                 }`}
                 onClick={() => setSelected(p.id)}
               >
@@ -269,8 +269,8 @@ export default function AbonnementsPage() {
                   <div
                     className={`savings-pill inline-flex self-start text-xs font-bold px-3 py-1.5 rounded-full mb-5 ${
                       on
-                        ? "bg-white dark:bg-[#0b1210]/15 text-teal-100"
-                        : "bg-teal-50 dark:bg-[#1F3D2E] text-teal-700 dark:text-[#6fcf9f]"
+                        ? "bg-white dark:bg-[#1c1c1e]/15 text-teal-100"
+                        : "bg-teal-50 dark:bg-[#6fcf9f]/10 text-teal-700 dark:text-[#6fcf9f]"
                     }`}
                   >
                     ✓ {p.savingsLabel}
@@ -280,7 +280,7 @@ export default function AbonnementsPage() {
                 )}
 
                 <div
-                  className={`card-divider h-px mb-6 ${on ? "bg-white dark:bg-[#0b1210]/15" : "bg-slate-100"}`}
+                  className={`card-divider h-px mb-6 ${on ? "bg-white dark:bg-[#1c1c1e]/15" : "bg-slate-100"}`}
                 />
 
                 <ul className="space-y-3 flex-1">
@@ -301,8 +301,8 @@ export default function AbonnementsPage() {
                         className={`feature-icon w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
                           f.included
                             ? on
-                              ? "bg-white dark:bg-[#0b1210]/15"
-                              : "bg-teal-50 dark:bg-[#1F3D2E]"
+                              ? "bg-white dark:bg-[#1c1c1e]/15"
+                              : "bg-teal-50 dark:bg-[#6fcf9f]/10"
                             : "bg-transparent"
                         }`}
                       >

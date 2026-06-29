@@ -396,7 +396,7 @@ export default function LawyerDashboardPage() {
               {isMultiProfession && (
                 <button
                   onClick={switchProfession}
-                  className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-[#0b1210] border border-teal-200 dark:border-[#1F3D2E] hover:bg-teal-50 dark:hover:bg-[#26492f] text-teal-700 dark:text-[#6fcf9f] text-xs font-semibold rounded-xl cursor-pointer transition-all"
+                  className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#6fcf9f]/20 hover:bg-teal-50 dark:hover:bg-[#26492f] text-teal-700 dark:text-[#6fcf9f] text-xs font-semibold rounded-xl cursor-pointer transition-all"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   {professions.find((p) => p !== activeProfession) ===
@@ -407,7 +407,7 @@ export default function LawyerDashboardPage() {
               )}
               <button
                 onClick={() => router.push("/settings")}
-                className="w-9 h-9 rounded-xl bg-white dark:bg-[#0b1210] border border-teal-100 dark:border-[#1F3D2E] flex items-center justify-center text-teal-600 dark:text-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] transition-colors cursor-pointer"
+                className="w-9 h-9 rounded-xl bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 flex items-center justify-center text-teal-600 dark:text-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] transition-colors cursor-pointer"
               >
                 <Settings className="w-4 h-4" />
               </button>
@@ -434,7 +434,7 @@ export default function LawyerDashboardPage() {
           )}
 
           {!isVerified && (
-            <div className="d-fade mb-5 flex items-center gap-3 bg-white dark:bg-[#0b1210] border border-teal-100 dark:border-[#1F3D2E] rounded-2xl px-4 py-3">
+            <div className="d-fade mb-5 flex items-center gap-3 bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl px-4 py-3">
               <Clock className="w-4 h-4 text-teal-500 dark:text-[#6fcf9f] flex-shrink-0" />
               <div>
                 <p className="text-sm font-semibold text-teal-800 dark:text-[#6fcf9f]">
@@ -447,10 +447,10 @@ export default function LawyerDashboardPage() {
             </div>
           )}
 
-          <div className="d-fade mb-5 bg-white dark:bg-[#0b1210] border border-teal-100 dark:border-[#1F3D2E] rounded-2xl px-5 py-4">
+          <div className="d-fade mb-5 bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl px-5 py-4">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-teal-50 dark:bg-[#1F3D2E] flex items-center justify-center flex-shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-teal-50 dark:bg-[#6fcf9f]/10 flex items-center justify-center flex-shrink-0">
                   <Zap className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
                 </div>
                 <div>
@@ -468,7 +468,7 @@ export default function LawyerDashboardPage() {
                 style={{ background: availableNow ? "#0D9488" : "#CBD5E1" }}
               >
                 <span
-                  className="absolute top-0.5 w-5 h-5 bg-white dark:bg-[#0b1210] rounded-full shadow dark:shadow-none transition-all"
+                  className="absolute top-0.5 w-5 h-5 bg-white dark:bg-[#1c1c1e] rounded-full shadow dark:shadow-none transition-all"
                   style={{ insetInlineStart: availableNow ? "22px" : "2px" }}
                 />
               </button>
@@ -501,7 +501,7 @@ export default function LawyerDashboardPage() {
                   </button>
                   <button
                     onClick={() => toggleAvailableNow(false)}
-                    className="text-xs font-medium bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] hover:bg-slate-50 text-slate-600 dark:text-[#E8E8E6] px-3 py-1.5 rounded-lg cursor-pointer"
+                    className="text-xs font-medium bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] hover:bg-slate-50 text-slate-600 dark:text-[#E8E8E6] px-3 py-1.5 rounded-lg cursor-pointer"
                   >
                     {t("dashboard.stillAvailableNo")}
                   </button>
@@ -511,7 +511,7 @@ export default function LawyerDashboardPage() {
           </div>
 
           <div className="d-fade grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-            <div className="bg-white dark:bg-[#0b1210] border border-teal-100 dark:border-[#1F3D2E] rounded-2xl p-4">
+            <div className="bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-3">
                 <Users className="w-4 h-4 text-teal-400 dark:text-[#6fcf9f]" />
                 {stats.pending > 0 && (
@@ -531,7 +531,7 @@ export default function LawyerDashboardPage() {
                 )}
               </p>
             </div>
-            <div className="bg-white dark:bg-[#0b1210] border border-teal-100 dark:border-[#1F3D2E] rounded-2xl p-4">
+            <div className="bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-3">
                 <CheckCircle className="w-4 h-4 text-teal-400 dark:text-[#6fcf9f]" />
               </div>
@@ -551,7 +551,7 @@ export default function LawyerDashboardPage() {
                 </p>
               )}
             </div>
-            <div className="bg-white dark:bg-[#0b1210] border border-teal-100 dark:border-[#1F3D2E] rounded-2xl p-4">
+            <div className="bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-3">
                 <Eye className="w-4 h-4 text-teal-400 dark:text-[#6fcf9f]" />
               </div>
@@ -594,9 +594,9 @@ export default function LawyerDashboardPage() {
           <div className="d-fade grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
             {ACTIONS.map((item, i) => (
               <Link key={i} href={item.href}>
-                <div className="group bg-white dark:bg-[#0b1210] border border-teal-100 dark:border-[#1F3D2E] rounded-2xl p-4 hover:border-teal-300 dark:hover:border-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] transition-all cursor-pointer h-full">
+                <div className="group bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl p-4 hover:border-teal-300 dark:hover:border-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] transition-all cursor-pointer h-full">
                   <div className="flex items-center justify-between mb-3">
-                    <div className="w-8 h-8 rounded-xl bg-teal-50 dark:bg-[#1F3D2E] group-hover:bg-white flex items-center justify-center transition-colors">
+                    <div className="w-8 h-8 rounded-xl bg-teal-50 dark:bg-[#6fcf9f]/10 group-hover:bg-white flex items-center justify-center transition-colors">
                       <item.icon className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
                     </div>
                     {(item.badge || 0) > 0 ? (
@@ -623,7 +623,7 @@ export default function LawyerDashboardPage() {
           </div>
 
           <div className="d-fade mb-5">
-            <div className="bg-white dark:bg-[#0b1210] border border-teal-100 dark:border-[#1F3D2E] rounded-2xl overflow-hidden">
+            <div className="bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl overflow-hidden">
               <div className="px-5 py-4 border-b border-teal-50 dark:border-[#1c2220] flex items-center gap-2">
                 <MessageSquare className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
                 <p className="text-sm font-bold text-teal-900 dark:text-[#F5F5F4]">
@@ -639,7 +639,7 @@ export default function LawyerDashboardPage() {
           {(activeProfession === "notaire" ||
             activeProfession === "huissier") && (
             <div className="d-fade mb-5">
-              <div className="bg-white dark:bg-[#0b1210] border border-teal-100 dark:border-[#1F3D2E] rounded-2xl overflow-hidden">
+              <div className="bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl overflow-hidden">
                 <div className="px-5 py-4 border-b border-teal-50 dark:border-[#1c2220] flex items-center gap-2">
                   <CalendarDays className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
                   <p className="text-sm font-bold text-teal-900 dark:text-[#F5F5F4]">
@@ -653,7 +653,7 @@ export default function LawyerDashboardPage() {
             </div>
           )}
 
-          <div className="d-fade flex items-center justify-between bg-white dark:bg-[#0b1210] border border-teal-100 dark:border-[#1F3D2E] rounded-2xl px-5 py-4">
+          <div className="d-fade flex items-center justify-between bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl px-5 py-4">
             <div>
               <p className="text-sm font-bold text-teal-900 dark:text-[#F5F5F4]">
                 {t("dashboard.helpTitle")}

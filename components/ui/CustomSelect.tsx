@@ -130,7 +130,7 @@ export function CustomSelect({
         </div>
 
         {isOpen && !disabled && (
-          <div className="absolute z-[9999] w-full mt-2 bg-white dark:bg-[#1c1c1e] border-2 border-teal-200 dark:border-[#1F3D2E] rounded-lg shadow-2xl dark:shadow-none max-h-64 overflow-hidden">
+          <div className="absolute z-[9999] w-full mt-2 bg-white dark:bg-[#1c1c1e] border-2 border-teal-200 dark:border-[#6fcf9f]/20 rounded-lg shadow-2xl dark:shadow-none max-h-64 overflow-hidden">
             <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-300 scrollbar-track-slate-100">
               {filteredOptions.length === 0 ? (
                 <div className="px-4 py-3 text-sm text-slate-500 dark:text-[#A8A8A6] bg-slate-50 dark:bg-[#141415]">
@@ -143,10 +143,10 @@ export function CustomSelect({
                     onClick={() => handleSelect(option.value)}
                     className={cn(
                       "px-4 py-3 text-sm cursor-pointer flex items-center justify-between",
-                      "hover:bg-teal-50 dark:hover:bg-[#1F3D2E] active:bg-teal-100 dark:active:bg-[#26492f]",
+                      "hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/15 active:bg-teal-100 dark:active:bg-[#26492f]",
                       "border-b border-slate-100 dark:border-[#1c2220] last:border-b-0",
                       value === option.value &&
-                        "bg-teal-100 dark:bg-[#1F3D2E] text-teal-800 dark:text-[#6fcf9f] font-medium"
+                        "bg-teal-100 dark:bg-[#6fcf9f]/10 text-teal-800 dark:text-[#6fcf9f] font-medium"
                     )}
                   >
                     <span className="truncate text-slate-700 dark:text-[#E8E8E6]">

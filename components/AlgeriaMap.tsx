@@ -151,7 +151,7 @@ export function AlgeriaMap({
 
       <div
         ref={containerRef}
-        className="relative w-full rounded-xl overflow-hidden border border-slate-200 dark:border-[#1c2220] shadow-sm dark:shadow-none bg-slate-50 dark:bg-[#0b1210]"
+        className="relative w-full rounded-xl overflow-hidden border border-slate-200 dark:border-[#1c2220] shadow-sm dark:shadow-none bg-slate-50 dark:bg-[#1c1c1e]"
         style={{ paddingBottom: "97%" }}
         onMouseMove={onMouseMove}
         onMouseLeave={() => setHovered(null)}
@@ -175,7 +175,7 @@ export function AlgeriaMap({
                   transition: fill 0.12s ease;
                 }
                 .dark #algeria-real-map path {
-                  fill: #1F3D2E; stroke: #0a0e0d; stroke-width: 12;
+                  fill: #2a2a28; stroke: #0a0e0d; stroke-width: 12;
                 }
               `}</style>
             </defs>
@@ -201,7 +201,7 @@ export function AlgeriaMap({
 
         {hovered && WILAYA_NAMES[hovered] && (
           <div
-            className="absolute pointer-events-none z-10 bg-white dark:bg-[#0b1210] border border-teal-200 dark:border-[#1F3D2E] text-teal-800 dark:text-[#6fcf9f] text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow-md dark:shadow-none whitespace-nowrap"
+            className="absolute pointer-events-none z-10 bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#6fcf9f]/20 text-teal-800 dark:text-[#6fcf9f] text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow-md dark:shadow-none whitespace-nowrap"
             style={{
               left: Math.min(
                 tooltipPos.x + 12,
@@ -223,7 +223,7 @@ export function AlgeriaMap({
       {!isLanding &&
         !hideBar &&
         (selectedWilaya ? (
-          <div className="mt-2 flex items-center justify-between bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] rounded-xl px-4 py-2.5">
+          <div className="mt-2 flex items-center justify-between bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 rounded-xl px-4 py-2.5">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-teal-600 dark:bg-[#6fcf9f]" />
               <span className="text-sm font-semibold text-teal-700 dark:text-[#6fcf9f]">

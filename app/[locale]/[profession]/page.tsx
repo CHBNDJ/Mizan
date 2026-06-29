@@ -267,7 +267,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
               <div className="mt-8 space-y-4 relative" style={{ zIndex: 1 }}>
                 {prof.steps.map((step, i) => (
                   <div key={i} className="ph-step flex gap-3">
-                    <div className="w-7 h-7 rounded-full bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] flex items-center justify-center text-xs font-bold text-teal-700 dark:text-[#6fcf9f] flex-shrink-0 mt-0.5">
+                    <div className="w-7 h-7 rounded-full bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 flex items-center justify-center text-xs font-bold text-teal-700 dark:text-[#6fcf9f] flex-shrink-0 mt-0.5">
                       {ld(String(i + 1))}
                     </div>
                     <div>
@@ -289,7 +289,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                 hideBar
               />
               <Link href={"/professions/" + profId}>
-                <div className="bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#6fcf9f]/30 hover:border-teal-400 dark:hover:border-[#6fcf9f] rounded-2xl p-5 cursor-pointer transition-all hover:shadow-sm dark:hover:shadow-none group">
+                <div className="bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/30 hover:border-teal-400 dark:hover:border-[#6fcf9f] rounded-2xl p-5 cursor-pointer transition-all hover:shadow-sm dark:hover:shadow-none group">
                   <div className="flex items-center gap-3 mb-2.5">
                     <div className="w-9 h-9 bg-teal-600 dark:bg-[#0F6E56] rounded-xl flex items-center justify-center flex-shrink-0">
                       <ProfIcon className="w-4 h-4 text-white" />
@@ -332,7 +332,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
             {t("professionLanding.ctaDesc")}
           </p>
           <Link href="/auth/lawyer/register">
-            <button className="inline-flex items-center gap-2 px-7 py-3 bg-white hover:bg-teal-50 dark:bg-[#1F3D2E] dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer shadow-sm dark:shadow-none text-sm sm:text-base">
+            <button className="inline-flex items-center gap-2 px-7 py-3 bg-white hover:bg-teal-50 dark:bg-[#6fcf9f]/10 dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer shadow-sm dark:shadow-none text-sm sm:text-base">
               {t("professionLanding.ctaAction")}{" "}
               <ChevronRight className="w-4 h-4" />
             </button>

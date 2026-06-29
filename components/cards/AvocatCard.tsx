@@ -33,7 +33,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
     <Link href={getProfileUrl()} className="h-full">
       <div className="sm:hidden h-full bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl p-3 cursor-pointer transition-all duration-200 hover:border-slate-300 hover:-translate-y-1 hover:shadow-md flex flex-col items-center text-center">
         <div className="relative w-16 h-16 mb-2 flex-shrink-0">
-          <div className="w-16 h-16 rounded-full overflow-hidden bg-teal-100 dark:bg-[#1F3D2E] flex items-center justify-center font-medium text-base text-teal-700 dark:text-[#6fcf9f]">
+          <div className="w-16 h-16 rounded-full overflow-hidden bg-teal-100 dark:bg-[#6fcf9f]/10 flex items-center justify-center font-medium text-base text-teal-700 dark:text-[#6fcf9f]">
             {avocat.avatar_url ? (
               <Image
                 src={avocat.avatar_url}
@@ -60,7 +60,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
               : t("professions.avocat.label")}
           </span>
           {autresSpecialites > 0 && (
-            <span className="flex-shrink-0 bg-teal-100 dark:bg-[#1F3D2E] text-teal-700 dark:text-[#6fcf9f] text-[10px] font-medium px-1.5 py-0.5 rounded">
+            <span className="flex-shrink-0 bg-teal-100 dark:bg-[#6fcf9f]/10 text-teal-700 dark:text-[#6fcf9f] text-[10px] font-medium px-1.5 py-0.5 rounded">
               +{autresSpecialites}
             </span>
           )}
@@ -110,11 +110,11 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
               src={avocat.avatar_url}
               alt={`${avocat.prenom} ${avocat.nom}`}
               fill
-              className="rounded-full object-cover border-2 border-teal-100 dark:border-[#1F3D2E]"
+              className="rounded-full object-cover border-2 border-teal-100 dark:border-[#6fcf9f]/20"
               sizes="48px"
             />
           ) : (
-            <div className="w-12 h-12 rounded-full bg-teal-100 dark:bg-[#1F3D2E] flex items-center justify-center font-medium text-base text-teal-700 dark:text-[#6fcf9f]">
+            <div className="w-12 h-12 rounded-full bg-teal-100 dark:bg-[#6fcf9f]/10 flex items-center justify-center font-medium text-base text-teal-700 dark:text-[#6fcf9f]">
               {getInitials(avocat.prenom, avocat.nom)}
             </div>
           )}
@@ -132,7 +132,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
               : t("professions.avocat.label")}
           </div>
           {autresSpecialites > 0 && (
-            <div className="flex-shrink-0 bg-teal-100 dark:bg-[#1F3D2E] text-teal-700 dark:text-[#6fcf9f] text-[10px] font-medium px-1.5 py-0.5 rounded">
+            <div className="flex-shrink-0 bg-teal-100 dark:bg-[#6fcf9f]/10 text-teal-700 dark:text-[#6fcf9f] text-[10px] font-medium px-1.5 py-0.5 rounded">
               +{autresSpecialites}
             </div>
           )}

@@ -241,7 +241,7 @@ export function Navigation() {
                     "relative w-12 h-12 rounded-xl flex items-center justify-center transition-all",
                     active
                       ? "bg-teal-600 dark:bg-[#0F6E56] text-white shadow-sm"
-                      : "text-slate-500 dark:text-[#A8A8A6] hover:bg-teal-50 dark:hover:bg-[#1F3D2E] hover:text-teal-700 dark:hover:text-[#6fcf9f]"
+                      : "text-slate-500 dark:text-[#A8A8A6] hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/15 hover:text-teal-700 dark:hover:text-[#6fcf9f]"
                   )}
                 >
                   <Icon className="w-5 h-5" />
@@ -312,13 +312,17 @@ export function Navigation() {
                     <Icon
                       className={cn(
                         "w-5 h-5",
-                        active ? "text-teal-600 dark:text-[#6fcf9f]" : "text-slate-400 dark:text-[#7A7A78]"
+                        active
+                          ? "text-teal-600 dark:text-[#6fcf9f]"
+                          : "text-slate-400 dark:text-[#7A7A78]"
                       )}
                     />
                     <span
                       className={cn(
                         "text-[10px] font-medium",
-                        active ? "text-teal-600 dark:text-[#6fcf9f]" : "text-slate-400 dark:text-[#7A7A78]"
+                        active
+                          ? "text-teal-600 dark:text-[#6fcf9f]"
+                          : "text-slate-400 dark:text-[#7A7A78]"
                       )}
                     >
                       {item.label}
@@ -345,8 +349,8 @@ export function Navigation() {
         <div className="w-full max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center group flex-shrink-0">
-              <div className="w-9 h-9 rounded-xl bg-teal-600 flex items-center justify-center transition-transform group-hover:rotate-12">
-                <Scale className="h-5 w-5 text-white" />
+              <div className="w-9 h-9 rounded-xl bg-teal-600 dark:bg-[#1c1c1e] dark:border dark:border-[#6fcf9f]/40 flex items-center justify-center transition-transform group-hover:rotate-12">
+                <Scale className="h-5 w-5 text-white dark:text-[#6fcf9f]" />
               </div>
             </Link>
 
@@ -360,8 +364,8 @@ export function Navigation() {
                     className={cn(
                       "relative whitespace-nowrap text-sm font-medium transition-all px-4 py-2 rounded-full",
                       active
-                        ? "bg-teal-600 text-white shadow-sm"
-                        : "text-slate-600 hover:shadow-md hover:shadow-teal-600/15 hover:-translate-y-0.5"
+                        ? "bg-teal-600 dark:bg-[#1c1c1e] dark:border dark:border-[#6fcf9f]/40 dark:text-[#6fcf9f] text-white shadow-sm"
+                        : "text-slate-600 dark:text-[#E8E8E6] hover:shadow-md hover:shadow-teal-600/15 dark:hover:shadow-[#6fcf9f]/15 hover:-translate-y-0.5"
                     )}
                   >
                     <span className="relative inline-flex items-center">
@@ -384,7 +388,7 @@ export function Navigation() {
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="group flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full transition-all duration-200 hover:bg-teal-50 dark:hover:bg-[#1F3D2E] cursor-pointer">
+                  <button className="group flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full transition-all duration-200 hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/15 cursor-pointer">
                     <div className="w-7 h-7 rounded-full bg-teal-600 dark:bg-[#0F6E56] flex items-center justify-center">
                       <span className="text-white text-xs font-medium">
                         {getUserInitial()}
@@ -398,13 +402,16 @@ export function Navigation() {
                     <ChevronDown className="w-4 h-4 text-slate-400 dark:text-[#7A7A78] transition-transform duration-200 group-aria-expanded:rotate-180" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 bg-white dark:bg-[#1c1c1e] dark:border-[#1c2220]">
+                <DropdownMenuContent
+                  align="end"
+                  className="w-56 bg-white dark:bg-[#1c1c1e] dark:border-[#1c2220]"
+                >
                   {profile?.user_type === "lawyer" && (
                     <>
                       <DropdownMenuItem asChild>
                         <Link
                           href="/lawyer/dashboard"
-                          className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6]"
+                          className="w-full hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/15 dark:text-[#E8E8E6]"
                         >
                           <LayoutDashboard className="w-4 h-4 me-2" />
                           {t("nav.dashboard")}
@@ -413,7 +420,7 @@ export function Navigation() {
                       <DropdownMenuItem asChild>
                         <Link
                           href="/lawyer/abonnements"
-                          className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6]"
+                          className="w-full hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/15 dark:text-[#E8E8E6]"
                         >
                           <CreditCard className="w-4 h-4 me-2" />
                           {t("nav.mySubscription")}
@@ -426,7 +433,7 @@ export function Navigation() {
                       router.push("/profile");
                       setIsOpen(false);
                     }}
-                    className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6] cursor-pointer"
+                    className="w-full hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/15 dark:text-[#E8E8E6] cursor-pointer"
                   >
                     <User className="w-4 h-4 me-2" />
                     {t("nav.myProfile")}
@@ -436,7 +443,7 @@ export function Navigation() {
                       router.push("/settings");
                       setIsOpen(false);
                     }}
-                    className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6] cursor-pointer"
+                    className="w-full hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/15 dark:text-[#E8E8E6] cursor-pointer"
                   >
                     <Settings className="w-4 h-4 me-2" />
                     {t("nav.settings")}
@@ -459,11 +466,14 @@ export function Navigation() {
                       <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="center" className="w-44 bg-white dark:bg-[#1c1c1e] dark:border-[#1c2220]">
+                  <DropdownMenuContent
+                    align="center"
+                    className="w-44 bg-white dark:bg-[#1c1c1e] dark:border-[#1c2220]"
+                  >
                     <DropdownMenuItem asChild>
                       <Link
                         href="/auth/client/login"
-                        className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6] text-sm py-2"
+                        className="w-full hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/15 dark:text-[#E8E8E6] text-sm py-2"
                       >
                         {t("nav.loginTab")}
                       </Link>
@@ -471,7 +481,7 @@ export function Navigation() {
                     <DropdownMenuItem asChild>
                       <Link
                         href="/auth/client/register"
-                        className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6] text-sm py-2"
+                        className="w-full hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/15 dark:text-[#E8E8E6] text-sm py-2"
                       >
                         {t("nav.signupTab")}
                       </Link>
@@ -481,7 +491,7 @@ export function Navigation() {
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="group rounded-md py-2 flex items-center gap-2 bg-teal-600 text-white px-5 cursor-pointer shadow-sm hover:shadow-lg hover:shadow-teal-600/30 hover:-translate-y-0.5 text-sm font-semibold transition-all">
+                    <button className="group rounded-md py-2 flex items-center gap-2 bg-teal-600 dark:bg-[#1c1c1e] dark:border dark:border-[#6fcf9f] text-white dark:text-[#6fcf9f] px-5 cursor-pointer shadow-sm dark:shadow-none hover:shadow-lg hover:shadow-teal-600/30 dark:hover:shadow-[#6fcf9f]/20 hover:-translate-y-0.5 text-sm font-semibold transition-all">
                       {t("nav.professional")}{" "}
                       <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                     </button>
@@ -494,7 +504,7 @@ export function Navigation() {
                     <DropdownMenuItem asChild>
                       <Link
                         href="/auth/lawyer/login"
-                        className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6] text-sm py-2"
+                        className="w-full hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/15 dark:text-[#E8E8E6] text-sm py-2"
                       >
                         {t("nav.loginTab")}
                       </Link>
@@ -502,7 +512,7 @@ export function Navigation() {
                     <DropdownMenuItem asChild>
                       <Link
                         href="/auth/lawyer/register"
-                        className="w-full hover:bg-teal-50 dark:hover:bg-[#1F3D2E] dark:text-[#E8E8E6] text-sm py-2"
+                        className="w-full hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/15 dark:text-[#E8E8E6] text-sm py-2"
                       >
                         {t("nav.signupTab")}
                       </Link>
@@ -545,9 +555,7 @@ export function Navigation() {
       <div
         className={cn(
           "lg:hidden fixed top-0 right-0 h-screen w-[82%] max-w-sm z-[9999] bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none shadow-2xl dark:shadow-none transition-transform duration-300 ease-out overflow-y-auto",
-          isOpen
-            ? "translate-x-0"
-            : "translate-x-full pointer-events-none"
+          isOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
         )}
       >
         <div className="flex items-center justify-end p-4">
@@ -567,7 +575,7 @@ export function Navigation() {
               className={cn(
                 "block px-4 py-3 text-sm font-medium rounded-lg mx-2 transition-colors relative",
                 pathname === link.href
-                  ? "text-teal-600 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E]"
+                  ? "text-teal-600 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10"
                   : "text-slate-600 dark:text-[#E8E8E6] hover:bg-slate-50 dark:hover:bg-[#1c2220]"
               )}
               onClick={() => setIsOpen(false)}
@@ -576,9 +584,7 @@ export function Navigation() {
                 {link.label}
                 {link.hasNotification && link.notificationCount ? (
                   <span className="ms-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                    {link.notificationCount > 9
-                      ? "9+"
-                      : link.notificationCount}
+                    {link.notificationCount > 9 ? "9+" : link.notificationCount}
                   </span>
                 ) : null}
               </span>
@@ -596,7 +602,7 @@ export function Navigation() {
                   className={cn(
                     "flex flex-col items-center gap-1.5 py-3 rounded-lg border transition-all cursor-pointer",
                     selectedProfile === "client"
-                      ? "border-teal-500 dark:border-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E]"
+                      ? "border-teal-500 dark:border-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10"
                       : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e]"
                   )}
                 >
@@ -624,7 +630,7 @@ export function Navigation() {
                   className={cn(
                     "flex flex-col items-center gap-1.5 py-3 rounded-lg border transition-all cursor-pointer",
                     selectedProfile === "professional"
-                      ? "border-teal-500 dark:border-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E]"
+                      ? "border-teal-500 dark:border-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10"
                       : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e]"
                   )}
                 >
@@ -668,7 +674,7 @@ export function Navigation() {
                       : "/auth/lawyer/register"
                   }
                   onClick={() => setIsOpen(false)}
-                  className="flex-1 text-center py-2.5 rounded-lg border border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e] hover:border-teal-500 dark:hover:border-[#6fcf9f] hover:bg-teal-50/30 dark:hover:bg-[#1F3D2E] text-slate-700 dark:text-[#E8E8E6] text-sm font-semibold transition-all"
+                  className="flex-1 text-center py-2.5 rounded-lg border border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e] hover:border-teal-500 dark:hover:border-[#6fcf9f] hover:bg-teal-50/30 dark:hover:bg-[#6fcf9f]/15 text-slate-700 dark:text-[#E8E8E6] text-sm font-semibold transition-all"
                 >
                   {t("nav.signupTab")}
                 </Link>

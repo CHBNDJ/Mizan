@@ -539,7 +539,7 @@ function LawyerConsultationsContent() {
     );
 
   const ChatPanel = () => (
-    <div className="bg-white dark:bg-[#0b1210] rounded-xl shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220] flex flex-col h-[600px]">
+    <div className="bg-white dark:bg-[#1c1c1e] rounded-xl shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220] flex flex-col h-[600px]">
       <div className="p-5 bg-gradient-to-r from-teal-50 to-white border-b border-slate-200 dark:border-[#1c2220]">
         <div className="flex items-start gap-3">
           <button
@@ -626,7 +626,7 @@ function LawyerConsultationsContent() {
                 </div>
               </div>
             ) : confirmAction === "close" ? (
-              <div className="flex-1 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-200 dark:border-[#1F3D2E] rounded-xl p-3 flex items-center justify-between gap-2">
+              <div className="flex-1 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 rounded-xl p-3 flex items-center justify-between gap-2">
                 <p className="text-xs text-teal-700 dark:text-[#6fcf9f] font-medium">
                   {t("lawyerConsultations.closeConfirm")}
                 </p>
@@ -657,7 +657,7 @@ function LawyerConsultationsContent() {
                 </button>
                 <button
                   onClick={() => setConfirmAction("close")}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-teal-700 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E] hover:bg-teal-100 dark:hover:bg-[#26492f] border border-teal-200 dark:border-[#1F3D2E] rounded-xl cursor-pointer transition-all"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-teal-700 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10 hover:bg-teal-100 dark:hover:bg-[#26492f] border border-teal-200 dark:border-[#6fcf9f]/20 rounded-xl cursor-pointer transition-all"
                 >
                   <CheckSquare className="w-3.5 h-3.5" />{" "}
                   {t("lawyerConsultations.close")}
@@ -707,7 +707,7 @@ function LawyerConsultationsContent() {
                       href={message.attachment_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 bg-white dark:bg-[#0b1210]/10 rounded p-2 hover:bg-white/20"
+                      className="flex items-center gap-2 bg-white dark:bg-[#1c1c1e]/10 rounded p-2 hover:bg-white/20"
                     >
                       <span>📄</span>
                       <span className="text-sm underline">
@@ -835,7 +835,7 @@ function LawyerConsultationsContent() {
                   }
                 }}
                 placeholder={t("consultShared.messagePlaceholder")}
-                className="w-full h-14 px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white dark:bg-[#0b1210] focus:border-teal-300 outline-none text-slate-700 dark:text-[#E8E8E6] resize-none"
+                className="w-full h-14 px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white dark:bg-[#1c1c1e] focus:border-teal-300 outline-none text-slate-700 dark:text-[#E8E8E6] resize-none"
                 rows={2}
               />
               <button
@@ -881,7 +881,7 @@ function LawyerConsultationsContent() {
         )}
 
         {consultations.length === 0 ? (
-          <div className="bg-white dark:bg-[#0b1210] rounded-2xl p-12 text-center shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220]">
+          <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl p-12 text-center shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220]">
             <MessageSquare className="w-16 h-16 text-slate-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-slate-800 dark:text-[#F5F5F4] mb-2">
               {t("lawyerConsultations.emptyTitle")}
@@ -918,12 +918,12 @@ function LawyerConsultationsContent() {
                   <button
                     key={tab.key}
                     onClick={() => setTabFilter(tab.key as TabFilter)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${tabFilter === tab.key ? "bg-teal-600 dark:bg-[#0F6E56] text-white" : "bg-white dark:bg-[#0b1210] border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] hover:bg-slate-50"}`}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${tabFilter === tab.key ? "bg-teal-600 dark:bg-[#0F6E56] text-white" : "bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] hover:bg-slate-50"}`}
                   >
                     <Icon className="w-3.5 h-3.5" />
                     {tab.label}
                     <span
-                      className={`text-xs px-1.5 py-0.5 rounded-full ${tabFilter === tab.key ? "bg-white dark:bg-[#0b1210]/20" : "bg-slate-100"}`}
+                      className={`text-xs px-1.5 py-0.5 rounded-full ${tabFilter === tab.key ? "bg-white dark:bg-[#1c1c1e]/20" : "bg-slate-100"}`}
                     >
                       {tab.count}
                     </span>
@@ -940,7 +940,7 @@ function LawyerConsultationsContent() {
                 className={`consultations-list space-y-3 ${showChat ? "hidden lg:block" : "block"}`}
               >
                 {filtered.length === 0 ? (
-                  <div className="bg-white dark:bg-[#0b1210] rounded-xl p-8 text-center border border-slate-200 dark:border-[#1c2220]">
+                  <div className="bg-white dark:bg-[#1c1c1e] rounded-xl p-8 text-center border border-slate-200 dark:border-[#1c2220]">
                     <Archive className="w-10 h-10 text-slate-300 mx-auto mb-3" />
                     <p className="text-slate-500 dark:text-[#A8A8A6] text-sm">
                       {tabFilter === "archived"
@@ -953,7 +953,7 @@ function LawyerConsultationsContent() {
                     <div
                       key={consultation.id}
                       onClick={() => handleSelectConsultation(consultation)}
-                      className={`cursor-pointer bg-white dark:bg-[#0b1210] rounded-xl p-4 border-2 transition-all hover:shadow-md relative ${selectedConsultation?.id === consultation.id ? "border-teal-500 shadow-md dark:shadow-none" : "border-slate-200 dark:border-[#1c2220] hover:border-teal-300 dark:hover:border-[#6fcf9f]"} ${(consultation as any).archived_at ? "opacity-70" : ""}`}
+                      className={`cursor-pointer bg-white dark:bg-[#1c1c1e] rounded-xl p-4 border-2 transition-all hover:shadow-md relative ${selectedConsultation?.id === consultation.id ? "border-teal-500 shadow-md dark:shadow-none" : "border-slate-200 dark:border-[#1c2220] hover:border-teal-300 dark:hover:border-[#6fcf9f]"} ${(consultation as any).archived_at ? "opacity-70" : ""}`}
                     >
                       {(consultation.unread_count ?? 0) > 0 && (
                         <div className="absolute -top-2 -end-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg dark:shadow-none">
@@ -962,7 +962,7 @@ function LawyerConsultationsContent() {
                       )}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 flex-1 min-w-0">
-                          <div className="w-10 h-10 bg-teal-100 dark:bg-[#1F3D2E] rounded-lg flex items-center justify-center flex-shrink-0">
+                          <div className="w-10 h-10 bg-teal-100 dark:bg-[#6fcf9f]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                             <User className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
                           </div>
                           <div className="min-w-0 flex-1">
@@ -980,7 +980,7 @@ function LawyerConsultationsContent() {
                               {isVideoConsultation(
                                 (consultation as any).subject
                               ) && (
-                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E] px-1.5 py-0.5 rounded-full border border-teal-100 dark:border-[#1F3D2E]">
+                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10 px-1.5 py-0.5 rounded-full border border-teal-100 dark:border-[#6fcf9f]/20">
                                   <Video className="w-2.5 h-2.5" />{" "}
                                   {t("consultShared.videoLabel")}
                                 </span>
@@ -1013,7 +1013,7 @@ function LawyerConsultationsContent() {
                                 isPhoneConsultation(
                                   (consultation as any).subject
                                 )) && (
-                                <div className="flex items-center gap-1 mt-1.5 text-teal-700 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-lg px-2 py-1 w-fit">
+                                <div className="flex items-center gap-1 mt-1.5 text-teal-700 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-lg px-2 py-1 w-fit">
                                   <Calendar className="w-3 h-3 flex-shrink-0" />
                                   <span className="text-[11px] font-medium">
                                     {formatScheduled(

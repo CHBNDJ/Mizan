@@ -174,7 +174,7 @@ export default function LawyerRegisterPage() {
   const langueOptions = LANGUES.map((l) => ({ value: l, label: l }));
 
   const inputCls =
-    "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white dark:bg-[#0b1210] hover:border-teal-300 dark:text-[#F5F5F4] focus:border-teal-300 focus:border-2 outline-none transition-all duration-200 text-slate-700";
+    "w-full h-12 px-4 text-sm border border-slate-300 rounded-lg bg-white dark:bg-[#1c1c1e] hover:border-teal-300 dark:text-[#F5F5F4] focus:border-teal-300 focus:border-2 outline-none transition-all duration-200 text-slate-700";
   const errCls = "text-red-500 text-xs mt-1";
 
   const cap = (s: string) =>
@@ -455,9 +455,9 @@ export default function LawyerRegisterPage() {
                   key={p.id}
                   type="button"
                   onClick={() => handleProfessionSelect(p.id)}
-                  className={`p-4 border-2 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer relative ${isSelected ? "border-teal-600 bg-teal-50 dark:bg-[#1F3D2E]" : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#0b1210] hover:border-teal-300 dark:text-[#F5F5F4]"}`}
+                  className={`p-4 border-2 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer relative ${isSelected ? "border-teal-600 bg-teal-50 dark:bg-[#6fcf9f]/10" : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e] hover:border-teal-300 dark:text-[#F5F5F4]"}`}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 flex items-center justify-center">
                     <p.Icon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
                   </div>
                   <span
@@ -482,9 +482,9 @@ export default function LawyerRegisterPage() {
                 <button
                   type="button"
                   onClick={() => handleProfessionSelect(p.id)}
-                  className={`w-[calc(50%-6px)] p-4 border-2 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer relative ${isSelected ? "border-teal-600 bg-teal-50 dark:bg-[#1F3D2E]" : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#0b1210] hover:border-teal-300 dark:text-[#F5F5F4]"}`}
+                  className={`w-[calc(50%-6px)] p-4 border-2 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer relative ${isSelected ? "border-teal-600 bg-teal-50 dark:bg-[#6fcf9f]/10" : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e] hover:border-teal-300 dark:text-[#F5F5F4]"}`}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 flex items-center justify-center">
                     <p.Icon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
                   </div>
                   <span
@@ -503,7 +503,7 @@ export default function LawyerRegisterPage() {
           </div>
 
           {professions[0] === "expert-comptable" && (
-            <div className="mt-4 bg-teal-50 dark:bg-[#1F3D2E] border border-teal-100 dark:border-[#1F3D2E] rounded-xl px-4 py-3 flex items-start gap-2">
+            <div className="mt-4 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl px-4 py-3 flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0 mt-0.5" />
               <p className="text-xs text-teal-700 dark:text-[#6fcf9f]">
                 {t("auth.lawyerRegister.expertComptableNote")}
@@ -962,7 +962,7 @@ export default function LawyerRegisterPage() {
           </p>
         </div>
 
-        <div className="register-form bg-white dark:bg-[#0b1210] rounded-2xl shadow-lg dark:shadow-none p-6 border border-slate-100 dark:border-[#1c2220]">
+        <div className="register-form bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-lg dark:shadow-none p-6 border border-slate-100 dark:border-[#1c2220]">
           {currentStep > 0 && <StepIndicator />}
           {currentStep > 0 && (
             <div className="mb-6">

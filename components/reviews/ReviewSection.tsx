@@ -174,7 +174,7 @@ export default function ReviewSection({
         {t("title")}
       </h2>
       {reviews.length === 0 ? (
-        <div className="text-center py-12 bg-slate-50 rounded-lg border border-teal-100 dark:border-[#1F3D2E]">
+        <div className="text-center py-12 bg-slate-50 rounded-lg border border-teal-100 dark:border-[#6fcf9f]/20">
           <p className="text-slate-800 dark:text-[#F5F5F4] text-lg font-medium">
             {t("noReviewsTitle")}
           </p>
@@ -234,7 +234,7 @@ export default function ReviewSection({
       )}
 
       {(!profile || profile.user_type === "client") && (
-        <div className="bg-gradient-to-br from-teal-50 to-white dark:from-[#1F3D2E] dark:to-[#1c1c1e] rounded-xl p-8 border border-teal-100 dark:border-[#1F3D2E] shadow-sm dark:shadow-none">
+        <div className="bg-gradient-to-br from-teal-50 to-white dark:from-[#6fcf9f]/10 dark:to-[#1c1c1e] rounded-xl p-8 border border-teal-100 dark:border-[#6fcf9f]/20 shadow-sm dark:shadow-none">
           <h3 className="text-2xl font-semibold text-slate-800 dark:text-[#F5F5F4] mb-6">
             {t("shareTitle")}
           </h3>
