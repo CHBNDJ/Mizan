@@ -188,39 +188,39 @@ export default function ClaimProfilePage({
 
   if (!avocat) {
     return (
-      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
         <div className="max-w-lg mx-auto px-4 py-8 space-y-4">
-          <div className="h-20 bg-slate-200 rounded-2xl animate-pulse mx-auto w-20" />
-          <div className="h-8 bg-slate-200 rounded-xl animate-pulse w-48 mx-auto" />
-          <div className="h-64 bg-slate-200 rounded-2xl animate-pulse" />
+          <div className="h-20 bg-slate-200 dark:bg-[#1c1c1e] rounded-2xl animate-pulse mx-auto w-20" />
+          <div className="h-8 bg-slate-200 dark:bg-[#1c1c1e] rounded-xl animate-pulse w-48 mx-auto" />
+          <div className="h-64 bg-slate-200 dark:bg-[#1c1c1e] rounded-2xl animate-pulse" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pt-24 bg-gradient-to-br from-teal-100 via-white to-teal-100 flex items-center justify-center">
+    <div className="min-h-screen pt-24 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none flex items-center justify-center">
       <style>{`.header-icon, .page-title, .page-subtitle, .main-card, .footer-text { opacity: 0; }`}</style>
 
       <div className="w-full max-w-lg mx-auto px-4 py-8" ref={containerRef}>
         <div className="text-center mb-8">
-          <div className="header-icon inline-flex items-center justify-center w-20 h-20 bg-teal-100 rounded-full mb-6">
-            <CheckCircle2 className="w-10 h-10 text-teal-600" />
+          <div className="header-icon inline-flex items-center justify-center w-20 h-20 bg-teal-100 dark:bg-[#6fcf9f]/10 rounded-full mb-6">
+            <CheckCircle2 className="w-10 h-10 text-teal-600 dark:text-[#6fcf9f]" />
           </div>
-          <h1 className="page-title text-3xl font-bold text-slate-800 mb-3">
+          <h1 className="page-title text-3xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-3">
             {t("title")}
           </h1>
-          <p className="page-subtitle text-lg text-slate-600">
+          <p className="page-subtitle text-lg text-slate-600 dark:text-[#E8E8E6]">
             {avocat.prenom} {avocat.nom}
           </p>
         </div>
 
-        <Card className="main-card shadow-2xl border-0">
+        <Card className="main-card shadow-2xl dark:shadow-none border-0">
           <div className="p-8">
             {step === 1 && (
               <form onSubmit={handleSendCode} className="space-y-6">
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-3">
+                  <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-3">
                     <Mail className="w-5 h-5" />
                     {t("step1.label")}
                   </label>
@@ -229,26 +229,28 @@ export default function ClaimProfilePage({
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="votre.email@exemple.com"
-                    className="w-full h-14 px-4 text-base border-2 border-slate-300 rounded-lg bg-white focus:border-teal-400 hover:border-teal-300 outline-none transition-all duration-200 text-slate-700"
+                    className="w-full h-14 px-4 text-base border-2 border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] focus:border-teal-400 dark:focus:border-[#6fcf9f] hover:border-teal-300 dark:hover:border-[#6fcf9f] outline-none transition-all duration-200 text-slate-700 dark:text-[#E8E8E6] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78]"
                     required
                     disabled={loading}
                   />
-                  <p className="text-sm text-slate-500 mt-3">
+                  <p className="text-sm text-slate-500 dark:text-[#A8A8A6] mt-3">
                     {t("step1.hint")}
                   </p>
                 </div>
 
                 {error && (
-                  <div className="flex items-start gap-3 p-4 bg-red-50 border-2 border-red-200 rounded-lg">
-                    <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                    <p className="text-red-700 text-sm font-medium">{error}</p>
+                  <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-[#3D1F1F] border-2 border-red-200 dark:border-[#5A2A2A] rounded-lg">
+                    <AlertCircle className="w-5 h-5 text-red-600 dark:text-[#E08585] flex-shrink-0 mt-0.5" />
+                    <p className="text-red-700 dark:text-[#E08585] text-sm font-medium">
+                      {error}
+                    </p>
                   </div>
                 )}
 
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-14 bg-teal-600 hover:bg-teal-700 text-white text-base font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full h-14 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#085041] text-white text-base font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <div className="flex items-center justify-center gap-2">
@@ -260,25 +262,27 @@ export default function ClaimProfilePage({
                   )}
                 </Button>
 
-                <div className="bg-teal-50 border-2 border-teal-200 p-4 rounded-lg">
-                  <p className="text-teal-800 text-sm">{t("step1.infoBox")}</p>
+                <div className="bg-teal-50 dark:bg-[#6fcf9f]/10 border-2 border-teal-200 dark:border-[#6fcf9f]/20 p-4 rounded-lg">
+                  <p className="text-teal-800 dark:text-[#6fcf9f] text-sm">
+                    {t("step1.infoBox")}
+                  </p>
                 </div>
               </form>
             )}
 
             {step === 2 && (
               <form onSubmit={handleActivate} className="space-y-6">
-                <div className="bg-teal-50 border-2 border-teal-200 p-5 rounded-lg">
+                <div className="bg-teal-50 dark:bg-[#6fcf9f]/10 border-2 border-teal-200 dark:border-[#6fcf9f]/20 p-5 rounded-lg">
                   <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-6 h-6 text-teal-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-6 h-6 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-teal-800 font-semibold text-base">
+                      <p className="text-teal-800 dark:text-[#6fcf9f] font-semibold text-base">
                         {t("step2.sentTitle")}
                       </p>
-                      <p className="text-teal-700 text-sm mt-1">
+                      <p className="text-teal-700 dark:text-[#6fcf9f]/90 text-sm mt-1">
                         {t("step2.sentDesc")}
                       </p>
-                      <p className="text-teal-600 text-xs mt-2">
+                      <p className="text-teal-600 dark:text-[#6fcf9f]/80 text-xs mt-2">
                         {t("step2.expiresIn", { n: ld(String(codeExpiresIn)) })}
                       </p>
                     </div>
@@ -286,7 +290,7 @@ export default function ClaimProfilePage({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-3">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-3">
                     {t("step2.codeLabel")}
                   </label>
                   <input
@@ -297,17 +301,17 @@ export default function ClaimProfilePage({
                       if (value.length <= 6) setCode(value);
                     }}
                     placeholder="000000"
-                    className="w-full h-16 px-4 text-center text-2xl font-bold tracking-widest border-2 border-slate-300 rounded-lg bg-white focus:border-teal-400 outline-none transition-all text-slate-700"
+                    className="w-full h-16 px-4 text-center text-2xl font-bold tracking-widest border-2 border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] focus:border-teal-400 dark:focus:border-[#6fcf9f] outline-none transition-all text-slate-700 dark:text-[#E8E8E6]"
                     required
                     maxLength={6}
                     disabled={loading}
                   />
                   <div className="flex items-center justify-between mt-2">
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
                       {t("step2.codeReceived")}
                     </p>
                     {attemptsLeft !== null && (
-                      <p className="text-xs text-amber-600 font-medium">
+                      <p className="text-xs text-amber-600 dark:text-[#E0B568] font-medium">
                         {t("step2.attemptsLeft", { n: attemptsLeft })}
                       </p>
                     )}
@@ -315,7 +319,7 @@ export default function ClaimProfilePage({
                 </div>
 
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-3">
+                  <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-3">
                     <Lock className="w-5 h-5" />
                     {t("step2.passwordLabel")}
                   </label>
@@ -325,7 +329,7 @@ export default function ClaimProfilePage({
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder={t("step2.passwordPh")}
-                      className="w-full h-14 px-4 pe-12 text-base border-2 border-slate-300 rounded-lg bg-white focus:border-teal-400 outline-none transition-all text-slate-700"
+                      className="w-full h-14 px-4 pe-12 text-base border-2 border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] focus:border-teal-400 dark:focus:border-[#6fcf9f] outline-none transition-all text-slate-700 dark:text-[#E8E8E6]"
                       required
                       minLength={8}
                       disabled={loading}
@@ -333,7 +337,7 @@ export default function ClaimProfilePage({
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:hover:text-[#E8E8E6]"
                       disabled={loading}
                     >
                       {showPassword ? (
@@ -346,17 +350,17 @@ export default function ClaimProfilePage({
                 </div>
 
                 {error && (
-                  <div className="flex items-start gap-3 p-4 bg-red-50 border-2 border-red-200 rounded-lg">
-                    <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-[#3D1F1F] border-2 border-red-200 dark:border-[#5A2A2A] rounded-lg">
+                    <AlertCircle className="w-5 h-5 text-red-600 dark:text-[#E08585] flex-shrink-0 mt-0.5" />
                     <div className="flex-1">
-                      <p className="text-red-700 text-sm font-medium">
+                      <p className="text-red-700 dark:text-[#E08585] text-sm font-medium">
                         {error}
                       </p>
                       {attemptsLeft === 0 && (
                         <button
                           type="button"
                           onClick={handleResendCode}
-                          className="mt-2 text-teal-600 text-sm font-medium hover:underline"
+                          className="mt-2 text-teal-600 dark:text-[#6fcf9f] text-sm font-medium hover:underline"
                         >
                           {t("step2.newCode")}
                         </button>
@@ -370,14 +374,14 @@ export default function ClaimProfilePage({
                     type="button"
                     onClick={handleResendCode}
                     disabled={loading}
-                    className="flex-1 h-14 bg-slate-200 text-slate-700 font-semibold rounded-lg hover:bg-slate-300 transition-colors disabled:opacity-50"
+                    className="flex-1 h-14 bg-slate-200 dark:bg-[#1c2220] text-slate-700 dark:text-[#E8E8E6] font-semibold rounded-lg hover:bg-slate-300 dark:hover:bg-[#2a2a2d] transition-colors disabled:opacity-50"
                   >
                     {t("step2.newCode")}
                   </button>
                   <button
                     type="submit"
                     disabled={loading || code.length !== 6}
-                    className="flex-[2] h-14 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50"
+                    className="flex-[2] h-14 bg-teal-600 dark:bg-[#0F6E56] text-white font-semibold rounded-lg hover:bg-teal-700 dark:hover:bg-[#085041] transition-colors disabled:opacity-50"
                   >
                     {loading ? (
                       <div className="flex items-center justify-center gap-2">
@@ -390,8 +394,8 @@ export default function ClaimProfilePage({
                   </button>
                 </div>
 
-                <div className="bg-amber-50 border-2 border-amber-200 p-4 rounded-lg">
-                  <p className="text-amber-800 text-xs">
+                <div className="bg-amber-50 dark:bg-[#3D2E1F] border-2 border-amber-200 dark:border-[#5A4A2A] p-4 rounded-lg">
+                  <p className="text-amber-800 dark:text-[#E0B568] text-xs">
                     {t("step2.notReceived")}
                   </p>
                 </div>
@@ -400,7 +404,7 @@ export default function ClaimProfilePage({
           </div>
         </Card>
 
-        <p className="footer-text text-center text-sm text-slate-500 mt-6">
+        <p className="footer-text text-center text-sm text-slate-500 dark:text-[#A8A8A6] mt-6">
           {t("footer")}
         </p>
       </div>

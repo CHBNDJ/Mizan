@@ -74,39 +74,39 @@ export default function ChangeEmailModal({
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
-      <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl transform animate-slideUp">
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl max-w-md w-full p-6 shadow-2xl dark:shadow-none transform animate-slideUp">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold text-slate-800 flex items-center gap-2">
-            <div className="p-2 bg-teal-100 rounded-lg">
-              <Mail className="w-5 h-5 text-teal-600" />
+          <h3 className="text-xl font-semibold text-slate-800 dark:text-[#F5F5F4] flex items-center gap-2">
+            <div className="p-2 bg-teal-100 dark:bg-[#6fcf9f]/10 rounded-lg">
+              <Mail className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
             </div>
             {t("title")}
           </h3>
           <button
             onClick={onClose}
-            className="cursor-pointer text-slate-800 hover:text-teal-600 p-2 hover:bg-teal-100 rounded-lg transition-colors"
+            className="cursor-pointer text-slate-800 dark:text-[#E8E8E6] hover:text-teal-600 dark:hover:text-[#6fcf9f] p-2 hover:bg-teal-100 dark:hover:bg-[#6fcf9f]/10 rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2 animate-shake">
-            <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-            <p className="text-red-600 text-sm">{error}</p>
+          <div className="mb-4 p-3 bg-red-50 dark:bg-[#3D1F1F] border border-red-200 dark:border-[#5A2A2A] rounded-lg flex items-start gap-2 animate-shake">
+            <AlertTriangle className="w-5 h-5 text-red-600 dark:text-[#E08585] flex-shrink-0 mt-0.5" />
+            <p className="text-red-600 dark:text-[#E08585] text-sm">{error}</p>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
               {t("newEmailLabel")}
             </label>
             <input
               type="email"
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
-              className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
+              className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 dark:text-[#F5F5F4] bg-white dark:bg-[#1c1c1e] border-2 border-slate-300 dark:border-[#3a3a3d] rounded-lg hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-300 dark:focus:border-[#6fcf9f] focus:ring-2 focus:ring-teal-500/20 dark:focus:ring-[#6fcf9f]/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-[#7A7A78]"
               placeholder={t("newEmailPh")}
               required
               disabled={isSubmitting}
@@ -114,7 +114,7 @@ export default function ChangeEmailModal({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
               {t("currentPasswordLabel")}
             </label>
             <div className="relative">
@@ -122,7 +122,7 @@ export default function ChangeEmailModal({
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 bg-white border-2 border-slate-300 rounded-lg hover:border-teal-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-500/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400"
+                className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base text-slate-900 dark:text-[#F5F5F4] bg-white dark:bg-[#1c1c1e] border-2 border-slate-300 dark:border-[#3a3a3d] rounded-lg hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-300 dark:focus:border-[#6fcf9f] focus:ring-2 focus:ring-teal-500/20 dark:focus:ring-[#6fcf9f]/20 focus:outline-none transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-[#7A7A78]"
                 placeholder={t("passwordPh")}
                 required
                 disabled={isSubmitting}
@@ -130,7 +130,7 @@ export default function ChangeEmailModal({
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="cursor-pointer absolute end-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                className="cursor-pointer absolute end-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:hover:text-[#E8E8E6] transition-colors"
               >
                 {showPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -145,7 +145,7 @@ export default function ChangeEmailModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="cursor-pointer flex-1 bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-all hover:shadow-lg"
+              className="cursor-pointer flex-1 bg-teal-600 dark:bg-[#0F6E56] text-white py-3 rounded-lg hover:bg-teal-700 dark:hover:bg-[#085041] disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-all hover:shadow-lg dark:hover:shadow-none"
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">
@@ -160,7 +160,7 @@ export default function ChangeEmailModal({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="cursor-pointer flex-1 border-2 border-slate-300 text-slate-600 py-3 rounded-lg hover:bg-slate-50 transition-colors font-medium"
+              className="cursor-pointer flex-1 border-2 border-slate-300 dark:border-[#3a3a3d] text-slate-600 dark:text-[#E8E8E6] py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1c2220] transition-colors font-medium"
             >
               {t("cancel")}
             </button>

@@ -128,7 +128,7 @@ function WilayaPageClient({
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none pt-16">
       <style jsx>{`
         .wilaya-header,
         .wilaya-stat,
@@ -138,12 +138,12 @@ function WilayaPageClient({
         }
       `}</style>
 
-      <div className="bg-white border-b">
+      <div className="bg-white dark:bg-[#1c1c1e] border-b border-slate-200 dark:border-[#1c2220]">
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="wilaya-header">
             <Link
               href="/"
-              className="inline-flex items-center text-slate-600 hover:text-slate-800 mb-6 transition-colors"
+              className="inline-flex items-center text-slate-600 dark:text-[#E8E8E6] hover:text-slate-800 dark:hover:text-[#F5F5F4] mb-6 transition-colors"
             >
               <ArrowLeft className="w-4 h-4 me-2" />
               {t("wilayaPage.backHome")}
@@ -151,19 +151,19 @@ function WilayaPageClient({
 
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-4xl font-bold text-slate-800 mb-4">
+                <h1 className="text-4xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-4">
                   {t("wilayaPage.title", { wilaya: wilayaLabel })}
                 </h1>
-                <p className="text-lg text-slate-600 max-w-2xl">
+                <p className="text-lg text-slate-600 dark:text-[#E8E8E6] max-w-2xl">
                   {t("wilayaPage.desc", { wilaya: wilayaLabel })}
                 </p>
               </div>
 
               <div className="text-end">
-                <div className="text-3xl font-bold text-teal-600">
+                <div className="text-3xl font-bold text-teal-600 dark:text-[#6fcf9f]">
                   {ld(String(totalAvocats))}
                 </div>
-                <div className="text-sm text-slate-500">
+                <div className="text-sm text-slate-500 dark:text-[#A8A8A6]">
                   {t("wilayaPage.available", { count: totalAvocats })}
                 </div>
               </div>
@@ -172,43 +172,43 @@ function WilayaPageClient({
         </div>
       </div>
 
-      <div className="bg-white border-b">
+      <div className="bg-white dark:bg-[#1c1c1e] border-b border-slate-200 dark:border-[#1c2220]">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="wilaya-stat text-center p-4 bg-teal-50 rounded-lg">
-              <div className="text-2xl font-bold text-teal-600 mb-1">
+            <div className="wilaya-stat text-center p-4 bg-teal-50 dark:bg-[#6fcf9f]/10 rounded-lg">
+              <div className="text-2xl font-bold text-teal-600 dark:text-[#6fcf9f] mb-1">
                 {ld(String(totalAvocats))}
               </div>
-              <div className="text-sm text-slate-600">
+              <div className="text-sm text-slate-600 dark:text-[#E8E8E6]">
                 {t("wilayaPage.statLawyers")}
               </div>
             </div>
 
-            <div className="wilaya-stat text-center p-4 bg-teal-50 rounded-lg">
-              <div className="text-2xl font-bold text-teal-600 mb-1">
+            <div className="wilaya-stat text-center p-4 bg-teal-50 dark:bg-[#6fcf9f]/10 rounded-lg">
+              <div className="text-2xl font-bold text-teal-600 dark:text-[#6fcf9f] mb-1">
                 {ld(String(avocatsVerifies))}
               </div>
-              <div className="text-sm text-slate-600">
+              <div className="text-sm text-slate-600 dark:text-[#E8E8E6]">
                 {t("wilayaPage.statVerified")}
               </div>
             </div>
 
-            <div className="wilaya-stat text-center p-4 bg-teal-50 rounded-lg">
-              <div className="text-2xl font-bold text-teal-600 mb-1">
+            <div className="wilaya-stat text-center p-4 bg-teal-50 dark:bg-[#6fcf9f]/10 rounded-lg">
+              <div className="text-2xl font-bold text-teal-600 dark:text-[#6fcf9f] mb-1">
                 {ld(moyenneExperience.toFixed(0))}
               </div>
-              <div className="text-sm text-slate-600">
+              <div className="text-sm text-slate-600 dark:text-[#E8E8E6]">
                 {t("wilayaPage.statExperience")}
               </div>
             </div>
 
-            <div className="wilaya-stat text-center p-4 bg-teal-50 rounded-lg">
-              <div className="text-2xl font-bold text-teal-600 mb-1">
+            <div className="wilaya-stat text-center p-4 bg-teal-50 dark:bg-[#6fcf9f]/10 rounded-lg">
+              <div className="text-2xl font-bold text-teal-600 dark:text-[#6fcf9f] mb-1">
                 {moyenneRating
                   ? ld(moyenneRating.toFixed(1))
                   : t("wilayaPage.noRating")}
               </div>
-              <div className="text-sm text-slate-600">
+              <div className="text-sm text-slate-600 dark:text-[#E8E8E6]">
                 {t("wilayaPage.statRating")}
               </div>
             </div>
@@ -219,7 +219,7 @@ function WilayaPageClient({
       {villes.length > 1 && (
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="wilaya-villes">
-            <h2 className="text-xl font-semibold text-slate-800 mb-4">
+            <h2 className="text-xl font-semibold text-slate-800 dark:text-[#F5F5F4] mb-4">
               {t("wilayaPage.citiesCovered", { wilaya: wilayaLabel })}
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -230,7 +230,7 @@ function WilayaPageClient({
                 return (
                   <span
                     key={ville}
-                    className="px-4 py-2 bg-teal-50 text-teal-700 rounded-lg text-sm font-medium hover:bg-teal-100 transition-colors"
+                    className="px-4 py-2 bg-teal-50 dark:bg-[#6fcf9f]/10 text-teal-700 dark:text-[#6fcf9f] rounded-lg text-sm font-medium hover:bg-teal-100 dark:hover:bg-[#6fcf9f]/20 transition-colors"
                   >
                     <MapPin className="w-4 h-4 inline me-1" />
                     {ville} ({ld(String(avocatsVille))})

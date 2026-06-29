@@ -84,21 +84,24 @@ export default function ImageCropModal({
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-md z-50 flex items-center justify-center p-4">
-      <div className="bg-white/95 backdrop-blur-3xl rounded-[28px] max-w-md w-full shadow-[0_20px_60px_rgba(0,0,0,0.15)] overflow-hidden">
-        <div className="px-5 pt-5 pb-3 flex items-center justify-between border-b border-gray-200/60">
-          <h3 className="text-lg font-semibold text-gray-900 tracking-tight">
+      <div className="bg-white/95 dark:bg-[#1c1c1e]/95 backdrop-blur-3xl rounded-[28px] max-w-md w-full shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-none overflow-hidden">
+        <div className="px-5 pt-5 pb-3 flex items-center justify-between border-b border-gray-200/60 dark:border-[#1c2220]">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-[#F5F5F4] tracking-tight">
             {t("title")}
           </h3>
           <button
             onClick={onCancel}
-            className="cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150"
+            className="cursor-pointer w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-[#1c2220] active:bg-gray-200 dark:active:bg-[#2a2a2d] transition-colors duration-150"
           >
-            <X className="w-5 h-5 text-gray-500" strokeWidth={2.5} />
+            <X
+              className="w-5 h-5 text-gray-500 dark:text-[#A8A8A6]"
+              strokeWidth={2.5}
+            />
           </button>
         </div>
 
         <div className="p-5">
-          <div className="relative h-80 rounded-[20px] overflow-hidden bg-gray-100 shadow-inner">
+          <div className="relative h-80 rounded-[20px] overflow-hidden bg-gray-100 dark:bg-[#141415] shadow-inner">
             <Cropper
               image={image}
               crop={crop}
@@ -116,10 +119,10 @@ export default function ImageCropModal({
         <div className="px-5 pb-5 space-y-5">
           <div className="space-y-2">
             <div className="flex items-center justify-between px-1">
-              <span className="text-sm font-medium text-gray-600">
+              <span className="text-sm font-medium text-gray-600 dark:text-[#A8A8A6]">
                 {t("zoom")}
               </span>
-              <span className="text-sm font-semibold text-teal-600 tabular-nums">
+              <span className="text-sm font-semibold text-teal-600 dark:text-[#6fcf9f] tabular-nums">
                 {Math.round(zoom * 100)}%
               </span>
             </div>
@@ -130,7 +133,7 @@ export default function ImageCropModal({
               step={0.01}
               value={zoom}
               onChange={(e) => setZoom(Number(e.target.value))}
-              className="w-full h-1 bg-gray-200 rounded-full appearance-none cursor-pointer
+              className="w-full h-1 bg-gray-200 dark:bg-[#3a3a3d] rounded-full appearance-none cursor-pointer
                 [&::-webkit-slider-thumb]:appearance-none
                 [&::-webkit-slider-thumb]:w-6
                 [&::-webkit-slider-thumb]:h-6
@@ -146,14 +149,14 @@ export default function ImageCropModal({
           <div className="flex gap-3">
             <button
               onClick={onCancel}
-              className="cursor-pointer flex-1 h-[50px] rounded-[14px] bg-gray-100 text-gray-900 font-semibold text-[17px] hover:bg-gray-200 active:bg-gray-300 transition-colors duration-150"
+              className="cursor-pointer flex-1 h-[50px] rounded-[14px] bg-gray-100 dark:bg-[#1c2220] text-gray-900 dark:text-[#F5F5F4] font-semibold text-[17px] hover:bg-gray-200 dark:hover:bg-[#2a2a2d] active:bg-gray-300 dark:active:bg-[#3a3a3d] transition-colors duration-150"
             >
               {t("cancel")}
             </button>
             <button
               onClick={handleValidate}
               disabled={!croppedAreaPixels}
-              className="cursor-pointer flex-1 h-[50px] rounded-[14px] bg-teal-500 text-white font-semibold text-[17px] hover:bg-teal-600 active:bg-teal-700 transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="cursor-pointer flex-1 h-[50px] rounded-[14px] bg-teal-500 dark:bg-[#0F6E56] text-white font-semibold text-[17px] hover:bg-teal-600 dark:hover:bg-[#085041] active:bg-teal-700 dark:active:bg-[#063d31] transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <Check className="w-5 h-5" strokeWidth={2.5} />
               {t("validate")}
