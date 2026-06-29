@@ -136,18 +136,20 @@ export function FilterPanel({
   }
 
   return (
-    <div className="relative z-50 rounded-lg shadow-sm bg-gradient-to-br from-teal-100 via-white to-teal-100">
+    <div className="relative z-50 rounded-lg shadow-sm dark:shadow-none bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:from-[#1c1c1e] dark:via-[#1c1c1e] dark:to-[#1c1c1e] dark:border dark:border-[#1c2220]">
       <div
         className="flex items-center justify-between p-4 cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-teal-100 rounded-lg">
-            <Filter className="w-4 h-4 text-teal-600" />
+          <div className="p-2 bg-teal-100 dark:bg-[#6fcf9f]/10 rounded-lg">
+            <Filter className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
           </div>
           <div>
-            <h3 className="font-semibold text-slate-800">{t("title")}</h3>
-            <p className="text-sm text-slate-500">
+            <h3 className="font-semibold text-slate-800 dark:text-[#F5F5F4]">
+              {t("title")}
+            </h3>
+            <p className="text-sm text-slate-500 dark:text-[#A8A8A6]">
               {activeFilters.length === 0
                 ? t("subtitleEmpty")
                 : t("subtitleActive", { n: ld(String(activeFilters.length)) })}
@@ -161,7 +163,7 @@ export function FilterPanel({
         <div className="p-4 space-y-4 relative">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-50">
             <div className="space-y-2 relative z-[60]">
-              <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+              <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-[#E8E8E6]">
                 <Languages className="w-4 h-4" />
                 {t("languageLabel")}
               </label>
@@ -174,7 +176,7 @@ export function FilterPanel({
             </div>
 
             <div className="space-y-2 relative z-[55]">
-              <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+              <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-[#E8E8E6]">
                 <User className="w-4 h-4" />
                 {t("civiliteLabel")}
               </label>
@@ -187,7 +189,7 @@ export function FilterPanel({
             </div>
 
             <div className="space-y-2 relative z-50">
-              <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+              <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-[#E8E8E6]">
                 <Briefcase className="w-4 h-4" />
                 {t("experienceLabel")}
               </label>

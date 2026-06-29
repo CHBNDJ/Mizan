@@ -174,7 +174,7 @@ export default function ReviewSection({
         {t("title")}
       </h2>
       {reviews.length === 0 ? (
-        <div className="text-center py-12 bg-slate-50 rounded-lg border border-teal-100 dark:border-[#6fcf9f]/20">
+        <div className="text-center py-12 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg border border-teal-100 dark:border-[#6fcf9f]/20">
           <p className="text-slate-800 dark:text-[#F5F5F4] text-lg font-medium">
             {t("noReviewsTitle")}
           </p>

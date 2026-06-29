@@ -491,7 +491,7 @@ export function Navigation() {
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="group flex items-center gap-1.5 px-3 py-2 rounded-md border border-teal-600 dark:border-[#6fcf9f] text-teal-600 dark:text-[#6fcf9f] hover:shadow-md hover:shadow-teal-600/20 dark:hover:shadow-[#6fcf9f]/20 hover:-translate-y-0.5 transition-all cursor-pointer text-sm font-medium">
+                    <button className="group flex items-center gap-1.5 px-3 py-2 rounded-md bg-teal-600 dark:bg-[#0F6E56] text-white hover:shadow-md hover:shadow-teal-600/20 dark:hover:shadow-[#0F6E56]/30 hover:-translate-y-0.5 transition-all cursor-pointer text-sm font-medium">
                       {t("nav.professional")}{" "}
                       <ChevronDown className="w-4 h-4 transition-transform duration-200 group-aria-expanded:rotate-180" />
                     </button>
@@ -499,7 +499,7 @@ export function Navigation() {
                   <DropdownMenuContent
                     align="center"
                     sameWidth={false}
-                    className="w-44"
+                    className="w-44 bg-white dark:bg-[#1c1c1e] dark:border-[#1c2220]"
                   >
                     <DropdownMenuItem asChild>
                       <Link

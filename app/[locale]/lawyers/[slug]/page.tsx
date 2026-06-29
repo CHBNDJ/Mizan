@@ -573,7 +573,7 @@ export default function ProfilePage({
           </div>
 
           {avocat.specialites && avocat.specialites.length > 0 && (
-            <Card className="content-card opacity-0 invisible shadow-sm">
+            <Card className="content-card opacity-0 invisible shadow-sm dark:shadow-none dark:bg-[#1c1c1e] dark:border-[#1c2220]">
               <CardHeader>
                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-800 dark:text-[#F5F5F4]">
                   <Briefcase className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />{" "}
@@ -585,9 +585,9 @@ export default function ProfilePage({
                   {avocat.specialites.map((spec: string, i: number) => (
                     <span
                       key={i}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 dark:bg-[#6fcf9f]/10 text-teal-700 dark:text-[#6fcf9f] rounded-full text-xs font-medium border border-teal-100 dark:border-[#6fcf9f]/20 hover:bg-teal-100 transition-all"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 dark:bg-[#6fcf9f]/10 text-teal-700 dark:text-[#6fcf9f] rounded-full text-xs font-medium border border-teal-100 dark:border-[#6fcf9f]/20 hover:bg-teal-100 dark:hover:bg-[#6fcf9f]/20 transition-all"
                     >
-                      <span className="w-1.5 h-1.5 bg-teal-600 rounded-full" />
+                      <span className="w-1.5 h-1.5 bg-teal-600 dark:bg-[#6fcf9f] rounded-full" />
                       {getSpecialiteLabel(spec, t)}
                     </span>
                   ))}

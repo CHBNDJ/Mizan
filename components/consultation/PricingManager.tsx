@@ -97,13 +97,13 @@ export default function PricingManager({ profession }: Props) {
   if (loading)
     return (
       <div className="flex justify-center py-8">
-        <div className="animate-spin rounded-full h-6 w-6 border-2 border-teal-600 border-t-transparent" />
+        <div className="animate-spin rounded-full h-6 w-6 border-2 border-teal-600 dark:border-[#6fcf9f] border-t-transparent" />
       </div>
     );
 
   return (
     <div className="space-y-3">
-      <p className="text-xs text-slate-500 mb-4">
+      <p className="text-xs text-slate-500 dark:text-[#A8A8A6] mb-4">
         {t("intro", {
           profession:
             activeProfession === "expert-comptable"
@@ -118,24 +118,26 @@ export default function PricingManager({ profession }: Props) {
         return (
           <div
             key={c.type}
-            className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-4 bg-teal-50 border border-teal-100 rounded-xl"
+            className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-4 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl"
           >
             <div className="flex items-center gap-3 sm:contents">
-              <div className="w-9 h-9 rounded-lg bg-teal-600 flex items-center justify-center flex-shrink-0">
+              <div className="w-9 h-9 rounded-lg bg-teal-600 dark:bg-[#0F6E56] flex items-center justify-center flex-shrink-0">
                 <Icon className="w-4 h-4 text-white" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-semibold text-slate-800">
+                  <p className="text-sm font-semibold text-slate-800 dark:text-[#F5F5F4]">
                     {c.label}
                   </p>
                   {c.duration && (
-                    <span className="text-[10px] text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] text-slate-500 dark:text-[#A8A8A6] bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] px-2 py-0.5 rounded-full">
                       {c.duration}
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-slate-500">{c.desc}</p>
+                <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
+                  {c.desc}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
@@ -146,9 +148,9 @@ export default function PricingManager({ profession }: Props) {
                   setPrices((p) => ({ ...p, [c.type]: e.target.value }))
                 }
                 placeholder={t("pricePh")}
-                className="flex-1 sm:flex-initial sm:w-32 h-9 px-3 text-sm border border-teal-200 rounded-lg bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none text-end text-slate-800 placeholder:text-slate-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className="flex-1 sm:flex-initial sm:w-32 h-9 px-3 text-sm border border-teal-200 dark:border-[#6fcf9f]/30 rounded-lg bg-white dark:bg-[#1c1c1e] focus:border-teal-500 dark:focus:border-[#6fcf9f] focus:ring-2 focus:ring-teal-500/20 dark:focus:ring-[#6fcf9f]/20 outline-none text-end text-slate-800 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
-              <span className="text-xs text-slate-600 font-medium">
+              <span className="text-xs text-slate-600 dark:text-[#A8A8A6] font-medium">
                 {t("currency")}
               </span>
             </div>
@@ -158,7 +160,7 @@ export default function PricingManager({ profession }: Props) {
       <button
         onClick={handleSave}
         disabled={saving}
-        className="mt-2 flex items-center gap-2 px-5 py-2.5 bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white rounded-xl text-sm font-semibold cursor-pointer transition-all"
+        className="mt-2 flex items-center gap-2 px-5 py-2.5 bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] disabled:opacity-50 text-white rounded-xl text-sm font-semibold cursor-pointer transition-all"
       >
         {saved ? (
           <>
