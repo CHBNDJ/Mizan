@@ -554,7 +554,7 @@ export function Navigation() {
 
       <div
         className={cn(
-          "lg:hidden fixed top-0 right-0 h-screen w-[82%] max-w-sm z-[9999] bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none shadow-2xl dark:shadow-none transition-transform duration-300 ease-out overflow-y-auto",
+          "lg:hidden fixed top-0 right-0 h-screen w-[82%] max-w-sm z-[9999] bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-[#1c1c1e] dark:from-[#1c1c1e] dark:via-[#1c1c1e] dark:to-[#1c1c1e] shadow-2xl dark:shadow-none transition-transform duration-300 ease-out overflow-y-auto",
           isOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
         )}
       >
