@@ -8,6 +8,7 @@ import {
   FileText,
   Briefcase,
   Calculator,
+  TrendingUp,
 } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -34,7 +35,7 @@ const PROF_ICONS: { id: ProfType; Icon: any }[] = [
   { id: "notaire", Icon: FileText },
   { id: "huissier", Icon: Briefcase },
   { id: "comptable", Icon: Calculator },
-  { id: "expert-comptable", Icon: Calculator },
+  { id: "expert-comptable", Icon: TrendingUp },
 ];
 
 const CLAIM_BANNER: Record<ProfType, boolean> = {
@@ -265,7 +266,7 @@ export default function HowItWorksPage() {
               </button>
             </Link>
             <Link href="/auth/lawyer/register" className="flex">
-              <button className="flex-1 h-12 px-8 bg-white hover:bg-[#6fcf9f] text-teal-700 hover:text-white font-semibold rounded-xl cursor-pointer shadow-sm transition-all duration-200 whitespace-nowrap">
+              <button className="flex-1 h-12 px-8 bg-white hover:bg-teal-50 text-teal-700 font-semibold rounded-xl cursor-pointer shadow-sm transition-all duration-200 whitespace-nowrap">
                 {t("howItWorks.ctaJoinAsPro")}
               </button>
             </Link>
