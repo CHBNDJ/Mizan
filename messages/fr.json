@@ -1674,7 +1674,7 @@
     "tag": "Votre avis compte",
     "title": "Comment s'est passée votre consultation avec Maître {name} ?",
     "ratingLabel": "Votre note",
-    "commentLabel": "Un commentaire ? (optionnel)",
+    "commentLabel": "Partagez votre expérience",
     "commentPlaceholder": "Partagez votre expérience avec Maître {name}...",
     "submit": "Publier mon avis",
     "later": "Plus tard",
