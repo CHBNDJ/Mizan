@@ -818,6 +818,7 @@ export default function LawyerRegisterPage() {
               className="h-12"
               placeholderClassName="text-slate-400 dark:text-[#7A7A78] font-medium text-sm"
               disabled={isSubmitting}
+              showSelectAll
             />
             {errors.specializations && (
               <p className={errCls}>{errors.specializations}</p>

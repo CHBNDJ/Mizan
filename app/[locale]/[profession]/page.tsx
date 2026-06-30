@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { AlgeriaMap } from "@/components/AlgeriaMap";
-import { CustomSelect } from "@/components/ui/CustomSelect";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 import {
   getWilayas,
@@ -126,7 +125,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
     }[],
   };
 
-  const [selectedWilaya, setSelectedWilaya] = useState("");
+  const [selectedWilayas, setSelectedWilayas] = useState<string[]>([]);
   const [selectedDomaines, setSelectedDomaines] = useState<string[]>([]);
   const [wilayas, setWilayas] = useState<string[]>([]);
   const [topPros, setTopPros] = useState<any[]>([]);
@@ -136,18 +135,13 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
     value: d,
     label: getSpecialiteLabel(d, t),
   }));
+
   const wilayaOptions = React.useMemo(() => {
-    const opts = wilayas.map((w) => ({
+    return wilayas.map((w) => ({
       value: w,
       label: getWilayaLabel(w, t),
     }));
-    if (selectedWilaya && !opts.find((o) => o.value === selectedWilaya))
-      opts.unshift({
-        value: selectedWilaya,
-        label: getWilayaLabel(selectedWilaya, t),
-      });
-    return opts;
-  }, [wilayas, selectedWilaya, locale]);
+  }, [wilayas, locale]);
 
   useEffect(() => {
     getWilayas().then((w) => {
@@ -155,7 +149,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
       setLoadingWilayas(false);
     });
     getTopRatedAvocats(6, profId).then(setTopPros);
-    setSelectedWilaya("");
+    setSelectedWilayas([]);
     setSelectedDomaines([]);
   }, [profId]);
 
@@ -196,9 +190,31 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
   const handleSearch = () => {
     const p = new URLSearchParams();
     p.set("profession", profId);
-    if (selectedWilaya) p.set("wilaya", selectedWilaya);
+    // Si une seule wilaya sélectionnée → filtre précis, sinon on envoie toutes
+    if (selectedWilayas.length === 1) {
+      p.set("wilaya", selectedWilayas[0]);
+    } else if (
+      selectedWilayas.length > 1 &&
+      selectedWilayas.length < wilayaOptions.length
+    ) {
+      selectedWilayas.forEach((w) => p.append("wilaya", w));
+    }
     selectedDomaines.forEach((d) => p.append("specialite", d));
     router.push(`/search?${p.toString()}`);
+  };
+
+  // Pour la carte : on passe la première wilaya sélectionnée (ou vide)
+  const mapSelectedWilaya =
+    selectedWilayas.length === 1 ? selectedWilayas[0] : "";
+  const handleMapSelect = (w: string) => {
+    if (!w) {
+      setSelectedWilayas([]);
+      return;
+    }
+    // Clic carte : toggle la wilaya
+    setSelectedWilayas((prev) =>
+      prev.includes(w) ? prev.filter((v) => v !== w) : [...prev, w]
+    );
   };
 
   return (
@@ -224,6 +240,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                 className="ph-form bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-md dark:shadow-none p-5 sm:p-6 space-y-4 relative"
                 style={{ zIndex: 50 }}
               >
+                {/* Spécialités avec Tout sélectionner */}
                 <div className="relative" style={{ zIndex: 20 }}>
                   <label className="block text-xs font-semibold text-slate-500 dark:text-[#A8A8A6] uppercase tracking-wide mb-2">
                     {prof.domainLabel}
@@ -239,24 +256,30 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                     onChange={setSelectedDomaines}
                     className="h-12"
                     placeholderClassName="text-slate-400 dark:text-[#7A7A78] font-medium text-sm"
+                    showSelectAll
                   />
                 </div>
+
+                {/* Wilayas avec Tout sélectionner */}
                 <div className="relative" style={{ zIndex: 10 }}>
                   <label className="block text-xs font-semibold text-slate-500 dark:text-[#A8A8A6] uppercase tracking-wide mb-2">
                     {t("professionLanding.wilayaLabel")}
                   </label>
                   {loadingWilayas ? (
-                    <div className="h-12 bg-slate-100 rounded-lg animate-pulse" />
+                    <div className="h-12 bg-slate-100 dark:bg-[#1c2220] rounded-lg animate-pulse" />
                   ) : (
-                    <CustomSelect
-                      placeholder={t("professionLanding.allWilayas")}
+                    <MultiSelectWithCheckboxes
+                      placeholder={t("professionLanding.wilayasPlaceholder")}
                       options={wilayaOptions}
-                      value={selectedWilaya}
-                      onChange={setSelectedWilaya}
+                      value={selectedWilayas}
+                      onChange={setSelectedWilayas}
                       className="h-12"
+                      placeholderClassName="text-slate-400 dark:text-[#7A7A78] font-medium text-sm"
+                      showSelectAll
                     />
                   )}
                 </div>
+
                 <button
                   onClick={handleSearch}
                   className="w-full h-12 bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white font-semibold rounded-xl flex items-center justify-center transition-all cursor-pointer text-sm sm:text-base"
@@ -284,8 +307,8 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
             </div>
             <div className="ph-map hidden lg:flex flex-col gap-3 sticky top-24">
               <AlgeriaMap
-                selectedWilaya={selectedWilaya}
-                onSelect={setSelectedWilaya}
+                selectedWilaya={mapSelectedWilaya}
+                onSelect={handleMapSelect}
                 hideBar
               />
               <Link href={"/professions/" + profId}>
