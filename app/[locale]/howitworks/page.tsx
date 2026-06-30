@@ -265,7 +265,7 @@ export default function HowItWorksPage() {
               </button>
             </Link>
             <Link href="/auth/lawyer/register" className="flex">
-              <button className="flex-1 h-12 px-8 bg-white hover:bg-teal-50 dark:bg-[#1c1c1e] dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl border border-white/20 cursor-pointer transition-colors whitespace-nowrap">
+              <button className="flex-1 h-12 px-8 bg-transparent hover:bg-white/10 text-white font-semibold rounded-xl border border-white/50 cursor-pointer transition-colors whitespace-nowrap">
                 {t("howItWorks.ctaJoinAsPro")}
               </button>
             </Link>
