@@ -327,21 +327,6 @@ export function ConsultationPanel({
               selectedDate={scheduledDate}
               selectedTime={scheduledTime}
             />
-            {scheduledDate && scheduledTime && (
-              <div className="mt-3 flex items-center gap-2 bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#6fcf9f]/20 rounded-lg px-3 py-2">
-                <CheckCircle className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0" />
-                <p className="text-xs font-semibold text-teal-700 dark:text-[#6fcf9f]">
-                  {new Date(
-                    `${scheduledDate}T${scheduledTime}`
-                  ).toLocaleDateString("fr-FR", {
-                    weekday: "long",
-                    day: "numeric",
-                    month: "long",
-                  })}{" "}
-                  à {scheduledTime}
-                </p>
-              </div>
-            )}
           </div>
         </div>
       )}
