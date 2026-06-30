@@ -15,25 +15,39 @@ interface PendingReview {
   };
 }
 
-const FAKE_PENDING: PendingReview = {
-  id: "test",
-  lawyer_id: "test",
-  consultation_id: "test",
-  lawyer: { first_name: "Ahmed", last_name: "Benali" },
-};
-
 export default function ReviewPopup() {
   const supabase = createClient();
   const { user, profile } = useAuth();
   const t = useTranslations("reviewPopup");
 
-  const [pending, setPending] = useState<PendingReview | null>(FAKE_PENDING);
+  const [pending, setPending] = useState<PendingReview | null>(null);
   const [rating, setRating] = useState(5);
   const [hovered, setHovered] = useState(0);
   const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (!user || profile?.user_type !== "client") return;
+    checkPendingReviews();
+  }, [user, profile]);
+
+  const checkPendingReviews = async () => {
+    const { data } = await supabase
+      .from("pending_reviews")
+      .select(
+        `id, lawyer_id, consultation_id, lawyer:lawyer_id(first_name, last_name)`
+      )
+      .eq("client_id", user!.id)
+      .limit(1)
+      .maybeSingle();
+
+    if (data) {
+      setPending(data as any);
+      setTimeout(() => setVisible(true), 800);
+    }
+  };
 
   const getStarLabel = (n: number) => {
     if (n === 1) return t("stars.1");
@@ -44,11 +58,36 @@ export default function ReviewPopup() {
   };
 
   const handleSubmit = async () => {
-    setDone(true);
-    setTimeout(() => setVisible(false), 2500);
+    if (!pending || !user) return;
+    setSubmitting(true);
+    try {
+      await supabase.from("reviews").insert({
+        lawyer_id: pending.lawyer_id,
+        client_id: user.id,
+        rating,
+        comment: comment.trim() || null,
+        source: "mizan",
+      });
+      try {
+        await fetch("/api/recalculate-ratings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ lawyerId: pending.lawyer_id }),
+        });
+      } catch (_) {}
+      await supabase.from("pending_reviews").delete().eq("id", pending.id);
+      setDone(true);
+      setTimeout(() => setVisible(false), 2500);
+    } catch (error) {
+      console.error("Erreur soumission avis:", error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const handleDismiss = () => {
+  const handleDismiss = async () => {
+    if (!pending) return;
+    await supabase.from("pending_reviews").delete().eq("id", pending.id);
     setVisible(false);
   };
 
@@ -130,7 +169,7 @@ export default function ReviewPopup() {
                   onChange={(e) => setComment(e.target.value)}
                   rows={3}
                   placeholder={t("commentPlaceholder")}
-                  className="w-full px-4 py-3 text-sm border-2 border-slate-200 dark:border-[#3a3a3d] rounded-xl bg-white dark:bg-[#141415] text-slate-700 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78] focus:border-teal-400 dark:focus:border-[#6fcf9f] focus:ring-2 focus:ring-teal-500/20 dark:focus:ring-[#6fcf9f]/20 outline-none transition-colors resize-none"
+                  className="w-full px-4 py-3 text-sm border-2 border-slate-200 dark:border-[#3a3a3d] rounded-xl bg-white dark:bg-[#141415] text-slate-700 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78] focus:border-transparent dark:focus:border-transparent focus:ring-2 focus:ring-teal-400 dark:focus:ring-[#6fcf9f] outline-none transition-all resize-none"
                 />
               </div>
 
@@ -140,7 +179,11 @@ export default function ReviewPopup() {
                   disabled={submitting}
                   className="flex-1 bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white py-3 rounded-xl font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
                 >
-                  {t("submit")}
+                  {submitting ? (
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                  ) : (
+                    t("submit")
+                  )}
                 </button>
                 <button
                   onClick={handleDismiss}
