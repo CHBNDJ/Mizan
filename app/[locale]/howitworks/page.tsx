@@ -225,25 +225,6 @@ export default function HowItWorksPage() {
             ))}
           </div>
 
-          {/* Banner claim */}
-          {userType === "professionnel" && claimBanner && (
-            <div className="mb-10 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <div className="text-sm font-semibold text-teal-800 dark:text-[#6fcf9f] mb-1">
-                  {t("howItWorks.claimBannerTitle")}
-                </div>
-                <div className="text-xs text-teal-700 dark:text-[#6fcf9f]/80 leading-relaxed">
-                  {t("howItWorks.claimBannerDesc")}
-                </div>
-              </div>
-              <Link href="/search?profession=avocat">
-                <button className="flex-shrink-0 text-sm px-4 py-2 bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white font-semibold rounded-xl cursor-pointer whitespace-nowrap">
-                  {t("howItWorks.claimBannerAction")}
-                </button>
-              </Link>
-            </div>
-          )}
-
           {/* FAQ */}
           <div>
             <p className="text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] uppercase tracking-widest mb-4 text-center">
@@ -278,13 +259,13 @@ export default function HowItWorksPage() {
             {t("howItWorks.ctaSubtitle")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/">
-              <button className="px-8 py-3 bg-white hover:bg-teal-50 dark:bg-[#1c1c1e] dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer shadow-sm transition-colors">
+            <Link href="/" className="flex">
+              <button className="flex-1 h-12 px-8 bg-white hover:bg-teal-50 dark:bg-[#1c1c1e] dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer shadow-sm transition-colors whitespace-nowrap">
                 {t("howItWorks.ctaFindExpert")}
               </button>
             </Link>
-            <Link href="/auth/lawyer/register">
-              <button className="px-8 py-3 bg-transparent hover:bg-white/10 text-white font-semibold rounded-xl border border-white/50 cursor-pointer transition-colors">
+            <Link href="/auth/lawyer/register" className="flex">
+              <button className="flex-1 h-12 px-8 bg-white hover:bg-teal-50 dark:bg-[#1c1c1e] dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl border border-white/20 cursor-pointer transition-colors whitespace-nowrap">
                 {t("howItWorks.ctaJoinAsPro")}
               </button>
             </Link>
