@@ -59,29 +59,12 @@ export function ConsultationPanel({
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
-  const [hasAvailability, setHasAvailability] = useState<boolean | null>(null);
-  const [checkingAvail, setCheckingAvail] = useState(true);
 
   const isAppointment = ["notaire", "huissier"].includes(
     avocat.profession || ""
   );
   const needsSchedule = NEEDS_SCHEDULE.includes(selected || "");
   const today = new Date().toISOString().split("T")[0];
-
-  useEffect(() => {
-    checkAvailability();
-  }, [avocat.id]);
-
-  const checkAvailability = async () => {
-    const { data } = await supabase
-      .from("availability_slots")
-      .select("id")
-      .eq("lawyer_id", avocat.id)
-      .eq("is_active", true)
-      .limit(1);
-    setHasAvailability(!!data && data.length > 0);
-    setCheckingAvail(false);
-  };
 
   const ALL_CANAUX = [
     {
@@ -182,7 +165,7 @@ export function ConsultationPanel({
           content: `📋 ${canal.label}${durStr}${dateStr}${priceStr}`,
         });
 
-        if (hasAvailability && scheduledDate && scheduledTime) {
+        if (scheduledDate && scheduledTime) {
           const dur = selected === "video_60" ? 60 : 30;
           const [h, m] = scheduledTime.split(":").map(Number);
           const endMin = h * 60 + m + dur;
@@ -325,82 +308,41 @@ export function ConsultationPanel({
         })}
       </div>
 
-      {needsSchedule && !checkingAvail && (
+      {needsSchedule && (
         <div className="mt-4">
-          {hasAvailability ? (
-            <div className="bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <CalendarDays className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
-                <p className="text-xs font-semibold text-teal-800 dark:text-[#6fcf9f]">
-                  {tc("schedule.title")}
-                </p>
-              </div>
-              <BookingCalendar
-                lawyerId={avocat.id}
-                onSelect={(date, time) => {
-                  setScheduledDate(date);
-                  setScheduledTime(time);
-                }}
-                selectedDate={scheduledDate}
-                selectedTime={scheduledTime}
-              />
-              {scheduledDate && scheduledTime && (
-                <div className="mt-3 flex items-center gap-2 bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#6fcf9f]/20 rounded-lg px-3 py-2">
-                  <CheckCircle className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0" />
-                  <p className="text-xs font-semibold text-teal-700 dark:text-[#6fcf9f]">
-                    {new Date(
-                      `${scheduledDate}T${scheduledTime}`
-                    ).toLocaleDateString("fr-FR", {
-                      weekday: "long",
-                      day: "numeric",
-                      month: "long",
-                    })}{" "}
-                    à {scheduledTime}
-                  </p>
-                </div>
-              )}
+          <div className="bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <CalendarDays className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
+              <p className="text-xs font-semibold text-teal-800 dark:text-[#6fcf9f]">
+                {tc("schedule.title")}
+              </p>
             </div>
-          ) : (
-            <div className="mt-4 p-4 bg-slate-50 dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl space-y-3">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-slate-500 dark:text-[#A8A8A6]" />
-                <p className="text-xs font-semibold text-slate-700 dark:text-[#E8E8E6]">
-                  {tc("schedule.title")}
+            <BookingCalendar
+              lawyerId={avocat.id}
+              profession={avocat.profession}
+              onSelect={(date, time) => {
+                setScheduledDate(date);
+                setScheduledTime(time);
+              }}
+              selectedDate={scheduledDate}
+              selectedTime={scheduledTime}
+            />
+            {scheduledDate && scheduledTime && (
+              <div className="mt-3 flex items-center gap-2 bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#6fcf9f]/20 rounded-lg px-3 py-2">
+                <CheckCircle className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0" />
+                <p className="text-xs font-semibold text-teal-700 dark:text-[#6fcf9f]">
+                  {new Date(
+                    `${scheduledDate}T${scheduledTime}`
+                  ).toLocaleDateString("fr-FR", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                  })}{" "}
+                  à {scheduledTime}
                 </p>
               </div>
-              <div className="flex items-start gap-2 bg-amber-50 dark:bg-[#3D2E1F] border border-amber-200 dark:border-[#5A4A2A] rounded-lg px-3 py-2">
-                <Info className="w-3.5 h-3.5 text-amber-600 dark:text-[#E0B568] mt-0.5 flex-shrink-0" />
-                <p className="text-xs text-amber-700 dark:text-[#E0B568]">
-                  {tc("schedule.noAvailabilityNote")}
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-600 dark:text-[#E8E8E6] mb-1">
-                    {tc("schedule.date")} *
-                  </label>
-                  <input
-                    type="date"
-                    value={scheduledDate}
-                    onChange={(e) => setScheduledDate(e.target.value)}
-                    min={today}
-                    className={inp}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-600 dark:text-[#E8E8E6] mb-1">
-                    {tc("schedule.time")} *
-                  </label>
-                  <input
-                    type="time"
-                    value={scheduledTime}
-                    onChange={(e) => setScheduledTime(e.target.value)}
-                    className={inp}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
 

@@ -75,7 +75,6 @@ export default function LawyerDashboardPage() {
   const [subPlan, setSubPlan] = useState<string | null>(null);
   const [subEnd, setSubEnd] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
-
   const [availableNow, setAvailableNow] = useState(false);
   const [availableSince, setAvailableSince] = useState<string | null>(null);
   const [elapsedMin, setElapsedMin] = useState(0);
@@ -464,11 +463,7 @@ export default function LawyerDashboardPage() {
               </div>
               <button
                 onClick={() => toggleAvailableNow(!availableNow)}
-                className={`relative w-11 h-6 rounded-full flex-shrink-0 cursor-pointer transition-colors ${
-                  availableNow
-                    ? "bg-teal-600 dark:bg-[#0F6E56]"
-                    : "bg-slate-300 dark:bg-[#3a3a3d]"
-                }`}
+                className={`relative w-11 h-6 rounded-full flex-shrink-0 cursor-pointer transition-colors ${availableNow ? "bg-teal-600 dark:bg-[#0F6E56]" : "bg-slate-300 dark:bg-[#3a3a3d]"}`}
               >
                 <span
                   className="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all"
@@ -607,7 +602,7 @@ export default function LawyerDashboardPage() {
                         {(item.badge || 0) > 9 ? "9+" : item.badge}
                       </span>
                     ) : (
-                      <ChevronRight className="w-4 h-4 text-teal-200 dark:text-[#6fcf9f] group-hover:text-teal-400 dark:text-[#6fcf9f] transition-colors" />
+                      <ChevronRight className="w-4 h-4 text-teal-200 dark:text-[#6fcf9f] group-hover:text-teal-400 transition-colors" />
                     )}
                   </div>
                   <p className="text-sm font-bold text-teal-900 dark:text-[#F5F5F4]">
@@ -639,22 +634,19 @@ export default function LawyerDashboardPage() {
             </div>
           </div>
 
-          {(activeProfession === "notaire" ||
-            activeProfession === "huissier") && (
-            <div className="d-fade mb-5">
-              <div className="bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl overflow-hidden">
-                <div className="px-5 py-4 border-b border-teal-50 dark:border-[#1c2220] flex items-center gap-2">
-                  <CalendarDays className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
-                  <p className="text-sm font-bold text-teal-900 dark:text-[#F5F5F4]">
-                    {t("dashboard.availabilityTitle")}
-                  </p>
-                </div>
-                <div className="p-5">
-                  <AvailabilityManager />
-                </div>
+          <div className="d-fade mb-5">
+            <div className="bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl overflow-hidden">
+              <div className="px-5 py-4 border-b border-teal-50 dark:border-[#1c2220] flex items-center gap-2">
+                <CalendarDays className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
+                <p className="text-sm font-bold text-teal-900 dark:text-[#F5F5F4]">
+                  {t("dashboard.availabilityTitle")}
+                </p>
+              </div>
+              <div className="p-5">
+                <AvailabilityManager />
               </div>
             </div>
-          )}
+          </div>
 
           <div className="d-fade flex items-center justify-between bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl px-5 py-4">
             <div>
@@ -667,7 +659,7 @@ export default function LawyerDashboardPage() {
             </div>
             <a
               href="mailto:support@mizan-dz.com"
-              className="text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] hover:text-teal-800 dark:text-[#6fcf9f] cursor-pointer transition-colors"
+              className="text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] hover:text-teal-800 cursor-pointer transition-colors"
             >
               {t("dashboard.contactAction")}
             </a>

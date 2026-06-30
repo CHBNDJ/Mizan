@@ -13,10 +13,24 @@ interface AvailSlot {
 
 interface Props {
   lawyerId: string;
+  profession?: string;
   onSelect: (date: string, time: string) => void;
   selectedDate?: string;
   selectedTime?: string;
 }
+
+const PROF_LABELS: Record<string, string> = {
+  avocat: "l'avocat",
+  notaire: "le notaire",
+  huissier: "l'huissier",
+  comptable: "le comptable",
+  "expert-comptable": "l'expert-comptable",
+};
+
+const DEFAULT_DAYS = [1, 2, 3, 4, 5, 6];
+const DEFAULT_START = "08:00";
+const DEFAULT_END = "18:00";
+const DEFAULT_DURATION = 30;
 
 function addMinutes(time: string, mins: number): string {
   const [h, m] = time.split(":").map(Number);
@@ -41,6 +55,7 @@ function generateSlots(start: string, end: string, duration: number): string[] {
 
 export default function BookingCalendar({
   lawyerId,
+  profession,
   onSelect,
   selectedDate,
   selectedTime,
@@ -49,6 +64,7 @@ export default function BookingCalendar({
   const locale = useLocale();
 
   const [availability, setAvailability] = useState<AvailSlot[]>([]);
+  const [hasCustomAvail, setHasCustomAvail] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [activeDay, setActiveDay] = useState<number | null>(null);
   const [timeSlots, setTimeSlots] = useState<string[]>([]);
@@ -68,7 +84,21 @@ export default function BookingCalendar({
       .select("day_of_week, start_time, end_time, duration_min")
       .eq("lawyer_id", lawyerId)
       .eq("is_active", true);
-    setAvailability(data || []);
+
+    if (data && data.length > 0) {
+      setAvailability(data);
+      setHasCustomAvail(true);
+    } else {
+      setHasCustomAvail(false);
+      setAvailability(
+        DEFAULT_DAYS.map((d) => ({
+          day_of_week: d,
+          start_time: DEFAULT_START,
+          end_time: DEFAULT_END,
+          duration_min: DEFAULT_DURATION,
+        }))
+      );
+    }
     setLoading(false);
   };
 
@@ -116,14 +146,18 @@ export default function BookingCalendar({
     const allSlots: string[] = [];
     daySlots.forEach((s) => {
       allSlots.push(
-        ...generateSlots(s.start_time, s.end_time, s.duration_min || 30)
+        ...generateSlots(
+          s.start_time,
+          s.end_time,
+          s.duration_min || DEFAULT_DURATION
+        )
       );
     });
 
     const now = new Date();
     const available = [...new Set(allSlots)].sort().filter((slot) => {
       const slotMin = timeToMin(slot);
-      const dur = daySlots[0].duration_min || 30;
+      const dur = daySlots[0].duration_min || DEFAULT_DURATION;
 
       const slotDate = new Date(year, month, day);
       slotDate.setHours(Math.floor(slotMin / 60), slotMin % 60);
@@ -185,6 +219,8 @@ export default function BookingCalendar({
         ? ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
         : ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"];
 
+  const profLabel = PROF_LABELS[profession || "avocat"] || "le professionnel";
+
   if (loading)
     return (
       <div className="flex items-center justify-center py-8">
@@ -194,6 +230,15 @@ export default function BookingCalendar({
 
   return (
     <div className="space-y-3">
+      {!hasCustomAvail && (
+        <div className="flex items-start gap-2 bg-amber-50 dark:bg-[#3D2E1F] border border-amber-200 dark:border-[#5A4A2A] rounded-lg px-3 py-2">
+          <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-[#E0B568] mt-0.5 flex-shrink-0" />
+          <p className="text-xs text-amber-700 dark:text-[#E0B568]">
+            Proposez un créneau, {profLabel} confirmera directement.
+          </p>
+        </div>
+      )}
+
       <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-[#1c2220]">
           <button
@@ -255,7 +300,11 @@ export default function BookingCalendar({
                       : avail
                         ? "hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/10 text-slate-800 dark:text-[#F5F5F4] cursor-pointer"
                         : "text-slate-300 dark:text-[#3a3a3d] cursor-default"
-                  } ${isToday && !isSelected ? "ring-1 ring-teal-400 dark:ring-[#6fcf9f]" : ""}`}
+                  } ${
+                    isToday && !isSelected
+                      ? "ring-1 ring-teal-400 dark:ring-[#6fcf9f]"
+                      : ""
+                  }`}
                 >
                   {day}
                   {avail && !isSelected && (
