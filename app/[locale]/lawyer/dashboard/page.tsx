@@ -623,20 +623,6 @@ export default function LawyerDashboardPage() {
           <div className="d-fade mb-5">
             <div className="bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl overflow-hidden">
               <div className="px-5 py-4 border-b border-teal-50 dark:border-[#1c2220] flex items-center gap-2">
-                <MessageSquare className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
-                <p className="text-sm font-bold text-teal-900 dark:text-[#F5F5F4]">
-                  {t("dashboard.pricingTitle", { profession: profLabel })}
-                </p>
-              </div>
-              <div className="p-5">
-                <PricingManager profession={activeProfession} />
-              </div>
-            </div>
-          </div>
-
-          <div className="d-fade mb-5">
-            <div className="bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl overflow-hidden">
-              <div className="px-5 py-4 border-b border-teal-50 dark:border-[#1c2220] flex items-center gap-2">
                 <CalendarDays className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
                 <p className="text-sm font-bold text-teal-900 dark:text-[#F5F5F4]">
                   {t("dashboard.availabilityTitle")}
@@ -644,6 +630,20 @@ export default function LawyerDashboardPage() {
               </div>
               <div className="p-5">
                 <AvailabilityManager />
+              </div>
+            </div>
+          </div>
+
+          <div className="d-fade mb-5">
+            <div className="bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl overflow-hidden">
+              <div className="px-5 py-4 border-b border-teal-50 dark:border-[#1c2220] flex items-center gap-2">
+                <MessageSquare className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
+                <p className="text-sm font-bold text-teal-900 dark:text-[#F5F5F4]">
+                  {t("dashboard.pricingTitle", { profession: profLabel })}
+                </p>
+              </div>
+              <div className="p-5">
+                <PricingManager profession={activeProfession} />
               </div>
             </div>
           </div>
