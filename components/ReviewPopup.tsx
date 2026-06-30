@@ -37,12 +37,7 @@ export default function ReviewPopup() {
     const { data } = await supabase
       .from("pending_reviews")
       .select(
-        `
-        id,
-        lawyer_id,
-        consultation_id,
-        lawyer:lawyer_id(first_name, last_name)
-      `
+        `id, lawyer_id, consultation_id, lawyer:lawyer_id(first_name, last_name)`
       )
       .eq("client_id", user!.id)
       .limit(1)
@@ -52,6 +47,14 @@ export default function ReviewPopup() {
       setPending(data as any);
       setTimeout(() => setVisible(true), 800);
     }
+  };
+
+  const getStarLabel = (n: number) => {
+    if (n === 1) return t("stars.1");
+    if (n === 2) return t("stars.2");
+    if (n === 3) return t("stars.3");
+    if (n === 4) return t("stars.4");
+    return t("stars.5");
   };
 
   const handleSubmit = async () => {
@@ -75,7 +78,6 @@ export default function ReviewPopup() {
       } catch (_) {}
 
       await supabase.from("pending_reviews").delete().eq("id", pending.id);
-
       setDone(true);
       setTimeout(() => setVisible(false), 2500);
     } catch (error) {
@@ -94,10 +96,11 @@ export default function ReviewPopup() {
   if (!visible || !pending) return null;
 
   const lawyerName = `${pending.lawyer.first_name} ${pending.lawyer.last_name}`;
+  const displayRating = hovered || rating;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
-      <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl w-full max-w-md shadow-2xl dark:shadow-none border border-slate-100 dark:border-[#1c2220] transform animate-slideUp">
+    <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl w-full max-w-md shadow-2xl dark:shadow-none border border-slate-100 dark:border-[#1c2220]">
         {done ? (
           <div className="p-8 text-center">
             <div className="w-16 h-16 bg-teal-50 dark:bg-[#6fcf9f]/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -117,13 +120,13 @@ export default function ReviewPopup() {
                 <p className="text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] uppercase tracking-wide mb-0.5">
                   {t("tag")}
                 </p>
-                <h3 className="text-base font-bold text-slate-800 dark:text-[#F5F5F4]">
+                <h3 className="text-base font-bold text-slate-800 dark:text-[#F5F5F4] leading-snug">
                   {t("title", { name: lawyerName })}
                 </h3>
               </div>
               <button
                 onClick={handleDismiss}
-                className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1c2220] text-slate-400 dark:text-[#7A7A78] transition-colors cursor-pointer"
+                className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#2a2a2d] text-slate-400 dark:text-[#7A7A78] transition-colors cursor-pointer flex-shrink-0 ms-3"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -134,7 +137,7 @@ export default function ReviewPopup() {
                 <p className="text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-3">
                   {t("ratingLabel")}
                 </p>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 mb-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
@@ -145,22 +148,18 @@ export default function ReviewPopup() {
                       className="cursor-pointer focus:outline-none transition-transform hover:scale-110"
                     >
                       <Star
-                        className={`w-8 h-8 transition-colors ${
-                          star <= (hovered || rating)
+                        className={`w-9 h-9 transition-colors duration-100 ${
+                          star <= displayRating
                             ? "fill-amber-400 text-amber-400"
-                            : "text-slate-200 dark:text-[#3a3a3d]"
+                            : "fill-transparent text-slate-200 dark:text-[#3a3a3d]"
                         }`}
                       />
                     </button>
                   ))}
-                  <span className="text-sm text-slate-500 dark:text-[#A8A8A6] ms-2">
-                    {rating === 1 && t("stars.1")}
-                    {rating === 2 && t("stars.2")}
-                    {rating === 3 && t("stars.3")}
-                    {rating === 4 && t("stars.4")}
-                    {rating === 5 && t("stars.5")}
-                  </span>
                 </div>
+                <p className="text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] h-4">
+                  {getStarLabel(displayRating)}
+                </p>
               </div>
 
               <div>
@@ -172,7 +171,7 @@ export default function ReviewPopup() {
                   onChange={(e) => setComment(e.target.value)}
                   rows={3}
                   placeholder={t("commentPlaceholder")}
-                  className="w-full px-4 py-3 text-sm border border-slate-300 dark:border-[#3a3a3d] rounded-xl bg-white dark:bg-[#1c1c1e] text-slate-700 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78] hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-400 dark:focus:border-[#6fcf9f] focus:ring-2 focus:ring-teal-500/20 dark:focus:ring-[#6fcf9f]/20 outline-none transition-all resize-none"
+                  className="w-full px-4 py-3 text-sm border border-slate-300 dark:border-[#3a3a3d] rounded-xl bg-white dark:bg-[#141415] text-slate-700 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78] hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-400 dark:focus:border-[#6fcf9f] focus:ring-2 focus:ring-teal-500/20 dark:focus:ring-[#6fcf9f]/20 outline-none transition-all resize-none"
                 />
               </div>
 
@@ -190,7 +189,7 @@ export default function ReviewPopup() {
                 </button>
                 <button
                   onClick={handleDismiss}
-                  className="px-4 py-3 border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-[#1c2220] transition-colors cursor-pointer"
+                  className="px-4 py-3 border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-[#2a2a2d] transition-colors cursor-pointer"
                 >
                   {t("later")}
                 </button>

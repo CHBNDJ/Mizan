@@ -11,6 +11,7 @@ import {
   Briefcase,
   Calculator,
   ChevronDown,
+  MapPin,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { CustomSelect } from "@/components/ui/CustomSelect";
@@ -45,6 +46,22 @@ const formatWilaya = (slug: string) =>
     .split("-")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
+
+const MapPinSmall = () => (
+  <svg
+    width="10"
+    height="10"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+    <circle cx="12" cy="10" r="3" />
+  </svg>
+);
 
 function SearchResults() {
   const searchParams = useSearchParams();
@@ -87,6 +104,7 @@ function SearchResults() {
   useEffect(() => {
     setFilters(readFilters());
   }, [searchParams]);
+
   useEffect(() => {
     setLoading(true);
     setPage(1);
@@ -142,7 +160,7 @@ function SearchResults() {
 
   const handleFilter = (key: keyof SearchFilters, value: any) => {
     const nf = { ...filters, [key]: value || undefined };
-    if (!value) delete nf[key];
+    if (!value || (Array.isArray(value) && value.length === 0)) delete nf[key];
     setFilters(nf);
     setPage(1);
     updateURL(nf);
@@ -317,19 +335,25 @@ function SearchResults() {
               <button
                 key={p.id}
                 onClick={() => handleProfessionSwitch(p.id)}
-                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${professionParam === p.id ? "bg-teal-600 dark:bg-[#0F6E56] text-white" : "text-slate-500 dark:text-[#A8A8A6] hover:bg-slate-100"}`}
+                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  professionParam === p.id
+                    ? "bg-teal-600 dark:bg-[#0F6E56] text-white"
+                    : "text-slate-500 dark:text-[#A8A8A6] hover:bg-slate-100 dark:hover:bg-[#1c2220]"
+                }`}
               >
                 <p.Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 <span>{p.label}</span>
               </button>
             ))}
           </div>
+
           <div className="flex items-center justify-between gap-2 flex-wrap">
             <div className="flex items-center gap-1.5 flex-wrap">
               <span className="text-xs sm:text-sm text-slate-500 dark:text-[#A8A8A6]">
                 {ld(String(avocats.length))} {currentProf.plural}{" "}
                 {t("search.found", { count: avocats.length })}
               </span>
+
               {filters.wilaya && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-600 dark:bg-[#0F6E56] text-white rounded-full text-xs font-semibold">
                   <MapPinSmall />
@@ -342,15 +366,28 @@ function SearchResults() {
                   </button>
                 </span>
               )}
+
               {filters.specialite?.map((s) => (
                 <span
                   key={s}
-                  className="px-2 py-0.5 bg-slate-100 text-slate-600 dark:text-[#E8E8E6] rounded-full text-xs font-medium"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-600 dark:bg-[#0F6E56] text-white rounded-full text-xs font-semibold"
                 >
                   {getSpecialiteLabel(s, t)}
+                  <button
+                    onClick={() =>
+                      handleFilter(
+                        "specialite",
+                        filters.specialite?.filter((sp) => sp !== s)
+                      )
+                    }
+                    className="ms-0.5 text-teal-200 hover:text-white cursor-pointer leading-none"
+                  >
+                    ×
+                  </button>
                 </span>
               ))}
             </div>
+
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowMobileFilters(!showMobileFilters)}
@@ -380,6 +417,7 @@ function SearchResults() {
             </div>
           </div>
         </div>
+
         {showMobileFilters && (
           <div className="lg:hidden border-t border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e] px-4 py-4">
             <LightFilters />
@@ -397,17 +435,18 @@ function SearchResults() {
               <LightFilters />
             </div>
           </aside>
+
           <div>
             {loading ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3">
                 {[...Array(8)].map((_, i) => (
                   <div
                     key={i}
-                    className="bg-white rounded-xl p-4 animate-pulse border border-slate-100 dark:border-[#1c2220]"
+                    className="bg-white dark:bg-[#1c1c1e] rounded-xl p-4 animate-pulse border border-slate-100 dark:border-[#1c2220]"
                   >
-                    <div className="w-10 h-10 bg-slate-200 rounded-full mb-3" />
-                    <div className="h-3.5 bg-slate-200 rounded mb-2" />
-                    <div className="h-3 bg-slate-200 rounded w-2/3" />
+                    <div className="w-10 h-10 bg-slate-200 dark:bg-[#2a2a2d] rounded-full mb-3" />
+                    <div className="h-3.5 bg-slate-200 dark:bg-[#2a2a2d] rounded mb-2" />
+                    <div className="h-3 bg-slate-200 dark:bg-[#2a2a2d] rounded w-2/3" />
                   </div>
                 ))}
               </div>
@@ -429,7 +468,7 @@ function SearchResults() {
                     </p>
                     <button
                       onClick={() => setPage((p) => p + 1)}
-                      className="flex items-center gap-2 px-6 py-3 bg-white border border-teal-200 dark:border-[#6fcf9f]/20 text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:bg-[#6fcf9f]/10 dark:hover:bg-[#26492f] hover:border-teal-400 dark:hover:border-[#6fcf9f] rounded-xl font-semibold text-sm cursor-pointer transition-all"
+                      className="flex items-center gap-2 px-6 py-3 bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#6fcf9f]/20 text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] hover:border-teal-400 dark:hover:border-[#6fcf9f] rounded-xl font-semibold text-sm cursor-pointer transition-all"
                     >
                       <ChevronDown className="w-4 h-4" />
                       {t("search.showMore")}
@@ -471,28 +510,12 @@ function SearchResults() {
   );
 }
 
-const MapPinSmall = () => (
-  <svg
-    width="10"
-    height="10"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-    <circle cx="12" cy="10" r="3" />
-  </svg>
-);
-
 export default function SearchPage() {
   return (
     <Suspense
       fallback={
         <div className="min-h-screen pt-20 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-teal-600" />
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-teal-600 dark:border-[#6fcf9f]" />
         </div>
       }
     >
