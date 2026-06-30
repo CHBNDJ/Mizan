@@ -1912,10 +1912,10 @@
     "citiesCovered": "المدن المغطاة في {wilaya}"
   },
   "professionLanding": {
-    "specialitiesPlaceholder": "اختر التخصصات...",
+    "specialitiesPlaceholder": "اختر تخصص(ات)",
     "domainsPlaceholder": "اختر المجالات...",
     "wilayaLabel": "الولاية",
-    "allWilayas": "اختر ولاية أو أكثر",
+    "allWilayas": "اختر ولاية(ات)",
     "topRatedTitle": "{plural} الأعلى تقييمًا",
     "topRatedSubtitle": "موصى بهم من مجتمعنا · موثّقون من ميزان",
     "seeAllPlural": "عرض جميع {plural}",

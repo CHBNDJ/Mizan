@@ -1960,10 +1960,10 @@
     "citiesCovered": "Villes couvertes dans {wilaya}"
   },
   "professionLanding": {
-    "specialitiesPlaceholder": "Choisir des spécialités...",
+    "specialitiesPlaceholder": "Choisir spécialité(s)",
     "domainsPlaceholder": "Choisir des domaines...",
     "wilayaLabel": "Wilaya",
-    "allWilayas": "Choisir la/les wilaya(s)",
+    "allWilayas": "Choisir wilaya(s)",
     "topRatedTitle": "{plural} les mieux notés",
     "topRatedSubtitle": "Recommandés par notre communauté · Vérifiés par Mizan",
     "seeAllPlural": "Voir tous les {plural}",
