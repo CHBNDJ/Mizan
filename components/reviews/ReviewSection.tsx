@@ -1,310 +1,158 @@
 "use client";
-
 import { useState, useEffect } from "react";
-import { Star, Quote } from "lucide-react";
-import { useTranslations, useLocale } from "next-intl";
+import { Star, X, CheckCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { localizedDigits } from "@/lib/arabicNumerals";
-import { ReviewSectionProps } from "@/types";
 
-interface Review {
+interface PendingReview {
   id: string;
-  rating: number;
-  comment: string | null;
-  created_at: string;
-  client: {
+  lawyer_id: string;
+  consultation_id: string;
+  lawyer: {
     first_name: string;
     last_name: string;
   };
 }
 
-export default function ReviewSection({
-  lawyerId,
-  onReviewSubmitted,
-}: ReviewSectionProps) {
+const FAKE_PENDING: PendingReview = {
+  id: "test",
+  lawyer_id: "test",
+  consultation_id: "test",
+  lawyer: { first_name: "Ahmed", last_name: "Benali" },
+};
+
+export default function ReviewPopup() {
   const supabase = createClient();
   const { user, profile } = useAuth();
-  const t = useTranslations("reviewSection");
-  const locale = useLocale();
-  const ld = (s: string) => localizedDigits(s, locale);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
+  const t = useTranslations("reviewPopup");
+
+  const [pending, setPending] = useState<PendingReview | null>(FAKE_PENDING);
+  const [rating, setRating] = useState(5);
+  const [hovered, setHovered] = useState(0);
+  const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [newReview, setNewReview] = useState({
-    rating: 5,
-    comment: "",
-  });
+  const [done, setDone] = useState(false);
+  const [visible, setVisible] = useState(true);
 
-  useEffect(() => {
-    loadReviews();
-  }, [lawyerId]);
-
-  const loadReviews = async () => {
-    try {
-      const { data: reviewsData, error: reviewsError } = await supabase
-        .from("reviews")
-        .select("*")
-        .eq("lawyer_id", lawyerId)
-        .eq("source", "mizan")
-        .order("created_at", { ascending: false });
-
-      if (reviewsError?.message) throw reviewsError;
-
-      if (!reviewsData || reviewsData.length === 0) {
-        setReviews([]);
-        setLoading(false);
-        return;
-      }
-
-      const clientIds = reviewsData
-        .map((r) => r.client_id)
-        .filter((id) => id !== null);
-
-      let clientsData: any[] = [];
-      if (clientIds.length > 0) {
-        const { data, error: clientsError } = await supabase
-          .from("users")
-          .select("id, first_name, last_name")
-          .in("id", clientIds);
-
-        if (clientsError?.message) throw clientsError;
-        clientsData = data || [];
-      }
-
-      const formattedReviews: Review[] = reviewsData.map((review) => {
-        const client = clientsData?.find((c) => c.id === review.client_id);
-        return {
-          id: review.id,
-          rating: review.rating,
-          comment: review.comment,
-          created_at: review.created_at,
-          client: {
-            first_name: client?.first_name || t("clientFallback"),
-            last_name: client?.last_name?.[0] || t("initialFallback"),
-          },
-        };
-      });
-
-      setReviews(formattedReviews);
-    } catch (error: any) {
-      console.error("Erreur chargement avis:", error);
-    } finally {
-      setLoading(false);
-    }
+  const getStarLabel = (n: number) => {
+    if (n === 1) return t("stars.1");
+    if (n === 2) return t("stars.2");
+    if (n === 3) return t("stars.3");
+    if (n === 4) return t("stars.4");
+    return t("stars.5");
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 0) return t("today");
-    if (diffDays === 1) return t("yesterday");
-    if (diffDays < 7) return t("daysAgo", { n: diffDays });
-    if (diffDays < 30) return t("weeksAgo", { n: Math.floor(diffDays / 7) });
-    if (diffDays < 365) return t("monthsAgo", { n: Math.floor(diffDays / 30) });
-    return t("yearsAgo", { n: Math.floor(diffDays / 365) });
+  const handleSubmit = async () => {
+    setDone(true);
+    setTimeout(() => setVisible(false), 2500);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!user) {
-      alert(t("errorMustBeLoggedIn"));
-      return;
-    }
-
-    const commentTrimmed = newReview.comment.trim();
-    setSubmitting(true);
-
-    try {
-      const { error: insertError } = await supabase.from("reviews").insert({
-        lawyer_id: lawyerId,
-        client_id: user.id,
-        rating: newReview.rating,
-        comment: commentTrimmed || null,
-        source: "mizan",
-      });
-
-      if (insertError) throw insertError;
-
-      try {
-        const recalcResponse = await fetch("/api/recalculate-ratings", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ lawyerId }),
-        });
-
-        if (!recalcResponse.ok) {
-          console.error("Erreur recalcul ratings");
-        }
-      } catch (apiError) {
-        console.error("Erreur API:", apiError);
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      await loadReviews();
-      if (onReviewSubmitted) {
-        await onReviewSubmitted();
-      }
-
-      setNewReview({ rating: 5, comment: "" });
-    } catch (error: any) {
-      console.error("Erreur soumission avis:", error);
-      alert(t("errorSubmit"));
-    } finally {
-      setSubmitting(false);
-    }
+  const handleDismiss = () => {
+    setVisible(false);
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600 dark:border-[#6fcf9f]"></div>
-      </div>
-    );
-  }
+  if (!visible || !pending) return null;
+
+  const lawyerName = `${pending.lawyer.first_name} ${pending.lawyer.last_name}`;
+  const displayRating = hovered || rating;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6 space-y-8">
-      <h2 className="text-3xl font-bold text-slate-800 dark:text-[#F5F5F4]">
-        {t("title")}
-      </h2>
-      {reviews.length === 0 ? (
-        <div className="text-center py-12 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg border border-teal-100 dark:border-[#6fcf9f]/20">
-          <p className="text-slate-800 dark:text-[#F5F5F4] text-lg font-medium">
-            {t("noReviewsTitle")}
-          </p>
-          <p className="text-sm text-slate-500 dark:text-[#A8A8A6] mt-2">
-            {t("noReviewsDesc")}
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {reviews.map((review) => (
-            <div
-              key={review.id}
-              className="bg-white dark:bg-[#1c1c1e] rounded-xl p-6 shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220] hover:shadow-lg transition-all duration-300"
-            >
-              {review.comment ? (
-                <div className="flex items-start gap-4 mb-4">
-                  <Quote className="w-6 h-6 text-teal-500 dark:text-[#6fcf9f] flex-shrink-0 mt-1" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-slate-700 dark:text-[#E8E8E6] italic leading-relaxed">
-                      "{review.comment}"
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="mb-4">
-                  <p className="text-slate-500 dark:text-[#A8A8A6] italic text-sm">
-                    {t("noComment")}
-                  </p>
-                </div>
-              )}
-
-              <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-[#1c2220]">
-                <div>
-                  <div className="font-semibold text-slate-800 dark:text-[#F5F5F4] text-base">
-                    {review.client.first_name} {review.client.last_name}.
-                  </div>
-                  <div className="text-xs text-slate-500 dark:text-[#A8A8A6] mt-1">
-                    {ld(formatDate(review.created_at))}
-                  </div>
-                </div>
-                <div className="flex gap-0.5">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      className={`w-5 h-5 ${
-                        star <= review.rating
-                          ? "fill-yellow-500 text-yellow-500"
-                          : "text-slate-300"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
+    <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl w-full max-w-md shadow-2xl dark:shadow-none border border-slate-100 dark:border-[#1c2220]">
+        {done ? (
+          <div className="p-8 text-center">
+            <div className="w-16 h-16 bg-teal-50 dark:bg-[#6fcf9f]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-teal-600 dark:text-[#6fcf9f]" />
             </div>
-          ))}
-        </div>
-      )}
-
-      {(!profile || profile.user_type === "client") && (
-        <div className="bg-gradient-to-br from-teal-50 to-white dark:from-[#6fcf9f]/10 dark:to-[#1c1c1e] rounded-xl p-8 border border-teal-100 dark:border-[#6fcf9f]/20 shadow-sm dark:shadow-none">
-          <h3 className="text-2xl font-semibold text-slate-800 dark:text-[#F5F5F4] mb-6">
-            {t("shareTitle")}
-          </h3>
-          {!user ? (
-            <p className="text-slate-600 dark:text-[#E8E8E6] text-base">
-              {t("loginToReview")}
+            <h3 className="text-lg font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
+              {t("thankYouTitle")}
+            </h3>
+            <p className="text-slate-500 dark:text-[#A8A8A6] text-sm">
+              {t("thankYouDesc")}
             </p>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="flex items-center gap-3">
-                <span className="text-base font-medium text-slate-700 dark:text-[#E8E8E6]">
-                  {t("yourRating")}
-                </span>
-                <div className="flex gap-2">
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-[#1c2220]">
+              <div>
+                <p className="text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] uppercase tracking-wide mb-0.5">
+                  {t("tag")}
+                </p>
+                <h3 className="text-base font-bold text-slate-800 dark:text-[#F5F5F4] leading-snug">
+                  {t("title", { name: lawyerName })}
+                </h3>
+              </div>
+              <button
+                onClick={handleDismiss}
+                className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#2a2a2d] text-slate-400 dark:text-[#7A7A78] transition-colors cursor-pointer flex-shrink-0 ms-3"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-5 space-y-5">
+              <div>
+                <p className="text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-3">
+                  {t("ratingLabel")}
+                </p>
+                <div className="flex items-center gap-1 mb-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
                       type="button"
-                      onClick={() =>
-                        setNewReview({ ...newReview, rating: star })
-                      }
-                      disabled={submitting}
-                      className="cursor-pointer focus:outline-none transition-all hover:scale-125 disabled:opacity-50 disabled:hover:scale-100"
+                      onClick={() => setRating(star)}
+                      onMouseEnter={() => setHovered(star)}
+                      onMouseLeave={() => setHovered(0)}
+                      className="cursor-pointer focus:outline-none transition-transform hover:scale-110"
                     >
                       <Star
-                        className={`w-5 h-5 ${
-                          star <= newReview.rating
-                            ? "fill-yellow-500 text-yellow-500"
-                            : "text-slate-300"
+                        className={`w-7 h-7 transition-colors duration-100 ${
+                          star <= displayRating
+                            ? "fill-amber-400 text-amber-400"
+                            : "fill-transparent text-slate-200 dark:text-[#3a3a3d]"
                         }`}
                       />
                     </button>
                   ))}
                 </div>
+                <p className="text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] h-4">
+                  {getStarLabel(displayRating)}
+                </p>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
-                  {t("yourComment")}
+                  {t("commentLabel")}
                 </label>
                 <textarea
-                  value={newReview.comment}
-                  onChange={(e) =>
-                    setNewReview({ ...newReview, comment: e.target.value })
-                  }
-                  rows={4}
-                  disabled={submitting}
-                  className="w-full py-4 px-5 text-base border border-slate-300 rounded-xl bg-white dark:bg-[#1c1c1e] focus:border-2 hover:border-2 hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-400 outline-none transition-all duration-200 text-slate-700 dark:text-[#E8E8E6] disabled:opacity-50 resize-none"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  rows={3}
                   placeholder={t("commentPlaceholder")}
+                  className="w-full px-4 py-3 text-sm border-2 border-slate-200 dark:border-[#3a3a3d] rounded-xl bg-white dark:bg-[#141415] text-slate-700 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78] focus:border-transparent dark:focus:border-transparent focus:ring-2 focus:ring-teal-400 dark:focus:ring-[#6fcf9f] outline-none transition-all resize-none"
                 />
               </div>
 
-              <button
-                type="submit"
-                disabled={submitting}
-                className="cursor-pointer w-full sm:w-auto bg-teal-600 dark:bg-[#0F6E56] text-white px-8 py-3.5 rounded-xl hover:bg-teal-700 dark:hover:bg-[#085041] transition-all duration-200 font-semibold text-base disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-md dark:shadow-none hover:shadow-lg hover:scale-[1.02] active:scale-100"
-              >
-                {submitting ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-                    {t("submitting")}
-                  </>
-                ) : (
-                  t("submit")
-                )}
-              </button>
-            </form>
-          )}
-        </div>
-      )}
+              <div className="flex gap-3">
+                <button
+                  onClick={handleSubmit}
+                  disabled={submitting}
+                  className="flex-1 bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white py-3 rounded-xl font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
+                >
+                  {t("submit")}
+                </button>
+                <button
+                  onClick={handleDismiss}
+                  className="px-4 py-3 border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-[#2a2a2d] transition-colors cursor-pointer"
+                >
+                  {t("later")}
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
