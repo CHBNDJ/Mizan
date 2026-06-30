@@ -10,6 +10,7 @@ import {
   FileText,
   Briefcase,
   Calculator,
+  TrendingUp,
 } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { AlgeriaMap } from "@/components/AlgeriaMap";
@@ -38,7 +39,7 @@ const PROF_ICONS: Record<ProfId, any> = {
   notaire: FileText,
   huissier: Briefcase,
   comptable: Calculator,
-  "expert-comptable": Calculator,
+  "expert-comptable": TrendingUp,
 };
 
 const PROF_KEY: Record<ProfId, string> = {
@@ -190,7 +191,6 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
   const handleSearch = () => {
     const p = new URLSearchParams();
     p.set("profession", profId);
-    // Si une seule wilaya sélectionnée → filtre précis, sinon on envoie toutes
     if (selectedWilayas.length === 1) {
       p.set("wilaya", selectedWilayas[0]);
     } else if (
@@ -203,19 +203,17 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
     router.push(`/search?${p.toString()}`);
   };
 
-  // Pour la carte : on passe la première wilaya sélectionnée (ou vide)
+  // Clic sur la carte → redirect DIRECT vers search sans bouton
+  const handleMapSelectAndSearch = (wilaya: string) => {
+    const p = new URLSearchParams();
+    p.set("profession", profId);
+    if (wilaya) p.set("wilaya", wilaya);
+    selectedDomaines.forEach((d) => p.append("specialite", d));
+    router.push(`/search?${p.toString()}`);
+  };
+
   const mapSelectedWilaya =
     selectedWilayas.length === 1 ? selectedWilayas[0] : "";
-  const handleMapSelect = (w: string) => {
-    if (!w) {
-      setSelectedWilayas([]);
-      return;
-    }
-    // Clic carte : toggle la wilaya
-    setSelectedWilayas((prev) =>
-      prev.includes(w) ? prev.filter((v) => v !== w) : [...prev, w]
-    );
-  };
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
@@ -240,7 +238,6 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                 className="ph-form bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-md dark:shadow-none p-5 sm:p-6 space-y-4 relative"
                 style={{ zIndex: 50 }}
               >
-                {/* Spécialités avec Tout sélectionner */}
                 <div className="relative" style={{ zIndex: 20 }}>
                   <label className="block text-xs font-semibold text-slate-500 dark:text-[#A8A8A6] uppercase tracking-wide mb-2">
                     {prof.domainLabel}
@@ -305,9 +302,11 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
               </div>
             </div>
             <div className="ph-map hidden lg:flex flex-col gap-3 sticky top-24">
+              {/* Carte : clic direct → search sans bouton */}
               <AlgeriaMap
                 selectedWilaya={mapSelectedWilaya}
-                onSelect={handleMapSelect}
+                onSelect={setSelectedWilayas.bind(null, [])}
+                onSelectAndSearch={handleMapSelectAndSearch}
                 hideBar
               />
               <Link href={"/professions/" + profId}>
