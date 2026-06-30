@@ -260,7 +260,6 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                   />
                 </div>
 
-                {/* Wilayas avec Tout sélectionner */}
                 <div className="relative" style={{ zIndex: 10 }}>
                   <label className="block text-xs font-semibold text-slate-500 dark:text-[#A8A8A6] uppercase tracking-wide mb-2">
                     {t("professionLanding.wilayaLabel")}
@@ -269,7 +268,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                     <div className="h-12 bg-slate-100 dark:bg-[#1c2220] rounded-lg animate-pulse" />
                   ) : (
                     <MultiSelectWithCheckboxes
-                      placeholder={t("professionLanding.wilayasPlaceholder")}
+                      placeholder={t("professionLanding.allWilayas")}
                       options={wilayaOptions}
                       value={selectedWilayas}
                       onChange={setSelectedWilayas}

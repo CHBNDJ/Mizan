@@ -163,13 +163,12 @@ export function MultiSelectWithCheckboxes({
         {isOpen && !disabled && (
           <div className="absolute z-[10000] w-full mt-2 bg-white dark:bg-[#1c1c1e] border-2 border-teal-200 dark:border-[#6fcf9f]/30 rounded-lg shadow-2xl dark:shadow-none max-h-64 overflow-hidden">
             <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-300 scrollbar-track-slate-100">
-              {/* ── Ligne "Tout / All / الكل" ── */}
               {showSelectAll && (
                 <div
                   className={cn(
                     "px-4 py-3 text-sm cursor-pointer flex items-center justify-between",
                     "hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/10 active:bg-teal-100 dark:active:bg-[#6fcf9f]/15 transition-colors duration-150",
-                    "border-b-2 border-teal-100 dark:border-[#6fcf9f]/20"
+                    "border-b border-slate-100 dark:border-[#1c2220]"
                   )}
                   onClick={handleToggleAll}
                 >
