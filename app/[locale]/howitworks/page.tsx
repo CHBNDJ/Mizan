@@ -138,6 +138,8 @@ export default function HowItWorksPage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <style>{`.hero-title,.hero-sub,.tabs-row,.step-card,.faq-card,.cta-section{opacity:0;}`}</style>
+
+      {/* Hero */}
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-5 leading-tight">
@@ -148,14 +150,21 @@ export default function HowItWorksPage() {
           </p>
         </div>
       </section>
+
+      {/* Contenu */}
       <section className="px-4 pb-16">
         <div className="max-w-4xl mx-auto">
+          {/* Tabs client / professionnel */}
           <div className="tabs-row flex justify-center gap-3 mb-6">
             {(["client", "professionnel"] as const).map((ut) => (
               <button
                 key={ut}
                 onClick={() => setUserType(ut)}
-                className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${userType === ut ? "bg-teal-600 text-white shadow-sm" : "bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] hover:border-teal-200 dark:border-[#6fcf9f]/20"}`}
+                className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+                  userType === ut
+                    ? "bg-teal-600 dark:bg-[#0F6E56] text-white shadow-sm"
+                    : "bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] hover:border-teal-200 dark:hover:border-[#6fcf9f]/30"
+                }`}
               >
                 {ut === "client"
                   ? t("howItWorks.tabClient")
@@ -163,24 +172,32 @@ export default function HowItWorksPage() {
               </button>
             ))}
           </div>
+
+          {/* Tabs professions */}
           {userType === "professionnel" && (
             <div className="flex justify-center gap-2 mb-8 flex-wrap">
               {PROFS.map((p) => (
                 <button
                   key={p.id}
                   onClick={() => setProfType(p.id)}
-                  className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${profType === p.id ? "bg-teal-600 text-white" : "bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] hover:border-teal-300"}`}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                    profType === p.id
+                      ? "bg-teal-600 dark:bg-[#0F6E56] text-white"
+                      : "bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] hover:border-teal-300 dark:hover:border-[#6fcf9f]/30"
+                  }`}
                 >
                   <p.Icon className="w-3.5 h-3.5" /> {p.label}
                 </button>
               ))}
             </div>
           )}
+
+          {/* Steps */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
             {steps.map((step, idx) => (
               <div
                 key={step.title}
-                className="step-card bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl p-5 hover:shadow-sm transition-all"
+                className="step-card bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl p-5 hover:shadow-sm dark:hover:shadow-none transition-all"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-8 h-8 rounded-full bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 flex items-center justify-center text-sm font-bold text-teal-700 dark:text-[#6fcf9f] flex-shrink-0">
@@ -199,7 +216,7 @@ export default function HowItWorksPage() {
                       key={pt}
                       className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#A8A8A6]"
                     >
-                      <CheckCircle className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
+                      <CheckCircle className="w-3.5 h-3.5 text-teal-500 dark:text-[#6fcf9f] flex-shrink-0" />
                       {pt}
                     </div>
                   ))}
@@ -207,23 +224,27 @@ export default function HowItWorksPage() {
               </div>
             ))}
           </div>
+
+          {/* Banner claim */}
           {userType === "professionnel" && claimBanner && (
             <div className="mb-10 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <div className="text-sm font-semibold text-teal-800 mb-1">
+                <div className="text-sm font-semibold text-teal-800 dark:text-[#6fcf9f] mb-1">
                   {t("howItWorks.claimBannerTitle")}
                 </div>
-                <div className="text-xs text-teal-700 dark:text-[#6fcf9f] leading-relaxed">
+                <div className="text-xs text-teal-700 dark:text-[#6fcf9f]/80 leading-relaxed">
                   {t("howItWorks.claimBannerDesc")}
                 </div>
               </div>
               <Link href="/search?profession=avocat">
-                <button className="flex-shrink-0 text-sm px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl cursor-pointer whitespace-nowrap">
+                <button className="flex-shrink-0 text-sm px-4 py-2 bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white font-semibold rounded-xl cursor-pointer whitespace-nowrap">
                   {t("howItWorks.claimBannerAction")}
                 </button>
               </Link>
             </div>
           )}
+
+          {/* FAQ */}
           <div>
             <p className="text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] uppercase tracking-widest mb-4 text-center">
               {t("howItWorks.faqTitle")}
@@ -232,7 +253,7 @@ export default function HowItWorksPage() {
               {faqs.map((faq, i) => (
                 <div
                   key={i}
-                  className="faq-card bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl p-4 hover:border-teal-100 dark:border-[#6fcf9f]/20 transition-all"
+                  className="faq-card bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl p-4 hover:border-teal-100 dark:hover:border-[#6fcf9f]/20 transition-all"
                 >
                   <div className="text-sm font-semibold text-slate-800 dark:text-[#F5F5F4] mb-1.5">
                     {faq.q}
@@ -246,20 +267,24 @@ export default function HowItWorksPage() {
           </div>
         </div>
       </section>
-      <section className="cta-section py-12 px-4 bg-teal-600">
+
+      {/* CTA */}
+      <section className="cta-section py-12 px-4 bg-teal-600 dark:bg-[#0F6E56]">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
             {t("howItWorks.ctaTitle")}
           </h2>
-          <p className="text-teal-100 mb-8">{t("howItWorks.ctaSubtitle")}</p>
+          <p className="text-teal-100 dark:text-[#9FE1CB] mb-8">
+            {t("howItWorks.ctaSubtitle")}
+          </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/">
-              <button className="px-8 py-3 bg-white hover:bg-teal-50 dark:bg-[#6fcf9f]/10 text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer shadow-sm">
+              <button className="px-8 py-3 bg-white hover:bg-teal-50 dark:bg-[#1c1c1e] dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer shadow-sm transition-colors">
                 {t("howItWorks.ctaFindExpert")}
               </button>
             </Link>
             <Link href="/auth/lawyer/register">
-              <button className="px-8 py-3 bg-transparent hover:bg-teal-50 dark:bg-[#6fcf9f]/100 text-white font-semibold rounded-xl border border-white/50 cursor-pointer">
+              <button className="px-8 py-3 bg-transparent hover:bg-white/10 text-white font-semibold rounded-xl border border-white/50 cursor-pointer transition-colors">
                 {t("howItWorks.ctaJoinAsPro")}
               </button>
             </Link>
