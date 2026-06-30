@@ -1681,11 +1681,11 @@
     "thankYouTitle": "Merci pour votre avis !",
     "thankYouDesc": "Votre avis aide d'autres clients à trouver le bon expert.",
     "stars": {
-      "1": "Très insatisfait",
-      "2": "Insatisfait",
+      "1": "Décevant",
+      "2": "Insuffisant",
       "3": "Correct",
-      "4": "Satisfait",
-      "5": "Très satisfait"
+      "4": "Professionnel",
+      "5": "Excellent"
     }
   },
   "verifyEmailPage": {
