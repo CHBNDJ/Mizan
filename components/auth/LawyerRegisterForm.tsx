@@ -653,6 +653,7 @@ export default function LawyerRegisterForm() {
                   className="h-12"
                   placeholderClassName="text-slate-400 font-medium text-sm"
                   disabled={isSubmitting}
+                  showSelectAll
                 />
                 <FieldError msg={errors.specializations} />
               </div>

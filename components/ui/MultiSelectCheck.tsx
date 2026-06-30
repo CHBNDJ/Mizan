@@ -14,7 +14,8 @@ export function MultiSelectWithCheckboxes({
   label,
   placeholderClassName = "text-slate-400 font-medium",
   disabled = false,
-}: MultiSelectWithCheckboxesProps) {
+  showSelectAll = false,
+}: MultiSelectWithCheckboxesProps & { showSelectAll?: boolean }) {
   const t = useTranslations("multiSelect");
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -32,6 +33,18 @@ export function MultiSelectWithCheckboxes({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
+
+  const allValues = options.map((o) => o.value);
+  const allSelected = allValues.every((v) => value.includes(v));
+
+  const handleToggleAll = () => {
+    if (disabled) return;
+    if (allSelected) {
+      onChange([]);
+    } else {
+      onChange(allValues);
+    }
+  };
 
   const handleToggle = (optionValue: string) => {
     if (disabled) return;
@@ -81,6 +94,20 @@ export function MultiSelectWithCheckboxes({
           <div className="flex-1 flex items-center gap-1 overflow-hidden">
             {value.length === 0 ? (
               <span className={placeholderClassName}>{placeholder}</span>
+            ) : allSelected && showSelectAll ? (
+              <span className="inline-flex items-center gap-1 bg-teal-100 dark:bg-[#6fcf9f]/15 text-teal-800 dark:text-[#6fcf9f] px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap">
+                {t("selectAll")}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onChange([]);
+                  }}
+                  disabled={disabled}
+                  className="rounded-full p-0.5 hover:bg-teal-200 dark:hover:bg-[#6fcf9f]/25 transition-colors"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
             ) : (
               <div className="flex items-center gap-1 overflow-hidden">
                 {value.slice(0, 1).map((selectedValue) => {
@@ -136,6 +163,43 @@ export function MultiSelectWithCheckboxes({
         {isOpen && !disabled && (
           <div className="absolute z-[10000] w-full mt-2 bg-white dark:bg-[#1c1c1e] border-2 border-teal-200 dark:border-[#6fcf9f]/30 rounded-lg shadow-2xl dark:shadow-none max-h-64 overflow-hidden">
             <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-300 scrollbar-track-slate-100">
+              {/* ── Ligne "Tout / All / الكل" ── */}
+              {showSelectAll && (
+                <div
+                  className={cn(
+                    "px-4 py-3 text-sm cursor-pointer flex items-center justify-between",
+                    "hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/10 active:bg-teal-100 dark:active:bg-[#6fcf9f]/15 transition-colors duration-150",
+                    "border-b-2 border-teal-100 dark:border-[#6fcf9f]/20"
+                  )}
+                  onClick={handleToggleAll}
+                >
+                  <span className="text-slate-800 dark:text-[#F5F5F4] font-semibold pe-4">
+                    {t("selectAll")}
+                  </span>
+                  <div className="relative">
+                    <input
+                      type="checkbox"
+                      checked={allSelected}
+                      onChange={handleToggleAll}
+                      className="w-5 h-5 appearance-none border-2 border-slate-300 dark:border-[#3a3a3d] rounded bg-white dark:bg-[#1c1c1e] checked:bg-teal-600 checked:border-teal-600 dark:checked:bg-[#0F6E56] dark:checked:border-[#0F6E56] transition-all duration-200 cursor-pointer"
+                    />
+                    {allSelected && (
+                      <svg
+                        className="absolute top-0.5 start-0.5 w-4 h-4 text-white pointer-events-none"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {options.map((option) => (
                 <div
                   key={option.value}

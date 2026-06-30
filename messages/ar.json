@@ -2495,7 +2495,8 @@
     "joinVideo": "الانضمام إلى الفيديو"
   },
   "multiSelect": {
-    "othersCount": "+{n} أخرى"
+    "othersCount": "+{n} أخرى",
+    "selectAll": "تحديد الكل"
   },
   "pricingManager": {
     "canaux": {

@@ -2543,7 +2543,8 @@
     "joinVideo": "Rejoindre la vidéo"
   },
   "multiSelect": {
-    "othersCount": "+{n} autres"
+    "othersCount": "+{n} autres",
+    "selectAll": "Tout sélectionner"
   },
   "pricingManager": {
     "canaux": {

@@ -2539,7 +2539,8 @@
     "joinVideo": "Join video call"
   },
   "multiSelect": {
-    "othersCount": "+{n} more"
+    "othersCount": "+{n} more",
+    "selectAll": "Select all"
   },
   "pricingManager": {
     "canaux": {
