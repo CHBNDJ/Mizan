@@ -260,13 +260,15 @@ export default function HowItWorksPage() {
             {t("howItWorks.ctaSubtitle")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            {/* Bouton plein blanc — "Trouver un expert" */}
             <Link href="/" className="flex">
               <button className="flex-1 h-12 px-8 bg-white hover:bg-teal-50 dark:bg-[#1c1c1e] dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer shadow-sm transition-colors whitespace-nowrap">
                 {t("howItWorks.ctaFindExpert")}
               </button>
             </Link>
+            {/* Bouton outline blanc — "S'inscrire comme professionnel" */}
             <Link href="/auth/lawyer/register" className="flex">
-              <button className="flex-1 h-12 px-8 bg-white hover:bg-teal-50 text-teal-700 font-semibold rounded-xl cursor-pointer shadow-sm transition-all duration-200 whitespace-nowrap">
+              <button className="flex-1 h-12 px-8 bg-transparent hover:bg-white/10 dark:bg-[#1c1c1e] dark:hover:bg-[#26492f] text-white dark:text-[#6fcf9f] font-semibold rounded-xl border-2 border-white dark:border-[#6fcf9f] cursor-pointer transition-colors whitespace-nowrap">
                 {t("howItWorks.ctaJoinAsPro")}
               </button>
             </Link>
