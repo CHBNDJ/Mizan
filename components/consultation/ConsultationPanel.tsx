@@ -1,5 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+const BookingCalendar = dynamic(
+  () => import("@/components/booking/BookingCalendar"),
+  { ssr: false }
+);
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
@@ -11,6 +16,8 @@ import {
   Mail,
   CheckCircle,
   Lock,
+  CalendarDays,
+  Info,
 } from "lucide-react";
 import { AvocatData } from "@/types";
 
@@ -52,12 +59,29 @@ export function ConsultationPanel({
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+  const [hasAvailability, setHasAvailability] = useState<boolean | null>(null);
+  const [checkingAvail, setCheckingAvail] = useState(true);
 
   const isAppointment = ["notaire", "huissier"].includes(
     avocat.profession || ""
   );
   const needsSchedule = NEEDS_SCHEDULE.includes(selected || "");
   const today = new Date().toISOString().split("T")[0];
+
+  useEffect(() => {
+    checkAvailability();
+  }, [avocat.id]);
+
+  const checkAvailability = async () => {
+    const { data } = await supabase
+      .from("availability_slots")
+      .select("id")
+      .eq("lawyer_id", avocat.id)
+      .eq("is_active", true)
+      .limit(1);
+    setHasAvailability(!!data && data.length > 0);
+    setCheckingAvail(false);
+  };
 
   const ALL_CANAUX = [
     {
@@ -108,7 +132,6 @@ export function ConsultationPanel({
     try {
       const canal = ALL_CANAUX.find((c) => c.type === selected)!;
       const price = pricingChannels.find((p: any) => p.type === selected);
-
       const scheduledAt =
         needsSchedule && scheduledDate && scheduledTime
           ? new Date(`${scheduledDate}T${scheduledTime}:00`).toISOString()
@@ -145,7 +168,12 @@ export function ConsultationPanel({
           : "";
         const durStr = canal.duration ? ` · ${canal.duration}` : "";
         const dateStr = scheduledAt
-          ? `\n📅 ${new Date(scheduledAt).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })} à ${scheduledTime}`
+          ? `\n📅 ${new Date(scheduledAt).toLocaleDateString("fr-FR", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })} à ${scheduledTime}`
           : "";
 
         await supabase.from("messages").insert({
@@ -153,6 +181,24 @@ export function ConsultationPanel({
           sender_id: user.id,
           content: `📋 ${canal.label}${durStr}${dateStr}${priceStr}`,
         });
+
+        if (hasAvailability && scheduledDate && scheduledTime) {
+          const dur = selected === "video_60" ? 60 : 30;
+          const [h, m] = scheduledTime.split(":").map(Number);
+          const endMin = h * 60 + m + dur;
+          const endTime = `${String(Math.floor(endMin / 60)).padStart(2, "0")}:${String(endMin % 60).padStart(2, "0")}`;
+
+          await supabase.from("appointments").insert({
+            lawyer_id: avocat.id,
+            client_id: user.id,
+            appointment_date: scheduledDate,
+            start_time: scheduledTime,
+            end_time: endTime,
+            subject: canal.label,
+            status: "pending",
+            type: "online",
+          });
+        }
       }
 
       fetch("/api/push/send", {
@@ -200,7 +246,7 @@ export function ConsultationPanel({
 
   return (
     <div>
-      <div className="divide-y divide-slate-100">
+      <div className="divide-y divide-slate-100 dark:divide-[#1c2220]">
         {canaux.map((canal) => {
           const Icon = CANAL_ICONS[canal.type];
           if (!Icon) return null;
@@ -211,19 +257,33 @@ export function ConsultationPanel({
               onClick={() => {
                 setSelected(canal.type);
                 setError("");
+                setScheduledDate("");
+                setScheduledTime("");
               }}
-              className={`w-full flex items-center justify-between gap-3 py-3 px-2 cursor-pointer transition-all text-start rounded-xl ${isSelected ? "bg-teal-50 dark:bg-[#6fcf9f]/10" : "hover:bg-slate-50 dark:hover:bg-[#1c2220]"}`}
+              className={`w-full flex items-center justify-between gap-3 py-3 px-2 cursor-pointer transition-all text-start rounded-xl ${
+                isSelected
+                  ? "bg-teal-50 dark:bg-[#6fcf9f]/10"
+                  : "hover:bg-slate-50 dark:hover:bg-[#1c2220]"
+              }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div
-                  className={`w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${isSelected ? "border-teal-600 dark:border-[#6fcf9f] bg-teal-600 dark:bg-[#0F6E56]" : "border-slate-300 dark:border-[#3a3a3d]"}`}
+                  className={`w-3.5 h-3.5 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${
+                    isSelected
+                      ? "border-teal-600 dark:border-[#6fcf9f] bg-teal-600 dark:bg-[#0F6E56]"
+                      : "border-slate-300 dark:border-[#3a3a3d]"
+                  }`}
                 >
                   {isSelected && (
-                    <div className="w-1 h-1 bg-white dark:bg-[#1c1c1e] rounded-full" />
+                    <div className="w-1 h-1 bg-white rounded-full" />
                   )}
                 </div>
                 <div
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? "bg-teal-600 dark:bg-[#0F6E56]" : "bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20"}`}
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                    isSelected
+                      ? "bg-teal-600 dark:bg-[#0F6E56]"
+                      : "bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20"
+                  }`}
                 >
                   <Icon
                     className={`w-3.5 h-3.5 ${isSelected ? "text-white" : "text-teal-600 dark:text-[#6fcf9f]"}`}
@@ -231,7 +291,7 @@ export function ConsultationPanel({
                 </div>
                 <div className="min-w-0">
                   <span
-                    className={`text-sm font-medium ${isSelected ? "text-teal-800" : "text-slate-700 dark:text-[#E8E8E6]"}`}
+                    className={`text-sm font-medium ${isSelected ? "text-teal-800 dark:text-[#6fcf9f]" : "text-slate-700 dark:text-[#E8E8E6]"}`}
                   >
                     {canal.label}
                   </span>
@@ -250,7 +310,11 @@ export function ConsultationPanel({
                 </div>
               </div>
               <span
-                className={`text-xs font-semibold flex-shrink-0 ${isSelected ? "text-teal-600 dark:text-[#6fcf9f] bg-white dark:bg-[#1c1c1e] px-2 py-0.5 rounded-full shadow-sm dark:shadow-none" : "text-slate-400 dark:text-[#7A7A78]"}`}
+                className={`text-xs font-semibold flex-shrink-0 ${
+                  isSelected
+                    ? "text-teal-600 dark:text-[#6fcf9f] bg-white dark:bg-[#1c1c1e] px-2 py-0.5 rounded-full shadow-sm"
+                    : "text-slate-400 dark:text-[#7A7A78]"
+                }`}
               >
                 {canal.base_price
                   ? `${canal.base_price.toLocaleString()} DA`
@@ -261,42 +325,82 @@ export function ConsultationPanel({
         })}
       </div>
 
-      {needsSchedule && (
-        <div className="mt-4 p-4 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl space-y-3">
-          <div className="flex items-center gap-2 mb-1">
-            <Calendar className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
-            <p className="text-xs font-semibold text-teal-800">
-              {tc("schedule.title")}
-            </p>
-          </div>
-          <p className="text-[11px] text-teal-600 dark:text-[#6fcf9f]">
-            {tc("schedule.subtitle")}
-          </p>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-slate-600 dark:text-[#E8E8E6] mb-1">
-                {tc("schedule.date")} *
-              </label>
-              <input
-                type="date"
-                value={scheduledDate}
-                onChange={(e) => setScheduledDate(e.target.value)}
-                min={today}
-                className={inp}
+      {needsSchedule && !checkingAvail && (
+        <div className="mt-4">
+          {hasAvailability ? (
+            <div className="bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <CalendarDays className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
+                <p className="text-xs font-semibold text-teal-800 dark:text-[#6fcf9f]">
+                  {tc("schedule.title")}
+                </p>
+              </div>
+              <BookingCalendar
+                lawyerId={avocat.id}
+                onSelect={(date, time) => {
+                  setScheduledDate(date);
+                  setScheduledTime(time);
+                }}
+                selectedDate={scheduledDate}
+                selectedTime={scheduledTime}
               />
+              {scheduledDate && scheduledTime && (
+                <div className="mt-3 flex items-center gap-2 bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#6fcf9f]/20 rounded-lg px-3 py-2">
+                  <CheckCircle className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0" />
+                  <p className="text-xs font-semibold text-teal-700 dark:text-[#6fcf9f]">
+                    {new Date(
+                      `${scheduledDate}T${scheduledTime}`
+                    ).toLocaleDateString("fr-FR", {
+                      weekday: "long",
+                      day: "numeric",
+                      month: "long",
+                    })}{" "}
+                    à {scheduledTime}
+                  </p>
+                </div>
+              )}
             </div>
-            <div>
-              <label className="block text-xs font-medium text-slate-600 dark:text-[#E8E8E6] mb-1">
-                {tc("schedule.time")} *
-              </label>
-              <input
-                type="time"
-                value={scheduledTime}
-                onChange={(e) => setScheduledTime(e.target.value)}
-                className={inp}
-              />
+          ) : (
+            <div className="mt-4 p-4 bg-slate-50 dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl space-y-3">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-slate-500 dark:text-[#A8A8A6]" />
+                <p className="text-xs font-semibold text-slate-700 dark:text-[#E8E8E6]">
+                  {tc("schedule.title")}
+                </p>
+              </div>
+              <div className="flex items-start gap-2 bg-amber-50 dark:bg-[#3D2E1F] border border-amber-200 dark:border-[#5A4A2A] rounded-lg px-3 py-2">
+                <Info className="w-3.5 h-3.5 text-amber-600 dark:text-[#E0B568] mt-0.5 flex-shrink-0" />
+                <p className="text-xs text-amber-700 dark:text-[#E0B568]">
+                  {tc("schedule.noAvailabilityNote")}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-600 dark:text-[#E8E8E6] mb-1">
+                    {tc("schedule.date")} *
+                  </label>
+                  <input
+                    type="date"
+                    value={scheduledDate}
+                    onChange={(e) => setScheduledDate(e.target.value)}
+                    min={today}
+                    className={inp}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-600 dark:text-[#E8E8E6] mb-1">
+                    {tc("schedule.time")} *
+                  </label>
+                  <input
+                    type="time"
+                    value={scheduledTime}
+                    onChange={(e) => setScheduledTime(e.target.value)}
+                    className={inp}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 
