@@ -374,6 +374,14 @@ function LawyerConsultationsContent() {
         })
         .eq("id", selectedConsultation.id);
 
+      try {
+        await fetch("/api/consultation-completed", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ consultationId: selectedConsultation.id }),
+        });
+      } catch (_) {}
+
       await loadConsultations();
       setSelectedConsultation(null);
       setShowChat(false);

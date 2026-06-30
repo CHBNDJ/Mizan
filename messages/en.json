@@ -1666,6 +1666,24 @@
     "clientFallback": "Client",
     "initialFallback": "M"
   },
+  "reviewPopup": {
+    "tag": "Your opinion matters",
+    "title": "How was your consultation with Maître {name}?",
+    "ratingLabel": "Your rating",
+    "commentLabel": "A comment? (optional)",
+    "commentPlaceholder": "Share your experience with Maître {name}...",
+    "submit": "Post my review",
+    "later": "Later",
+    "thankYouTitle": "Thank you for your review!",
+    "thankYouDesc": "Your review helps other clients find the right expert.",
+    "stars": {
+      "1": "Very unsatisfied",
+      "2": "Unsatisfied",
+      "3": "Average",
+      "4": "Satisfied",
+      "5": "Very satisfied"
+    }
+  },
   "verifyEmailPage": {
     "missingEmailTitle": "Missing email",
     "missingEmailDesc": "Cannot verify your account without an email.",

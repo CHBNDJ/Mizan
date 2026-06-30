@@ -1670,6 +1670,24 @@
     "clientFallback": "Client",
     "initialFallback": "M"
   },
+  "reviewPopup": {
+    "tag": "Votre avis compte",
+    "title": "Comment s'est passée votre consultation avec Maître {name} ?",
+    "ratingLabel": "Votre note",
+    "commentLabel": "Un commentaire ? (optionnel)",
+    "commentPlaceholder": "Partagez votre expérience avec Maître {name}...",
+    "submit": "Publier mon avis",
+    "later": "Plus tard",
+    "thankYouTitle": "Merci pour votre avis !",
+    "thankYouDesc": "Votre avis aide d'autres clients à trouver le bon expert.",
+    "stars": {
+      "1": "Très insatisfait",
+      "2": "Insatisfait",
+      "3": "Correct",
+      "4": "Satisfait",
+      "5": "Très satisfait"
+    }
+  },
   "verifyEmailPage": {
     "missingEmailTitle": "Email manquant",
     "missingEmailDesc": "Impossible de vérifier votre compte sans email.",

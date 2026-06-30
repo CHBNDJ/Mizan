@@ -1622,6 +1622,24 @@
     "clientFallback": "عميل",
     "initialFallback": "م"
   },
+  "reviewPopup": {
+    "tag": "رأيك مهم",
+    "title": "كيف كانت استشارتك مع الأستاذ {name}؟",
+    "ratingLabel": "تقييمك",
+    "commentLabel": "تعليق؟ (اختياري)",
+    "commentPlaceholder": "شاركنا تجربتك مع الأستاذ {name}...",
+    "submit": "نشر تقييمي",
+    "later": "لاحقاً",
+    "thankYouTitle": "شكراً على تقييمك!",
+    "thankYouDesc": "تقييمك يساعد العملاء الآخرين في إيجاد الخبير المناسب.",
+    "stars": {
+      "1": "غير راضٍ جداً",
+      "2": "غير راضٍ",
+      "3": "مقبول",
+      "4": "راضٍ",
+      "5": "راضٍ جداً"
+    }
+  },
   "verifyEmailPage": {
     "missingEmailTitle": "البريد الإلكتروني مفقود",
     "missingEmailDesc": "لا يمكن التحقق من حسابك بدون بريد إلكتروني.",

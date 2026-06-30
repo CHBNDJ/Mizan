@@ -86,6 +86,14 @@ export default function VideoConsultationPage({ params }: PageProps) {
       .update({ status: "completed", updated_at: new Date().toISOString() })
       .eq("id", id);
 
+    try {
+      await fetch("/api/consultation-completed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ consultationId: id }),
+      });
+    } catch (_) {}
+
     const isLawyerUser = user?.id === consultation?.lawyer_id;
     router.push(isLawyerUser ? "/lawyer/consultations" : "/mes-consultations");
   };

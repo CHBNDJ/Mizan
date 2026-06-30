@@ -11,6 +11,7 @@ import type { Metadata, Viewport } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import PushNotificationInit from "@/components/PushNotificationInit";
+import ReviewPopup from "@/components/ReviewPopup";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -110,7 +111,6 @@ export default async function RootLayout({
           name="google-site-verification"
           content="W7PDaGtQ4F7JD8rOf8RDI1wmwSrgdMt0ivpebaRSeww"
         />
-        {/* Hreflang pour éviter les duplicates i18n */}
         <link rel="alternate" hrefLang="fr" href={`${siteConfig.url}/fr`} />
         <link rel="alternate" hrefLang="ar" href={`${siteConfig.url}/ar`} />
         <link rel="alternate" hrefLang="en" href={`${siteConfig.url}/en`} />
@@ -141,6 +141,7 @@ export default async function RootLayout({
           <AuthProvider>
             <PushNotificationInit />
             <Navigation />
+            <ReviewPopup />
             <ScrollManager>{children}</ScrollManager>
             <Footer />
           </AuthProvider>
