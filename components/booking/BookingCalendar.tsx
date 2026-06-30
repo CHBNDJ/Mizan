@@ -335,7 +335,7 @@ export default function BookingCalendar({
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2">
         <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl overflow-hidden">
           <div className="flex items-center justify-between px-3 py-2.5 border-b border-slate-100 dark:border-[#1c2220]">
             <button
