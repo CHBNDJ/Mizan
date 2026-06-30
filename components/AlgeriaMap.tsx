@@ -209,14 +209,7 @@ export function AlgeriaMap({
               ),
               top: Math.max(tooltipPos.y - 36, 4),
             }}
-          >
-            {getWilayaLabel(WILAYA_NAMES[hovered], t)}
-            {isLanding && (
-              <span className="ms-1 text-teal-400 dark:text-[#6fcf9f] text-[10px]">
-                {t("algeriaMap.goSearch")}
-              </span>
-            )}
-          </div>
+          ></div>
         )}
       </div>
 
