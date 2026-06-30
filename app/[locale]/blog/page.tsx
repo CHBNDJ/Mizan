@@ -4,13 +4,24 @@ import { ArrowRight, Calendar } from "lucide-react";
 import { getTranslations, getLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
-  title: "Blog juridique — Conseils et droits en Algérie | Mizan",
+  title: "Blog juridique — Conseils et droits en Algérie | MIZAN",
   description:
     "Conseils juridiques pratiques pour les particuliers et entreprises en Algérie. Droit de la famille, droit commercial, succession, divorce — rédigés par des experts.",
+  keywords: [
+    "blog juridique algérie",
+    "conseils juridiques algérie",
+    "droit algérien",
+    "divorce algérie",
+    "succession algérie",
+    "droit immobilier algérie",
+    "droit travail algérie",
+  ],
   openGraph: {
-    title: "Blog juridique | Mizan",
+    title: "Blog juridique | MIZAN",
     description: "Conseils juridiques pratiques en Algérie.",
     url: "https://mizan-dz.com/blog",
+    siteName: "MIZAN",
+    type: "website",
   },
   alternates: {
     canonical: "https://mizan-dz.com/blog",

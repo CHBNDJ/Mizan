@@ -95,17 +95,19 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const meta = ARTICLE_META[slug];
-  if (!meta) return { title: "Article | Mizan" };
+  if (!meta) return { title: "Article | MIZAN" };
   const t = await getTranslations("blogArticles");
   const titre = t(`${slug}.titre`);
   const resume = t(`${slug}.resume`);
   return {
-    title: `${titre} | Mizan`,
+    title: `${titre} | MIZAN`,
     description: resume,
     openGraph: {
       title: titre,
       description: resume,
       url: `https://mizan-dz.com/blog/${slug}`,
+      siteName: "MIZAN",
+      type: "article",
     },
     alternates: { canonical: `https://mizan-dz.com/blog/${slug}` },
   };
@@ -251,7 +253,7 @@ export default async function BlogArticlePage({ params }: Props) {
           <p className="text-teal-100 dark:text-[#6fcf9f] text-sm mb-5">
             {t("blogArticleDetail.ctaDesc")}
           </p>
-          <Link href={`/avocats/specialite/${meta.specialiteSlug}`}>
+          <Link href={`/lawyers/specialite/${meta.specialiteSlug}`}>
             <button className="bg-white hover:bg-teal-50 dark:bg-[#1c1c1e] dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] px-6 py-2.5 rounded-xl font-semibold text-sm transition-colors cursor-pointer">
               {t("blogArticleDetail.ctaAction")}
             </button>
