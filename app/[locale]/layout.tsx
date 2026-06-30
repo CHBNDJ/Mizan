@@ -63,23 +63,16 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_DZ",
     url: siteConfig.url,
-    siteName: "Mizan",
-    title: "Mizan — Trouvez votre expert juridique en Algérie",
+    siteName: "MIZAN",
+    title: "MIZAN — Trouvez votre expert juridique en Algérie",
     description:
       "Avocats, notaires, huissiers, comptables vérifiés en Algérie. Consultations en ligne depuis l'Algérie et la diaspora.",
     images: [
       {
         url: `${siteConfig.url}/og-image.png`,
-        width: 512,
-        height: 512,
-        alt: "Logo Mizan",
-        type: "image/png",
-      },
-      {
-        url: `${siteConfig.url}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "Mizan — Experts juridiques d'Algérie",
+        alt: "MIZAN — Experts juridiques Algérie",
         type: "image/png",
       },
     ],
@@ -87,11 +80,11 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@mizan_dz",
-    title: "Mizan — Trouvez votre expert juridique en Algérie",
+    title: "MIZAN — Trouvez votre expert juridique en Algérie",
     description: "Avocats, notaires, huissiers, comptables vérifiés en Algérie",
     images: [`${siteConfig.url}/og-image.png`],
   },
-  appleWebApp: { capable: true, statusBarStyle: "default", title: "Mizan" },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "MIZAN" },
 };
 
 export default async function RootLayout({
@@ -117,6 +110,11 @@ export default async function RootLayout({
           name="google-site-verification"
           content="W7PDaGtQ4F7JD8rOf8RDI1wmwSrgdMt0ivpebaRSeww"
         />
+        {/* Hreflang pour éviter les duplicates i18n */}
+        <link rel="alternate" hrefLang="fr" href={`${siteConfig.url}/fr`} />
+        <link rel="alternate" hrefLang="ar" href={`${siteConfig.url}/ar`} />
+        <link rel="alternate" hrefLang="en" href={`${siteConfig.url}/en`} />
+        <link rel="alternate" hrefLang="x-default" href={siteConfig.url} />
         <OrganizationJsonLd />
         <script
           dangerouslySetInnerHTML={{

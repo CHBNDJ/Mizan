@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const siteConfig = {
-  name: "Mizan",
+  name: "MIZAN",
   description:
     "Plateforme de mise en relation avec des experts juridiques vérifiés en Algérie. Avocats, notaires, huissiers, comptables.",
   url: "https://mizan-dz.com",
@@ -9,11 +9,12 @@ export const siteConfig = {
 };
 
 export const homeMetadata: Metadata = {
-  title: "Mizan — Trouvez votre expert juridique en Algérie",
+  title: "MIZAN — Trouvez votre expert juridique en Algérie",
   description:
     "Trouvez rapidement un avocat, notaire, huissier, comptable ou expert-comptable vérifié en Algérie. Experts vérifiés dans toutes les wilayas. Que vous soyez en Algérie ou à l'étranger.",
   keywords: [
     "avocat algérie",
+    "avocat en ligne algérie",
     "notaire algérie",
     "huissier algérie",
     "comptable algérie",
@@ -21,42 +22,55 @@ export const homeMetadata: Metadata = {
     "avocat alger",
     "avocat oran",
     "avocat constantine",
+    "avocat annaba",
+    "avocat sétif",
     "consultation juridique algérie",
+    "consultation juridique en ligne algérie",
     "annuaire juridique algérie",
+    "annuaire avocat algérie",
+    "trouver avocat algérie",
+    "expert juridique algérie",
+    "droit algérien",
+    "diaspora algérienne avocat",
     "محامي الجزائر",
     "موثق الجزائر",
+    "محضر قضائي الجزائر",
     "استشارة قانونية الجزائر",
+    "استشارة قانونية اونلاين الجزائر",
+    "دليل المحامين الجزائر",
   ],
-  authors: [{ name: "Mizan" }],
-  creator: "Mizan",
-  publisher: "Mizan",
+  authors: [{ name: "MIZAN" }],
+  creator: "MIZAN",
+  publisher: "MIZAN",
   other: {
     "geo.region": "DZ",
     "geo.placename": "Algérie",
     "geo.position": "36.7538;3.0588",
+    "geo.ICBM": "36.7538, 3.0588",
   },
   openGraph: {
     type: "website",
     locale: "fr_DZ",
     alternateLocale: ["fr_FR", "ar_DZ", "en_US"],
     url: siteConfig.url,
-    title: "Mizan — Trouvez votre expert juridique en Algérie",
+    title: "MIZAN — Trouvez votre expert juridique en Algérie",
     description: siteConfig.description,
-    siteName: siteConfig.name,
+    siteName: "MIZAN",
     images: [
       {
         url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: "Mizan — Experts juridiques Algérie",
+        alt: "MIZAN — Experts juridiques Algérie",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mizan — Experts juridiques Algérie",
+    title: "MIZAN — Experts juridiques Algérie",
     description: siteConfig.description,
     images: [siteConfig.ogImage],
+    site: "@mizan_dz",
   },
   robots: {
     index: true,
@@ -69,87 +83,111 @@ export const homeMetadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: { canonical: siteConfig.url },
+  alternates: {
+    canonical: siteConfig.url,
+    languages: {
+      "fr-DZ": `${siteConfig.url}/fr`,
+      "ar-DZ": `${siteConfig.url}/ar`,
+      "en-US": `${siteConfig.url}/en`,
+      "x-default": siteConfig.url,
+    },
+  },
 };
 
 export const searchMetadata: Metadata = {
-  title: "Rechercher un expert juridique | Mizan Algérie",
+  title: "Rechercher un expert juridique en Algérie | MIZAN",
   description:
-    "Recherchez un avocat, notaire, huissier, comptable ou expert-comptable vérifié en Algérie. Filtrez par wilaya et domaine d'intervention.",
+    "Recherchez un avocat, notaire, huissier, comptable ou expert-comptable vérifié en Algérie. Filtrez par wilaya et domaine d'intervention. Résultats vérifiés par MIZAN.",
   keywords: [
     "rechercher avocat algérie",
-    "trouver notaire",
-    "huissier algérie",
-    "comptable algérie",
+    "trouver notaire algérie",
+    "huissier algérie liste",
+    "comptable agréé algérie",
     "expert comptable algérie",
+    "annuaire professionnel juridique algérie",
   ],
   openGraph: {
-    title: "Rechercher un expert juridique | Mizan",
+    title: "Rechercher un expert juridique en Algérie | MIZAN",
     description: "Trouvez votre expert juridique vérifié en Algérie.",
     url: `${siteConfig.url}/search`,
+    siteName: "MIZAN",
     type: "website",
   },
-  alternates: { canonical: `${siteConfig.url}/search` },
+  alternates: {
+    canonical: `${siteConfig.url}/search`,
+    languages: {
+      "fr-DZ": `${siteConfig.url}/fr/search`,
+      "ar-DZ": `${siteConfig.url}/ar/search`,
+      "en-US": `${siteConfig.url}/en/search`,
+      "x-default": `${siteConfig.url}/search`,
+    },
+  },
 };
 
 export const consultationMetadata: Metadata = {
-  title: "Consulter un professionnel | Mizan",
+  title: "Consulter un professionnel juridique en ligne | MIZAN",
   description:
-    "Choisissez votre mode de consultation — message, téléphone, vidéo ou email — avec un professionnel juridique vérifié sur Mizan.",
+    "Choisissez votre mode de consultation — message, téléphone, vidéo ou email — avec un professionnel juridique vérifié sur MIZAN.",
   openGraph: {
-    title: "Consulter un professionnel | Mizan",
+    title: "Consulter un professionnel | MIZAN",
     description: "Consultation en ligne avec un expert juridique vérifié.",
     url: `${siteConfig.url}/consultation`,
+    siteName: "MIZAN",
     type: "website",
   },
   alternates: { canonical: `${siteConfig.url}/consultation` },
 };
 
 export const contactMetadata: Metadata = {
-  title: "Contactez-nous | Mizan",
-  description: "Besoin d'aide ? Contactez l'équipe Mizan.",
+  title: "Contactez-nous | MIZAN",
+  description:
+    "Besoin d'aide ? Contactez l'équipe MIZAN. Nous répondons sous 24h.",
   openGraph: {
-    title: "Contactez-nous | Mizan",
-    description: "Besoin d'aide ? Contactez l'équipe Mizan.",
+    title: "Contactez-nous | MIZAN",
+    description: "Besoin d'aide ? Contactez l'équipe MIZAN.",
     url: `${siteConfig.url}/contact`,
+    siteName: "MIZAN",
     type: "website",
   },
   alternates: { canonical: `${siteConfig.url}/contact` },
 };
 
 export const howItWorksMetadata: Metadata = {
-  title: "Comment ça marche | Mizan",
+  title: "Comment ça marche | MIZAN — Experts juridiques Algérie",
   description:
-    "Découvrez comment Mizan vous aide à trouver le bon expert juridique en Algérie en 3 étapes simples.",
+    "Découvrez comment MIZAN vous aide à trouver le bon expert juridique en Algérie en 3 étapes simples. Gratuit pour les clients.",
   openGraph: {
-    title: "Comment ça marche | Mizan",
-    description: "Trouvez votre expert en 3 étapes simples.",
-    url: `${siteConfig.url}/comment-ca-marche`,
+    title: "Comment ça marche | MIZAN",
+    description: "Trouvez votre expert juridique en 3 étapes simples.",
+    url: `${siteConfig.url}/howitworks`,
+    siteName: "MIZAN",
     type: "website",
   },
-  alternates: { canonical: `${siteConfig.url}/comment-ca-marche` },
+  alternates: { canonical: `${siteConfig.url}/howitworks` },
 };
 
 export const faqMetadata: Metadata = {
-  title: "Questions Fréquentes (FAQ) | Mizan",
+  title: "Questions Fréquentes (FAQ) | MIZAN — Algérie",
   description:
-    "Toutes vos questions sur Mizan : avocats, notaires, huissiers, comptables et experts-comptables vérifiés en Algérie.",
+    "Toutes vos questions sur MIZAN : avocats, notaires, huissiers, comptables et experts-comptables vérifiés en Algérie. Réponses claires et rapides.",
   openGraph: {
-    title: "FAQ | Mizan",
-    description: "Toutes vos questions sur Mizan.",
+    title: "FAQ | MIZAN",
+    description: "Toutes vos questions sur MIZAN répondues.",
     url: `${siteConfig.url}/faq`,
+    siteName: "MIZAN",
     type: "website",
   },
   alternates: { canonical: `${siteConfig.url}/faq` },
 };
 
 export const cguMetadata: Metadata = {
-  title: "Conditions Générales d'Utilisation | Mizan",
-  description: "Conditions générales d'utilisation de la plateforme Mizan.",
+  title: "Conditions Générales d'Utilisation | MIZAN",
+  description: "Conditions générales d'utilisation de la plateforme MIZAN.",
   openGraph: {
-    title: "CGU | Mizan",
-    description: "Conditions d'utilisation de Mizan.",
+    title: "CGU | MIZAN",
+    description: "Conditions d'utilisation de MIZAN.",
     url: `${siteConfig.url}/cgu`,
+    siteName: "MIZAN",
     type: "website",
   },
   alternates: { canonical: `${siteConfig.url}/cgu` },
@@ -157,13 +195,14 @@ export const cguMetadata: Metadata = {
 };
 
 export const privacyMetadata: Metadata = {
-  title: "Politique de Confidentialité | Mizan",
+  title: "Politique de Confidentialité | MIZAN",
   description:
-    "Politique de confidentialité de Mizan. Comment nous collectons, utilisons et protégeons vos données.",
+    "Politique de confidentialité de MIZAN. Comment nous collectons, utilisons et protégeons vos données personnelles.",
   openGraph: {
-    title: "Confidentialité | Mizan",
-    description: "Protection de vos données sur Mizan.",
+    title: "Confidentialité | MIZAN",
+    description: "Protection de vos données sur MIZAN.",
     url: `${siteConfig.url}/privacy`,
+    siteName: "MIZAN",
     type: "website",
   },
   alternates: { canonical: `${siteConfig.url}/privacy` },
@@ -171,12 +210,13 @@ export const privacyMetadata: Metadata = {
 };
 
 export const legalMetadata: Metadata = {
-  title: "Mentions Légales | Mizan",
-  description: "Mentions légales de la plateforme Mizan.",
+  title: "Mentions Légales | MIZAN",
+  description: "Mentions légales de la plateforme MIZAN.",
   openGraph: {
-    title: "Mentions Légales | Mizan",
-    description: "Informations légales sur Mizan.",
+    title: "Mentions Légales | MIZAN",
+    description: "Informations légales sur MIZAN.",
     url: `${siteConfig.url}/legal`,
+    siteName: "MIZAN",
     type: "website",
   },
   alternates: { canonical: `${siteConfig.url}/legal` },
@@ -229,10 +269,10 @@ export function generateProfessionalMetadata(
   const prof = PROF_META[pro.profession || "avocat"] || PROF_META.avocat;
   const fullName = `${pro.prenom} ${pro.nom}`;
   const spec = pro.specialites?.[0] || prof.singular;
-  const title = `Maître ${fullName} - ${spec} à ${pro.ville} | Mizan`;
+  const title = `Maître ${fullName} — ${spec} à ${pro.ville} | MIZAN`;
   const desc = pro.bio
     ? `${pro.bio.substring(0, 150)}...`
-    : `Consultez le profil de Maître ${fullName}, ${prof.singular.toLowerCase()} spécialisé en ${spec}, ${prof.numLabel} de ${pro.barreau}. Contactez via Mizan.`;
+    : `Consultez le profil de Maître ${fullName}, ${prof.singular.toLowerCase()} spécialisé en ${spec}, ${prof.numLabel} de ${pro.barreau}. Contactez via MIZAN.`;
   const url = proId
     ? `${siteConfig.url}/lawyers/${proId}`
     : `${siteConfig.url}/lawyers`;
@@ -240,15 +280,17 @@ export function generateProfessionalMetadata(
     title,
     description: desc,
     keywords: [
-      `${prof.singular.toLowerCase()} ${spec.toLowerCase()}`,
+      `${prof.singular.toLowerCase()} ${spec.toLowerCase()} algérie`,
       `${prof.singular.toLowerCase()} ${pro.ville.toLowerCase()}`,
-      fullName,
-      `maître ${pro.nom.toLowerCase()}`,
+      `maître ${fullName.toLowerCase()}`,
+      `maître ${pro.nom.toLowerCase()} ${pro.ville.toLowerCase()}`,
+      `${prof.singular.toLowerCase()} ${pro.ville.toLowerCase()} algérie`,
     ],
     openGraph: {
-      title: `Maître ${fullName} - ${spec}`,
+      title: `Maître ${fullName} — ${spec} à ${pro.ville}`,
       description: desc,
       url,
+      siteName: "MIZAN",
       type: "profile",
     },
     alternates: { canonical: url },
@@ -264,24 +306,26 @@ export function generateWilayaMetadata(
 ): Metadata {
   const prof = PROF_META[profession] || PROF_META.avocat;
   return {
-    title: `${prof.plural} à ${wilaya} | Mizan Algérie`,
-    description: `Trouvez les meilleurs ${prof.plural.toLowerCase()} vérifiés à ${wilaya}, Algérie. Profils détaillés, avis clients, contact direct.`,
+    title: `${prof.plural} à ${wilaya} — Vérifiés | MIZAN Algérie`,
+    description: `Trouvez les meilleurs ${prof.plural.toLowerCase()} vérifiés à ${wilaya}, Algérie. Profils détaillés, avis clients, contact direct sur MIZAN.`,
     keywords: [
       `${prof.singular.toLowerCase()} ${wilaya.toLowerCase()}`,
       `${prof.plural.toLowerCase()} ${wilaya.toLowerCase()}`,
-      `consultation juridique ${wilaya.toLowerCase()}`,
+      `${prof.singular.toLowerCase()} ${wilaya.toLowerCase()} algérie`,
+      `consultation ${prof.singular.toLowerCase()} ${wilaya.toLowerCase()}`,
     ],
     openGraph: {
-      title: `${prof.plural} à ${wilaya} | Mizan`,
-      description: `${prof.plural} vérifiés à ${wilaya}.`,
+      title: `${prof.plural} à ${wilaya} | MIZAN`,
+      description: `${prof.plural} vérifiés à ${wilaya} — MIZAN Algérie.`,
       url: `${siteConfig.url}/wilayas/${wilaya}`,
+      siteName: "MIZAN",
       type: "website",
       images: [
         {
           url: siteConfig.ogImage,
           width: 1200,
           height: 630,
-          alt: `${prof.plural} à ${wilaya} - Mizan`,
+          alt: `${prof.plural} à ${wilaya} — MIZAN`,
         },
       ],
     },
