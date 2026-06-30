@@ -92,6 +92,7 @@ export default function ReviewPopup() {
     await supabase.from("pending_reviews").delete().eq("id", pending.id);
     setVisible(false);
   };
+  if (!visible) return null;
 
   if (!visible || !pending) return null;
 
