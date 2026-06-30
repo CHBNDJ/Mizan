@@ -32,6 +32,9 @@ const BLOG_SLUGS = [
   "droits-locataire-algerie",
   "licenciement-algerie",
   "acheter-bien-immobilier-algerie",
+  "creer-entreprise-algerie-diaspora",
+  "heriter-bien-immobilier-algerie-france",
+  "vendre-appartement-algerie-etranger",
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -95,20 +98,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const professionPages: MetadataRoute.Sitemap = PROFESSIONS.map((prof) => ({
-    url: `${baseUrl}/professions/${prof}`,
+    url: `${baseUrl}/${prof}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.95,
   }));
-
-  const searchProfessionPages: MetadataRoute.Sitemap = PROFESSIONS.map(
-    (prof) => ({
-      url: `${baseUrl}/search?profession=${prof}`,
-      lastModified: new Date(),
-      changeFrequency: "daily" as const,
-      priority: 0.85,
-    })
-  );
 
   const specialitePages: MetadataRoute.Sitemap = SPECIALITES_SLUGS.map(
     (slug) => ({
@@ -142,6 +136,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
     );
 
+    // Pages search par wilaya — URLs propres pour le SEO
     const { data: usersData } = await supabase
       .from("users")
       .select("address")
@@ -152,24 +147,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       if (u.address?.wilaya) wilayasSet.add(u.address.wilaya.toLowerCase());
     });
 
-    const wilayaPages: MetadataRoute.Sitemap = Array.from(wilayasSet).flatMap(
-      (wilaya) =>
-        PROFESSIONS.map((prof) => ({
-          url: `${baseUrl}/search?profession=${prof}&wilaya=${encodeURIComponent(wilaya)}`,
-          lastModified: new Date(),
-          changeFrequency: "weekly" as const,
-          priority: 0.75,
-        }))
+    const searchWilayaPages: MetadataRoute.Sitemap = Array.from(
+      wilayasSet
+    ).flatMap((wilaya) =>
+      PROFESSIONS.map((prof) => ({
+        url: `${baseUrl}/search?profession=${prof}&wilaya=${encodeURIComponent(wilaya)}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly" as const,
+        priority: 0.75,
+      }))
     );
 
     return [
       ...staticPages,
       ...professionPages,
-      ...searchProfessionPages,
       ...specialitePages,
       ...blogPages,
       ...lawyerPages,
-      ...wilayaPages,
+      ...searchWilayaPages,
     ];
   } catch {
     return [
