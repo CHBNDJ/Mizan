@@ -209,7 +209,9 @@ export function AlgeriaMap({
               ),
               top: Math.max(tooltipPos.y - 36, 4),
             }}
-          ></div>
+          >
+            {getWilayaLabel(WILAYA_NAMES[hovered], t)}
+          </div>
         )}
       </div>
 
