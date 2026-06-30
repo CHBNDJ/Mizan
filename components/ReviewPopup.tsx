@@ -130,7 +130,7 @@ export default function ReviewPopup() {
                   onChange={(e) => setComment(e.target.value)}
                   rows={3}
                   placeholder={t("commentPlaceholder")}
-                  className="w-full px-4 py-3 text-sm border border-slate-300 dark:border-[#3a3a3d] rounded-xl bg-white dark:bg-[#141415] text-slate-700 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78] hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-400 dark:focus:border-[#6fcf9f] focus:ring-2 focus:ring-teal-500/20 dark:focus:ring-[#6fcf9f]/20 outline-none transition-all resize-none"
+                  className="w-full px-4 py-3 text-sm border-2 border-slate-200 dark:border-[#3a3a3d] rounded-xl bg-white dark:bg-[#141415] text-slate-700 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78] focus:border-teal-400 dark:focus:border-[#6fcf9f] focus:ring-2 focus:ring-teal-500/20 dark:focus:ring-[#6fcf9f]/20 outline-none transition-colors resize-none"
                 />
               </div>
 

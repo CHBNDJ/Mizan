@@ -1675,7 +1675,7 @@
     "title": "Comment s'est passée votre consultation avec Maître {name} ?",
     "ratingLabel": "Votre note",
     "commentLabel": "Partagez votre expérience",
-    "commentPlaceholder": "Partagez votre expérience avec Maître {name}...",
+    "commentPlaceholder": "Comment s'est passée votre consultation ?",
     "submit": "Publier mon avis",
     "later": "Plus tard",
     "thankYouTitle": "Merci pour votre avis !",

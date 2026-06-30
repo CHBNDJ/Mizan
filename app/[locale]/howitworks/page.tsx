@@ -140,7 +140,6 @@ export default function HowItWorksPage() {
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
       <style>{`.hero-title,.hero-sub,.tabs-row,.step-card,.faq-card,.cta-section{opacity:0;}`}</style>
 
-      {/* Hero */}
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="hero-title text-3xl sm:text-5xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-5 leading-tight">
@@ -152,10 +151,8 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
-      {/* Contenu */}
       <section className="px-4 pb-16">
         <div className="max-w-4xl mx-auto">
-          {/* Tabs client / professionnel */}
           <div className="tabs-row flex justify-center gap-3 mb-6">
             {(["client", "professionnel"] as const).map((ut) => (
               <button
@@ -174,7 +171,6 @@ export default function HowItWorksPage() {
             ))}
           </div>
 
-          {/* Tabs professions */}
           {userType === "professionnel" && (
             <div className="flex justify-center gap-2 mb-8 flex-wrap">
               {PROFS.map((p) => (
@@ -193,7 +189,6 @@ export default function HowItWorksPage() {
             </div>
           )}
 
-          {/* Steps */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
             {steps.map((step, idx) => (
               <div
@@ -226,7 +221,6 @@ export default function HowItWorksPage() {
             ))}
           </div>
 
-          {/* FAQ */}
           <div>
             <p className="text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] uppercase tracking-widest mb-4 text-center">
               {t("howItWorks.faqTitle")}
@@ -250,7 +244,6 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="cta-section py-12 px-4 bg-teal-600 dark:bg-[#0F6E56]">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
@@ -260,13 +253,12 @@ export default function HowItWorksPage() {
             {t("howItWorks.ctaSubtitle")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            {/* Bouton plein blanc — "Trouver un expert" */}
             <Link href="/" className="flex">
               <button className="flex-1 h-12 px-8 bg-white hover:bg-teal-50 dark:bg-[#1c1c1e] dark:hover:bg-[#26492f] text-teal-600 dark:text-[#6fcf9f] font-semibold rounded-xl cursor-pointer shadow-sm transition-colors whitespace-nowrap">
                 {t("howItWorks.ctaFindExpert")}
               </button>
             </Link>
-            {/* Bouton outline blanc — "S'inscrire comme professionnel" */}
+
             <Link href="/auth/lawyer/register" className="flex">
               <button className="flex-1 h-12 px-8 bg-transparent hover:bg-white/10 dark:bg-transparent dark:hover:bg-white/10 text-white dark:text-white font-semibold rounded-xl border-2 border-white dark:border-white cursor-pointer transition-colors whitespace-nowrap">
                 {t("howItWorks.ctaJoinAsPro")}
