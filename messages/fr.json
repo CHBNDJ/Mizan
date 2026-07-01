@@ -31,7 +31,7 @@
     },
     "onDemand": "Sur demande",
     "schedule": {
-      "title": "Choisissez votre créneau souhaité",
+      "title": "Choisissez votre créneau de rendez-vous",
       "subtitle": "Le professionnel confirmera la disponibilité et ses honoraires.",
       "date": "Date",
       "time": "Heure",

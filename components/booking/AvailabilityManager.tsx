@@ -5,13 +5,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { Plus, X, Save, CheckCircle } from "lucide-react";
 
 const JOURS = [
-  { short: "Lu", label: "Lundi", dow: 1 },
-  { short: "Ma", label: "Mardi", dow: 2 },
-  { short: "Me", label: "Mercredi", dow: 3 },
-  { short: "Je", label: "Jeudi", dow: 4 },
-  { short: "Ve", label: "Vendredi", dow: 5 },
-  { short: "Sa", label: "Samedi", dow: 6 },
-  { short: "Di", label: "Dimanche", dow: 0 },
+  { label: "Lundi", dow: 1 },
+  { label: "Mardi", dow: 2 },
+  { label: "Mercredi", dow: 3 },
+  { label: "Jeudi", dow: 4 },
+  { label: "Vendredi", dow: 5 },
+  { label: "Samedi", dow: 6 },
+  { label: "Dimanche", dow: 0 },
 ];
 
 interface Plage {
@@ -28,17 +28,28 @@ export default function AvailabilityManager() {
   const supabase = createClient();
   const { user } = useAuth();
 
-  const [selected, setSelected] = useState<number>(1);
-  const [duration, setDuration] = useState<30 | 60>(30);
+  const [enabled, setEnabled] = useState<Record<number, boolean>>({
+    0: false,
+    1: true,
+    2: true,
+    3: false,
+    4: true,
+    5: true,
+    6: false,
+  });
   const [slots, setSlots] = useState<Record<number, Plage[]>>({
     0: [],
-    1: [],
-    2: [],
+    1: [
+      { start: "09:00", end: "12:00" },
+      { start: "14:00", end: "17:00" },
+    ],
+    2: [{ start: "09:00", end: "17:00" }],
     3: [],
-    4: [],
-    5: [],
+    4: [{ start: "09:00", end: "17:00" }],
+    5: [{ start: "09:00", end: "12:00" }],
     6: [],
   });
+  const [duration, setDuration] = useState<30 | 60>(30);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -58,6 +69,15 @@ export default function AvailabilityManager() {
 
     if (data && data.length > 0) {
       setDuration((data[0].duration_min as 30 | 60) || 30);
+      const newEnabled: Record<number, boolean> = {
+        0: false,
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false,
+        6: false,
+      };
       const newSlots: Record<number, Plage[]> = {
         0: [],
         1: [],
@@ -68,41 +88,68 @@ export default function AvailabilityManager() {
         6: [],
       };
       data.forEach((s: any) => {
+        newEnabled[s.day_of_week] = true;
         newSlots[s.day_of_week].push({
           start: s.start_time.slice(0, 5),
           end: s.end_time.slice(0, 5),
         });
       });
+      setEnabled(newEnabled);
       setSlots(newSlots);
-      const firstWithSlots = data[0].day_of_week;
-      setSelected(firstWithSlots);
+    } else {
+      // Pas de données → reset propre
+      setEnabled({
+        0: false,
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false,
+        6: false,
+      });
+      setSlots({ 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] });
     }
     setLoading(false);
   };
 
-  const addSlot = () => {
+  const toggle = (dow: number, on: boolean) => {
+    setEnabled((prev) => ({ ...prev, [dow]: on }));
+    if (on && (slots[dow] || []).length === 0) {
+      setSlots((prev) => ({
+        ...prev,
+        [dow]: [{ start: "09:00", end: "17:00" }],
+      }));
+    }
+  };
+
+  const addPlage = (dow: number) => {
+    if ((slots[dow] || []).length >= 3) return;
     setSlots((prev) => ({
       ...prev,
-      [selected]: [...(prev[selected] || []), { start: "09:00", end: "12:00" }],
+      [dow]: [...(prev[dow] || []), { start: "09:00", end: "12:00" }],
     }));
   };
 
-  const updateSlot = (idx: number, field: "start" | "end", val: string) => {
+  const updatePlage = (
+    dow: number,
+    idx: number,
+    field: "start" | "end",
+    val: string
+  ) => {
     setSlots((prev) => {
-      const next = [...(prev[selected] || [])];
+      const next = [...(prev[dow] || [])];
       next[idx] = { ...next[idx], [field]: val };
-      return { ...prev, [selected]: next };
+      return { ...prev, [dow]: next };
     });
   };
 
-  const removeSlot = (idx: number) => {
-    setSlots((prev) => ({
-      ...prev,
-      [selected]: (prev[selected] || []).filter((_, i) => i !== idx),
-    }));
+  const removePlage = (dow: number, idx: number) => {
+    setSlots((prev) => {
+      const next = (prev[dow] || []).filter((_, i) => i !== idx);
+      if (next.length === 0) setEnabled((e) => ({ ...e, [dow]: false }));
+      return { ...prev, [dow]: next };
+    });
   };
-
-  const clearDay = () => setSlots((prev) => ({ ...prev, [selected]: [] }));
 
   const handleSave = async () => {
     if (!user) return;
@@ -111,6 +158,7 @@ export default function AvailabilityManager() {
 
     const toInsert: any[] = [];
     JOURS.forEach(({ dow }) => {
+      if (!enabled[dow]) return;
       (slots[dow] || []).forEach((p) => {
         if (p.start && p.end && p.start < p.end) {
           toInsert.push({
@@ -128,13 +176,16 @@ export default function AvailabilityManager() {
     if (toInsert.length > 0) {
       await supabase.from("availability_slots").insert(toInsert);
     }
-
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
 
-  const activeJours = JOURS.filter((j) => (slots[j.dow] || []).length > 0);
+  const activeJours = JOURS.filter(
+    (j) =>
+      enabled[j.dow] &&
+      (slots[j.dow] || []).some((p) => p.start && p.end && p.start < p.end)
+  );
   const totalSlots = activeJours.reduce((acc, j) => {
     return (
       acc +
@@ -148,7 +199,6 @@ export default function AvailabilityManager() {
     );
   }, 0);
   const totalH = Math.floor((totalSlots * duration) / 60);
-  const currentSlots = slots[selected] || [];
 
   if (loading)
     return (
@@ -158,11 +208,11 @@ export default function AvailabilityManager() {
     );
 
   return (
-    <div className="space-y-4">
-      {/* Header durée */}
-      <div className="flex items-center justify-between">
+    <div>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
         <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
-          Cliquez sur un jour pour configurer ses horaires
+          Activez les jours et configurez les horaires
         </p>
         <div className="flex border border-slate-200 dark:border-[#1c2220] rounded-lg overflow-hidden">
           {([30, 60] as const).map((d) => (
@@ -181,170 +231,134 @@ export default function AvailabilityManager() {
         </div>
       </div>
 
-      {/* Grille jours */}
-      <div className="grid grid-cols-7 gap-1.5">
-        {JOURS.map(({ short, label, dow }) => {
-          const hasSlots = (slots[dow] || []).length > 0;
-          const isSelected = selected === dow;
+      {/* Liste jours */}
+      <div className="border border-slate-200 dark:border-[#1c2220] rounded-xl overflow-hidden divide-y divide-slate-100 dark:divide-[#1c2220]">
+        {JOURS.map(({ label, dow }) => {
+          const on = enabled[dow];
+          const plages = slots[dow] || [];
           return (
-            <button
+            <div
               key={dow}
-              onClick={() => setSelected(dow)}
-              title={label}
-              className={`flex flex-col items-center gap-1 py-2.5 rounded-xl border-2 transition-all cursor-pointer ${
-                isSelected
-                  ? "border-teal-600 dark:border-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10"
-                  : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e] hover:border-teal-300 dark:hover:border-[#6fcf9f]/30"
+              className={`flex items-start gap-3 px-4 py-3 transition-colors ${
+                on
+                  ? "bg-white dark:bg-[#1c1c1e]"
+                  : "bg-slate-50 dark:bg-[#141415]"
               }`}
             >
+              {/* Toggle */}
+              <label className="relative inline-flex items-center cursor-pointer mt-0.5 flex-shrink-0">
+                <input
+                  type="checkbox"
+                  checked={on}
+                  onChange={(e) => toggle(dow, e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-8 h-[18px] rounded-full bg-slate-200 dark:bg-[#3a3a3d] peer-checked:bg-teal-600 dark:peer-checked:bg-[#0F6E56] transition-colors after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:w-[14px] after:h-[14px] after:transition-all peer-checked:after:translate-x-[14px]" />
+              </label>
+
+              {/* Nom du jour */}
               <span
-                className={`text-[11px] font-bold ${
-                  isSelected
-                    ? "text-teal-700 dark:text-[#6fcf9f]"
-                    : "text-slate-600 dark:text-[#E8E8E6]"
+                className={`text-sm font-medium w-20 flex-shrink-0 pt-0.5 ${
+                  on
+                    ? "text-slate-800 dark:text-[#F5F5F4]"
+                    : "text-slate-400 dark:text-[#3a3a3d]"
                 }`}
               >
-                {short}
+                {label}
               </span>
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${
-                  hasSlots
-                    ? "bg-teal-500 dark:bg-[#6fcf9f]"
-                    : "bg-slate-200 dark:bg-[#3a3a3d]"
-                }`}
-              />
-            </button>
+
+              {/* Plages ou Indisponible */}
+              {!on ? (
+                <span className="text-xs text-slate-400 dark:text-[#7A7A78] pt-0.5">
+                  Indisponible
+                </span>
+              ) : (
+                <div className="flex-1 space-y-2">
+                  {plages.map((p, idx) => (
+                    <div
+                      key={idx}
+                      className="grid items-center gap-2"
+                      style={{ gridTemplateColumns: "1fr 14px 1fr 26px" }}
+                    >
+                      <input
+                        type="time"
+                        value={p.start}
+                        onChange={(e) =>
+                          updatePlage(dow, idx, "start", e.target.value)
+                        }
+                        className="h-8 px-2 text-xs border border-slate-200 dark:border-[#3a3a3d] rounded-lg bg-slate-50 dark:bg-[#141415] text-slate-800 dark:text-[#F5F5F4] focus:border-teal-500 dark:focus:border-[#6fcf9f] outline-none transition-colors w-full"
+                      />
+                      <span className="text-[11px] text-slate-300 dark:text-[#3a3a3d] text-center">
+                        –
+                      </span>
+                      <input
+                        type="time"
+                        value={p.end}
+                        onChange={(e) =>
+                          updatePlage(dow, idx, "end", e.target.value)
+                        }
+                        className="h-8 px-2 text-xs border border-slate-200 dark:border-[#3a3a3d] rounded-lg bg-slate-50 dark:bg-[#141415] text-slate-800 dark:text-[#F5F5F4] focus:border-teal-500 dark:focus:border-[#6fcf9f] outline-none transition-colors w-full"
+                      />
+                      <button
+                        onClick={() => removePlage(dow, idx)}
+                        disabled={plages.length <= 1}
+                        className="w-6 h-6 flex items-center justify-center text-slate-300 dark:text-[#3a3a3d] hover:text-red-400 disabled:opacity-0 cursor-pointer transition-colors rounded"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                  {plages.length < 3 && (
+                    <button
+                      onClick={() => addPlage(dow)}
+                      className="flex items-center gap-1 text-[11px] text-teal-600 dark:text-[#6fcf9f] font-medium cursor-pointer hover:underline"
+                    >
+                      <Plus className="w-3 h-3" /> Ajouter
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           );
         })}
-      </div>
 
-      {/* Panel jour sélectionné */}
-      <div className="border border-slate-200 dark:border-[#1c2220] rounded-xl overflow-hidden">
-        <div className="flex items-center justify-between px-4 py-2.5 bg-slate-50 dark:bg-[#141415] border-b border-slate-200 dark:border-[#1c2220]">
-          <span className="text-sm font-semibold text-slate-800 dark:text-[#F5F5F4]">
-            {JOURS.find((j) => j.dow === selected)?.label}
-          </span>
-          <div className="flex items-center gap-3">
-            {currentSlots.length > 0 && (
-              <button
-                onClick={clearDay}
-                className="text-xs text-slate-400 dark:text-[#7A7A78] hover:text-red-400 dark:hover:text-red-400 cursor-pointer transition-colors"
-              >
-                Effacer
-              </button>
+        {/* Footer stats + save */}
+        <div className="flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-[#141415]">
+          <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
+            {activeJours.length > 0 ? (
+              <>
+                <span className="font-semibold text-slate-700 dark:text-[#E8E8E6]">
+                  {activeJours.length}
+                </span>{" "}
+                jour{activeJours.length > 1 ? "s" : ""} ·{" "}
+                <span className="font-semibold text-teal-600 dark:text-[#6fcf9f]">
+                  {totalSlots} créneaux
+                </span>{" "}
+                · {totalH}h/sem
+              </>
+            ) : (
+              "Aucun jour configuré"
             )}
-            <span className="text-xs text-slate-400 dark:text-[#7A7A78]">
-              {currentSlots.length === 0
-                ? "Aucune plage"
-                : `${currentSlots.length} plage${currentSlots.length > 1 ? "s" : ""}`}
-            </span>
-          </div>
-        </div>
-
-        <div className="p-4 space-y-2 bg-white dark:bg-[#1c1c1e]">
-          {currentSlots.length === 0 ? (
-            <p className="text-center text-sm text-slate-400 dark:text-[#7A7A78] py-4">
-              Pas de consultation ce jour —{" "}
-              <button
-                onClick={addSlot}
-                className="text-teal-600 dark:text-[#6fcf9f] font-medium cursor-pointer hover:underline"
-              >
-                ajouter une plage
-              </button>
-            </p>
-          ) : (
-            currentSlots.map((slot, idx) => (
-              <div
-                key={idx}
-                className="grid items-center gap-2"
-                style={{ gridTemplateColumns: "1fr 20px 1fr 28px" }}
-              >
-                <input
-                  type="time"
-                  value={slot.start}
-                  onChange={(e) => updateSlot(idx, "start", e.target.value)}
-                  className="h-9 px-2.5 text-sm border border-slate-200 dark:border-[#3a3a3d] rounded-lg bg-slate-50 dark:bg-[#141415] text-slate-800 dark:text-[#F5F5F4] focus:border-teal-500 dark:focus:border-[#6fcf9f] focus:ring-1 focus:ring-teal-500/20 outline-none transition-all w-full"
-                />
-                <span className="text-xs text-slate-400 dark:text-[#7A7A78] text-center">
-                  →
-                </span>
-                <input
-                  type="time"
-                  value={slot.end}
-                  onChange={(e) => updateSlot(idx, "end", e.target.value)}
-                  className="h-9 px-2.5 text-sm border border-slate-200 dark:border-[#3a3a3d] rounded-lg bg-slate-50 dark:bg-[#141415] text-slate-800 dark:text-[#F5F5F4] focus:border-teal-500 dark:focus:border-[#6fcf9f] focus:ring-1 focus:ring-teal-500/20 outline-none transition-all w-full"
-                />
-                <button
-                  onClick={() => removeSlot(idx)}
-                  disabled={currentSlots.length <= 1}
-                  className="w-7 h-7 flex items-center justify-center text-slate-300 dark:text-[#3a3a3d] hover:text-red-400 dark:hover:text-red-400 disabled:opacity-30 cursor-pointer transition-colors rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ))
-          )}
-          {currentSlots.length > 0 && currentSlots.length < 3 && (
-            <button
-              onClick={addSlot}
-              className="flex items-center gap-1.5 text-xs text-teal-600 dark:text-[#6fcf9f] font-medium cursor-pointer hover:underline mt-1"
-            >
-              <Plus className="w-3 h-3" /> Ajouter une plage
-            </button>
-          )}
+          </p>
+          <button
+            onClick={handleSave}
+            disabled={saving || activeJours.length === 0}
+            className="flex items-center gap-1.5 px-4 py-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#085041] disabled:opacity-40 text-white text-xs font-semibold rounded-lg cursor-pointer transition-all"
+          >
+            {saving ? (
+              <div className="animate-spin rounded-full h-3 w-3 border-2 border-white border-t-transparent" />
+            ) : saved ? (
+              <>
+                <CheckCircle className="w-3 h-3" /> Enregistré
+              </>
+            ) : (
+              <>
+                <Save className="w-3 h-3" /> Enregistrer
+              </>
+            )}
+          </button>
         </div>
       </div>
-
-      {/* Récap */}
-      {activeJours.length > 0 && (
-        <div className="border border-slate-200 dark:border-[#1c2220] rounded-xl overflow-hidden">
-          <div className="grid grid-cols-3 divide-x divide-slate-200 dark:divide-[#1c2220]">
-            <div className="px-4 py-3 text-center">
-              <p className="text-[10px] text-slate-400 dark:text-[#7A7A78] mb-1">
-                Jours actifs
-              </p>
-              <p className="text-sm font-bold text-slate-800 dark:text-[#F5F5F4]">
-                {activeJours.length}
-              </p>
-            </div>
-            <div className="px-4 py-3 text-center">
-              <p className="text-[10px] text-slate-400 dark:text-[#7A7A78] mb-1">
-                Créneaux / semaine
-              </p>
-              <p className="text-sm font-bold text-teal-600 dark:text-[#6fcf9f]">
-                {totalSlots}
-              </p>
-            </div>
-            <div className="px-4 py-3 text-center">
-              <p className="text-[10px] text-slate-400 dark:text-[#7A7A78] mb-1">
-                Heures / semaine
-              </p>
-              <p className="text-sm font-bold text-teal-600 dark:text-[#6fcf9f]">
-                {totalH}h
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Bouton */}
-      <button
-        onClick={handleSave}
-        disabled={saving || activeJours.length === 0}
-        className="w-full flex items-center justify-center gap-2 py-2.5 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#085041] disabled:opacity-40 text-white font-semibold text-sm rounded-xl cursor-pointer transition-all"
-      >
-        {saving ? (
-          <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
-        ) : saved ? (
-          <>
-            <CheckCircle className="w-4 h-4" /> Enregistré
-          </>
-        ) : (
-          <>
-            <Save className="w-4 h-4" /> Enregistrer
-          </>
-        )}
-      </button>
     </div>
   );
 }
