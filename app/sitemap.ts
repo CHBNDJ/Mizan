@@ -78,19 +78,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     },
     {
-      url: `${baseUrl}/cgu`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-    {
       url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/legal`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.3,
@@ -123,13 +111,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const { data: lawyers } = await supabase
       .from("lawyers")
-      .select("id, updated_at, users!inner(user_type)")
+      .select("id, slug, updated_at, users!inner(user_type)")
       .eq("is_verified", true)
       .eq("users.user_type", "lawyer");
 
+    // On soumet directement l'URL canonique (le slug si disponible) plutôt
+    // que l'UUID, pour éviter que Google crawle une URL qui redirige.
     const lawyerPages: MetadataRoute.Sitemap = (lawyers || []).map(
       (lawyer) => ({
-        url: `${baseUrl}/lawyers/${lawyer.id}`,
+        url: `${baseUrl}/lawyers/${lawyer.slug || lawyer.id}`,
         lastModified: new Date(lawyer.updated_at || new Date()),
         changeFrequency: "weekly" as const,
         priority: 0.8,
