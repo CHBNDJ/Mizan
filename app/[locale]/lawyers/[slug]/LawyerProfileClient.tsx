@@ -1,6 +1,12 @@
 "use client";
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useLayoutEffect,
+  useMemo,
+} from "react";
+import { useLocale, useTranslations, useMessages } from "next-intl";
 import { localizedDigits } from "@/lib/arabicNumerals";
 import { notFound, useRouter, useSearchParams } from "next/navigation";
 import {
@@ -257,14 +263,19 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
   const ld = (s: string) => localizedDigits(s, locale);
   const t = useTranslations("lawyerProfile");
   const tProf = useTranslations("professions");
-  const tSpec = useTranslations("specialites");
-  const translateSpec = (s: string) => {
-    try {
-      return tSpec(s);
-    } catch {
-      return s;
-    }
-  };
+  // Recherche insensible à la casse : la valeur stockée en base peut être
+  // en Title Case ("Droit De La Famille") alors que la clé JSON de
+  // traduction est en casse normale ("Droit de la famille").
+  const messages = useMessages();
+  const specialitesLookup = useMemo(() => {
+    const raw = (messages as any)?.specialites || {};
+    const map: Record<string, string> = {};
+    Object.entries(raw).forEach(([k, v]) => {
+      map[k.toLowerCase()] = v as string;
+    });
+    return map;
+  }, [messages]);
+  const translateSpec = (s: string) => specialitesLookup[s.toLowerCase()] || s;
   const searchParams = useSearchParams();
   const { user, profile } = useAuth();
   const [avocat, setAvocat] = useState<AvocatData | null>(null);
