@@ -120,33 +120,35 @@ const InfoCardMobile = ({
   const body = (
     <div className="flex items-center gap-3 px-4 py-3.5">
       <div
-        className={`w-9 h-9 flex items-center justify-center flex-shrink-0 rounded-lg text-base ${teal ? "bg-white border border-teal-100" : "bg-teal-50 border border-teal-100"}`}
+        className={`w-9 h-9 flex items-center justify-center flex-shrink-0 rounded-lg text-base ${teal ? "bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20" : "bg-teal-50 dark:bg-[#141415] border border-teal-100 dark:border-[#1c2220]"}`}
       >
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <div
-          className={`text-xs mb-0.5 ${teal ? "text-teal-600" : "text-slate-400"}`}
+          className={`text-xs mb-0.5 ${teal ? "text-teal-600 dark:text-[#6fcf9f]" : "text-slate-400 dark:text-[#7A7A78]"}`}
         >
           {label}
         </div>
         <div
-          className={`text-sm font-medium truncate ${teal ? "text-teal-800" : "text-slate-800"}`}
+          className={`text-sm font-medium truncate ${teal ? "text-teal-800 dark:text-[#6fcf9f]" : "text-slate-800 dark:text-[#F5F5F4]"}`}
         >
           {value}
         </div>
         {sublabel && !whatsappHref && (
-          <div className="text-xs text-slate-400 mt-0.5">{sublabel}</div>
+          <div className="text-xs text-slate-400 dark:text-[#7A7A78] mt-0.5">
+            {sublabel}
+          </div>
         )}
       </div>
       <ChevronRight
-        className={`w-4 h-4 flex-shrink-0 ${teal ? "text-teal-400" : "text-slate-300"}`}
+        className={`w-4 h-4 flex-shrink-0 ${teal ? "text-teal-400 dark:text-[#6fcf9f]" : "text-slate-300 dark:text-[#3a3a3d]"}`}
       />
     </div>
   );
   return (
     <div
-      className={`rounded-xl border shadow-sm overflow-hidden ${teal ? "bg-teal-50 border-teal-100" : "bg-white border-slate-200"}`}
+      className={`rounded-xl border shadow-sm overflow-hidden ${teal ? "bg-teal-50 dark:bg-[#141415] border-teal-100 dark:border-[#1c2220]" : "bg-white dark:bg-[#1c1c1e] border-slate-200 dark:border-[#1c2220]"}`}
     >
       {href && !whatsappHref ? (
         <a
@@ -161,10 +163,10 @@ const InfoCardMobile = ({
         <div>{body}</div>
       )}
       {whatsappHref && href && (
-        <div className="flex border-t border-slate-100">
+        <div className="flex border-t border-slate-100 dark:border-[#1c2220]">
           <a
             href={href}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-slate-600 hover:bg-slate-50 border-r border-slate-100"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-slate-600 dark:text-[#E8E8E6] hover:bg-slate-50 dark:hover:bg-[#2a2a2d] border-r border-slate-100 dark:border-[#1c2220]"
           >
             <Phone className="w-3.5 h-3.5" /> Appeler
           </a>
@@ -193,28 +195,28 @@ const InfoCardDesktop = ({
 }: InfoItem) => {
   const body = (
     <div
-      className={`rounded-xl border shadow-sm overflow-hidden flex flex-col h-full ${teal ? "bg-teal-50 border-teal-100" : "bg-white border-slate-200"}`}
+      className={`rounded-xl border shadow-sm overflow-hidden flex flex-col h-full ${teal ? "bg-teal-50 dark:bg-[#141415] border-teal-100 dark:border-[#1c2220]" : "bg-white dark:bg-[#1c1c1e] border-slate-200 dark:border-[#1c2220]"}`}
     >
       <div className="flex items-start gap-3 p-4 flex-1">
         <div
-          className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-base ${teal ? "bg-white border border-teal-100" : "bg-teal-50 border border-teal-100"}`}
+          className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-base ${teal ? "bg-white dark:bg-[#1c1c1e] border border-teal-100 dark:border-[#6fcf9f]/20" : "bg-teal-50 dark:bg-[#141415] border border-teal-100 dark:border-[#1c2220]"}`}
         >
           {icon}
         </div>
         <div className="flex-1 min-w-0">
           <div
-            className={`text-xs font-semibold uppercase tracking-wide mb-1 ${teal ? "text-teal-600" : "text-slate-400"}`}
+            className={`text-xs font-semibold uppercase tracking-wide mb-1 ${teal ? "text-teal-600 dark:text-[#6fcf9f]" : "text-slate-400 dark:text-[#7A7A78]"}`}
           >
             {label}
           </div>
           <div
-            className={`text-sm font-medium ${teal ? "text-teal-800" : "text-slate-800"}`}
+            className={`text-sm font-medium ${teal ? "text-teal-800 dark:text-[#6fcf9f]" : "text-slate-800 dark:text-[#F5F5F4]"}`}
           >
             {value}
           </div>
           {sublabel && !whatsappHref && (
             <div
-              className={`text-xs mt-0.5 ${teal ? "text-teal-500" : "text-slate-400"}`}
+              className={`text-xs mt-0.5 ${teal ? "text-teal-500 dark:text-[#6fcf9f]/80" : "text-slate-400 dark:text-[#7A7A78]"}`}
             >
               {sublabel}
             </div>
@@ -222,15 +224,15 @@ const InfoCardDesktop = ({
         </div>
         {!whatsappHref && (
           <ChevronRight
-            className={`w-4 h-4 flex-shrink-0 mt-0.5 ${teal ? "text-teal-400" : "text-slate-300"}`}
+            className={`w-4 h-4 flex-shrink-0 mt-0.5 ${teal ? "text-teal-400 dark:text-[#6fcf9f]" : "text-slate-300 dark:text-[#3a3a3d]"}`}
           />
         )}
       </div>
       {whatsappHref && href && (
-        <div className="flex border-t border-slate-100 mt-auto">
+        <div className="flex border-t border-slate-100 dark:border-[#1c2220] mt-auto">
           <a
             href={href}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 border-r border-slate-100"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-slate-600 dark:text-[#E8E8E6] hover:bg-slate-50 dark:hover:bg-[#2a2a2d] border-r border-slate-100 dark:border-[#1c2220]"
           >
             <Phone className="w-3 h-3" /> Appeler
           </a>
@@ -391,10 +393,10 @@ export default function ProfilePage({
 
   if (loading)
     return (
-      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
+      <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:from-[#0a0a0a] dark:via-[#141415] dark:to-[#0a0a0a]">
         <div className="max-w-5xl mx-auto px-4 py-8 space-y-4">
-          <div className="h-80 bg-slate-200 rounded-2xl animate-pulse" />
-          <div className="h-32 bg-slate-200 rounded-xl animate-pulse" />
+          <div className="h-80 bg-slate-200 dark:bg-[#1c1c1e] rounded-2xl animate-pulse" />
+          <div className="h-32 bg-slate-200 dark:bg-[#1c1c1e] rounded-xl animate-pulse" />
         </div>
       </div>
     );
@@ -444,9 +446,9 @@ export default function ProfilePage({
           {
             icon:
               siteInfo.label === "LinkedIn" ? (
-                <Linkedin className="w-3.5 h-3.5 text-teal-600" />
+                <Linkedin className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f]" />
               ) : (
-                <Globe className="w-3.5 h-3.5 text-teal-600" />
+                <Globe className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f]" />
               ),
             label: siteInfo.label,
             value: siteInfo.sublabel,
@@ -460,7 +462,9 @@ export default function ProfilePage({
   ];
   const claimItem: InfoItem | null = !avocat.is_claimed
     ? {
-        icon: <CheckCircle className="w-3.5 h-3.5 text-teal-600" />,
+        icon: (
+          <CheckCircle className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f]" />
+        ),
         label: "Vous êtes ce professionnel ?",
         value: "Réclamer ce profil",
         href: `/claim-profile/${avocat.id}`,
@@ -470,11 +474,11 @@ export default function ProfilePage({
   const allInfoItems = [...infoItems, ...(claimItem ? [claimItem] : [])];
 
   return (
-    <div className="min-h-screen pt-16 pb-24 lg:pb-8 bg-gradient-to-br from-teal-100 via-white to-teal-100 overflow-x-hidden w-full">
+    <div className="min-h-screen pt-16 pb-24 lg:pb-8 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:from-[#0a0a0a] dark:via-[#141415] dark:to-[#0a0a0a] overflow-x-hidden w-full">
       <div className="max-w-3xl mx-auto px-4 py-8">
         <button
           onClick={() => router.push(`/search?${searchParams.toString()}`)}
-          className="back-button opacity-0 invisible flex items-center gap-2 text-teal-600 hover:text-teal-700 cursor-pointer mb-6 text-sm font-medium"
+          className="back-button opacity-0 invisible flex items-center gap-2 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#8fdfb5] cursor-pointer mb-6 text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="hidden sm:inline">Retour aux résultats</span>
@@ -482,20 +486,20 @@ export default function ProfilePage({
         </button>
 
         {isOwnProfile && (
-          <div className="mb-4 flex items-center justify-between bg-teal-50 border border-teal-200 rounded-xl px-4 py-3">
+          <div className="mb-4 flex items-center justify-between bg-teal-50 dark:bg-[#141415] border border-teal-200 dark:border-[#1c2220] rounded-xl px-4 py-3">
             <div className="flex items-center gap-2">
-              <Eye className="w-4 h-4 text-teal-700" />
+              <Eye className="w-4 h-4 text-teal-700 dark:text-[#6fcf9f]" />
               <div>
-                <p className="text-sm font-medium text-teal-900">
+                <p className="text-sm font-medium text-teal-900 dark:text-[#F5F5F4]">
                   Aperçu de votre profil public
                 </p>
-                <p className="text-xs text-teal-600">
+                <p className="text-xs text-teal-600 dark:text-[#6fcf9f]">
                   Tel que vos clients vous voient
                 </p>
               </div>
             </div>
             <Link href="/profile">
-              <button className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer transition-all">
+              <button className="bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#085041] text-white text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer transition-all">
                 Modifier →
               </button>
             </Link>
@@ -504,7 +508,7 @@ export default function ProfilePage({
 
         <div className="space-y-4">
           {/* Hero card */}
-          <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl overflow-hidden shadow-sm">
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[320px]">
               <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
                 <div>
@@ -512,39 +516,41 @@ export default function ProfilePage({
                     {avokatProfessions.map((p: string) => (
                       <span
                         key={p}
-                        className="text-[10px] font-semibold text-teal-600 uppercase tracking-widest bg-teal-50 px-2 py-0.5 rounded-full border border-teal-100"
+                        className="text-[10px] font-semibold text-teal-600 dark:text-[#6fcf9f] uppercase tracking-widest bg-teal-50 dark:bg-[#141415] px-2 py-0.5 rounded-full border border-teal-100 dark:border-[#1c2220]"
                       >
                         {getProfLabel(p).label}
                       </span>
                     ))}
-                    <span className="text-[10px] text-slate-400">
+                    <span className="text-[10px] text-slate-400 dark:text-[#7A7A78]">
                       · {profInfo.numLabel} {avocat.barreau}
                     </span>
                   </div>
-                  <h1 className="text-2xl sm:text-3xl font-light text-slate-800 leading-tight mb-1">
+                  <h1 className="text-2xl sm:text-3xl font-light text-slate-800 dark:text-[#E8E8E6] leading-tight mb-1">
                     {toCivilite(avocat.genre)} {avocat.prenom}
                   </h1>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 leading-tight mb-4">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-[#F5F5F4] leading-tight mb-4">
                     {avocat.nom}
                   </h2>
-                  <div className="w-10 h-0.5 bg-teal-600 mb-4" />
+                  <div className="w-10 h-0.5 bg-teal-600 dark:bg-[#0F6E56] mb-4" />
                   <div className="space-y-1.5 mb-4">
                     <div className="flex items-center gap-1.5">
-                      <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
-                      <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-teal-600" />
-                      <span className="text-sm text-slate-600 font-medium">
-                        {expAnnees} ans d'expérience
+                      <div className="w-1 h-1 rounded-full bg-teal-500 dark:bg-[#6fcf9f] flex-shrink-0" />
+                      <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-teal-600 dark:text-[#6fcf9f]" />
+                      <span className="text-sm text-slate-600 dark:text-[#E8E8E6] font-medium">
+                        {ld(String(expAnnees))} ans d'expérience
                       </span>
-                      <span className="text-sm text-slate-400">
+                      <span className="text-sm text-slate-400 dark:text-[#7A7A78]">
                         · inscrit en{" "}
-                        {avocat.experience?.date_inscription || "N/A"}
+                        {avocat.experience?.date_inscription
+                          ? ld(String(avocat.experience.date_inscription))
+                          : "N/A"}
                       </span>
                     </div>
                     {avocat.langues && avocat.langues.length > 0 && (
                       <div className="flex items-center gap-1.5">
-                        <div className="w-1 h-1 rounded-full bg-teal-500 flex-shrink-0" />
-                        <Languages className="w-3.5 h-3.5 flex-shrink-0 text-teal-600" />
-                        <span className="text-sm text-slate-600 font-medium">
+                        <div className="w-1 h-1 rounded-full bg-teal-500 dark:bg-[#6fcf9f] flex-shrink-0" />
+                        <Languages className="w-3.5 h-3.5 flex-shrink-0 text-teal-600 dark:text-[#6fcf9f]" />
+                        <span className="text-sm text-slate-600 dark:text-[#E8E8E6] font-medium">
                           {avocat.langues.join(" · ")}
                         </span>
                       </div>
@@ -558,7 +564,7 @@ export default function ProfilePage({
                           (avocat.reviews_count_google ?? 0) > 0 && (
                             <div className="flex items-center gap-1">
                               <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                              <span className="text-sm font-semibold text-slate-700">
+                              <span className="text-sm font-semibold text-slate-700 dark:text-[#E8E8E6]">
                                 {ld(avocat.rating_google.toFixed(1))}
                               </span>
                               <Image
@@ -567,7 +573,7 @@ export default function ProfilePage({
                                 width={10}
                                 height={10}
                               />
-                              <span className="text-sm text-slate-400">
+                              <span className="text-sm text-slate-400 dark:text-[#7A7A78]">
                                 ({ld(String(avocat.reviews_count_google))})
                               </span>
                             </div>
@@ -575,12 +581,12 @@ export default function ProfilePage({
                         {avocat.rating_mizan &&
                           (avocat.reviews_count_mizan ?? 0) > 0 && (
                             <div className="flex items-center gap-1">
-                              <Star className="w-3.5 h-3.5 fill-teal-500 text-teal-500" />
-                              <span className="text-sm font-semibold text-slate-700">
+                              <Star className="w-3.5 h-3.5 fill-teal-500 text-teal-500 dark:fill-[#6fcf9f] dark:text-[#6fcf9f]" />
+                              <span className="text-sm font-semibold text-slate-700 dark:text-[#E8E8E6]">
                                 {ld(avocat.rating_mizan.toFixed(1))}
                               </span>
-                              <Scale className="w-3.5 h-3.5 text-teal-600" />
-                              <span className="text-sm text-slate-400">
+                              <Scale className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f]" />
+                              <span className="text-sm text-slate-400 dark:text-[#7A7A78]">
                                 ({ld(String(avocat.reviews_count_mizan))})
                               </span>
                             </div>
@@ -591,18 +597,18 @@ export default function ProfilePage({
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   {avocat.verified && (
-                    <div className="flex items-center gap-1 text-[11px] text-teal-600 font-medium bg-teal-50 border border-teal-100 px-2 py-0.5 rounded-full">
+                    <div className="flex items-center gap-1 text-[11px] text-teal-600 dark:text-[#6fcf9f] font-medium bg-teal-50 dark:bg-[#141415] border border-teal-100 dark:border-[#1c2220] px-2 py-0.5 rounded-full">
                       <CheckCircle className="w-3 h-3" /> Vérifié par Mizan
                     </div>
                   )}
                   {avocat.is_cour_supreme && (
-                    <div className="flex items-center gap-1 text-[11px] text-amber-700 font-medium bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                    <div className="flex items-center gap-1 text-[11px] text-amber-700 dark:text-[#E0B568] font-medium bg-amber-50 dark:bg-[#3D2E1F] border border-amber-200 dark:border-[#5A4A2A] px-2 py-0.5 rounded-full">
                       <CheckCircle className="w-3 h-3" /> Agréé Cour Suprême
                     </div>
                   )}
                 </div>
               </div>
-              <div className="hero-right opacity-0 invisible bg-gradient-to-b from-teal-500 to-teal-800 flex items-center justify-center relative order-first sm:order-last min-h-[260px] sm:min-h-0">
+              <div className="hero-right opacity-0 invisible bg-gradient-to-b from-teal-500 to-teal-800 dark:from-[#0F6E56] dark:to-[#04342C] flex items-center justify-center relative order-first sm:order-last min-h-[260px] sm:min-h-0">
                 {avocat.avatar_url ? (
                   <Image
                     src={avocat.avatar_url}
@@ -623,11 +629,11 @@ export default function ProfilePage({
 
           {/* Spécialités */}
           {avocat.specialites && avocat.specialites.length > 0 && (
-            <Card className="content-card opacity-0 invisible shadow-sm">
+            <Card className="content-card opacity-0 invisible shadow-sm dark:bg-[#1c1c1e] dark:border-[#1c2220]">
               <CardHeader>
-                <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-                  <Briefcase className="w-4 h-4 text-teal-600" /> Domaines
-                  d'expertise
+                <div className="flex items-center gap-2 text-sm font-semibold text-slate-800 dark:text-[#F5F5F4]">
+                  <Briefcase className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />{" "}
+                  Domaines d'expertise
                 </div>
               </CardHeader>
               <CardContent>
@@ -635,9 +641,9 @@ export default function ProfilePage({
                   {avocat.specialites.map((spec: string, i: number) => (
                     <span
                       key={i}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 text-teal-700 rounded-full text-xs font-medium border border-teal-100 hover:bg-teal-100 transition-all"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 dark:bg-[#141415] text-teal-700 dark:text-[#6fcf9f] rounded-full text-xs font-medium border border-teal-100 dark:border-[#1c2220] hover:bg-teal-100 dark:hover:bg-[#1c2220] transition-all"
                     >
-                      <span className="w-1.5 h-1.5 bg-teal-600 rounded-full" />
+                      <span className="w-1.5 h-1.5 bg-teal-600 dark:bg-[#6fcf9f] rounded-full" />
                       {spec}
                     </span>
                   ))}
@@ -648,13 +654,13 @@ export default function ProfilePage({
 
           {/* Panel consultation */}
           {showConsultPanel && (
-            <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden">
+            <div className="content-card opacity-0 invisible bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-5 shadow-sm relative overflow-hidden">
               {isOwnProfile && (
-                <div className="absolute inset-0 z-10 bg-white/80 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center gap-2">
-                  <div className="flex items-center gap-2 bg-teal-50 border border-teal-200 text-teal-800 text-xs font-medium px-4 py-2 rounded-full">
+                <div className="absolute inset-0 z-10 bg-white/80 dark:bg-[#1c1c1e]/90 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center gap-2">
+                  <div className="flex items-center gap-2 bg-teal-50 dark:bg-[#141415] border border-teal-200 dark:border-[#1c2220] text-teal-800 dark:text-[#6fcf9f] text-xs font-medium px-4 py-2 rounded-full">
                     <Eye className="w-3.5 h-3.5" /> Ce que vos clients voient
                   </div>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-400 dark:text-[#7A7A78]">
                     Vous ne pouvez pas vous envoyer une consultation
                   </p>
                 </div>
@@ -701,7 +707,7 @@ export default function ProfilePage({
 
           {/* Carte */}
           {hasAddress && (
-            <div className="content-card opacity-0 invisible bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+            <div className="content-card opacity-0 invisible bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl overflow-hidden shadow-sm">
               <LawyerMap
                 address={[
                   avocat.adresse?.rue,
@@ -718,7 +724,6 @@ export default function ProfilePage({
             </div>
           )}
 
-          {/* Avis */}
           <div className="reviews-section opacity-0 invisible mt-4">
             <ReviewSection
               lawyerId={avocat.id}

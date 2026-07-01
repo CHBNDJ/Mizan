@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getLocale } from "next-intl/server";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import Link from "next/link";
 import { Star, Scale, ArrowRight, Briefcase } from "lucide-react";
 import { searchAvocats } from "@/lib/avocatsData";
@@ -120,6 +122,8 @@ export async function generateStaticParams() {
 
 export default async function SpecialitePage({ params }: Props) {
   const { specialite } = await params;
+  const locale = await getLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
   const specData = SPECIALITES_MAP[specialite?.toLowerCase() ?? ""];
   if (!specData) notFound();
 
@@ -129,29 +133,34 @@ export default async function SpecialitePage({ params }: Props) {
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100">
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="mb-10">
-          <div className="flex items-center gap-2 text-sm text-slate-500 mb-4 flex-wrap">
-            <Link href="/" className="hover:text-teal-600 transition-colors">
+          <div className="flex items-center gap-2 text-sm text-slate-500 mb-4 flex-wrap dark:text-[#A8A8A6]">
+            <Link
+              href="/"
+              className="hover:text-teal-600 transition-colors dark:text-[#6fcf9f]"
+            >
               Accueil
             </Link>
             <span>·</span>
             <Link
               href="/search"
-              className="hover:text-teal-600 transition-colors"
+              className="hover:text-teal-600 transition-colors dark:text-[#6fcf9f]"
             >
               Avocats
             </Link>
             <span>·</span>
-            <span className="text-slate-800 font-medium">{specData.label}</span>
+            <span className="text-slate-800 font-medium dark:text-[#F5F5F4]">
+              {specData.label}
+            </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 mb-4 dark:text-[#F5F5F4]">
             Avocat spécialisé en {specData.label} en Algérie
           </h1>
-          <p className="text-lg text-slate-600 max-w-2xl">
+          <p className="text-lg text-slate-600 max-w-2xl dark:text-[#E8E8E6]">
             {specData.description}
           </p>
 
-          <div className="flex items-center gap-2 mt-4 text-sm text-teal-600 font-medium">
+          <div className="flex items-center gap-2 mt-4 text-sm text-teal-600 font-medium dark:text-[#6fcf9f]">
             <Briefcase className="w-4 h-4" />
             <span>
               {avocats.length} avocat{avocats.length > 1 ? "s" : ""} spécialisé
@@ -164,7 +173,7 @@ export default async function SpecialitePage({ params }: Props) {
           <div className="space-y-4 mb-12">
             {avocats.map((avocat) => (
               <Link key={avocat.id} href={`/lawyers/${avocat.id}`}>
-                <div className="bg-white border border-slate-200 rounded-xl p-5 hover:border-teal-200 hover:shadow-sm transition-all flex items-center gap-4">
+                <div className="bg-white border border-slate-200 rounded-xl p-5 hover:border-teal-200 hover:shadow-sm transition-all flex items-center gap-4 dark:bg-[#1c1c1e] dark:border-[#1c2220]">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 overflow-hidden">
                     {avocat.avatar_url ? (
                       <img
@@ -177,10 +186,10 @@ export default async function SpecialitePage({ params }: Props) {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-slate-800 mb-0.5">
+                    <div className="font-semibold text-slate-800 mb-0.5 dark:text-[#F5F5F4]">
                       {avocat.prenom} {avocat.nom}
                     </div>
-                    <div className="text-sm text-slate-500 mb-1">
+                    <div className="text-sm text-slate-500 mb-1 dark:text-[#A8A8A6]">
                       {avocat.ville}, {avocat.wilaya}
                       {avocat.experience?.annees &&
                         ` · ${avocat.experience.annees} ans d'expérience`}
@@ -188,58 +197,60 @@ export default async function SpecialitePage({ params }: Props) {
                     <div className="flex items-center gap-3">
                       {avocat.rating_google &&
                         (avocat.reviews_count_google ?? 0) > 0 && (
-                          <div className="flex items-center gap-1 text-xs text-slate-500">
+                          <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-[#A8A8A6]">
                             <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                            <span className="font-medium text-slate-700">
+                            <span className="font-medium text-slate-700 dark:text-[#E8E8E6]">
                               {avocat.rating_google.toFixed(1)}
                             </span>
-                            <span>({avocat.reviews_count_google} avis)</span>
+                            <span>
+                              ({ld(String(avocat.reviews_count_google))} avis)
+                            </span>
                           </div>
                         )}
                       {avocat.rating_mizan &&
                         (avocat.reviews_count_mizan ?? 0) > 0 && (
-                          <div className="flex items-center gap-1 text-xs text-slate-500">
+                          <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-[#A8A8A6]">
                             <Star className="w-3 h-3 fill-teal-500 text-teal-500" />
-                            <span className="font-medium text-slate-700">
+                            <span className="font-medium text-slate-700 dark:text-[#E8E8E6]">
                               {avocat.rating_mizan.toFixed(1)}
                             </span>
-                            <Scale className="w-3 h-3 text-teal-600" />
+                            <Scale className="w-3 h-3 text-teal-600 dark:text-[#6fcf9f]" />
                           </div>
                         )}
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-slate-300 flex-shrink-0" />
+                  <ArrowRight className="w-4 h-4 text-slate-300 flex-shrink-0 dark:text-[#3a3a3d]" />
                 </div>
               </Link>
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-xl border border-slate-200 p-12 text-center mb-12">
-            <p className="text-slate-500 mb-4">
+          <div className="bg-white rounded-xl border border-slate-200 p-12 text-center mb-12 dark:bg-[#1c1c1e] dark:border-[#1c2220]">
+            <p className="text-slate-500 mb-4 dark:text-[#A8A8A6]">
               Aucun avocat spécialisé en {specData.label} pour le moment.
             </p>
             <Link href="/search">
-              <button className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer">
+              <button className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer dark:bg-[#0F6E56] dark:bg-[#085041] dark:hover:bg-[#085041]">
                 Voir tous les avocats
               </button>
             </Link>
           </div>
         )}
 
-        <div className="bg-white border border-slate-200 rounded-2xl p-8 mb-8">
-          <h2 className="text-xl font-bold text-slate-800 mb-4">
+        <div className="bg-white border border-slate-200 rounded-2xl p-8 mb-8 dark:bg-[#1c1c1e] dark:border-[#1c2220]">
+          <h2 className="text-xl font-bold text-slate-800 mb-4 dark:text-[#F5F5F4]">
             Questions fréquentes — {specData.label} en Algérie
           </h2>
           <div className="space-y-4">
             {specData.questions.map((question, i) => (
               <div
                 key={i}
-                className="border-b border-slate-100 pb-4 last:border-0 last:pb-0"
+                className="border-b border-slate-100 pb-4 last:border-0 last:pb-0 dark:border-[#1c2220]"
               >
-                <p className="font-medium text-slate-800 mb-1 text-sm">
+                <p className="font-medium text-slate-800 mb-1 text-sm dark:text-[#F5F5F4]">
                   {question}
                 </p>
-                <p className="text-sm text-slate-500 leading-relaxed">
+                <p className="text-sm text-slate-500 leading-relaxed dark:text-[#A8A8A6]">
                   Un avocat spécialisé en {specData.label} inscrit au barreau
                   algérien peut vous accompagner sur cette question. Consultez
                   les profils disponibles sur Mizan et prenez contact
@@ -250,7 +261,7 @@ export default async function SpecialitePage({ params }: Props) {
           </div>
         </div>
 
-        <div className="bg-teal-600 rounded-2xl p-8 text-center">
+        <div className="bg-teal-600 rounded-2xl p-8 text-center dark:bg-[#0F6E56]">
           <h2 className="text-xl font-bold text-white mb-3">
             Besoin d'un avocat en {specData.label} ?
           </h2>
@@ -261,7 +272,7 @@ export default async function SpecialitePage({ params }: Props) {
           <Link
             href={`/search?specialite=${encodeURIComponent(specData.label)}`}
           >
-            <button className="bg-white hover:bg-teal-50 text-teal-600 px-8 py-3 rounded-xl font-semibold text-sm transition-colors cursor-pointer">
+            <button className="bg-white hover:bg-teal-50 text-teal-600 px-8 py-3 rounded-xl font-semibold text-sm transition-colors cursor-pointer dark:bg-[#1c1c1e] dark:bg-[#141415] dark:text-[#6fcf9f] dark:hover:bg-[#1c2220]">
               Trouver un avocat spécialisé
             </button>
           </Link>

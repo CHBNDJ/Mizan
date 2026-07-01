@@ -1,7 +1,8 @@
 "use client";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import { getSpecialiteLabel, getWilayaLabel } from "@/lib/i18nLabels";
 import { AvocatData } from "@/types";
 import { MapPin, Star, Scale } from "lucide-react";
@@ -13,6 +14,8 @@ interface AvocatCardProps {
 }
 
 export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
   const t = useTranslations();
 
   const getProfileUrl = () => {
@@ -74,7 +77,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
             <div className="flex items-center justify-center gap-1 text-[11px]">
               <Star className="w-3 h-3 fill-amber-400 text-amber-400 flex-shrink-0" />
               <span className="font-medium text-slate-800 dark:text-[#F5F5F4]">
-                {avocat.rating_google!.toFixed(1)}
+                {ld(avocat.rating_google!.toFixed(1))}
               </span>
               <Image
                 src="/google.png"
@@ -84,7 +87,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
                 className="flex-shrink-0"
               />
               <span className="text-slate-500 dark:text-[#A8A8A6]">
-                ({avocat.reviews_count_google})
+                ({ld(String(avocat.reviews_count_google))})
               </span>
             </div>
           )}
@@ -92,11 +95,11 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
             <div className="flex items-center justify-center gap-1 text-[11px]">
               <Star className="w-3 h-3 fill-teal-500 text-teal-500 flex-shrink-0" />
               <span className="font-medium text-slate-800 dark:text-[#F5F5F4]">
-                {avocat.rating_mizan!.toFixed(1)}
+                {ld(avocat.rating_mizan!.toFixed(1))}
               </span>
               <Scale className="w-3 h-3 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0" />
               <span className="text-slate-500 dark:text-[#A8A8A6]">
-                ({avocat.reviews_count_mizan})
+                ({ld(String(avocat.reviews_count_mizan))})
               </span>
             </div>
           )}
@@ -146,7 +149,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
             <div className="flex items-center gap-1 text-[12px]">
               <Star className="w-3 h-3 fill-amber-400 text-amber-400 flex-shrink-0" />
               <span className="font-medium text-slate-800 dark:text-[#F5F5F4]">
-                {avocat.rating_google!.toFixed(1)}
+                {ld(avocat.rating_google!.toFixed(1))}
               </span>
               <Image
                 src="/google.png"
@@ -156,7 +159,7 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
                 className="flex-shrink-0"
               />
               <span className="text-slate-500 dark:text-[#A8A8A6]">
-                ({avocat.reviews_count_google})
+                ({ld(String(avocat.reviews_count_google))})
               </span>
             </div>
           )}
@@ -164,11 +167,11 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
             <div className="flex items-center gap-1 text-[12px]">
               <Star className="w-3 h-3 fill-teal-500 text-teal-500 flex-shrink-0" />
               <span className="font-medium text-slate-800 dark:text-[#F5F5F4]">
-                {avocat.rating_mizan!.toFixed(1)}
+                {ld(avocat.rating_mizan!.toFixed(1))}
               </span>
               <Scale className="w-3 h-3 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0" />
               <span className="text-slate-500 dark:text-[#A8A8A6]">
-                ({avocat.reviews_count_mizan})
+                ({ld(String(avocat.reviews_count_mizan))})
               </span>
             </div>
           )}

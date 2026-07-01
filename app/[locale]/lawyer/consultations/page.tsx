@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import FeedbackPopup from "@/components/FeedbackPopup";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -42,8 +43,9 @@ function LawyerConsultationsContent() {
   const { user, profile } = useAuth();
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
-  const t = useTranslations();
   const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
+  const t = useTranslations();
   const dateLocale =
     locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-FR";
 
@@ -373,14 +375,6 @@ function LawyerConsultationsContent() {
           archived_at: new Date().toISOString(),
         })
         .eq("id", selectedConsultation.id);
-
-      try {
-        await fetch("/api/consultation-completed", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ consultationId: selectedConsultation.id }),
-        });
-      } catch (_) {}
 
       await loadConsultations();
       setSelectedConsultation(null);
@@ -933,7 +927,7 @@ function LawyerConsultationsContent() {
                     <span
                       className={`text-xs px-1.5 py-0.5 rounded-full ${tabFilter === tab.key ? "bg-white dark:bg-[#1c1c1e]/20" : "bg-slate-100"}`}
                     >
-                      {tab.count}
+                      {ld(String(tab.count))}
                     </span>
                     {tab.key === "active" && unreadTotal > 0 && (
                       <span className="w-2 h-2 bg-red-500 rounded-full" />
@@ -965,7 +959,7 @@ function LawyerConsultationsContent() {
                     >
                       {(consultation.unread_count ?? 0) > 0 && (
                         <div className="absolute -top-2 -end-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg dark:shadow-none">
-                          {consultation.unread_count}
+                          {ld(String(consultation.unread_count))}
                         </div>
                       )}
                       <div className="flex items-center justify-between">
