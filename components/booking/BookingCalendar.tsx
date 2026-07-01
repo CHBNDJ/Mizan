@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import { createClient } from "@/lib/supabase/client";
 import { ChevronLeft, ChevronRight, Clock, Calendar } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
@@ -78,6 +79,7 @@ export default function BookingCalendar({
 }: Props) {
   const supabase = createClient();
   const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
   const t = useTranslations("bookingCalendar");
   const tBM = useTranslations("bookingModal");
 
@@ -229,7 +231,7 @@ export default function BookingCalendar({
 
   const activeDayDate = activeDay ? new Date(year, month, activeDay) : null;
   const activeDayLabel = activeDayDate
-    ? `${DAYS_FULL[activeDayDate.getDay()]} ${activeDay} ${MONTHS[month]}`
+    ? `${DAYS_FULL[activeDayDate.getDay()]} ${localizedDigits(String(activeDay), locale)} ${MONTHS[month]}`
     : "";
 
   const SlotButton = ({ time }: { time: string }) => {
@@ -244,7 +246,7 @@ export default function BookingCalendar({
             : "bg-white dark:bg-[#1c1c1e] text-slate-700 dark:text-[#E8E8E6] border-slate-200 dark:border-[#1c2220] hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#6fcf9f]/10"
         }`}
       >
-        {time}
+        {ld(time)}
       </button>
     );
   };
@@ -329,7 +331,7 @@ export default function BookingCalendar({
                           : "text-slate-300 dark:text-[#3a3a3d] cursor-default"
                     } ${isToday && !isSelected ? "ring-1 ring-teal-500 dark:ring-[#6fcf9f]" : ""}`}
                   >
-                    {day}
+                    {ld(String(day))}
                     {avail && !isSelected && (
                       <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-teal-500 dark:bg-[#6fcf9f]" />
                     )}
@@ -406,7 +408,7 @@ export default function BookingCalendar({
         <div className="flex items-center gap-2 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 rounded-lg px-3 py-2">
           <CheckCircle className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0" />
           <p className="text-xs font-semibold text-teal-700 dark:text-[#6fcf9f] capitalize">
-            {activeDayLabel} · {selectedTime}
+            {activeDayLabel} · {ld(selectedTime)}
           </p>
         </div>
       )}
