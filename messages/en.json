@@ -31,7 +31,7 @@
     },
     "onDemand": "On request",
     "schedule": {
-      "title": "Choose your preferred time slot",
+      "title": "Choose your time slot",
       "subtitle": "The professional will confirm availability and fees.",
       "date": "Date",
       "time": "Time",
@@ -2600,6 +2600,18 @@
       "Friday",
       "Saturday"
     ],
+    "hint": "Enable days and set your hours",
+    "duration30": "30 min",
+    "duration60": "1h",
+    "unavailable": "Unavailable",
+    "addRange": "Add a slot",
+    "clearDay": "Clear",
+    "noRange": "No consultation this day —",
+    "addFirst": "add a slot",
+    "save": "Save",
+    "saved": "Saved",
+    "noConfig": "No days configured",
+    "statsLabel": "{days} day(s) · {slots} slot(s) · {hours}h/week",
     "tabSchedule": "My hours",
     "tabBlocks": "Blocked days",
     "addSlotTitle": "Add a time slot",
@@ -2624,6 +2636,13 @@
     "blockThisDate": "Block this date",
     "upcomingBlocked": "Upcoming blocked dates",
     "allDayLabel": "All day"
+  },
+  "bookingCalendar": {
+    "selectDay": "Select a day to see available slots",
+    "morning": "Morning",
+    "afternoon": "Afternoon",
+    "noSlots": "No slots available this day",
+    "noAvailNote": "Suggest a time, {prof} will confirm directly."
   },
   "bookingModal": {
     "daysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],

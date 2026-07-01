@@ -31,7 +31,7 @@
     },
     "onDemand": "Sur demande",
     "schedule": {
-      "title": "Choisissez votre créneau de rendez-vous",
+      "title": "Choisissez votre créneau",
       "subtitle": "Le professionnel confirmera la disponibilité et ses honoraires.",
       "date": "Date",
       "time": "Heure",
@@ -2604,6 +2604,18 @@
       "Vendredi",
       "Samedi"
     ],
+    "hint": "Activez les jours et configurez les horaires",
+    "duration30": "30 min",
+    "duration60": "1h",
+    "unavailable": "Indisponible",
+    "addRange": "Ajouter une plage",
+    "clearDay": "Effacer",
+    "noRange": "Pas de consultation ce jour —",
+    "addFirst": "ajouter une plage",
+    "save": "Enregistrer",
+    "saved": "Enregistré",
+    "noConfig": "Aucun jour configuré",
+    "statsLabel": "{days} jour(s) · {slots} créneau(x) · {hours}h/sem",
     "tabSchedule": "Mes horaires",
     "tabBlocks": "Jours bloqués",
     "addSlotTitle": "Ajouter une plage horaire",
@@ -2628,6 +2640,13 @@
     "blockThisDate": "Bloquer cette date",
     "upcomingBlocked": "Dates bloquées à venir",
     "allDayLabel": "Journée entière"
+  },
+  "bookingCalendar": {
+    "selectDay": "Sélectionnez un jour pour voir les créneaux disponibles",
+    "morning": "Matin",
+    "afternoon": "Après-midi",
+    "noSlots": "Aucun créneau disponible ce jour",
+    "noAvailNote": "Proposez un créneau, {prof} confirmera directement."
   },
   "bookingModal": {
     "daysShort": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],

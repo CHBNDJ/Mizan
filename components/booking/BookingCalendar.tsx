@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { ChevronLeft, ChevronRight, Clock, CheckCircle } from "lucide-react";
-import { useLocale } from "next-intl";
+import { ChevronLeft, ChevronRight, Clock, Calendar } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 interface AvailSlot {
   day_of_week: number;
@@ -19,12 +19,28 @@ interface Props {
   selectedTime?: string;
 }
 
-const PROF_LABELS: Record<string, string> = {
-  avocat: "l'avocat",
-  notaire: "le notaire",
-  huissier: "l'huissier",
-  comptable: "le comptable",
-  "expert-comptable": "l'expert-comptable",
+const PROF_LABELS: Record<string, Record<string, string>> = {
+  fr: {
+    avocat: "l'avocat",
+    notaire: "le notaire",
+    huissier: "l'huissier",
+    comptable: "le comptable",
+    "expert-comptable": "l'expert-comptable",
+  },
+  en: {
+    avocat: "the lawyer",
+    notaire: "the notary",
+    huissier: "the bailiff",
+    comptable: "the accountant",
+    "expert-comptable": "the chartered accountant",
+  },
+  ar: {
+    avocat: "المحامي",
+    notaire: "الموثّق",
+    huissier: "المحضر القضائي",
+    comptable: "المحاسب",
+    "expert-comptable": "خبير المحاسبة",
+  },
 };
 
 const DEFAULT_DAYS = [0, 1, 2, 3, 4, 5, 6];
@@ -62,6 +78,8 @@ export default function BookingCalendar({
 }: Props) {
   const supabase = createClient();
   const locale = useLocale();
+  const t = useTranslations("bookingCalendar");
+  const tBM = useTranslations("bookingModal");
 
   const [availability, setAvailability] = useState<AvailSlot[]>([]);
   const [hasCustomAvail, setHasCustomAvail] = useState(false);
@@ -69,7 +87,6 @@ export default function BookingCalendar({
   const [activeDay, setActiveDay] = useState<number | null>(null);
   const [morningSlots, setMorningSlots] = useState<string[]>([]);
   const [afternoonSlots, setAfternoonSlots] = useState<string[]>([]);
-  const [bookedTimes, setBookedTimes] = useState<string[]>([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -123,11 +140,9 @@ export default function BookingCalendar({
     const dow = date.getDay();
     const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
     const daySlots = availability.filter((s) => s.day_of_week === dow);
-
     if (daySlots.length === 0) {
       setMorningSlots([]);
       setAfternoonSlots([]);
-      setBookedTimes([]);
       setLoadingSlots(false);
       return;
     }
@@ -159,14 +174,11 @@ export default function BookingCalendar({
 
     const now = new Date();
     const dur = daySlots[0].duration_min || DEFAULT_DURATION;
-    const bookedSet = new Set<string>();
-
     const filtered = [...new Set(allSlots)].sort().filter((slot) => {
       const slotMin = timeToMin(slot);
       const slotDate = new Date(year, month, day);
       slotDate.setHours(Math.floor(slotMin / 60), slotMin % 60);
       if (slotDate <= now) return false;
-
       const isBlocked = blocks?.some((b) => {
         if (!b.start_time) return true;
         return (
@@ -175,20 +187,14 @@ export default function BookingCalendar({
         );
       });
       if (isBlocked) return false;
-
       const isBooked = booked?.some(
         (b) =>
           slotMin < timeToMin(b.end_time.slice(0, 5)) &&
           slotMin + dur > timeToMin(b.start_time.slice(0, 5))
       );
-      if (isBooked) {
-        bookedSet.add(slot);
-        return false;
-      }
-      return true;
+      return !isBooked;
     });
 
-    setBookedTimes([...bookedSet]);
     setMorningSlots(filtered.filter((t) => timeToMin(t) < 12 * 60));
     setAfternoonSlots(filtered.filter((t) => timeToMin(t) >= 12 * 60));
     setLoadingSlots(false);
@@ -208,53 +214,8 @@ export default function BookingCalendar({
     ? `${year}-${String(month + 1).padStart(2, "0")}-${String(activeDay).padStart(2, "0")}`
     : null;
 
-  const dateLocale =
-    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-FR";
-  const MONTHS =
-    locale === "ar"
-      ? [
-          "يناير",
-          "فبراير",
-          "مارس",
-          "أبريل",
-          "مايو",
-          "يونيو",
-          "يوليو",
-          "أغسطس",
-          "سبتمبر",
-          "أكتوبر",
-          "نوفمبر",
-          "ديسمبر",
-        ]
-      : locale === "en"
-        ? [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ]
-        : [
-            "Janvier",
-            "Février",
-            "Mars",
-            "Avril",
-            "Mai",
-            "Juin",
-            "Juillet",
-            "Août",
-            "Septembre",
-            "Octobre",
-            "Novembre",
-            "Décembre",
-          ];
+  const MONTHS = tBM.raw("months") as string[];
+  const DAYS_FULL = tBM.raw("daysFull") as string[];
 
   const WEEKDAYS =
     locale === "ar"
@@ -263,38 +224,9 @@ export default function BookingCalendar({
         ? ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
         : ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"];
 
-  const DAYS_FULL =
-    locale === "ar"
-      ? [
-          "الأحد",
-          "الاثنين",
-          "الثلاثاء",
-          "الأربعاء",
-          "الخميس",
-          "الجمعة",
-          "السبت",
-        ]
-      : locale === "en"
-        ? [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-          ]
-        : [
-            "Dimanche",
-            "Lundi",
-            "Mardi",
-            "Mercredi",
-            "Jeudi",
-            "Vendredi",
-            "Samedi",
-          ];
+  const profLang = PROF_LABELS[locale] || PROF_LABELS["fr"];
+  const profLabel = profLang[profession || "avocat"] || profLang["avocat"];
 
-  const profLabel = PROF_LABELS[profession || "avocat"] || "le professionnel";
   const activeDayDate = activeDay ? new Date(year, month, activeDay) : null;
   const activeDayLabel = activeDayDate
     ? `${DAYS_FULL[activeDayDate.getDay()]} ${activeDay} ${MONTHS[month]}`
@@ -330,12 +262,13 @@ export default function BookingCalendar({
         <div className="flex items-start gap-2 bg-amber-50 dark:bg-[#3D2E1F] border border-amber-200 dark:border-[#5A4A2A] rounded-lg px-3 py-2">
           <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-[#E0B568] mt-0.5 flex-shrink-0" />
           <p className="text-xs text-amber-700 dark:text-[#E0B568]">
-            Proposez un créneau, {profLabel} confirmera directement.
+            {t("noAvailNote", { prof: profLabel })}
           </p>
         </div>
       )}
 
       <div className="grid grid-cols-2 gap-2">
+        {/* Calendrier */}
         <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl overflow-hidden">
           <div className="flex items-center justify-between px-3 py-2.5 border-b border-slate-100 dark:border-[#1c2220]">
             <button
@@ -383,7 +316,6 @@ export default function BookingCalendar({
                 const isToday =
                   new Date(year, month, day).toDateString() ===
                   new Date().toDateString();
-
                 return (
                   <button
                     key={day}
@@ -408,55 +340,56 @@ export default function BookingCalendar({
           </div>
         </div>
 
+        {/* Créneaux */}
         <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl overflow-hidden">
           {!activeDay ? (
-            <div className="flex flex-col items-center justify-center h-full py-10 px-4">
-              <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#2a2a2d] flex items-center justify-center mb-3">
-                <Clock className="w-5 h-5 text-slate-400 dark:text-[#7A7A78]" />
+            <div className="flex flex-col items-center justify-center h-full py-8 px-3">
+              <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-[#2a2a2d] flex items-center justify-center mb-2">
+                <Clock className="w-4 h-4 text-slate-400 dark:text-[#7A7A78]" />
               </div>
-              <p className="text-xs text-slate-400 dark:text-[#7A7A78] text-center">
-                Sélectionnez un jour pour voir les créneaux disponibles
+              <p className="text-[11px] text-slate-400 dark:text-[#7A7A78] text-center leading-relaxed">
+                {t("selectDay")}
               </p>
             </div>
           ) : (
             <>
-              <div className="px-3 py-2.5 border-b border-slate-100 dark:border-[#1c2220]">
-                <p className="text-xs font-semibold text-slate-800 dark:text-[#F5F5F4] capitalize">
+              <div className="px-3 py-2.5 border-b border-slate-100 dark:border-[#1c2220] flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0" />
+                <p className="text-xs font-semibold text-slate-800 dark:text-[#F5F5F4] capitalize truncate">
                   {activeDayLabel}
                 </p>
               </div>
-
-              <div className="p-3 space-y-4 max-h-64 overflow-y-auto">
+              <div className="p-2.5 space-y-3 max-h-56 overflow-y-auto">
                 {loadingSlots ? (
-                  <div className="flex items-center justify-center py-8">
+                  <div className="flex items-center justify-center py-6">
                     <div className="animate-spin rounded-full h-5 w-5 border-2 border-teal-600 dark:border-[#6fcf9f] border-t-transparent" />
                   </div>
                 ) : morningSlots.length === 0 && afternoonSlots.length === 0 ? (
-                  <p className="text-xs text-slate-400 dark:text-[#7A7A78] text-center py-6">
-                    Aucun créneau disponible
+                  <p className="text-xs text-slate-400 dark:text-[#7A7A78] text-center py-4">
+                    {t("noSlots")}
                   </p>
                 ) : (
                   <>
                     {morningSlots.length > 0 && (
                       <div>
-                        <p className="text-[10px] font-semibold text-slate-400 dark:text-[#7A7A78] uppercase tracking-wide mb-2">
-                          Matin
+                        <p className="text-[10px] font-semibold text-slate-400 dark:text-[#7A7A78] uppercase tracking-wide mb-1.5">
+                          {t("morning")}
                         </p>
-                        <div className="grid grid-cols-3 gap-1.5">
-                          {morningSlots.map((t) => (
-                            <SlotButton key={t} time={t} />
+                        <div className="grid grid-cols-2 gap-1.5">
+                          {morningSlots.map((time) => (
+                            <SlotButton key={time} time={time} />
                           ))}
                         </div>
                       </div>
                     )}
                     {afternoonSlots.length > 0 && (
                       <div>
-                        <p className="text-[10px] font-semibold text-slate-400 dark:text-[#7A7A78] uppercase tracking-wide mb-2">
-                          Après-midi
+                        <p className="text-[10px] font-semibold text-slate-400 dark:text-[#7A7A78] uppercase tracking-wide mb-1.5">
+                          {t("afternoon")}
                         </p>
-                        <div className="grid grid-cols-3 gap-1.5">
-                          {afternoonSlots.map((t) => (
-                            <SlotButton key={t} time={t} />
+                        <div className="grid grid-cols-2 gap-1.5">
+                          {afternoonSlots.map((time) => (
+                            <SlotButton key={time} time={time} />
                           ))}
                         </div>
                       </div>
@@ -470,13 +403,31 @@ export default function BookingCalendar({
       </div>
 
       {selectedDate && selectedTime && selectedDate === selectedDateStr && (
-        <div className="flex items-center gap-2 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 rounded-lg px-3 py-2.5">
+        <div className="flex items-center gap-2 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 rounded-lg px-3 py-2">
           <CheckCircle className="w-3.5 h-3.5 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0" />
-          <p className="text-xs font-semibold text-teal-700 dark:text-[#6fcf9f]">
-            {activeDayLabel} à {selectedTime}
+          <p className="text-xs font-semibold text-teal-700 dark:text-[#6fcf9f] capitalize">
+            {activeDayLabel} · {selectedTime}
           </p>
         </div>
       )}
     </div>
+  );
+}
+
+function CheckCircle({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
   );
 }
