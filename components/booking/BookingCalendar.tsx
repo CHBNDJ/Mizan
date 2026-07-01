@@ -269,7 +269,7 @@ export default function BookingCalendar({
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-2">
         {/* Calendrier */}
         <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl overflow-hidden">
           <div className="flex items-center justify-between px-3 py-2.5 border-b border-slate-100 dark:border-[#1c2220]">
@@ -377,7 +377,7 @@ export default function BookingCalendar({
                         <p className="text-[10px] font-semibold text-slate-400 dark:text-[#7A7A78] uppercase tracking-wide mb-1.5">
                           {t("morning")}
                         </p>
-                        <div className="grid grid-cols-2 gap-1.5">
+                        <div className="grid grid-cols-3 sm:grid-cols-2 gap-1.5">
                           {morningSlots.map((time) => (
                             <SlotButton key={time} time={time} />
                           ))}
@@ -389,7 +389,7 @@ export default function BookingCalendar({
                         <p className="text-[10px] font-semibold text-slate-400 dark:text-[#7A7A78] uppercase tracking-wide mb-1.5">
                           {t("afternoon")}
                         </p>
-                        <div className="grid grid-cols-2 gap-1.5">
+                        <div className="grid grid-cols-3 sm:grid-cols-2 gap-1.5">
                           {afternoonSlots.map((time) => (
                             <SlotButton key={time} time={time} />
                           ))}
