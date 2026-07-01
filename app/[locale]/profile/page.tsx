@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import {
   User,
   Mail,
@@ -65,6 +66,8 @@ function ProfilePageContent() {
   const supabase = createClient();
   const { user, profile, lawyerProfile, loading, refreshProfile } = useAuth();
   const t = useTranslations();
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -924,7 +927,7 @@ function ProfilePageContent() {
                         ) : (
                           <div className="p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                             <span className="text-slate-800 dark:text-[#F5F5F4]">
-                              {lawyerFormData.experienceYears || 0}{" "}
+                              {ld(String(lawyerFormData.experienceYears || 0))}{" "}
                               {t("myProfile.yearsShort")}
                             </span>
                           </div>

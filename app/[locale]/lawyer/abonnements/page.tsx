@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Check } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
+import { localizedDigits } from "@/lib/arabicNumerals";
 
 const PLANS_RAW = [
   {
@@ -63,9 +64,10 @@ export default function AbonnementsPage() {
   const locale = useLocale();
   const numLocale =
     locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-DZ";
+  const ld = (s: string) => localizedDigits(s, locale);
 
   const fmt = (n: number) =>
-    n.toLocaleString(numLocale) +
+    ld(n.toLocaleString(numLocale)) +
     " " +
     t("subscriptionPlans.perMonth").split("/")[0];
 
@@ -81,7 +83,7 @@ export default function AbonnementsPage() {
     savingsLabel:
       p.savings != null
         ? t("subscriptionPlans.savings", {
-            amount: p.savings.toLocaleString(numLocale),
+            amount: ld(p.savings.toLocaleString(numLocale)),
           })
         : null,
     features: p.features.map((f) => ({
@@ -177,7 +179,7 @@ export default function AbonnementsPage() {
               )}
               <div className="mb-1">
                 <span className="text-5xl font-bold tracking-tight text-white leading-none">
-                  {p.monthly.toLocaleString(numLocale)}
+                  {ld(p.monthly.toLocaleString(numLocale))}
                 </span>
                 <span className="text-sm ml-2 text-white/50">
                   {t("subscriptionPlans.perMonth")}
@@ -255,7 +257,7 @@ export default function AbonnementsPage() {
                   <span
                     className={`card-price text-5xl font-bold tracking-tight leading-none ${on ? "text-white" : "text-slate-900 dark:text-[#F5F5F4]"}`}
                   >
-                    {p.monthly.toLocaleString(numLocale)}
+                    {ld(p.monthly.toLocaleString(numLocale))}
                   </span>
                   <span
                     className={`card-unit text-sm ml-2 ${on ? "text-white/45" : "text-slate-400 dark:text-[#7A7A78]"}`}

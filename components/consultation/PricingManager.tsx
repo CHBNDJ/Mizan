@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { MessageSquare, Phone, Video, Save, CheckCircle } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -19,6 +20,8 @@ interface Props {
 export default function PricingManager({ profession }: Props) {
   const supabase = createClient();
   const { user } = useAuth();
+  const locale = useLocale();
+  const ld = (s: string) => localizedDigits(s, locale);
   const t = useTranslations("pricingManager");
   const [prices, setPrices] = useState<Record<string, string>>({});
   const [ids, setIds] = useState<Record<string, string>>({});
@@ -131,7 +134,7 @@ export default function PricingManager({ profession }: Props) {
                   </p>
                   {c.duration && (
                     <span className="text-[10px] text-slate-500 dark:text-[#A8A8A6] bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] px-2 py-0.5 rounded-full">
-                      {c.duration}
+                      {ld(c.duration)}
                     </span>
                   )}
                 </div>

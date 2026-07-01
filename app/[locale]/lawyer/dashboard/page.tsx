@@ -514,7 +514,7 @@ export default function LawyerDashboardPage() {
                 <Users className="w-4 h-4 text-teal-400 dark:text-[#6fcf9f]" />
                 {stats.pending > 0 && (
                   <span className="bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">
-                    {stats.pending}
+                    {ld(String(stats.pending))}
                   </span>
                 )}
               </div>
@@ -525,7 +525,7 @@ export default function LawyerDashboardPage() {
                 {loadingStats ? (
                   <span className="text-teal-200 dark:text-[#6fcf9f]">—</span>
                 ) : (
-                  stats.total
+                  ld(String(stats.total))
                 )}
               </p>
             </div>
@@ -540,12 +540,13 @@ export default function LawyerDashboardPage() {
                 {loadingStats ? (
                   <span className="text-teal-200 dark:text-[#6fcf9f]">—</span>
                 ) : (
-                  stats.answered
+                  ld(String(stats.answered))
                 )}
               </p>
               {stats.total > 0 && (
                 <p className="text-[11px] text-teal-400 dark:text-[#6fcf9f] mt-1.5">
-                  {Math.round((stats.answered / stats.total) * 100)}%
+                  {ld(String(Math.round((stats.answered / stats.total) * 100)))}
+                  %
                 </p>
               )}
             </div>
@@ -560,7 +561,7 @@ export default function LawyerDashboardPage() {
                 {loadingStats ? (
                   <span className="text-teal-200 dark:text-[#6fcf9f]">—</span>
                 ) : (
-                  stats.views
+                  ld(String(stats.views))
                 )}
               </p>
             </div>
