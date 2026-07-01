@@ -136,35 +136,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
     );
 
-    // Pages search par wilaya — URLs propres pour le SEO
-    const { data: usersData } = await supabase
-      .from("users")
-      .select("address")
-      .eq("user_type", "lawyer");
-
-    const wilayasSet = new Set<string>();
-    usersData?.forEach((u) => {
-      if (u.address?.wilaya) wilayasSet.add(u.address.wilaya.toLowerCase());
-    });
-
-    const searchWilayaPages: MetadataRoute.Sitemap = Array.from(
-      wilayasSet
-    ).flatMap((wilaya) =>
-      PROFESSIONS.map((prof) => ({
-        url: `${baseUrl}/search?profession=${prof}&wilaya=${encodeURIComponent(wilaya)}`,
-        lastModified: new Date(),
-        changeFrequency: "weekly" as const,
-        priority: 0.75,
-      }))
-    );
-
     return [
       ...staticPages,
       ...professionPages,
       ...specialitePages,
       ...blogPages,
       ...lawyerPages,
-      ...searchWilayaPages,
     ];
   } catch {
     return [
