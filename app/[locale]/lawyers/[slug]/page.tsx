@@ -724,6 +724,7 @@ export default function ProfilePage({
             </div>
           )}
 
+          {/* Avis */}
           <div className="reviews-section opacity-0 invisible mt-4">
             <ReviewSection
               lawyerId={avocat.id}
