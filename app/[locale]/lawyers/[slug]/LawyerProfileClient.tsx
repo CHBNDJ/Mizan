@@ -257,6 +257,14 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
   const ld = (s: string) => localizedDigits(s, locale);
   const t = useTranslations("lawyerProfile");
   const tProf = useTranslations("professions");
+  const tSpec = useTranslations("specialites");
+  const translateSpec = (s: string) => {
+    try {
+      return tSpec(s);
+    } catch {
+      return s;
+    }
+  };
   const searchParams = useSearchParams();
   const { user, profile } = useAuth();
   const [avocat, setAvocat] = useState<AvocatData | null>(null);
@@ -647,7 +655,7 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 dark:bg-[#141415] text-teal-700 dark:text-[#6fcf9f] rounded-full text-xs font-medium border border-teal-100 dark:border-[#1c2220] hover:bg-teal-100 dark:hover:bg-[#1c2220] transition-all"
                     >
                       <span className="w-1.5 h-1.5 bg-teal-600 dark:bg-[#6fcf9f] rounded-full" />
-                      {spec}
+                      {translateSpec(spec)}
                     </span>
                   ))}
                 </div>
