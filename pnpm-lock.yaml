@@ -41,9 +41,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      dotenv:
-        specifier: ^17.2.3
-        version: 17.2.3
       gsap:
         specifier: ^3.13.0
         version: 3.13.0
@@ -111,6 +108,9 @@ importers:
       '@types/web-push':
         specifier: ^3.6.4
         version: 3.6.4
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
       tailwindcss:
         specifier: ^4
         version: 4.1.14
