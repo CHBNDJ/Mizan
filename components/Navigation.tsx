@@ -28,13 +28,22 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 function MizanLogo({ size = 40 }: { size?: number }) {
   return (
-    <img
-      src="/logo_transparent.png"
-      width={size}
-      height={size}
-      alt="Mizan"
-      className="dark:brightness-0 dark:invert dark:sepia dark:saturate-[3] dark:hue-rotate-[120deg]"
-    />
+    <>
+      <img
+        src="/favicon-light.svg"
+        width={size}
+        height={size}
+        alt="Mizan"
+        className="block dark:hidden"
+      />
+      <img
+        src="/favicon-dark.svg"
+        width={size}
+        height={size}
+        alt="Mizan"
+        className="hidden dark:block"
+      />
+    </>
   );
 }
 
