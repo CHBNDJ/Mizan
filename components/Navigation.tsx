@@ -27,76 +27,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 function MizanLogo({ size = 20 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 200 200"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-label="Mizan"
-    >
-      <path
-        d="M40 50 L40 150 L55 150 L55 80 L75 150 L95 80 L115 150 L135 80 L155 150 L170 150 L170 50 L155 50 L135 120 L115 50 L95 120 L75 50 L55 120 L40 50"
-        className="fill-white dark:fill-[#6fcf9f]"
-      />
-      <line
-        x1="55"
-        y1="95"
-        x2="145"
-        y2="95"
-        className="stroke-white dark:stroke-[#0a0e0d]"
-        strokeWidth="12"
-        strokeLinecap="round"
-      />
-      <circle
-        cx="65"
-        cy="115"
-        r="8"
-        fill="none"
-        className="stroke-white dark:stroke-[#0a0e0d]"
-        strokeWidth="6"
-      />
-      <line
-        x1="65"
-        y1="95"
-        x2="65"
-        y2="115"
-        className="stroke-white dark:stroke-[#0a0e0d]"
-        strokeWidth="6"
-      />
-      <circle
-        cx="135"
-        cy="115"
-        r="8"
-        fill="none"
-        className="stroke-white dark:stroke-[#0a0e0d]"
-        strokeWidth="6"
-      />
-      <line
-        x1="135"
-        y1="95"
-        x2="135"
-        y2="115"
-        className="stroke-white dark:stroke-[#0a0e0d]"
-        strokeWidth="6"
-      />
-      <rect
-        x="97"
-        y="65"
-        width="6"
-        height="35"
-        rx="3"
-        className="fill-white dark:fill-[#0a0e0d]"
-      />
-      <circle
-        cx="100"
-        cy="62"
-        r="8"
-        className="fill-white dark:fill-[#0a0e0d]"
-      />
-    </svg>
-  );
+  return <img src="/favicon.svg" width={size} height={size} alt="Mizan" />;
 }
 
 type NavLink = {
