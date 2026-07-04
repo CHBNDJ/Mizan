@@ -26,7 +26,7 @@ import {
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-function MizanLogo({ size = 20 }: { size?: number }) {
+function MizanLogo({ size = 36 }: { size?: number }) {
   return <img src="/favicon.svg" width={size} height={size} alt="Mizan" />;
 }
 
@@ -217,9 +217,9 @@ export function Navigation() {
         <aside className="hidden lg:flex fixed top-0 start-0 h-screen w-20 flex-col items-center py-6 z-[999] border-e border-slate-200 dark:border-[#1c2220] bg-white/80 dark:bg-[#1c1c1e]/95 backdrop-blur-xl">
           <Link
             href="/"
-            className="w-11 h-11 rounded-xl bg-teal-600 dark:bg-[#1c1c1e] dark:border dark:border-[#6fcf9f]/40 flex items-center justify-center mb-8 flex-shrink-0 hover:rotate-6 transition-transform"
+            className="mb-8 flex-shrink-0 hover:rotate-6 transition-transform flex items-center justify-center"
           >
-            <MizanLogo size={24} />
+            <MizanLogo size={40} />
           </Link>
           <nav className="flex flex-col items-center gap-2 flex-1">
             {sidebarItems.map((item) => {
@@ -266,11 +266,8 @@ export function Navigation() {
         </div>
 
         <div className="lg:hidden fixed top-0 left-0 right-0 h-20 z-[999] flex items-center justify-between px-5 backdrop-blur-md">
-          <Link
-            href="/"
-            className="w-8 h-8 rounded-lg bg-teal-600 dark:bg-[#1c1c1e] dark:border dark:border-[#6fcf9f]/40 flex items-center justify-center"
-          >
-            <MizanLogo size={18} />
+          <Link href="/" className="flex items-center justify-center">
+            <MizanLogo size={32} />
           </Link>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
@@ -337,10 +334,11 @@ export function Navigation() {
       <nav className="fixed top-0 left-0 right-0 z-[999] h-20 flex items-center backdrop-blur-md">
         <div className="w-full max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center group flex-shrink-0">
-              <div className="w-9 h-9 rounded-xl bg-teal-600 dark:bg-[#1c1c1e] dark:border dark:border-[#6fcf9f]/40 flex items-center justify-center transition-transform group-hover:rotate-12">
-                <MizanLogo size={20} />
-              </div>
+            <Link
+              href="/"
+              className="flex items-center group flex-shrink-0 hover:opacity-80 transition-opacity"
+            >
+              <MizanLogo size={40} />
             </Link>
             <div className="hidden lg:flex items-center gap-1">
               {allNavLinks.map((link) => {
