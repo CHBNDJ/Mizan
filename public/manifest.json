@@ -1,39 +1,49 @@
 {
-  "name": "Mizan - Annuaire des Avocats d'Algérie",
-  "short_name": "Mizan",
-  "description": "Trouvez et contactez les meilleurs avocats en Algérie. Consultations juridiques en ligne.",
+  "name": "MIZAN — L'annuaire juridique d'Algérie",
+  "short_name": "MIZAN",
+  "description": "Trouvez votre avocat, notaire, huissier, comptable ou expert-comptable vérifié en Algérie. Consultations en ligne depuis l'Algérie et la diaspora.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#14b8a6",
+  "theme_color": "#085041",
   "orientation": "portrait",
+  "lang": "fr",
+  "categories": ["legal", "business", "productivity"],
   "icons": [
+    { "src": "/favicon-16x16.png", "sizes": "16x16", "type": "image/png" },
+    { "src": "/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
     {
-      "src": "/favicon-16x16.png",
-      "sizes": "16x16",
-      "type": "image/png"
-    },
-    {
-      "src": "/favicon-32x32.png",
-      "sizes": "32x32",
-      "type": "image/png"
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/favicon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     },
     {
       "src": "/favicon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 }

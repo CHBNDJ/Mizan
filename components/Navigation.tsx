@@ -2,7 +2,6 @@
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import {
-  Scale,
   Menu,
   X,
   ChevronDown,
@@ -27,6 +26,79 @@ import {
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
+function MizanLogo({ size = 20 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 200 200"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Mizan"
+    >
+      <path
+        d="M40 50 L40 150 L55 150 L55 80 L75 150 L95 80 L115 150 L135 80 L155 150 L170 150 L170 50 L155 50 L135 120 L115 50 L95 120 L75 50 L55 120 L40 50"
+        className="fill-white dark:fill-[#6fcf9f]"
+      />
+      <line
+        x1="55"
+        y1="95"
+        x2="145"
+        y2="95"
+        className="stroke-white dark:stroke-[#0a0e0d]"
+        strokeWidth="12"
+        strokeLinecap="round"
+      />
+      <circle
+        cx="65"
+        cy="115"
+        r="8"
+        fill="none"
+        className="stroke-white dark:stroke-[#0a0e0d]"
+        strokeWidth="6"
+      />
+      <line
+        x1="65"
+        y1="95"
+        x2="65"
+        y2="115"
+        className="stroke-white dark:stroke-[#0a0e0d]"
+        strokeWidth="6"
+      />
+      <circle
+        cx="135"
+        cy="115"
+        r="8"
+        fill="none"
+        className="stroke-white dark:stroke-[#0a0e0d]"
+        strokeWidth="6"
+      />
+      <line
+        x1="135"
+        y1="95"
+        x2="135"
+        y2="115"
+        className="stroke-white dark:stroke-[#0a0e0d]"
+        strokeWidth="6"
+      />
+      <rect
+        x="97"
+        y="65"
+        width="6"
+        height="35"
+        rx="3"
+        className="fill-white dark:fill-[#0a0e0d]"
+      />
+      <circle
+        cx="100"
+        cy="62"
+        r="8"
+        className="fill-white dark:fill-[#0a0e0d]"
+      />
+    </svg>
+  );
+}
+
 type NavLink = {
   href: string;
   label: string;
@@ -47,7 +119,6 @@ export function Navigation() {
   const supabase = createClient();
   const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("login");
   const [selectedProfile, setSelectedProfile] = useState<
     "client" | "professional"
   >("client");
@@ -106,7 +177,7 @@ export function Navigation() {
               ) {
                 new Notification("Nouveau message - Mizan", {
                   body: "Vous avez reçu un nouveau message",
-                  icon: "/logo.png",
+                  icon: "/favicon-192.png",
                   tag: "mizan-message",
                 });
               }
@@ -152,13 +223,6 @@ export function Navigation() {
     profile?.first_name && profile?.last_name
       ? `${cap(profile.first_name)} ${cap(profile.last_name)}`
       : user?.email || t("nav.defaultUser");
-
-  const getProfessionLabel = () => {
-    if (profile?.user_type === "client") return t("nav.client");
-    const prof = (profile as any)?.profession;
-    const key = PROF_KEY[prof];
-    return key ? t(`professions.${key}.label`) : t("nav.professional");
-  };
 
   const allNavLinks: NavLink[] = [
     { href: "/howitworks", label: t("nav.howItWorks") },
@@ -219,15 +283,13 @@ export function Navigation() {
 
     return (
       <>
-        {/* Sidebar desktop */}
         <aside className="hidden lg:flex fixed top-0 start-0 h-screen w-20 flex-col items-center py-6 z-[999] border-e border-slate-200 dark:border-[#1c2220] bg-white/80 dark:bg-[#1c1c1e]/95 backdrop-blur-xl">
           <Link
             href="/"
             className="w-11 h-11 rounded-xl bg-teal-600 dark:bg-[#1c1c1e] dark:border dark:border-[#6fcf9f]/40 flex items-center justify-center mb-8 flex-shrink-0 hover:rotate-6 transition-transform"
           >
-            <Scale className="h-6 w-6 text-white dark:text-[#6fcf9f]" />
+            <MizanLogo size={24} />
           </Link>
-
           <nav className="flex flex-col items-center gap-2 flex-1">
             {sidebarItems.map((item) => {
               const Icon = item.icon;
@@ -256,7 +318,6 @@ export function Navigation() {
               );
             })}
           </nav>
-
           <div className="flex flex-col items-center gap-2 flex-shrink-0">
             <ThemeToggle />
             <button
@@ -269,18 +330,16 @@ export function Navigation() {
           </div>
         </aside>
 
-        {/* Langue flottante en haut à droite, hors sidebar */}
         <div className="hidden lg:block fixed top-4 end-4 z-[999]">
           <LanguageSwitcher />
         </div>
 
-        {/* Mini barre mobile : logo + mode sombre */}
         <div className="lg:hidden fixed top-0 left-0 right-0 h-20 z-[999] flex items-center justify-between px-5 backdrop-blur-md">
           <Link
             href="/"
             className="w-8 h-8 rounded-lg bg-teal-600 dark:bg-[#1c1c1e] dark:border dark:border-[#6fcf9f]/40 flex items-center justify-center"
           >
-            <Scale className="h-4 w-4 text-white dark:text-[#6fcf9f]" />
+            <MizanLogo size={18} />
           </Link>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
@@ -295,7 +354,6 @@ export function Navigation() {
           </div>
         </div>
 
-        {/* Barre d'onglets mobile */}
         <nav className="lg:hidden fixed bottom-0 start-0 end-0 z-[999] border-t border-slate-200 dark:border-[#1c2220] bg-white/90 dark:bg-[#1c1c1e]/95 backdrop-blur-xl">
           <div className="flex items-center justify-around py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
             {sidebarItems
@@ -350,10 +408,9 @@ export function Navigation() {
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center group flex-shrink-0">
               <div className="w-9 h-9 rounded-xl bg-teal-600 dark:bg-[#1c1c1e] dark:border dark:border-[#6fcf9f]/40 flex items-center justify-center transition-transform group-hover:rotate-12">
-                <Scale className="h-5 w-5 text-white dark:text-[#6fcf9f]" />
+                <MizanLogo size={20} />
               </div>
             </Link>
-
             <div className="hidden lg:flex items-center gap-1">
               {allNavLinks.map((link) => {
                 const active = pathname === link.href;
@@ -488,7 +545,6 @@ export function Navigation() {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="group flex items-center gap-1.5 px-3 py-2 rounded-md bg-teal-600 dark:bg-[#0F6E56] text-white hover:shadow-md hover:shadow-teal-600/20 dark:hover:shadow-[#0F6E56]/30 hover:-translate-y-0.5 transition-all cursor-pointer text-sm font-medium">
@@ -566,7 +622,6 @@ export function Navigation() {
             <X className="h-5 w-5" />
           </button>
         </div>
-
         <div className="px-2 space-y-4 pb-8">
           {allNavLinks.map((link) => (
             <Link
@@ -590,7 +645,6 @@ export function Navigation() {
               </span>
             </Link>
           ))}
-
           <div className="px-4 space-y-4 border-t border-slate-200/70 pt-4">
             <div className="m-4">
               <p className="text-xs font-semibold text-slate-900 dark:text-[#F5F5F4] uppercase tracking-wide mb-2">
@@ -654,7 +708,6 @@ export function Navigation() {
                   </span>
                 </button>
               </div>
-
               <div className="flex gap-2">
                 <Link
                   href={

@@ -18,7 +18,6 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 
 const merriweather = Merriweather({ subsets: ["latin"], display: "swap" });
-
 const RTL_LOCALES = ["ar"];
 
 export function generateStaticParams() {
@@ -26,7 +25,10 @@ export function generateStaticParams() {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#14b8a6",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#085041" },
+    { media: "(prefers-color-scheme: dark)", color: "#6fcf9f" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -96,11 +98,7 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-
-  if (!routing.locales.includes(locale as any)) {
-    notFound();
-  }
-
+  if (!routing.locales.includes(locale as any)) notFound();
   const messages = await getMessages();
   const dir = RTL_LOCALES.includes(locale) ? "rtl" : "ltr";
 
@@ -118,16 +116,7 @@ export default async function RootLayout({
         <OrganizationJsonLd />
         <script
           dangerouslySetInnerHTML={{
-            __html: `
-              (function () {
-                try {
-                  var theme = localStorage.getItem("mizan-theme");
-                  if (theme === "dark") {
-                    document.documentElement.classList.add("dark");
-                  }
-                } catch (e) {}
-              })();
-            `,
+            __html: `(function(){try{var t=localStorage.getItem("mizan-theme");if(t==="dark")document.documentElement.classList.add("dark")}catch(e){}})();`,
           }}
         />
       </head>

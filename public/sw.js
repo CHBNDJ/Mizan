@@ -4,8 +4,8 @@ self.addEventListener("push", function (event) {
   event.waitUntil(
     self.registration.showNotification(data.title, {
       body: data.body,
-      icon: "/icon-192.png",
-      badge: "/icon-72.png",
+      icon: "/favicon-192.png",
+      badge: "/favicon-32x32.png",
       data: { url: data.url || "/lawyer/dashboard" },
       vibrate: [200, 100, 200],
     })
