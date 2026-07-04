@@ -26,7 +26,7 @@ import {
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-function MizanLogo({ size = 40 }: { size?: number }) {
+function MizanLogo({ size = 46 }: { size?: number }) {
   return (
     <>
       <img
