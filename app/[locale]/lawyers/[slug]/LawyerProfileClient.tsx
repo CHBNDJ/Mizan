@@ -261,7 +261,6 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
   const ld = (s: string) => localizedDigits(s, locale);
   const t = useTranslations("lawyerProfile");
   const tProf = useTranslations("professions");
-  const tc = useTranslations("consultationPanel");
   const messages = useMessages();
   const specialitesLookup = useMemo(() => {
     const raw = (messages as any)?.specialites || {};
@@ -272,15 +271,6 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
     return map;
   }, [messages]);
   const translateSpec = (s: string) => specialitesLookup[s.toLowerCase()] || s;
-
-  // Le canal (téléphone/message/vidéo) n'est pas stocké proprement en base —
-  // il est déduit du texte du `subject`, qui contient le libellé traduit
-  // (ex: "Téléphonique" en fr, "هاتفية" en ar, "Phone" en en). On compare donc
-  // au libellé de la langue ACTIVE plutôt qu'à des mots-clés figés en français,
-  // pour que ça fonctionne dans les 3 langues.
-  const phoneLabel = tc("channels.phone.label").toLowerCase();
-  const detectPhoneChannel = (subject: string) =>
-    (subject || "").toLowerCase().includes(phoneLabel);
 
   const searchParams = useSearchParams();
   const { user, profile } = useAuth();
@@ -339,17 +329,15 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
     }
     supabase
       .from("consultations")
-      .select("subject, status")
+      .select("channel, status")
       .eq("client_id", user.id)
       .eq("lawyer_id", avocat.id)
+      .eq("channel", "phone")
       .in("status", ["accepted", "in_progress"])
       .then(({ data }) => {
-        const hasPhone = (data || []).some((c: any) =>
-          detectPhoneChannel(c.subject)
-        );
-        setHasAcceptedPhoneConsultation(hasPhone);
+        setHasAcceptedPhoneConsultation((data || []).length > 0);
       });
-  }, [user, isClient, avocat?.id, phoneLabel]);
+  }, [user, isClient, avocat?.id]);
 
   useLayoutEffect(() => {
     if (!avocat || loading || hasAnimated.current) return;
