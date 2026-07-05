@@ -460,7 +460,7 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
     ...mobiles.map((p) => ({ number: p, type: detectPhoneType(p) })),
   ];
 
-  const showContact = isOwnProfile || hasAcceptedPhoneConsultation;
+  const showContact = hasAcceptedPhoneConsultation;
 
   const rawSiteUrl = avocat.contact?.site_web?.trim();
   const validSiteUrl = rawSiteUrl
