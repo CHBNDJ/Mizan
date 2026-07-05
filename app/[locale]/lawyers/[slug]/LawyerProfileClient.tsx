@@ -47,8 +47,6 @@ const LawyerMap = dynamic(() => import("@/components/map/LawyerMap"), {
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
-// Mappe la valeur profession stockée en base ("expert-comptable")
-// vers la clé de traduction camelCase ("expertComptable")
 const PROF_KEY_MAP: Record<string, string> = {
   avocat: "avocat",
   notaire: "notaire",
@@ -263,9 +261,7 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
   const ld = (s: string) => localizedDigits(s, locale);
   const t = useTranslations("lawyerProfile");
   const tProf = useTranslations("professions");
-  // Recherche insensible à la casse : la valeur stockée en base peut être
-  // en Title Case ("Droit De La Famille") alors que la clé JSON de
-  // traduction est en casse normale ("Droit de la famille").
+  const tc = useTranslations("consultationPanel");
   const messages = useMessages();
   const specialitesLookup = useMemo(() => {
     const raw = (messages as any)?.specialites || {};
@@ -276,12 +272,24 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
     return map;
   }, [messages]);
   const translateSpec = (s: string) => specialitesLookup[s.toLowerCase()] || s;
+
+  // Le canal (téléphone/message/vidéo) n'est pas stocké proprement en base —
+  // il est déduit du texte du `subject`, qui contient le libellé traduit
+  // (ex: "Téléphonique" en fr, "هاتفية" en ar, "Phone" en en). On compare donc
+  // au libellé de la langue ACTIVE plutôt qu'à des mots-clés figés en français,
+  // pour que ça fonctionne dans les 3 langues.
+  const phoneLabel = tc("channels.phone.label").toLowerCase();
+  const detectPhoneChannel = (subject: string) =>
+    (subject || "").toLowerCase().includes(phoneLabel);
+
   const searchParams = useSearchParams();
   const { user, profile } = useAuth();
   const [avocat, setAvocat] = useState<AvocatData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [pricingChannels, setPricingChannels] = useState<any[]>([]);
+  const [hasAcceptedPhoneConsultation, setHasAcceptedPhoneConsultation] =
+    useState(false);
   const supabase = createClient();
   const hasAnimated = useRef(false);
 
@@ -321,6 +329,27 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
       .catch(() => setAvocat(null))
       .finally(() => setLoading(false));
   }, [slug]);
+
+  // Le numéro n'est révélé au client que s'il a une consultation
+  // téléphonique acceptée par ce professionnel.
+  useEffect(() => {
+    if (!user || !isClient || !avocat?.id) {
+      setHasAcceptedPhoneConsultation(false);
+      return;
+    }
+    supabase
+      .from("consultations")
+      .select("subject, status")
+      .eq("client_id", user.id)
+      .eq("lawyer_id", avocat.id)
+      .in("status", ["accepted", "in_progress"])
+      .then(({ data }) => {
+        const hasPhone = (data || []).some((c: any) =>
+          detectPhoneChannel(c.subject)
+        );
+        setHasAcceptedPhoneConsultation(hasPhone);
+      });
+  }, [user, isClient, avocat?.id, phoneLabel]);
 
   useLayoutEffect(() => {
     if (!avocat || loading || hasAnimated.current) return;
@@ -430,7 +459,9 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
     ...telephones.map((p) => ({ number: p, type: detectPhoneType(p) })),
     ...mobiles.map((p) => ({ number: p, type: detectPhoneType(p) })),
   ];
-  const showContact = isOwnProfile;
+
+  const showContact = isOwnProfile || hasAcceptedPhoneConsultation;
+
   const rawSiteUrl = avocat.contact?.site_web?.trim();
   const validSiteUrl = rawSiteUrl
     ? rawSiteUrl.startsWith("http")
