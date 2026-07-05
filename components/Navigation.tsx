@@ -26,34 +26,17 @@ import {
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-// function MizanLogo() {
-//   return (
-//     <>
-//       <img
-//         src="/favicon-light.svg"
-//         className="block dark:hidden w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11"
-//         alt="Mizan"
-//       />
-//       <img
-//         src="/favicon-dark.svg"
-//         className="hidden dark:block w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11"
-//         alt="Mizan"
-//       />
-//     </>
-//   );
-// }
-
 function MizanLogo() {
   return (
-    <div className="rounded-xl bg-teal-500 dark:bg-[#0a0e0d] p-1.5 flex items-center justify-center">
+    <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl p-1.5 flex items-center justify-center transition-all duration-200">
       <img
         src="/favicon-light.svg"
-        className="block dark:hidden w-6 h-6 sm:w-7 sm:h-7 lg:w-9 lg:h-9"
+        className="block dark:hidden w-7 h-7 sm:w-8 sm:h-8 lg:w-10 lg:h-10"
         alt="Mizan"
       />
       <img
         src="/favicon-dark.svg"
-        className="hidden dark:block w-6 h-6 sm:w-7 sm:h-7 lg:w-9 lg:h-9"
+        className="hidden dark:block w-7 h-7 sm:w-8 sm:h-8 lg:w-10 lg:h-10"
         alt="Mizan"
       />
     </div>
