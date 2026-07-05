@@ -31,12 +31,12 @@ function MizanLogo() {
     <>
       <img
         src="/favicon-light.svg"
-        className="block dark:hidden w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14"
+        className="block dark:hidden w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11"
         alt="Mizan"
       />
       <img
         src="/favicon-dark.svg"
-        className="hidden dark:block w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14"
+        className="hidden dark:block w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11"
         alt="Mizan"
       />
     </>
