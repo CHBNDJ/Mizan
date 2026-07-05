@@ -28,7 +28,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 function MizanLogo() {
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] border border-teal-500 dark:border-[#6fcf9f]/40 rounded-xl p-1.5 flex items-center justify-center transition-all duration-200 hover:shadow-md cursor-pointer">
+    <div className="bg-white dark:bg-[#1c1c1e] border border-teal-500 dark:border-[#6fcf9f]/40 rounded-xl p-.5 flex items-center justify-center transition-all duration-200 hover:shadow-md cursor-pointer">
       <img
         src="/favicon-light.svg"
         className="block dark:hidden w-7 h-7 sm:w-8 sm:h-8 lg:w-10 lg:h-10"
