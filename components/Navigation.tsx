@@ -26,22 +26,18 @@ import {
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-function MizanLogo({ size = 46 }: { size?: number }) {
+function MizanLogo() {
   return (
     <>
       <img
         src="/favicon-light.svg"
-        width={size}
-        height={size}
+        className="block dark:hidden w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14"
         alt="Mizan"
-        className="block dark:hidden"
       />
       <img
         src="/favicon-dark.svg"
-        width={size}
-        height={size}
+        className="hidden dark:block w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14"
         alt="Mizan"
-        className="hidden dark:block"
       />
     </>
   );
@@ -236,7 +232,7 @@ export function Navigation() {
             href="/"
             className="mb-8 flex-shrink-0 hover:rotate-6 transition-transform flex items-center justify-center"
           >
-            <MizanLogo size={40} />
+            <MizanLogo />
           </Link>
           <nav className="flex flex-col items-center gap-2 flex-1">
             {sidebarItems.map((item) => {
@@ -284,7 +280,7 @@ export function Navigation() {
 
         <div className="lg:hidden fixed top-0 left-0 right-0 h-20 z-[999] flex items-center justify-between px-5 backdrop-blur-md">
           <Link href="/" className="flex items-center justify-center">
-            <MizanLogo size={32} />
+            <MizanLogo />
           </Link>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
@@ -355,7 +351,7 @@ export function Navigation() {
               href="/"
               className="flex items-center group flex-shrink-0 hover:opacity-80 transition-opacity"
             >
-              <MizanLogo size={40} />
+              <MizanLogo />
             </Link>
             <div className="hidden lg:flex items-center gap-1">
               {allNavLinks.map((link) => {
