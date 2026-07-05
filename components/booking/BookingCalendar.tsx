@@ -160,7 +160,7 @@ export default function BookingCalendar({
         .select("start_time, end_time")
         .eq("lawyer_id", lawyerId)
         .eq("appointment_date", dateStr)
-        .in("status", ["pending", "confirmed"]),
+        .in("status", ["pending", "accepted", "confirmed"]),
     ]);
 
     const allSlots: string[] = [];

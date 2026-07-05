@@ -101,7 +101,7 @@ export default function BookingModal({
         .select("start_time, end_time")
         .eq("lawyer_id", lawyerId)
         .eq("appointment_date", dateStr)
-        .in("status", ["pending", "confirmed"]);
+        .in("status", ["pending", "accepted", "confirmed"]);
 
       const allSlots: string[] = [];
       for (const a of avail) {
@@ -167,6 +167,10 @@ export default function BookingModal({
         .single();
       const dur = avail?.duration_min || 30;
 
+      // Le créneau vient de loadSlots(), qui ne propose que des créneaux
+      // réellement libres selon les disponibilités du professionnel — pas
+      // besoin de validation manuelle, c'est confirmé directement, comme
+      // pour les consultations téléphone/vidéo.
       await supabase.from("appointments").insert({
         lawyer_id: lawyerId,
         client_id: user.id,
@@ -175,9 +179,31 @@ export default function BookingModal({
         end_time: addMinutes(selectedSlot, dur),
         subject: subject.trim(),
         client_phone: phone.trim() || null,
-        status: "pending",
+        status: "accepted",
         type: "physical",
+        channel: "physical",
       });
+
+      fetch("/api/push/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: lawyerId,
+          title: "Rendez-vous confirmé",
+          body: `${subject.trim()} le ${selectedDate.toLocaleDateString("fr-FR")} à ${selectedSlot}`,
+          url: "/lawyer/consultations",
+        }),
+      }).catch(() => {});
+      fetch("/api/push/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: user.id,
+          title: "Rendez-vous confirmé",
+          body: `Rendez-vous avec ${lawyerName} le ${selectedDate.toLocaleDateString("fr-FR")} à ${selectedSlot}`,
+          url: "/mes-consultations",
+        }),
+      }).catch(() => {});
 
       setStep("done");
       setTimeout(() => {

@@ -60,9 +60,13 @@ export function ConsultationPanel({
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
 
-  const isAppointment = ["notaire", "huissier"].includes(
-    avocat.profession || ""
-  );
+  const isAppointment = [
+    "notaire",
+    "huissier",
+    "avocat",
+    "comptable",
+    "expert-comptable",
+  ].includes(avocat.profession || "");
   const needsSchedule = NEEDS_SCHEDULE.includes(selected || "");
   const today = new Date().toISOString().split("T")[0];
 
@@ -120,6 +124,13 @@ export function ConsultationPanel({
           ? new Date(`${scheduledDate}T${scheduledTime}:00`).toISOString()
           : null;
 
+      // Un créneau choisi dans needsSchedule correspond forcément à une
+      // disponibilité déjà ouverte par le professionnel (BookingCalendar ne
+      // propose que des créneaux libres) — donc pas besoin d'acceptation
+      // manuelle, c'est confirmé directement. Seule la demande par message
+      // simple reste "en attente" (le professionnel doit choisir d'y répondre).
+      const initialStatus = needsSchedule ? "accepted" : "pending";
+
       const { data: existing } = await supabase
         .from("consultations")
         .select("id")
@@ -136,13 +147,22 @@ export function ConsultationPanel({
           .insert({
             client_id: user.id,
             lawyer_id: avocat.id,
-            status: "pending",
-            subject: canal.label,
+            status: initialStatus,
+            channel: selected,
             scheduled_at: scheduledAt,
           })
           .select("id")
           .single();
         cid = nc?.id;
+      } else {
+        await supabase
+          .from("consultations")
+          .update({
+            status: initialStatus,
+            channel: selected,
+            scheduled_at: scheduledAt,
+          })
+          .eq("id", cid);
       }
 
       if (cid) {
@@ -178,22 +198,46 @@ export function ConsultationPanel({
             start_time: scheduledTime,
             end_time: endTime,
             subject: canal.label,
-            status: "pending",
-            type: "online",
+            status: initialStatus,
+            type: selected,
+            channel: selected,
           });
         }
       }
+
+      // Confirmé directement (créneau dispo) -> notification immédiate aux
+      // deux parties. En attente (message simple) -> notification au
+      // professionnel seulement, pour qu'il traite la demande.
+      const notifTitle = needsSchedule
+        ? "Rendez-vous confirmé"
+        : "Nouvelle demande de consultation";
+      const notifBodyLawyer = needsSchedule
+        ? `${canal.label} confirmé${scheduledAt ? ` le ${new Date(scheduledAt).toLocaleDateString("fr-FR")} à ${scheduledTime}` : ""}`
+        : `${canal.label}`;
 
       fetch("/api/push/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           user_id: avocat.id,
-          title: "Nouvelle demande de consultation",
-          body: `${canal.label}${scheduledAt ? ` le ${new Date(scheduledAt).toLocaleDateString("fr-FR")}` : ""}`,
+          title: notifTitle,
+          body: notifBodyLawyer,
           url: "/lawyer/consultations",
         }),
       }).catch(() => {});
+
+      if (needsSchedule) {
+        fetch("/api/push/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: user.id,
+            title: "Rendez-vous confirmé",
+            body: `${canal.label} le ${new Date(scheduledAt!).toLocaleDateString("fr-FR")} à ${scheduledTime}`,
+            url: "/mes-consultations",
+          }),
+        }).catch(() => {});
+      }
 
       setSent(true);
       setTimeout(() => {
