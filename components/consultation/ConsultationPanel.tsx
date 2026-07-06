@@ -136,6 +136,24 @@ export function ConsultationPanel({
       // simple reste "en attente" (le professionnel doit choisir d'y répondre).
       const initialStatus = needsSchedule ? "accepted" : "pending";
 
+      const priceStr = price?.base_price
+        ? `\n💰 ${price.base_price.toLocaleString()} DA`
+        : "";
+      const durStr = canal.duration ? ` · ${canal.duration}` : "";
+      const dateStr = scheduledAt
+        ? `\n📅 ${new Date(scheduledAt).toLocaleDateString("fr-FR", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })} à ${scheduledTime}`
+        : "";
+      const questionStr =
+        selected === "message" && messageText.trim()
+          ? `\n\n${messageText.trim()}`
+          : "";
+      const fullContent = `📋 ${canal.label}${durStr}${dateStr}${priceStr}${questionStr}`;
+
       const { data: nc, error: insertError } = await supabase
         .from("consultations")
         .insert({
@@ -144,6 +162,7 @@ export function ConsultationPanel({
           status: initialStatus,
           channel: selected,
           scheduled_at: scheduledAt,
+          question: fullContent,
         })
         .select("id")
         .single();
@@ -160,28 +179,10 @@ export function ConsultationPanel({
       const cid = nc?.id;
 
       if (cid) {
-        const priceStr = price?.base_price
-          ? `\n💰 ${price.base_price.toLocaleString()} DA`
-          : "";
-        const durStr = canal.duration ? ` · ${canal.duration}` : "";
-        const dateStr = scheduledAt
-          ? `\n📅 ${new Date(scheduledAt).toLocaleDateString("fr-FR", {
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })} à ${scheduledTime}`
-          : "";
-
-        const questionStr =
-          selected === "message" && messageText.trim()
-            ? `\n\n${messageText.trim()}`
-            : "";
-
         const { error: msgError } = await supabase.from("messages").insert({
           consultation_id: cid,
           sender_id: user.id,
-          content: `📋 ${canal.label}${durStr}${dateStr}${priceStr}${questionStr}`,
+          content: fullContent,
         });
         if (msgError) console.error("Erreur création message:", msgError);
 
