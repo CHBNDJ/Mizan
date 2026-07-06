@@ -136,39 +136,28 @@ export function ConsultationPanel({
       // simple reste "en attente" (le professionnel doit choisir d'y répondre).
       const initialStatus = needsSchedule ? "accepted" : "pending";
 
-      const { data: existing } = await supabase
+      const { data: nc, error: insertError } = await supabase
         .from("consultations")
+        .insert({
+          client_id: user.id,
+          lawyer_id: avocat.id,
+          status: initialStatus,
+          channel: selected,
+          scheduled_at: scheduledAt,
+        })
         .select("id")
-        .eq("client_id", user.id)
-        .eq("lawyer_id", avocat.id)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+        .single();
 
-      let cid = existing?.id;
-      if (!cid) {
-        const { data: nc } = await supabase
-          .from("consultations")
-          .insert({
-            client_id: user.id,
-            lawyer_id: avocat.id,
-            status: initialStatus,
-            channel: selected,
-            scheduled_at: scheduledAt,
-          })
-          .select("id")
-          .single();
-        cid = nc?.id;
-      } else {
-        await supabase
-          .from("consultations")
-          .update({
-            status: initialStatus,
-            channel: selected,
-            scheduled_at: scheduledAt,
-          })
-          .eq("id", cid);
+      if (insertError) {
+        console.error("Erreur création consultation:", insertError);
+        setError(
+          `Erreur: ${insertError.message || "impossible d'envoyer la demande"}`
+        );
+        setSending(false);
+        return;
       }
+
+      const cid = nc?.id;
 
       if (cid) {
         const priceStr = price?.base_price
@@ -189,11 +178,12 @@ export function ConsultationPanel({
             ? `\n\n${messageText.trim()}`
             : "";
 
-        await supabase.from("messages").insert({
+        const { error: msgError } = await supabase.from("messages").insert({
           consultation_id: cid,
           sender_id: user.id,
           content: `📋 ${canal.label}${durStr}${dateStr}${priceStr}${questionStr}`,
         });
+        if (msgError) console.error("Erreur création message:", msgError);
 
         if (scheduledDate && scheduledTime) {
           const dur = selected === "video_60" ? 60 : 30;
@@ -201,17 +191,21 @@ export function ConsultationPanel({
           const endMin = h * 60 + m + dur;
           const endTime = `${String(Math.floor(endMin / 60)).padStart(2, "0")}:${String(endMin % 60).padStart(2, "0")}`;
 
-          await supabase.from("appointments").insert({
-            lawyer_id: avocat.id,
-            client_id: user.id,
-            appointment_date: scheduledDate,
-            start_time: scheduledTime,
-            end_time: endTime,
-            subject: canal.label,
-            status: initialStatus,
-            type: selected,
-            channel: selected,
-          });
+          const { error: apptError } = await supabase
+            .from("appointments")
+            .insert({
+              lawyer_id: avocat.id,
+              client_id: user.id,
+              appointment_date: scheduledDate,
+              start_time: scheduledTime,
+              end_time: endTime,
+              subject: canal.label,
+              status: initialStatus,
+              type: selected,
+              channel: selected,
+            });
+          if (apptError)
+            console.error("Erreur création rendez-vous:", apptError);
         }
       }
 
