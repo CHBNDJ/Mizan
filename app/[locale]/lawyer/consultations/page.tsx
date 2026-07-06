@@ -83,7 +83,10 @@ function LawyerConsultationsContent() {
       router.push("/auth/lawyer/login");
       return;
     }
-    if (profile?.user_type !== "lawyer") {
+    if (!profile) {
+      return;
+    }
+    if (profile.user_type !== "lawyer") {
       router.push("/");
       return;
     }

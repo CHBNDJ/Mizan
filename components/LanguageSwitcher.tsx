@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 const LANGUAGES = [
   { code: "fr", label: "FR", full: "Français", flag: "🇫🇷" },
@@ -13,6 +14,7 @@ export function LanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
+  const supabase = createClient();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -27,6 +29,22 @@ export function LanguageSwitcher() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const changeLanguage = async (code: string) => {
+    setOpen(false);
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        await supabase
+          .from("users")
+          .update({ preferred_locale: code })
+          .eq("id", user.id);
+      }
+    } catch {}
+    router.replace(pathname, { locale: code });
+  };
 
   return (
     <div className="relative" ref={ref}>
@@ -58,10 +76,7 @@ export function LanguageSwitcher() {
           {LANGUAGES.map((l) => (
             <button
               key={l.code}
-              onClick={() => {
-                setOpen(false);
-                router.replace(pathname, { locale: l.code });
-              }}
+              onClick={() => changeLanguage(l.code)}
               className={`w-full text-center px-2.5 py-1.5 rounded-md text-sm cursor-pointer transition-all whitespace-nowrap ${
                 locale === l.code
                   ? "bg-teal-600 dark:bg-[#0F6E56] text-white font-medium"

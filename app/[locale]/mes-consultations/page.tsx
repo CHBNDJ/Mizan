@@ -67,7 +67,10 @@ function MesConsultationsContent() {
       router.push("/auth/client/login");
       return;
     }
-    if (profile?.user_type !== "client") {
+    if (!profile) {
+      return;
+    }
+    if (profile.user_type !== "client") {
       router.push("/");
       return;
     }

@@ -106,34 +106,69 @@ export async function POST(
           : consultation.lawyer_id;
       const { data: recipient } = await supabase
         .from("users")
-        .select("email, first_name, last_name, user_type")
+        .select("email, first_name, last_name, user_type, preferred_locale")
         .eq("id", recipientId)
         .single();
 
       if (recipient) {
+        const rlocale = ["fr", "ar", "en"].includes(recipient.preferred_locale)
+          ? recipient.preferred_locale
+          : "fr";
+
+        const EMAIL_STRINGS: Record<string, Record<string, string>> = {
+          fr: {
+            profPrefix: "Me.",
+            newMessage: "Nouveau message",
+            from: "De",
+            greeting: "Bonjour",
+            reply: "Répondre →",
+            attachment: "📎 Fichier joint",
+            closed: "Cette consultation a été clôturée.",
+            subject: "💬 Nouveau message de",
+          },
+          en: {
+            profPrefix: "Me.",
+            newMessage: "New message",
+            from: "From",
+            greeting: "Hello",
+            reply: "Reply →",
+            attachment: "📎 Attachment",
+            closed: "This consultation has been closed.",
+            subject: "💬 New message from",
+          },
+          ar: {
+            profPrefix: "الأستاذ",
+            newMessage: "رسالة جديدة",
+            from: "من",
+            greeting: "مرحباً",
+            reply: "الرد →",
+            attachment: "📎 مرفق",
+            closed: "تم إغلاق هذه الاستشارة.",
+            subject: "💬 رسالة جديدة من",
+          },
+        };
+        const es = EMAIL_STRINGS[rlocale];
+        const profPrefix = es.profPrefix;
+
         const senderName =
           senderType === "lawyer"
-            ? `Me. ${userData.first_name} ${userData.last_name}`
+            ? `${profPrefix} ${userData.first_name} ${userData.last_name}`
             : `${userData.first_name} ${userData.last_name}`;
         const recipientName =
           recipient.user_type === "lawyer"
-            ? `Me. ${recipient.first_name} ${recipient.last_name}`
+            ? `${profPrefix} ${recipient.first_name} ${recipient.last_name}`
             : `${recipient.first_name} ${recipient.last_name}`;
-        const consultationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${recipient.user_type === "lawyer" ? "lawyer/consultations" : "mes-consultations"}`;
-        const systemPreviewFallback: Record<string, string> = {
-          close: "Cette consultation a été clôturée.",
-        };
+        const consultationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${rlocale}/${recipient.user_type === "lawyer" ? "lawyer/consultations" : "mes-consultations"}`;
         const messagePreview =
           message?.trim()?.slice(0, 150) ||
-          (system_key && systemPreviewFallback[system_key]) ||
-          "📎 Fichier joint";
+          (system_key === "close" ? es.closed : es.attachment);
 
         await resend.emails.send({
           from: "Mizan <noreply@mizan-dz.com>",
           to: recipient.email,
-          subject: `💬 Nouveau message de ${senderName}`,
+          subject: `${es.subject} ${senderName}`,
           html: `<!DOCTYPE html>
-<html lang="fr">
+<html lang="${rlocale}" dir="${rlocale === "ar" ? "rtl" : "ltr"}">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#f0f4f8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f4f8;padding:40px 16px;">
@@ -157,21 +192,21 @@ export async function POST(
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
             <td style="background:linear-gradient(135deg,#0d9488 0%,#0f766e 100%);padding:28px 32px;">
-              <p style="margin:0 0 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#99f6e4;">Nouveau message</p>
-              <p style="margin:0;font-size:20px;font-weight:700;color:#fff;">De ${senderName}</p>
+              <p style="margin:0 0 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#99f6e4;">${es.newMessage}</p>
+              <p style="margin:0;font-size:20px;font-weight:700;color:#fff;">${es.from} ${senderName}</p>
             </td>
           </tr>
           <tr>
             <td style="padding:28px 32px;">
-              <p style="margin:0 0 16px;font-size:14px;color:#475569;line-height:1.7;">Bonjour ${recipientName},</p>
+              <p style="margin:0 0 16px;font-size:14px;color:#475569;line-height:1.7;">${es.greeting} ${recipientName},</p>
               <div style="background:#f8fafc;border-left:3px solid #0d9488;border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:24px;">
                 <p style="margin:0;font-size:14px;color:#1e293b;line-height:1.7;white-space:pre-wrap;">${messagePreview}${message?.trim()?.length > 150 ? "..." : ""}</p>
-                ${attachment_url ? `<p style="margin:8px 0 0;font-size:12px;color:#64748b;">📎 Fichier joint</p>` : ""}
+                ${attachment_url ? `<p style="margin:8px 0 0;font-size:12px;color:#64748b;">${es.attachment}</p>` : ""}
               </div>
               <table cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
                 <tr>
                   <td style="background:#0d9488;border-radius:8px;padding:11px 24px;">
-                    <a href="${consultationUrl}" style="font-size:14px;font-weight:700;color:#fff;text-decoration:none;display:block;">Répondre →</a>
+                    <a href="${consultationUrl}" style="font-size:14px;font-weight:700;color:#fff;text-decoration:none;display:block;">${es.reply}</a>
                   </td>
                 </tr>
               </table>
@@ -204,7 +239,7 @@ export async function POST(
           },
           body: JSON.stringify({
             user_id: recipientId,
-            title: `Nouveau message de ${senderName}`,
+            title: `${es.subject} ${senderName}`,
             body: messagePreview,
             url: consultationUrl,
           }),
