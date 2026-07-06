@@ -39,7 +39,7 @@ export async function POST(
         { status: 404 }
       );
 
-    const senderType = userData.user_type === "lawyer" ? "lawyer" : "client";
+    const senderType = userData.user_type === "client" ? "client" : "lawyer";
 
     const { data: consultation, error: consultationError } = await supabase
       .from("consultations")
