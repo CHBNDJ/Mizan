@@ -328,6 +328,8 @@ export interface Message {
   attachment_url?: string | null;
   attachment_type?: string | null;
   attachment_name?: string | null;
+  system_key?: string | null;
+  system_params?: Record<string, any> | null;
   sender: {
     first_name: string;
     last_name: string;

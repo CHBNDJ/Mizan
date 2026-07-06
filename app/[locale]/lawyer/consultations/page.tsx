@@ -355,14 +355,13 @@ function LawyerConsultationsContent() {
       const lawyerName =
         `${t("mesConsultations.lawyerPrefix")} ${userData?.first_name || ""} ${userData?.last_name || ""}`.trim();
 
-      const autoMessage = t("lawyerConsultations.autoMessages.close", {
-        lawyerName,
-      });
-
       await fetch(`/api/consultations/${selectedConsultation.id}/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: autoMessage }),
+        body: JSON.stringify({
+          system_key: "close",
+          system_params: { lawyerName },
+        }),
       });
 
       await supabase
@@ -649,10 +648,19 @@ function LawyerConsultationsContent() {
             <div
               className={`max-w-[75%] rounded-xl p-3.5 ${message.sender_type === "lawyer" ? "bg-teal-600 dark:bg-[#0F6E56] text-white" : "bg-slate-100 dark:bg-[#2a2a2d] text-slate-900 dark:text-[#F5F5F4]"}`}
             >
-              {message.message && (
+              {message.system_key ? (
                 <p className="text-sm whitespace-pre-wrap leading-relaxed">
-                  {message.message}
+                  {t(
+                    `lawyerConsultations.autoMessages.${message.system_key}`,
+                    message.system_params || {}
+                  )}
                 </p>
+              ) : (
+                message.message && (
+                  <p className="text-sm whitespace-pre-wrap leading-relaxed">
+                    {message.message}
+                  </p>
+                )
               )}
               {message.attachment_url && (
                 <div className="mt-2">

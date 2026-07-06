@@ -11,10 +11,16 @@ export async function POST(
   try {
     const supabase = await createClient();
     const { id: consultationId } = await params;
-    const { message, attachment_url, attachment_type, attachment_name } =
-      await request.json();
+    const {
+      message,
+      attachment_url,
+      attachment_type,
+      attachment_name,
+      system_key,
+      system_params,
+    } = await request.json();
 
-    if (!message?.trim() && !attachment_url) {
+    if (!message?.trim() && !attachment_url && !system_key) {
       return NextResponse.json(
         { error: "Message ou pièce jointe requis" },
         { status: 400 }
@@ -65,11 +71,13 @@ export async function POST(
         consultation_id: consultationId,
         sender_id: user.id,
         sender_type: senderType,
-        message: message?.trim() || "(Fichier joint)",
+        message: message?.trim() || (system_key ? "" : "(Fichier joint)"),
         is_read: false,
         attachment_url,
         attachment_type,
         attachment_name,
+        system_key: system_key || null,
+        system_params: system_params || null,
       })
       .select()
       .single();
@@ -112,8 +120,13 @@ export async function POST(
             ? `Me. ${recipient.first_name} ${recipient.last_name}`
             : `${recipient.first_name} ${recipient.last_name}`;
         const consultationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${recipient.user_type === "lawyer" ? "lawyer/consultations" : "mes-consultations"}`;
+        const systemPreviewFallback: Record<string, string> = {
+          close: "Cette consultation a été clôturée.",
+        };
         const messagePreview =
-          message?.trim()?.slice(0, 150) || "📎 Fichier joint";
+          message?.trim()?.slice(0, 150) ||
+          (system_key && systemPreviewFallback[system_key]) ||
+          "📎 Fichier joint";
 
         await resend.emails.send({
           from: "Mizan <noreply@mizan-dz.com>",

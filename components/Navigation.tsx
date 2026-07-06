@@ -307,14 +307,23 @@ export function Navigation() {
                     href={item.href}
                     className="relative flex flex-col items-center gap-1 px-3 py-1"
                   >
-                    <Icon
-                      className={cn(
-                        "w-5 h-5",
-                        active
-                          ? "text-teal-600 dark:text-[#6fcf9f]"
-                          : "text-slate-400 dark:text-[#7A7A78]"
-                      )}
-                    />
+                    <span className="relative inline-flex">
+                      <Icon
+                        className={cn(
+                          "w-5 h-5",
+                          active
+                            ? "text-teal-600 dark:text-[#6fcf9f]"
+                            : "text-slate-400 dark:text-[#7A7A78]"
+                        )}
+                      />
+                      {item.hasNotification && item.notificationCount ? (
+                        <span className="absolute -top-1.5 -end-2 w-4 h-4 bg-red-500 text-white text-[9px] rounded-full flex items-center justify-center font-bold">
+                          {item.notificationCount > 9
+                            ? "9+"
+                            : item.notificationCount}
+                        </span>
+                      ) : null}
+                    </span>
                     <span
                       className={cn(
                         "text-[10px] font-medium",
@@ -325,13 +334,6 @@ export function Navigation() {
                     >
                       {item.label}
                     </span>
-                    {item.hasNotification && item.notificationCount ? (
-                      <span className="absolute -top-0.5 end-1 w-4 h-4 bg-red-500 text-white text-[9px] rounded-full flex items-center justify-center font-bold">
-                        {item.notificationCount > 9
-                          ? "9+"
-                          : item.notificationCount}
-                      </span>
-                    ) : null}
                   </Link>
                 );
               })}
