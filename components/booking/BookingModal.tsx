@@ -184,9 +184,16 @@ export default function BookingModal({
         channel: "physical",
       });
 
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const authHeader: Record<string, string> = session
+        ? { Authorization: `Bearer ${session.access_token}` }
+        : {};
+
       fetch("/api/push/send", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeader },
         body: JSON.stringify({
           user_id: lawyerId,
           title: "Rendez-vous confirmé",
@@ -196,7 +203,7 @@ export default function BookingModal({
       }).catch(() => {});
       fetch("/api/push/send", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeader },
         body: JSON.stringify({
           user_id: user.id,
           title: "Rendez-vous confirmé",
