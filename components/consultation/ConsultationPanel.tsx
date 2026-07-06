@@ -179,11 +179,13 @@ export function ConsultationPanel({
       const cid = nc?.id;
 
       if (cid) {
-        const { error: msgError } = await supabase.from("messages").insert({
-          consultation_id: cid,
-          sender_id: user.id,
-          content: fullContent,
-        });
+        const { error: msgError } = await supabase
+          .from("consultation_messages")
+          .insert({
+            consultation_id: cid,
+            sender_id: user.id,
+            content: fullContent,
+          });
         if (msgError) console.error("Erreur création message:", msgError);
 
         if (scheduledDate && scheduledTime) {
