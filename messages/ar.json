@@ -30,6 +30,8 @@
       "oneHour": "ساعة واحدة"
     },
     "onDemand": "بحسب الطلب",
+    "messagePlaceholder": "صف وضعيتك في بضعة أسطر...",
+    "messageRequired": "يرجى كتابة رسالتك قبل الإرسال",
     "schedule": {
       "title": "اختر موعدك",
       "subtitle": "سيؤكد المختص التوفر والأتعاب.",

@@ -30,6 +30,8 @@
       "oneHour": "1 heure"
     },
     "onDemand": "Sur demande",
+    "messagePlaceholder": "Décrivez votre situation en quelques lignes...",
+    "messageRequired": "Merci d'écrire votre message avant d'envoyer",
     "schedule": {
       "title": "Choisissez votre créneau",
       "subtitle": "Le professionnel confirmera la disponibilité et ses honoraires.",

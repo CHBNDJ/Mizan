@@ -30,6 +30,8 @@
       "oneHour": "1 hour"
     },
     "onDemand": "On request",
+    "messagePlaceholder": "Describe your situation in a few lines...",
+    "messageRequired": "Please write your message before sending",
     "schedule": {
       "title": "Choose your time slot",
       "subtitle": "The professional will confirm availability and fees.",
