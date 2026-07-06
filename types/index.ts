@@ -86,7 +86,7 @@ export interface LawyerProfile {
 
 export interface Consultation {
   id: string;
-  status: "pending" | "answered" | "closed";
+  status: "pending" | "answered" | "closed" | "accepted";
   created_at: string;
   client_id: string;
   lawyer_id?: string;
@@ -94,6 +94,9 @@ export interface Consultation {
   response?: string;
   answered_at?: string;
   opened_by_lawyer?: boolean;
+  archived_at?: string | null;
+  scheduled_at?: string | null;
+  subject?: string;
   unread_count?: number;
   client: {
     first_name: string;
@@ -333,13 +336,15 @@ export interface Message {
 
 export interface ClientConsultation {
   id: string;
-  status: "pending" | "answered" | "closed";
+  status: "pending" | "answered" | "closed" | "accepted";
   subject: string;
   created_at: string;
   archived_at: string | null;
+  scheduled_at?: string | null;
   lawyer: {
     first_name: string;
     last_name: string;
+    profession?: string;
   };
   unread_count?: number;
 }

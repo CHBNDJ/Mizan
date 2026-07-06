@@ -1,31 +1,35 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { localizedDigits } from "@/lib/arabicNumerals";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { Message, ClientConsultation } from "@/types";
 import {
   MessageSquare,
   Send,
   CheckCircle,
-  Calendar,
-  AlertCircle,
   User,
+  AlertCircle,
   ArrowLeft,
   Video,
   Archive,
   Clock,
   Filter,
+  Calendar,
 } from "lucide-react";
+import { Message, ClientConsultation } from "@/types";
 import { gsap } from "gsap";
 import { JoinCallButton } from "@/components/consultation/JoinCallButton";
 import FeedbackPopup from "@/components/FeedbackPopup";
 import { Suspense } from "react";
 
 type TabFilter = "active" | "archived" | "all";
+
+const getProfessionalTitle = (profession?: string) =>
+  profession === "comptable" || profession === "expert-comptable"
+    ? "M."
+    : "Me.";
 
 function MesConsultationsContent() {
   const supabase = createClient();
@@ -214,7 +218,7 @@ function MesConsultationsContent() {
       const { data, error: err } = await supabase
         .from("consultations")
         .select(
-          `*, lawyer:lawyers!consultations_lawyer_id_fkey(id, bar_number)`
+          `*, lawyer:lawyers!consultations_lawyer_id_fkey(id, bar_number, profession)`
         )
         .eq("client_id", user.id)
         .order("created_at", { ascending: false });
@@ -242,7 +246,7 @@ function MesConsultationsContent() {
           const lawyerUser = lawyersData.find((l) => l.id === item.lawyer?.id);
           return {
             id: item.id,
-            status: item.status as "pending" | "answered" | "closed",
+            status: item.status as "answered" | "closed" | "accepted",
             subject: item.subject || "",
             created_at: item.created_at,
             archived_at: item.archived_at || null,
@@ -253,6 +257,7 @@ function MesConsultationsContent() {
                 lawyerUser?.first_name || t("myProfile.firstNameFallback"),
               last_name:
                 lawyerUser?.last_name || t("myProfile.lastNameFallback"),
+              profession: item.lawyer?.profession || "avocat",
             },
           };
         })
@@ -428,27 +433,23 @@ function MesConsultationsContent() {
     });
 
   const filteredConsultations = consultations.filter((c) => {
-    if (tabFilter === "active") return !(c as any).archived_at;
-    if (tabFilter === "archived") return !!(c as any).archived_at;
+    if (tabFilter === "active") return !c.archived_at;
+    if (tabFilter === "archived") return !!c.archived_at;
     return true;
   });
 
-  const activeCount = consultations.filter(
-    (c) => !(c as any).archived_at
-  ).length;
-  const archivedCount = consultations.filter(
-    (c) => !!(c as any).archived_at
-  ).length;
+  const activeCount = consultations.filter((c) => !c.archived_at).length;
+  const archivedCount = consultations.filter((c) => !!c.archived_at).length;
 
   if (loading)
     return (
       <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
         <div className="max-w-6xl mx-auto px-4 py-8 space-y-4">
-          <div className="h-8 bg-slate-200 rounded-xl animate-pulse w-48" />
+          <div className="h-8 bg-slate-200 dark:bg-[#2a2a2d] rounded-xl animate-pulse w-48" />
           {[...Array(3)].map((_, i) => (
             <div
               key={i}
-              className="h-24 bg-slate-200 rounded-xl animate-pulse"
+              className="h-24 bg-slate-200 dark:bg-[#2a2a2d] rounded-xl animate-pulse"
             />
           ))}
         </div>
@@ -457,11 +458,11 @@ function MesConsultationsContent() {
 
   const ChatPanel = () => (
     <div className="bg-white dark:bg-[#1c1c1e] rounded-xl shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220] flex flex-col h-[600px]">
-      <div className="p-5 bg-gradient-to-r from-teal-50 to-white border-b border-slate-200 dark:border-[#1c2220]">
+      <div className="p-5 bg-teal-50 dark:bg-[#1c1c1e] border-b border-slate-200 dark:border-[#1c2220]">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowChat(false)}
-            className="lg:hidden p-1.5 rounded-lg hover:bg-slate-100 cursor-pointer flex-shrink-0"
+            className="lg:hidden p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#2a2a2d] cursor-pointer flex-shrink-0"
           >
             <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-[#E8E8E6]" />
           </button>
@@ -470,7 +471,7 @@ function MesConsultationsContent() {
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-slate-900 dark:text-[#F5F5F4] truncate">
-              {t("mesConsultations.lawyerPrefix")}{" "}
+              {getProfessionalTitle(selectedConsultation!.lawyer.profession)}{" "}
               {selectedConsultation!.lawyer.first_name}{" "}
               {selectedConsultation!.lawyer.last_name}
             </h3>
@@ -479,7 +480,7 @@ function MesConsultationsContent() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            {isVideoConsultation((selectedConsultation as any)?.subject) && (
+            {isVideoConsultation(selectedConsultation!.subject) && (
               <JoinCallButton
                 consultationId={selectedConsultation!.id}
                 canal="video_30"
@@ -489,13 +490,13 @@ function MesConsultationsContent() {
               onClick={() =>
                 handleArchive(
                   selectedConsultation!.id,
-                  !!(selectedConsultation as any).archived_at
+                  !!selectedConsultation!.archived_at
                 )
               }
               disabled={archiving === selectedConsultation!.id}
-              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6] cursor-pointer"
+              className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#2a2a2d] text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:hover:text-[#E8E8E6] cursor-pointer"
               title={
-                (selectedConsultation as any).archived_at
+                selectedConsultation!.archived_at
                   ? t("consultShared.unarchive")
                   : t("consultShared.archive")
               }
@@ -510,7 +511,7 @@ function MesConsultationsContent() {
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <MessageSquare className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+              <MessageSquare className="w-12 h-12 text-slate-300 dark:text-[#3a3a3d] mx-auto mb-3" />
               <p className="text-slate-500 dark:text-[#A8A8A6] font-medium">
                 {t("consultShared.noMessages")}
               </p>
@@ -524,7 +525,7 @@ function MesConsultationsContent() {
                 className={`flex ${message.sender_type === "client" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[75%] rounded-xl p-3.5 ${message.sender_type === "client" ? "bg-teal-600 dark:bg-[#0F6E56] text-white" : "bg-slate-100 text-slate-900 dark:text-[#F5F5F4]"}`}
+                  className={`max-w-[75%] rounded-xl p-3.5 ${message.sender_type === "client" ? "bg-teal-600 dark:bg-[#0F6E56] text-white" : "bg-slate-100 dark:bg-[#2a2a2d] text-slate-900 dark:text-[#F5F5F4]"}`}
                 >
                   {message.message && (
                     <p className="text-sm whitespace-pre-wrap leading-relaxed">
@@ -581,7 +582,7 @@ function MesConsultationsContent() {
             ))}
             {otherUserTyping && (
               <div className="flex justify-start">
-                <div className="bg-slate-100 rounded-xl p-3 flex items-center gap-2">
+                <div className="bg-slate-100 dark:bg-[#2a2a2d] rounded-xl p-3 flex items-center gap-2">
                   <div className="flex gap-1">
                     {[0, 150, 300].map((d) => (
                       <span
@@ -604,7 +605,7 @@ function MesConsultationsContent() {
 
       <div className="p-4 border-t border-slate-200 dark:border-[#1c2220]">
         {selectedFile && (
-          <div className="mb-3 bg-slate-50 rounded-lg p-2.5 flex items-center justify-between">
+          <div className="mb-3 bg-slate-50 dark:bg-[#141415] rounded-lg p-2.5 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span>
                 {selectedFile.type.startsWith("image/") ? "🖼️" : "📄"}
@@ -620,7 +621,7 @@ function MesConsultationsContent() {
             </div>
             <button
               onClick={() => setSelectedFile(null)}
-              className="text-red-500 hover:text-red-700 text-sm"
+              className="text-red-500 dark:text-[#E08585] hover:text-red-700 text-sm"
             >
               ✕
             </button>
@@ -636,7 +637,7 @@ function MesConsultationsContent() {
           />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="cursor-pointer px-3 border border-slate-200 dark:border-[#1c2220] rounded-lg hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f]"
+            className="cursor-pointer px-3 border border-slate-200 dark:border-[#1c2220] rounded-lg hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] bg-white dark:bg-[#141415]"
             disabled={isSending || uploading}
           >
             📎
@@ -669,7 +670,7 @@ function MesConsultationsContent() {
               }
             }}
             placeholder={t("consultShared.messagePlaceholder")}
-            className="w-full h-14 px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white dark:bg-[#1c1c1e] focus:border-teal-300 outline-none text-slate-700 dark:text-[#E8E8E6] resize-none"
+            className="w-full h-14 px-3 py-2.5 text-sm border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] focus:border-teal-300 outline-none text-slate-700 dark:text-[#E8E8E6] resize-none"
             rows={2}
           />
           <button
@@ -677,7 +678,7 @@ function MesConsultationsContent() {
             disabled={
               (!newMessage.trim() && !selectedFile) || isSending || uploading
             }
-            className="cursor-pointer px-4 bg-teal-600 dark:bg-[#0F6E56] text-white rounded-lg hover:bg-teal-700 dark:hover:bg-[#085041] disabled:opacity-50"
+            className="cursor-pointer px-4 bg-teal-600 dark:bg-[#085041] text-white rounded-lg hover:bg-teal-700 dark:hover:bg-[#0a6b52] disabled:opacity-50"
           >
             {isSending || uploading ? (
               <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
@@ -704,15 +705,15 @@ function MesConsultationsContent() {
         </div>
 
         {error && (
-          <div className="mb-5 bg-red-50 border-l-4 border-red-500 rounded-r-xl p-4 flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-            <p className="text-red-700 text-sm">{error}</p>
+          <div className="mb-5 bg-red-50 dark:bg-red-950/30 border-l-4 border-red-500 rounded-r-xl p-4 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+            <p className="text-red-700 dark:text-red-400 text-sm">{error}</p>
           </div>
         )}
 
         {consultations.length === 0 ? (
           <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl p-12 text-center shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220]">
-            <MessageSquare className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+            <MessageSquare className="w-16 h-16 text-slate-300 dark:text-[#3a3a3d] mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-slate-800 dark:text-[#F5F5F4] mb-2">
               {t("mesConsultations.emptyTitle")}
             </h3>
@@ -754,12 +755,12 @@ function MesConsultationsContent() {
                   <button
                     key={tab.key}
                     onClick={() => setTabFilter(tab.key as TabFilter)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium cursor-pointer ${tabFilter === tab.key ? "bg-teal-600 dark:bg-[#0F6E56] text-white" : "bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] hover:bg-slate-50"}`}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium cursor-pointer ${tabFilter === tab.key ? "bg-teal-600 dark:bg-[#0F6E56] text-white" : "bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] text-slate-600 dark:text-[#E8E8E6] hover:bg-slate-50 dark:hover:bg-[#2a2a2d]"}`}
                   >
                     <Icon className="w-3.5 h-3.5" />
                     {tab.label}
                     <span
-                      className={`text-xs px-1.5 py-0.5 rounded-full ${tabFilter === tab.key ? "bg-white dark:bg-[#1c1c1e]/20" : "bg-slate-100"}`}
+                      className={`text-xs px-1.5 py-0.5 rounded-full font-semibold ${tabFilter === tab.key ? "bg-white text-teal-700 dark:bg-[#1c1c1e]/30 dark:text-white" : "bg-slate-100 text-slate-600 dark:bg-[#2a2a2d] dark:text-[#E8E8E6]"}`}
                     >
                       {ld(String(tab.count))}
                     </span>
@@ -774,7 +775,7 @@ function MesConsultationsContent() {
               >
                 {filteredConsultations.length === 0 ? (
                   <div className="bg-white dark:bg-[#1c1c1e] rounded-xl p-8 text-center border border-slate-200 dark:border-[#1c2220]">
-                    <Archive className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+                    <Archive className="w-10 h-10 text-slate-300 dark:text-[#3a3a3d] mx-auto mb-3" />
                     <p className="text-slate-500 dark:text-[#A8A8A6] text-sm">
                       {tabFilter === "archived"
                         ? t("consultShared.noArchived")
@@ -786,7 +787,7 @@ function MesConsultationsContent() {
                     <div
                       key={consultation.id}
                       onClick={() => handleSelectConsultation(consultation)}
-                      className={`cursor-pointer bg-white dark:bg-[#1c1c1e] rounded-xl p-4 border-2 transition-all hover:shadow-md relative ${selectedConsultation?.id === consultation.id ? "border-teal-500 shadow-md dark:shadow-none" : "border-slate-200 dark:border-[#1c2220] hover:border-teal-300 dark:hover:border-[#6fcf9f]"} ${(consultation as any).archived_at ? "opacity-70" : ""}`}
+                      className={`cursor-pointer bg-white dark:bg-[#1c1c1e] rounded-xl p-4 border-2 transition-all hover:shadow-md relative ${selectedConsultation?.id === consultation.id ? "border-teal-500 shadow-md dark:shadow-none" : "border-slate-200 dark:border-[#1c2220] hover:border-teal-300 dark:hover:border-[#6fcf9f]"} ${consultation.archived_at ? "opacity-70" : ""}`}
                     >
                       {(consultation.unread_count ?? 0) > 0 && (
                         <div className="absolute -top-2 -end-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg dark:shadow-none">
@@ -795,12 +796,14 @@ function MesConsultationsContent() {
                       )}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 flex-1 min-w-0">
-                          <div className="w-10 h-10 bg-teal-100 dark:bg-[#6fcf9f]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <div className="w-10 h-10 bg-teal-100 dark:bg-[#1c2220] rounded-lg flex items-center justify-center flex-shrink-0">
                             <User className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
                           </div>
                           <div className="min-w-0 flex-1">
                             <h3 className="font-semibold text-slate-900 dark:text-[#F5F5F4] text-sm truncate">
-                              {t("mesConsultations.lawyerPrefix")}{" "}
+                              {getProfessionalTitle(
+                                consultation.lawyer.profession
+                              )}{" "}
                               {consultation.lawyer.first_name}{" "}
                               {consultation.lawyer.last_name}
                             </h3>
@@ -809,41 +812,40 @@ function MesConsultationsContent() {
                                 <Calendar className="w-3 h-3" />
                                 {formatDate(consultation.created_at)}
                               </p>
-                              {isVideoConsultation(
-                                (consultation as any).subject
-                              ) && (
-                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10 px-1.5 py-0.5 rounded-full border border-teal-100 dark:border-[#6fcf9f]/20">
+                              {isVideoConsultation(consultation.subject) && (
+                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#141415] px-1.5 py-0.5 rounded-full border border-teal-100 dark:border-[#1c2220]">
                                   <Video className="w-2.5 h-2.5" />{" "}
                                   {t("consultShared.videoLabel")}
                                 </span>
                               )}
-                              {(consultation as any).archived_at && (
-                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-500 dark:text-[#A8A8A6] bg-slate-100 px-1.5 py-0.5 rounded-full">
-                                  <Archive className="w-2.5 h-2.5" />{" "}
-                                  {t("consultShared.archivedLabel")}
+                              {consultation.status === "closed" && (
+                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-500 dark:text-[#A8A8A6] bg-slate-100 dark:bg-[#2a2a2d] px-1.5 py-0.5 rounded-full">
+                                  <CheckCircle className="w-2.5 h-2.5" />{" "}
+                                  {t("lawyerConsultations.closedLabel")}
                                 </span>
                               )}
+                              {consultation.archived_at &&
+                                consultation.status !== "closed" && (
+                                  <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-500 dark:text-[#A8A8A6] bg-slate-100 dark:bg-[#2a2a2d] px-1.5 py-0.5 rounded-full">
+                                    <Archive className="w-2.5 h-2.5" />{" "}
+                                    {t("consultShared.archivedLabel")}
+                                  </span>
+                                )}
                             </div>
-                            {(consultation as any).scheduled_at &&
-                              (isVideoConsultation(
-                                (consultation as any).subject
-                              ) ||
-                                isPhoneConsultation(
-                                  (consultation as any).subject
-                                )) && (
-                                <div className="flex items-center gap-1 mt-1.5 text-teal-700 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-lg px-2 py-1 w-fit">
+                            {consultation.scheduled_at &&
+                              (isVideoConsultation(consultation.subject) ||
+                                isPhoneConsultation(consultation.subject)) && (
+                                <div className="flex items-center gap-1 mt-1.5 text-teal-700 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#141415] border border-teal-100 dark:border-[#1c2220] rounded-lg px-2 py-1 w-fit">
                                   <Calendar className="w-3 h-3 flex-shrink-0" />
                                   <span className="text-[11px] font-medium">
-                                    {formatScheduled(
-                                      (consultation as any).scheduled_at
-                                    )}
+                                    {formatScheduled(consultation.scheduled_at)}
                                   </span>
                                 </div>
                               )}
                           </div>
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0 ms-2">
-                          {consultation.status === "answered" &&
+                          {consultation.status !== "closed" &&
                             (consultation.unread_count ?? 0) === 0 && (
                               <CheckCircle className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
                             )}
@@ -852,11 +854,11 @@ function MesConsultationsContent() {
                               e.stopPropagation();
                               handleArchive(
                                 consultation.id,
-                                !!(consultation as any).archived_at
+                                !!consultation.archived_at
                               );
                             }}
                             disabled={archiving === consultation.id}
-                            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:text-[#E8E8E6] cursor-pointer"
+                            className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#2a2a2d] text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:hover:text-[#E8E8E6] cursor-pointer"
                           >
                             {archiving === consultation.id ? (
                               <div className="w-4 h-4 animate-spin rounded-full border-2 border-slate-400 border-t-transparent" />
@@ -877,8 +879,8 @@ function MesConsultationsContent() {
                 {selectedConsultation ? (
                   <ChatPanel />
                 ) : (
-                  <div className="hidden lg:flex bg-slate-50 rounded-xl p-12 text-center border-2 border-dashed border-slate-300 flex-col items-center">
-                    <MessageSquare className="w-12 h-12 text-slate-300 mb-3" />
+                  <div className="hidden lg:flex bg-slate-50 dark:bg-[#141415] rounded-xl p-12 text-center border-2 border-dashed border-slate-300 dark:border-[#3a3a3d] flex-col items-center">
+                    <MessageSquare className="w-12 h-12 text-slate-300 dark:text-[#3a3a3d] mb-3" />
                     <p className="text-slate-500 dark:text-[#A8A8A6] font-medium">
                       {t("mesConsultations.selectPrompt")}
                     </p>

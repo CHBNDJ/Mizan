@@ -129,12 +129,7 @@ export function ConsultationPanel({
           ? new Date(`${scheduledDate}T${scheduledTime}:00`).toISOString()
           : null;
 
-      // Un créneau choisi dans needsSchedule correspond forcément à une
-      // disponibilité déjà ouverte par le professionnel (BookingCalendar ne
-      // propose que des créneaux libres) — donc pas besoin d'acceptation
-      // manuelle, c'est confirmé directement. Seule la demande par message
-      // simple reste "en attente" (le professionnel doit choisir d'y répondre).
-      const initialStatus = needsSchedule ? "accepted" : "pending";
+      const initialStatus = needsSchedule ? "accepted" : "answered";
 
       const priceStr = price?.base_price
         ? `\n💰 ${price.base_price.toLocaleString()} DA`
@@ -212,9 +207,6 @@ export function ConsultationPanel({
         }
       }
 
-      // Confirmé directement (créneau dispo) -> notification immédiate aux
-      // deux parties. En attente (message simple) -> notification au
-      // professionnel seulement, pour qu'il traite la demande.
       const notifTitle = needsSchedule
         ? "Rendez-vous confirmé"
         : "Nouvelle demande de consultation";
