@@ -59,6 +59,7 @@ export function ConsultationPanel({
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+  const [messageText, setMessageText] = useState("");
 
   const isAppointment = [
     "notaire",
@@ -111,6 +112,10 @@ export function ConsultationPanel({
     if (!selected) return;
     if (needsSchedule && (!scheduledDate || !scheduledTime)) {
       setError(tc("schedule.errorRequired"));
+      return;
+    }
+    if (selected === "message" && !messageText.trim()) {
+      setError(tc("messageRequired"));
       return;
     }
     setError("");
@@ -179,10 +184,15 @@ export function ConsultationPanel({
             })} à ${scheduledTime}`
           : "";
 
+        const questionStr =
+          selected === "message" && messageText.trim()
+            ? `\n\n${messageText.trim()}`
+            : "";
+
         await supabase.from("messages").insert({
           consultation_id: cid,
           sender_id: user.id,
-          content: `📋 ${canal.label}${durStr}${dateStr}${priceStr}`,
+          content: `📋 ${canal.label}${durStr}${dateStr}${priceStr}${questionStr}`,
         });
 
         if (scheduledDate && scheduledTime) {
@@ -352,6 +362,18 @@ export function ConsultationPanel({
         })}
       </div>
 
+      {selected === "message" && (
+        <div className="mt-4">
+          <textarea
+            value={messageText}
+            onChange={(e) => setMessageText(e.target.value)}
+            rows={4}
+            placeholder={tc("messagePlaceholder")}
+            className="w-full px-3 py-2.5 text-sm border border-slate-200 dark:border-[#1c2220] rounded-xl bg-white dark:bg-[#1c1c1e] focus:border-teal-400 dark:focus:border-[#6fcf9f] focus:border-2 outline-none transition-all resize-none text-slate-700 dark:text-[#E8E8E6] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78]"
+          />
+        </div>
+      )}
+
       {needsSchedule && (
         <div className="mt-4">
           <div className="bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl p-4">
@@ -383,7 +405,8 @@ export function ConsultationPanel({
           disabled={
             !selected ||
             sending ||
-            (needsSchedule && (!scheduledDate || !scheduledTime))
+            (needsSchedule && (!scheduledDate || !scheduledTime)) ||
+            (selected === "message" && !messageText.trim())
           }
           className="w-full bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#085041] disabled:opacity-40 text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
         >
