@@ -1504,7 +1504,7 @@ export default function LawyerRegisterPage() {
             {t("auth.lawyerRegister.step0Subtitle")}
           </p>
           <div className="grid grid-cols-2 gap-3 mb-3">
-            {PROFESSIONS.slice(0, 4).map((p) => {
+            {PROFESSIONS.map((p) => {
               const isSelected = professions.includes(p.id);
               return (
                 <button
@@ -1529,33 +1529,6 @@ export default function LawyerRegisterPage() {
                 </button>
               );
             })}
-          </div>
-          <div className="flex justify-center">
-            {(() => {
-              const p = PROFESSIONS[4];
-              const isSelected = professions[0] === p.id;
-              return (
-                <button
-                  type="button"
-                  onClick={() => handleProfessionSelect(p.id)}
-                  className={`w-[calc(50%-6px)] p-4 border-2 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer relative ${isSelected ? "border-teal-600 dark:border-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10" : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e] hover:border-teal-300 dark:hover:border-[#6fcf9f]/50"}`}
-                >
-                  <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 flex items-center justify-center">
-                    <p.Icon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
-                  </div>
-                  <span
-                    className={`text-sm font-semibold ${isSelected ? "text-teal-700 dark:text-[#6fcf9f]" : "text-slate-700 dark:text-[#E8E8E6]"}`}
-                  >
-                    {p.label}
-                  </span>
-                  {isSelected && (
-                    <div className="absolute top-2 end-2 w-5 h-5 bg-teal-600 dark:bg-[#0F6E56] rounded-full flex items-center justify-center">
-                      <CheckCircle className="w-3 h-3 text-white" />
-                    </div>
-                  )}
-                </button>
-              );
-            })()}
           </div>
 
           {professions[0] === "expert-comptable" && (
