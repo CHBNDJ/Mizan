@@ -449,7 +449,12 @@
     "Français": "الفرنسية",
     "Anglais": "الإنجليزية",
     "Tamazight": "الأمازيغية",
-    "Espagnol": "الإسبانية"
+    "Espagnol": "الإسبانية",
+    "Allemand": "الألمانية",
+    "Russe": "الروسية",
+    "Chinois": "الصينية",
+    "Italien": "الإيطالية",
+    "Turc": "التركية"
   },
   "genres": {
     "homme": "السيد",
@@ -1354,7 +1359,9 @@
           }
         ]
       }
-    }
+    },
+    "languesLabel": "اللغة",
+    "languesPlaceholder": "كل اللغات"
   },
   "professionsPage": {
     "tag": "دليل المهن",

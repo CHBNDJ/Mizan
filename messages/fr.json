@@ -879,7 +879,12 @@
     "Français": "Français",
     "Anglais": "Anglais",
     "Tamazight": "Tamazight",
-    "Espagnol": "Espagnol"
+    "Espagnol": "Espagnol",
+    "Allemand": "Allemand",
+    "Russe": "Russe",
+    "Chinois": "Chinois",
+    "Italien": "Italien",
+    "Turc": "Turc"
   },
   "genres": {
     "homme": "M.",
@@ -2153,7 +2158,9 @@
           }
         ]
       }
-    }
+    },
+    "languesLabel": "Langue",
+    "languesPlaceholder": "Toutes les langues"
   },
   "professionsPage": {
     "tag": "Guide des professions",

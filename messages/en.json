@@ -871,7 +871,12 @@
     "Français": "French",
     "Anglais": "English",
     "Tamazight": "Tamazight",
-    "Espagnol": "Spanish"
+    "Espagnol": "Spanish",
+    "Allemand": "German",
+    "Russe": "Russian",
+    "Chinois": "Chinese",
+    "Italien": "Italian",
+    "Turc": "Turkish"
   },
   "genres": {
     "homme": "Mr.",
@@ -2145,7 +2150,9 @@
           }
         ]
       }
-    }
+    },
+    "languesLabel": "Language",
+    "languesPlaceholder": "All languages"
   },
   "professionsPage": {
     "tag": "Professions guide",
