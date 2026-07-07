@@ -296,7 +296,6 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                       onChange={setSelectedLangues}
                       className="h-12"
                       placeholderClassName="text-slate-400 dark:text-[#7A7A78] font-medium text-sm"
-                      showSelectAll
                     />
                   </div>
                 )}

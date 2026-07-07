@@ -148,7 +148,7 @@ export interface SearchFilters {
   specialite?: string[];
   experience_min?: number;
   verified?: boolean;
-  langues?: string;
+  langues?: string | string[];
   profession?: string;
   genre?: "homme" | "femme";
   query?: string;

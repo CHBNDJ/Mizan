@@ -2019,7 +2019,12 @@
     "Due diligence financière": "الفحص المالي النافي للجهالة",
     "Déclarations fiscales (IFU, G50, IBS, TAP)": "التصريحات الضريبية (IFU، G50، IBS، TAP)",
     "Comptabilité EURL/SARL/SPA": "محاسبة EURL/SARL/SPA",
-    "Bilan et compte de résultat": "الميزانية وحساب النتائج"
+    "Bilan et compte de résultat": "الميزانية وحساب النتائج",
+    "Document d'état civil": "وثيقة الحالة المدنية",
+    "Document juridique": "وثيقة قانونية",
+    "Document administratif": "وثيقة إدارية",
+    "Document académique et professionnel": "وثيقة أكاديمية ومهنية",
+    "Interprétariat": "الترجمة الفورية"
   },
   "countries": {
     "dz": "الجزائر",

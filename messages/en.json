@@ -864,7 +864,12 @@
     "Due diligence financière": "Financial due diligence",
     "Déclarations fiscales (IFU, G50, IBS, TAP)": "Tax filings (IFU, G50, IBS, TAP)",
     "Comptabilité EURL/SARL/SPA": "EURL/SARL/SPA bookkeeping",
-    "Bilan et compte de résultat": "Balance sheet and income statement"
+    "Bilan et compte de résultat": "Balance sheet and income statement",
+    "Document d'état civil": "Civil status document",
+    "Document juridique": "Legal document",
+    "Document administratif": "Administrative document",
+    "Document académique et professionnel": "Academic & professional document",
+    "Interprétariat": "Interpreting"
   },
   "langues": {
     "Arabe": "Arabic",
