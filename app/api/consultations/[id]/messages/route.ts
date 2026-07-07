@@ -231,21 +231,25 @@ export async function POST(
 
         const appUrl =
           process.env.NEXT_PUBLIC_APP_URL || "https://mizan-dz.com";
-        await fetch(`${appUrl}/api/push/send`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-internal-secret": process.env.INTERNAL_API_SECRET || "",
-          },
-          body: JSON.stringify({
-            user_id: recipientId,
-            title: `${es.subject} ${senderName}`,
-            body: messagePreview,
-            url: consultationUrl,
-          }),
-        });
-        const pushText = await pushRes.text();
-        console.log("PUSH RESULT:", pushRes.status, pushText);
+        try {
+          const pushRes = await fetch(`${appUrl}/api/push/send`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-internal-secret": process.env.INTERNAL_API_SECRET || "",
+            },
+            body: JSON.stringify({
+              user_id: recipientId,
+              title: `${es.subject} ${senderName}`,
+              body: messagePreview,
+              url: consultationUrl,
+            }),
+          });
+          const pushText = await pushRes.text();
+          console.log("PUSH RESULT:", pushRes.status, pushText);
+        } catch (pushErr) {
+          console.log("PUSH ERROR:", pushErr);
+        }
       }
     } catch (notifError) {
       console.error("Erreur notifications:", notifError);
