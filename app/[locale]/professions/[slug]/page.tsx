@@ -474,7 +474,10 @@ export default function ProfessionPage() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {data.missions.map((m, i) => (
-              <div key={i} className="flex gap-3 p-4 bg-slate-50 rounded-xl">
+              <div
+                key={i}
+                className="flex gap-3 p-4 bg-slate-50 dark:bg-[#141415] rounded-xl"
+              >
                 <span className="text-lg flex-shrink-0">{m.emoji}</span>
                 <div>
                   <p className="text-xs font-semibold text-slate-800 dark:text-[#F5F5F4] mb-1">
@@ -490,7 +493,7 @@ export default function ProfessionPage() {
         </div>
 
         <div className="pf-section bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-2xl p-6 mb-4">
-          <h2 className="text-sm font-bold text-teal-900 mb-4">
+          <h2 className="text-sm font-bold text-teal-900 dark:text-[#6fcf9f] mb-4">
             {t("professionDetailPage.whenToCallTitle", {
               label: data.label.toLowerCase(),
             })}
@@ -499,7 +502,7 @@ export default function ProfessionPage() {
             {data.quandFaireAppel.map((q, i) => (
               <div
                 key={i}
-                className="flex gap-3 bg-white rounded-xl p-4 shadow-sm"
+                className="flex gap-3 bg-white dark:bg-[#1c1c1e] rounded-xl p-4 shadow-sm dark:shadow-none"
               >
                 <CheckCircle className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
                 <div>
@@ -523,7 +526,7 @@ export default function ProfessionPage() {
             {data.differences.map((d, i) => (
               <div
                 key={i}
-                className="p-4 bg-slate-50 border-s-4 border-teal-400 rounded-e-xl"
+                className="p-4 bg-slate-50 dark:bg-[#141415] border-s-4 border-teal-400 rounded-e-xl"
               >
                 <p className="text-xs font-bold text-teal-700 dark:text-[#6fcf9f] uppercase tracking-wide mb-1">
                   {t("professionDetailPage.vsLabel", {
