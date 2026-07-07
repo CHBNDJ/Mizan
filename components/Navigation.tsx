@@ -99,6 +99,12 @@ export function Navigation() {
   }, [user, profile]);
 
   useEffect(() => {
+    const handler = () => loadUnreadCount();
+    window.addEventListener("mizan:refresh-unread", handler);
+    return () => window.removeEventListener("mizan:refresh-unread", handler);
+  }, [user, profile]);
+
+  useEffect(() => {
     if (!user || !profile) return;
     const channel = supabase
       .channel(`navbar-unread-${user.id}`)
