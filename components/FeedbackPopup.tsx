@@ -68,19 +68,19 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl max-w-lg w-full shadow-xl relative">
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-xl max-w-lg w-full shadow-xl dark:shadow-none border border-transparent dark:border-[#1c2220] relative">
         <button
           onClick={onClose}
-          className="absolute top-4 end-4 text-slate-400 hover:text-slate-700 transition-colors"
+          className="absolute top-4 end-4 text-slate-400 dark:text-[#7A7A78] hover:text-slate-700 dark:hover:text-[#E8E8E6] transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         {success ? (
           <div className="text-center py-12 px-8">
-            <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-teal-100 dark:bg-[#6fcf9f]/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg
-                className="w-8 h-8 text-teal-600"
+                className="w-8 h-8 text-teal-600 dark:text-[#6fcf9f]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -93,23 +93,27 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-2">
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-[#F5F5F4] mb-2">
               {t("thanksTitle")}
             </h3>
-            <p className="text-slate-600">{t("thanksDesc")}</p>
+            <p className="text-slate-600 dark:text-[#A8A8A6]">
+              {t("thanksDesc")}
+            </p>
           </div>
         ) : (
           <>
-            <div className="p-6 border-b border-slate-100">
-              <h3 className="text-xl font-semibold text-slate-900 mb-1">
+            <div className="p-6 border-b border-slate-100 dark:border-[#1c2220]">
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-[#F5F5F4] mb-1">
                 {t("title")}
               </h3>
-              <p className="text-sm text-slate-600">{t("subtitle")}</p>
+              <p className="text-sm text-slate-600 dark:text-[#A8A8A6]">
+                {t("subtitle")}
+              </p>
             </div>
 
             <div className="p-6">
               {error && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/40 rounded-lg text-red-600 dark:text-red-400 text-sm">
                   {error}
                 </div>
               )}
@@ -124,8 +128,8 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
                       key={ft.value}
                       className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
                         isSelected
-                          ? "border-teal-500 bg-teal-50"
-                          : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                          ? "border-teal-500 dark:border-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10"
+                          : "border-slate-200 dark:border-[#1c2220] hover:border-slate-300 dark:hover:border-[#3a3a3d] hover:bg-slate-50 dark:hover:bg-[#141415]"
                       }`}
                     >
                       <input
@@ -138,24 +142,30 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
                       />
                       <div
                         className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                          isSelected ? "bg-teal-600" : "bg-slate-100"
+                          isSelected
+                            ? "bg-teal-600 dark:bg-[#0F6E56]"
+                            : "bg-slate-100 dark:bg-[#2a2a2d]"
                         }`}
                       >
                         <Icon
                           className={`w-5 h-5 ${
-                            isSelected ? "text-white" : "text-slate-500"
+                            isSelected
+                              ? "text-white"
+                              : "text-slate-500 dark:text-[#A8A8A6]"
                           }`}
                         />
                       </div>
                       <span
                         className={`font-medium ${
-                          isSelected ? "text-slate-900" : "text-slate-700"
+                          isSelected
+                            ? "text-slate-900 dark:text-[#F5F5F4]"
+                            : "text-slate-700 dark:text-[#E8E8E6]"
                         }`}
                       >
                         {ft.label}
                       </span>
                       {isSelected && (
-                        <div className="ms-auto w-5 h-5 bg-teal-600 rounded-full flex items-center justify-center">
+                        <div className="ms-auto w-5 h-5 bg-teal-600 dark:bg-[#0F6E56] rounded-full flex items-center justify-center">
                           <svg
                             className="w-3 h-3 text-white"
                             fill="currentColor"
@@ -175,28 +185,28 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
               </div>
 
               <div className="mb-6">
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-2">
                   {t("messageLabel")}
                 </label>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder={placeholder}
-                  className="w-full px-4 py-3 text-sm border border-slate-300 rounded-lg bg-white focus:border-2 hover:border-2 hover:border-teal-300 focus:border-teal-300 outline-none transition-all duration-200 text-slate-700 resize-none h-32"
+                  className="w-full px-4 py-3 text-sm border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#141415] focus:border-2 hover:border-2 hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-300 dark:focus:border-[#6fcf9f] outline-none transition-all duration-200 text-slate-700 dark:text-[#E8E8E6] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78] resize-none h-32"
                 />
               </div>
 
               <div className="flex gap-3">
                 <button
                   onClick={onClose}
-                  className="cursor-pointer flex-1 px-4 py-2.5 border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-colors"
+                  className="cursor-pointer flex-1 px-4 py-2.5 border border-slate-300 dark:border-[#1c2220] rounded-lg text-slate-700 dark:text-[#E8E8E6] font-medium hover:bg-slate-50 dark:hover:bg-[#141415] transition-colors"
                 >
                   {t("later")}
                 </button>
                 <button
                   onClick={handleSubmit}
                   disabled={!message.trim() || sending}
-                  className="cursor-pointer flex-1 bg-teal-600 hover:bg-teal-700 disabled:bg-slate-300 text-white py-2.5 px-4 rounded-lg font-medium transition-colors disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="cursor-pointer flex-1 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#085041] disabled:bg-slate-300 dark:disabled:bg-[#2a2a2d] text-white py-2.5 px-4 rounded-lg font-medium transition-colors disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {sending ? (
                     <>

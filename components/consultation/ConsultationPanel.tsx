@@ -179,7 +179,9 @@ export function ConsultationPanel({
           .insert({
             consultation_id: cid,
             sender_id: user.id,
-            content: fullContent,
+            sender_type: "client",
+            message: fullContent,
+            is_read: false,
           });
         if (msgError) console.error("Erreur création message:", msgError);
 
