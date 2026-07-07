@@ -76,6 +76,11 @@
       "label": "Expert Comptable",
       "desc": "Audit légal, due diligence",
       "plural": "experts comptables"
+    },
+    "traducteur": {
+      "label": "Traducteur assermenté",
+      "desc": "Traductions officielles, actes, diplômes...",
+      "plural": "traducteurs assermentés"
     }
   },
   "validation": {
@@ -221,7 +226,8 @@
       "notaire": "Chambre des notaires de",
       "huissier": "Juridiction de",
       "expertComptable": "N° ONEC",
-      "comptable": "N° ONEC/ONCA"
+      "comptable": "N° ONEC/ONCA",
+      "traducteur": "N° d'agrément (Ministère de la Justice)"
     },
     "experienceYears": "ans d'expérience",
     "registeredIn": "inscrit en",
@@ -349,14 +355,16 @@
         "notaire": "N° chambre des notaires",
         "huissier": "N° d'huissier",
         "comptable": "N° ONEC / ONCA",
-        "expertComptable": "N° ONEC"
+        "expertComptable": "N° ONEC",
+        "traducteur": "N° d'agrément (Ministère de la Justice)"
       },
       "numPlaceholders": {
         "avocat": "23/3456",
         "notaire": "NOT2024-001",
         "huissier": "HUI2024-001",
         "comptable": "CMP2024-001",
-        "expertComptable": "ONEC2024-001"
+        "expertComptable": "ONEC2024-001",
+        "traducteur": "TRD2024-001"
       },
       "barNumberRequired": "Le {numLabel} est requis"
     },
@@ -679,6 +687,34 @@
           {
             "q": "Les missions peuvent-elles se faire à distance ?",
             "a": "Oui. La plupart des missions peuvent se faire par échange de documents et messagerie. Mizan facilite ce flux dès le premier contact."
+          }
+        ]
+      },
+      "traducteur": {
+        "claimBanner": false,
+        "steps": [
+          {
+            "title": "Inscrivez-vous",
+            "desc": "Créez votre profil. Votre N° d'agrément du Ministère de la Justice sera requis.",
+            "points": ["Profil complet", "N° agrément requis", "Gratuit"]
+          },
+          {
+            "title": "Vérification",
+            "desc": "Notre équipe vérifie votre agrément de traducteur assermenté sous 24-48h.",
+            "points": [
+              "Délai 24-48h",
+              "Vérification agrément",
+              "Activation manuelle"
+            ]
+          },
+          {
+            "title": "Clients diaspora",
+            "desc": "La diaspora qui a besoin de traductions officielles pour ses démarches vous trouve directement.",
+            "points": [
+              "Actes et diplômes",
+              "Documents juridiques",
+              "À distance"
+            ]
           }
         ]
       }
@@ -1603,14 +1639,16 @@
       "notaire": "N° chambre des notaires",
       "huissier": "N° huissier de justice",
       "comptable": "N° ONEC / ONCA",
-      "expertComptable": "N° ONEC"
+      "expertComptable": "N° ONEC",
+      "traducteur": "N° d'agrément (Ministère de la Justice)"
     },
     "numPlaceholders": {
       "avocat": "ex: ALG2024-001",
       "notaire": "ex: NOT-2024-001",
       "huissier": "ex: HUI-2024-001",
       "comptable": "ex: ONEC-2024-001",
-      "expertComptable": "ex: ONEC-2024-001"
+      "expertComptable": "ex: ONEC-2024-001",
+      "traducteur": "TRD2024-001"
     }
   },
   "settingsPage": {
@@ -2094,6 +2132,26 @@
             "desc": "La majorité des missions d'expertise se font à distance par échange de documents."
           }
         ]
+      },
+      "traducteur": {
+        "domainLabel": "Langue / Document",
+        "hero": "Trouvez un traducteur assermenté en Algérie",
+        "sub": "Traduction officielle d'actes, diplômes et documents juridiques — pour résidents et diaspora.",
+        "searchLabel": "Rechercher un traducteur assermenté",
+        "steps": [
+          {
+            "title": "Précisez votre besoin",
+            "desc": "Paire de langues et type de document : acte d'état civil, diplôme, jugement..."
+          },
+          {
+            "title": "Choisissez la wilaya",
+            "desc": "Un traducteur agréé près de chez vous facilite la remise des documents originaux."
+          },
+          {
+            "title": "Traduction certifiée",
+            "desc": "La plupart des échanges se font par messagerie, avec remise du document tamponné."
+          }
+        ]
       }
     }
   },
@@ -2478,6 +2536,64 @@
         {
           "avec": "Avocat fiscaliste",
           "distinction": "L'expert-comptable prépare et chiffre la défense fiscale. L'avocat fiscaliste la plaide devant les juridictions. Les deux travaillent souvent ensemble sur les dossiers complexes."
+        }
+      ]
+    },
+    "traducteur": {
+      "label": "Traducteur assermenté",
+      "labelPlural": "traducteurs assermentés",
+      "tagline": "Traductions officielles à valeur légale",
+      "intro": "Le traducteur assermenté est agréé par le Ministère de la Justice pour produire des traductions officielles à valeur légale. Il traduit actes d'état civil, jugements, diplômes, contrats et documents administratifs, avec un cachet reconnu par les administrations algériennes et étrangères. Indispensable pour les démarches de visa, d'immigration, d'équivalence de diplômes ou de dossiers judiciaires internationaux.",
+      "cadreJuridique": "Le traducteur assermenté (traducteur-interprète officiel) exerce sous l'agrément du Ministère de la Justice. Il prête serment devant la cour et son cachet confère à ses traductions une valeur officielle opposable aux administrations et juridictions. Ses traductions sont reconnues pour les actes destinés aux autorités algériennes comme étrangères.",
+      "missions": [
+        {
+          "title": "Traduction d'actes d'état civil",
+          "desc": "Actes de naissance, de mariage, de décès — traduits et certifiés pour vos démarches administratives en Algérie ou à l'étranger.",
+          "emoji": "📄"
+        },
+        {
+          "title": "Traduction de diplômes",
+          "desc": "Diplômes et relevés de notes traduits officiellement pour l'équivalence, la poursuite d'études ou l'emploi à l'étranger.",
+          "emoji": "🎓"
+        },
+        {
+          "title": "Documents judiciaires",
+          "desc": "Jugements, actes de procédure et pièces de dossier traduits avec valeur légale pour les procédures internationales.",
+          "emoji": "⚖️"
+        },
+        {
+          "title": "Contrats et actes notariés",
+          "desc": "Contrats commerciaux, procurations et actes notariés traduits fidèlement et certifiés.",
+          "emoji": "📝"
+        },
+        {
+          "title": "Interprétariat au tribunal",
+          "desc": "Interprétation officielle lors d'audiences, d'auditions ou de signatures d'actes.",
+          "emoji": "🗣️"
+        }
+      ],
+      "quandFaireAppel": [
+        {
+          "situation": "Démarche de visa ou d'immigration",
+          "detail": "Les consulats exigent des traductions assermentées de vos actes d'état civil et justificatifs."
+        },
+        {
+          "situation": "Équivalence de diplôme",
+          "detail": "Une traduction officielle de vos diplômes est requise pour toute équivalence à l'étranger."
+        },
+        {
+          "situation": "Dossier judiciaire international",
+          "detail": "Les jugements et pièces destinés à une juridiction étrangère doivent être traduits par un assermenté."
+        }
+      ],
+      "differences": [
+        {
+          "avec": "un traducteur classique",
+          "distinction": "Seul le traducteur assermenté peut produire une traduction à valeur officielle, reconnue par les administrations et les tribunaux."
+        },
+        {
+          "avec": "le notaire",
+          "distinction": "Le notaire authentifie des actes ; le traducteur assermenté en produit la version officielle dans une autre langue."
         }
       ]
     }

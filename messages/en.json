@@ -76,6 +76,11 @@
       "label": "Chartered Accountant",
       "desc": "Statutory audit, due diligence",
       "plural": "chartered accountants"
+    },
+    "traducteur": {
+      "label": "Sworn translator",
+      "desc": "Official translations, records, diplomas...",
+      "plural": "sworn translators"
     }
   },
   "validation": {
@@ -221,7 +226,8 @@
       "notaire": "Chamber of notaries of",
       "huissier": "Jurisdiction of",
       "expertComptable": "ONEC No.",
-      "comptable": "ONEC/ONCA No."
+      "comptable": "ONEC/ONCA No.",
+      "traducteur": "Accreditation No. (Ministry of Justice)"
     },
     "experienceYears": "years of experience",
     "registeredIn": "registered in",
@@ -349,14 +355,16 @@
         "notaire": "Chamber of notaries No.",
         "huissier": "Bailiff No.",
         "comptable": "ONEC / ONCA No.",
-        "expertComptable": "ONEC No."
+        "expertComptable": "ONEC No.",
+        "traducteur": "Accreditation No. (Ministry of Justice)"
       },
       "numPlaceholders": {
         "avocat": "23/3456",
         "notaire": "NOT2024-001",
         "huissier": "HUI2024-001",
         "comptable": "CMP2024-001",
-        "expertComptable": "ONEC2024-001"
+        "expertComptable": "ONEC2024-001",
+        "traducteur": "TRD2024-001"
       },
       "barNumberRequired": "{numLabel} is required"
     },
@@ -675,6 +683,30 @@
           {
             "q": "Can assignments be done remotely?",
             "a": "Yes. Most assignments can be done through document exchange and messaging. Mizan facilitates this flow from first contact."
+          }
+        ]
+      },
+      "traducteur": {
+        "claimBanner": false,
+        "steps": [
+          {
+            "title": "Sign up",
+            "desc": "Create your profile. Your Ministry of Justice accreditation number will be required.",
+            "points": ["Full profile", "Accreditation required", "Free"]
+          },
+          {
+            "title": "Verification",
+            "desc": "Our team verifies your sworn translator accreditation within 24-48h.",
+            "points": [
+              "24-48h delay",
+              "Accreditation check",
+              "Manual activation"
+            ]
+          },
+          {
+            "title": "Diaspora clients",
+            "desc": "The diaspora needing official translations for their procedures finds you directly.",
+            "points": ["Records & diplomas", "Legal documents", "Remote"]
           }
         ]
       }
@@ -1599,14 +1631,16 @@
       "notaire": "Chamber of notaries No.",
       "huissier": "Bailiff number",
       "comptable": "ONEC / ONCA No.",
-      "expertComptable": "ONEC No."
+      "expertComptable": "ONEC No.",
+      "traducteur": "Accreditation No. (Ministry of Justice)"
     },
     "numPlaceholders": {
       "avocat": "e.g.: ALG2024-001",
       "notaire": "e.g.: NOT-2024-001",
       "huissier": "e.g.: HUI-2024-001",
       "comptable": "e.g.: ONEC-2024-001",
-      "expertComptable": "e.g.: ONEC-2024-001"
+      "expertComptable": "e.g.: ONEC-2024-001",
+      "traducteur": "TRD2024-001"
     }
   },
   "settingsPage": {
@@ -2090,6 +2124,26 @@
             "desc": "Most expert assignments are done remotely through document exchange."
           }
         ]
+      },
+      "traducteur": {
+        "domainLabel": "Language / Document",
+        "hero": "Find a sworn translator in Algeria",
+        "sub": "Official translation of records, diplomas and legal documents — for residents and the diaspora.",
+        "searchLabel": "Search for a sworn translator",
+        "steps": [
+          {
+            "title": "Specify your need",
+            "desc": "Language pair and document type: civil record, diploma, judgment..."
+          },
+          {
+            "title": "Choose the wilaya",
+            "desc": "A local accredited translator makes handing over original documents easier."
+          },
+          {
+            "title": "Certified translation",
+            "desc": "Most exchanges happen by messaging, with delivery of the stamped document."
+          }
+        ]
       }
     }
   },
@@ -2474,6 +2528,64 @@
         {
           "avec": "Tax lawyer",
           "distinction": "The chartered accountant prepares and quantifies the tax defense. The tax lawyer argues it before the courts. The two often work together on complex cases."
+        }
+      ]
+    },
+    "traducteur": {
+      "label": "Sworn translator",
+      "labelPlural": "sworn translators",
+      "tagline": "Official translations with legal value",
+      "intro": "The sworn translator is accredited by the Ministry of Justice to produce official translations with legal value. They translate civil records, judgments, diplomas, contracts and administrative documents, with a stamp recognized by Algerian and foreign authorities. Essential for visa procedures, immigration, diploma equivalence or international judicial files.",
+      "cadreJuridique": "The sworn translator (official translator-interpreter) operates under Ministry of Justice accreditation. They take an oath before the court and their stamp gives their translations official value enforceable before administrations and courts. Their translations are recognized for documents intended for both Algerian and foreign authorities.",
+      "missions": [
+        {
+          "title": "Civil record translation",
+          "desc": "Birth, marriage and death certificates — translated and certified for your administrative procedures in Algeria or abroad.",
+          "emoji": "📄"
+        },
+        {
+          "title": "Diploma translation",
+          "desc": "Diplomas and transcripts officially translated for equivalence, further study or employment abroad.",
+          "emoji": "🎓"
+        },
+        {
+          "title": "Judicial documents",
+          "desc": "Judgments, procedural acts and file documents translated with legal value for international procedures.",
+          "emoji": "⚖️"
+        },
+        {
+          "title": "Contracts and notarial acts",
+          "desc": "Commercial contracts, powers of attorney and notarial acts translated faithfully and certified.",
+          "emoji": "📝"
+        },
+        {
+          "title": "Court interpreting",
+          "desc": "Official interpreting during hearings, examinations or the signing of documents.",
+          "emoji": "🗣️"
+        }
+      ],
+      "quandFaireAppel": [
+        {
+          "situation": "Visa or immigration procedure",
+          "detail": "Consulates require sworn translations of your civil records and supporting documents."
+        },
+        {
+          "situation": "Diploma equivalence",
+          "detail": "An official translation of your diplomas is required for any equivalence abroad."
+        },
+        {
+          "situation": "International judicial file",
+          "detail": "Judgments and documents intended for a foreign court must be translated by a sworn translator."
+        }
+      ],
+      "differences": [
+        {
+          "avec": "a regular translator",
+          "distinction": "Only the sworn translator can produce a translation with official value, recognized by administrations and courts."
+        },
+        {
+          "avec": "the notary",
+          "distinction": "The notary authenticates documents; the sworn translator produces the official version in another language."
         }
       ]
     }
