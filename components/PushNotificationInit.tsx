@@ -28,11 +28,9 @@ export default function PushNotificationInit() {
     if (!("serviceWorker" in navigator) || !("PushManager" in window)) return;
     if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) return;
 
-    const autoSubscribe = async () => {
+    const registerForCurrentUser = async () => {
       try {
         const reg = await navigator.serviceWorker.ready;
-        const existing = await reg.pushManager.getSubscription();
-        if (existing) return;
 
         const permission =
           Notification.permission === "default"
@@ -41,12 +39,15 @@ export default function PushNotificationInit() {
 
         if (permission !== "granted") return;
 
-        const sub = await reg.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(
-            process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
-          ),
-        });
+        let sub = await reg.pushManager.getSubscription();
+        if (!sub) {
+          sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(
+              process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
+            ),
+          });
+        }
 
         const {
           data: { session },
@@ -64,7 +65,7 @@ export default function PushNotificationInit() {
       } catch {}
     };
 
-    autoSubscribe();
+    registerForCurrentUser();
   }, [user?.id, profile?.user_type]);
 
   return null;
