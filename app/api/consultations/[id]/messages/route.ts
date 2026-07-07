@@ -243,7 +243,9 @@ export async function POST(
             body: messagePreview,
             url: consultationUrl,
           }),
-        }).catch(() => {});
+        });
+        const pushText = await pushRes.text();
+        console.log("PUSH RESULT:", pushRes.status, pushText);
       }
     } catch (notifError) {
       console.error("Erreur notifications:", notifError);
