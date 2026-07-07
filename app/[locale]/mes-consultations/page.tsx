@@ -33,7 +33,7 @@ const getProfessionalTitle = (profession?: string) =>
 
 function MesConsultationsContent() {
   const supabase = createClient();
-  const { user, profile } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -63,6 +63,7 @@ function MesConsultationsContent() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (authLoading) return;
     if (!user) {
       router.push("/auth/client/login");
       return;
@@ -75,7 +76,7 @@ function MesConsultationsContent() {
       return;
     }
     loadConsultations();
-  }, [user, profile]);
+  }, [user, profile, authLoading]);
 
   useEffect(() => {
     if (searchParams.get("feedback") === "true") {

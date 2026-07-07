@@ -39,7 +39,7 @@ const capitalizeWords = (text: string) => {
 
 function LawyerConsultationsContent() {
   const supabase = createClient();
-  const { user, profile } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   const locale = useLocale();
@@ -79,6 +79,7 @@ function LawyerConsultationsContent() {
   }, [searchParams]);
 
   useEffect(() => {
+    if (authLoading) return;
     if (!user) {
       router.push("/auth/lawyer/login");
       return;
@@ -91,7 +92,7 @@ function LawyerConsultationsContent() {
       return;
     }
     loadConsultations();
-  }, [user, profile]);
+  }, [user, profile, authLoading]);
 
   useEffect(() => {
     if (selectedConsultation) loadMessages(selectedConsultation.id);
