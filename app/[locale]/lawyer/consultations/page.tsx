@@ -454,6 +454,7 @@ function LawyerConsultationsContent() {
       p_consultation_id: consultationId,
     });
     await loadConsultations();
+    window.dispatchEvent(new Event("mizan:refresh-unread"));
   };
 
   const markConsultationAsOpened = async (id: string) => {

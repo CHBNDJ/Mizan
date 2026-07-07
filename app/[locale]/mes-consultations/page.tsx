@@ -396,6 +396,7 @@ function MesConsultationsContent() {
       p_consultation_id: consultationId,
     });
     await loadConsultations();
+    window.dispatchEvent(new Event("mizan:refresh-unread"));
   };
 
   const handleSelectConsultation = async (consultation: ClientConsultation) => {
