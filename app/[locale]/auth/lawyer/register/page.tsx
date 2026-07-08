@@ -474,7 +474,7 @@ export default function LawyerRegisterPage() {
                     <p.Icon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
                   </div>
                   <span
-                    className={`text-sm font-semibold ${isSelected ? "text-teal-700 dark:text-[#6fcf9f]" : "text-slate-700 dark:text-[#E8E8E6]"}`}
+                    className={`text-sm font-semibold text-center leading-tight min-h-[2.5rem] flex items-center justify-center ${isSelected ? "text-teal-700 dark:text-[#6fcf9f]" : "text-slate-700 dark:text-[#E8E8E6]"}`}
                   >
                     {p.label}
                   </span>
