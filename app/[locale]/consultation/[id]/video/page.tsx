@@ -13,7 +13,7 @@ interface PageProps {
 export default function VideoConsultationPage({ params }: PageProps) {
   const { id } = use(params);
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const supabase = createClient();
   const t = useTranslations("videoConsultation");
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -25,9 +25,14 @@ export default function VideoConsultationPage({ params }: PageProps) {
   const [joined, setJoined] = useState(false);
 
   useEffect(() => {
-    if (!user) return;
+    if (authLoading) return;
+    if (!user) {
+      setError(t("unauthorized"));
+      setLoading(false);
+      return;
+    }
     loadConsultation();
-  }, [user, id]);
+  }, [user, id, authLoading]);
 
   const loadConsultation = async () => {
     try {
@@ -37,7 +42,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
           "*, lawyer:lawyer_id(first_name, last_name, profession), client:client_id(first_name, last_name)"
         )
         .eq("id", id)
-        .single();
+        .maybeSingle();
 
       if (err || !consult) {
         setError(t("notFound"));
@@ -51,6 +56,25 @@ export default function VideoConsultationPage({ params }: PageProps) {
         setError(t("unauthorized"));
         setLoading(false);
         return;
+      }
+
+      // Fenêtre d'accès : 15 min avant le créneau jusqu'à (durée + 30 min) après
+      if (consult.scheduled_at) {
+        const now = Date.now();
+        const start = new Date(consult.scheduled_at).getTime();
+        const durationMin = consult.channel === "video_60" ? 60 : 30;
+        const opensAt = start - 15 * 60 * 1000;
+        const closesAt = start + (durationMin + 30) * 60 * 1000;
+        if (now < opensAt) {
+          setError(t("tooEarly"));
+          setLoading(false);
+          return;
+        }
+        if (now > closesAt) {
+          setError(t("tooLate"));
+          setLoading(false);
+          return;
+        }
       }
 
       setConsultation(consult);
@@ -83,7 +107,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
   const handleLeave = async () => {
     await supabase
       .from("consultations")
-      .update({ status: "completed", updated_at: new Date().toISOString() })
+      .update({ status: "answered" })
       .eq("id", id);
 
     try {

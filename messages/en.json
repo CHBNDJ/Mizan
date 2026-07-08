@@ -2136,7 +2136,7 @@
         ]
       },
       "traducteur": {
-        "domainLabel": "Document",
+        "domainLabel": "Language / Document",
         "hero": "Find a sworn translator in Algeria",
         "sub": "Official translation of records, diplomas and legal documents — for residents and the diaspora.",
         "searchLabel": "Search for a sworn translator",
@@ -2882,7 +2882,9 @@
     "consultationWith": "Consultation with",
     "joinConsultation": "Join consultation",
     "cameraMicNote": "Your camera and microphone will be activated",
-    "roomLoadError": "Unable to load video room"
+    "roomLoadError": "Unable to load video room",
+    "tooEarly": "The call is not accessible yet. You can join 15 minutes before the appointment time.",
+    "tooLate": "This call's time slot has ended. Contact the professional by message if needed."
   },
   "phoneCallButton": {
     "call": "Call"

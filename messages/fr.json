@@ -2890,7 +2890,9 @@
     "consultationWith": "Consultation avec",
     "joinConsultation": "Rejoindre la consultation",
     "cameraMicNote": "Votre caméra et micro seront activés",
-    "roomLoadError": "Impossible de charger la salle vidéo"
+    "roomLoadError": "Impossible de charger la salle vidéo",
+    "tooEarly": "L'appel n'est pas encore accessible. Vous pourrez rejoindre 15 minutes avant l'heure du rendez-vous.",
+    "tooLate": "Le créneau de cet appel est terminé. Contactez le professionnel par message si besoin."
   },
   "phoneCallButton": {
     "call": "Appeler"
