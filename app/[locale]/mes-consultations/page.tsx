@@ -253,6 +253,7 @@ function MesConsultationsContent() {
             id: item.id,
             status: item.status as "answered" | "closed" | "accepted",
             subject: item.subject || "",
+            channel: item.channel || "",
             created_at: item.created_at,
             archived_at: item.archived_at || null,
             scheduled_at: item.scheduled_at || null,
@@ -407,11 +408,12 @@ function MesConsultationsContent() {
     await markMessagesAsRead(consultation.id);
   };
 
-  const isVideoConsultation = (subject?: string) =>
+  const isVideoConsultation = (subject?: string, channel?: string) =>
+    channel?.startsWith("video") ||
     subject?.toLowerCase().includes("vidéo") ||
     subject?.toLowerCase().includes("video");
-  const isPhoneConsultation = (subject?: string) =>
-    !!subject?.toLowerCase().includes("téléphone");
+  const isPhoneConsultation = (subject?: string, channel?: string) =>
+    channel === "phone" || !!subject?.toLowerCase().includes("téléphone");
   const formatScheduled = (iso: string) => {
     const d = new Date(iso);
     return (
@@ -486,10 +488,13 @@ function MesConsultationsContent() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            {isVideoConsultation(selectedConsultation!.subject) && (
+            {isVideoConsultation(
+              selectedConsultation!.subject,
+              selectedConsultation!.channel
+            ) && (
               <JoinCallButton
                 consultationId={selectedConsultation!.id}
-                canal="video_30"
+                canal={selectedConsultation!.channel || "video_60"}
               />
             )}
             <button
@@ -827,7 +832,10 @@ function MesConsultationsContent() {
                                 <Calendar className="w-3 h-3" />
                                 {formatDate(consultation.created_at)}
                               </p>
-                              {isVideoConsultation(consultation.subject) && (
+                              {isVideoConsultation(
+                                consultation.subject,
+                                consultation.channel
+                              ) && (
                                 <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#141415] px-1.5 py-0.5 rounded-full border border-teal-100 dark:border-[#1c2220]">
                                   <Video className="w-2.5 h-2.5" />{" "}
                                   {t("consultShared.videoLabel")}
@@ -848,8 +856,14 @@ function MesConsultationsContent() {
                                 )}
                             </div>
                             {consultation.scheduled_at &&
-                              (isVideoConsultation(consultation.subject) ||
-                                isPhoneConsultation(consultation.subject)) && (
+                              (isVideoConsultation(
+                                consultation.subject,
+                                consultation.channel
+                              ) ||
+                                isPhoneConsultation(
+                                  consultation.subject,
+                                  consultation.channel
+                                )) && (
                                 <div className="flex items-center gap-1 mt-1.5 text-teal-700 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#141415] border border-teal-100 dark:border-[#1c2220] rounded-lg px-2 py-1 w-fit">
                                   <Calendar className="w-3 h-3 flex-shrink-0" />
                                   <span className="text-[11px] font-medium">

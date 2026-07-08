@@ -97,6 +97,7 @@ export interface Consultation {
   archived_at?: string | null;
   scheduled_at?: string | null;
   subject?: string;
+  channel?: string;
   unread_count?: number;
   client: {
     first_name: string;
@@ -340,6 +341,7 @@ export interface ClientConsultation {
   id: string;
   status: "pending" | "answered" | "closed" | "accepted";
   subject: string;
+  channel?: string;
   created_at: string;
   archived_at: string | null;
   scheduled_at?: string | null;

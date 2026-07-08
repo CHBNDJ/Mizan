@@ -258,6 +258,7 @@ function LawyerConsultationsContent() {
             archived_at: item.archived_at || null,
             scheduled_at: item.scheduled_at || null,
             subject: item.subject || "",
+            channel: item.channel || "",
             unread_count: count || 0,
             client: {
               first_name: item.client?.first_name || "",
@@ -474,13 +475,14 @@ function LawyerConsultationsContent() {
     await markMessagesAsRead(consultation.id);
   };
 
-  const isVideoConsultation = (subject?: string) =>
+  const isVideoConsultation = (subject?: string, channel?: string) =>
     !!(
+      channel?.startsWith("video") ||
       subject?.toLowerCase().includes("vidéo") ||
       subject?.toLowerCase().includes("video")
     );
-  const isPhoneConsultation = (subject?: string) =>
-    !!subject?.toLowerCase().includes("téléphone");
+  const isPhoneConsultation = (subject?: string, channel?: string) =>
+    !!(channel === "phone" || subject?.toLowerCase().includes("téléphone"));
   const formatDate = (d: string) =>
     new Date(d).toLocaleDateString(dateLocale, {
       day: "numeric",
@@ -573,10 +575,13 @@ function LawyerConsultationsContent() {
             )}
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            {isVideoConsultation(selectedConsultation!.subject) && (
+            {isVideoConsultation(
+              selectedConsultation!.subject,
+              selectedConsultation!.channel
+            ) && (
               <JoinCallButton
                 consultationId={selectedConsultation!.id}
-                canal="video_30"
+                canal={selectedConsultation!.channel || "video_60"}
               />
             )}
             <button
@@ -953,13 +958,19 @@ function LawyerConsultationsContent() {
                               <p className="text-xs text-slate-400 dark:text-[#7A7A78]">
                                 {formatDate(consultation.created_at)}
                               </p>
-                              {isVideoConsultation(consultation.subject) && (
+                              {isVideoConsultation(
+                                consultation.subject,
+                                consultation.channel
+                              ) && (
                                 <span className="inline-flex items-center gap-1 text-[10px] font-medium text-teal-600 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#141415] px-1.5 py-0.5 rounded-full border border-teal-100 dark:border-[#1c2220]">
                                   <Video className="w-2.5 h-2.5" />{" "}
                                   {t("consultShared.videoLabel")}
                                 </span>
                               )}
-                              {isPhoneConsultation(consultation.subject) && (
+                              {isPhoneConsultation(
+                                consultation.subject,
+                                consultation.channel
+                              ) && (
                                 <span className="inline-flex items-center gap-1 text-[10px] font-medium text-blue-600 dark:text-[#7EA8E0] bg-blue-50 dark:bg-[#1F2A3D] px-1.5 py-0.5 rounded-full border border-blue-100 dark:border-[#2A3A5A]">
                                   {t("lawyerConsultations.phoneLabel")}
                                 </span>
@@ -979,8 +990,14 @@ function LawyerConsultationsContent() {
                                 )}
                             </div>
                             {consultation.scheduled_at &&
-                              (isVideoConsultation(consultation.subject) ||
-                                isPhoneConsultation(consultation.subject)) && (
+                              (isVideoConsultation(
+                                consultation.subject,
+                                consultation.channel
+                              ) ||
+                                isPhoneConsultation(
+                                  consultation.subject,
+                                  consultation.channel
+                                )) && (
                                 <div className="flex items-center gap-1 mt-1.5 text-teal-700 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#141415] border border-teal-100 dark:border-[#1c2220] rounded-lg px-2 py-1 w-fit">
                                   <Calendar className="w-3 h-3 flex-shrink-0" />
                                   <span className="text-[11px] font-medium">
