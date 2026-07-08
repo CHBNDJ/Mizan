@@ -36,7 +36,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
 
   const loadConsultation = async () => {
     try {
-      const res = await fetch("/api/consultation/get", {
+      const res = await fetch("/api/consultations/get", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ consultationId: id, userId: user?.id }),
