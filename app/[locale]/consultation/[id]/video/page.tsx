@@ -36,29 +36,27 @@ export default function VideoConsultationPage({ params }: PageProps) {
 
   const loadConsultation = async () => {
     try {
-      const { data: consult, error: err } = await supabase
-        .from("consultations")
-        .select(
-          "*, lawyer:lawyer_id(first_name, last_name, profession), client:client_id(first_name, last_name)"
-        )
-        .eq("id", id)
-        .maybeSingle();
+      const res = await fetch("/api/consultation/get", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ consultationId: id, userId: user?.id }),
+      });
 
-      if (err || !consult) {
+      if (!res.ok) {
+        if (res.status === 403) setError(t("unauthorized"));
+        else setError(t("notFound"));
+        setLoading(false);
+        return;
+      }
+
+      const { consultation: consult } = await res.json();
+
+      if (!consult) {
         setError(t("notFound"));
         setLoading(false);
         return;
       }
-      if (
-        !user ||
-        (user.id !== consult.lawyer_id && user.id !== consult.client_id)
-      ) {
-        setError(t("unauthorized"));
-        setLoading(false);
-        return;
-      }
 
-      // Fenêtre d'accès : 15 min avant le créneau jusqu'à (durée + 30 min) après
       if (consult.scheduled_at) {
         const now = Date.now();
         const start = new Date(consult.scheduled_at).getTime();
@@ -88,13 +86,6 @@ export default function VideoConsultationPage({ params }: PageProps) {
   };
 
   const getOrCreateDailyRoom = async (consultId: string): Promise<string> => {
-    const { data: existing } = await supabase
-      .from("consultation_rooms")
-      .select("room_url")
-      .eq("consultation_id", consultId)
-      .maybeSingle();
-
-    if (existing?.room_url) return existing.room_url;
     const res = await fetch("/api/daily/create-room", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -117,7 +108,6 @@ export default function VideoConsultationPage({ params }: PageProps) {
         body: JSON.stringify({ consultationId: id }),
       });
     } catch (_) {}
-
     const isLawyerUser = user?.id === consultation?.lawyer_id;
     router.push(isLawyerUser ? "/lawyer/consultations" : "/mes-consultations");
   };
@@ -183,7 +173,6 @@ export default function VideoConsultationPage({ params }: PageProps) {
           <span className="hidden sm:inline">{t("end")}</span>
         </button>
       </div>
-
       <div className="flex-1 relative">
         {!joined ? (
           <div className="absolute inset-0 flex items-center justify-center px-4">
