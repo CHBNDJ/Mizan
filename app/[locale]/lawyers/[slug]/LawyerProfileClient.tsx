@@ -53,6 +53,7 @@ const PROF_KEY_MAP: Record<string, string> = {
   huissier: "huissier",
   comptable: "comptable",
   "expert-comptable": "expertComptable",
+  traducteur: "traducteur",
 };
 
 const getMapsQuery = (a: AvocatData) =>
@@ -320,8 +321,6 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  // Le numéro n'est révélé au client que s'il a une consultation
-  // téléphonique acceptée par ce professionnel.
   useEffect(() => {
     if (!user || !isClient || !avocat?.id) {
       setHasAcceptedPhoneConsultation(false);
@@ -547,7 +546,6 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
         )}
 
         <div className="space-y-4">
-          {/* Hero card */}
           <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl overflow-hidden shadow-sm">
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] min-h-[320px]">
               <div className="hero-left opacity-0 invisible p-7 flex flex-col justify-between">
@@ -561,9 +559,11 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                         {getProfLabel(p).label}
                       </span>
                     ))}
-                    <span className="text-[10px] text-slate-400 dark:text-[#7A7A78]">
-                      · {profInfo.numLabel} {avocat.barreau}
-                    </span>
+                    {avocat.barreau && (
+                      <span className="text-[10px] text-slate-400 dark:text-[#7A7A78]">
+                        · {profInfo.numLabel} {avocat.barreau}
+                      </span>
+                    )}
                   </div>
                   <h1 className="text-2xl sm:text-3xl font-light text-slate-800 dark:text-[#E8E8E6] leading-tight mb-1">
                     {toCivilite(avocat.genre)} {avocat.prenom}
@@ -668,7 +668,6 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
             </div>
           </div>
 
-          {/* Spécialités */}
           {avocat.specialites && avocat.specialites.length > 0 && (
             <Card className="content-card opacity-0 invisible shadow-sm dark:bg-[#1c1c1e] dark:border-[#1c2220]">
               <CardHeader>
@@ -693,7 +692,6 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
             </Card>
           )}
 
-          {/* Panel consultation */}
           {showConsultPanel && (
             <div className="content-card opacity-0 invisible bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-5 shadow-sm relative overflow-hidden">
               {isOwnProfile && (
@@ -718,7 +716,6 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
             </div>
           )}
 
-          {/* Contacts */}
           {allInfoItems.length > 0 && (
             <>
               <div className="content-card opacity-0 invisible sm:hidden flex flex-col gap-2.5">
@@ -750,7 +747,6 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
             </>
           )}
 
-          {/* Carte */}
           {hasAddress && (
             <div className="content-card opacity-0 invisible bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl overflow-hidden shadow-sm">
               <LawyerMap
@@ -769,7 +765,6 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
             </div>
           )}
 
-          {/* Avis */}
           <div className="reviews-section opacity-0 invisible mt-4">
             <ReviewSection
               lawyerId={avocat.id}
