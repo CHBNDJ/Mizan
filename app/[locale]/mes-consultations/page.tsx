@@ -22,6 +22,7 @@ import { Message, ClientConsultation } from "@/types";
 import { gsap } from "gsap";
 import { JoinCallButton } from "@/components/consultation/JoinCallButton";
 import FeedbackPopup from "@/components/FeedbackPopup";
+import ReviewPopup from "@/components/ReviewPopup";
 import { Suspense } from "react";
 
 type TabFilter = "active" | "archived" | "all";
@@ -907,6 +908,7 @@ function MesConsultationsContent() {
       </div>
 
       {showFeedback && <FeedbackPopup onClose={() => setShowFeedback(false)} />}
+      <ReviewPopup />
     </div>
   );
 }
