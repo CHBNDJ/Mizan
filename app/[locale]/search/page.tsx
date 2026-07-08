@@ -353,13 +353,14 @@ function SearchResults() {
           placeholder={t("search.language.all")}
           value={selectedLangues}
           onChange={(v) => handleFilter("langues", v.length ? v : null)}
-          className="h-9 text-sm"
+          className="text-sm"
+          heightClass="h-9 max-h-9"
         />
       </div>
       {hasLightFilters && (
         <button
           onClick={clearLightFilters}
-          className="w-full text-xs text-slate-500 dark:text-[#A8A8A6] hover:text-slate-700 dark:hover:text-[#E8E8E6] py-2 px-3 border border-slate-200 dark:border-[#1c2220] rounded-lg bg-white dark:bg-[#1c1c1e] hover:bg-slate-50 dark:hover:bg-[#1c2220] cursor-pointer font-medium"
+          className="w-full text-xs text-slate-600 dark:text-[#E8E8E6] hover:text-slate-800 dark:hover:text-white py-2 px-3 border border-slate-200 dark:border-[#6fcf9f]/30 rounded-lg bg-white dark:bg-[#1c2220] hover:bg-slate-50 dark:hover:bg-[#26492f] cursor-pointer font-semibold"
         >
           {t("search.reset")}
         </button>

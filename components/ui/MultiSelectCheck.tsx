@@ -15,7 +15,11 @@ export function MultiSelectWithCheckboxes({
   placeholderClassName = "text-slate-400 font-medium",
   disabled = false,
   showSelectAll = false,
-}: MultiSelectWithCheckboxesProps & { showSelectAll?: boolean }) {
+  heightClass = "h-12 max-h-12",
+}: MultiSelectWithCheckboxesProps & {
+  showSelectAll?: boolean;
+  heightClass?: string;
+}) {
   const t = useTranslations("multiSelect");
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -77,7 +81,7 @@ export function MultiSelectWithCheckboxes({
         <div
           className={cn(
             "w-full px-3 py-2 border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] flex items-center justify-between",
-            "transition-all duration-200 h-12 max-h-12 outline-none",
+            `transition-all duration-200 ${heightClass} outline-none`,
             disabled
               ? "opacity-50 cursor-not-allowed bg-slate-50 dark:bg-[#141415] border-slate-200 dark:border-[#1c2220]"
               : cn(
