@@ -67,8 +67,8 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
         : t("placeholders.testimonial");
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-[#1c1c1e] rounded-xl max-w-lg w-full shadow-xl dark:shadow-none border border-transparent dark:border-[#1c2220] relative">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] p-3 sm:p-4 overflow-y-auto">
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-xl max-w-lg w-full my-auto max-h-[90vh] overflow-y-auto shadow-xl dark:shadow-none border border-transparent dark:border-[#1c2220] relative">
         <button
           onClick={onClose}
           className="absolute top-4 end-4 text-slate-400 dark:text-[#7A7A78] hover:text-slate-700 dark:hover:text-[#E8E8E6] transition-colors"
@@ -102,7 +102,7 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
           </div>
         ) : (
           <>
-            <div className="p-6 border-b border-slate-100 dark:border-[#1c2220]">
+            <div className="p-4 sm:p-6 border-b border-slate-100 dark:border-[#1c2220]">
               <h3 className="text-xl font-semibold text-slate-900 dark:text-[#F5F5F4] mb-1">
                 {t("title")}
               </h3>
@@ -111,7 +111,7 @@ export default function FeedbackPopup({ onClose }: FeedbackPopupProps) {
               </p>
             </div>
 
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               {error && (
                 <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/40 rounded-lg text-red-600 dark:text-red-400 text-sm">
                   {error}
