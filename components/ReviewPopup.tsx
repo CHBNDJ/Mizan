@@ -61,20 +61,21 @@ export default function ReviewPopup() {
     if (!pending || !user) return;
     setSubmitting(true);
     try {
-      await supabase.from("reviews").insert({
-        lawyer_id: pending.lawyer_id,
-        client_id: user.id,
-        rating,
-        comment: comment.trim() || null,
-        source: "mizan",
+      const res = await fetch("/api/reviews/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lawyerId: pending.lawyer_id,
+          clientId: user.id,
+          rating,
+          comment: comment.trim() || null,
+        }),
       });
-      try {
-        await fetch("/api/recalculate-ratings", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ lawyerId: pending.lawyer_id }),
-        });
-      } catch (_) {}
+      if (!res.ok) {
+        console.error("Echec insertion avis");
+        setSubmitting(false);
+        return;
+      }
       await supabase.from("pending_reviews").delete().eq("id", pending.id);
       setDone(true);
       setTimeout(() => setVisible(false), 2500);
