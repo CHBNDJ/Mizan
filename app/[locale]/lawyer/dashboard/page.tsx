@@ -32,7 +32,6 @@ import {
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { gsap } from "gsap";
-import { PendingConsultations } from "@/components/dashboard/PendingConsultations";
 import { localizedDigits } from "@/lib/arabicNumerals";
 
 const PROF_KEY: Record<string, string> = {
@@ -615,10 +614,6 @@ export default function LawyerDashboardPage() {
                 </div>
               </Link>
             ))}
-          </div>
-
-          <div className="d-fade mb-5">
-            <PendingConsultations />
           </div>
 
           <div className="d-fade mb-5">
