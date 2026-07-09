@@ -33,29 +33,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Recalculer la note moyenne de l'avocat
-    try {
-      const { data: allReviews } = await supabaseAdmin
-        .from("reviews")
-        .select("rating")
-        .eq("lawyer_id", lawyerId)
-        .eq("source", "mizan");
-
-      if (allReviews && allReviews.length > 0) {
-        const avg =
-          allReviews.reduce((s, r) => s + r.rating, 0) / allReviews.length;
-        await supabaseAdmin
-          .from("lawyers")
-          .update({
-            rating_mizan: Math.round(avg * 10) / 10,
-            reviews_count_mizan: allReviews.length,
-          })
-          .eq("id", lawyerId);
-      }
-    } catch (e) {
-      console.error("Erreur recalcul:", e);
-    }
-
     return NextResponse.json({ ok: true });
   } catch (e: any) {
     console.error("Erreur reviews/create:", e);
