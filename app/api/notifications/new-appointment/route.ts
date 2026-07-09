@@ -77,7 +77,6 @@ export async function POST(request: NextRequest) {
     const dateLabel = formatDate(appt.appointment_date);
     const timeLabel = appt.start_time?.slice(0, 5) || "";
 
-    // Email au professionnel
     await resend.emails.send({
       from: "Mizan <noreply@mizan-dz.com>",
       to: lawyer.email,
@@ -133,7 +132,6 @@ export async function POST(request: NextRequest) {
 </body></html>`,
     });
 
-    // Email de confirmation au client
     await resend.emails.send({
       from: "Mizan <noreply@mizan-dz.com>",
       to: client.email,

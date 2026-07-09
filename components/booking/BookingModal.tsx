@@ -63,7 +63,7 @@ export default function BookingModal({
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const weekStart = new Date(today);
-  weekStart.setDate(today.getDate() - today.getDay() + 1 + weekOffset * 7); // commence lundi
+  weekStart.setDate(today.getDate() - today.getDay() + 1 + weekOffset * 7);
 
   const weekDays = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(weekStart);
@@ -167,10 +167,6 @@ export default function BookingModal({
         .single();
       const dur = avail?.duration_min || 30;
 
-      // Le créneau vient de loadSlots(), qui ne propose que des créneaux
-      // réellement libres selon les disponibilités du professionnel — pas
-      // besoin de validation manuelle, c'est confirmé directement, comme
-      // pour les consultations téléphone/vidéo.
       await supabase.from("appointments").insert({
         lawyer_id: lawyerId,
         client_id: user.id,

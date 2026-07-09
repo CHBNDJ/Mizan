@@ -230,7 +230,6 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
     router.push(`/search?${p.toString()}`);
   };
 
-  // Clic sur la carte → redirect DIRECT vers search sans bouton
   const handleMapSelectAndSearch = (wilaya: string) => {
     const p = new URLSearchParams();
     p.set("profession", profId);

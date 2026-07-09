@@ -355,6 +355,7 @@ function SearchResults() {
           onChange={(v) => handleFilter("langues", v.length ? v : null)}
           className="text-sm"
           heightClass="h-9 max-h-9"
+          placeholderClassName="text-slate-700 dark:text-[#E8E8E6] font-medium"
         />
       </div>
       {hasLightFilters && (

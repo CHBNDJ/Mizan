@@ -115,8 +115,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .eq("is_verified", true)
       .eq("users.user_type", "lawyer");
 
-    // On soumet directement l'URL canonique (le slug si disponible) plutôt
-    // que l'UUID, pour éviter que Google crawle une URL qui redirige.
     const lawyerPages: MetadataRoute.Sitemap = (lawyers || []).map(
       (lawyer) => ({
         url: `${baseUrl}/lawyers/${lawyer.slug || lawyer.id}`,
