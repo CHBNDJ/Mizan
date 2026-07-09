@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Plus, X, Save, CheckCircle } from "lucide-react";
 
 interface Plage {
@@ -15,12 +15,20 @@ function timeToMin(t: string) {
   return h * 60 + m;
 }
 
+const TIME_OPTIONS: string[] = (() => {
+  const opts: string[] = [];
+  for (let h = 0; h < 24; h++) {
+    for (let m = 0; m < 60; m += 30) {
+      opts.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
+    }
+  }
+  return opts;
+})();
+
 export default function AvailabilityManager() {
   const supabase = createClient();
   const { user } = useAuth();
   const t = useTranslations("availabilityManager");
-  const locale = useLocale();
-  const timeLang = locale === "ar" ? "ar" : locale === "en" ? "en" : "fr";
 
   const JOURS = [
     { label: t("days.1"), dow: 1 },
@@ -265,27 +273,35 @@ export default function AvailabilityManager() {
                       className="grid items-center gap-2"
                       style={{ gridTemplateColumns: "1fr 14px 1fr 26px" }}
                     >
-                      <input
-                        type="time"
-                        lang={timeLang}
+                      <select
                         value={p.start}
                         onChange={(e) =>
                           updatePlage(dow, idx, "start", e.target.value)
                         }
-                        className="h-8 px-2 text-xs border border-slate-200 dark:border-[#3a3a3d] rounded-lg bg-slate-50 dark:bg-[#141415] text-slate-800 dark:text-[#F5F5F4] focus:border-teal-500 dark:focus:border-[#6fcf9f] outline-none transition-colors w-full"
-                      />
+                        className="h-8 px-2 text-xs border border-slate-200 dark:border-[#3a3a3d] rounded-lg bg-slate-50 dark:bg-[#141415] text-slate-800 dark:text-[#F5F5F4] focus:border-teal-500 dark:focus:border-[#6fcf9f] outline-none transition-colors w-full cursor-pointer"
+                      >
+                        {TIME_OPTIONS.map((tOpt) => (
+                          <option key={tOpt} value={tOpt}>
+                            {tOpt}
+                          </option>
+                        ))}
+                      </select>
                       <span className="text-[11px] text-slate-300 dark:text-[#3a3a3d] text-center">
                         –
                       </span>
-                      <input
-                        type="time"
-                        lang={timeLang}
+                      <select
                         value={p.end}
                         onChange={(e) =>
                           updatePlage(dow, idx, "end", e.target.value)
                         }
-                        className="h-8 px-2 text-xs border border-slate-200 dark:border-[#3a3a3d] rounded-lg bg-slate-50 dark:bg-[#141415] text-slate-800 dark:text-[#F5F5F4] focus:border-teal-500 dark:focus:border-[#6fcf9f] outline-none transition-colors w-full"
-                      />
+                        className="h-8 px-2 text-xs border border-slate-200 dark:border-[#3a3a3d] rounded-lg bg-slate-50 dark:bg-[#141415] text-slate-800 dark:text-[#F5F5F4] focus:border-teal-500 dark:focus:border-[#6fcf9f] outline-none transition-colors w-full cursor-pointer"
+                      >
+                        {TIME_OPTIONS.map((tOpt) => (
+                          <option key={tOpt} value={tOpt}>
+                            {tOpt}
+                          </option>
+                        ))}
+                      </select>
                       <button
                         onClick={() => removePlage(dow, idx)}
                         disabled={plages.length <= 1}
