@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Plus, X, Save, CheckCircle } from "lucide-react";
 
 interface Plage {
@@ -19,6 +19,8 @@ export default function AvailabilityManager() {
   const supabase = createClient();
   const { user } = useAuth();
   const t = useTranslations("availabilityManager");
+  const locale = useLocale();
+  const timeLang = locale === "ar" ? "ar" : locale === "en" ? "en" : "fr";
 
   const JOURS = [
     { label: t("days.1"), dow: 1 },
@@ -220,6 +222,11 @@ export default function AvailabilityManager() {
           ))}
         </div>
       </div>
+      <div className="mb-4 flex items-start gap-2 bg-teal-50 dark:bg-[#0F6E56]/15 border border-teal-100 dark:border-[#6fcf9f]/25 rounded-lg px-3 py-2">
+        <p className="text-[11px] text-teal-700 dark:text-[#6fcf9f] leading-relaxed">
+          {t("timezoneNote")}
+        </p>
+      </div>
 
       <div className="border border-slate-200 dark:border-[#1c2220] rounded-xl overflow-hidden divide-y divide-slate-100 dark:divide-[#1c2220]">
         {JOURS.map(({ label, dow }) => {
@@ -260,6 +267,7 @@ export default function AvailabilityManager() {
                     >
                       <input
                         type="time"
+                        lang={timeLang}
                         value={p.start}
                         onChange={(e) =>
                           updatePlage(dow, idx, "start", e.target.value)
@@ -271,6 +279,7 @@ export default function AvailabilityManager() {
                       </span>
                       <input
                         type="time"
+                        lang={timeLang}
                         value={p.end}
                         onChange={(e) =>
                           updatePlage(dow, idx, "end", e.target.value)
@@ -318,11 +327,11 @@ export default function AvailabilityManager() {
                 <span className="font-semibold text-slate-700 dark:text-[#E8E8E6]">
                   {activeJours.length}
                 </span>{" "}
-                {activeJours.length > 1 ? "jours" : "jour"} ·{" "}
+                {activeJours.length > 1 ? t("dayPlural") : t("daySingular")} ·{" "}
                 <span className="font-semibold text-teal-600 dark:text-[#6fcf9f]">
-                  {totalSlots} créneaux
+                  {totalSlots} {t("slotsLabel")}
                 </span>{" "}
-                · {totalH}h/sem
+                · {t("hoursPerWeek", { n: totalH })}
               </>
             ) : (
               t("noConfig")

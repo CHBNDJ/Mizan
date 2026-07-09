@@ -697,7 +697,12 @@
     "reasonPh": "عطلة، تنقّل...",
     "blockThisDate": "حظر هذا التاريخ",
     "upcomingBlocked": "التواريخ المحظورة القادمة",
-    "allDayLabel": "اليوم كاملاً"
+    "allDayLabel": "اليوم كاملاً",
+    "timezoneNote": "🕐 المواعيد بتوقيت الجزائر المحلي. سيرى عملاؤك في الخارج المواعيد محوّلة إلى منطقتهم الزمنية.",
+    "daySingular": "يوم",
+    "dayPlural": "أيام",
+    "slotsLabel": "مواعيد",
+    "hoursPerWeek": "{n}س/أسبوع"
   },
   "bookingCalendar": {
     "selectDay": "اختر يوماً لعرض الأوقات المتاحة",

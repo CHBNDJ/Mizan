@@ -2767,7 +2767,12 @@
     "reasonPh": "Leave, travel...",
     "blockThisDate": "Block this date",
     "upcomingBlocked": "Upcoming blocked dates",
-    "allDayLabel": "All day"
+    "allDayLabel": "All day",
+    "timezoneNote": "🕐 Times are in Algeria local time. Clients abroad will see slots converted to their time zone.",
+    "daySingular": "day",
+    "dayPlural": "days",
+    "slotsLabel": "slots",
+    "hoursPerWeek": "{n}h/week"
   },
   "bookingCalendar": {
     "selectDay": "Select a day to see available slots",

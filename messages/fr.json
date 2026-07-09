@@ -2775,7 +2775,12 @@
     "reasonPh": "Congé, déplacement...",
     "blockThisDate": "Bloquer cette date",
     "upcomingBlocked": "Dates bloquées à venir",
-    "allDayLabel": "Journée entière"
+    "allDayLabel": "Journée entière",
+    "timezoneNote": "🕐 Les horaires sont en heure locale d'Algérie. Vos clients à l'étranger verront les créneaux convertis dans leur fuseau.",
+    "daySingular": "jour",
+    "dayPlural": "jours",
+    "slotsLabel": "créneaux",
+    "hoursPerWeek": "{n}h/sem"
   },
   "bookingCalendar": {
     "selectDay": "Sélectionnez un jour pour voir les créneaux disponibles",
