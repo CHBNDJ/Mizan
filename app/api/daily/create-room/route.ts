@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         name: roomName,
-        privacy: "private",
+        privacy: "public",
         properties: {
           exp: expiresAt,
           enable_chat: true,
