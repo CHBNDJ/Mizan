@@ -40,6 +40,7 @@ const PROF_KEY: Record<string, string> = {
   huissier: "huissier",
   comptable: "comptable",
   "expert-comptable": "expertComptable",
+  traducteur: "traducteur",
 };
 const PROF_ICONS: Record<string, any> = {
   avocat: CheckCircle,
@@ -47,6 +48,7 @@ const PROF_ICONS: Record<string, any> = {
   huissier: CheckCircle,
   comptable: Calculator,
   "expert-comptable": TrendingUp,
+  traducteur: CheckCircle,
 };
 
 const CHECKIN_REMINDER_MS = 2 * 60 * 60 * 1000;
