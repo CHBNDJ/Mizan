@@ -114,29 +114,33 @@ export default function VideoConsultationPage({ params }: PageProps) {
 
   if (!user)
     return (
-      <div className="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center">
-        <p className="text-white">{t("loginRequired")}</p>
+      <div className="fixed inset-0 z-[9999] bg-teal-50 dark:bg-[#0a0a0b] flex items-center justify-center">
+        <p className="text-slate-900 dark:text-white">{t("loginRequired")}</p>
       </div>
     );
 
   if (loading)
     return (
-      <div className="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center">
+      <div className="fixed inset-0 z-[9999] bg-teal-50 dark:bg-[#0a0a0b] flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-2 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-300 text-sm">{t("connecting")}</p>
+          <p className="text-slate-500 dark:text-slate-300 text-sm">
+            {t("connecting")}
+          </p>
         </div>
       </div>
     );
 
   if (error)
     return (
-      <div className="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center px-4">
-        <div className="bg-slate-800 rounded-2xl p-8 text-center max-w-sm w-full">
+      <div className="fixed inset-0 z-[9999] bg-teal-50 dark:bg-[#0a0a0b] flex items-center justify-center px-4">
+        <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#2a2a2d] rounded-2xl p-8 text-center max-w-sm w-full">
           <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <X className="w-6 h-6 text-red-400" />
           </div>
-          <p className="text-white font-semibold mb-2">{error}</p>
+          <p className="text-slate-900 dark:text-white font-semibold mb-2">
+            {error}
+          </p>
           <button
             onClick={() => router.push("/mes-consultations")}
             className="mt-4 bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-xl text-sm font-medium cursor-pointer"
@@ -154,15 +158,19 @@ export default function VideoConsultationPage({ params }: PageProps) {
     : t("participantFallback");
 
   return (
-    <div className="fixed inset-0 z-[100] bg-slate-900 flex flex-col">
-      <div className="flex items-center justify-between px-5 py-4 bg-slate-800 border-b border-slate-700">
+    <div className="fixed inset-0 z-[9999] bg-teal-50 dark:bg-[#0a0a0b] flex flex-col">
+      <div className="flex items-center justify-between px-5 py-4 bg-white dark:bg-[#1c1c1e] border-b border-slate-200 dark:border-[#2a2a2d]">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
             <Video className="w-4 h-4 text-white" />
           </div>
           <div>
-            <p className="text-white font-semibold text-sm">{t("title")}</p>
-            <p className="text-slate-400 text-xs">{otherName}</p>
+            <p className="text-slate-900 dark:text-white font-semibold text-sm">
+              {t("title")}
+            </p>
+            <p className="text-slate-500 dark:text-slate-400 text-xs">
+              {otherName}
+            </p>
           </div>
         </div>
         <button
@@ -176,16 +184,18 @@ export default function VideoConsultationPage({ params }: PageProps) {
       <div className="flex-1 relative">
         {!joined ? (
           <div className="absolute inset-0 flex items-center justify-center px-4">
-            <div className="bg-slate-800 rounded-2xl p-8 text-center max-w-sm w-full">
+            <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#2a2a2d] rounded-2xl p-8 text-center max-w-sm w-full">
               <div className="w-16 h-16 bg-teal-600/20 border border-teal-500/30 rounded-full flex items-center justify-center mx-auto mb-5">
                 <Video className="w-8 h-8 text-teal-400" />
               </div>
-              <p className="text-white font-semibold text-lg mb-2">
+              <p className="text-slate-900 dark:text-white font-semibold text-lg mb-2">
                 {t("readyToJoin")}
               </p>
-              <p className="text-slate-400 text-sm mb-6">
+              <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">
                 {t("consultationWith")}{" "}
-                <span className="text-white font-medium">{otherName}</span>
+                <span className="text-slate-900 dark:text-white font-medium">
+                  {otherName}
+                </span>
               </p>
               <button
                 onClick={() => setJoined(true)}
@@ -193,7 +203,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
               >
                 {t("joinConsultation")}
               </button>
-              <p className="text-slate-500 text-xs mt-4">
+              <p className="text-slate-400 dark:text-slate-500 text-xs mt-4">
                 {t("cameraMicNote")}
               </p>
             </div>
@@ -201,14 +211,16 @@ export default function VideoConsultationPage({ params }: PageProps) {
         ) : roomUrl ? (
           <iframe
             ref={iframeRef}
-            src={`${roomUrl}?embed=1&theme=dark`}
+            src={`${roomUrl}?embed=1`}
             className="w-full h-full border-0"
             allow="camera; microphone; fullscreen; display-capture; autoplay"
             style={{ minHeight: "calc(100vh - 65px)" }}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <p className="text-slate-400">{t("roomLoadError")}</p>
+            <p className="text-slate-500 dark:text-slate-400">
+              {t("roomLoadError")}
+            </p>
           </div>
         )}
       </div>
