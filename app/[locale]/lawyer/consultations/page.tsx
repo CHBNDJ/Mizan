@@ -378,6 +378,8 @@ function LawyerConsultationsContent() {
       setSelectedConsultation((prev) =>
         prev ? { ...prev, status: "closed" } : prev
       );
+      // Afficher le popup feedback Mizan au professionnel après clôture
+      setTimeout(() => setShowFeedback(true), 1200);
     } catch {
       setError(t("lawyerConsultations.actionError"));
     } finally {

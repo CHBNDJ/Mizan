@@ -114,14 +114,14 @@ export default function VideoConsultationPage({ params }: PageProps) {
 
   if (!user)
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center">
         <p className="text-white">{t("loginRequired")}</p>
       </div>
     );
 
   if (loading)
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-2 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-slate-300 text-sm">{t("connecting")}</p>
@@ -131,7 +131,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
 
   if (error)
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4">
+      <div className="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center px-4">
         <div className="bg-slate-800 rounded-2xl p-8 text-center max-w-sm w-full">
           <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <X className="w-6 h-6 text-red-400" />
@@ -154,7 +154,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
     : t("participantFallback");
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col">
+    <div className="fixed inset-0 z-[100] bg-slate-900 flex flex-col">
       <div className="flex items-center justify-between px-5 py-4 bg-slate-800 border-b border-slate-700">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
@@ -201,7 +201,7 @@ export default function VideoConsultationPage({ params }: PageProps) {
         ) : roomUrl ? (
           <iframe
             ref={iframeRef}
-            src={`${roomUrl}?embed=1`}
+            src={`${roomUrl}?embed=1&theme=dark`}
             className="w-full h-full border-0"
             allow="camera; microphone; fullscreen; display-capture; autoplay"
             style={{ minHeight: "calc(100vh - 65px)" }}
