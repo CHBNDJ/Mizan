@@ -758,7 +758,7 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                 ]
                   .filter(Boolean)
                   .join(", ")}
-                showContact={showContact}
+                showContact={showContact || isClient}
                 googleMapsUrl={getGoogleMapsUrl(avocat)}
                 onLockedClick={() => router.push("/auth/client/register")}
               />
