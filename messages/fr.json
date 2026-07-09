@@ -1903,7 +1903,9 @@
     "callTime": "C'est l'heure de votre appel",
     "callLawyer": "Appelez votre avocat au :",
     "callClient": "Appelez votre client au :",
-    "callButton": "Appeler"
+    "callButton": "Appeler",
+    "archivedNotice": "Cette consultation est archivée. Vous ne pouvez plus envoyer de message ni lancer d'appel.",
+    "closedNotice": "Cette consultation est clôturée. Vous ne pouvez plus envoyer de message ni lancer d'appel."
   },
   "mesConsultations": {
     "title": "Mes consultations",

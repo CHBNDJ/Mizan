@@ -357,6 +357,11 @@ function MesConsultationsContent() {
 
   const handleSendMessage = async () => {
     if ((!newMessage.trim() && !selectedFile) || isSending) return;
+    if (
+      selectedConsultation?.archived_at ||
+      selectedConsultation?.status === "closed"
+    )
+      return;
     setIsSending(true);
     setError("");
     try {
@@ -500,15 +505,17 @@ function MesConsultationsContent() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            {isVideoConsultation(
-              selectedConsultation!.subject,
-              selectedConsultation!.channel
-            ) && (
-              <JoinCallButton
-                consultationId={selectedConsultation!.id}
-                canal={selectedConsultation!.channel || "video_60"}
-              />
-            )}
+            {!selectedConsultation!.archived_at &&
+              selectedConsultation!.status !== "closed" &&
+              isVideoConsultation(
+                selectedConsultation!.subject,
+                selectedConsultation!.channel
+              ) && (
+                <JoinCallButton
+                  consultationId={selectedConsultation!.id}
+                  canal={selectedConsultation!.channel || "video_60"}
+                />
+              )}
             <button
               onClick={() =>
                 handleArchive(
@@ -531,10 +538,12 @@ function MesConsultationsContent() {
       </div>
 
       <div className="flex-1 overflow-y-auto p-5 space-y-3">
-        {isPhoneConsultation(
-          selectedConsultation!.subject,
-          selectedConsultation!.channel
-        ) &&
+        {!selectedConsultation!.archived_at &&
+          selectedConsultation!.status !== "closed" &&
+          isPhoneConsultation(
+            selectedConsultation!.subject,
+            selectedConsultation!.channel
+          ) &&
           selectedConsultation!.lawyer.mobile &&
           isCallWindowOpen(
             selectedConsultation!.scheduled_at,
@@ -675,89 +684,103 @@ function MesConsultationsContent() {
       </div>
 
       <div className="p-4 border-t border-slate-200 dark:border-[#1c2220]">
-        {selectedFile && (
-          <div className="mb-3 bg-slate-50 dark:bg-[#141415] rounded-lg p-2.5 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span>
-                {selectedFile.type.startsWith("image/") ? "🖼️" : "📄"}
-              </span>
-              <div>
-                <p className="text-xs font-medium text-slate-900 dark:text-[#F5F5F4]">
-                  {selectedFile.name}
-                </p>
-                <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
-                  {(selectedFile.size / 1024).toFixed(0)} KB
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => setSelectedFile(null)}
-              className="text-red-500 dark:text-[#E08585] hover:text-red-700 text-sm"
-            >
-              ✕
-            </button>
+        {selectedConsultation!.archived_at ||
+        selectedConsultation!.status === "closed" ? (
+          <div className="flex items-center justify-center gap-2 py-3 text-sm text-slate-500 dark:text-[#A8A8A6]">
+            <Archive className="w-4 h-4" />
+            {selectedConsultation!.status === "closed"
+              ? t("consultShared.closedNotice")
+              : t("consultShared.archivedNotice")}
           </div>
-        )}
-        <div className="flex gap-2">
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*,.pdf"
-            onChange={handleFileSelect}
-            className="hidden"
-          />
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="cursor-pointer px-3 border border-slate-200 dark:border-[#1c2220] rounded-lg hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] bg-white dark:bg-[#141415]"
-            disabled={isSending || uploading}
-          >
-            📎
-          </button>
-          <textarea
-            value={newMessage}
-            onChange={(e) => {
-              setNewMessage(e.target.value);
-              if (selectedConsultation) {
-                const ch = supabase.channel(
-                  `typing-${selectedConsultation.id}`
-                );
-                ch.subscribe((status) => {
-                  if (status === "SUBSCRIBED")
-                    ch.send({
-                      type: "broadcast",
-                      event: "typing",
-                      payload: { userId: user?.id },
-                    });
-                });
-              }
-              if (typingTimeoutRef.current)
-                clearTimeout(typingTimeoutRef.current);
-              typingTimeoutRef.current = setTimeout(() => {}, 1000);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSendMessage();
-              }
-            }}
-            placeholder={t("consultShared.messagePlaceholder")}
-            className="w-full h-14 px-3 py-2.5 text-sm border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] focus:border-teal-300 outline-none text-slate-700 dark:text-[#E8E8E6] resize-none"
-            rows={2}
-          />
-          <button
-            onClick={handleSendMessage}
-            disabled={
-              (!newMessage.trim() && !selectedFile) || isSending || uploading
-            }
-            className="cursor-pointer px-4 bg-teal-600 dark:bg-[#085041] text-white rounded-lg hover:bg-teal-700 dark:hover:bg-[#0a6b52] disabled:opacity-50"
-          >
-            {isSending || uploading ? (
-              <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
-            ) : (
-              <Send className="w-5 h-5" />
+        ) : (
+          <>
+            {selectedFile && (
+              <div className="mb-3 bg-slate-50 dark:bg-[#141415] rounded-lg p-2.5 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span>
+                    {selectedFile.type.startsWith("image/") ? "🖼️" : "📄"}
+                  </span>
+                  <div>
+                    <p className="text-xs font-medium text-slate-900 dark:text-[#F5F5F4]">
+                      {selectedFile.name}
+                    </p>
+                    <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
+                      {(selectedFile.size / 1024).toFixed(0)} KB
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedFile(null)}
+                  className="text-red-500 dark:text-[#E08585] hover:text-red-700 text-sm"
+                >
+                  ✕
+                </button>
+              </div>
             )}
-          </button>
-        </div>
+            <div className="flex gap-2">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*,.pdf"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="cursor-pointer px-3 border border-slate-200 dark:border-[#1c2220] rounded-lg hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] bg-white dark:bg-[#141415]"
+                disabled={isSending || uploading}
+              >
+                📎
+              </button>
+              <textarea
+                value={newMessage}
+                onChange={(e) => {
+                  setNewMessage(e.target.value);
+                  if (selectedConsultation) {
+                    const ch = supabase.channel(
+                      `typing-${selectedConsultation.id}`
+                    );
+                    ch.subscribe((status) => {
+                      if (status === "SUBSCRIBED")
+                        ch.send({
+                          type: "broadcast",
+                          event: "typing",
+                          payload: { userId: user?.id },
+                        });
+                    });
+                  }
+                  if (typingTimeoutRef.current)
+                    clearTimeout(typingTimeoutRef.current);
+                  typingTimeoutRef.current = setTimeout(() => {}, 1000);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+                placeholder={t("consultShared.messagePlaceholder")}
+                className="w-full h-14 px-3 py-2.5 text-sm border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] focus:border-teal-300 outline-none text-slate-700 dark:text-[#E8E8E6] resize-none"
+                rows={2}
+              />
+              <button
+                onClick={handleSendMessage}
+                disabled={
+                  (!newMessage.trim() && !selectedFile) ||
+                  isSending ||
+                  uploading
+                }
+                className="cursor-pointer px-4 bg-teal-600 dark:bg-[#085041] text-white rounded-lg hover:bg-teal-700 dark:hover:bg-[#0a6b52] disabled:opacity-50"
+              >
+                {isSending || uploading ? (
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
+                ) : (
+                  <Send className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

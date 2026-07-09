@@ -1895,7 +1895,9 @@
     "callTime": "It's time for your call",
     "callLawyer": "Call your lawyer at:",
     "callClient": "Call your client at:",
-    "callButton": "Call"
+    "callButton": "Call",
+    "archivedNotice": "This consultation is archived. You can no longer send messages or start a call.",
+    "closedNotice": "This consultation is closed. You can no longer send messages or start a call."
   },
   "mesConsultations": {
     "title": "My consultations",

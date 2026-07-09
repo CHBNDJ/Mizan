@@ -417,6 +417,11 @@ function LawyerConsultationsContent() {
 
   const handleSendMessage = async () => {
     if ((!newMessage.trim() && !selectedFile) || isSending) return;
+    if (
+      selectedConsultation?.status === "closed" ||
+      selectedConsultation?.archived_at
+    )
+      return;
     setIsSending(true);
     setError("");
     try {
@@ -536,6 +541,7 @@ function LawyerConsultationsContent() {
   ).length;
 
   const isClosed = selectedConsultation?.status === "closed";
+  const isLocked = isClosed || !!selectedConsultation?.archived_at;
 
   if (loading)
     return (
@@ -590,15 +596,16 @@ function LawyerConsultationsContent() {
             )}
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            {isVideoConsultation(
-              selectedConsultation!.subject,
-              selectedConsultation!.channel
-            ) && (
-              <JoinCallButton
-                consultationId={selectedConsultation!.id}
-                canal={selectedConsultation!.channel || "video_60"}
-              />
-            )}
+            {!isLocked &&
+              isVideoConsultation(
+                selectedConsultation!.subject,
+                selectedConsultation!.channel
+              ) && (
+                <JoinCallButton
+                  consultationId={selectedConsultation!.id}
+                  canal={selectedConsultation!.channel || "video_60"}
+                />
+              )}
             <button
               onClick={() =>
                 handleArchive(
@@ -665,10 +672,11 @@ function LawyerConsultationsContent() {
       </div>
 
       <div className="flex-1 overflow-y-auto p-5 space-y-3">
-        {isPhoneConsultation(
-          selectedConsultation!.subject,
-          selectedConsultation!.channel
-        ) &&
+        {!isLocked &&
+          isPhoneConsultation(
+            selectedConsultation!.subject,
+            selectedConsultation!.channel
+          ) &&
           selectedConsultation!.client.mobile &&
           isCallWindowOpen(
             selectedConsultation!.scheduled_at,
@@ -794,9 +802,11 @@ function LawyerConsultationsContent() {
       </div>
 
       <div className="p-4 border-t border-slate-200 dark:border-[#1c2220]">
-        {isClosed ? (
+        {isLocked ? (
           <p className="text-center text-xs text-slate-400 dark:text-[#7A7A78] py-2">
-            {t("lawyerConsultations.consultationClosed")}
+            {selectedConsultation!.archived_at && !isClosed
+              ? t("consultShared.archivedNotice")
+              : t("lawyerConsultations.consultationClosed")}
           </p>
         ) : (
           <>
