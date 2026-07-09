@@ -302,47 +302,45 @@ export function Navigation() {
 
         <nav className="lg:hidden fixed bottom-0 start-0 end-0 z-[999] border-t border-slate-200 dark:border-[#1c2220] bg-white/90 dark:bg-[#1c1c1e]/95 backdrop-blur-xl">
           <div className="flex items-center justify-around py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
-            {sidebarItems
-              .filter((i) => i.href !== "/settings")
-              .map((item) => {
-                const Icon = item.icon;
-                const active = pathname === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="relative flex flex-col items-center gap-1 px-3 py-1"
-                  >
-                    <span className="relative inline-flex">
-                      <Icon
-                        className={cn(
-                          "w-5 h-5",
-                          active
-                            ? "text-teal-600 dark:text-[#6fcf9f]"
-                            : "text-slate-400 dark:text-[#7A7A78]"
-                        )}
-                      />
-                      {item.hasNotification && item.notificationCount ? (
-                        <span className="absolute -top-1.5 -end-2 w-4 h-4 bg-red-500 text-white text-[9px] rounded-full flex items-center justify-center font-bold">
-                          {item.notificationCount > 9
-                            ? "9+"
-                            : item.notificationCount}
-                        </span>
-                      ) : null}
-                    </span>
-                    <span
+            {sidebarItems.map((item) => {
+              const Icon = item.icon;
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="relative flex flex-col items-center gap-1 px-2 py-1"
+                >
+                  <span className="relative inline-flex">
+                    <Icon
                       className={cn(
-                        "text-[10px] font-medium",
+                        "w-5 h-5",
                         active
                           ? "text-teal-600 dark:text-[#6fcf9f]"
                           : "text-slate-400 dark:text-[#7A7A78]"
                       )}
-                    >
-                      {item.label}
-                    </span>
-                  </Link>
-                );
-              })}
+                    />
+                    {item.hasNotification && item.notificationCount ? (
+                      <span className="absolute -top-1.5 -end-2 w-4 h-4 bg-red-500 text-white text-[9px] rounded-full flex items-center justify-center font-bold">
+                        {item.notificationCount > 9
+                          ? "9+"
+                          : item.notificationCount}
+                      </span>
+                    ) : null}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-[10px] font-medium",
+                      active
+                        ? "text-teal-600 dark:text-[#6fcf9f]"
+                        : "text-slate-400 dark:text-[#7A7A78]"
+                    )}
+                  >
+                    {item.label}
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         </nav>
       </>
