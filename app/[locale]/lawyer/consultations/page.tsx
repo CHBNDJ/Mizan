@@ -22,6 +22,8 @@ import {
   Filter,
   Calendar,
   CheckSquare,
+  Phone,
+  MessageCircle,
 } from "lucide-react";
 import { Message, Consultation } from "@/types";
 import { gsap } from "gsap";
@@ -231,7 +233,7 @@ function LawyerConsultationsContent() {
       const { data, error: err } = await supabase
         .from("consultations")
         .select(
-          `*, client:users!consultations_client_id_fkey(id, first_name, last_name, email, location)`
+          `*, client:users!consultations_client_id_fkey(id, first_name, last_name, email, location, mobile)`
         )
         .eq("lawyer_id", user.id)
         .order("created_at", { ascending: false });
@@ -265,6 +267,7 @@ function LawyerConsultationsContent() {
               last_name: item.client?.last_name || "",
               email: item.client?.email || "",
               location: item.client?.location || "",
+              mobile: item.client?.mobile || null,
             },
           };
         })
@@ -485,6 +488,16 @@ function LawyerConsultationsContent() {
     );
   const isPhoneConsultation = (subject?: string, channel?: string) =>
     !!(channel === "phone" || subject?.toLowerCase().includes("téléphone"));
+  const isCallWindowOpen = (scheduledAt?: string | null, channel?: string) => {
+    if (!scheduledAt) return false;
+    const now = Date.now();
+    const start = new Date(scheduledAt).getTime();
+    const durationMin = channel === "video_60" ? 60 : 30;
+    return (
+      now >= start - 15 * 60 * 1000 &&
+      now <= start + (durationMin + 30) * 60 * 1000
+    );
+  };
   const formatDate = (d: string) =>
     new Date(d).toLocaleDateString(dateLocale, {
       day: "numeric",
@@ -652,6 +665,45 @@ function LawyerConsultationsContent() {
       </div>
 
       <div className="flex-1 overflow-y-auto p-5 space-y-3">
+        {isPhoneConsultation(
+          selectedConsultation!.subject,
+          selectedConsultation!.channel
+        ) &&
+          selectedConsultation!.client.mobile &&
+          isCallWindowOpen(
+            selectedConsultation!.scheduled_at,
+            selectedConsultation!.channel
+          ) && (
+            <div className="bg-teal-50 dark:bg-[#0F6E56]/15 border border-teal-100 dark:border-[#6fcf9f]/25 rounded-2xl p-4 mb-2">
+              <p className="text-xs text-teal-700 dark:text-[#6fcf9f] mb-1">
+                {t("consultShared.callTime")}
+              </p>
+              <p className="text-sm text-teal-900 dark:text-[#E8E8E6] mb-3">
+                {t("consultShared.callClient")}
+              </p>
+              <div className="flex gap-2">
+                <a
+                  href={`tel:${selectedConsultation!.client.mobile}`}
+                  className="flex-1 flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 text-white py-3 rounded-xl font-medium text-sm"
+                >
+                  <Phone className="w-4 h-4" />
+                  {t("consultShared.callButton")}
+                </a>
+                <a
+                  href={`https://wa.me/${selectedConsultation!.client.mobile.replace(/[^0-9]/g, "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-xl font-medium text-sm"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  WhatsApp
+                </a>
+              </div>
+              <p className="text-xs text-teal-700 dark:text-[#6fcf9f] text-center mt-3">
+                {selectedConsultation!.client.mobile}
+              </p>
+            </div>
+          )}
         {messages.map((message) => (
           <div
             key={message.id}

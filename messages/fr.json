@@ -1899,7 +1899,11 @@
     "loadError": "Erreur lors du chargement des consultations.",
     "messagePlaceholder": "Écrivez votre message...",
     "atConnector": "à",
-    "image": "Image"
+    "image": "Image",
+    "callTime": "C'est l'heure de votre appel",
+    "callLawyer": "Appelez votre avocat au :",
+    "callClient": "Appelez votre client au :",
+    "callButton": "Appeler"
   },
   "mesConsultations": {
     "title": "Mes consultations",

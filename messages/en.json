@@ -1891,7 +1891,11 @@
     "loadError": "Error loading consultations.",
     "messagePlaceholder": "Write your message...",
     "atConnector": "at",
-    "image": "Image"
+    "image": "Image",
+    "callTime": "It's time for your call",
+    "callLawyer": "Call your lawyer at:",
+    "callClient": "Call your client at:",
+    "callButton": "Call"
   },
   "mesConsultations": {
     "title": "My consultations",

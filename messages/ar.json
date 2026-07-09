@@ -950,7 +950,11 @@
     "loadError": "خطأ أثناء تحميل الاستشارات.",
     "messagePlaceholder": "اكتب رسالتك...",
     "atConnector": "في",
-    "image": "صورة"
+    "image": "صورة",
+    "callTime": "حان وقت مكالمتك",
+    "callLawyer": "اتصل بمحاميك على:",
+    "callClient": "اتصل بعميلك على:",
+    "callButton": "اتصل"
   },
   "mesConsultations": {
     "title": "استشاراتي",

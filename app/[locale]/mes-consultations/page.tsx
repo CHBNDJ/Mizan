@@ -7,7 +7,9 @@ import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import {
   MessageSquare,
+  MessageCircle,
   Send,
+  Phone,
   CheckCircle,
   User,
   AlertCircle,
@@ -234,7 +236,7 @@ function MesConsultationsContent() {
       if (lawyerIds.length > 0) {
         const { data: usersData } = await supabase
           .from("users")
-          .select("id, first_name, last_name")
+          .select("id, first_name, last_name, mobile")
           .in("id", lawyerIds)
           .eq("user_type", "lawyer");
         lawyersData = usersData || [];
@@ -264,6 +266,7 @@ function MesConsultationsContent() {
               last_name:
                 lawyerUser?.last_name || t("myProfile.lastNameFallback"),
               profession: item.lawyer?.profession || "avocat",
+              mobile: lawyerUser?.mobile || null,
             },
           };
         })
@@ -414,6 +417,16 @@ function MesConsultationsContent() {
     subject?.toLowerCase().includes("video");
   const isPhoneConsultation = (subject?: string, channel?: string) =>
     channel === "phone" || !!subject?.toLowerCase().includes("téléphone");
+  const isCallWindowOpen = (scheduledAt?: string | null, channel?: string) => {
+    if (!scheduledAt) return false;
+    const now = Date.now();
+    const start = new Date(scheduledAt).getTime();
+    const durationMin = channel === "video_60" ? 60 : 30;
+    return (
+      now >= start - 15 * 60 * 1000 &&
+      now <= start + (durationMin + 30) * 60 * 1000
+    );
+  };
   const formatScheduled = (iso: string) => {
     const d = new Date(iso);
     return (
@@ -519,6 +532,45 @@ function MesConsultationsContent() {
       </div>
 
       <div className="flex-1 overflow-y-auto p-5 space-y-3">
+        {isPhoneConsultation(
+          selectedConsultation!.subject,
+          selectedConsultation!.channel
+        ) &&
+          selectedConsultation!.lawyer.mobile &&
+          isCallWindowOpen(
+            selectedConsultation!.scheduled_at,
+            selectedConsultation!.channel
+          ) && (
+            <div className="bg-teal-50 dark:bg-[#0F6E56]/15 border border-teal-100 dark:border-[#6fcf9f]/25 rounded-2xl p-4 mb-2">
+              <p className="text-xs text-teal-700 dark:text-[#6fcf9f] mb-1">
+                {t("consultShared.callTime")}
+              </p>
+              <p className="text-sm text-teal-900 dark:text-[#E8E8E6] mb-3">
+                {t("consultShared.callLawyer")}
+              </p>
+              <div className="flex gap-2">
+                <a
+                  href={`tel:${selectedConsultation!.lawyer.mobile}`}
+                  className="flex-1 flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 text-white py-3 rounded-xl font-medium text-sm"
+                >
+                  <Phone className="w-4 h-4" />
+                  {t("consultShared.callButton")}
+                </a>
+                <a
+                  href={`https://wa.me/${selectedConsultation!.lawyer.mobile.replace(/[^0-9]/g, "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-xl font-medium text-sm"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  WhatsApp
+                </a>
+              </div>
+              <p className="text-xs text-teal-700 dark:text-[#6fcf9f] text-center mt-3">
+                {selectedConsultation!.lawyer.mobile}
+              </p>
+            </div>
+          )}
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">

@@ -104,6 +104,7 @@ export interface Consultation {
     last_name: string;
     email: string;
     location: string;
+    mobile?: string | null;
   };
 }
 
@@ -349,6 +350,7 @@ export interface ClientConsultation {
     first_name: string;
     last_name: string;
     profession?: string;
+    mobile?: string | null;
   };
   unread_count?: number;
 }
