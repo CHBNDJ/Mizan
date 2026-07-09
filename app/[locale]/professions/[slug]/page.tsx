@@ -121,7 +121,7 @@ export default function ProfessionPage() {
           <ArrowLeft className="w-4 h-4" />
         </button>
 
-        <div className="pf-hero bg-teal-600 rounded-2xl p-7 sm:p-8 mb-6 text-white">
+        <div className="pf-hero bg-teal-600 dark:bg-[#0F6E56] dark:border dark:border-[#6fcf9f]/20 rounded-2xl p-7 sm:p-8 mb-6 text-white">
           <div className="flex items-start gap-4 mb-5">
             <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
               <Icon className="w-7 h-7 text-white" />
@@ -249,7 +249,7 @@ export default function ProfessionPage() {
           </div>
         </div>
 
-        <div className="pf-cta bg-teal-600 rounded-2xl p-7 text-center mb-8">
+        <div className="pf-cta bg-teal-600 dark:bg-[#0F6E56] dark:border dark:border-[#6fcf9f]/20 rounded-2xl p-7 text-center mb-8">
           <h2 className="text-lg font-bold text-white mb-2">
             {t("professionDetailPage.ctaTitle", {
               label: data.label.toLowerCase(),
@@ -259,7 +259,7 @@ export default function ProfessionPage() {
             {t("professionDetailPage.ctaDesc")}
           </p>
           <Link href={`/${slug}`}>
-            <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 dark:bg-[#6fcf9f]/10 text-teal-600 dark:text-[#6fcf9f] font-semibold text-sm rounded-xl cursor-pointer transition-all">
+            <button className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-teal-50 dark:bg-[#6fcf9f] dark:hover:bg-[#5bb98a] text-teal-600 dark:text-[#0a3d30] font-semibold text-sm rounded-xl cursor-pointer transition-all shadow-sm">
               {t("professionDetailPage.ctaAction", {
                 label: data.label.toLowerCase(),
               })}{" "}
@@ -279,11 +279,11 @@ export default function ProfessionPage() {
               const OtherIcon = PROF_ICONS[p];
               return (
                 <Link key={p} href={`/professions/${p}`}>
-                  <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] hover:border-teal-200 dark:border-[#6fcf9f]/20 rounded-xl p-3 text-center cursor-pointer transition-all hover:shadow-sm">
-                    <div className="w-9 h-9 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <div className="group bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#2a2a2d] hover:border-teal-300 dark:hover:border-[#6fcf9f]/50 hover:bg-teal-50/30 dark:hover:bg-[#6fcf9f]/5 rounded-xl p-4 text-center cursor-pointer transition-all hover:shadow-sm dark:hover:shadow-[0_0_0_1px_rgba(111,207,159,0.1)]">
+                    <div className="w-10 h-10 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/25 rounded-lg flex items-center justify-center mx-auto mb-2.5 transition-colors group-hover:bg-teal-100 dark:group-hover:bg-[#6fcf9f]/20">
                       <OtherIcon className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
                     </div>
-                    <p className="text-xs font-semibold text-slate-700">
+                    <p className="text-xs font-semibold text-slate-700 dark:text-[#E8E8E6] group-hover:text-teal-700 dark:group-hover:text-[#6fcf9f] transition-colors">
                       {otherLabel}
                     </p>
                   </div>
