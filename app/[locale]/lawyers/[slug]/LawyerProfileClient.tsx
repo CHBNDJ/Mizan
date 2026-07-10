@@ -666,7 +666,7 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                         }
                         setShowContactNow(true);
                       }}
-                      className="mt-3 flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#6fcf9f] hover:text-white dark:hover:text-[#0a3d30] text-white font-semibold text-sm px-5 py-2.5 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md"
+                      className="mt-3 flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-500 dark:hover:bg-[#6fcf9f] hover:text-white dark:hover:text-[#0a3d30] text-white font-semibold text-sm px-5 py-2.5 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md"
                     >
                       <Phone className="w-4 h-4" />
                       {t("contactNow")}
