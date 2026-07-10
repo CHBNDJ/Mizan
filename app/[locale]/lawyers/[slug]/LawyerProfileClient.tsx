@@ -648,31 +648,29 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                       {t("courSupremeBadge")}
                     </div>
                   )}
+                  {avocat.available_now && !isOwnProfile && (
+                    <div className="flex items-center gap-1 text-[11px] text-teal-700 dark:text-[#6fcf9f] font-medium bg-teal-100 dark:bg-[#6fcf9f]/15 border border-teal-200 dark:border-[#6fcf9f]/30 px-2 py-0.5 rounded-full">
+                      <span className="w-1.5 h-1.5 rounded-full bg-teal-500 dark:bg-[#6fcf9f] animate-pulse" />
+                      {t("availableNowBadge")}
+                    </div>
+                  )}
                 </div>
                 {avocat.available_now &&
                   !isOwnProfile &&
                   avocat.contact?.mobile && (
-                    <div className="mt-4 flex flex-col items-end">
-                      <div className="flex items-center gap-1.5 mb-2">
-                        <span className="w-2 h-2 rounded-full bg-teal-500 dark:bg-[#6fcf9f] animate-pulse" />
-                        <span className="text-xs font-semibold text-teal-700 dark:text-[#6fcf9f]">
-                          {t("availableNowBadge")}
-                        </span>
-                      </div>
-                      <button
-                        onClick={() => {
-                          if (!user || profile?.user_type !== "client") {
-                            router.push("/auth/client/register");
-                            return;
-                          }
-                          setShowContactNow(true);
-                        }}
-                        className="flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#085041] text-white font-semibold text-sm px-5 py-2.5 rounded-xl cursor-pointer transition-all shadow-sm"
-                      >
-                        <Phone className="w-4 h-4" />
-                        {t("contactNow")}
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => {
+                        if (!user || profile?.user_type !== "client") {
+                          router.push("/auth/client/register");
+                          return;
+                        }
+                        setShowContactNow(true);
+                      }}
+                      className="mt-3 flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#6fcf9f] hover:text-white dark:hover:text-[#0a3d30] text-white font-semibold text-sm px-5 py-2.5 rounded-xl cursor-pointer transition-all shadow-sm hover:shadow-md"
+                    >
+                      <Phone className="w-4 h-4" />
+                      {t("contactNow")}
+                    </button>
                   )}
               </div>
               <div className="hero-right opacity-0 invisible bg-gradient-to-b from-teal-500 to-teal-800 dark:from-[#0F6E56] dark:to-[#04342C] flex items-center justify-center relative order-first sm:order-last min-h-[260px] sm:min-h-0">
