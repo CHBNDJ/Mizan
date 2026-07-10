@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import LawyerProfileClient from "./LawyerProfileClient";
 
@@ -38,11 +38,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProfilePage({ params }: Props) {
   const { slug } = await params;
 
-  if (isUUID(slug)) {
-    const lawyer = await resolveLawyer(slug);
-    if (lawyer?.slug) {
-      redirect(`/lawyers/${lawyer.slug}`);
-    }
+  const lawyer = await resolveLawyer(slug);
+
+  if (!lawyer) {
+    notFound();
+  }
+
+  if (isUUID(slug) && lawyer.slug) {
+    redirect(`/lawyers/${lawyer.slug}`);
   }
 
   return <LawyerProfileClient slug={slug} />;
