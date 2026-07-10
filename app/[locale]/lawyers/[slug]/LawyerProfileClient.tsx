@@ -279,6 +279,7 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
   const [loading, setLoading] = useState(true);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [pricingChannels, setPricingChannels] = useState<any[]>([]);
+  const [showContactNow, setShowContactNow] = useState(false);
   const [hasAcceptedPhoneConsultation, setHasAcceptedPhoneConsultation] =
     useState(false);
   const supabase = createClient();
@@ -648,6 +649,31 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                     </div>
                   )}
                 </div>
+                {avocat.available_now &&
+                  !isOwnProfile &&
+                  avocat.contact?.mobile && (
+                    <div className="mt-4 flex flex-col items-end">
+                      <div className="flex items-center gap-1.5 mb-2">
+                        <span className="w-2 h-2 rounded-full bg-teal-500 dark:bg-[#6fcf9f] animate-pulse" />
+                        <span className="text-xs font-semibold text-teal-700 dark:text-[#6fcf9f]">
+                          {t("availableNowBadge")}
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => {
+                          if (!user || profile?.user_type !== "client") {
+                            router.push("/auth/client/register");
+                            return;
+                          }
+                          setShowContactNow(true);
+                        }}
+                        className="flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#085041] text-white font-semibold text-sm px-5 py-2.5 rounded-xl cursor-pointer transition-all shadow-sm"
+                      >
+                        <Phone className="w-4 h-4" />
+                        {t("contactNow")}
+                      </button>
+                    </div>
+                  )}
               </div>
               <div className="hero-right opacity-0 invisible bg-gradient-to-b from-teal-500 to-teal-800 dark:from-[#0F6E56] dark:to-[#04342C] flex items-center justify-center relative order-first sm:order-last min-h-[260px] sm:min-h-0">
                 {avocat.avatar_url ? (
@@ -773,6 +799,57 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
           </div>
         </div>
       </div>
+
+      {showContactNow && avocat.contact?.mobile && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          onClick={() => setShowContactNow(false)}
+        >
+          <div
+            className="bg-white dark:bg-[#1c1c1e] rounded-2xl max-w-sm w-full p-6 shadow-xl border border-transparent dark:border-[#1c2220] relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowContactNow(false)}
+              className="absolute top-4 end-4 text-slate-400 hover:text-slate-600 dark:hover:text-[#E8E8E6] cursor-pointer"
+            >
+              ✕
+            </button>
+            <div className="text-center mb-5">
+              <div className="w-14 h-14 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Phone className="w-7 h-7 text-teal-600 dark:text-[#6fcf9f]" />
+              </div>
+              <p className="text-lg font-bold text-slate-900 dark:text-[#F5F5F4] mb-1">
+                {t("contactNowTitle")}
+              </p>
+              <p className="text-sm text-slate-500 dark:text-[#A8A8A6]">
+                {toCivilite(avocat.genre)} {avocat.prenom} {avocat.nom}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <a
+                href={`tel:${avocat.contact.mobile.replace(/\s/g, "")}`}
+                className="flex-1 flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 text-white py-3 rounded-xl font-medium text-sm"
+              >
+                <Phone className="w-4 h-4" />
+                {t("contact.call")}
+              </a>
+              <a
+                href={waUrl(avocat.contact.mobile)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-xl font-medium text-sm"
+              >
+                <WaIcon />
+                {t("contact.whatsapp")}
+              </a>
+            </div>
+            <p className="text-center text-sm text-teal-700 dark:text-[#6fcf9f] font-medium mt-4">
+              {ld(formatPhoneNumber(avocat.contact.mobile))}
+            </p>
+          </div>
+        </div>
+      )}
 
       <BookingModal
         isOpen={isBookingModalOpen}

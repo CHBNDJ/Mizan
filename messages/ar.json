@@ -250,7 +250,9 @@
       "facebookPage": "عرض الصفحة",
       "instagramProfile": "عرض الملف"
     },
-    "availableNowBadge": "متاح الآن"
+    "availableNowBadge": "متاح الآن",
+    "contactNow": "اتصل الآن",
+    "contactNowTitle": "اتصل مباشرة"
   },
   "auth": {
     "clientRegister": {

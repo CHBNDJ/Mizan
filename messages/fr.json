@@ -250,7 +250,9 @@
       "facebookPage": "Voir la page",
       "instagramProfile": "Voir le profil"
     },
-    "availableNowBadge": "Disponible maintenant"
+    "availableNowBadge": "Disponible maintenant",
+    "contactNow": "Contacter maintenant",
+    "contactNowTitle": "Contactez directement"
   },
   "auth": {
     "clientRegister": {
