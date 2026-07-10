@@ -73,50 +73,6 @@ export default function LawyerMap({
           </svg>
         </button>
       </div>
-      {showContact && googleMapsUrl ? (
-        <a
-          href={googleMapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 py-3 text-xs font-medium text-slate-600 dark:text-[#E8E8E6] hover:bg-slate-50 dark:hover:bg-[#26492f] transition-colors border-t border-slate-100 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e]"
-        >
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-            <polyline points="15 3 21 3 21 9" />
-            <line x1="10" y1="14" x2="21" y2="3" />
-          </svg>
-          Ouvrir dans Google Maps · Itinéraire
-        </a>
-      ) : (
-        <button
-          onClick={onLockedClick}
-          className="w-full flex items-center justify-center gap-2 py-3 text-xs font-medium text-slate-400 dark:text-[#7A7A78] hover:bg-slate-50 dark:hover:bg-[#141415] transition-colors border-t border-slate-100 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e] cursor-pointer"
-        >
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <rect x="3" y="11" width="18" height="11" rx="2" />
-            <path d="M7 11V7a5 5 0 0110 0v4" />
-          </svg>
-          Connectez-vous pour l'itinéraire
-        </button>
-      )}
     </div>
   );
 }
