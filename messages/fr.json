@@ -719,6 +719,24 @@
               "À distance"
             ]
           }
+        ],
+        "faqs": [
+          {
+            "q": "Quels documents puis-je traduire ?",
+            "a": "Actes d'état civil, diplômes, jugements, contrats, documents administratifs et juridiques — avec valeur officielle grâce à votre agrément."
+          },
+          {
+            "q": "La publicité est-elle autorisée ?",
+            "a": "Figurer dans un annuaire vérifié est autorisé et conforme aux règles de la profession de traducteur assermenté."
+          },
+          {
+            "q": "L'inscription est-elle payante ?",
+            "a": "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité."
+          },
+          {
+            "q": "Les clients peuvent-ils envoyer des documents ?",
+            "a": "Oui, via la messagerie Mizan sécurisée. Idéal pour la diaspora qui a besoin de traductions officielles à distance."
+          }
         ]
       }
     }

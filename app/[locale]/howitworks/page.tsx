@@ -82,7 +82,7 @@ export default function HowItWorksPage() {
   const faqs: Faq[] =
     userType === "client"
       ? (t.raw("howItWorks.client.faqs") as Faq[])
-      : (t.raw(`howItWorks.professions.${profKey}.faqs`) as Faq[]);
+      : (t.raw(`howItWorks.professions.${profKey}.faqs`) as Faq[]) || [];
 
   useEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });

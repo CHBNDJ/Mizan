@@ -711,6 +711,24 @@
             "desc": "The diaspora needing official translations for their procedures finds you directly.",
             "points": ["Records & diplomas", "Legal documents", "Remote"]
           }
+        ],
+        "faqs": [
+          {
+            "q": "What documents can I translate?",
+            "a": "Civil status records, diplomas, judgments, contracts, administrative and legal documents — with official value thanks to your certification."
+          },
+          {
+            "q": "Is advertising allowed?",
+            "a": "Being listed in a verified directory is permitted and compliant with the rules for sworn translators."
+          },
+          {
+            "q": "Is registration free?",
+            "a": "Registration is free. An optional subscription improves your visibility."
+          },
+          {
+            "q": "Can clients send documents?",
+            "a": "Yes, through Mizan's secure messaging. Ideal for the diaspora needing official translations remotely."
+          }
         ]
       }
     }
