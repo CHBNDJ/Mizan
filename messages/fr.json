@@ -202,6 +202,7 @@
     "refine": "Affiner",
     "sort": {
       "default": "Par défaut",
+      "available": "Disponibles en premier",
       "rating": "Mieux notés",
       "experience": "Plus exp.",
       "name": "A→Z",

@@ -202,6 +202,7 @@
     "refine": "Refine",
     "sort": {
       "default": "Default",
+      "available": "Available first",
       "rating": "Top rated",
       "experience": "Most experienced",
       "name": "A→Z",

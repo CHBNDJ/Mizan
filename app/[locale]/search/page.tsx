@@ -201,6 +201,10 @@ function SearchResults() {
 
   const sortAvocats = (list: AvocatData[], type: string) => {
     const s = [...list];
+    if (type === "available")
+      return s.sort(
+        (a, b) => Number(!!b.available_now) - Number(!!a.available_now)
+      );
     if (type === "rating")
       return s.sort(
         (a, b) =>
@@ -454,6 +458,7 @@ function SearchResults() {
                 <CustomSelect
                   options={[
                     { value: "", label: t("search.sort.default") },
+                    { value: "available", label: t("search.sort.available") },
                     { value: "rating", label: t("search.sort.rating") },
                     { value: "experience", label: t("search.sort.experience") },
                     { value: "nom", label: t("search.sort.name") },
