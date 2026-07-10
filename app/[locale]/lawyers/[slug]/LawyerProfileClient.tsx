@@ -842,7 +842,7 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                 {t("contact.whatsapp")}
               </a>
             </div>
-            <p className="text-center text-sm text-teal-700 dark:text-[#6fcf9f] font-medium mt-4">
+            <p className="hidden sm:block text-center text-sm text-teal-700 dark:text-[#6fcf9f] font-medium mt-4">
               {ld(formatPhoneNumber(avocat.contact.mobile))}
             </p>
           </div>

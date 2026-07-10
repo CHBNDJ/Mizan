@@ -201,10 +201,6 @@ function SearchResults() {
 
   const sortAvocats = (list: AvocatData[], type: string) => {
     const s = [...list];
-    if (type === "available")
-      return s.sort(
-        (a, b) => Number(!!b.available_now) - Number(!!a.available_now)
-      );
     if (type === "rating")
       return s.sort(
         (a, b) =>
@@ -228,7 +224,10 @@ function SearchResults() {
     return s;
   };
 
-  const avocatsTries = sortBy ? sortAvocats(avocats, sortBy) : avocats;
+  const avocatsBase = sortBy ? sortAvocats(avocats, sortBy) : avocats;
+  const avocatsTries = [...avocatsBase].sort(
+    (a, b) => Number(!!b.available_now) - Number(!!a.available_now)
+  );
   const displayed = avocatsTries.slice(0, page * PAGE_SIZE);
   const hasMore = avocatsTries.length > page * PAGE_SIZE;
   const hasLightFilters = !!(
@@ -458,7 +457,6 @@ function SearchResults() {
                 <CustomSelect
                   options={[
                     { value: "", label: t("search.sort.default") },
-                    { value: "available", label: t("search.sort.available") },
                     { value: "rating", label: t("search.sort.rating") },
                     { value: "experience", label: t("search.sort.experience") },
                     { value: "nom", label: t("search.sort.name") },
