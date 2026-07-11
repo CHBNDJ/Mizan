@@ -21,6 +21,7 @@ import {
   Camera,
   Globe,
   CheckCircle,
+  Languages,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { createClient } from "@/lib/supabase/client";
@@ -45,6 +46,7 @@ const PROF_KEY: Record<string, string> = {
   huissier: "huissier",
   comptable: "comptable",
   "expert-comptable": "expertComptable",
+  traducteur: "traducteur",
 };
 const PROF_ICONS: Record<string, any> = {
   avocat: Scale,
@@ -52,6 +54,7 @@ const PROF_ICONS: Record<string, any> = {
   huissier: Briefcase,
   comptable: Calculator,
   "expert-comptable": TrendingUp,
+  traducteur: Languages,
 };
 
 const cap = (str: string) =>
