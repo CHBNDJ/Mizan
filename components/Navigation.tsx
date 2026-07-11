@@ -301,7 +301,7 @@ export function Navigation() {
         </div>
 
         <nav className="lg:hidden fixed bottom-0 start-0 end-0 z-[999] border-t border-slate-200 dark:border-[#1c2220] bg-white/90 dark:bg-[#1c1c1e]/95 backdrop-blur-xl">
-          <div className="flex items-center justify-around py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+          <div className="flex items-stretch py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
             {sidebarItems.map((item) => {
               const Icon = item.icon;
               const active = pathname === item.href;
@@ -309,12 +309,12 @@ export function Navigation() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="relative flex flex-col items-center gap-1 px-2 py-1"
+                  className="relative flex flex-1 flex-col items-center justify-center gap-1 px-1 py-1 min-w-0"
                 >
-                  <span className="relative inline-flex">
+                  <span className="relative inline-flex items-center justify-center">
                     <Icon
                       className={cn(
-                        "w-5 h-5",
+                        "w-5 h-5 flex-shrink-0",
                         active
                           ? "text-teal-600 dark:text-[#6fcf9f]"
                           : "text-slate-400 dark:text-[#7A7A78]"
@@ -330,7 +330,7 @@ export function Navigation() {
                   </span>
                   <span
                     className={cn(
-                      "text-[10px] font-medium",
+                      "text-[10px] font-medium text-center leading-tight w-full truncate",
                       active
                         ? "text-teal-600 dark:text-[#6fcf9f]"
                         : "text-slate-400 dark:text-[#7A7A78]"
