@@ -379,9 +379,17 @@ export default function LawyerRegisterPage() {
       router.push(result.redirectPath || "/lawyer/dashboard");
     } catch (error: any) {
       let msg = t("validation.general.genericError");
-      if (error.message?.includes("already registered"))
+      const em = (error?.message || "").toLowerCase();
+      if (
+        em.includes("already registered") ||
+        em.includes("already been registered")
+      )
         msg = t("validation.general.emailTaken");
-      else if (error.message?.includes("Database error"))
+      else if (em.includes("bar_number") || em.includes("check constraint"))
+        msg = t("validation.general.barNumberInvalid");
+      else if (em.includes("network") || em.includes("fetch"))
+        msg = t("validation.general.networkError");
+      else if (em.includes("database error"))
         msg = t("validation.general.dbError");
       setErrors({ general: msg });
     } finally {

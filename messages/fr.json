@@ -123,7 +123,9 @@
       "emailNotConfirmedShort": "Confirmez votre email avant de vous connecter.",
       "notClientAccount": "Ce compte n'est pas un compte client. Veuillez utiliser l'interface professionnelle.",
       "notLawyerAccount": "Ce compte n'est pas un compte professionnel. Utilisez la connexion client.",
-      "pendingVerification": "Votre compte est en attente de validation. Vous recevrez un email dès que votre profil sera vérifié."
+      "pendingVerification": "Votre compte est en attente de validation. Vous recevrez un email dès que votre profil sera vérifié.",
+      "barNumberInvalid": "Le format de votre numéro d'agrément n'est pas valide. Vérifiez-le et réessayez.",
+      "networkError": "Problème de connexion. Vérifiez votre connexion internet et réessayez."
     }
   },
   "home": {
@@ -202,7 +204,6 @@
     "refine": "Affiner",
     "sort": {
       "default": "Par défaut",
-      "available": "Disponibles en premier",
       "rating": "Mieux notés",
       "experience": "Plus exp.",
       "name": "A→Z",
@@ -253,6 +254,9 @@
     },
     "availableNowBadge": "Disponible maintenant",
     "contactNow": "Contacter maintenant",
+    "contactNowMessage": "Demande de consultation immédiate par téléphone",
+    "contactNowNotifTitle": "Consultation immédiate",
+    "contactNowNotifBody": "Un client souhaite vous contacter maintenant",
     "contactNowTitle": "Contactez directement"
   },
   "auth": {
@@ -718,24 +722,6 @@
               "Documents juridiques",
               "À distance"
             ]
-          }
-        ],
-        "faqs": [
-          {
-            "q": "Quels documents puis-je traduire ?",
-            "a": "Actes d'état civil, diplômes, jugements, contrats, documents administratifs et juridiques — avec valeur officielle grâce à votre agrément."
-          },
-          {
-            "q": "La publicité est-elle autorisée ?",
-            "a": "Figurer dans un annuaire vérifié est autorisé et conforme aux règles de la profession de traducteur assermenté."
-          },
-          {
-            "q": "L'inscription est-elle payante ?",
-            "a": "L'inscription est gratuite. Un abonnement optionnel améliore votre visibilité."
-          },
-          {
-            "q": "Les clients peuvent-ils envoyer des documents ?",
-            "a": "Oui, via la messagerie Mizan sécurisée. Idéal pour la diaspora qui a besoin de traductions officielles à distance."
           }
         ]
       }

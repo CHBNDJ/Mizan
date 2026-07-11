@@ -123,7 +123,9 @@
       "emailNotConfirmedShort": "Confirm your email before logging in.",
       "notClientAccount": "This account is not a client account. Please use the professional interface.",
       "notLawyerAccount": "This account is not a professional account. Use client login.",
-      "pendingVerification": "Your account is pending verification. You will receive an email once your profile is verified."
+      "pendingVerification": "Your account is pending verification. You will receive an email once your profile is verified.",
+      "barNumberInvalid": "Your registration number format is invalid. Please check it and try again.",
+      "networkError": "Connection problem. Please check your internet connection and try again."
     }
   },
   "home": {
@@ -202,7 +204,6 @@
     "refine": "Refine",
     "sort": {
       "default": "Default",
-      "available": "Available first",
       "rating": "Top rated",
       "experience": "Most experienced",
       "name": "A→Z",
@@ -253,6 +254,9 @@
     },
     "availableNowBadge": "Available now",
     "contactNow": "Contact now",
+    "contactNowMessage": "Immediate phone consultation request",
+    "contactNowNotifTitle": "Immediate consultation",
+    "contactNowNotifBody": "A client wants to contact you now",
     "contactNowTitle": "Contact directly"
   },
   "auth": {
@@ -710,24 +714,6 @@
             "title": "Diaspora clients",
             "desc": "The diaspora needing official translations for their procedures finds you directly.",
             "points": ["Records & diplomas", "Legal documents", "Remote"]
-          }
-        ],
-        "faqs": [
-          {
-            "q": "What documents can I translate?",
-            "a": "Civil status records, diplomas, judgments, contracts, administrative and legal documents — with official value thanks to your certification."
-          },
-          {
-            "q": "Is advertising allowed?",
-            "a": "Being listed in a verified directory is permitted and compliant with the rules for sworn translators."
-          },
-          {
-            "q": "Is registration free?",
-            "a": "Registration is free. An optional subscription improves your visibility."
-          },
-          {
-            "q": "Can clients send documents?",
-            "a": "Yes, through Mizan's secure messaging. Ideal for the diaspora needing official translations remotely."
           }
         ]
       }
