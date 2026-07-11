@@ -106,6 +106,7 @@ export const DOMAINES_PAR_PROFESSION: Record<string, string[]> = {
     "Document juridique",
     "Document administratif",
     "Document académique et professionnel",
+    "Document médical",
     "Interprétariat",
   ],
 };
