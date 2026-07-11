@@ -42,6 +42,11 @@ const PROF_CONFIG: Record<
     numLabel: "N° ONEC",
     civilite: (fn, ln) => `${fn} ${ln}`,
   },
+  traducteur: {
+    label: "traducteur assermenté",
+    numLabel: "N° d'agrément (Ministère de la Justice)",
+    civilite: (fn, ln) => `${fn} ${ln}`,
+  },
 };
 
 const buildEmailHtml = (
