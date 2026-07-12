@@ -129,7 +129,7 @@ export default function HomePage() {
   const statsData = [
     { end: stats.total_avocats, label: t("home.stats.total") },
     { end: wilayas.length, label: t("home.stats.wilayas") },
-    { end: 5, label: t("home.stats.categories") },
+    { end: 6, label: t("home.stats.categories") },
     {
       end: stats.pourcentage_verification,
       label: t("home.stats.verification"),
