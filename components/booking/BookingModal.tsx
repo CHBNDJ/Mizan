@@ -63,7 +63,7 @@ export default function BookingModal({
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const weekStart = new Date(today);
-  weekStart.setDate(today.getDate() - today.getDay() + 1 + weekOffset * 7);
+  weekStart.setDate(today.getDate() - today.getDay() + 1 + weekOffset * 7); // commence lundi
 
   const weekDays = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(weekStart);
@@ -166,6 +166,44 @@ export default function BookingModal({
         .eq("day_of_week", selectedDate.getDay())
         .single();
       const dur = avail?.duration_min || 30;
+
+      // Le créneau vient de loadSlots(), qui ne propose que des créneaux
+      // réellement libres selon les disponibilités du professionnel — pas
+      // besoin de validation manuelle, c'est confirmé directement, comme
+      // pour les consultations téléphone/vidéo.
+      const dateLabel = selectedDate.toLocaleDateString("fr-FR", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+      const fullContent = `📋 ${t("physicalLabel")}\n📅 ${dateLabel} · ${selectedSlot}\n\n${subject.trim()}`;
+      const scheduledAt = new Date(
+        `${dateStr}T${selectedSlot}:00`
+      ).toISOString();
+
+      const { data: nc } = await supabase
+        .from("consultations")
+        .insert({
+          client_id: user.id,
+          lawyer_id: lawyerId,
+          status: "accepted",
+          channel: "physical",
+          scheduled_at: scheduledAt,
+          question: fullContent,
+        })
+        .select("id")
+        .single();
+
+      if (nc?.id) {
+        await supabase.from("consultation_messages").insert({
+          consultation_id: nc.id,
+          sender_id: user.id,
+          sender_type: "client",
+          message: fullContent,
+          is_read: false,
+        });
+      }
 
       await supabase.from("appointments").insert({
         lawyer_id: lawyerId,

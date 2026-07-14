@@ -147,7 +147,7 @@
       "steps": [
         {
           "title": "Choose your expert",
-          "desc": "Select the right category — lawyer, notary, bailiff, accountant, chartered accountant or sworn translator."
+          "desc": "Select the right category — lawyer, notary, bailiff or accountant."
         },
         {
           "title": "Filter by wilaya",
@@ -423,7 +423,7 @@
           "title": "Choose your expert",
           "desc": "Click on the category you need.",
           "points": [
-            "6 expert categories",
+            "5 expert categories",
             "Search by wilaya",
             "Accessible from abroad"
           ]
@@ -876,7 +876,6 @@
     "Document juridique": "Legal document",
     "Document administratif": "Administrative document",
     "Document académique et professionnel": "Academic & professional document",
-    "Document médicaux": "Medical document",
     "Interprétariat": "Interpreting"
   },
   "langues": {
@@ -2150,7 +2149,7 @@
         ]
       },
       "traducteur": {
-        "domainLabel": "Document",
+        "domainLabel": "Language / Document",
         "hero": "Find a sworn translator in Algeria",
         "sub": "Official translation of records, diplomas and legal documents — for residents and the diaspora.",
         "searchLabel": "Search for a sworn translator",
@@ -2829,7 +2828,8 @@
     "confirmAppointment": "Confirm appointment",
     "doneTitle": "Appointment confirmed!",
     "doneDesc": "You will receive a reminder 30 minutes before your appointment with {lawyerName}.",
-    "atConnector": "at"
+    "atConnector": "at",
+    "physicalLabel": "Office appointment"
   },
   "blogArticleDetail": {
     "home": "Home",

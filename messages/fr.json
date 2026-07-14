@@ -79,7 +79,7 @@
     },
     "traducteur": {
       "label": "Traducteur assermenté",
-      "desc": "Traductions officielles, actes...",
+      "desc": "Traductions officielles, actes, diplômes...",
       "plural": "traducteurs assermentés"
     }
   },
@@ -147,7 +147,7 @@
       "steps": [
         {
           "title": "Choisissez votre expert",
-          "desc": "Sélectionnez la catégorie adaptée — avocat, notaire, huissier, comptable, expert-comptable ou traducteur assermenté."
+          "desc": "Sélectionnez la catégorie adaptée — avocat, notaire, huissier ou comptable."
         },
         {
           "title": "Filtrez par wilaya",
@@ -423,7 +423,7 @@
           "title": "Choisissez votre expert",
           "desc": "Cliquez sur la catégorie dont vous avez besoin.",
           "points": [
-            "6 catégories d'experts",
+            "5 catégories d'experts",
             "Recherche par wilaya",
             "Accessible depuis l'étranger"
           ]
@@ -884,7 +884,6 @@
     "Document juridique": "Document juridique",
     "Document administratif": "Document administratif",
     "Document académique et professionnel": "Document académique et professionnel",
-    "Document médicaux": "Document médical",
     "Interprétariat": "Interprétariat"
   },
   "langues": {
@@ -2158,7 +2157,7 @@
         ]
       },
       "traducteur": {
-        "domainLabel": "Document",
+        "domainLabel": "Langue / Document",
         "hero": "Trouvez un traducteur assermenté en Algérie",
         "sub": "Traduction officielle d'actes, diplômes et documents juridiques — pour résidents et diaspora.",
         "searchLabel": "Rechercher un traducteur assermenté",
@@ -2837,7 +2836,8 @@
     "confirmAppointment": "Confirmer le rendez-vous",
     "doneTitle": "Rendez-vous confirmé !",
     "doneDesc": "Vous recevrez un rappel 30 minutes avant votre rendez-vous avec {lawyerName}.",
-    "atConnector": "à"
+    "atConnector": "à",
+    "physicalLabel": "Rendez-vous au cabinet"
   },
   "blogArticleDetail": {
     "home": "Accueil",
