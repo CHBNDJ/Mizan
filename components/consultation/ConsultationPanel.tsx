@@ -141,10 +141,7 @@ export function ConsultationPanel({
             day: "numeric",
             month: "long",
             year: "numeric",
-          })} à ${new Date(scheduledAt).toLocaleTimeString("fr-FR", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}`
+          })} à ${scheduledTime}`
         : "";
       const questionStr =
         selected === "message" && messageText.trim()
@@ -203,8 +200,8 @@ export function ConsultationPanel({
               start_time: scheduledTime,
               end_time: endTime,
               subject: canal.label,
-              status: initialStatus,
-              type: selected,
+              status: "confirmed",
+              type: "online",
               channel: selected,
             });
           if (apptError)
@@ -216,7 +213,7 @@ export function ConsultationPanel({
         ? "Rendez-vous confirmé"
         : "Nouvelle demande de consultation";
       const notifBodyLawyer = needsSchedule
-        ? `${canal.label} confirmé${scheduledAt ? ` le ${new Date(scheduledAt).toLocaleDateString("fr-FR")} à ${new Date(scheduledAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}` : ""}`
+        ? `${canal.label} confirmé${scheduledAt ? ` le ${new Date(scheduledAt).toLocaleDateString("fr-FR")} à ${scheduledTime}` : ""}`
         : `${canal.label}`;
 
       const {
@@ -244,7 +241,7 @@ export function ConsultationPanel({
           body: JSON.stringify({
             user_id: user.id,
             title: "Rendez-vous confirmé",
-            body: `${canal.label} le ${new Date(scheduledAt!).toLocaleDateString("fr-FR")} à ${new Date(scheduledAt!).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}`,
+            body: `${canal.label} le ${new Date(scheduledAt!).toLocaleDateString("fr-FR")} à ${scheduledTime}`,
             url: "/mes-consultations",
           }),
         }).catch(() => {});

@@ -205,7 +205,7 @@ export default function BookingModal({
         });
       }
 
-      await supabase.from("appointments").insert({
+      const { error: apptError } = await supabase.from("appointments").insert({
         lawyer_id: lawyerId,
         client_id: user.id,
         appointment_date: dateStr,
@@ -213,10 +213,14 @@ export default function BookingModal({
         end_time: addMinutes(selectedSlot, dur),
         subject: subject.trim(),
         client_phone: phone.trim() || null,
-        status: "accepted",
+        status: "confirmed",
         type: "physical",
         channel: "physical",
       });
+
+      if (apptError) {
+        console.error("Erreur création rendez-vous (appointments):", apptError);
+      }
 
       const {
         data: { session },
