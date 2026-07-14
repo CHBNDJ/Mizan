@@ -342,7 +342,6 @@ export default function BookingCalendar({
           </div>
         </div>
 
-        {/* Créneaux */}
         <div className="bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl overflow-hidden">
           {!activeDay ? (
             <div className="flex flex-col items-center justify-center h-full py-8 px-3">

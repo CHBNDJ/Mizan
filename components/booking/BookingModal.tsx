@@ -231,12 +231,12 @@ export default function BookingModal({
     "w-full h-11 px-3 text-sm border border-slate-200 dark:border-[#1c2220] rounded-xl bg-white dark:bg-[#1c1c1e] focus:border-teal-400 dark:focus:border-[#6fcf9f] focus:border-2 outline-none transition-all text-slate-700 dark:text-[#E8E8E6] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78]";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4">
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative bg-white dark:bg-[#1c1c1e] rounded-t-2xl sm:rounded-2xl shadow-xl dark:shadow-none w-full sm:max-w-lg z-10">
+      <div className="relative bg-white dark:bg-[#1c1c1e] rounded-2xl shadow-xl dark:shadow-none w-full sm:max-w-lg z-10">
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-[#1c2220]">
           <div className="flex items-center gap-2">
             {step !== "date" && step !== "done" && (
