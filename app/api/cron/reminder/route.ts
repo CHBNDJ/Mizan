@@ -70,7 +70,7 @@ function buildEmail(opts: {
   `;
 }
 
-export async function GET(req: NextRequest) {
+async function runReminders(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
   if (
     process.env.CRON_SECRET &&
@@ -168,6 +168,7 @@ export async function GET(req: NextRequest) {
           results.errors++;
         }
       }
+
       if (lawyer?.email) {
         try {
           await resend.emails.send({
@@ -189,6 +190,7 @@ export async function GET(req: NextRequest) {
           results.errors++;
         }
       }
+
       const updateField = is1hWindow
         ? { reminder_1h_sent: true }
         : { reminder_15m_sent: true };
@@ -206,4 +208,12 @@ export async function GET(req: NextRequest) {
     console.error("Erreur cron reminders:", e);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
+}
+
+export async function GET(req: NextRequest) {
+  return runReminders(req);
+}
+
+export async function POST(req: NextRequest) {
+  return runReminders(req);
 }
