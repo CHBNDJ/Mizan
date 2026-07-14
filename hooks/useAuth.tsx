@@ -202,6 +202,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await new Promise((resolve) => setTimeout(resolve, 2500));
 
       try {
+        const detectedTz =
+          userData.userType === "lawyer"
+            ? "Africa/Algiers"
+            : Intl.DateTimeFormat().resolvedOptions().timeZone ||
+              "Africa/Algiers";
+        await supabase
+          .from("users")
+          .update({ timezone: detectedTz })
+          .eq("id", authData.user.id);
+
         if (userData.languages?.length) {
           await supabase
             .from("users")
