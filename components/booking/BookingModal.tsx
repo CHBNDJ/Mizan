@@ -179,7 +179,7 @@ export default function BookingModal({
       });
       const fullContent = `📋 ${t("physicalLabel")}\n📅 ${dateLabel} · ${selectedSlot}\n\n${subject.trim()}`;
       const scheduledAt = new Date(
-        `${dateStr}T${selectedSlot}:00`
+        `${dateStr}T${selectedSlot}:00+01:00`
       ).toISOString();
 
       const { data: nc } = await supabase

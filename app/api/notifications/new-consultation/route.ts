@@ -19,14 +19,34 @@ const CHANNEL_LABELS: Record<string, string> = {
   physical: "Rendez-vous au cabinet",
 };
 
-function formatDateFr(iso: string): string {
-  return new Date(iso).toLocaleString("fr-FR", {
+const TZ_LABELS: Record<string, string> = {
+  "Africa/Algiers": "heure d'Algérie",
+  "Europe/Paris": "heure de Paris",
+  "Europe/Brussels": "heure de Bruxelles",
+  "Europe/Zurich": "heure de Zurich",
+  "Europe/Madrid": "heure de Madrid",
+  "Europe/London": "heure de Londres",
+  "America/Montreal": "heure de Montréal",
+  "America/Toronto": "heure de Toronto",
+  "America/New_York": "heure de New York",
+};
+
+function tzLabel(tz: string): string {
+  return (
+    TZ_LABELS[tz] || `heure de ${tz.split("/").pop()?.replace(/_/g, " ") || tz}`
+  );
+}
+
+function formatInTz(iso: string, tz: string): string {
+  const d = new Date(iso).toLocaleString("fr-FR", {
+    timeZone: tz,
     weekday: "long",
     day: "numeric",
     month: "long",
     hour: "2-digit",
     minute: "2-digit",
   });
+  return `${d} (${tzLabel(tz)})`;
 }
 
 function shell(title: string, tag: string, inner: string): string {
@@ -79,20 +99,23 @@ export async function POST(req: NextRequest) {
 
     const { data: lawyer } = await supabaseAdmin
       .from("users")
-      .select("email, first_name, last_name, address")
+      .select("email, first_name, last_name, address, timezone")
       .eq("id", lawyerId)
       .maybeSingle();
 
     const { data: client } = await supabaseAdmin
       .from("users")
-      .select("email, first_name, last_name")
+      .select("email, first_name, last_name, timezone")
       .eq("id", clientId)
       .maybeSingle();
 
     const channelLabel = CHANNEL_LABELS[channel] || "Consultation";
     const isPhysical = channel === "physical";
     const isScheduled = !!scheduledAt;
-    const whenStr = scheduledAt ? formatDateFr(scheduledAt) : "";
+    const clientTz = (client as any)?.timezone || "Africa/Algiers";
+    const lawyerTz = (lawyer as any)?.timezone || "Africa/Algiers";
+    const whenClient = scheduledAt ? formatInTz(scheduledAt, clientTz) : "";
+    const whenLawyer = scheduledAt ? formatInTz(scheduledAt, lawyerTz) : "";
 
     const lawyerName =
       `${lawyer?.first_name || ""} ${lawyer?.last_name || ""}`.trim() ||
@@ -118,7 +141,7 @@ export async function POST(req: NextRequest) {
       ];
       if (isScheduled)
         rows.push(
-          `<p style="color:#475569;font-size:14px;margin:0">📅 ${whenStr}</p>`
+          `<p style="color:#475569;font-size:14px;margin:0">📅 ${whenLawyer}</p>`
         );
 
       const inner = `
@@ -161,7 +184,7 @@ export async function POST(req: NextRequest) {
       ];
       if (isScheduled)
         rows.push(
-          `<p style="color:#475569;font-size:14px;margin:0 0 4px">📅 ${whenStr}</p>`
+          `<p style="color:#475569;font-size:14px;margin:0 0 4px">📅 ${whenClient}</p>`
         );
       if (isPhysical && cabinetAddress)
         rows.push(

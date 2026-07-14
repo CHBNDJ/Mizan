@@ -126,7 +126,7 @@ export function ConsultationPanel({
       const price = pricingChannels.find((p: any) => p.type === selected);
       const scheduledAt =
         needsSchedule && scheduledDate && scheduledTime
-          ? new Date(`${scheduledDate}T${scheduledTime}:00`).toISOString()
+          ? new Date(`${scheduledDate}T${scheduledTime}:00+01:00`).toISOString()
           : null;
 
       const initialStatus = needsSchedule ? "accepted" : "answered";

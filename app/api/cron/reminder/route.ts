@@ -11,14 +11,34 @@ const resend = new Resend(process.env.RESEND_API_KEY!);
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://mizan-dz.com";
 
-function formatDateFr(iso: string): string {
-  return new Date(iso).toLocaleString("fr-FR", {
+const TZ_LABELS: Record<string, string> = {
+  "Africa/Algiers": "heure d'Algérie",
+  "Europe/Paris": "heure de Paris",
+  "Europe/Brussels": "heure de Bruxelles",
+  "Europe/Zurich": "heure de Zurich",
+  "Europe/Madrid": "heure de Madrid",
+  "Europe/London": "heure de Londres",
+  "America/Montreal": "heure de Montréal",
+  "America/Toronto": "heure de Toronto",
+  "America/New_York": "heure de New York",
+};
+
+function tzLabel(tz: string): string {
+  return (
+    TZ_LABELS[tz] || `heure de ${tz.split("/").pop()?.replace(/_/g, " ") || tz}`
+  );
+}
+
+function formatInTz(iso: string, tz: string): string {
+  const d = new Date(iso).toLocaleString("fr-FR", {
+    timeZone: tz,
     weekday: "long",
     day: "numeric",
     month: "long",
     hour: "2-digit",
     minute: "2-digit",
   });
+  return `${d} (${tzLabel(tz)})`;
 }
 
 function buildEmail(opts: {
@@ -111,13 +131,13 @@ async function runReminders(req: NextRequest) {
 
       const { data: client } = await supabaseAdmin
         .from("users")
-        .select("email, first_name, last_name")
+        .select("email, first_name, last_name, timezone")
         .eq("id", c.client_id)
         .maybeSingle();
 
       const { data: lawyer } = await supabaseAdmin
         .from("users")
-        .select("email, first_name, last_name, address")
+        .select("email, first_name, last_name, address, timezone")
         .eq("id", c.lawyer_id)
         .maybeSingle();
 
@@ -127,7 +147,10 @@ async function runReminders(req: NextRequest) {
         : c.channel === "phone"
           ? "téléphone"
           : "vidéo";
-      const whenStr = formatDateFr(c.scheduled_at);
+      const clientTz = (client as any)?.timezone || "Africa/Algiers";
+      const lawyerTz = (lawyer as any)?.timezone || "Africa/Algiers";
+      const whenClient = formatInTz(c.scheduled_at, clientTz);
+      const whenLawyer = formatInTz(c.scheduled_at, lawyerTz);
       const minutesLabel = is1hWindow ? "dans 1 heure" : "dans 15 minutes";
       const joinUrl = isPhysical
         ? `${APP_URL}/mes-consultations`
@@ -156,7 +179,7 @@ async function runReminders(req: NextRequest) {
               recipientName: clientName,
               otherName: lawyerName || "votre professionnel",
               channelLabel,
-              whenStr,
+              whenStr: whenClient,
               joinUrl,
               minutesLabel,
               isPhysical,
@@ -179,7 +202,7 @@ async function runReminders(req: NextRequest) {
               recipientName: lawyer?.first_name || "cher professionnel",
               otherName: clientName,
               channelLabel,
-              whenStr,
+              whenStr: whenLawyer,
               joinUrl: lawyerJoinUrl,
               minutesLabel,
               isPhysical,
