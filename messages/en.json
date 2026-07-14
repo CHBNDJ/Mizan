@@ -74,12 +74,12 @@
     },
     "expertComptable": {
       "label": "Chartered Accountant",
-      "desc": "Statutory audit, due diligence",
+      "desc": "Statutory audit, due diligence...",
       "plural": "chartered accountants"
     },
     "traducteur": {
       "label": "Sworn translator",
-      "desc": "Official translations, records, diplomas...",
+      "desc": "Official translations, records...",
       "plural": "sworn translators"
     }
   },
@@ -2149,7 +2149,7 @@
         ]
       },
       "traducteur": {
-        "domainLabel": "Language / Document",
+        "domainLabel": "Document",
         "hero": "Find a sworn translator in Algeria",
         "sub": "Official translation of records, diplomas and legal documents — for residents and the diaspora.",
         "searchLabel": "Search for a sworn translator",
