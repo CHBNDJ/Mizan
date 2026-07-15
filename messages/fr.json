@@ -1724,6 +1724,8 @@
     "submitting": "Envoi en cours...",
     "errorMustBeLoggedIn": "Vous devez être connecté pour laisser un avis",
     "errorSubmit": "Erreur lors de l'envoi de l'avis",
+    "errorAlreadyReviewed": "Vous avez déjà laissé un avis pour ce professionnel.",
+    "errorMustHaveConsultation": "Vous devez avoir consulté ce professionnel pour laisser un avis.",
     "clientFallback": "Client",
     "initialFallback": "M"
   },

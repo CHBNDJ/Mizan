@@ -781,6 +781,8 @@
     "submitting": "جارٍ الإرسال...",
     "errorMustBeLoggedIn": "يجب تسجيل الدخول لترك تقييم",
     "errorSubmit": "خطأ أثناء إرسال التقييم",
+    "errorAlreadyReviewed": "لقد قمت بالفعل بترك تقييم لهذا المحترف.",
+    "errorMustHaveConsultation": "يجب أن تكون قد استشرت هذا المحترف لترك تقييم.",
     "clientFallback": "عميل",
     "initialFallback": "م"
   },

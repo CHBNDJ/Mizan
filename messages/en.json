@@ -1716,6 +1716,8 @@
     "submitting": "Sending...",
     "errorMustBeLoggedIn": "You must be logged in to leave a review",
     "errorSubmit": "Error sending review",
+    "errorAlreadyReviewed": "You have already left a review for this professional.",
+    "errorMustHaveConsultation": "You must have consulted this professional to leave a review.",
     "clientFallback": "Client",
     "initialFallback": "M"
   },

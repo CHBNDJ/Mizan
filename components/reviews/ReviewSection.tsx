@@ -93,7 +93,7 @@ export default function ReviewSection({
     const date = new Date(dateString);
     const now = new Date();
     const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     if (diffDays === 0) return t("today");
     if (diffDays === 1) return t("yesterday");
     if (diffDays < 7) return t("daysAgo", { n: diffDays });
@@ -111,6 +111,35 @@ export default function ReviewSection({
     const commentTrimmed = newReview.comment.trim();
     setSubmitting(true);
     try {
+      const { data: consultation } = await supabase
+        .from("consultations")
+        .select("id")
+        .eq("client_id", user.id)
+        .eq("lawyer_id", lawyerId)
+        .limit(1)
+        .maybeSingle();
+
+      if (!consultation) {
+        alert(t("errorMustHaveConsultation"));
+        setSubmitting(false);
+        return;
+      }
+
+      const { data: existingReview } = await supabase
+        .from("reviews")
+        .select("id")
+        .eq("client_id", user.id)
+        .eq("lawyer_id", lawyerId)
+        .eq("source", "mizan")
+        .limit(1)
+        .maybeSingle();
+
+      if (existingReview) {
+        alert(t("errorAlreadyReviewed"));
+        setSubmitting(false);
+        return;
+      }
+
       const { error: insertError } = await supabase.from("reviews").insert({
         lawyer_id: lawyerId,
         client_id: user.id,
@@ -135,7 +164,14 @@ export default function ReviewSection({
       setNewReview({ rating: 5, comment: "" });
     } catch (error: any) {
       console.error("Erreur soumission avis:", error);
-      alert(t("errorSubmit"));
+      if (
+        error?.code === "23505" ||
+        (error?.message || "").toLowerCase().includes("duplicate")
+      ) {
+        alert(t("errorAlreadyReviewed"));
+      } else {
+        alert(t("errorSubmit"));
+      }
     } finally {
       setSubmitting(false);
     }
