@@ -2909,5 +2909,18 @@
   },
   "phoneCallButton": {
     "call": "Call"
+  },
+  "acquisitionPopup": {
+    "title": "Welcome to Mizan",
+    "question": "How did you hear about us?",
+    "facebook": "Facebook",
+    "tiktok": "TikTok",
+    "twitter": "X (Twitter)",
+    "google": "Google",
+    "proche": "A friend",
+    "presse": "Press / article",
+    "autre": "Other",
+    "skip": "Skip",
+    "close": "Close"
   }
 }

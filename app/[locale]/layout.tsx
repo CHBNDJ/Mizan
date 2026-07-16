@@ -12,6 +12,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import PushNotificationInit from "@/components/PushNotificationInit";
 import ReviewPopup from "@/components/ReviewPopup";
+import AcquisitionGate from "@/components/AcquisitionGate";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -131,6 +132,7 @@ export default async function RootLayout({
             <PushNotificationInit />
             <Navigation />
             <ReviewPopup />
+            <AcquisitionGate />
             <ScrollManager>{children}</ScrollManager>
             <Footer />
           </AuthProvider>

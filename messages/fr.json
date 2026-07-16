@@ -2917,5 +2917,18 @@
   },
   "phoneCallButton": {
     "call": "Appeler"
+  },
+  "acquisitionPopup": {
+    "title": "Bienvenue sur Mizan",
+    "question": "Comment nous avez-vous connus ?",
+    "facebook": "Facebook",
+    "tiktok": "TikTok",
+    "twitter": "X (Twitter)",
+    "google": "Google",
+    "proche": "Un proche",
+    "presse": "Presse / article",
+    "autre": "Autre",
+    "skip": "Passer",
+    "close": "Fermer"
   }
 }

@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
 import { Eye, EyeOff, Smartphone } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { toArabicNumerals } from "@/lib/arabicNumerals";
 import { CustomSelect } from "@/components/ui/CustomSelect";
@@ -15,6 +15,8 @@ import { gsap } from "gsap";
 
 export default function ClientRegisterPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "";
   const { signUp } = useAuth();
   const t = useTranslations();
   const locale = useLocale();
@@ -125,7 +127,13 @@ export default function ClientRegisterPage() {
         location: formData.location,
         gender: frontendToDb(formData.gender),
       });
-      router.push(result.redirectPath || "/");
+      const base = result.redirectPath || "/";
+      const target = redirectTo
+        ? `${base}${base.includes("?") ? "&" : "?"}redirect=${encodeURIComponent(
+            redirectTo
+          )}`
+        : base;
+      router.push(target);
     } catch (error: any) {
       let msg = t("validation.general.genericError");
       if (error.message?.includes("already registered"))

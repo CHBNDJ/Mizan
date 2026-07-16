@@ -71,6 +71,8 @@ export interface Profile {
   created_at?: string;
   updated_at?: string;
   role?: "admin";
+  timezone?: string;
+  acquisition_source?: string;
 }
 
 export interface LawyerProfile {

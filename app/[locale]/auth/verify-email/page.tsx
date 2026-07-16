@@ -13,6 +13,7 @@ function VerifyEmailForm() {
   const containerRef = useRef<HTMLDivElement>(null);
   const email = searchParams.get("email") || "";
   const userType = searchParams.get("type") || "client";
+  const redirectTo = searchParams.get("redirect") || "";
 
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
@@ -83,7 +84,7 @@ function VerifyEmailForm() {
       setSuccess(true);
 
       setTimeout(() => {
-        const redirectPath = data.redirectPath || "/";
+        const redirectPath = redirectTo || data.redirectPath || "/";
         router.push(redirectPath);
       }, 2000);
     } catch (err: any) {

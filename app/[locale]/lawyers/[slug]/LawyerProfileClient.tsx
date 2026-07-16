@@ -661,7 +661,9 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                     <button
                       onClick={() => {
                         if (!user || profile?.user_type !== "client") {
-                          router.push("/auth/client/register");
+                          router.push(
+                            `/auth/client/register?redirect=${encodeURIComponent(window.location.pathname)}`
+                          );
                           return;
                         }
                         setShowContactNow(true);
@@ -784,7 +786,11 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                   .join(", ")}
                 showContact={showContact || isClient}
                 googleMapsUrl={getGoogleMapsUrl(avocat)}
-                onLockedClick={() => router.push("/auth/client/register")}
+                onLockedClick={() =>
+                  router.push(
+                    `/auth/client/register?redirect=${encodeURIComponent(window.location.pathname)}`
+                  )
+                }
               />
             </div>
           )}
