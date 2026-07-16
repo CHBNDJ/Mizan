@@ -100,8 +100,6 @@ export default function ClientRegisterPage() {
     if (!formData.password) e.password = t("validation.required.password");
     else if (formData.password.length < 8)
       e.password = t("validation.invalid.passwordLength");
-    else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password))
-      e.password = t("validation.invalid.passwordComplexity");
     if (formData.password !== formData.confirmPassword)
       e.confirmPassword = t("validation.invalid.passwordMismatch");
     if (!formData.mobile.trim()) e.mobile = t("validation.required.mobile");
@@ -218,7 +216,7 @@ export default function ClientRegisterPage() {
               </div>
             </div>
 
-            <div>
+            <div className="relative z-30">
               <label className="block text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
                 {t("auth.clientRegister.location")} *
               </label>
@@ -233,7 +231,7 @@ export default function ClientRegisterPage() {
               {errors.location && <p className={errCls}>{errors.location}</p>}
             </div>
 
-            <div>
+            <div className="relative z-20">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
                 <Smartphone className="w-4 h-4" />{" "}
                 {t("auth.clientRegister.mobile")} *
