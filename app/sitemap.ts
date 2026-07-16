@@ -12,6 +12,7 @@ const PROFESSIONS = [
   "huissier",
   "comptable",
   "expert-comptable",
+  "traducteur",
 ];
 
 const SPECIALITES_SLUGS = [
