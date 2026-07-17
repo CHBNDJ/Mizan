@@ -106,7 +106,9 @@ export function ConsultationPanel({
 
   const handleSend = async () => {
     if (!user || profile?.user_type !== "client") {
-      router.push("/auth/client/register");
+      router.push(
+        `/auth/client/register?redirect=${encodeURIComponent(window.location.pathname)}`
+      );
       return;
     }
     if (!selected) return;
@@ -126,7 +128,7 @@ export function ConsultationPanel({
       const price = pricingChannels.find((p: any) => p.type === selected);
       const scheduledAt =
         needsSchedule && scheduledDate && scheduledTime
-          ? new Date(`${scheduledDate}T${scheduledTime}:00+01:00`).toISOString()
+          ? new Date(`${scheduledDate}T${scheduledTime}:00`).toISOString()
           : null;
 
       const initialStatus = needsSchedule ? "accepted" : "answered";
@@ -200,8 +202,8 @@ export function ConsultationPanel({
               start_time: scheduledTime,
               end_time: endTime,
               subject: canal.label,
-              status: "confirmed",
-              type: "online",
+              status: initialStatus,
+              type: selected,
               channel: selected,
             });
           if (apptError)
