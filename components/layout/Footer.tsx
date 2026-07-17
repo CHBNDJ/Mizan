@@ -13,12 +13,12 @@ export default function Footer() {
           <div className="flex items-baseline">
             <img
               src="/favicon-light.svg"
-              className="block dark:hidden w-4 h-4 self-center"
+              className="block dark:hidden w-5 h-5 self-center"
               alt="M"
             />
             <img
               src="/favicon-dark.svg"
-              className="hidden dark:block w-4 h-4 self-center"
+              className="hidden dark:block w-5 h-5 self-center"
               alt="M"
             />
             <span className="text-base font-semibold text-slate-800 dark:text-[#F5F5F4] -ms-0.5">
