@@ -1,7 +1,6 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { Scale } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export default function Footer() {
@@ -12,7 +11,16 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm">
           <div className="flex items-center gap-1.5">
-            <Scale className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f]" />
+            <img
+              src="/favicon-light.svg"
+              className="block dark:hidden w-5 h-5"
+              alt="Mizan"
+            />
+            <img
+              src="/favicon-dark.svg"
+              className="hidden dark:block w-5 h-5"
+              alt="Mizan"
+            />
             <span className="font-semibold text-slate-800 dark:text-[#F5F5F4]">
               MIZAN
             </span>
