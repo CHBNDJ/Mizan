@@ -13,17 +13,14 @@ export default function Footer() {
           <div className="flex items-center gap-1.5">
             <img
               src="/favicon-light.svg"
-              className="block dark:hidden w-5 h-5"
+              className="block dark:hidden w-6 h-6"
               alt="Mizan"
             />
             <img
               src="/favicon-dark.svg"
-              className="hidden dark:block w-5 h-5"
+              className="hidden dark:block w-6 h-6"
               alt="Mizan"
             />
-            <span className="font-semibold text-slate-800 dark:text-[#F5F5F4]">
-              MIZAN
-            </span>
           </div>
           <span className="text-slate-300">|</span>
           <Link
