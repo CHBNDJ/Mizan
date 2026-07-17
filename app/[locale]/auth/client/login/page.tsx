@@ -102,21 +102,31 @@ export default function ClientLoginPage() {
       router.push(redirectPath);
     } catch (error: any) {
       console.error("Erreur connexion client:", error);
+      const errStr = (error?.message || "").toLowerCase();
 
       let errorMessage = t("validation.general.wrongCredentials");
 
-      if (error.message?.includes("Invalid login credentials")) {
-        errorMessage = t("validation.general.wrongCredentials");
-      } else if (error.message?.includes("Too many requests")) {
-        errorMessage = t("validation.general.tooManyAttempts");
-      } else if (
-        error.message?.includes("Ce compte n'est pas un compte client")
+      if (
+        errStr.includes("invalid login credentials") ||
+        errStr.includes("invalid credentials")
       ) {
+        errorMessage = t("validation.general.wrongCredentials");
+      } else if (
+        errStr.includes("too many requests") ||
+        errStr.includes("rate")
+      ) {
+        errorMessage = t("validation.general.tooManyAttempts");
+      } else if (errStr.includes("n'est pas un compte client")) {
         errorMessage = t("validation.general.notClientAccount");
-      } else if (error.message?.includes("User not found")) {
+      } else if (errStr.includes("user not found")) {
         errorMessage = t("validation.general.userNotFound");
-      } else if (error.message?.includes("Email not confirmed")) {
+      } else if (
+        errStr.includes("email not confirmed") ||
+        errStr.includes("not confirmed")
+      ) {
         errorMessage = t("validation.general.emailNotConfirmed");
+      } else if (errStr.includes("network") || errStr.includes("fetch")) {
+        errorMessage = t("validation.general.networkError");
       }
 
       setErrors({ general: errorMessage });

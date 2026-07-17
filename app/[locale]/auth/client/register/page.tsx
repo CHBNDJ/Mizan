@@ -133,9 +133,27 @@ export default function ClientRegisterPage() {
         : base;
       router.push(target);
     } catch (error: any) {
+      const errStr = (error?.message || "").toLowerCase();
       let msg = t("validation.general.genericError");
-      if (error.message?.includes("already registered"))
+
+      if (
+        errStr.includes("already registered") ||
+        errStr.includes("already exists") ||
+        errStr.includes("user already") ||
+        errStr.includes("duplicate") ||
+        error?.status === 422
+      ) {
         msg = t("validation.general.emailTaken");
+      } else if (errStr.includes("invalid") && errStr.includes("email")) {
+        msg = t("validation.general.emailInvalid");
+      } else if (errStr.includes("password")) {
+        msg = t("validation.general.passwordWeak");
+      } else if (errStr.includes("rate") || errStr.includes("too many")) {
+        msg = t("validation.general.tooManyAttempts");
+      } else if (errStr.includes("network") || errStr.includes("fetch")) {
+        msg = t("validation.general.networkError");
+      }
+
       setErrors({ general: msg });
     } finally {
       setIsSubmitting(false);

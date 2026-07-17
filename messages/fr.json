@@ -125,7 +125,9 @@
       "notLawyerAccount": "Ce compte n'est pas un compte professionnel. Utilisez la connexion client.",
       "pendingVerification": "Votre compte est en attente de validation. Vous recevrez un email dès que votre profil sera vérifié.",
       "barNumberInvalid": "Le format de votre numéro d'agrément n'est pas valide. Vérifiez-le et réessayez.",
-      "networkError": "Problème de connexion. Vérifiez votre connexion internet et réessayez."
+      "networkError": "Problème de connexion. Vérifiez votre connexion internet et réessayez.",
+      "emailInvalid": "L'adresse email n'est pas valide.",
+      "passwordWeak": "Le mot de passe ne respecte pas les critères."
     }
   },
   "home": {

@@ -125,7 +125,9 @@
       "notLawyerAccount": "This account is not a professional account. Use client login.",
       "pendingVerification": "Your account is pending verification. You will receive an email once your profile is verified.",
       "barNumberInvalid": "Your registration number format is invalid. Please check it and try again.",
-      "networkError": "Connection problem. Please check your internet connection and try again."
+      "networkError": "Connection problem. Please check your internet connection and try again.",
+      "emailInvalid": "The email address is invalid.",
+      "passwordWeak": "The password does not meet the requirements."
     }
   },
   "home": {

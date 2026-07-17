@@ -382,7 +382,10 @@ export default function LawyerRegisterPage() {
       const em = (error?.message || "").toLowerCase();
       if (
         em.includes("already registered") ||
-        em.includes("already been registered")
+        em.includes("already been registered") ||
+        em.includes("already exists") ||
+        em.includes("duplicate") ||
+        error?.status === 422
       )
         msg = t("validation.general.emailTaken");
       else if (em.includes("bar_number") || em.includes("check constraint"))

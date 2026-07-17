@@ -115,6 +115,11 @@ export default function LawyerLoginPage() {
         msg = t("validation.general.userNotFound");
       else if (err.message?.includes("Email not confirmed"))
         msg = t("validation.general.emailNotConfirmedShort");
+      else if (
+        err.message?.toLowerCase().includes("network") ||
+        err.message?.toLowerCase().includes("fetch")
+      )
+        msg = t("validation.general.networkError");
       setErrors({ general: msg });
     } finally {
       setIsSubmitting(false);
