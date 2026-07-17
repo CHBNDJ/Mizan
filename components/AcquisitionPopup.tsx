@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Sparkles, Users, Newspaper, MoreHorizontal, X } from "lucide-react";
+import { Sparkles, Users, Newspaper, MoreHorizontal } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
 
@@ -105,15 +105,6 @@ export default function AcquisitionPopup({
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 dark:bg-black/70 backdrop-blur-sm">
       <div className="w-full max-w-sm bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none dark:bg-[#1c1c1e] rounded-2xl border border-teal-100 dark:border-[#1c2220] shadow-2xl dark:shadow-none p-6 relative">
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-4 end-4 text-slate-400 dark:text-[#7A7A78] hover:text-slate-600 dark:hover:text-[#E8E8E6] cursor-pointer"
-          aria-label={t("close")}
-        >
-          <X className="w-4 h-4" />
-        </button>
-
         <div className="text-center mb-5">
           <div className="w-12 h-12 rounded-full bg-white dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 flex items-center justify-center mx-auto mb-3 shadow-sm dark:shadow-none">
             <Sparkles className="w-6 h-6 text-teal-600 dark:text-[#6fcf9f]" />
@@ -159,13 +150,6 @@ export default function AcquisitionPopup({
             </span>
           </button>
         </div>
-
-        <p
-          onClick={onClose}
-          className="text-center text-xs text-slate-400 dark:text-[#7A7A78] mt-4 cursor-pointer hover:text-slate-600 dark:hover:text-[#E8E8E6]"
-        >
-          {t("skip")}
-        </p>
       </div>
     </div>
   );
