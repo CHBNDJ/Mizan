@@ -11,6 +11,21 @@ interface Testimonial {
   created_at: string;
 }
 
+const getInitials = (name?: string) => {
+  if (!name) return "?";
+  const parts = name.trim().split(/\s+/);
+  const first = parts[0]?.[0] || "";
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : "";
+  return (first + last).toUpperCase() || "?";
+};
+
+const shortName = (name?: string) => {
+  if (!name) return "";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0];
+  return `${parts[0]} ${parts[parts.length - 1][0].toUpperCase()}.`;
+};
+
 export default function TestimonialsSection() {
   const supabase = createClient();
   const t = useTranslations("testimonials");
@@ -66,12 +81,12 @@ export default function TestimonialsSection() {
                 <div className="flex items-center gap-3 pt-3 border-t border-teal-100 dark:border-[#3a3a3d]">
                   <div className="w-9 h-9 bg-teal-600 dark:bg-[#0F6E56] rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-white text-sm font-bold">
-                      {item.user_name?.charAt(0)?.toUpperCase() || "?"}
+                      {getInitials(item.user_name)}
                     </span>
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-slate-800 dark:text-[#F5F5F4]">
-                      {item.user_name}
+                      {shortName(item.user_name)}
                     </p>
                     <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
                       {item.user_type === "lawyer"
