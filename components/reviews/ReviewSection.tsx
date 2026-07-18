@@ -177,7 +177,7 @@ export default function ReviewSection({
                   </div>
                   <div>
                     <div className="font-semibold text-slate-800 dark:text-[#F5F5F4] text-sm">
-                      {t("client")}
+                      {t("clientFallback")}
                       {review.client_initial
                         ? ` ${review.client_initial}.`
                         : ""}
