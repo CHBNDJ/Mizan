@@ -12,10 +12,7 @@ interface Review {
   rating: number;
   comment: string | null;
   created_at: string;
-  client: {
-    first_name: string;
-    last_name: string;
-  };
+  client_initial: string;
 }
 
 export default function ReviewSection({
@@ -40,7 +37,7 @@ export default function ReviewSection({
     try {
       const { data: reviewsData, error: reviewsError } = await supabase
         .from("reviews")
-        .select("*")
+        .select("id, rating, comment, created_at, client_initial")
         .eq("lawyer_id", lawyerId)
         .eq("source", "mizan")
         .order("created_at", { ascending: false });
@@ -53,33 +50,13 @@ export default function ReviewSection({
         return;
       }
 
-      const clientIds = reviewsData
-        .map((r) => r.client_id)
-        .filter((id) => id !== null);
-
-      let clientsData: any[] = [];
-      if (clientIds.length > 0) {
-        const { data, error: clientsError } = await supabase
-          .from("users")
-          .select("id, first_name, last_name")
-          .in("id", clientIds);
-        if (clientsError?.message) throw clientsError;
-        clientsData = data || [];
-      }
-
-      const formattedReviews: Review[] = reviewsData.map((review) => {
-        const client = clientsData?.find((c) => c.id === review.client_id);
-        return {
-          id: review.id,
-          rating: review.rating,
-          comment: review.comment,
-          created_at: review.created_at,
-          client: {
-            first_name: client?.first_name || t("clientFallback"),
-            last_name: client?.last_name?.[0] || t("initialFallback"),
-          },
-        };
-      });
+      const formattedReviews: Review[] = reviewsData.map((review) => ({
+        id: review.id,
+        rating: review.rating,
+        comment: review.comment,
+        created_at: review.created_at,
+        client_initial: (review.client_initial || "").toUpperCase(),
+      }));
 
       setReviews(formattedReviews);
     } catch (error: any) {
@@ -111,34 +88,10 @@ export default function ReviewSection({
     const commentTrimmed = newReview.comment.trim();
     setSubmitting(true);
     try {
-      const { data: consultation } = await supabase
-        .from("consultations")
-        .select("id")
-        .eq("client_id", user.id)
-        .eq("lawyer_id", lawyerId)
-        .limit(1)
-        .maybeSingle();
-
-      if (!consultation) {
-        alert(t("errorMustHaveConsultation"));
-        setSubmitting(false);
-        return;
-      }
-
-      const { data: existingReview } = await supabase
-        .from("reviews")
-        .select("id")
-        .eq("client_id", user.id)
-        .eq("lawyer_id", lawyerId)
-        .eq("source", "mizan")
-        .limit(1)
-        .maybeSingle();
-
-      if (existingReview) {
-        alert(t("errorAlreadyReviewed"));
-        setSubmitting(false);
-        return;
-      }
+      const clientInitial = (profile?.first_name || "")
+        .trim()
+        .charAt(0)
+        .toUpperCase();
 
       const { error: insertError } = await supabase.from("reviews").insert({
         lawyer_id: lawyerId,
@@ -146,6 +99,7 @@ export default function ReviewSection({
         rating: newReview.rating,
         comment: commentTrimmed || null,
         source: "mizan",
+        client_initial: clientInitial || null,
       });
       if (insertError) throw insertError;
       try {
@@ -164,14 +118,7 @@ export default function ReviewSection({
       setNewReview({ rating: 5, comment: "" });
     } catch (error: any) {
       console.error("Erreur soumission avis:", error);
-      if (
-        error?.code === "23505" ||
-        (error?.message || "").toLowerCase().includes("duplicate")
-      ) {
-        alert(t("errorAlreadyReviewed"));
-      } else {
-        alert(t("errorSubmit"));
-      }
+      alert(t("errorSubmit"));
     } finally {
       setSubmitting(false);
     }
@@ -222,12 +169,22 @@ export default function ReviewSection({
                 </div>
               )}
               <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-[#1c2220]">
-                <div>
-                  <div className="font-semibold text-slate-800 dark:text-[#F5F5F4] text-base">
-                    {review.client.first_name} {review.client.last_name}.
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-teal-600 dark:bg-[#0F6E56] flex items-center justify-center flex-shrink-0">
+                    <span className="text-white text-sm font-bold">
+                      {review.client_initial || "?"}
+                    </span>
                   </div>
-                  <div className="text-xs text-slate-500 dark:text-[#A8A8A6] mt-1">
-                    {ld(formatDate(review.created_at))}
+                  <div>
+                    <div className="font-semibold text-slate-800 dark:text-[#F5F5F4] text-sm">
+                      {t("client")}
+                      {review.client_initial
+                        ? ` ${review.client_initial}.`
+                        : ""}
+                    </div>
+                    <div className="text-xs text-slate-500 dark:text-[#A8A8A6] mt-0.5">
+                      {ld(formatDate(review.created_at))}
+                    </div>
                   </div>
                 </div>
                 <div className="flex gap-0.5">
