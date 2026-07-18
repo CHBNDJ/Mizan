@@ -5,14 +5,16 @@ import { useAuth } from "@/hooks/useAuth";
 import AcquisitionPopup from "@/components/AcquisitionPopup";
 
 export default function AcquisitionGate() {
-  const { user, profile } = useAuth();
+  const { user, profile, refreshProfile } = useAuth();
   const pathname = usePathname();
   const [show, setShow] = useState(false);
+  const [answered, setAnswered] = useState(false);
 
   useEffect(() => {
     const emailConfirmed = !!(user as any)?.email_confirmed_at;
     const isAuthPage = pathname?.includes("/auth/");
     if (
+      !answered &&
       user &&
       emailConfirmed &&
       !isAuthPage &&
@@ -24,9 +26,17 @@ export default function AcquisitionGate() {
     } else {
       setShow(false);
     }
-  }, [user, profile, pathname]);
+  }, [user, profile, pathname, answered]);
+
+  const handleClose = async () => {
+    setAnswered(true);
+    setShow(false);
+    try {
+      await refreshProfile();
+    } catch {}
+  };
 
   if (!show || !user) return null;
 
-  return <AcquisitionPopup userId={user.id} onClose={() => setShow(false)} />;
+  return <AcquisitionPopup userId={user.id} onClose={handleClose} />;
 }
