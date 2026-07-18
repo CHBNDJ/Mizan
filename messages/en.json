@@ -1699,6 +1699,7 @@
     }
   },
   "reviewSection": {
+    "client": "Client",
     "title": "Client reviews",
     "noReviewsTitle": "No reviews yet",
     "noReviewsDesc": "Be the first to share your experience",

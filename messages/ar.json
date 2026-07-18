@@ -764,6 +764,7 @@
     "physicalLabel": "موعد في المكتب"
   },
   "reviewSection": {
+    "client": "عميل",
     "title": "تقييمات العملاء",
     "noReviewsTitle": "لا توجد تقييمات حتى الآن",
     "noReviewsDesc": "كن أول من يشارك تجربته",

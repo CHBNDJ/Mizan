@@ -1707,6 +1707,7 @@
     }
   },
   "reviewSection": {
+    "client": "Client",
     "title": "Avis des clients",
     "noReviewsTitle": "Aucun avis pour le moment",
     "noReviewsDesc": "Soyez le premier à partager votre expérience",
