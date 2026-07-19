@@ -185,6 +185,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (userData.userType === "lawyer") {
         metaData.bar_number = userData.bar_number || "";
         metaData.profession = userData.profession || "avocat";
+        metaData.professions = userData.professions?.length
+          ? userData.professions
+          : [userData.profession || "avocat"];
         metaData.specializations = userData.specializations || [];
         metaData.experience_years = userData.experience_years || 0;
         metaData.consultation_price = userData.consultation_price || null;
