@@ -51,9 +51,6 @@ const PROF_ICONS: Record<string, any> = {
   traducteur: CheckCircle,
 };
 
-const CHECKIN_REMINDER_MS = 2 * 60 * 60 * 1000;
-const AUTO_OFF_AFTER_IGNORED_MS = 4 * 60 * 60 * 1000;
-
 export default function LawyerDashboardPage() {
   const supabase = createClient();
   const { profile, user, isAuthenticated, loading, lawyerProfile } = useAuth();
@@ -79,7 +76,6 @@ export default function LawyerDashboardPage() {
   const [availableNow, setAvailableNow] = useState(false);
   const [availableSince, setAvailableSince] = useState<string | null>(null);
   const [elapsedMin, setElapsedMin] = useState(0);
-  const [showCheckIn, setShowCheckIn] = useState(false);
 
   const professions: string[] = (lawyerProfile as any)?.professions || [
     (profile as any)?.profession || "avocat",
@@ -168,18 +164,11 @@ export default function LawyerDashboardPage() {
   useEffect(() => {
     if (!availableNow || !availableSince) {
       setElapsedMin(0);
-      setShowCheckIn(false);
       return;
     }
     const tick = () => {
       const elapsed = Date.now() - new Date(availableSince).getTime();
       setElapsedMin(Math.floor(elapsed / 60000));
-      if (elapsed >= AUTO_OFF_AFTER_IGNORED_MS) {
-        toggleAvailableNow(false);
-        setShowCheckIn(false);
-      } else if (elapsed >= CHECKIN_REMINDER_MS) {
-        setShowCheckIn(true);
-      }
     };
     tick();
     const interval = setInterval(tick, 30000);
@@ -204,21 +193,9 @@ export default function LawyerDashboardPage() {
     const since = next ? new Date().toISOString() : null;
     setAvailableNow(next);
     setAvailableSince(since);
-    setShowCheckIn(false);
     await supabase
       .from("lawyers")
       .update({ available_now: next, available_now_since: since })
-      .eq("id", user.id);
-  };
-
-  const confirmStillAvailable = async () => {
-    if (!user) return;
-    const since = new Date().toISOString();
-    setAvailableSince(since);
-    setShowCheckIn(false);
-    await supabase
-      .from("lawyers")
-      .update({ available_now_since: since })
       .eq("id", user.id);
   };
 
@@ -484,27 +461,6 @@ export default function LawyerDashboardPage() {
                         n: ld(String(Math.floor(elapsedMin / 60))),
                       })}
                 </p>
-              </div>
-            )}
-            {showCheckIn && (
-              <div className="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-center justify-between gap-3 flex-wrap">
-                <p className="text-xs font-semibold text-amber-800">
-                  {t("dashboard.stillAvailableQuestion")}
-                </p>
-                <div className="flex gap-2">
-                  <button
-                    onClick={confirmStillAvailable}
-                    className="text-xs font-semibold bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#085041] text-white px-3 py-1.5 rounded-lg cursor-pointer"
-                  >
-                    {t("dashboard.stillAvailableYes")}
-                  </button>
-                  <button
-                    onClick={() => toggleAvailableNow(false)}
-                    className="text-xs font-medium bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] hover:bg-slate-50 text-slate-600 dark:text-[#E8E8E6] px-3 py-1.5 rounded-lg cursor-pointer"
-                  >
-                    {t("dashboard.stillAvailableNo")}
-                  </button>
-                </div>
               </div>
             )}
           </div>

@@ -481,7 +481,7 @@ function MesConsultationsContent() {
       </div>
     );
 
-  const ChatPanel = () => (
+  const chatPanelContent = selectedConsultation ? (
     <div className="bg-white dark:bg-[#1c1c1e] rounded-xl shadow-sm dark:shadow-none border border-slate-200 dark:border-[#1c2220] flex flex-col h-[600px]">
       <div className="p-5 bg-teal-50 dark:bg-[#1c1c1e] border-b border-slate-200 dark:border-[#1c2220]">
         <div className="flex items-center gap-3">
@@ -734,25 +734,7 @@ function MesConsultationsContent() {
               </button>
               <textarea
                 value={newMessage}
-                onChange={(e) => {
-                  setNewMessage(e.target.value);
-                  if (selectedConsultation) {
-                    const ch = supabase.channel(
-                      `typing-${selectedConsultation.id}`
-                    );
-                    ch.subscribe((status) => {
-                      if (status === "SUBSCRIBED")
-                        ch.send({
-                          type: "broadcast",
-                          event: "typing",
-                          payload: { userId: user?.id },
-                        });
-                    });
-                  }
-                  if (typingTimeoutRef.current)
-                    clearTimeout(typingTimeoutRef.current);
-                  typingTimeoutRef.current = setTimeout(() => {}, 1000);
-                }}
+                onChange={(e) => setNewMessage(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
@@ -783,7 +765,7 @@ function MesConsultationsContent() {
         )}
       </div>
     </div>
-  );
+  ) : null;
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">
@@ -980,7 +962,7 @@ function MesConsultationsContent() {
                 className={`chat-container lg:sticky lg:top-24 lg:self-start ${showChat ? "block" : "hidden lg:block"}`}
               >
                 {selectedConsultation ? (
-                  <ChatPanel />
+                  chatPanelContent
                 ) : (
                   <div className="hidden lg:flex bg-slate-50 dark:bg-[#141415] rounded-xl p-12 text-center border-2 border-dashed border-slate-300 dark:border-[#3a3a3d] flex-col items-center">
                     <MessageSquare className="w-12 h-12 text-slate-300 dark:text-[#3a3a3d] mb-3" />
