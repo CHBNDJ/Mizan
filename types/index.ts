@@ -35,6 +35,7 @@ export interface AvocatData {
   langues?: string[];
   verified?: boolean;
   is_cour_supreme?: boolean;
+  is_assermente?: boolean;
   available_now?: boolean;
   available_now_since?: string | null;
 

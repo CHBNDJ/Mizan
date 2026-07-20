@@ -235,15 +235,19 @@ export default function LawyerRegisterPage() {
         e.postalCode = t("validation.required.postalCode");
       else if (!/^\d{5}$/.test(formData.address.postalCode))
         e.postalCode = t("validation.invalid.postalCode");
-      if (!formData.barNumber.trim())
-        e.barNumber = t("auth.lawyerRegister.barNumberRequired", {
-          numLabel: currentProf?.numLabel || "",
-        });
-      else if (
-        primaryProfession === "avocat" &&
-        !/^(\d{2}\/\d{3,4}|\d{3,4}\/\d{2})$/.test(formData.barNumber.trim())
-      )
-        e.barNumber = t("validation.invalid.barNumber");
+      const isTraducteurNonAssermente =
+        primaryProfession === "traducteur" && !(formData as any).isAssermente;
+      if (!isTraducteurNonAssermente) {
+        if (!formData.barNumber.trim())
+          e.barNumber = t("auth.lawyerRegister.barNumberRequired", {
+            numLabel: currentProf?.numLabel || "",
+          });
+        else if (
+          primaryProfession === "avocat" &&
+          !/^(\d{2}\/\d{3,4}|\d{3,4}\/\d{2})$/.test(formData.barNumber.trim())
+        )
+          e.barNumber = t("validation.invalid.barNumber");
+      }
     }
     if (step === 3) {
       if (formData.specializations.length === 0)
@@ -331,6 +335,10 @@ export default function LawyerRegisterPage() {
         userType: "lawyer" as const,
         location: formData.address.city.trim(),
         is_cour_supreme: !!(formData as any).isCourtSupreme,
+        is_assermente:
+          primaryProfession === "traducteur"
+            ? !!(formData as any).isAssermente
+            : false,
         website: formData.website?.trim()
           ? formData.website.startsWith("http")
             ? formData.website.trim()
@@ -723,19 +731,26 @@ export default function LawyerRegisterPage() {
                 <p className={errCls}>{errors.postalCode}</p>
               )}
             </div>
-            <div>
-              <label className={labelCls}>{currentProf?.numLabel} *</label>
-              <input
-                type="text"
-                name="barNumber"
-                value={formData.barNumber}
-                onChange={handleInput}
-                className={inputCls}
-                placeholder={currentProf?.numPlaceholder}
-                disabled={isSubmitting}
-              />
-              {errors.barNumber && <p className={errCls}>{errors.barNumber}</p>}
-            </div>
+            {!(
+              primaryProfession === "traducteur" &&
+              !(formData as any).isAssermente
+            ) && (
+              <div>
+                <label className={labelCls}>{currentProf?.numLabel} *</label>
+                <input
+                  type="text"
+                  name="barNumber"
+                  value={formData.barNumber}
+                  onChange={handleInput}
+                  className={inputCls}
+                  placeholder={currentProf?.numPlaceholder}
+                  disabled={isSubmitting}
+                />
+                {errors.barNumber && (
+                  <p className={errCls}>{errors.barNumber}</p>
+                )}
+              </div>
+            )}
           </div>
           {primaryProfession === "avocat" && (
             <div className="flex items-start gap-3 p-4 border border-amber-200 dark:border-[#5A4A2A] bg-amber-50 dark:bg-[#3D2E1F] rounded-xl">
@@ -760,6 +775,33 @@ export default function LawyerRegisterPage() {
                 </span>
                 <p className="text-xs text-amber-600 dark:text-[#E0B568]/80 mt-0.5 font-normal">
                   {t("auth.lawyerRegister.courSupremeNote")}
+                </p>
+              </label>
+            </div>
+          )}
+          {primaryProfession === "traducteur" && (
+            <div className="flex items-start gap-3 p-4 border border-amber-200 dark:border-[#5A4A2A] bg-amber-50 dark:bg-[#3D2E1F] rounded-xl">
+              <input
+                type="checkbox"
+                id="assermente"
+                checked={(formData as any).isAssermente || false}
+                onChange={(e) =>
+                  setFormData(
+                    (p) => ({ ...p, isAssermente: e.target.checked }) as any
+                  )
+                }
+                disabled={isSubmitting}
+                className="w-4 h-4 accent-amber-600 mt-0.5 flex-shrink-0 cursor-pointer"
+              />
+              <label
+                htmlFor="assermente"
+                className="text-sm text-amber-800 dark:text-[#E0B568] cursor-pointer"
+              >
+                <span className="font-semibold">
+                  {t("auth.lawyerRegister.assermenteLabel")}
+                </span>
+                <p className="text-xs text-amber-600 dark:text-[#E0B568]/80 mt-0.5 font-normal">
+                  {t("auth.lawyerRegister.assermenteNote")}
                 </p>
               </label>
             </div>

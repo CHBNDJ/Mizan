@@ -231,12 +231,13 @@
       "huissier": "دائرة قضائية بـ",
       "expertComptable": "رقم تسجيل ONEC",
       "comptable": "رقم تسجيل ONEC/ONCA",
-      "traducteur": "رقم الاعتماد (وزارة العدل)"
+      "traducteur": "رقم الاعتماد"
     },
     "experienceYears": "سنوات خبرة",
     "registeredIn": "مسجّل منذ",
     "verifiedBadge": "موثّق من ميزان",
     "courSupremeBadge": "معتمد لدى المحكمة العليا",
+    "assermenteBadge": "محلّف",
     "expertiseDomains": "مجالات الخبرة",
     "ownProfileOverlay": "ما يراه عملاؤك",
     "ownProfileNote": "لا يمكنك إرسال طلب استشارة لنفسك",
@@ -335,6 +336,8 @@
       "postalCode": "الرمز البريدي",
       "courSupremeLabel": "أنا معتمد لدى المحكمة العليا ومجلس الدولة",
       "courSupremeNote": "يتطلب ١٠ سنوات خبرة على الأقل.",
+      "assermenteLabel": "أنا مترجم محلّف",
+      "assermenteNote": "معتمد لدى وزارة العدل للترجمات الرسمية",
       "website": "الموقع الإلكتروني",
       "websiteOptional": "(اختياري)",
       "websitePh": "www.example.com",

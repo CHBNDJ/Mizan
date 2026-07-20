@@ -78,7 +78,7 @@
       "plural": "experts comptables"
     },
     "traducteur": {
-      "label": "Traducteur assermenté",
+      "label": "Traducteur",
       "desc": "Traductions officielles, actes...",
       "plural": "traducteurs assermentés"
     }
@@ -237,6 +237,7 @@
     "registeredIn": "inscrit en",
     "verifiedBadge": "Vérifié par Mizan",
     "courSupremeBadge": "Agréé Cour Suprême",
+    "assermenteBadge": "Assermenté",
     "expertiseDomains": "Domaines d'expertise",
     "ownProfileOverlay": "Ce que vos clients voient",
     "ownProfileNote": "Vous ne pouvez pas vous envoyer une consultation",
@@ -335,6 +336,8 @@
       "postalCode": "Code postal",
       "courSupremeLabel": "Je suis agréé auprès de la Cour Suprême et du Conseil d'État",
       "courSupremeNote": "Requiert 10 ans d'ancienneté minimum.",
+      "assermenteLabel": "Je suis traducteur assermenté",
+      "assermenteNote": "Agréé auprès du Ministère de la Justice pour les traductions officielles",
       "website": "Site web",
       "websiteOptional": "(optionnel)",
       "websitePh": "www.votre-cabinet.com",
@@ -1659,7 +1662,7 @@
       "huissier": "N° huissier de justice",
       "comptable": "N° ONEC / ONCA",
       "expertComptable": "N° ONEC",
-      "traducteur": "N° d'agrément (Ministère de la Justice)"
+      "traducteur": "N° d'agrément"
     },
     "numPlaceholders": {
       "avocat": "ex: ALG2024-001",

@@ -191,6 +191,7 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     profession: lawyer.profession || "avocat",
     professions: lawyer.professions || [lawyer.profession || "avocat"],
     is_cour_supreme: lawyer.is_cour_supreme || false,
+    is_assermente: lawyer.is_assermente || false,
     bio: lawyer.bio || undefined,
   };
 }

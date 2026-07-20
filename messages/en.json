@@ -237,6 +237,7 @@
     "registeredIn": "registered in",
     "verifiedBadge": "Verified by Mizan",
     "courSupremeBadge": "Supreme Court accredited",
+    "assermenteBadge": "Sworn translator",
     "expertiseDomains": "Areas of expertise",
     "ownProfileOverlay": "What your clients see",
     "ownProfileNote": "You cannot send yourself a consultation",
@@ -335,6 +336,8 @@
       "postalCode": "Postal code",
       "courSupremeLabel": "I am accredited with the Supreme Court and Council of State",
       "courSupremeNote": "Requires a minimum of 10 years of experience.",
+      "assermenteLabel": "I am a sworn translator",
+      "assermenteNote": "Accredited by the Ministry of Justice for official translations",
       "website": "Website",
       "websiteOptional": "(optional)",
       "websitePh": "www.your-office.com",
@@ -1651,7 +1654,7 @@
       "huissier": "Bailiff number",
       "comptable": "ONEC / ONCA No.",
       "expertComptable": "ONEC No.",
-      "traducteur": "Accreditation No. (Ministry of Justice)"
+      "traducteur": "Accreditation No."
     },
     "numPlaceholders": {
       "avocat": "e.g.: ALG2024-001",

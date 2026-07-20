@@ -162,6 +162,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       languages?: string[];
       website?: string;
       is_cour_supreme?: boolean;
+      is_assermente?: boolean;
       address?: {
         street: string;
         neighborhood?: string | null;
@@ -188,6 +189,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         metaData.professions = userData.professions?.length
           ? userData.professions
           : [userData.profession || "avocat"];
+        metaData.is_assermente = !!userData.is_assermente;
         metaData.specializations = userData.specializations || [];
         metaData.experience_years = userData.experience_years || 0;
         metaData.consultation_price = userData.consultation_price || null;
@@ -242,6 +244,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               professions: professionsToSet,
               slug: uniqueSlug,
               is_cour_supreme: !!userData.is_cour_supreme,
+              is_assermente: !!userData.is_assermente,
             })
             .eq("id", authData.user.id);
           if (userData.website) {
