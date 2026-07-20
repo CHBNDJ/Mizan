@@ -80,7 +80,7 @@
     "traducteur": {
       "label": "Traducteur",
       "desc": "Traductions officielles, actes...",
-      "plural": "traducteurs assermentés"
+      "plural": "traducteurs"
     }
   },
   "validation": {
@@ -2573,8 +2573,8 @@
       ]
     },
     "traducteur": {
-      "label": "Traducteur assermenté",
-      "labelPlural": "traducteurs assermentés",
+      "label": "Traducteur",
+      "labelPlural": "traducteurs",
       "tagline": "Traductions officielles à valeur légale",
       "intro": "Le traducteur assermenté est agréé par le Ministère de la Justice pour produire des traductions officielles à valeur légale. Il traduit actes d'état civil, jugements, diplômes, contrats et documents administratifs, avec un cachet reconnu par les administrations algériennes et étrangères. Indispensable pour les démarches de visa, d'immigration, d'équivalence de diplômes ou de dossiers judiciaires internationaux.",
       "cadreJuridique": "Le traducteur assermenté (traducteur-interprète officiel) exerce sous l'agrément du Ministère de la Justice. Il prête serment devant la cour et son cachet confère à ses traductions une valeur officielle opposable aux administrations et juridictions. Ses traductions sont reconnues pour les actes destinés aux autorités algériennes comme étrangères.",

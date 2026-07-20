@@ -78,9 +78,9 @@
       "plural": "chartered accountants"
     },
     "traducteur": {
-      "label": "Sworn translator",
+      "label": "Translator",
       "desc": "Official translations, records...",
-      "plural": "sworn translators"
+      "plural": "Translators"
     }
   },
   "validation": {
