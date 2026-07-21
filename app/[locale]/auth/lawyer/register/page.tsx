@@ -384,7 +384,7 @@ export default function LawyerRegisterPage() {
               <p><strong>Ville :</strong> ${formData.address.city}, ${formData.address.wilaya}</p>
               <p><strong>Spécialités :</strong> ${formData.specializations.map((s) => domaineOptions.find((o) => o.value === s)?.label || s).join(", ")}</p>
               <p><strong>Langues :</strong> ${formData.languages.join(", ")}</p>
-              <p><strong>Expérience :</strong> ${formData.experience} ans</p>
+              <p><strong>Année d'inscription :</strong> ${formData.experience}</p>
             `,
             priority: "high",
           }),
