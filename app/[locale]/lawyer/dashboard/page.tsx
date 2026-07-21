@@ -247,7 +247,7 @@ export default function LawyerDashboardPage() {
           .from("consultations")
           .select("*", { count: "exact", head: true })
           .eq("lawyer_id", user.id)
-          .eq("status", "answered"),
+          .in("status", ["answered", "closed"]),
         supabase
           .from("profile_views")
           .select("*", { count: "exact", head: true })

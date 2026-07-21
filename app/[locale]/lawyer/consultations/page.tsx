@@ -249,7 +249,11 @@ function LawyerConsultationsContent() {
             .neq("sender_id", user.id);
           return {
             id: item.id,
-            status: item.status as "answered" | "closed" | "accepted",
+            status: item.status as
+              | "pending"
+              | "answered"
+              | "closed"
+              | "accepted",
             created_at: item.created_at,
             client_id: item.client_id,
             lawyer_id: item.lawyer_id,

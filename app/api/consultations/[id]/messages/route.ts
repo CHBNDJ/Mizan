@@ -84,17 +84,25 @@ export async function POST(
 
     if (insertError) throw insertError;
 
-    if (senderType === "lawyer") {
+    {
       const { data: consultationStatus } = await supabase
         .from("consultations")
         .select("status")
         .eq("id", consultationId)
         .single();
 
-      if (consultationStatus?.status === "pending") {
+      if (senderType === "lawyer" && consultationStatus?.status === "pending") {
         await supabase
           .from("consultations")
           .update({ status: "answered", answered_at: new Date().toISOString() })
+          .eq("id", consultationId);
+      } else if (
+        senderType === "client" &&
+        consultationStatus?.status === "answered"
+      ) {
+        await supabase
+          .from("consultations")
+          .update({ status: "pending" })
           .eq("id", consultationId);
       }
     }

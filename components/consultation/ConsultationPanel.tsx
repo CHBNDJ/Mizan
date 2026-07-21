@@ -131,7 +131,7 @@ export function ConsultationPanel({
           ? new Date(`${scheduledDate}T${scheduledTime}:00`).toISOString()
           : null;
 
-      const initialStatus = needsSchedule ? "accepted" : "answered";
+      const initialStatus = needsSchedule ? "accepted" : "pending";
 
       const priceStr = price?.base_price
         ? `\n💰 ${price.base_price.toLocaleString()} DA`
