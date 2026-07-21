@@ -375,8 +375,8 @@
       "profileClaimed": "Ce profil a déjà été réclamé.",
       "numLabels": {
         "avocat": "N° carte pro",
-        "notaire": "N° chambre des notaires",
-        "huissier": "N° d'huissier",
+        "notaire": "N° d'agrément",
+        "huissier": "N° d'agrément",
         "comptable": "N° ONEC / ONCA",
         "expertComptable": "N° ONEC",
         "traducteur": "N° d'agrément"

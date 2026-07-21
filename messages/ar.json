@@ -604,11 +604,11 @@
     "addPhoto": "إضافة",
     "numLabels": {
       "avocat": "رقم البطاقة المهنية",
-      "notaire": "رقم غرفة الموثقين",
-      "huissier": "رقم المحضر القضائي",
+      "notaire": "رقم الاعتماد",
+      "huissier": "رقم الاعتماد",
       "comptable": "رقم ONEC / ONCA",
       "expertComptable": "رقم ONEC",
-      "traducteur": "رقم الاعتماد (وزارة العدل)"
+      "traducteur": "رقم الاعتماد"
     },
     "numPlaceholders": {
       "avocat": "مثال: ALG2024-001",

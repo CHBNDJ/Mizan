@@ -1672,12 +1672,12 @@
     "noLanguages": "No language specified",
     "addPhoto": "Add",
     "numLabels": {
-      "avocat": "Bar number",
-      "notaire": "Chamber of notaries No.",
-      "huissier": "Bailiff number",
-      "comptable": "ONEC / ONCA No.",
-      "expertComptable": "ONEC No.",
-      "traducteur": "Accreditation No."
+      "avocat": "Professional card no.",
+      "notaire": "Accreditation no.",
+      "huissier": "Accreditation no.",
+      "comptable": "ONEC / ONCA no.",
+      "expertComptable": "ONEC no.",
+      "traducteur": "Accreditation no."
     },
     "numPlaceholders": {
       "avocat": "e.g.: ALG2024-001",
