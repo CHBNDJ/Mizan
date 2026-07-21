@@ -649,11 +649,6 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                   </div>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  {avocat.verified && (
-                    <div className="flex items-center gap-1 text-[11px] text-teal-600 dark:text-[#6fcf9f] font-medium bg-teal-50 dark:bg-[#141415] border border-teal-100 dark:border-[#1c2220] px-2 py-0.5 rounded-full">
-                      <CheckCircle className="w-3 h-3" /> {t("verifiedBadge")}
-                    </div>
-                  )}
                   {avocat.is_cour_supreme && (
                     <div className="flex items-center gap-1 text-[11px] text-amber-700 dark:text-[#E0B568] font-medium bg-amber-50 dark:bg-[#3D2E1F] border border-amber-200 dark:border-[#5A4A2A] px-2 py-0.5 rounded-full">
                       <CheckCircle className="w-3 h-3" />{" "}
