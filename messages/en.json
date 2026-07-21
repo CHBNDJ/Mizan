@@ -57,6 +57,10 @@
       "desc": "Civil, criminal, family law...",
       "plural": "lawyers"
     },
+    "avocatF": {
+      "label": "Lawyer"
+    },
+
     "notaire": {
       "label": "Notary",
       "desc": "Inheritance, real estate...",
@@ -76,6 +80,9 @@
       "label": "Chartered Accountant",
       "desc": "Statutory audit, due diligence...",
       "plural": "chartered accountants"
+    },
+    "expertComptableF": {
+      "label": "Chartered Accountant"
     },
     "traducteur": {
       "label": "Translator",

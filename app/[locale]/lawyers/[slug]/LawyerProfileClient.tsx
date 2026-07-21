@@ -285,11 +285,18 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
   const supabase = createClient();
   const hasAnimated = useRef(false);
 
+  const FEMININE_KEYS: Record<string, string> = {
+    avocat: "avocatF",
+    expertComptable: "expertComptableF",
+    traducteur: "traducteurF",
+  };
+
   const getProfLabel = (p?: string) => {
     const key = PROF_KEY_MAP[p || "avocat"] || "avocat";
+    const femKey = FEMININE_KEYS[key];
     const label =
-      key === "traducteur" && avocat?.genre === "femme"
-        ? tProf("traducteurF.label")
+      femKey && avocat?.genre === "femme"
+        ? tProf(`${femKey}.label`)
         : tProf(`${key}.label`);
     return { label, numLabel: t(`numLabels.${key}`) };
   };

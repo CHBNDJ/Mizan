@@ -57,6 +57,9 @@
       "desc": "Droit civil, pénal, famille...",
       "plural": "avocats"
     },
+    "avocatF": {
+      "label": "Avocate"
+    },
     "notaire": {
       "label": "Notaire",
       "desc": "Successions, immobilier...",
@@ -76,6 +79,9 @@
       "label": "Expert Comptable",
       "desc": "Audit légal, due diligence...",
       "plural": "experts comptables"
+    },
+    "expertComptableF": {
+      "label": "Experte Comptable"
     },
     "traducteur": {
       "label": "Traducteur",
