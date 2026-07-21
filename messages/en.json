@@ -81,6 +81,9 @@
       "label": "Translator",
       "desc": "Official translations, records...",
       "plural": "translators"
+    },
+    "traducteurF": {
+      "label": "Translator"
     }
   },
   "validation": {
@@ -2567,56 +2570,56 @@
       ]
     },
     "traducteur": {
-      "label": "Sworn translator",
-      "labelPlural": "sworn translators",
-      "tagline": "Official translations with legal value",
-      "intro": "The sworn translator is accredited by the Ministry of Justice to produce official translations with legal value. They translate civil records, judgments, diplomas, contracts and administrative documents, with a stamp recognized by Algerian and foreign authorities. Essential for visa procedures, immigration, diploma equivalence or international judicial files.",
-      "cadreJuridique": "The sworn translator (official translator-interpreter) operates under Ministry of Justice accreditation. They take an oath before the court and their stamp gives their translations official value enforceable before administrations and courts. Their translations are recognized for documents intended for both Algerian and foreign authorities.",
+      "label": "Translator",
+      "labelPlural": "translators",
+      "tagline": "Document translation, sworn or standard",
+      "intro": "A translator faithfully converts your documents from one language to another: records, diplomas, contracts, correspondence. There are two profiles. The sworn translator is accredited by the Ministry of Justice: their translations carry an official stamp with legal value, recognized by administrations and courts — essential for a visa, diploma equivalence or judicial file. The standard (non-sworn) translator produces faithful professional translations for any use that does not require an official stamp: commercial or technical documents, correspondence, websites.",
+      "cadreJuridique": "The sworn translator (official translator-interpreter) operates under Ministry of Justice accreditation. They take an oath before the court and their stamp gives their translations official value enforceable before Algerian and foreign administrations and courts. The non-sworn translator does not hold this official status: their translations are valid for any private or professional use, but are not recognized by administrations for official documents. On Mizan, a badge clearly indicates whether a translator is sworn.",
       "missions": [
         {
           "title": "Civil record translation",
-          "desc": "Birth, marriage and death certificates — translated and certified for your administrative procedures in Algeria or abroad.",
+          "desc": "Birth, marriage and death certificates — translated and, if sworn, certified for your administrative procedures in Algeria or abroad.",
           "emoji": "📄"
         },
         {
           "title": "Diploma translation",
-          "desc": "Diplomas and transcripts officially translated for equivalence, further study or employment abroad.",
+          "desc": "Diplomas and transcripts translated for equivalence, further study or employment abroad.",
           "emoji": "🎓"
         },
         {
           "title": "Judicial documents",
-          "desc": "Judgments, procedural acts and file documents translated with legal value for international procedures.",
+          "desc": "Judgments, procedural acts and file documents translated with legal value by a sworn translator for international procedures.",
           "emoji": "⚖️"
         },
         {
-          "title": "Contracts and notarial acts",
-          "desc": "Commercial contracts, powers of attorney and notarial acts translated faithfully and certified.",
+          "title": "Contracts and professional documents",
+          "desc": "Commercial contracts, correspondence, technical documents or websites — faithfully translated, with or without sworn certification as needed.",
           "emoji": "📝"
         },
         {
-          "title": "Court interpreting",
-          "desc": "Official interpreting during hearings, examinations or the signing of documents.",
+          "title": "Interpreting",
+          "desc": "Interpreting during hearings, meetings or the signing of documents — official when provided by a sworn translator.",
           "emoji": "🗣️"
         }
       ],
       "quandFaireAppel": [
         {
           "situation": "Visa or immigration procedure",
-          "detail": "Consulates require sworn translations of your civil records and supporting documents."
+          "detail": "Consulates require sworn translations of your civil records and supporting documents. Choose a sworn translator."
         },
         {
           "situation": "Diploma equivalence",
-          "detail": "An official translation of your diplomas is required for any equivalence abroad."
+          "detail": "An official translation of your diplomas, by a sworn translator, is required for any equivalence abroad."
         },
         {
-          "situation": "International judicial file",
-          "detail": "Judgments and documents intended for a foreign court must be translated by a sworn translator."
+          "situation": "Commercial or personal document",
+          "detail": "For a contract, website or correspondence with no official requirement, a non-sworn translator is enough."
         }
       ],
       "differences": [
         {
-          "avec": "a regular translator",
-          "distinction": "Only the sworn translator can produce a translation with official value, recognized by administrations and courts."
+          "avec": "a non-sworn translator",
+          "distinction": "Only the sworn translator can produce a translation with official value, recognized by administrations and courts. The non-sworn translator faithfully translates for all everyday uses that do not require an official stamp."
         },
         {
           "avec": "the notary",

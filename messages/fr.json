@@ -81,6 +81,9 @@
       "label": "Traducteur",
       "desc": "Traductions officielles, actes...",
       "plural": "traducteurs"
+    },
+    "traducteurF": {
+      "label": "Traductrice"
     }
   },
   "validation": {
@@ -2577,54 +2580,54 @@
     "traducteur": {
       "label": "Traducteur",
       "labelPlural": "traducteurs",
-      "tagline": "Traductions officielles à valeur légale",
-      "intro": "Le traducteur assermenté est agréé par le Ministère de la Justice pour produire des traductions officielles à valeur légale. Il traduit actes d'état civil, jugements, diplômes, contrats et documents administratifs, avec un cachet reconnu par les administrations algériennes et étrangères. Indispensable pour les démarches de visa, d'immigration, d'équivalence de diplômes ou de dossiers judiciaires internationaux.",
-      "cadreJuridique": "Le traducteur assermenté (traducteur-interprète officiel) exerce sous l'agrément du Ministère de la Justice. Il prête serment devant la cour et son cachet confère à ses traductions une valeur officielle opposable aux administrations et juridictions. Ses traductions sont reconnues pour les actes destinés aux autorités algériennes comme étrangères.",
+      "tagline": "Traduction de documents, assermentée ou non",
+      "intro": "Le traducteur convertit fidèlement vos documents d'une langue à une autre : actes, diplômes, contrats, correspondances. On distingue deux profils. Le traducteur assermenté est agréé par le Ministère de la Justice : ses traductions portent un cachet officiel à valeur légale, reconnu par les administrations et tribunaux — indispensable pour un visa, une équivalence de diplôme ou un dossier judiciaire. Le traducteur non assermenté réalise des traductions professionnelles fidèles pour tous les usages qui n'exigent pas de cachet officiel : documents commerciaux, techniques, correspondances, sites web.",
+      "cadreJuridique": "Le traducteur assermenté (traducteur-interprète officiel) exerce sous l'agrément du Ministère de la Justice. Il prête serment devant la cour et son cachet confère à ses traductions une valeur officielle opposable aux administrations et juridictions algériennes comme étrangères. Le traducteur non assermenté n'a pas ce statut officiel : ses traductions sont valables pour tout usage privé ou professionnel, mais ne sont pas reconnues par les administrations pour les actes officiels. Sur Mizan, un badge indique clairement si un traducteur est assermenté.",
       "missions": [
         {
           "title": "Traduction d'actes d'état civil",
-          "desc": "Actes de naissance, de mariage, de décès — traduits et certifiés pour vos démarches administratives en Algérie ou à l'étranger.",
+          "desc": "Actes de naissance, de mariage, de décès — traduits et, si assermentés, certifiés pour vos démarches administratives en Algérie ou à l'étranger.",
           "emoji": "📄"
         },
         {
           "title": "Traduction de diplômes",
-          "desc": "Diplômes et relevés de notes traduits officiellement pour l'équivalence, la poursuite d'études ou l'emploi à l'étranger.",
+          "desc": "Diplômes et relevés de notes traduits pour l'équivalence, la poursuite d'études ou l'emploi à l'étranger.",
           "emoji": "🎓"
         },
         {
           "title": "Documents judiciaires",
-          "desc": "Jugements, actes de procédure et pièces de dossier traduits avec valeur légale pour les procédures internationales.",
+          "desc": "Jugements, actes de procédure et pièces de dossier traduits avec valeur légale par un assermenté pour les procédures internationales.",
           "emoji": "⚖️"
         },
         {
-          "title": "Contrats et actes notariés",
-          "desc": "Contrats commerciaux, procurations et actes notariés traduits fidèlement et certifiés.",
+          "title": "Contrats et documents professionnels",
+          "desc": "Contrats commerciaux, correspondances, documents techniques ou sites web — traduits fidèlement, avec ou sans assermentation selon le besoin.",
           "emoji": "📝"
         },
         {
-          "title": "Interprétariat au tribunal",
-          "desc": "Interprétation officielle lors d'audiences, d'auditions ou de signatures d'actes.",
+          "title": "Interprétariat",
+          "desc": "Interprétation lors d'audiences, de réunions ou de signatures d'actes — officielle si assurée par un assermenté.",
           "emoji": "🗣️"
         }
       ],
       "quandFaireAppel": [
         {
           "situation": "Démarche de visa ou d'immigration",
-          "detail": "Les consulats exigent des traductions assermentées de vos actes d'état civil et justificatifs."
+          "detail": "Les consulats exigent des traductions assermentées de vos actes d'état civil et justificatifs. Choisissez un traducteur assermenté."
         },
         {
           "situation": "Équivalence de diplôme",
-          "detail": "Une traduction officielle de vos diplômes est requise pour toute équivalence à l'étranger."
+          "detail": "Une traduction officielle de vos diplômes, par un assermenté, est requise pour toute équivalence à l'étranger."
         },
         {
-          "situation": "Dossier judiciaire international",
-          "detail": "Les jugements et pièces destinés à une juridiction étrangère doivent être traduits par un assermenté."
+          "situation": "Document commercial ou personnel",
+          "detail": "Pour un contrat, un site web ou une correspondance sans exigence officielle, un traducteur non assermenté suffit."
         }
       ],
       "differences": [
         {
-          "avec": "un traducteur classique",
-          "distinction": "Seul le traducteur assermenté peut produire une traduction à valeur officielle, reconnue par les administrations et les tribunaux."
+          "avec": "un traducteur non assermenté",
+          "distinction": "Seul le traducteur assermenté peut produire une traduction à valeur officielle, reconnue par les administrations et les tribunaux. Le non-assermenté traduit fidèlement pour tous les usages courants qui n'exigent pas de cachet officiel."
         },
         {
           "avec": "le notaire",

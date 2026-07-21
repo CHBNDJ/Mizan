@@ -287,7 +287,11 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
 
   const getProfLabel = (p?: string) => {
     const key = PROF_KEY_MAP[p || "avocat"] || "avocat";
-    return { label: tProf(`${key}.label`), numLabel: t(`numLabels.${key}`) };
+    const label =
+      key === "traducteur" && avocat?.genre === "femme"
+        ? tProf("traducteurF.label")
+        : tProf(`${key}.label`);
+    return { label, numLabel: t(`numLabels.${key}`) };
   };
 
   const getSiteLabel = (url: string) => {
