@@ -705,7 +705,14 @@ export default function LawyerRegisterPage() {
             {errors.city && <p className={errCls}>{errors.city}</p>}
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div
+              className={
+                primaryProfession === "traducteur" &&
+                !(formData as any).isAssermente
+                  ? "col-span-2"
+                  : ""
+              }
+            >
               <label className={labelCls}>
                 {t("auth.lawyerRegister.postalCode")} *
               </label>

@@ -649,8 +649,11 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                     </div>
                   )}
                   {(avocat as any).is_assermente && (
-                    <div className="flex items-center gap-1 text-[11px] text-amber-700 dark:text-[#E0B568] font-medium bg-amber-50 dark:bg-[#3D2E1F] border border-amber-200 dark:border-[#5A4A2A] px-2 py-0.5 rounded-full">
-                      <CheckCircle className="w-3 h-3" /> {t("assermenteBadge")}
+                    <div className="...">
+                      <CheckCircle className="w-3 h-3" />{" "}
+                      {avocat.genre === "femme"
+                        ? t("assermenteBadgeF")
+                        : t("assermenteBadge")}
                     </div>
                   )}
                   {avocat.available_now && !isOwnProfile && (
