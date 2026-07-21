@@ -25,6 +25,7 @@ import {
   Linkedin,
   Mail,
   Eye,
+  Info,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getAvocatById } from "@/lib/avocatsData";

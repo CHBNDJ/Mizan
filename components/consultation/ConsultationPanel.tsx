@@ -283,6 +283,14 @@ export function ConsultationPanel({
 
   return (
     <div>
+      {avocat.profession === "traducteur" && (avocat as any).is_assermente && (
+        <div className="mb-4 flex items-start gap-2.5 p-3 bg-amber-50 dark:bg-[#3D2E1F] border border-amber-200 dark:border-[#5A4A2A] rounded-xl">
+          <Info className="w-4 h-4 text-amber-600 dark:text-[#E0B568] flex-shrink-0 mt-0.5" />
+          <p className="text-xs text-amber-800 dark:text-[#E0B568] leading-relaxed">
+            {tc("traducteurNotice")}
+          </p>
+        </div>
+      )}
       <div className="divide-y divide-slate-100 dark:divide-[#1c2220]">
         {canaux.map((canal) => {
           const Icon = CANAL_ICONS[canal.type];
