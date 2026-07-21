@@ -254,8 +254,12 @@ export default function LawyerRegisterPage() {
         e.specializations = t("validation.required.specializations");
       if (!formData.experience.trim())
         e.experience = t("validation.required.experience");
-      else if (parseInt(formData.experience) > 50)
-        e.experience = t("validation.invalid.experienceMax");
+      else {
+        const yr = parseInt(formData.experience);
+        const currentYear = new Date().getFullYear();
+        if (yr < 1950 || yr > currentYear)
+          e.experience = t("auth.lawyerRegister.inscriptionYearInvalid");
+      }
     }
     if (step === 4) {
       if (!formData.email.trim()) e.email = t("validation.required.email");
@@ -350,7 +354,10 @@ export default function LawyerRegisterPage() {
         specializations: formData.specializations.map(
           (slug) => domaineOptions.find((o) => o.value === slug)?.label || slug
         ),
-        experience_years: parseInt(formData.experience) || 0,
+        inscription_year: parseInt(formData.experience) || null,
+        experience_years:
+          new Date().getFullYear() -
+          (parseInt(formData.experience) || new Date().getFullYear()),
         consultation_price: null,
         address: {
           street: formData.address.street.trim(),
@@ -870,17 +877,22 @@ export default function LawyerRegisterPage() {
           </div>
           <div>
             <label className={labelCls}>
-              {t("auth.lawyerRegister.experience")} *
+              {t(
+                `auth.lawyerRegister.inscriptionYearLabels.${PROF_KEY[primaryProfession || "avocat"]}`
+              )}{" "}
+              *
             </label>
             <input
               type="text"
               name="experience"
               value={formData.experience}
               onChange={(e) => {
-                if (/^\d*$/.test(e.target.value)) handleInput(e);
+                if (/^\d*$/.test(e.target.value) && e.target.value.length <= 4)
+                  handleInput(e);
               }}
               className={inputCls}
-              placeholder="5"
+              placeholder={t("auth.lawyerRegister.inscriptionYearPlaceholder")}
+              maxLength={4}
               disabled={isSubmitting}
             />
             {errors.experience && <p className={errCls}>{errors.experience}</p>}

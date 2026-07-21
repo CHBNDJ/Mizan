@@ -389,7 +389,17 @@
         "expertComptable": "ONEC2024-001",
         "traducteur": "TRD2024-001"
       },
-      "barNumberRequired": "Le {numLabel} est requis"
+      "barNumberRequired": "Le {numLabel} est requis",
+      "inscriptionYearLabels": {
+        "avocat": "Année d'inscription au barreau",
+        "notaire": "Année de nomination",
+        "huissier": "Année de prestation de serment",
+        "comptable": "Année d'inscription à l'ordre",
+        "expertComptable": "Année d'inscription à l'ordre",
+        "traducteur": "Année d'agrément"
+      },
+      "inscriptionYearPlaceholder": "2012",
+      "inscriptionYearInvalid": "Année invalide"
     },
     "clientLogin": {
       "title": "Connexion Client",

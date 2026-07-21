@@ -157,6 +157,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       specializations?: string[];
       wilayas?: string[];
       experience_years?: number;
+      inscription_year?: number | null;
       consultation_price?: number | null;
       gender?: string;
       languages?: string[];
@@ -245,6 +246,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               slug: uniqueSlug,
               is_cour_supreme: !!userData.is_cour_supreme,
               is_assermente: !!userData.is_assermente,
+              inscription_year: userData.inscription_year ?? null,
+              experience_years: userData.experience_years ?? 0,
             })
             .eq("id", authData.user.id);
           if (userData.website) {

@@ -389,7 +389,17 @@
         "expertComptable": "ONEC2024-001",
         "traducteur": "TRD2024-001"
       },
-      "barNumberRequired": "{numLabel} مطلوب"
+      "barNumberRequired": "{numLabel} مطلوب",
+      "inscriptionYearLabels": {
+        "avocat": "سنة التسجيل في النقابة",
+        "notaire": "سنة التعيين",
+        "huissier": "سنة أداء اليمين",
+        "comptable": "سنة التسجيل في الهيئة",
+        "expertComptable": "سنة التسجيل في الهيئة",
+        "traducteur": "سنة الاعتماد"
+      },
+      "inscriptionYearPlaceholder": "2012",
+      "inscriptionYearInvalid": "سنة غير صحيحة"
     },
     "clientLogin": {
       "title": "تسجيل دخول العميل",
