@@ -80,7 +80,7 @@
     "traducteur": {
       "label": "Translator",
       "desc": "Official translations, records...",
-      "plural": "Translators"
+      "plural": "translators"
     }
   },
   "validation": {
@@ -881,6 +881,7 @@
     "Document juridique": "Legal document",
     "Document administratif": "Administrative document",
     "Document académique et professionnel": "Academic & professional document",
+    "Document médical": "Medical document",
     "Interprétariat": "Interpreting"
   },
   "langues": {

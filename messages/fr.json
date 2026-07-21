@@ -231,7 +231,7 @@
       "huissier": "Juridiction de",
       "expertComptable": "N° ONEC",
       "comptable": "N° ONEC/ONCA",
-      "traducteur": "N° d'agrément (Ministère de la Justice)"
+      "traducteur": "N° d'agrément"
     },
     "experienceYears": "ans d'expérience",
     "registeredIn": "inscrit en",
@@ -368,7 +368,7 @@
         "huissier": "N° d'huissier",
         "comptable": "N° ONEC / ONCA",
         "expertComptable": "N° ONEC",
-        "traducteur": "N° d'agrément (Ministère de la Justice)"
+        "traducteur": "N° d'agrément"
       },
       "numPlaceholders": {
         "avocat": "23/3456",
@@ -889,6 +889,7 @@
     "Document juridique": "Document juridique",
     "Document administratif": "Document administratif",
     "Document académique et professionnel": "Document académique et professionnel",
+    "Document médical": "Document médical",
     "Interprétariat": "Interprétariat"
   },
   "langues": {
@@ -2166,9 +2167,9 @@
       },
       "traducteur": {
         "domainLabel": "Document",
-        "hero": "Trouvez un traducteur assermenté en Algérie",
+        "hero": "Trouvez un traducteur en Algérie",
         "sub": "Traduction officielle d'actes, diplômes et documents juridiques — pour résidents et diaspora.",
-        "searchLabel": "Rechercher un traducteur assermenté",
+        "searchLabel": "Rechercher un traducteur",
         "steps": [
           {
             "title": "Précisez votre besoin",

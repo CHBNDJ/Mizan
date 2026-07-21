@@ -77,10 +77,11 @@
       "desc": "التدقيق القانوني، الفحص النافي للجهالة...",
       "plural": "خبراء محاسبون"
     },
-   "traducteur": {
-    "label": "مترجم",
-    "desc": "ترجمات رسمية، عقود...",
-    "plural": "مترجمون"
+    "traducteur": {
+      "label": "مترجم",
+      "desc": "ترجمات رسمية، عقود...",
+      "plural": "مترجمون"
+    }
   },
   "validation": {
     "required": {
@@ -2052,6 +2053,7 @@
     "Document juridique": "وثيقة قانونية",
     "Document administratif": "وثيقة إدارية",
     "Document académique et professionnel": "وثيقة أكاديمية ومهنية",
+    "Document médical": "وثيقة طبية",
     "Interprétariat": "الترجمة الفورية"
   },
   "countries": {
