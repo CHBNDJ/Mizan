@@ -75,7 +75,7 @@ export default function TestimonialsSection() {
                     &rdquo;
                   </span>
                 </div>
-                <p className="text-sm text-slate-600 dark:text-[#E8E8E6] leading-relaxed flex-1 italic line-clamp-5">
+                <p className="text-sm text-slate-600 dark:text-[#E8E8E6] leading-relaxed flex-1 italic">
                   {item.message}
                 </p>
                 <div className="flex items-center gap-3 pt-3 border-t border-teal-100 dark:border-[#3a3a3d]">
