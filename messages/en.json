@@ -742,6 +742,24 @@
             "desc": "The diaspora needing official translations for their procedures finds you directly.",
             "points": ["Records & diplomas", "Legal documents", "Remote"]
           }
+        ],
+        "faqs": [
+          {
+            "q": "Do I need to be a sworn translator to register?",
+            "a": "No. Both sworn and non-sworn translators can join Mizan. A badge clearly identifies, on the profile, translators accredited by the Ministry of Justice."
+          },
+          {
+            "q": "Is registration free?",
+            "a": "Registration and profile creation are free during the launch phase. You will be notified in advance of any change."
+          },
+          {
+            "q": "How long does profile verification take?",
+            "a": "Your file is reviewed within 24 to 48 business hours. You receive an email as soon as your profile is activated."
+          },
+          {
+            "q": "How do clients contact me?",
+            "a": "Clients send you a request through the secure messaging system, or book a slot directly. You manage your availability and your rates from your dashboard."
+          }
         ]
       }
     }

@@ -14,7 +14,9 @@ const supabaseAdmin = createClient(
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, code, userType } = await request.json();
+    const body = await request.json();
+    const email = (body.email || "").trim().toLowerCase();
+    const { code, userType } = body;
 
     if (!email || !code) {
       return NextResponse.json(
@@ -54,7 +56,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { data: userData } = await supabaseAdmin.auth.admin.listUsers();
-    const user = userData?.users.find((u) => u.email === email);
+    const user = userData?.users.find((u) => u.email?.toLowerCase() === email);
 
     if (!user) {
       return NextResponse.json(

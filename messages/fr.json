@@ -749,6 +749,24 @@
               "À distance"
             ]
           }
+        ],
+        "faqs": [
+          {
+            "q": "Faut-il être traducteur assermenté pour s'inscrire ?",
+            "a": "Non. Les traducteurs assermentés comme non assermentés peuvent rejoindre Mizan. Un badge distingue clairement, sur le profil, les traducteurs agréés par le Ministère de la Justice."
+          },
+          {
+            "q": "L'inscription est-elle payante ?",
+            "a": "L'inscription et la création de votre profil sont gratuites pendant la phase de lancement. Vous êtes informé à l'avance de toute évolution."
+          },
+          {
+            "q": "Combien de temps prend la vérification de mon profil ?",
+            "a": "Votre dossier est examiné sous 24 à 48 heures ouvrées. Vous recevez un email dès l'activation de votre profil."
+          },
+          {
+            "q": "Comment les clients me contactent-ils ?",
+            "a": "Les clients vous adressent une demande via la messagerie sécurisée, ou réservent directement un créneau. Vous gérez vos disponibilités et vos tarifs depuis votre tableau de bord."
+          }
         ]
       }
     }

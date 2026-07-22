@@ -75,9 +75,9 @@ export default function HowItWorksPage() {
   const claimBanner = CLAIM_BANNER[profType];
 
   const steps: Step[] =
-    userType === "client"
+    (userType === "client"
       ? (t.raw("howItWorks.client.steps") as Step[])
-      : (t.raw(`howItWorks.professions.${profKey}.steps`) as Step[]);
+      : (t.raw(`howItWorks.professions.${profKey}.steps`) as Step[])) || [];
 
   const faqs: Faq[] =
     userType === "client"

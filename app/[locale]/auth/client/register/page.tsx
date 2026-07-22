@@ -116,8 +116,9 @@ export default function ClientRegisterPage() {
     if (!validateForm()) return;
     setIsSubmitting(true);
     setErrors({});
+    const emailNorm = formData.email.trim().toLowerCase();
     try {
-      const result = await signUp(formData.email, formData.password, {
+      const result = await signUp(emailNorm, formData.password, {
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
         mobile: `+${mobileCountry}${formData.mobile}`,

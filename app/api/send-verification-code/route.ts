@@ -61,7 +61,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { email, firstName, userType } = await request.json();
+    const body = await request.json();
+    const email = (body.email || "").trim().toLowerCase();
+    const { firstName, userType } = body;
 
     if (!email || !userType) {
       return NextResponse.json(

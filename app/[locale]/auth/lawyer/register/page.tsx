@@ -297,14 +297,13 @@ export default function LawyerRegisterPage() {
     if (!validateStep(4) || professions.length === 0) return;
     setIsSubmitting(true);
     setErrors({});
+    const emailNorm = formData.email.trim().toLowerCase();
     try {
       const { data: existing } = await supabase
         .from("users")
         .select("id")
         .eq("user_type", "lawyer")
-        .or(
-          `email.eq.${formData.email},professional_email.eq.${formData.email}`
-        );
+        .or(`email.eq.${emailNorm},professional_email.eq.${emailNorm}`);
       if (existing && existing.length > 0) {
         const { data: ld } = await supabase
           .from("lawyers")
@@ -330,7 +329,7 @@ export default function LawyerRegisterPage() {
         `+${selectedCountry}${formData.phone.trim()}`
       );
 
-      const result = await signUp(formData.email, formData.password, {
+      const result = await signUp(emailNorm, formData.password, {
         gender: frontendToDb(formData.gender),
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
@@ -377,7 +376,7 @@ export default function LawyerRegisterPage() {
             title: `Nouveau professionnel sur Mizan`,
             message: `
               <p><strong>Nom :</strong> ${formData.firstName} ${formData.lastName}</p>
-              <p><strong>Email :</strong> ${formData.email}</p>
+              <p><strong>Email :</strong> ${emailNorm}</p>
               <p><strong>Mobile :</strong> +${selectedMobileCountry}${formData.mobile}</p>
               <p><strong>Professions :</strong> ${professions.join(", ")}</p>
               <p><strong>${currentProf?.numLabel} :</strong> ${formData.barNumber}</p>
