@@ -663,6 +663,14 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                         : t("assermenteBadge")}
                     </div>
                   )}
+                  {avocat.profession === "expert-comptable" && (
+                    <div className="flex items-center gap-1 text-[11px] text-amber-700 dark:text-[#E0B568] font-medium bg-amber-50 dark:bg-[#3D2E1F] border border-amber-200 dark:border-[#5A4A2A] px-2 py-0.5 rounded-full">
+                      <CheckCircle className="w-3 h-3" />{" "}
+                      {avocat.genre === "femme"
+                        ? t("commissaireBadgeF")
+                        : t("commissaireBadge")}
+                    </div>
+                  )}
                   {avocat.available_now && !isOwnProfile && (
                     <div className="flex items-center gap-1 text-[11px] text-teal-700 dark:text-[#6fcf9f] font-medium bg-teal-100 dark:bg-[#6fcf9f]/15 border border-teal-200 dark:border-[#6fcf9f]/30 px-2 py-0.5 rounded-full">
                       <span className="w-1.5 h-1.5 rounded-full bg-teal-500 dark:bg-[#6fcf9f] animate-pulse" />
