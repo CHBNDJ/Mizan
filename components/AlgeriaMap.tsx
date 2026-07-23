@@ -219,7 +219,7 @@ export function AlgeriaMap({
           `}</style>
         )}
 
-        {hovered && WILAYA_NAMES[hovered] && (
+        {!readOnly && hovered && WILAYA_NAMES[hovered] && (
           <div
             className="absolute pointer-events-none z-10 bg-white dark:bg-[#1c1c1e] border border-teal-200 dark:border-[#6fcf9f]/20 text-teal-800 dark:text-[#6fcf9f] text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow-md dark:shadow-none whitespace-nowrap"
             style={{
@@ -235,7 +235,22 @@ export function AlgeriaMap({
         )}
       </div>
 
+      {readOnly && (activeWilayas || []).length > 0 && (
+        <div className="mt-4 flex flex-wrap justify-center gap-1.5">
+          {(activeWilayas || []).map((w) => (
+            <span
+              key={w}
+              className="text-[11px] font-medium text-teal-700 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 px-2 py-0.5 rounded-full"
+            >
+              {getWilayaLabel(w, t)}
+            </span>
+          ))}
+        </div>
+      )}
+
       {!isLanding &&
+        !hideBar &&
+        !readOnly &&
         !hideBar &&
         (selectedWilaya ? (
           <div className="mt-2 flex items-center justify-between bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 rounded-xl px-4 py-2.5">

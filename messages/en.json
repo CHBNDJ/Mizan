@@ -149,6 +149,10 @@
       "sub2": "Compare. Choose. Contact."
     },
     "profLink": "Understanding legal professions in Algeria →",
+    "map": {
+      "title": "Find a professional near you",
+      "subtitle": "Where our professionals are located"
+    },
     "stats": {
       "total": "Registered professionals",
       "wilayas": "Wilayas covered",
