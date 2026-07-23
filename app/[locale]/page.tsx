@@ -328,8 +328,8 @@ export default function HomePage() {
           <AlgeriaMap
             selectedWilaya=""
             onSelect={() => {}}
-            onSelectAndSearch={goToWilaya}
-            hideBar
+            readOnly
+            activeWilayas={wilayas}
           />
         </div>
       </section>

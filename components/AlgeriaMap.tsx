@@ -80,6 +80,8 @@ interface Props {
   onSelect: (w: string) => void;
   onSelectAndSearch?: (w: string) => void;
   hideBar?: boolean;
+  readOnly?: boolean;
+  activeWilayas?: string[];
 }
 
 export function AlgeriaMap({
@@ -87,6 +89,8 @@ export function AlgeriaMap({
   onSelect,
   onSelectAndSearch,
   hideBar,
+  readOnly,
+  activeWilayas,
 }: Props) {
   const t = useTranslations();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -113,6 +117,7 @@ export function AlgeriaMap({
   };
 
   const onMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (readOnly) return;
     setHovered(getId(e.target as Element));
     const r = containerRef.current?.getBoundingClientRect();
     if (r) setTooltipPos({ x: e.clientX - r.left, y: e.clientY - r.top });
@@ -120,6 +125,7 @@ export function AlgeriaMap({
 
   const onClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
+      if (readOnly) return;
       const id = getId(e.target as Element);
       if (!id) return;
       const name = WILAYA_NAMES[id];
@@ -140,14 +146,23 @@ export function AlgeriaMap({
     id ? `#algeria-real-map path#\\3${id.charAt(0)} ${id.slice(1)}` : null;
 
   const isLanding = !!onSelectAndSearch;
+  const activeSelector = (activeWilayas || [])
+    .map(
+      (name) => Object.entries(WILAYA_NAMES).find(([, v]) => v === name)?.[0]
+    )
+    .filter(Boolean)
+    .map((id) => cssId(id as string))
+    .join(", ");
 
   return (
     <div className="w-full select-none">
-      <p className="text-xs font-semibold text-slate-600 dark:text-[#E8E8E6] mb-2">
-        {isLanding
-          ? t("algeriaMap.clickToSearch")
-          : t("algeriaMap.selectWilaya")}
-      </p>
+      {!readOnly && (
+        <p className="text-xs font-semibold text-slate-600 dark:text-[#E8E8E6] mb-2">
+          {isLanding
+            ? t("algeriaMap.clickToSearch")
+            : t("algeriaMap.selectWilaya")}
+        </p>
+      )}
 
       <div
         ref={containerRef}
@@ -166,7 +181,7 @@ export function AlgeriaMap({
           <svg
             viewBox="0 0 9968 9644.45"
             className="absolute inset-0 w-full h-full"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: readOnly ? "default" : "pointer" }}
           >
             <defs>
               <style>{`
@@ -189,7 +204,12 @@ export function AlgeriaMap({
             />
           </svg>
         )}
-
+        {readOnly && activeSelector && (
+          <style>{`
+            ${activeSelector} { fill: #5eead4 !important; }
+            .dark ${activeSelector.split(", ").join(", .dark ")} { fill: #6fcf9f !important; }
+          `}</style>
+        )}
         {(hovered || selId) && (
           <style>{`
             ${selId ? `${cssId(selId)}  { fill: #0d9488 !important; stroke: #0f766e !important; stroke-width: 18 !important; }` : ""}
