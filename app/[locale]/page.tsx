@@ -16,6 +16,7 @@ import {
   Languages,
 } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
+import { AlgeriaMap } from "@/components/AlgeriaMap";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import {
@@ -137,6 +138,12 @@ export default function HomePage() {
     },
   ];
 
+  const goToWilaya = (wilaya: string) => {
+    router.push(
+      wilaya ? `/search?wilaya=${encodeURIComponent(wilaya)}` : "/search"
+    );
+  };
+
   useLayoutEffect(() => {
     getWilayas().then(setWilayas);
     Promise.all([getTopRatedAvocats(8), getStatistiques()]).then(
@@ -186,6 +193,7 @@ export default function HomePage() {
     );
 
     [
+      "map-section",
       "steps-section",
       "cta-section",
       "testimonials-section",
@@ -234,7 +242,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none overflow-x-hidden">
       <style>{`
-        .hero-title,.hero-sub,.prof-card,.stat-card,.steps-section,.avocat-card,.cta-section,.prof-roles-link,.testimonials-section,.feedback-cta { opacity:0; }
+        .hero-title,.hero-sub,.prof-card,.stat-card,.map-section,.steps-section,.avocat-card,.cta-section,.prof-roles-link,.testimonials-section,.feedback-cta { opacity:0; }
         .prof-card-btn { transition:all 0.2s ease; }
         .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
       `}</style>
@@ -307,6 +315,24 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+      <section className="map-section px-4 pb-14 sm:pb-20">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
+              {t("home.map.title")}
+            </h2>
+            <p className="text-slate-500 dark:text-[#A8A8A6] text-sm">
+              {t("home.map.subtitle")}
+            </p>
+          </div>
+          <AlgeriaMap
+            selectedWilaya=""
+            onSelect={() => {}}
+            onSelectAndSearch={goToWilaya}
+            hideBar
+          />
+        </div>
+      </section>
 
       <section className="steps-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto">
@@ -338,6 +364,10 @@ export default function HomePage() {
         </div>
       </section>
 
+      <div className="testimonials-section">
+        <TestimonialsSection />
+      </div>
+
       {topAvocats.length > 0 && (
         <section className="avocats-section pb-16 sm:pb-20 px-4">
           <div className="max-w-6xl mx-auto">
@@ -367,10 +397,6 @@ export default function HomePage() {
           </div>
         </section>
       )}
-
-      <div className="testimonials-section">
-        <TestimonialsSection />
-      </div>
 
       <section className="feedback-cta px-4 py-10 sm:py-12">
         <style>{`
