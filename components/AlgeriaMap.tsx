@@ -96,6 +96,7 @@ export function AlgeriaMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const [svgContent, setSvgContent] = useState("");
   const [hovered, setHovered] = useState<string | null>(null);
+  const [activeHovered, setActiveHovered] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const [loaded, setLoaded] = useState(false);
 
@@ -116,16 +117,36 @@ export function AlgeriaMap({
     return id && WILAYA_NAMES[id] ? id : null;
   };
 
-  const onMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (readOnly) return;
-    setHovered(getId(e.target as Element));
-    const r = containerRef.current?.getBoundingClientRect();
-    if (r) setTooltipPos({ x: e.clientX - r.left, y: e.clientY - r.top });
-  }, []);
+  const activeIds = (activeWilayas || [])
+    .map(
+      (name) => Object.entries(WILAYA_NAMES).find(([, v]) => v === name)?.[0]
+    )
+    .filter(Boolean) as string[];
+
+  const onMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const r = containerRef.current?.getBoundingClientRect();
+      if (readOnly) {
+        const id = getId(e.target as Element);
+        setActiveHovered(id && activeIds.includes(id) ? id : null);
+        if (r) setTooltipPos({ x: e.clientX - r.left, y: e.clientY - r.top });
+        return;
+      }
+      setHovered(getId(e.target as Element));
+      if (r) setTooltipPos({ x: e.clientX - r.left, y: e.clientY - r.top });
+    },
+    [readOnly, activeIds]
+  );
 
   const onClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (readOnly) return;
+      if (readOnly) {
+        const id = getId(e.target as Element);
+        setActiveHovered(id && activeIds.includes(id) ? id : null);
+        const r = containerRef.current?.getBoundingClientRect();
+        if (r) setTooltipPos({ x: e.clientX - r.left, y: e.clientY - r.top });
+        return;
+      }
       const id = getId(e.target as Element);
       if (!id) return;
       const name = WILAYA_NAMES[id];
@@ -135,7 +156,7 @@ export function AlgeriaMap({
       }
       onSelect(selectedWilaya === name ? "" : name);
     },
-    [selectedWilaya, onSelect, onSelectAndSearch]
+    [selectedWilaya, onSelect, onSelectAndSearch, readOnly, activeIds]
   );
 
   const selId = selectedWilaya
@@ -181,7 +202,7 @@ export function AlgeriaMap({
           <svg
             viewBox="0 0 9968 9644.45"
             className="absolute inset-0 w-full h-full"
-            style={{ cursor: readOnly ? "default" : "pointer" }}
+            style={{ cursor: "pointer" }}
           >
             <defs>
               <style>{`
@@ -233,20 +254,22 @@ export function AlgeriaMap({
             {getWilayaLabel(WILAYA_NAMES[hovered], t)}
           </div>
         )}
-      </div>
 
-      {readOnly && (activeWilayas || []).length > 0 && (
-        <div className="mt-4 flex flex-wrap justify-center gap-1.5">
-          {(activeWilayas || []).map((w) => (
-            <span
-              key={w}
-              className="text-[11px] font-medium text-teal-700 dark:text-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 px-2 py-0.5 rounded-full"
-            >
-              {getWilayaLabel(w, t)}
-            </span>
-          ))}
-        </div>
-      )}
+        {readOnly && activeHovered && WILAYA_NAMES[activeHovered] && (
+          <div
+            className="absolute pointer-events-none z-10 bg-teal-600 dark:bg-[#0F6E56] text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow-md whitespace-nowrap"
+            style={{
+              left: Math.min(
+                tooltipPos.x + 12,
+                (containerRef.current?.clientWidth ?? 300) - 130
+              ),
+              top: Math.max(tooltipPos.y - 36, 4),
+            }}
+          >
+            {getWilayaLabel(WILAYA_NAMES[activeHovered], t)}
+          </div>
+        )}
+      </div>
 
       {!isLanding &&
         !hideBar &&

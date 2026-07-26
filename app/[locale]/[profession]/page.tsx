@@ -326,6 +326,14 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                   {t("professionLanding.seeButton", { plural: labelPlural })}
                 </button>
               </div>
+              <div className="ph-map lg:hidden mt-6">
+                <AlgeriaMap
+                  selectedWilaya={mapSelectedWilaya}
+                  onSelect={setSelectedWilayas.bind(null, [])}
+                  onSelectAndSearch={handleMapSelectAndSearch}
+                  hideBar
+                />
+              </div>
               <div className="mt-8 space-y-4 relative" style={{ zIndex: 1 }}>
                 {prof.steps.map((step, i) => (
                   <div key={i} className="ph-step flex gap-3">
@@ -345,7 +353,6 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
               </div>
             </div>
             <div className="ph-map hidden lg:flex flex-col gap-3 sticky top-24">
-              {/* Carte : clic direct → search sans bouton */}
               <AlgeriaMap
                 selectedWilaya={mapSelectedWilaya}
                 onSelect={setSelectedWilayas.bind(null, [])}
