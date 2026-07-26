@@ -171,7 +171,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
   }, [wilayas, locale]);
 
   useEffect(() => {
-    getWilayas().then((w) => {
+    getWilayas(profId).then((w) => {
       setWilayas(w);
       setLoadingWilayas(false);
     });
@@ -331,6 +331,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                   selectedWilaya={mapSelectedWilaya}
                   onSelect={setSelectedWilayas.bind(null, [])}
                   onSelectAndSearch={handleMapSelectAndSearch}
+                  activeWilayas={wilayas}
                   hideBar
                 />
               </div>
@@ -357,6 +358,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                 selectedWilaya={mapSelectedWilaya}
                 onSelect={setSelectedWilayas.bind(null, [])}
                 onSelectAndSearch={handleMapSelectAndSearch}
+                activeWilayas={wilayas}
                 hideBar
               />
               <Link href={"/professions/" + profId}>

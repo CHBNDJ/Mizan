@@ -314,10 +314,9 @@ export async function getStatistiques() {
     };
   }
 }
-
-export async function getWilayas(): Promise<string[]> {
+export async function getWilayas(profession?: string): Promise<string[]> {
   try {
-    const all = await getSupabaseAvocats();
+    const all = await getSupabaseAvocats(profession);
     const set = new Set<string>();
     all.forEach((a) => {
       if (a.wilaya) set.add(a.wilaya);
