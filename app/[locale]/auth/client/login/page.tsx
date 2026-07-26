@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
 import { Eye, EyeOff } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { FormErrors } from "@/types";
 import { useAuth } from "@/hooks/useAuth";
@@ -13,6 +13,8 @@ export default function ClientLoginPage() {
   const router = useRouter();
   const { signIn } = useAuth();
   const t = useTranslations();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "";
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState({
@@ -98,8 +100,9 @@ export default function ClientLoginPage() {
 
     try {
       const result = await signIn(formData.email, formData.password, "client");
-      const redirectPath = result.redirectPath || "/";
-      router.push(redirectPath);
+      const base = result.redirectPath || "/";
+      const target = redirectTo || base;
+      router.push(target);
     } catch (error: any) {
       console.error("Erreur connexion client:", error);
       const errStr = (error?.message || "").toLowerCase();

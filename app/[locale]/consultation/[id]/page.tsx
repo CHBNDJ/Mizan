@@ -106,9 +106,16 @@ export default function ConsultationPage({
     });
   }, [id]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const canal = params.get("canal");
+    if (canal) setSelected(canal);
+  }, []);
+
   const handleConsult = async () => {
     if (!user || profile?.user_type !== "client") {
-      router.push("/auth/client/register");
+      const back = `/consultation/${id}${selected ? `?canal=${selected}` : ""}`;
+      router.push(`/auth/client/register?redirect=${encodeURIComponent(back)}`);
       return;
     }
     if (!selected) return;
@@ -133,7 +140,6 @@ export default function ConsultationPage({
             client_id: user.id,
             lawyer_id: id,
             status: "pending",
-            subject: canal.label,
           })
           .select("id")
           .single();
@@ -144,10 +150,12 @@ export default function ConsultationPage({
           ? `\n💰 Tarif indicatif : ${price.base_price.toLocaleString()} DA`
           : "";
         const durStr = price?.duration ? ` · ${price.duration}` : "";
-        await supabase.from("messages").insert({
+        await supabase.from("consultation_messages").insert({
           consultation_id: cid,
           sender_id: user.id,
-          content: `📋 Demande de consultation\n\n🔔 Canal choisi : ${canal.label}${durStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif selon mon dossier.`,
+          sender_type: "client",
+          message: `📋 Demande de consultation\n\n🔔 Canal choisi : ${canal.label}${durStr}${priceStr}\n\nMerci de confirmer votre disponibilité et le tarif définitif selon mon dossier.`,
+          is_read: false,
         });
       }
       setSent(true);
@@ -375,18 +383,24 @@ export default function ConsultationPage({
             </div>
 
             {!user ? (
-              <div className="space-y-3">
-                <Link href="/auth/client/register" className="block">
-                  <button className="w-full bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white py-3.5 rounded-2xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all">
-                    Créer un compte gratuit pour consulter
-                  </button>
-                </Link>
-                <Link href="/auth/client/login" className="block">
-                  <button className="w-full bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] hover:bg-slate-50 dark:hover:bg-[#1c2220] text-slate-700 dark:text-[#E8E8E6] py-3.5 rounded-2xl font-medium text-sm cursor-pointer transition-all">
-                    J'ai déjà un compte — Me connecter
-                  </button>
-                </Link>
-              </div>
+              (() => {
+                const back = `/consultation/${id}${selected ? `?canal=${selected}` : ""}`;
+                const q = `?redirect=${encodeURIComponent(back)}`;
+                return (
+                  <div className="space-y-3">
+                    <Link href={`/auth/client/register${q}`} className="block">
+                      <button className="w-full bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white py-3.5 rounded-2xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all">
+                        Créer un compte gratuit pour consulter
+                      </button>
+                    </Link>
+                    <Link href={`/auth/client/login${q}`} className="block">
+                      <button className="w-full bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] hover:bg-slate-50 dark:hover:bg-[#1c2220] text-slate-700 dark:text-[#E8E8E6] py-3.5 rounded-2xl font-medium text-sm cursor-pointer transition-all">
+                        J'ai déjà un compte — Me connecter
+                      </button>
+                    </Link>
+                  </div>
+                );
+              })()
             ) : (
               <button
                 onClick={handleConsult}
