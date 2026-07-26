@@ -225,7 +225,7 @@ export function AlgeriaMap({
             />
           </svg>
         )}
-        {readOnly && activeSelector && (
+        {activeSelector && (
           <style>{`
             ${activeSelector} { fill: #5eead4 !important; }
             .dark ${activeSelector.split(", ").join(", .dark ")} { fill: #6fcf9f !important; }
