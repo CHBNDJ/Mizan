@@ -9,7 +9,6 @@ const PricingManager = dynamic(
   { ssr: false }
 );
 import { useState, useEffect, useRef } from "react";
-import FeedbackPopup from "@/components/FeedbackPopup";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
@@ -72,7 +71,6 @@ export default function LawyerDashboardPage() {
   const [subStatus, setSubStatus] = useState<string | null>(null);
   const [subPlan, setSubPlan] = useState<string | null>(null);
   const [subEnd, setSubEnd] = useState<string | null>(null);
-  const [showFeedback, setShowFeedback] = useState(false);
   const [availableNow, setAvailableNow] = useState(false);
   const [availableSince, setAvailableSince] = useState<string | null>(null);
   const [elapsedMin, setElapsedMin] = useState(0);
@@ -103,15 +101,6 @@ export default function LawyerDashboardPage() {
       setActiveProfession(active);
     }
   }, [lawyerProfile]);
-
-  useEffect(() => {
-    const pending = localStorage.getItem("pendingFeedback");
-    if (pending === "true") {
-      localStorage.removeItem("pendingFeedback");
-      const timer = setTimeout(() => setShowFeedback(true), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, []);
 
   useEffect(() => {
     if (user && profile?.user_type === "lawyer") {
@@ -620,7 +609,6 @@ export default function LawyerDashboardPage() {
           </div>
         </div>
       </div>
-      {showFeedback && <FeedbackPopup onClose={() => setShowFeedback(false)} />}
     </>
   );
 }

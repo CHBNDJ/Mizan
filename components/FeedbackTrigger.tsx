@@ -31,12 +31,32 @@ export default function FeedbackTrigger() {
         .maybeSingle();
       if (existingFeedback) return;
 
-      const column = profile.user_type === "lawyer" ? "lawyer_id" : "client_id";
-      const { count: consultCount } = await supabase
-        .from("consultations")
-        .select("*", { count: "exact", head: true })
-        .eq(column, user.id);
-      if ((consultCount || 0) === 0) return;
+      let eligible = false;
+
+      if (profile.user_type === "lawyer") {
+        const { count: sentCount } = await supabase
+          .from("consultation_messages")
+          .select("*", { count: "exact", head: true })
+          .eq("sender_id", user.id)
+          .eq("sender_type", "lawyer");
+        eligible = (sentCount || 0) > 0;
+      } else {
+        const { data: myConsults } = await supabase
+          .from("consultations")
+          .select("id")
+          .eq("client_id", user.id);
+        const ids = (myConsults || []).map((c) => c.id);
+        if (ids.length > 0) {
+          const { count: lawyerReplies } = await supabase
+            .from("consultation_messages")
+            .select("*", { count: "exact", head: true })
+            .in("consultation_id", ids)
+            .eq("sender_type", "lawyer");
+          eligible = (lawyerReplies || 0) > 0;
+        }
+      }
+
+      if (!eligible) return;
 
       setTimeout(() => {
         if (!cancelled) setShowFeedback(true);

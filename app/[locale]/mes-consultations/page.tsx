@@ -404,6 +404,21 @@ function MesConsultationsContent() {
     setSelectedConsultation(consultation);
     setShowChat(true);
     await markMessagesAsRead(consultation.id);
+
+    const { count: lawyerMsgCount } = await supabase
+      .from("consultation_messages")
+      .select("*", { count: "exact", head: true })
+      .eq("consultation_id", consultation.id)
+      .eq("sender_type", "lawyer");
+
+    if ((lawyerMsgCount || 0) > 0) {
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://mizan-dz.com";
+      fetch(`${appUrl}/api/consultation-completed`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ consultationId: consultation.id }),
+      }).catch(() => {});
+    }
   };
 
   const isVideoConsultation = (subject?: string, channel?: string) =>
