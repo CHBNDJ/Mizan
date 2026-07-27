@@ -30,8 +30,45 @@ export default function ReviewPopup() {
 
   useEffect(() => {
     if (!user || profile?.user_type !== "client") return;
-    checkPendingReviews();
+    (async () => {
+      await triggerPhoneReviews();
+      await checkPendingReviews();
+    })();
   }, [user, profile]);
+
+  const triggerPhoneReviews = async () => {
+    const { data: phoneConsults } = await supabase
+      .from("consultations")
+      .select("id, scheduled_at, created_at")
+      .eq("client_id", user!.id)
+      .eq("channel", "phone")
+      .neq("status", "closed");
+
+    if (!phoneConsults || phoneConsults.length === 0) return;
+
+    const now = Date.now();
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://mizan-dz.com";
+
+    for (const c of phoneConsults) {
+      let shouldTrigger = false;
+
+      if (c.scheduled_at) {
+        const rdvPlusOneHour =
+          new Date(c.scheduled_at).getTime() + 60 * 60 * 1000;
+        if (now >= rdvPlusOneHour) shouldTrigger = true;
+      } else {
+        shouldTrigger = true;
+      }
+
+      if (shouldTrigger) {
+        await fetch(`${appUrl}/api/consultation-completed`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ consultationId: c.id }),
+        }).catch(() => {});
+      }
+    }
+  };
 
   const checkPendingReviews = async () => {
     const { data } = await supabase

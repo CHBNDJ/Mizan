@@ -74,11 +74,25 @@ function LawyerConsultationsContent() {
   const [confirmClose, setConfirmClose] = useState(false);
 
   useEffect(() => {
-    if (searchParams.get("feedback") === "true") {
-      const timer = setTimeout(() => setShowFeedback(true), 3000);
+    if (searchParams.get("feedback") !== "true" || !user) return;
+    let cancelled = false;
+    (async () => {
+      const { data: existingFeedback } = await supabase
+        .from("platform_feedbacks")
+        .select("id")
+        .eq("user_id", user.id)
+        .limit(1)
+        .maybeSingle();
+      if (existingFeedback) return;
+      const timer = setTimeout(() => {
+        if (!cancelled) setShowFeedback(true);
+      }, 3000);
       return () => clearTimeout(timer);
-    }
-  }, [searchParams]);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [searchParams, user, supabase]);
 
   useEffect(() => {
     if (authLoading) return;
@@ -385,8 +399,14 @@ function LawyerConsultationsContent() {
       setSelectedConsultation((prev) =>
         prev ? { ...prev, status: "closed" } : prev
       );
-      // Afficher le popup feedback Mizan au professionnel après clôture
-      setTimeout(() => setShowFeedback(true), 1200);
+
+      const { data: existingFeedback } = await supabase
+        .from("platform_feedbacks")
+        .select("id")
+        .eq("user_id", user.id)
+        .limit(1)
+        .maybeSingle();
+      if (!existingFeedback) setTimeout(() => setShowFeedback(true), 1200);
     } catch {
       setError(t("lawyerConsultations.actionError"));
     } finally {

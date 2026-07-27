@@ -81,11 +81,34 @@ function MesConsultationsContent() {
   }, [user, profile, authLoading]);
 
   useEffect(() => {
-    if (searchParams.get("feedback") === "true") {
-      const timer = setTimeout(() => setShowFeedback(true), 3000);
+    if (searchParams.get("feedback") !== "true" || !user) return;
+    let cancelled = false;
+    (async () => {
+      const { data: pendingReview } = await supabase
+        .from("pending_reviews")
+        .select("id")
+        .eq("client_id", user.id)
+        .limit(1)
+        .maybeSingle();
+      if (pendingReview) return;
+
+      const { data: existingFeedback } = await supabase
+        .from("platform_feedbacks")
+        .select("id")
+        .eq("user_id", user.id)
+        .limit(1)
+        .maybeSingle();
+      if (existingFeedback) return;
+
+      const timer = setTimeout(() => {
+        if (!cancelled) setShowFeedback(true);
+      }, 3000);
       return () => clearTimeout(timer);
-    }
-  }, [searchParams]);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [searchParams, user, supabase]);
 
   useEffect(() => {
     if (selectedConsultation) loadMessages(selectedConsultation.id);

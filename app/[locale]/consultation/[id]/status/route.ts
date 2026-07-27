@@ -81,10 +81,12 @@ export async function PATCH(
         status === "accepted"
           ? "✅ Demande acceptée. La consultation peut commencer."
           : `❌ Demande non retenue.${message ? " " + message : ""}`;
-      await supabaseAdmin.from("messages").insert({
+      await supabaseAdmin.from("consultation_messages").insert({
         consultation_id: consultationId,
         sender_id: consult.lawyer_id,
-        content: systemMsg,
+        sender_type: "lawyer",
+        message: systemMsg,
+        is_read: false,
       });
     }
 

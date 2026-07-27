@@ -107,6 +107,24 @@ export async function POST(
       }
     }
 
+    if (senderType === "lawyer") {
+      const { count: clientMsgCount } = await supabase
+        .from("consultation_messages")
+        .select("*", { count: "exact", head: true })
+        .eq("consultation_id", consultationId)
+        .eq("sender_type", "client");
+
+      if ((clientMsgCount || 0) > 0) {
+        const appUrl =
+          process.env.NEXT_PUBLIC_APP_URL || "https://mizan-dz.com";
+        fetch(`${appUrl}/api/consultation-completed`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ consultationId }),
+        }).catch(() => {});
+      }
+    }
+
     try {
       const recipientId =
         senderType === "lawyer"

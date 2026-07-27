@@ -284,6 +284,32 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
   const [hasAcceptedPhoneConsultation, setHasAcceptedPhoneConsultation] =
     useState(false);
   const supabase = createClient();
+
+  const createDirectCallConsultation = async () => {
+    if (!user || profile?.user_type !== "client" || !avocat?.id) return;
+    try {
+      const { data: existing } = await supabase
+        .from("consultations")
+        .select("id")
+        .eq("client_id", user.id)
+        .eq("lawyer_id", avocat.id)
+        .eq("channel", "phone")
+        .gte(
+          "created_at",
+          new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+        )
+        .limit(1)
+        .maybeSingle();
+      if (existing) return;
+
+      await supabase.from("consultations").insert({
+        client_id: user.id,
+        lawyer_id: avocat.id,
+        status: "pending",
+        channel: "phone",
+      });
+    } catch {}
+  };
   const hasAnimated = useRef(false);
 
   const FEMININE_KEYS: Record<string, string> = {
@@ -856,6 +882,7 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
             <div className="flex gap-2">
               <a
                 href={`tel:${avocat.contact.mobile.replace(/\s/g, "")}`}
+                onClick={() => createDirectCallConsultation()}
                 className="flex-1 flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 text-white py-3 rounded-xl font-medium text-sm"
               >
                 <Phone className="w-4 h-4" />
@@ -865,6 +892,7 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                 href={waUrl(avocat.contact.mobile)}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => createDirectCallConsultation()}
                 className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-xl font-medium text-sm"
               >
                 <WaIcon />
