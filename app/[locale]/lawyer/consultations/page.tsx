@@ -4,7 +4,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { localizedDigits } from "@/lib/arabicNumerals";
-import FeedbackPopup from "@/components/FeedbackPopup";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -61,7 +60,6 @@ function LawyerConsultationsContent() {
   const [isSending, setIsSending] = useState(false);
   const [tabFilter, setTabFilter] = useState<TabFilter>("active");
   const [archiving, setArchiving] = useState<string | null>(null);
-  const [showFeedback, setShowFeedback] = useState(false);
   const searchParams = useSearchParams();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [otherUserTyping, setOtherUserTyping] = useState(false);
@@ -72,27 +70,6 @@ function LawyerConsultationsContent() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isActioning, setIsActioning] = useState(false);
   const [confirmClose, setConfirmClose] = useState(false);
-
-  useEffect(() => {
-    if (searchParams.get("feedback") !== "true" || !user) return;
-    let cancelled = false;
-    (async () => {
-      const { data: existingFeedback } = await supabase
-        .from("platform_feedbacks")
-        .select("id")
-        .eq("user_id", user.id)
-        .limit(1)
-        .maybeSingle();
-      if (existingFeedback) return;
-      const timer = setTimeout(() => {
-        if (!cancelled) setShowFeedback(true);
-      }, 3000);
-      return () => clearTimeout(timer);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [searchParams, user, supabase]);
 
   useEffect(() => {
     if (authLoading) return;
@@ -399,14 +376,6 @@ function LawyerConsultationsContent() {
       setSelectedConsultation((prev) =>
         prev ? { ...prev, status: "closed" } : prev
       );
-
-      const { data: existingFeedback } = await supabase
-        .from("platform_feedbacks")
-        .select("id")
-        .eq("user_id", user.id)
-        .limit(1)
-        .maybeSingle();
-      if (!existingFeedback) setTimeout(() => setShowFeedback(true), 1200);
     } catch {
       setError(t("lawyerConsultations.actionError"));
     } finally {
@@ -1120,7 +1089,6 @@ function LawyerConsultationsContent() {
           </>
         )}
       </div>
-      {showFeedback && <FeedbackPopup onClose={() => setShowFeedback(false)} />}
     </div>
   );
 }

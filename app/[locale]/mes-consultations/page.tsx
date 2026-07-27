@@ -23,7 +23,6 @@ import {
 import { Message, ClientConsultation } from "@/types";
 import { gsap } from "gsap";
 import { JoinCallButton } from "@/components/consultation/JoinCallButton";
-import FeedbackPopup from "@/components/FeedbackPopup";
 import { Suspense } from "react";
 
 type TabFilter = "active" | "archived" | "all";
@@ -56,7 +55,6 @@ function MesConsultationsContent() {
   const [isSending, setIsSending] = useState(false);
   const [tabFilter, setTabFilter] = useState<TabFilter>("active");
   const [archiving, setArchiving] = useState<string | null>(null);
-  const [showFeedback, setShowFeedback] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [otherUserTyping, setOtherUserTyping] = useState(false);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -79,36 +77,6 @@ function MesConsultationsContent() {
     }
     loadConsultations();
   }, [user, profile, authLoading]);
-
-  useEffect(() => {
-    if (searchParams.get("feedback") !== "true" || !user) return;
-    let cancelled = false;
-    (async () => {
-      const { data: pendingReview } = await supabase
-        .from("pending_reviews")
-        .select("id")
-        .eq("client_id", user.id)
-        .limit(1)
-        .maybeSingle();
-      if (pendingReview) return;
-
-      const { data: existingFeedback } = await supabase
-        .from("platform_feedbacks")
-        .select("id")
-        .eq("user_id", user.id)
-        .limit(1)
-        .maybeSingle();
-      if (existingFeedback) return;
-
-      const timer = setTimeout(() => {
-        if (!cancelled) setShowFeedback(true);
-      }, 3000);
-      return () => clearTimeout(timer);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [searchParams, user, supabase]);
 
   useEffect(() => {
     if (selectedConsultation) loadMessages(selectedConsultation.id);
@@ -999,8 +967,6 @@ function MesConsultationsContent() {
           </>
         )}
       </div>
-
-      {showFeedback && <FeedbackPopup onClose={() => setShowFeedback(false)} />}
     </div>
   );
 }
