@@ -35,7 +35,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { gsap } from "gsap";
 import { createClient } from "@/lib/supabase/client";
 import { DOMAINES_PAR_PROFESSION } from "@/lib/avocatsData";
-import { getSpecialiteLabel } from "@/lib/i18nLabels";
+import { getSpecialiteLabel, getCountryLabel } from "@/lib/i18nLabels";
 
 type Profession =
   | "avocat"
@@ -176,10 +176,14 @@ export default function LawyerRegisterPage() {
     value: w.toLowerCase().replace(/\s+/g, "-"),
     label: w,
   }));
-  const countryOptions = COUNTRIES.map((c) => ({
-    value: c.code,
-    label: `${c.flag} \u200E+${c.code}\u200E`,
-  }));
+  const countryOptions = COUNTRIES.map((c) => {
+    const nom = getCountryLabel(c.id, t);
+    return {
+      value: c.code,
+      label: `${c.flag} \u200E+${c.code}\u200E ${nom}`,
+      sortKey: nom,
+    };
+  }).sort((a, b) => a.sortKey.localeCompare(b.sortKey, locale));
   const langueOptions = (
     primaryProfession === "traducteur" ? LANGUES_TRADUCTEUR : LANGUES
   ).map((l) => ({ value: l, label: l }));

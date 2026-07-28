@@ -61,10 +61,15 @@ export default function ClientRegisterPage() {
       );
   }, []);
 
-  const countryOptions = COUNTRIES.map((c) => ({
-    value: c.code,
-    label: `${c.flag} \u200E+${c.code}\u200E ${getCountryLabel(c.id, t)}`,
-  }));
+  const countryOptions = COUNTRIES.map((c) => {
+    const nom =
+      getCountryLabel(c.id, t) === c.id ? c.name : getCountryLabel(c.id, t);
+    return {
+      value: c.code,
+      label: `${c.flag} \u200E+${c.code}\u200E ${nom}`,
+      sortKey: nom,
+    };
+  }).sort((a, b) => a.sortKey.localeCompare(b.sortKey, locale));
 
   const inputCls =
     "w-full h-12 px-4 text-sm border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] hover:border-teal-300 dark:hover:border-[#6fcf9f] focus:border-teal-300 dark:focus:border-[#6fcf9f] focus:border-2 outline-none transition-all duration-200 text-slate-700 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78]";
