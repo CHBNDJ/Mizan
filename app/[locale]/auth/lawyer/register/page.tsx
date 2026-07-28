@@ -323,10 +323,10 @@ export default function LawyerRegisterPage() {
       }
 
       const { mobile: m1 } = separatePhoneTypes(
-        `+${selectedMobileCountry}${formData.mobile.trim()}`
+        `+${selectedMobileCountry}${formData.mobile.trim().replace(/^0+/, "")}`
       );
       const { fixe: f1 } = separatePhoneTypes(
-        `+${selectedCountry}${formData.phone.trim()}`
+        `+${selectedCountry}${formData.phone.trim().replace(/^0+/, "")}`
       );
 
       const result = await signUp(emailNorm, formData.password, {
@@ -377,7 +377,7 @@ export default function LawyerRegisterPage() {
             message: `
               <p><strong>Nom :</strong> ${formData.firstName} ${formData.lastName}</p>
               <p><strong>Email :</strong> ${emailNorm}</p>
-              <p><strong>Mobile :</strong> +${selectedMobileCountry}${formData.mobile}</p>
+              <p><strong>Mobile :</strong> +${selectedMobileCountry}${formData.mobile.replace(/^0+/, "")}</p>
               <p><strong>Professions :</strong> ${professions.join(", ")}</p>
               <p><strong>${currentProf?.numLabel} :</strong> ${formData.barNumber}</p>
               <p><strong>Ville :</strong> ${formData.address.city}, ${formData.address.wilaya}</p>

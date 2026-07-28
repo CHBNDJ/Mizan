@@ -121,7 +121,7 @@ export default function ClientRegisterPage() {
       const result = await signUp(emailNorm, formData.password, {
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
-        mobile: `+${mobileCountry}${formData.mobile}`,
+        mobile: `+${mobileCountry}${formData.mobile.replace(/^0+/, "")}`,
         userType: "client" as const,
         location: formData.location,
         gender: frontendToDb(formData.gender),
