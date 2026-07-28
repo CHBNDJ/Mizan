@@ -1,13 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 interface Testimonial {
   id: string;
   user_name: string;
   user_type: string;
   message: string;
+  translations: Record<string, string> | null;
   created_at: string;
 }
 
@@ -29,13 +30,14 @@ const shortName = (name?: string) => {
 export default function TestimonialsSection() {
   const supabase = createClient();
   const t = useTranslations("testimonials");
+  const locale = useLocale();
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     supabase
       .from("platform_feedbacks")
-      .select("id, user_name, user_type, message, created_at")
+      .select("id, user_name, user_type, message, translations, created_at")
       .eq("type", "testimonial")
       .eq("is_public", true)
       .order("created_at", { ascending: false })
@@ -75,8 +77,11 @@ export default function TestimonialsSection() {
                     &rdquo;
                   </span>
                 </div>
-                <p className="text-sm text-slate-600 dark:text-[#E8E8E6] leading-relaxed flex-1 italic">
-                  {item.message}
+                <p
+                  className="text-sm text-slate-600 dark:text-[#E8E8E6] leading-relaxed flex-1 italic"
+                  dir={locale === "ar" ? "rtl" : "ltr"}
+                >
+                  {item.translations?.[locale] || item.message}
                 </p>
                 <div className="flex items-center gap-3 pt-3 border-t border-teal-100 dark:border-[#3a3a3d]">
                   <div className="w-9 h-9 bg-teal-600 dark:bg-[#0F6E56] rounded-full flex items-center justify-center flex-shrink-0">
