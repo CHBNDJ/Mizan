@@ -114,7 +114,7 @@ export default function LawyerRegisterPage() {
   const currentProf = PROFESSIONS.find((p) => p.id === primaryProfession);
   const domaineOptions = primaryProfession
     ? (DOMAINES_PAR_PROFESSION[primaryProfession] || []).map((d) => ({
-        value: d.toLowerCase().replace(/\s+/g, "-"),
+        value: d,
         label: getSpecialiteLabel(d, t),
       }))
     : [];
@@ -354,9 +354,7 @@ export default function LawyerRegisterPage() {
         bar_number: formData.barNumber.trim(),
         profession: primaryProfession!,
         professions: professions,
-        specializations: formData.specializations.map(
-          (slug) => domaineOptions.find((o) => o.value === slug)?.label || slug
-        ),
+        specializations: formData.specializations,
         inscription_year: parseInt(formData.experience) || null,
         experience_years:
           new Date().getFullYear() -
@@ -385,7 +383,7 @@ export default function LawyerRegisterPage() {
               <p><strong>Professions :</strong> ${professions.join(", ")}</p>
               <p><strong>${currentProf?.numLabel} :</strong> ${formData.barNumber}</p>
               <p><strong>Ville :</strong> ${formData.address.city}, ${formData.address.wilaya}</p>
-              <p><strong>Spécialités :</strong> ${formData.specializations.map((s) => domaineOptions.find((o) => o.value === s)?.label || s).join(", ")}</p>
+              <p><strong>Spécialités :</strong> ${formData.specializations.map((s) => getSpecialiteLabel(s, t)).join(", ")}</p>
               <p><strong>Langues :</strong> ${formData.languages.join(", ")}</p>
               <p><strong>Année d'inscription :</strong> ${formData.experience}</p>
             `,
