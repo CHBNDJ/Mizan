@@ -39,7 +39,6 @@ import Link from "next/link";
 import { formatPhoneNumber, detectPhoneType } from "@/lib/phoneFormatter";
 import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
-import { toCivilite } from "@/lib/genderUtils";
 import { gsap } from "gsap";
 import dynamic from "next/dynamic";
 const LawyerMap = dynamic(() => import("@/components/map/LawyerMap"), {
@@ -273,6 +272,39 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
     return map;
   }, [messages]);
   const translateSpec = (s: string) => specialitesLookup[s.toLowerCase()] || s;
+
+  const languesLookup = useMemo(() => {
+    const raw = (messages as any)?.langues || {};
+    const map: Record<string, string> = {};
+    Object.entries(raw).forEach(([k, v]) => {
+      map[k.toLowerCase()] = v as string;
+    });
+    return map;
+  }, [messages]);
+  const translateLangue = (s: string) => languesLookup[s.toLowerCase()] || s;
+
+  const wilayasLookup = useMemo(() => {
+    const raw = (messages as any)?.wilayas || {};
+    const map: Record<string, string> = {};
+    Object.entries(raw).forEach(([k, v]) => {
+      map[k.toLowerCase()] = v as string;
+    });
+    return map;
+  }, [messages]);
+  const translateWilaya = (s: string) =>
+    s ? wilayasLookup[s.toLowerCase()] || s : s;
+
+  const genresLookup = useMemo(() => {
+    const raw = (messages as any)?.genres || {};
+    return {
+      homme: (raw.homme as string) || "M.",
+      femme: (raw.femme as string) || "Mme",
+    };
+  }, [messages]);
+  const civilite = (genre?: string) =>
+    genre === "femme" || genre === "female"
+      ? genresLookup.femme
+      : genresLookup.homme;
 
   const searchParams = useSearchParams();
   const { user, profile } = useAuth();
@@ -600,12 +632,12 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                     ))}
                     {avocat.barreau && (
                       <span className="text-[10px] text-slate-400 dark:text-[#7A7A78]">
-                        · {profInfo.numLabel} {avocat.barreau}
+                        · {profInfo.numLabel} {translateWilaya(avocat.barreau)}
                       </span>
                     )}
                   </div>
                   <h1 className="text-2xl sm:text-3xl font-light text-slate-800 dark:text-[#E8E8E6] leading-tight mb-1">
-                    {toCivilite(avocat.genre)} {avocat.prenom}
+                    {civilite(avocat.genre)} {avocat.prenom}
                   </h1>
                   <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-[#F5F5F4] leading-tight mb-4">
                     {avocat.nom}
@@ -630,7 +662,9 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                         <div className="w-1 h-1 rounded-full bg-teal-500 dark:bg-[#6fcf9f] flex-shrink-0" />
                         <Languages className="w-3.5 h-3.5 flex-shrink-0 text-teal-600 dark:text-[#6fcf9f]" />
                         <span className="text-sm text-slate-600 dark:text-[#E8E8E6] font-medium">
-                          {avocat.langues.join(" · ")}
+                          {avocat.langues
+                            .map((l: string) => translateLangue(l))
+                            .join(" · ")}
                         </span>
                       </div>
                     )}
@@ -876,7 +910,7 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                 {t("contactNowTitle")}
               </p>
               <p className="text-sm text-slate-500 dark:text-[#A8A8A6]">
-                {toCivilite(avocat.genre)} {avocat.prenom} {avocat.nom}
+                {civilite(avocat.genre)} {avocat.prenom} {avocat.nom}
               </p>
             </div>
             <div className="flex gap-2">
