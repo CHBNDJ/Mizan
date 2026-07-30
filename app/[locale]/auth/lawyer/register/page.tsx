@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Link } from "@/i18n/navigation";
 import {
   Eye,
@@ -17,7 +17,7 @@ import {
   Languages,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations, useLocale, useMessages } from "next-intl";
 import { toArabicNumerals } from "@/lib/arabicNumerals";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 import { ExtendedLawyerSignupFormData, FormErrors } from "@/types";
@@ -35,7 +35,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { gsap } from "gsap";
 import { createClient } from "@/lib/supabase/client";
 import { DOMAINES_PAR_PROFESSION } from "@/lib/avocatsData";
-import { getSpecialiteLabel, getCountryLabel } from "@/lib/i18nLabels";
+import {
+  getSpecialiteLabel,
+  getCountryLabel,
+  getWilayaLabel,
+} from "@/lib/i18nLabels";
 
 type Profession =
   | "avocat"
@@ -67,6 +71,26 @@ export default function LawyerRegisterPage() {
   const router = useRouter();
   const { signUp } = useAuth();
   const t = useTranslations();
+  const messages = useMessages();
+  const specialitesLookup = useMemo(() => {
+    const raw = (messages as any)?.specialites || {};
+    const map: Record<string, string> = {};
+    Object.entries(raw).forEach(([k, v]) => {
+      map[k.toLowerCase()] = v as string;
+    });
+    return map;
+  }, [messages]);
+  const translateSpec = (s: string) => specialitesLookup[s.toLowerCase()] || s;
+
+  const wilayasLookup = useMemo(() => {
+    const raw = (messages as any)?.wilayas || {};
+    const map: Record<string, string> = {};
+    Object.entries(raw).forEach(([k, v]) => {
+      map[k.toLowerCase()] = v as string;
+    });
+    return map;
+  }, [messages]);
+  const translateWilaya = (s: string) => wilayasLookup[s.toLowerCase()] || s;
   const civiliteOptions = [
     { value: "homme", label: t("genres.homme") },
     { value: "femme", label: t("genres.femme") },
@@ -118,8 +142,8 @@ export default function LawyerRegisterPage() {
   const currentProf = PROFESSIONS.find((p) => p.id === primaryProfession);
   const domaineOptions = primaryProfession
     ? (DOMAINES_PAR_PROFESSION[primaryProfession] || []).map((d) => ({
-        value: d,
-        label: getSpecialiteLabel(d, t),
+        value: d.toLowerCase().replace(/\s+/g, "-"),
+        label: translateSpec(d),
       }))
     : [];
 
@@ -178,7 +202,7 @@ export default function LawyerRegisterPage() {
 
   const wilayaOptions = WILAYAS.map((w) => ({
     value: w.toLowerCase().replace(/\s+/g, "-"),
-    label: w,
+    label: translateWilaya(w),
   }));
   const countryOptions = COUNTRIES.map((c) => {
     const nom = getCountryLabel(c.id, t);
