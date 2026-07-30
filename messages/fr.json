@@ -49,6 +49,7 @@
     },
     "priceDisclaimer": "Tarifs indicatifs · confirmés par le professionnel",
     "traducteurNotice": "La mise en relation avec le traducteur assermenté accélère le traitement de votre traduction. La présence physique du client et du document lors de la réception reste toutefois obligatoire, conformément aux textes de loi qui régissent la profession.",
+    "phoneRdvNotice": "Le jour du rendez-vous, le numéro du professionnel apparaîtra dans votre page « Mes consultations », 15 minutes avant l'heure convenue. Vous pourrez alors l'appeler directement ou via WhatsApp.",
     "sentTitle": "Demande envoyée",
     "sentSubtitle": "Redirection vers vos consultations..."
   },
@@ -3518,6 +3519,10 @@
     "atConnector": "à",
     "image": "Image",
     "callTime": "C'est l'heure de votre appel",
+    "numberSoonTitle": "Numéro bientôt disponible",
+    "numberSoonDesc": "Le numéro du professionnel s'affichera ici 15 min avant votre rendez-vous du {date}.",
+    "numberSoonTitleLawyer": "Numéro bientôt disponible",
+    "numberSoonDescLawyer": "Le numéro du client s'affichera ici 15 min avant le rendez-vous du {date}.",
     "callLawyer": "Appelez votre avocat au :",
     "callClient": "Appelez votre client au :",
     "callButton": "Appeler",

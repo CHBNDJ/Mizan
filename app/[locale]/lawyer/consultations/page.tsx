@@ -700,9 +700,32 @@ function LawyerConsultationsContent() {
                   WhatsApp
                 </a>
               </div>
-              <p className="text-xs text-teal-700 dark:text-[#6fcf9f] text-center mt-3">
-                {selectedConsultation!.client.mobile}
-              </p>
+            </div>
+          )}
+        {!isLocked &&
+          isPhoneConsultation(
+            selectedConsultation!.subject,
+            selectedConsultation!.channel
+          ) &&
+          selectedConsultation!.scheduled_at &&
+          !isCallWindowOpen(
+            selectedConsultation!.scheduled_at,
+            selectedConsultation!.channel
+          ) &&
+          new Date(selectedConsultation!.scheduled_at).getTime() >
+            Date.now() && (
+            <div className="bg-slate-50 dark:bg-[#141415] border border-slate-200 dark:border-[#1c2220] rounded-2xl p-4 mb-2 flex items-start gap-2.5">
+              <Clock className="w-4 h-4 text-slate-400 dark:text-[#7A7A78] flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-xs font-medium text-slate-600 dark:text-[#E8E8E6]">
+                  {t("consultShared.numberSoonTitleLawyer")}
+                </p>
+                <p className="text-xs text-slate-400 dark:text-[#7A7A78] mt-0.5">
+                  {t("consultShared.numberSoonDescLawyer", {
+                    date: formatScheduled(selectedConsultation!.scheduled_at),
+                  })}
+                </p>
+              </div>
             </div>
           )}
         {messages.map((message) => (

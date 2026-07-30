@@ -431,7 +431,14 @@ export function ConsultationPanel({
           </div>
         </div>
       )}
-
+      {selected === "phone" && scheduledDate && scheduledTime && (
+        <div className="mt-3 flex items-start gap-2.5 p-3 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl">
+          <Info className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0 mt-0.5" />
+          <p className="text-xs text-teal-700 dark:text-[#6fcf9f] leading-relaxed">
+            {tc("phoneRdvNotice")}
+          </p>
+        </div>
+      )}
       {error && <p className="mt-2 text-xs text-red-500">{error}</p>}
 
       <div className="mt-4 space-y-2">

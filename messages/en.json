@@ -49,6 +49,7 @@
     },
     "priceDisclaimer": "Indicative rates · confirmed by the professional",
     "traducteurNotice": "Connecting with the sworn translator speeds up the processing of your translation. However, the physical presence of the client and the document at the time of collection remains mandatory, in accordance with the laws governing the profession.",
+    "phoneRdvNotice": "On the day of the appointment, the professional's number will appear in your 'My consultations' page, 15 minutes before the scheduled time. You can then call directly or via WhatsApp.",
     "sentTitle": "Request sent",
     "sentSubtitle": "Redirecting to your consultations..."
   },
@@ -3511,6 +3512,10 @@
     "atConnector": "at",
     "image": "Image",
     "callTime": "It's time for your call",
+    "numberSoonTitle": "Number available soon",
+    "numberSoonDesc": "The professional's number will appear here 15 min before your appointment on {date}.",
+    "numberSoonTitleLawyer": "Number available soon",
+    "numberSoonDescLawyer": "The client's number will appear here 15 min before the appointment on {date}.",
     "callLawyer": "Call your lawyer at:",
     "callClient": "Call your client at:",
     "callButton": "Call",
