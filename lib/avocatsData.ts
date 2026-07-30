@@ -154,7 +154,9 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
           ? "M."
           : "Maître",
     genre: genre || undefined,
-    specialites: capitalizeSpecialites(lawyer.specializations),
+    specialites: Array.isArray(lawyer.specializations)
+      ? lawyer.specializations.map((s: string) => s.trim())
+      : [],
     barreau: lawyer.profession === "avocat" ? wilaya : "",
     wilaya,
     ville,
