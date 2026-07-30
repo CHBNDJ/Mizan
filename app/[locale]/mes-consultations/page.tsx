@@ -564,14 +564,17 @@ function MesConsultationsContent() {
               </p>
               <div className="flex gap-2">
                 <a
-                  href={`tel:${selectedConsultation!.lawyer.mobile}`}
+                  href={`tel:${selectedConsultation!.lawyer.mobile.split(",")[0].trim()}`}
                   className="flex-1 flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 text-white py-3 rounded-xl font-medium text-sm"
                 >
                   <Phone className="w-4 h-4" />
                   {t("consultShared.callButton")}
                 </a>
                 <a
-                  href={`https://wa.me/${selectedConsultation!.lawyer.mobile.replace(/[^0-9]/g, "")}`}
+                  href={`https://wa.me/${selectedConsultation!.lawyer.mobile
+                    .split(",")[0]
+                    .trim()
+                    .replace(/[^0-9]/g, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-xl font-medium text-sm"
@@ -581,7 +584,7 @@ function MesConsultationsContent() {
                 </a>
               </div>
               <p className="text-xs text-teal-700 dark:text-[#6fcf9f] text-center mt-3">
-                {selectedConsultation!.lawyer.mobile}
+                {selectedConsultation!.lawyer.mobile.split(",")[0].trim()}
               </p>
             </div>
           )}

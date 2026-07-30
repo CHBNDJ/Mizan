@@ -913,29 +913,42 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                 {civilite(avocat.genre)} {avocat.prenom} {avocat.nom}
               </p>
             </div>
-            <div className="flex gap-2">
-              <a
-                href={`tel:${avocat.contact.mobile.replace(/\s/g, "")}`}
-                onClick={() => createDirectCallConsultation()}
-                className="flex-1 flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 text-white py-3 rounded-xl font-medium text-sm"
-              >
-                <Phone className="w-4 h-4" />
-                {t("contact.call")}
-              </a>
-              <a
-                href={waUrl(avocat.contact.mobile)}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => createDirectCallConsultation()}
-                className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-xl font-medium text-sm"
-              >
-                <WaIcon />
-                {t("contact.whatsapp")}
-              </a>
+            <div className="space-y-3">
+              {avocat.contact.mobile
+                .split(",")
+                .map((n) => n.trim())
+                .filter(Boolean)
+                .map((num, idx) => (
+                  <div
+                    key={idx}
+                    className="border border-slate-200 dark:border-[#1c2220] rounded-xl p-3"
+                  >
+                    <p className="text-center text-sm text-teal-700 dark:text-[#6fcf9f] font-medium mb-2">
+                      {flag(num)} {ld(formatPhoneNumber(num))}
+                    </p>
+                    <div className="flex gap-2">
+                      <a
+                        href={`tel:${num.replace(/\s/g, "")}`}
+                        onClick={() => createDirectCallConsultation()}
+                        className="flex-1 flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 text-white py-2.5 rounded-xl font-medium text-sm"
+                      >
+                        <Phone className="w-4 h-4" />
+                        {t("contact.call")}
+                      </a>
+                      <a
+                        href={waUrl(num)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => createDirectCallConsultation()}
+                        className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-2.5 rounded-xl font-medium text-sm"
+                      >
+                        <WaIcon />
+                        {t("contact.whatsapp")}
+                      </a>
+                    </div>
+                  </div>
+                ))}
             </div>
-            <p className="hidden sm:block text-center text-sm text-teal-700 dark:text-[#6fcf9f] font-medium mt-4">
-              {ld(formatPhoneNumber(avocat.contact.mobile))}
-            </p>
           </div>
         </div>
       )}
