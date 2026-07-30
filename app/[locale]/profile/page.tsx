@@ -27,11 +27,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { createClient } from "@/lib/supabase/client";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 import { CustomSelect } from "@/components/ui/CustomSelect";
-import {
-  CIVILITE_OPTIONS,
-  dbToFrontend,
-  frontendToDb,
-} from "@/lib/genderUtils";
+import { dbToFrontend, frontendToDb } from "@/lib/genderUtils";
 import { SPECIALITES, WILAYAS, LOCATION, LANGUES } from "@/utils/constants";
 import { COMMUNES_PAR_WILAYA } from "@/utils/communes";
 import { DOMAINES_PAR_PROFESSION } from "@/lib/avocatsData";
