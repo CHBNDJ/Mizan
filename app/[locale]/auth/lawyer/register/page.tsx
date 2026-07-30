@@ -81,7 +81,11 @@ export default function LawyerRegisterPage() {
     return map;
   }, [messages]);
   const translateSpec = (s: string) => specialitesLookup[s.toLowerCase()] || s;
-
+  console.log("SPEC DEBUG", {
+    messagesKeys: Object.keys(messages as any).slice(0, 15),
+    lookupSize: Object.keys(specialitesLookup).length,
+    test: translateSpec("Droit administratif"),
+  });
   const wilayasLookup = useMemo(() => {
     const raw = (messages as any)?.wilayas || {};
     const map: Record<string, string> = {};
@@ -91,6 +95,17 @@ export default function LawyerRegisterPage() {
     return map;
   }, [messages]);
   const translateWilaya = (s: string) => wilayasLookup[s.toLowerCase()] || s;
+
+  const communesLookup = useMemo(() => {
+    const raw = (messages as any)?.communes || {};
+    const map: Record<string, string> = {};
+    Object.entries(raw).forEach(([k, v]) => {
+      map[k.toLowerCase()] = v as string;
+    });
+    return map;
+  }, [messages]);
+  const translateCommune = (s: string) => communesLookup[s.toLowerCase()] || s;
+
   const civiliteOptions = [
     { value: "homme", label: t("genres.homme") },
     { value: "femme", label: t("genres.femme") },
@@ -190,7 +205,7 @@ export default function LawyerRegisterPage() {
       setCommuneOptions(
         COMMUNES_PAR_WILAYA[w].map((c) => ({
           value: c.toLowerCase().replace(/\s+/g, "-"),
-          label: c,
+          label: translateCommune(c),
         }))
       );
       setFormData((prev) => ({
