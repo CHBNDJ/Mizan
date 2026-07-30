@@ -621,8 +621,11 @@ export default function LawyerRegisterPage() {
               {t("auth.lawyerRegister.mobileDz")} *
             </label>
             <div className="flex gap-2">
-              <div className="w-24 h-12 flex items-center justify-center border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-slate-50 dark:bg-[#141415] text-sm font-medium text-slate-600 dark:text-[#E8E8E6] flex-shrink-0">
-                🇩🇿 {locale === "ar" ? toArabicNumerals("+213") : "+213"}
+              <div className="w-24 h-12 flex items-center gap-1.5 px-3 border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-slate-50 dark:bg-[#141415] text-sm text-slate-700 dark:text-[#F5F5F4] flex-shrink-0 cursor-not-allowed">
+                <span>🇩🇿</span>
+                <span dir="ltr">
+                  {locale === "ar" ? toArabicNumerals("+213") : "+213"}
+                </span>
               </div>
               <input
                 type="tel"
