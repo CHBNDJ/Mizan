@@ -152,7 +152,7 @@ export default function LawyerRegisterPage() {
   const currentProf = PROFESSIONS.find((p) => p.id === primaryProfession);
   const domaineOptions = primaryProfession
     ? (DOMAINES_PAR_PROFESSION[primaryProfession] || []).map((d) => ({
-        value: d.toLowerCase().replace(/\s+/g, "-"),
+        value: d,
         label: translateSpec(d),
       }))
     : [];
