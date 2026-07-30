@@ -134,7 +134,7 @@ function ProfilePageContent() {
   const domaineOptions = (
     DOMAINES_PAR_PROFESSION[profession] || SPECIALITES
   ).map((s) => ({
-    value: s.toLowerCase().replace(/\s+/g, "-"),
+    value: s,
     label: getSpecialiteLabel(s, t),
   }));
 
@@ -328,10 +328,7 @@ function ProfilePageContent() {
             bar_number: lawyerFormData.barNumber.trim(),
             experience_years:
               parseInt(lawyerFormData.experienceYears.toString()) || 0,
-            specializations: lawyerFormData.specializations.map((slug) => {
-              const f = domaineOptions.find((o) => o.value === slug);
-              return f ? f.label : slug;
-            }),
+            specializations: lawyerFormData.specializations,
             consultation_price:
               lawyerFormData.consultationPrice &&
               lawyerFormData.consultationPrice > 0
