@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import React, { useState, useEffect, useRef } from "react";
-import { useTranslations, useLocale } from "next-intl";
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import { useTranslations, useLocale, useMessages } from "next-intl";
 import { localizedDigits } from "@/lib/arabicNumerals";
 import {
   User,
@@ -36,7 +36,6 @@ import { SPECIALITES, WILAYAS, LOCATION, LANGUES } from "@/utils/constants";
 import { COMMUNES_PAR_WILAYA } from "@/utils/communes";
 import { DOMAINES_PAR_PROFESSION } from "@/lib/avocatsData";
 import { getInitials } from "@/lib/utils";
-import { getSpecialiteLabel, getWilayaLabel } from "@/lib/i18nLabels";
 import ImageCropModal from "@/components/ImageCropModal";
 import { gsap } from "gsap";
 
@@ -71,6 +70,27 @@ function ProfilePageContent() {
   const t = useTranslations();
   const locale = useLocale();
   const ld = (s: string) => localizedDigits(s, locale);
+  const messages = useMessages();
+  const specialitesLookup = useMemo(() => {
+    const raw = (messages as any)?.specialites || {};
+    const map: Record<string, string> = {};
+    Object.entries(raw).forEach(([k, v]) => {
+      map[k.toLowerCase()] = v as string;
+    });
+    return map;
+  }, [messages]);
+  const translateSpec = (s: string) => specialitesLookup[s.toLowerCase()] || s;
+
+  const wilayasLookup = useMemo(() => {
+    const raw = (messages as any)?.wilayas || {};
+    const map: Record<string, string> = {};
+    Object.entries(raw).forEach(([k, v]) => {
+      map[k.toLowerCase()] = v as string;
+    });
+    return map;
+  }, [messages]);
+  const translateWilaya = (s: string) =>
+    s ? wilayasLookup[s.toLowerCase()] || s : s;
   const civiliteOptions = [
     { value: "homme", label: t("genres.homme") },
     { value: "femme", label: t("genres.femme") },
@@ -135,7 +155,7 @@ function ProfilePageContent() {
     DOMAINES_PAR_PROFESSION[profession] || SPECIALITES
   ).map((s) => ({
     value: s,
-    label: getSpecialiteLabel(s, t),
+    label: translateSpec(s),
   }));
 
   useEffect(() => {
@@ -193,7 +213,7 @@ function ProfilePageContent() {
 
   const wilayaOptions = WILAYAS.map((w) => ({
     value: w.toLowerCase().replace(/\s+/g, "-"),
-    label: getWilayaLabel(w, t),
+    label: translateWilaya(w),
   }));
   const langueOptions = LANGUES.map((l) => ({
     value: l,
@@ -384,7 +404,7 @@ function ProfilePageContent() {
 
   const getFullAddress = () => {
     const wilayaDisplay = addressData.wilaya
-      ? getWilayaLabel(cap(addressData.wilaya), t)
+      ? translateWilaya(cap(addressData.wilaya))
       : "";
     const cityDisplay = addressData.city ? cap(addressData.city) : "";
     return (
@@ -981,7 +1001,7 @@ function ProfilePageContent() {
                                     key={i}
                                     className="bg-teal-100 dark:bg-[#6fcf9f]/10 text-teal-800 dark:text-[#6fcf9f] px-3 py-1 rounded-full text-sm"
                                   >
-                                    {getSpecialiteLabel(s, t)}
+                                    {translateSpec(s)}
                                   </span>
                                 )
                               )}
