@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { toArabicNumerals } from "@/lib/arabicNumerals";
 import { CustomSelect } from "@/components/ui/CustomSelect";
-import { CIVILITE_OPTIONS, frontendToDb } from "@/lib/genderUtils";
+import { frontendToDb } from "@/lib/genderUtils";
 import { LOCATION, COUNTRIES, LOCATION_TO_PHONE_CODE } from "@/utils/constants";
 import { getCountryLabel } from "@/lib/i18nLabels";
 import { FormErrors } from "@/types";
@@ -21,6 +21,10 @@ export default function ClientRegisterPage() {
   const t = useTranslations();
   const locale = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
+  const civiliteOptions = [
+    { value: "homme", label: t("genres.homme") },
+    { value: "femme", label: t("genres.femme") },
+  ];
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -195,7 +199,7 @@ export default function ClientRegisterPage() {
                 {t("auth.clientRegister.civilite")} *
               </label>
               <CustomSelect
-                options={CIVILITE_OPTIONS}
+                options={civiliteOptions}
                 value={formData.gender}
                 onChange={(v) => setFormData((p) => ({ ...p, gender: v }))}
                 placeholder={t("auth.clientRegister.select")}

@@ -71,6 +71,10 @@ function ProfilePageContent() {
   const t = useTranslations();
   const locale = useLocale();
   const ld = (s: string) => localizedDigits(s, locale);
+  const civiliteOptions = [
+    { value: "homme", label: t("genres.homme") },
+    { value: "femme", label: t("genres.femme") },
+  ];
   const containerRef = useRef<HTMLDivElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -191,7 +195,10 @@ function ProfilePageContent() {
     value: w.toLowerCase().replace(/\s+/g, "-"),
     label: getWilayaLabel(w, t),
   }));
-  const langueOptions = LANGUES.map((l) => ({ value: l, label: l }));
+  const langueOptions = LANGUES.map((l) => ({
+    value: l,
+    label: t(`langues.${l}`),
+  }));
 
   useEffect(() => {
     if (profile) {
@@ -600,7 +607,7 @@ function ProfilePageContent() {
                     {isEditing ? (
                       <div className="relative z-20">
                         <CustomSelect
-                          options={CIVILITE_OPTIONS}
+                          options={civiliteOptions}
                           value={lawyerFormData.gender}
                           onChange={(v) =>
                             setLawyerFormData((p) => ({ ...p, gender: v }))
@@ -613,7 +620,7 @@ function ProfilePageContent() {
                       <div className="p-3 bg-slate-50 dark:bg-[#1c1c1e] rounded-lg">
                         <span className="text-slate-800 dark:text-[#F5F5F4]">
                           {lawyerFormData.gender
-                            ? CIVILITE_OPTIONS.find(
+                            ? civiliteOptions.find(
                                 (g) => g.value === lawyerFormData.gender
                               )?.label
                             : t("myProfile.notProvided")}

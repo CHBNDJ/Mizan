@@ -21,7 +21,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { toArabicNumerals } from "@/lib/arabicNumerals";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 import { ExtendedLawyerSignupFormData, FormErrors } from "@/types";
-import { CIVILITE_OPTIONS, frontendToDb } from "@/lib/genderUtils";
+import { frontendToDb } from "@/lib/genderUtils";
 import {
   WILAYAS,
   COUNTRIES,
@@ -67,6 +67,10 @@ export default function LawyerRegisterPage() {
   const router = useRouter();
   const { signUp } = useAuth();
   const t = useTranslations();
+  const civiliteOptions = [
+    { value: "homme", label: t("genres.homme") },
+    { value: "femme", label: t("genres.femme") },
+  ];
   const locale = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
@@ -186,7 +190,7 @@ export default function LawyerRegisterPage() {
   }).sort((a, b) => a.sortKey.localeCompare(b.sortKey, locale));
   const langueOptions = (
     primaryProfession === "traducteur" ? LANGUES_TRADUCTEUR : LANGUES
-  ).map((l) => ({ value: l, label: l }));
+  ).map((l) => ({ value: l, label: t(`langues.${l}`) }));
 
   const inputCls =
     "w-full h-12 px-4 text-sm border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-white dark:bg-[#1c1c1e] hover:border-teal-300 dark:hover:border-[#6fcf9f] text-slate-700 dark:text-[#F5F5F4] focus:border-teal-300 dark:focus:border-[#6fcf9f] focus:border-2 outline-none transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-[#7A7A78]";
@@ -534,7 +538,7 @@ export default function LawyerRegisterPage() {
               {t("auth.lawyerRegister.civilite")} *
             </label>
             <CustomSelect
-              options={CIVILITE_OPTIONS}
+              options={civiliteOptions}
               value={formData.gender}
               onChange={(v) => setFormData((p) => ({ ...p, gender: v }))}
               placeholder={t("auth.clientRegister.select")}

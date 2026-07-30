@@ -61,6 +61,21 @@ export function ConsultationPanel({
   const [error, setError] = useState("");
   const [messageText, setMessageText] = useState("");
 
+  useEffect(() => {
+    if (!user || profile?.user_type !== "client" || !avocat?.id) return;
+    let pending: any = null;
+    try {
+      const raw = sessionStorage.getItem("mizan_pending_consultation");
+      if (raw) pending = JSON.parse(raw);
+    } catch {}
+    if (!pending || pending.lawyerId !== avocat.id) return;
+    sessionStorage.removeItem("mizan_pending_consultation");
+    setSelected(pending.selected || null);
+    setMessageText(pending.messageText || "");
+    setScheduledDate(pending.scheduledDate || "");
+    setScheduledTime(pending.scheduledTime || "");
+  }, [user, profile, avocat?.id]);
+
   const isAppointment = [
     "notaire",
     "huissier",
@@ -106,6 +121,18 @@ export function ConsultationPanel({
 
   const handleSend = async () => {
     if (!user || profile?.user_type !== "client") {
+      try {
+        sessionStorage.setItem(
+          "mizan_pending_consultation",
+          JSON.stringify({
+            lawyerId: avocat.id,
+            selected,
+            messageText,
+            scheduledDate,
+            scheduledTime,
+          })
+        );
+      } catch {}
       router.push(
         `/auth/client/register?redirect=${encodeURIComponent(window.location.pathname)}`
       );
