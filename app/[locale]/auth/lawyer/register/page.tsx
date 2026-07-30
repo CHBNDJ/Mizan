@@ -81,11 +81,6 @@ export default function LawyerRegisterPage() {
     return map;
   }, [messages]);
   const translateSpec = (s: string) => specialitesLookup[s.toLowerCase()] || s;
-  console.log("SPEC DEBUG", {
-    messagesKeys: Object.keys(messages as any).slice(0, 15),
-    lookupSize: Object.keys(specialitesLookup).length,
-    test: translateSpec("Droit administratif"),
-  });
   const wilayasLookup = useMemo(() => {
     const raw = (messages as any)?.wilayas || {};
     const map: Record<string, string> = {};
