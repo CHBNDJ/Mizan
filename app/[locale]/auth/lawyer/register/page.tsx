@@ -364,19 +364,20 @@ export default function LawyerRegisterPage() {
         return;
       }
 
-      const { mobile: m1 } = separatePhoneTypes(
-        `+${selectedMobileCountry}${formData.mobile.trim().replace(/^0+/, "")}`
-      );
-      const { fixe: f1 } = separatePhoneTypes(
-        `+${selectedCountry}${formData.phone.trim().replace(/^0+/, "")}`
-      );
+      const mobileDz = formData.mobile.trim()
+        ? `+213${formData.mobile.trim().replace(/^0+/, "")}`
+        : "";
+      const mobileIntl = formData.phone.trim()
+        ? `+${selectedCountry}${formData.phone.trim().replace(/^0+/, "")}`
+        : "";
+      const allMobiles = [mobileDz, mobileIntl].filter(Boolean).join(",");
 
       const result = await signUp(emailNorm, formData.password, {
         gender: frontendToDb(formData.gender),
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
-        phone: f1 || undefined,
-        mobile: m1 || undefined,
+        phone: undefined,
+        mobile: allMobiles || undefined,
         userType: "lawyer" as const,
         location: formData.address.city.trim(),
         is_cour_supreme: !!(formData as any).isCourtSupreme,
@@ -417,7 +418,8 @@ export default function LawyerRegisterPage() {
             message: `
               <p><strong>Nom :</strong> ${formData.firstName} ${formData.lastName}</p>
               <p><strong>Email :</strong> ${emailNorm}</p>
-              <p><strong>Mobile :</strong> +${selectedMobileCountry}${formData.mobile.replace(/^0+/, "")}</p>
+              <p><strong>Mobile DZ :</strong> +213${formData.mobile.replace(/^0+/, "")}</p>
+              ${formData.phone.trim() ? `<p><strong>Mobile international :</strong> +${selectedCountry}${formData.phone.replace(/^0+/, "")}</p>` : ""}
               <p><strong>Professions :</strong> ${professions.join(", ")}</p>
               <p><strong>${currentProf?.numLabel} :</strong> ${formData.barNumber}</p>
               <p><strong>Ville :</strong> ${formData.address.city}, ${formData.address.wilaya}</p>
@@ -616,19 +618,12 @@ export default function LawyerRegisterPage() {
           <div className="relative z-20">
             <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
               <Smartphone className="w-4 h-4" />{" "}
-              {t("auth.lawyerRegister.mobile")} *
+              {t("auth.lawyerRegister.mobileDz")} *
             </label>
             <div className="flex gap-2">
-              <CustomSelect
-                options={countryOptions}
-                value={selectedMobileCountry}
-                onChange={setSelectedMobileCountry}
-                placeholder={
-                  locale === "ar" ? toArabicNumerals("+213") : "+213"
-                }
-                className="w-24 h-12"
-                disabled={isSubmitting}
-              />
+              <div className="w-24 h-12 flex items-center justify-center border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-slate-50 dark:bg-[#141415] text-sm font-medium text-slate-600 dark:text-[#E8E8E6] flex-shrink-0">
+                🇩🇿 {locale === "ar" ? toArabicNumerals("+213") : "+213"}
+              </div>
               <input
                 type="tel"
                 name="mobile"
@@ -637,7 +632,7 @@ export default function LawyerRegisterPage() {
                   if (/^\d*$/.test(e.target.value)) handleInput(e);
                 }}
                 className={inputCls}
-                placeholder={t("auth.lawyerRegister.mobilePh")}
+                placeholder={t("auth.lawyerRegister.mobileDzPh")}
                 disabled={isSubmitting}
               />
             </div>
@@ -646,16 +641,17 @@ export default function LawyerRegisterPage() {
           <div className="relative z-10">
             <label className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-[#E8E8E6] mb-1">
               <Phone className="w-4 h-4" />{" "}
-              {t("auth.lawyerRegister.fixedPhone")}
+              {t("auth.lawyerRegister.mobileIntl")}{" "}
+              <span className="text-slate-400 dark:text-[#7A7A78] font-normal text-xs">
+                {t("auth.lawyerRegister.websiteOptional")}
+              </span>
             </label>
             <div className="flex gap-2">
               <CustomSelect
                 options={countryOptions}
                 value={selectedCountry}
                 onChange={setSelectedCountry}
-                placeholder={
-                  locale === "ar" ? toArabicNumerals("+213") : "+213"
-                }
+                placeholder={locale === "ar" ? toArabicNumerals("+33") : "+33"}
                 className="w-24 h-12"
                 disabled={isSubmitting}
               />
@@ -667,7 +663,7 @@ export default function LawyerRegisterPage() {
                   if (/^\d*$/.test(e.target.value)) handleInput(e);
                 }}
                 className={inputCls}
-                placeholder={t("auth.lawyerRegister.fixedPhonePh")}
+                placeholder={t("auth.lawyerRegister.mobileIntlPh")}
                 disabled={isSubmitting}
               />
             </div>
