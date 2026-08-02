@@ -154,36 +154,8 @@ function MesConsultationsContent() {
           table: "consultation_messages",
           filter: `consultation_id=eq.${selectedConsultation.id}`,
         },
-        (payload) => {
-          const newMsg = payload.new as Message;
-          Promise.all([
-            supabase
-              .from("users")
-              .select("first_name, last_name")
-              .eq("id", newMsg.sender_id)
-              .single(),
-            newMsg.attachment_url
-              ? supabase.storage
-                  .from("consultation-attachments")
-                  .createSignedUrl(
-                    extractStoragePath(newMsg.attachment_url),
-                    3600
-                  )
-              : Promise.resolve({ data: null }),
-          ]).then(([{ data }, signedRes]) => {
-            setMessages((prev) => [
-              ...prev,
-              {
-                ...newMsg,
-                attachment_url:
-                  signedRes?.data?.signedUrl || newMsg.attachment_url,
-                sender: {
-                  first_name: data?.first_name || "",
-                  last_name: data?.last_name || "",
-                },
-              },
-            ]);
-          });
+        () => {
+          loadMessages(selectedConsultation.id);
         }
       )
       .subscribe();
@@ -277,17 +249,12 @@ function MesConsultationsContent() {
 
   const loadMessages = async (consultationId: string) => {
     try {
-      const { data, error: err } = await supabase
-        .from("consultation_messages")
-        .select(
-          `*, sender:users!consultation_messages_sender_id_fkey(first_name, last_name)`
-        )
-        .eq("consultation_id", consultationId)
-        .order("created_at", { ascending: true });
-      if (err) throw err;
+      const res = await fetch(`/api/consultations/${consultationId}/messages`);
+      if (!res.ok) throw new Error("Erreur chargement");
+      const { messages: data } = await res.json();
 
       const withSignedUrls = await Promise.all(
-        (data || []).map(async (msg) => {
+        (data || []).map(async (msg: any) => {
           if (!msg.attachment_url) return msg;
           const path = extractStoragePath(msg.attachment_url);
           const { data: signed } = await supabase.storage

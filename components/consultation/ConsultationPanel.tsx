@@ -203,16 +203,12 @@ export function ConsultationPanel({
       const cid = nc?.id;
 
       if (cid) {
-        const { error: msgError } = await supabase
-          .from("consultation_messages")
-          .insert({
-            consultation_id: cid,
-            sender_id: user.id,
-            sender_type: "client",
-            message: fullContent,
-            is_read: false,
-          });
-        if (msgError) console.error("Erreur création message:", msgError);
+        const msgRes = await fetch(`/api/consultations/${cid}/messages`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: fullContent }),
+        });
+        if (!msgRes.ok) console.error("Erreur création message");
 
         if (scheduledDate && scheduledTime) {
           const dur = selected === "video_60" ? 60 : 30;

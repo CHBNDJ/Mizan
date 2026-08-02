@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { Resend } from "resend";
+import { encryptMessage, decryptMessage } from "@/lib/messageEncryption";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -65,13 +66,16 @@ export async function POST(
     if (!isAuthorized)
       return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
 
+    const rawMessage = message?.trim() || (system_key ? "" : "(Fichier joint)");
+    const storedMessage = rawMessage ? encryptMessage(rawMessage) : rawMessage;
+
     const { data: newMessage, error: insertError } = await supabase
       .from("consultation_messages")
       .insert({
         consultation_id: consultationId,
         sender_id: user.id,
         sender_type: senderType,
-        message: message?.trim() || (system_key ? "" : "(Fichier joint)"),
+        message: storedMessage,
         is_read: false,
         attachment_url,
         attachment_type,
@@ -262,6 +266,54 @@ export async function POST(
     console.error("Erreur création message:", error);
     return NextResponse.json(
       { error: error.message || "Erreur lors de l'envoi du message" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const supabase = await createClient();
+    const { id: consultationId } = await params;
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user)
+      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+
+    const { data: consultation } = await supabase
+      .from("consultations")
+      .select("client_id, lawyer_id")
+      .eq("id", consultationId)
+      .single();
+
+    if (
+      !consultation ||
+      (user.id !== consultation.client_id && user.id !== consultation.lawyer_id)
+    )
+      return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
+
+    const { data: messages, error } = await supabase
+      .from("consultation_messages")
+      .select("*")
+      .eq("consultation_id", consultationId)
+      .order("created_at", { ascending: true });
+
+    if (error) throw error;
+
+    const decrypted = (messages || []).map((m) => ({
+      ...m,
+      message: decryptMessage(m.message),
+    }));
+
+    return NextResponse.json({ messages: decrypted });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message || "Erreur" },
       { status: 500 }
     );
   }

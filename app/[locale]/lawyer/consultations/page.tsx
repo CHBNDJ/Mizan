@@ -163,36 +163,8 @@ function LawyerConsultationsContent() {
           table: "consultation_messages",
           filter: `consultation_id=eq.${selectedConsultation.id}`,
         },
-        (payload) => {
-          const newMsg = payload.new as Message;
-          Promise.all([
-            supabase
-              .from("users")
-              .select("first_name, last_name")
-              .eq("id", newMsg.sender_id)
-              .single(),
-            newMsg.attachment_url
-              ? supabase.storage
-                  .from("consultation-attachments")
-                  .createSignedUrl(
-                    extractStoragePath(newMsg.attachment_url),
-                    3600
-                  )
-              : Promise.resolve({ data: null }),
-          ]).then(([{ data }, signedRes]) => {
-            setMessages((prev) => [
-              ...prev,
-              {
-                ...newMsg,
-                attachment_url:
-                  signedRes?.data?.signedUrl || newMsg.attachment_url,
-                sender: {
-                  first_name: data?.first_name || "",
-                  last_name: data?.last_name || "",
-                },
-              },
-            ]);
-          });
+        () => {
+          loadMessages(selectedConsultation.id);
         }
       )
       .subscribe();
@@ -283,24 +255,21 @@ function LawyerConsultationsContent() {
 
   const loadMessages = async (consultationId: string) => {
     try {
-      const { data, error: err } = await supabase
-        .from("consultation_messages")
-        .select("*")
-        .eq("consultation_id", consultationId)
-        .order("created_at", { ascending: true });
-      if (err) throw err;
+      const res = await fetch(`/api/consultations/${consultationId}/messages`);
+      if (!res.ok) throw new Error("Erreur chargement");
+      const { messages: data } = await res.json();
       if (!data || data.length === 0) {
         setMessages([]);
         return;
       }
-      const senderIds = [...new Set(data.map((m) => m.sender_id))];
+      const senderIds = [...new Set(data.map((m: any) => m.sender_id))];
       const { data: sendersData } = await supabase
         .from("users")
         .select("id, first_name, last_name")
         .in("id", senderIds);
       const withSignedUrls = await Promise.all(
-        data.map(async (msg) => {
-          const sender = sendersData?.find((s) => s.id === msg.sender_id);
+        data.map(async (msg: any) => {
+          const sender = sendersData?.find((s: any) => s.id === msg.sender_id);
           let attachment_url = msg.attachment_url;
           if (attachment_url) {
             const path = extractStoragePath(attachment_url);
