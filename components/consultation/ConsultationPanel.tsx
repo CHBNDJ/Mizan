@@ -177,6 +177,7 @@ export function ConsultationPanel({
           ? `\n\n${messageText.trim()}`
           : "";
       const fullContent = `📋 ${canal.label}${durStr}${dateStr}${priceStr}${questionStr}`;
+      const questionLabel = `📋 ${canal.label}${durStr}${dateStr}${priceStr}`;
 
       const { data: nc, error: insertError } = await supabase
         .from("consultations")
@@ -186,7 +187,7 @@ export function ConsultationPanel({
           status: initialStatus,
           channel: selected,
           scheduled_at: scheduledAt,
-          question: fullContent,
+          question: questionLabel,
         })
         .select("id")
         .single();

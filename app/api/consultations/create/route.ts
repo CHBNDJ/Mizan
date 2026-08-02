@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       .insert({
         client_id: body.client_id,
         lawyer_id: body.lawyer_id,
-        question: body.question.trim(),
+        question: "📋 Consultation",
         status: "pending",
       })
       .select()
