@@ -364,13 +364,15 @@ export default function LawyerRegisterPage() {
         return;
       }
 
-      const mobileDz = formData.mobile.trim()
-        ? `+213${formData.mobile.trim().replace(/^0+/, "")}`
+      const mobilePrincipal = formData.mobile.trim()
+        ? `+${selectedMobileCountry}${formData.mobile.trim().replace(/^0+/, "")}`
         : "";
-      const mobileIntl = formData.phone.trim()
+      const mobileSecondaire = formData.phone.trim()
         ? `+${selectedCountry}${formData.phone.trim().replace(/^0+/, "")}`
         : "";
-      const allMobiles = [mobileDz, mobileIntl].filter(Boolean).join(",");
+      const allMobiles = [mobilePrincipal, mobileSecondaire]
+        .filter(Boolean)
+        .join(",");
 
       const result = await signUp(emailNorm, formData.password, {
         gender: frontendToDb(formData.gender),
@@ -418,8 +420,8 @@ export default function LawyerRegisterPage() {
             message: `
               <p><strong>Nom :</strong> ${formData.firstName} ${formData.lastName}</p>
               <p><strong>Email :</strong> ${emailNorm}</p>
-              <p><strong>Mobile DZ :</strong> +213${formData.mobile.replace(/^0+/, "")}</p>
-              ${formData.phone.trim() ? `<p><strong>Mobile international :</strong> +${selectedCountry}${formData.phone.replace(/^0+/, "")}</p>` : ""}
+             <p><strong>Numéro principal :</strong> +${selectedMobileCountry}${formData.mobile.replace(/^0+/, "")}</p>
+              ${formData.phone.trim() ? `<p><strong>Numéro secondaire :</strong> +${selectedCountry}${formData.phone.replace(/^0+/, "")}</p>` : ""}
               <p><strong>Professions :</strong> ${professions.join(", ")}</p>
               <p><strong>${currentProf?.numLabel} :</strong> ${formData.barNumber}</p>
               <p><strong>Ville :</strong> ${formData.address.city}, ${formData.address.wilaya}</p>
@@ -621,12 +623,16 @@ export default function LawyerRegisterPage() {
               {t("auth.lawyerRegister.mobileDz")} *
             </label>
             <div className="flex gap-2">
-              <div className="w-24 h-12 flex items-center gap-1.5 px-3 border border-slate-300 dark:border-[#3a3a3d] rounded-lg bg-slate-50 dark:bg-[#141415] text-sm text-slate-700 dark:text-[#F5F5F4] flex-shrink-0 cursor-not-allowed">
-                <span>🇩🇿</span>
-                <span dir="ltr">
-                  {locale === "ar" ? toArabicNumerals("+213") : "+213"}
-                </span>
-              </div>
+              <CustomSelect
+                options={countryOptions}
+                value={selectedMobileCountry}
+                onChange={setSelectedMobileCountry}
+                placeholder={
+                  locale === "ar" ? toArabicNumerals("+213") : "+213"
+                }
+                className="w-24 h-12"
+                disabled={isSubmitting}
+              />
               <input
                 type="tel"
                 name="mobile"
