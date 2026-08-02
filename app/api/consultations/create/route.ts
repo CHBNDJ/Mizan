@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { Resend } from "resend";
+import { encryptMessage } from "@/lib/messageEncryption";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -49,7 +50,7 @@ export async function POST(request: NextRequest) {
         consultation_id: consultation.id,
         sender_id: body.client_id,
         sender_type: "client",
-        message: body.question.trim(),
+        message: encryptMessage(body.question.trim()),
         is_read: false,
       });
 
