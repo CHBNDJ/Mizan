@@ -167,10 +167,6 @@ export default function BookingModal({
         .single();
       const dur = avail?.duration_min || 30;
 
-      // Le créneau vient de loadSlots(), qui ne propose que des créneaux
-      // réellement libres selon les disponibilités du professionnel — pas
-      // besoin de validation manuelle, c'est confirmé directement, comme
-      // pour les consultations téléphone/vidéo.
       const dateLabel = selectedDate.toLocaleDateString("fr-FR", {
         weekday: "long",
         day: "numeric",
@@ -178,6 +174,7 @@ export default function BookingModal({
         year: "numeric",
       });
       const fullContent = `📋 ${t("physicalLabel")}\n📅 ${dateLabel} · ${selectedSlot}\n\n${subject.trim()}`;
+      const questionLabel = `📋 ${t("physicalLabel")} · ${dateLabel} · ${selectedSlot}`;
       const scheduledAt = new Date(
         `${dateStr}T${selectedSlot}:00+01:00`
       ).toISOString();
@@ -190,19 +187,17 @@ export default function BookingModal({
           status: "accepted",
           channel: "physical",
           scheduled_at: scheduledAt,
-          question: fullContent,
+          question: questionLabel,
         })
         .select("id")
         .single();
 
       if (nc?.id) {
-        await supabase.from("consultation_messages").insert({
-          consultation_id: nc.id,
-          sender_id: user.id,
-          sender_type: "client",
-          message: fullContent,
-          is_read: false,
-        });
+        await fetch(`/api/consultations/${nc.id}/messages`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: fullContent }),
+        }).catch(() => {});
       }
 
       const { error: apptError } = await supabase.from("appointments").insert({
