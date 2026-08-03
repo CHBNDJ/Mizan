@@ -52,16 +52,35 @@ export default function TestimonialsSection() {
     supabase
       .from("platform_feedbacks")
       .select(
-        "id, user_name, user_type, message, translations, created_at, user:users!platform_feedbacks_user_id_fkey(country)"
+        "id, user_name, user_type, message, translations, created_at, user_id"
       )
       .eq("type", "testimonial")
       .eq("is_public", true)
       .order("created_at", { ascending: false })
       .limit(9)
-      .then(({ data }) => {
-        const mapped = (data || []).map((item: any) => ({
+      .then(async ({ data, error }) => {
+        console.log("TESTIMONIALS DATA:", data, "ERROR:", error);
+        if (!data) {
+          setTestimonials([]);
+          setLoading(false);
+          return;
+        }
+        const userIds = [
+          ...new Set(data.map((d: any) => d.user_id).filter(Boolean)),
+        ];
+        const countryMap: Record<string, string> = {};
+        if (userIds.length > 0) {
+          const { data: users } = await supabase
+            .from("users")
+            .select("id, country")
+            .in("id", userIds);
+          (users || []).forEach((u: any) => {
+            countryMap[u.id] = u.country;
+          });
+        }
+        const mapped = data.map((item: any) => ({
           ...item,
-          country: item.user?.country || null,
+          country: countryMap[item.user_id] || null,
         }));
         setTestimonials(mapped);
         setLoading(false);
