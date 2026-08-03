@@ -3487,7 +3487,13 @@
     "title": "What our users say",
     "subtitle": "Clients and professionals who trust Mizan",
     "verifiedPro": "MIZAN Professional",
-    "client": "MIZAN Client"
+    "client": "MIZAN Client",
+    "countries": {
+      "Algérie": "Algeria",
+      "France": "France",
+      "Canada": "Canada",
+      "Suisse": "Switzerland"
+    }
   },
   "consultShared": {
     "tabs": {

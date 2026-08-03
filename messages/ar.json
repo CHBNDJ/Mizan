@@ -977,7 +977,13 @@
     "title": "ما يقوله مستخدمونا",
     "subtitle": "عملاء ومختصون يثقون بميزان",
     "verifiedPro": "محترف MIZAN",
-    "client": "عميل MIZAN"
+    "client": "عميل MIZAN",
+    "countries": {
+      "Algérie": "الجزائر",
+      "France": "فرنسا",
+      "Canada": "كندا",
+      "Suisse": "سويسرا"
+    }
   },
   "consultShared": {
     "tabs": {

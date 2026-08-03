@@ -10,6 +10,7 @@ interface Testimonial {
   message: string;
   translations: Record<string, string> | null;
   created_at: string;
+  country: string | null;
 }
 
 const getInitials = (name?: string) => {
@@ -37,13 +38,19 @@ export default function TestimonialsSection() {
   useEffect(() => {
     supabase
       .from("platform_feedbacks")
-      .select("id, user_name, user_type, message, translations, created_at")
+      .select(
+        "id, user_name, user_type, message, translations, created_at, user:users!platform_feedbacks_user_id_fkey(country)"
+      )
       .eq("type", "testimonial")
       .eq("is_public", true)
       .order("created_at", { ascending: false })
       .limit(9)
       .then(({ data }) => {
-        setTestimonials(data || []);
+        const mapped = (data || []).map((item: any) => ({
+          ...item,
+          country: item.user?.country || null,
+        }));
+        setTestimonials(mapped);
         setLoading(false);
       });
   }, []);
@@ -96,7 +103,9 @@ export default function TestimonialsSection() {
                     <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
                       {item.user_type === "lawyer"
                         ? t("verifiedPro")
-                        : t("client")}
+                        : item.country
+                          ? `${t("client")} · ${t.has(`countries.${item.country}`) ? t(`countries.${item.country}`) : item.country}`
+                          : t("client")}
                     </p>
                   </div>
                 </div>

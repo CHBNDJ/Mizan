@@ -3494,7 +3494,13 @@
     "title": "Ce que disent nos utilisateurs",
     "subtitle": "Des clients et professionnels qui font confiance à Mizan",
     "verifiedPro": "Professionnel MIZAN",
-    "client": "Client MIZAN"
+    "client": "Client MIZAN",
+    "countries": {
+      "Algérie": "Algérie",
+      "France": "France",
+      "Canada": "Canada",
+      "Suisse": "Suisse"
+    }
   },
   "consultShared": {
     "tabs": {
