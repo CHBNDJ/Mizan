@@ -58,7 +58,7 @@ export async function GET(
     const contentType =
       request.nextUrl.searchParams.get("type") || "application/octet-stream";
 
-    return new NextResponse(decrypted, {
+    return new NextResponse(new Uint8Array(decrypted), {
       status: 200,
       headers: {
         "Content-Type": contentType,
