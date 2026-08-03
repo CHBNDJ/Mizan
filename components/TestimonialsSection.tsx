@@ -35,6 +35,19 @@ export default function TestimonialsSection() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const translateCountry = (country: string | null) => {
+    if (!country) return "";
+    try {
+      const translated = t(`countries.${country}`);
+      return translated.startsWith("testimonials.") ||
+        translated.includes("countries.")
+        ? country
+        : translated;
+    } catch {
+      return country;
+    }
+  };
+
   useEffect(() => {
     supabase
       .from("platform_feedbacks")
@@ -104,7 +117,7 @@ export default function TestimonialsSection() {
                       {item.user_type === "lawyer"
                         ? t("verifiedPro")
                         : item.country
-                          ? `${t("client")} · ${t.has(`countries.${item.country}`) ? t(`countries.${item.country}`) : item.country}`
+                          ? `${t("client")} · ${translateCountry(item.country)}`
                           : t("client")}
                     </p>
                   </div>
