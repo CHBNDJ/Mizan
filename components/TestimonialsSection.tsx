@@ -41,7 +41,7 @@ export default function TestimonialsSection() {
       .eq("type", "testimonial")
       .eq("is_public", true)
       .order("created_at", { ascending: false })
-      .limit(6)
+      .limit(9)
       .then(({ data }) => {
         setTestimonials(data || []);
         setLoading(false);
