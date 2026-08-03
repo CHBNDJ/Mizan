@@ -253,18 +253,15 @@ function MesConsultationsContent() {
       if (!res.ok) throw new Error("Erreur chargement");
       const { messages: data } = await res.json();
 
-      const withSignedUrls = await Promise.all(
-        (data || []).map(async (msg: any) => {
-          if (!msg.attachment_url) return msg;
-          const path = extractStoragePath(msg.attachment_url);
-          const { data: signed } = await supabase.storage
-            .from("consultation-attachments")
-            .createSignedUrl(path, 3600);
-          return signed?.signedUrl
-            ? { ...msg, attachment_url: signed.signedUrl }
-            : msg;
-        })
-      );
+      const withSignedUrls = (data || []).map((msg: any) => {
+        if (!msg.attachment_url) return msg;
+        const path = extractStoragePath(msg.attachment_url);
+        const type = encodeURIComponent(msg.attachment_type || "");
+        return {
+          ...msg,
+          attachment_url: `/api/consultations/${consultationId}/attachment/${path}?type=${type}`,
+        };
+      });
       setMessages(withSignedUrls);
     } catch {}
   };
@@ -304,13 +301,18 @@ function MesConsultationsContent() {
   };
 
   const uploadFile = async (file: File): Promise<string> => {
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${selectedConsultation!.id}/${Date.now()}.${fileExt}`;
-    const { error } = await supabase.storage
-      .from("consultation-attachments")
-      .upload(fileName, file);
-    if (error) throw error;
-    return fileName;
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch(
+      `/api/consultations/${selectedConsultation!.id}/attachment`,
+      { method: "POST", body: formData }
+    );
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || "Erreur upload");
+    }
+    const { path } = await res.json();
+    return path;
   };
 
   const handleSendMessage = async () => {

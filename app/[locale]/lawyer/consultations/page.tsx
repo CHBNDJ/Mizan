@@ -267,28 +267,23 @@ function LawyerConsultationsContent() {
         .from("users")
         .select("id, first_name, last_name")
         .in("id", senderIds);
-      const withSignedUrls = await Promise.all(
-        data.map(async (msg: any) => {
-          const sender = sendersData?.find((s: any) => s.id === msg.sender_id);
-          let attachment_url = msg.attachment_url;
-          if (attachment_url) {
-            const path = extractStoragePath(attachment_url);
-            const { data: signed } = await supabase.storage
-              .from("consultation-attachments")
-              .createSignedUrl(path, 3600);
-            if (signed?.signedUrl) attachment_url = signed.signedUrl;
-          }
-          return {
-            ...msg,
-            attachment_url,
-            sender: {
-              first_name:
-                sender?.first_name || t("myProfile.firstNameFallback"),
-              last_name: sender?.last_name || "",
-            },
-          };
-        })
-      );
+      const withSignedUrls = data.map((msg: any) => {
+        const sender = sendersData?.find((s: any) => s.id === msg.sender_id);
+        let attachment_url = msg.attachment_url;
+        if (attachment_url) {
+          const path = extractStoragePath(attachment_url);
+          const type = encodeURIComponent(msg.attachment_type || "");
+          attachment_url = `/api/consultations/${consultationId}/attachment/${path}?type=${type}`;
+        }
+        return {
+          ...msg,
+          attachment_url,
+          sender: {
+            first_name: sender?.first_name || t("myProfile.firstNameFallback"),
+            last_name: sender?.last_name || "",
+          },
+        };
+      });
       setMessages(withSignedUrls);
     } catch {
       setMessages([]);
@@ -368,15 +363,19 @@ function LawyerConsultationsContent() {
   };
 
   const uploadFile = async (file: File): Promise<string> => {
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${selectedConsultation!.id}/${Date.now()}.${fileExt}`;
-    const { error } = await supabase.storage
-      .from("consultation-attachments")
-      .upload(fileName, file);
-    if (error) throw error;
-    return fileName;
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch(
+      `/api/consultations/${selectedConsultation!.id}/attachment`,
+      { method: "POST", body: formData }
+    );
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || "Erreur upload");
+    }
+    const { path } = await res.json();
+    return path;
   };
-
   const handleSendMessage = async () => {
     if ((!newMessage.trim() && !selectedFile) || isSending) return;
     if (
