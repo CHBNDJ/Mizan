@@ -206,11 +206,11 @@
       "female": "Femme"
     },
     "experience": {
-      "label": "Expérience",
-      "all": "Tous niveaux",
       "5": "5 ans+",
       "10": "10 ans+",
-      "20": "20 ans+"
+      "20": "20 ans+",
+      "label": "Expérience",
+      "all": "Tous niveaux"
     },
     "language": {
       "label": "Langue",
@@ -507,7 +507,11 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil — spécialités, expérience, cabinet. Votre numéro de barreau sera demandé.",
-            "points": ["Profil complet", "N° de barreau requis", "Gratuit"]
+            "points": [
+              "Profil complet",
+              "N° de barreau requis",
+              "Gratuit"
+            ]
           },
           {
             "title": "Vérification",
@@ -553,7 +557,11 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil notarial. Votre N° de chambre sera requis.",
-            "points": ["Profil complet", "N° chambre des notaires", "Gratuit"]
+            "points": [
+              "Profil complet",
+              "N° chambre des notaires",
+              "Gratuit"
+            ]
           },
           {
             "title": "Vérification",
@@ -599,7 +607,11 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° officiel d'huissier sera requis.",
-            "points": ["Profil complet", "N° d'huissier requis", "Gratuit"]
+            "points": [
+              "Profil complet",
+              "N° d'huissier requis",
+              "Gratuit"
+            ]
           },
           {
             "title": "Vérification",
@@ -645,7 +657,11 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° d'agrément ONEC ou ONCA sera requis.",
-            "points": ["Profil complet", "N° agrément requis", "Gratuit"]
+            "points": [
+              "Profil complet",
+              "N° agrément requis",
+              "Gratuit"
+            ]
           },
           {
             "title": "Vérification",
@@ -691,7 +707,11 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° d'agrément ONEC sera requis.",
-            "points": ["Profil complet", "N° ONEC requis", "Gratuit"]
+            "points": [
+              "Profil complet",
+              "N° ONEC requis",
+              "Gratuit"
+            ]
           },
           {
             "title": "Vérification",
@@ -737,7 +757,11 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° d'agrément du Ministère de la Justice sera requis.",
-            "points": ["Profil complet", "N° agrément requis", "Gratuit"]
+            "points": [
+              "Profil complet",
+              "N° agrément requis",
+              "Gratuit"
+            ]
           },
           {
             "title": "Vérification",
@@ -3601,6 +3625,10 @@
       "travail": "Droit du travail"
     },
     "articles": {
+      "exequatur-algerie-jugement-etranger": {
+        "titre": "Exequatur en Algérie : faire reconnaître un divorce ou un jugement étranger",
+        "resume": "Un jugement rendu à l'étranger (divorce, succession) n'a aucune valeur en Algérie sans exequatur. Guide complet de la procédure et des documents, en Algérie comme depuis l'étranger."
+      },
       "comment-divorcer-en-algerie": {
         "titre": "Comment divorcer en Algérie : les étapes à suivre",
         "resume": "Le divorce en Algérie est régi par le Code de la famille. Découvrez les différentes procédures, les délais et les droits de chaque partie."
@@ -4418,7 +4446,15 @@
     "noAvailNote": "Proposez un créneau, {prof} confirmera directement."
   },
   "bookingModal": {
-    "daysShort": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+    "daysShort": [
+      "Dim",
+      "Lun",
+      "Mar",
+      "Mer",
+      "Jeu",
+      "Ven",
+      "Sam"
+    ],
     "daysFull": [
       "Dimanche",
       "Lundi",
@@ -4470,6 +4506,11 @@
     "read": "Lire"
   },
   "blogArticles": {
+    "exequatur-algerie-jugement-etranger": {
+      "titre": "Exequatur en Algérie : faire reconnaître un divorce ou un jugement étranger",
+      "resume": "Un jugement rendu à l'étranger (divorce, succession, décision commerciale) n'a aucune valeur en Algérie sans exequatur. Guide complet de la procédure, des conditions et des documents, en Algérie comme depuis l'étranger.",
+      "contenu": "\n## Qu'est-ce que l'exequatur en Algérie ?\n\nL'exequatur est la procédure par laquelle une décision de justice ou une sentence arbitrale rendue par une juridiction étrangère est reconnue comme exécutoire en Algérie, exactement comme un jugement algérien. Tant qu'un jugement étranger n'a pas obtenu l'exequatur, il n'existe pratiquement pas aux yeux des autorités algériennes.\n\nCela concerne aussi bien les Algériens installés à l'étranger que ceux qui vivent en Algérie : un divorce prononcé en France, une décision commerciale rendue au Canada ou une sentence arbitrale signée à l'étranger n'ont d'effet en Algérie qu'après cette reconnaissance.\n\n## Pourquoi l'exequatur est indispensable\n\nSans exequatur, un jugement étranger ne peut ni être exécuté de force en Algérie (saisies, inscriptions, modification de l'état civil), ni être opposé aux tribunaux, à l'administration ou aux consulats algériens.\n\nConcrètement, si vous avez divorcé à l'étranger et que vous voulez faire inscrire ce divorce sur votre état civil algérien, vous remarier en Algérie ou régler une succession, l'exequatur est obligatoire.\n\nLa procédure est encadrée par le Code de procédure civile et administrative (CPCA), notamment les articles 605 à 608 relatifs à l'exécution des jugements étrangers. Pour les sentences arbitrales, l'article 1035 du même code organise la déclaration de force exécutoire par le président du tribunal compétent.\n\n## Mon divorce prononcé à l'étranger est-il valable en Algérie ?\n\nC'est l'une des questions les plus fréquentes chez les Algériens de l'étranger. La réponse est claire : un divorce prononcé à l'étranger, même entre deux ressortissants algériens, ne produit aucun effet en Algérie tant qu'il n'a pas obtenu l'exequatur.\n\nTant que cette étape n'est pas franchie, vous restez considéré comme marié au regard de l'état civil algérien. C'est pourquoi tout jugement de divorce rendu à l'étranger concernant un Algérien doit passer par l'exequatur pour être transcrit et produire ses effets sur le territoire national.\n\n## Les conditions pour faire reconnaître un jugement étranger\n\nAvant d'accorder l'exequatur, le tribunal algérien vérifie plusieurs conditions :\n\n- **La compétence de la juridiction étrangère** qui a rendu la décision.\n- **La régularité de la procédure** : les parties doivent avoir été régulièrement informées et le principe du contradictoire respecté.\n- **Le caractère définitif et exécutoire** du jugement dans son pays d'origine (force de chose jugée, absence de recours).\n- **La conformité à l'ordre public algérien** et aux bonnes mœurs : la décision ne doit pas heurter les principes fondamentaux du droit algérien.\n\nSi ces conditions sont réunies, le juge algérien délivre une décision d'exequatur qui confère au jugement étranger la même force qu'un jugement rendu en Algérie.\n\n## La procédure d'exequatur étape par étape\n\n1. **Déposer une requête** auprès du tribunal algérien compétent, généralement déterminé par le lieu de naissance ou de résidence de l'intéressé, ou par l'objet du litige.\n2. **Joindre les pièces justificatives** requises.\n3. **Examen du dossier** par le tribunal, qui vérifie le respect des conditions.\n4. **Décision d'exequatur** : si les conditions sont remplies, le jugement devient exécutoire en Algérie ; sinon, la demande est rejetée.\n\n## Les documents à fournir\n\nLe dossier d'exequatur comprend généralement :\n\n- Le **jugement original** ou une copie authentifiée.\n- L'**acte de notification** du jugement.\n- Le **certificat de non-recours** (attestant l'absence d'appel ou de pourvoi en cassation).\n- Une **traduction officielle en langue arabe** de la décision.\n- La **pièce d'identité** du demandeur.\n\nUn dossier incomplet ou mal préparé est la première cause de rejet ou de retard : c'est là qu'un avocat spécialisé fait la différence.\n\n## Cas pratique : le divorce prononcé à l'étranger\n\nPour un couple algérien divorcé en France, en Belgique ou au Canada, l'exequatur est l'étape qui permet d'inscrire le divorce à l'état civil algérien, de mettre à jour les actes et de régulariser la situation matrimoniale. Sans lui, les deux ex-époux restent mariés en Algérie, avec toutes les conséquences sur l'héritage, le remariage ou la garde des enfants.\n\n## Cas pratique : les sentences arbitrales\n\nLes sentences arbitrales, qu'elles soient d'origine algérienne ou étrangère, peuvent faire l'objet d'une exécution volontaire. En cas de refus, il faut recourir à une procédure d'exécution forcée qui requiert une ordonnance d'exequatur émise par le président du tribunal compétent. Cette ordonnance est requise soit dans le ressort où la sentence a été rendue, soit, si le siège du tribunal arbitral est situé à l'étranger, dans le lieu d'exécution.\n\n## Faut-il un avocat pour une procédure d'exequatur ?\n\nL'exequatur relève du droit international privé, un domaine technique où chaque condition compte et où un dossier mal monté peut être rejeté. Que vous soyez en Algérie ou à l'étranger, un avocat spécialisé peut constituer votre dossier, le déposer devant le bon tribunal et suivre la procédure à votre place, y compris à distance.\n"
+    },
     "comment-divorcer-en-algerie": {
       "titre": "Comment divorcer en Algérie : les étapes à suivre",
       "resume": "Le divorce en Algérie est régi par le Code de la famille. Découvrez les différentes procédures, les délais et les droits de chaque partie.",

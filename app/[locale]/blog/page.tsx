@@ -30,6 +30,11 @@ export const metadata: Metadata = {
 
 const ARTICLE_META = [
   {
+    slug: "exequatur-algerie-jugement-etranger",
+    categorie: "famille",
+    date: "2026-08-05",
+  },
+  {
     slug: "comment-divorcer-en-algerie",
     categorie: "famille",
     date: "2025-04-01",
