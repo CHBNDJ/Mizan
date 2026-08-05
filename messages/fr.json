@@ -507,11 +507,7 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil — spécialités, expérience, cabinet. Votre numéro de barreau sera demandé.",
-            "points": [
-              "Profil complet",
-              "N° de barreau requis",
-              "Gratuit"
-            ]
+            "points": ["Profil complet", "N° de barreau requis", "Gratuit"]
           },
           {
             "title": "Vérification",
@@ -557,11 +553,7 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil notarial. Votre N° de chambre sera requis.",
-            "points": [
-              "Profil complet",
-              "N° chambre des notaires",
-              "Gratuit"
-            ]
+            "points": ["Profil complet", "N° chambre des notaires", "Gratuit"]
           },
           {
             "title": "Vérification",
@@ -607,11 +599,7 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° officiel d'huissier sera requis.",
-            "points": [
-              "Profil complet",
-              "N° d'huissier requis",
-              "Gratuit"
-            ]
+            "points": ["Profil complet", "N° d'huissier requis", "Gratuit"]
           },
           {
             "title": "Vérification",
@@ -657,11 +645,7 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° d'agrément ONEC ou ONCA sera requis.",
-            "points": [
-              "Profil complet",
-              "N° agrément requis",
-              "Gratuit"
-            ]
+            "points": ["Profil complet", "N° agrément requis", "Gratuit"]
           },
           {
             "title": "Vérification",
@@ -707,11 +691,7 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° d'agrément ONEC sera requis.",
-            "points": [
-              "Profil complet",
-              "N° ONEC requis",
-              "Gratuit"
-            ]
+            "points": ["Profil complet", "N° ONEC requis", "Gratuit"]
           },
           {
             "title": "Vérification",
@@ -757,11 +737,7 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° d'agrément du Ministère de la Justice sera requis.",
-            "points": [
-              "Profil complet",
-              "N° agrément requis",
-              "Gratuit"
-            ]
+            "points": ["Profil complet", "N° agrément requis", "Gratuit"]
           },
           {
             "title": "Vérification",
@@ -808,6 +784,7 @@
     "myConsultations": "Mes consultations",
     "consultations": "Consultations",
     "howItWorks": "Comment ça marche",
+    "blog": "Articles",
     "dashboard": "Tableau de bord",
     "mySubscription": "Mon abonnement",
     "myProfile": "Mon profil",
@@ -4446,15 +4423,7 @@
     "noAvailNote": "Proposez un créneau, {prof} confirmera directement."
   },
   "bookingModal": {
-    "daysShort": [
-      "Dim",
-      "Lun",
-      "Mar",
-      "Mer",
-      "Jeu",
-      "Ven",
-      "Sam"
-    ],
+    "daysShort": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
     "daysFull": [
       "Dimanche",
       "Lundi",

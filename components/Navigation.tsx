@@ -175,6 +175,7 @@ export function Navigation() {
 
   const allNavLinks: NavLink[] = [
     { href: "/howitworks", label: t("nav.howItWorks") },
+    { href: "/blog", label: t("nav.blog") },
   ];
 
   const handleSignOut = async () => {

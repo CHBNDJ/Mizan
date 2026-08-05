@@ -507,20 +507,12 @@
           {
             "title": "Register",
             "desc": "Create your profile — specialties, experience, office. Your bar number will be requested.",
-            "points": [
-              "Complete profile",
-              "Bar number required",
-              "Free"
-            ]
+            "points": ["Complete profile", "Bar number required", "Free"]
           },
           {
             "title": "Verification",
             "desc": "Our team validates your bar registration within 24-48h.",
-            "points": [
-              "24-48h delay",
-              "Bar verification",
-              "Manual activation"
-            ]
+            "points": ["24-48h delay", "Bar verification", "Manual activation"]
           },
           {
             "title": "Receive clients",
@@ -557,11 +549,7 @@
           {
             "title": "Register",
             "desc": "Create your notarial profile. Your chamber number will be required.",
-            "points": [
-              "Complete profile",
-              "Chamber of notaries number",
-              "Free"
-            ]
+            "points": ["Complete profile", "Chamber of notaries number", "Free"]
           },
           {
             "title": "Verification",
@@ -607,11 +595,7 @@
           {
             "title": "Register",
             "desc": "Create your profile. Your official bailiff number will be required.",
-            "points": [
-              "Complete profile",
-              "Bailiff number required",
-              "Free"
-            ]
+            "points": ["Complete profile", "Bailiff number required", "Free"]
           },
           {
             "title": "Verification",
@@ -707,20 +691,12 @@
           {
             "title": "Register",
             "desc": "Create your profile. Your ONEC accreditation number will be required.",
-            "points": [
-              "Complete profile",
-              "ONEC number required",
-              "Free"
-            ]
+            "points": ["Complete profile", "ONEC number required", "Free"]
           },
           {
             "title": "Verification",
             "desc": "Our team verifies your registration with the ONEC order within 24-48h.",
-            "points": [
-              "24-48h delay",
-              "ONEC verification",
-              "Manual activation"
-            ]
+            "points": ["24-48h delay", "ONEC verification", "Manual activation"]
           },
           {
             "title": "Corporate clients",
@@ -757,11 +733,7 @@
           {
             "title": "Sign up",
             "desc": "Create your profile. Your Ministry of Justice accreditation number will be required.",
-            "points": [
-              "Full profile",
-              "Accreditation required",
-              "Free"
-            ]
+            "points": ["Full profile", "Accreditation required", "Free"]
           },
           {
             "title": "Verification",
@@ -775,11 +747,7 @@
           {
             "title": "Diaspora clients",
             "desc": "The diaspora needing official translations for their procedures finds you directly.",
-            "points": [
-              "Records & diplomas",
-              "Legal documents",
-              "Remote"
-            ]
+            "points": ["Records & diplomas", "Legal documents", "Remote"]
           }
         ],
         "faqs": [
@@ -808,6 +776,7 @@
     "myConsultations": "My consultations",
     "consultations": "Consultations",
     "howItWorks": "How it works",
+    "blog": "Articles",
     "dashboard": "Dashboard",
     "mySubscription": "My subscription",
     "myProfile": "My profile",
@@ -4446,15 +4415,7 @@
     "noAvailNote": "Suggest a time, {prof} will confirm directly."
   },
   "bookingModal": {
-    "daysShort": [
-      "Sun",
-      "Mon",
-      "Tue",
-      "Wed",
-      "Thu",
-      "Fri",
-      "Sat"
-    ],
+    "daysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     "daysFull": [
       "Sunday",
       "Monday",
