@@ -30,6 +30,7 @@ const SPECIALITES_SLUGS = [
 ];
 
 const BLOG_SLUGS = [
+  "exequatur-algerie-jugement-etranger",
   "comment-divorcer-en-algerie",
   "creer-sarl-algerie",
   "succession-algerie-depuis-etranger",
