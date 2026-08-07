@@ -10,7 +10,7 @@ export default function Footer() {
     <footer className="bg-white dark:bg-[#1c1c1e] border-t border-slate-100 dark:border-[#1c2220]">
       <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm">
-          <div className="flex items-baseline">
+          <div dir="ltr" className="flex items-baseline">
             <img
               src="/favicon-light.svg"
               className="block dark:hidden w-5 h-5 self-center -translate-y-px"
@@ -21,7 +21,7 @@ export default function Footer() {
               className="hidden dark:block w-5 h-5 self-center -translate-y-px"
               alt="M"
             />
-            <span className="text-base font-semibold text-slate-800 dark:text-[#F5F5F4] -ms-0.5">
+            <span className="text-base font-semibold text-slate-800 dark:text-[#F5F5F4] -ms-1">
               IZAN
             </span>
           </div>
