@@ -370,7 +370,7 @@ export default async function BlogArticlePage({ params }: Props) {
   const t = await getTranslations();
   const locale = await getLocale();
   const dateLocale =
-    locale === "ar" ? "ar" : locale === "en" ? "en-US" : "fr-FR";
+    locale === "ar" ? "ar-EG" : locale === "en" ? "en-US" : "fr-FR";
   const ui = UI[locale] || UI.fr;
 
   const titre = t(`blogArticles.${slug}.titre`);
