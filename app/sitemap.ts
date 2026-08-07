@@ -44,6 +44,12 @@ const BLOG_SLUGS = [
 
 const baseUrl = "https://mizan-dz.com";
 
+function localeUrl(locale: string, path: string): string {
+  return locale === DEFAULT_LOCALE
+    ? `${baseUrl}${path || "/"}`
+    : `${baseUrl}/${locale}${path}`;
+}
+
 function entry(
   path: string,
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
@@ -51,13 +57,13 @@ function entry(
   lastModified: Date = new Date()
 ): MetadataRoute.Sitemap[number] {
   return {
-    url: `${baseUrl}/${DEFAULT_LOCALE}${path}`,
+    url: localeUrl(DEFAULT_LOCALE, path),
     lastModified,
     changeFrequency,
     priority,
     alternates: {
       languages: Object.fromEntries(
-        LOCALES.map((l) => [l, `${baseUrl}/${l}${path}`])
+        LOCALES.map((l) => [l, localeUrl(l, path)])
       ),
     },
   };
