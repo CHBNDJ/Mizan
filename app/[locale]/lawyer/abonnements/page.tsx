@@ -63,7 +63,7 @@ export default function AbonnementsPage() {
   const t = useTranslations();
   const locale = useLocale();
   const numLocale =
-    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-DZ";
+    locale === "ar" ? "ar-EG" : locale === "en" ? "en-US" : "fr-DZ";
   const ld = (s: string) => localizedDigits(s, locale);
 
   const fmt = (n: number) =>

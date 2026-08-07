@@ -47,7 +47,7 @@ function LawyerConsultationsContent() {
   const ld = (s: string) => localizedDigits(s, locale);
   const t = useTranslations();
   const dateLocale =
-    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-FR";
+    locale === "ar" ? "ar-EG" : locale === "en" ? "en-US" : "fr-FR";
 
   const [consultations, setConsultations] = useState<Consultation[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);

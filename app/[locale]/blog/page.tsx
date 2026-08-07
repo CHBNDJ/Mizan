@@ -62,7 +62,7 @@ export default async function BlogPage() {
   const t = await getTranslations("blogPage");
   const locale = await getLocale();
   const dateLocale =
-    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-FR";
+    locale === "ar" ? "ar-EG" : locale === "en" ? "en-US" : "fr-FR";
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none">

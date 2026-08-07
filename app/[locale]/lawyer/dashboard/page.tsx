@@ -263,7 +263,7 @@ export default function LawyerDashboardPage() {
   const planLabel = (p: string | null): string =>
     p ? t(`durations.${p}`) : "";
   const dateLocale =
-    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-DZ";
+    locale === "ar" ? "ar-EG" : locale === "en" ? "en-US" : "fr-DZ";
   const fmtDate = (d: string | null): string =>
     d
       ? new Date(d).toLocaleDateString(dateLocale, {
