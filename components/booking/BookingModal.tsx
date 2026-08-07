@@ -167,7 +167,9 @@ export default function BookingModal({
         .single();
       const dur = avail?.duration_min || 30;
 
-      const dateLabel = selectedDate.toLocaleDateString("fr-FR", {
+      const dateLocale =
+        locale === "ar" ? "ar-EG" : locale === "en" ? "en-US" : "fr-FR";
+      const dateLabel = selectedDate.toLocaleDateString(dateLocale, {
         weekday: "long",
         day: "numeric",
         month: "long",
