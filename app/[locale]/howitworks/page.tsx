@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   CheckCircle,
   Scale,
@@ -61,8 +61,15 @@ interface Faq {
   a: string;
 }
 
+const toArabicDigits = (n: number, locale: string): string => {
+  const s = String(n);
+  if (locale !== "ar") return s;
+  return s.replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[Number(d)]);
+};
+
 export default function HowItWorksPage() {
   const t = useTranslations();
+  const locale = useLocale();
   const [userType, setUserType] = useState<UserType>("client");
   const [profType, setProfType] = useState<ProfType>("avocat");
 
@@ -202,7 +209,7 @@ export default function HowItWorksPage() {
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-8 h-8 rounded-full bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 flex items-center justify-center text-sm font-bold text-teal-700 dark:text-[#6fcf9f] flex-shrink-0">
-                    {idx + 1}
+                    {toArabicDigits(idx + 1, locale)}
                   </div>
                   <div className="text-sm font-semibold text-slate-800 dark:text-[#F5F5F4]">
                     {step.title}
