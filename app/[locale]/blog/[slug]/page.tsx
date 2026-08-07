@@ -153,6 +153,13 @@ const UI: Record<
   },
 };
 
+const toArabicDigits = (n: number, locale: string): string => {
+  const s = String(n);
+  if (locale !== "ar") return s;
+  const map = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
+  return s.replace(/\d/g, (d) => map[Number(d)]);
+};
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -248,7 +255,7 @@ const extractHeadings = (contenu: string) => {
   return headings;
 };
 
-const renderContenu = (contenu: string, expert: boolean) => {
+const renderContenu = (contenu: string, expert: boolean, locale: string) => {
   const lines = contenu.trim().split("\n");
   const out: React.ReactNode[] = [];
   let key = 0;
@@ -275,7 +282,7 @@ const renderContenu = (contenu: string, expert: boolean) => {
           <span className="flex-shrink-0 text-teal-600 dark:text-[#6fcf9f]">
             {type === "ol" ? (
               <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-teal-100 dark:bg-[#6fcf9f]/15 text-[11px] font-semibold">
-                {j + 1}
+                {toArabicDigits(j + 1, locale)}
               </span>
             ) : (
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-teal-500 dark:bg-[#6fcf9f]" />
@@ -526,7 +533,7 @@ export default async function BlogArticlePage({ params }: Props) {
                       className="text-sm text-slate-600 dark:text-[#E8E8E6] hover:text-teal-600 dark:hover:text-[#6fcf9f] transition-colors flex items-start gap-2"
                     >
                       <span className="text-teal-500 dark:text-[#6fcf9f] font-medium">
-                        {idx + 1}.
+                        {toArabicDigits(idx + 1, locale)}.
                       </span>
                       <span>{h.text}</span>
                     </a>
@@ -537,7 +544,7 @@ export default async function BlogArticlePage({ params }: Props) {
           )}
 
           <div className="prose-like space-y-2">
-            {renderContenu(contenu, expert)}
+            {renderContenu(contenu, expert, locale)}
           </div>
         </div>
 
