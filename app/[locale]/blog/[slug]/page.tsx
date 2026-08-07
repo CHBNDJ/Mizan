@@ -6,6 +6,7 @@ import { getTranslations, getLocale } from "next-intl/server";
 import React from "react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
+import { localizedDigits } from "@/lib/arabicNumerals";
 
 const ARTICLE_META: Record<
   string,
@@ -153,13 +154,6 @@ const UI: Record<
   },
 };
 
-const toArabicDigits = (n: number, locale: string): string => {
-  const s = String(n);
-  if (locale !== "ar") return s;
-  const map = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
-  return s.replace(/\d/g, (d) => map[Number(d)]);
-};
-
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -282,7 +276,7 @@ const renderContenu = (contenu: string, expert: boolean, locale: string) => {
           <span className="flex-shrink-0 text-teal-600 dark:text-[#6fcf9f]">
             {type === "ol" ? (
               <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-teal-100 dark:bg-[#6fcf9f]/15 text-[11px] font-semibold">
-                {toArabicDigits(j + 1, locale)}
+                {localizedDigits(String(j + 1), locale)}
               </span>
             ) : (
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-teal-500 dark:bg-[#6fcf9f]" />
@@ -445,7 +439,7 @@ export default async function BlogArticlePage({ params }: Props) {
               {expert && (
                 <span className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />
-                  {toArabicDigits(readingTime, locale)} {ui.read}
+                  {localizedDigits(String(readingTime), locale)} {ui.read}
                 </span>
               )}
               <span className="flex items-center gap-1">
@@ -533,7 +527,7 @@ export default async function BlogArticlePage({ params }: Props) {
                       className="text-sm text-slate-600 dark:text-[#E8E8E6] hover:text-teal-600 dark:hover:text-[#6fcf9f] transition-colors flex items-start gap-2"
                     >
                       <span className="text-teal-500 dark:text-[#6fcf9f] font-medium">
-                        {toArabicDigits(idx + 1, locale)}.
+                        {localizedDigits(String(idx + 1), locale)}.
                       </span>
                       <span>{h.text}</span>
                     </a>

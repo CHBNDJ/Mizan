@@ -11,6 +11,7 @@ import {
   TrendingUp,
   Languages,
 } from "lucide-react";
+import { localizedDigits } from "@/lib/arabicNumerals";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
@@ -60,12 +61,6 @@ interface Faq {
   q: string;
   a: string;
 }
-
-const toArabicDigits = (n: number, locale: string): string => {
-  const s = String(n);
-  if (locale !== "ar") return s;
-  return s.replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[Number(d)]);
-};
 
 export default function HowItWorksPage() {
   const t = useTranslations();
@@ -209,7 +204,7 @@ export default function HowItWorksPage() {
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-8 h-8 rounded-full bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 flex items-center justify-center text-sm font-bold text-teal-700 dark:text-[#6fcf9f] flex-shrink-0">
-                    {toArabicDigits(idx + 1, locale)}
+                    {localizedDigits(String(idx + 1), locale)}
                   </div>
                   <div className="text-sm font-semibold text-slate-800 dark:text-[#F5F5F4]">
                     {step.title}
