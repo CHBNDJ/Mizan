@@ -15,7 +15,7 @@ const ARTICLE_META: Record<
     specialiteSlug: string;
     articlesLies: string[];
     auteur?: {
-      nom: string;
+      nom: { fr: string; ar: string; en: string };
       slug: string;
       titres: { fr: string[]; ar: string[]; en: string[] };
     };
@@ -102,7 +102,11 @@ const ARTICLE_META: Record<
       "succession-algerie-depuis-etranger",
     ],
     auteur: {
-      nom: "Me Atmani Bilal",
+      nom: {
+        fr: "Me Atmani Bilal",
+        ar: "الأستاذ أتماني بلال",
+        en: "Me Atmani Bilal",
+      },
       slug: "bilal-atmani",
       titres: {
         fr: [
@@ -461,14 +465,14 @@ export default async function BlogArticlePage({ params }: Props) {
                 {auteurAvatar ? (
                   <Image
                     src={auteurAvatar}
-                    alt={meta.auteur.nom}
+                    alt={meta.auteur.nom.fr}
                     width={56}
                     height={56}
                     className="w-14 h-14 rounded-full object-cover"
                   />
                 ) : (
                   <div className="w-14 h-14 rounded-full bg-teal-600 dark:bg-[#0F6E56] text-white flex items-center justify-center text-base font-bold">
-                    {meta.auteur.nom
+                    {meta.auteur.nom.fr
                       .replace(/^Me\s+/, "")
                       .split(/\s+/)
                       .map((w) => w[0])
@@ -480,7 +484,9 @@ export default async function BlogArticlePage({ params }: Props) {
               </div>
               <div className="min-w-0">
                 <span className="block text-sm font-semibold text-slate-800 dark:text-[#F5F5F4] group-hover:text-teal-600 dark:group-hover:text-[#6fcf9f] transition-colors">
-                  {ui.by} {meta.auteur.nom}
+                  {ui.by}{" "}
+                  {meta.auteur.nom[locale as "fr" | "ar" | "en"] ||
+                    meta.auteur.nom.fr}
                 </span>
                 <span className="block mt-1 space-y-0.5">
                   {(
