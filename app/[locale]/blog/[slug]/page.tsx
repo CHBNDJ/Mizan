@@ -370,7 +370,7 @@ export default async function BlogArticlePage({ params }: Props) {
   const t = await getTranslations();
   const locale = await getLocale();
   const dateLocale =
-    locale === "ar" ? "ar-DZ" : locale === "en" ? "en-US" : "fr-FR";
+    locale === "ar" ? "ar" : locale === "en" ? "en-US" : "fr-FR";
   const ui = UI[locale] || UI.fr;
 
   const titre = t(`blogArticles.${slug}.titre`);
@@ -445,7 +445,7 @@ export default async function BlogArticlePage({ params }: Props) {
               {expert && (
                 <span className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />
-                  {readingTime} {ui.read}
+                  {toArabicDigits(readingTime, locale)} {ui.read}
                 </span>
               )}
               <span className="flex items-center gap-1">
