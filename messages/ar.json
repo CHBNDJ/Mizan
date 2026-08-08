@@ -318,12 +318,13 @@
       "step0Subtitle": "اختر فئتك لتخصيص النموذج",
       "expertComptableNote": "سيكون ملفك مرئيًا تلقائيًا في عمليات بحث خبير محاسب ومحاسب.",
       "steps": {
+        "profession": "المهنة",
         "identity": "الهوية",
         "office": "المكتب",
-        "expertise": "الخبرة",
+        "expertise": "التخصص",
         "account": "الحساب"
       },
-      "stepOf": "الخطوة {step} من ٤",
+      "stepOf": "الخطوة {step} من ٥",
       "stepMeta": {
         "identityTitle": "المعلومات الشخصية",
         "identitySubtitle": "بياناتك بصفتك {profession}",
@@ -348,6 +349,8 @@
       "address": "العنوان",
       "addressPh": "١٢٣ شارع الجمهورية",
       "wilaya": "الولاية",
+      "countryStepTitle": "أين تمارس مهنتك؟",
+      "countryStepSubtitle": "اختر بلد الممارسة للبدء.",
       "countryPractice": "بلد الممارسة",
       "countryAlgeria": "الجزائر",
       "countryFrance": "فرنسا",
@@ -355,6 +358,7 @@
       "regionPh": "اختر منطقة",
       "ville": "المدينة",
       "villePh": "اختر مدينة",
+      "numPlaceholderFrance": "رقمك المهني",
       "wilayaPh": "اختر الولاية",
       "commune": "البلدية",
       "communePh": "اختر البلدية",

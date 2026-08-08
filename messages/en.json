@@ -318,12 +318,13 @@
       "step0Subtitle": "Choose your category to customize the form",
       "expertComptableNote": "Your profile will automatically be visible in Chartered Accountant and Accountant searches.",
       "steps": {
+        "profession": "Profession",
         "identity": "Identity",
         "office": "Office",
         "expertise": "Expertise",
         "account": "Account"
       },
-      "stepOf": "Step {step} of 4",
+      "stepOf": "Step {step} of 5",
       "stepMeta": {
         "identityTitle": "Personal information",
         "identitySubtitle": "Your details as a {profession}",
@@ -348,6 +349,8 @@
       "address": "Address",
       "addressPh": "123 Republic Street",
       "wilaya": "Wilaya",
+      "countryStepTitle": "Where do you practice?",
+      "countryStepSubtitle": "Select your country of practice to begin.",
       "countryPractice": "Country of practice",
       "countryAlgeria": "Algeria",
       "countryFrance": "France",
@@ -355,6 +358,7 @@
       "regionPh": "Select a region",
       "ville": "City",
       "villePh": "Select a city",
+      "numPlaceholderFrance": "Your professional number",
       "wilayaPh": "Select the wilaya",
       "commune": "City",
       "communePh": "Select the city",
@@ -404,6 +408,7 @@
         "expertComptable": "ONEC2024-001",
         "traducteur": "TRD2024-001"
       },
+
       "barNumberRequired": "{numLabel} is required",
       "inscriptionYearLabels": {
         "avocat": "Year of bar admission",

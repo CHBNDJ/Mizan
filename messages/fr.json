@@ -318,12 +318,13 @@
       "step0Subtitle": "Choisissez votre catégorie pour personnaliser le formulaire",
       "expertComptableNote": "Votre profil sera automatiquement visible dans les recherches Expert Comptable et Comptable.",
       "steps": {
+        "profession": "Métier",
         "identity": "Identité",
         "office": "Cabinet",
         "expertise": "Expertise",
         "account": "Compte"
       },
-      "stepOf": "Étape {step} sur 4",
+      "stepOf": "Étape {step} sur 5",
       "stepMeta": {
         "identityTitle": "Informations personnelles",
         "identitySubtitle": "Vos coordonnées en tant que {profession}",
@@ -348,6 +349,8 @@
       "address": "Adresse",
       "addressPh": "123 Rue de la République",
       "wilaya": "Wilaya",
+      "countryStepTitle": "Où exercez-vous ?",
+      "countryStepSubtitle": "Sélectionnez votre pays d'exercice pour commencer.",
       "countryPractice": "Pays d'exercice",
       "countryAlgeria": "Algérie",
       "countryFrance": "France",
@@ -355,6 +358,7 @@
       "regionPh": "Sélectionnez une région",
       "ville": "Ville",
       "villePh": "Sélectionnez une ville",
+      "numPlaceholderFrance": "Votre numéro professionnel",
       "wilayaPh": "Sélectionnez la wilaya",
       "commune": "Commune",
       "communePh": "Sélectionnez la commune",

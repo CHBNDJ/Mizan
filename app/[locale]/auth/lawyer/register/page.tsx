@@ -140,6 +140,8 @@ export default function LawyerRegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
 
+  const isFrance = formData.country_practice === "France";
+
   const PROFESSIONS = PROFESSION_ICONS.map((p) => {
     const key = PROF_KEY[p.id];
     return {
@@ -165,6 +167,16 @@ export default function LawyerRegisterPage() {
     } else {
       setProfessions([p]);
     }
+  };
+
+  const handleCountrySelect = (country: string) => {
+    setFormData((p) => ({
+      ...p,
+      country_practice: country,
+      address: { ...p.address, wilaya: "", city: "" },
+    }));
+    const dial = country === "France" ? "33" : "213";
+    setSelectedMobileCountry(dial);
   };
 
   useEffect(() => {
@@ -195,7 +207,6 @@ export default function LawyerRegisterPage() {
       setCommuneOptions([]);
       return;
     }
-    const isFrance = formData.country_practice === "France";
     if (isFrance) {
       const r = REGIONS_FRANCE.find(
         (x) => x.toLowerCase().replace(/\s+/g, "-") === formData.address.wilaya
@@ -281,7 +292,7 @@ export default function LawyerRegisterPage() {
 
   const validateStep = (step: number): boolean => {
     const e: FormErrors = {};
-    if (step === 1) {
+    if (step === 2) {
       if (!formData.gender) e.gender = t("validation.required.civilite");
       if (!formData.firstName.trim())
         e.firstName = t("validation.required.firstName");
@@ -293,7 +304,7 @@ export default function LawyerRegisterPage() {
       if (formData.languages.length === 0)
         e.languages = t("validation.required.languages");
     }
-    if (step === 2) {
+    if (step === 3) {
       if (!formData.address.street.trim())
         e.street = t("validation.required.street");
       if (!formData.address.wilaya) e.wilaya = t("validation.required.wilaya");
@@ -304,7 +315,7 @@ export default function LawyerRegisterPage() {
         e.postalCode = t("validation.invalid.postalCode");
       const isTraducteurNonAssermente =
         primaryProfession === "traducteur" && !(formData as any).isAssermente;
-      if (!isTraducteurNonAssermente) {
+      if (!isTraducteurNonAssermente && !isFrance) {
         if (!formData.barNumber.trim())
           e.barNumber = t("auth.lawyerRegister.barNumberRequired", {
             numLabel: currentProf?.numLabel || "",
@@ -316,7 +327,7 @@ export default function LawyerRegisterPage() {
           e.barNumber = t("validation.invalid.barNumber");
       }
     }
-    if (step === 3) {
+    if (step === 4) {
       if (formData.specializations.length === 0)
         e.specializations = t("validation.required.specializations");
       if (!formData.experience.trim())
@@ -328,7 +339,7 @@ export default function LawyerRegisterPage() {
           e.experience = t("auth.lawyerRegister.inscriptionYearInvalid");
       }
     }
-    if (step === 4) {
+    if (step === 5) {
       if (!formData.email.trim()) e.email = t("validation.required.email");
       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
         e.email = t("validation.invalid.email");
@@ -345,8 +356,14 @@ export default function LawyerRegisterPage() {
   };
 
   const handleNext = () => {
-    if (currentStep === 0 && professions.length > 0) {
+    if (currentStep === 0) {
+      if (!formData.country_practice) return;
       setCurrentStep(1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    if (currentStep === 1 && professions.length > 0) {
+      setCurrentStep(2);
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
@@ -361,7 +378,7 @@ export default function LawyerRegisterPage() {
   };
 
   const handleSubmit = async () => {
-    if (!validateStep(4) || professions.length === 0) return;
+    if (!validateStep(5) || professions.length === 0) return;
     setIsSubmitting(true);
     setErrors({});
     const emailNorm = formData.email.trim().toLowerCase();
@@ -426,6 +443,7 @@ export default function LawyerRegisterPage() {
           new Date().getFullYear() -
           (parseInt(formData.experience) || new Date().getFullYear()),
         consultation_price: null,
+        country_practice: formData.country_practice || "Algérie",
         address: {
           street: formData.address.street.trim(),
           city: formData.address.city.trim(),
@@ -447,6 +465,7 @@ export default function LawyerRegisterPage() {
               <p><strong>Email :</strong> ${emailNorm}</p>
              <p><strong>Numéro principal :</strong> +${selectedMobileCountry}${formData.mobile.replace(/^0+/, "")}</p>
               ${formData.phone.trim() ? `<p><strong>Numéro secondaire :</strong> +${selectedCountry}${formData.phone.replace(/^0+/, "")}</p>` : ""}
+              <p><strong>Pays d'exercice :</strong> ${formData.country_practice}</p>
               <p><strong>Professions :</strong> ${professions.join(", ")}</p>
               <p><strong>${currentProf?.numLabel} :</strong> ${formData.barNumber}</p>
               <p><strong>Ville :</strong> ${formData.address.city}, ${formData.address.wilaya}</p>
@@ -484,10 +503,11 @@ export default function LawyerRegisterPage() {
   };
 
   const STEPS = [
-    { id: 1, label: t("auth.lawyerRegister.steps.identity") },
-    { id: 2, label: t("auth.lawyerRegister.steps.office") },
-    { id: 3, label: t("auth.lawyerRegister.steps.expertise") },
-    { id: 4, label: t("auth.lawyerRegister.steps.account") },
+    { id: 1, label: t("auth.lawyerRegister.steps.profession") },
+    { id: 2, label: t("auth.lawyerRegister.steps.identity") },
+    { id: 3, label: t("auth.lawyerRegister.steps.office") },
+    { id: 4, label: t("auth.lawyerRegister.steps.expertise") },
+    { id: 5, label: t("auth.lawyerRegister.steps.account") },
   ];
 
   const StepIndicator = () => (
@@ -500,6 +520,8 @@ export default function LawyerRegisterPage() {
             >
               {step.id < currentStep ? (
                 <CheckCircle className="w-4 h-4" />
+              ) : locale === "ar" ? (
+                toArabicNumerals(String(step.id))
               ) : (
                 step.id
               )}
@@ -522,23 +544,27 @@ export default function LawyerRegisterPage() {
 
   const stepMeta: Record<number, { title: string; sub: string }> = {
     1: {
+      title: t("auth.lawyerRegister.step0Title"),
+      sub: t("auth.lawyerRegister.step0Subtitle"),
+    },
+    2: {
       title: t("auth.lawyerRegister.stepMeta.identityTitle"),
       sub: t("auth.lawyerRegister.stepMeta.identitySubtitle", {
         profession: currentProf?.label || "",
       }),
     },
-    2: {
+    3: {
       title: t("auth.lawyerRegister.stepMeta.officeTitle"),
       sub: t("auth.lawyerRegister.stepMeta.officeSubtitle"),
     },
-    3: {
+    4: {
       title:
         primaryProfession === "avocat"
           ? t("auth.lawyerRegister.stepMeta.expertiseTitleAvocat")
           : t("auth.lawyerRegister.stepMeta.expertiseTitleOther"),
       sub: t("auth.lawyerRegister.stepMeta.expertiseSubtitle"),
     },
-    4: {
+    5: {
       title: t("auth.lawyerRegister.stepMeta.accountTitle"),
       sub: t("auth.lawyerRegister.stepMeta.accountSubtitle"),
     },
@@ -549,11 +575,48 @@ export default function LawyerRegisterPage() {
       return (
         <div>
           <h3 className="text-base font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
-            {t("auth.lawyerRegister.step0Title")}
+            {t("auth.lawyerRegister.countryStepTitle")}
           </h3>
           <p className="text-sm text-slate-500 dark:text-[#A8A8A6] mb-6">
-            {t("auth.lawyerRegister.step0Subtitle")}
+            {t("auth.lawyerRegister.countryStepSubtitle")}
           </p>
+          <div className="grid grid-cols-2 gap-3 max-w-xs mx-auto">
+            {[
+              {
+                value: "Algérie",
+                flag: "🇩🇿",
+                label: t("auth.lawyerRegister.countryAlgeria"),
+              },
+              {
+                value: "France",
+                flag: "🇫🇷",
+                label: t("auth.lawyerRegister.countryFrance"),
+              },
+            ].map((c) => {
+              const isSelected = formData.country_practice === c.value;
+              return (
+                <button
+                  key={c.value}
+                  type="button"
+                  onClick={() => handleCountrySelect(c.value)}
+                  className={`aspect-square p-4 border-2 rounded-xl flex flex-col items-center justify-center gap-2 transition-all cursor-pointer relative ${isSelected ? "border-teal-600 dark:border-[#6fcf9f] bg-teal-50 dark:bg-[#6fcf9f]/10" : "border-slate-200 dark:border-[#1c2220] bg-white dark:bg-[#1c1c1e] hover:border-teal-300 dark:hover:border-[#6fcf9f]/50"}`}
+                >
+                  <span className="text-4xl leading-none">{c.flag}</span>
+                  <span
+                    className={`text-sm font-semibold text-center ${isSelected ? "text-teal-700 dark:text-[#6fcf9f]" : "text-slate-700 dark:text-[#E8E8E6]"}`}
+                  >
+                    {c.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      );
+
+    if (currentStep === 1)
+      return (
+        <div>
           <div className="grid grid-cols-2 gap-3 mb-3">
             {PROFESSIONS.map((p) => {
               const isSelected = professions.includes(p.id);
@@ -572,11 +635,6 @@ export default function LawyerRegisterPage() {
                   >
                     {p.label}
                   </span>
-                  {isSelected && (
-                    <div className="absolute top-2 end-2 w-5 h-5 bg-teal-600 dark:bg-[#0F6E56] rounded-full flex items-center justify-center">
-                      <CheckCircle className="w-3 h-3 text-white" />
-                    </div>
-                  )}
                 </button>
               );
             })}
@@ -593,7 +651,7 @@ export default function LawyerRegisterPage() {
         </div>
       );
 
-    if (currentStep === 1)
+    if (currentStep === 2)
       return (
         <div className="space-y-4">
           <div>
@@ -720,7 +778,7 @@ export default function LawyerRegisterPage() {
         </div>
       );
 
-    if (currentStep === 2)
+    if (currentStep === 3)
       return (
         <div className="space-y-4">
           <div>
@@ -738,47 +796,15 @@ export default function LawyerRegisterPage() {
             />
             {errors.street && <p className={errCls}>{errors.street}</p>}
           </div>
-          <div className="relative z-50">
-            <label className={labelCls}>
-              {t("auth.lawyerRegister.countryPractice")} *
-            </label>
-            <CustomSelect
-              options={[
-                {
-                  value: "Algérie",
-                  label: t("auth.lawyerRegister.countryAlgeria"),
-                },
-                {
-                  value: "France",
-                  label: t("auth.lawyerRegister.countryFrance"),
-                },
-              ]}
-              value={formData.country_practice || "Algérie"}
-              onChange={(v) =>
-                setFormData((p) => ({
-                  ...p,
-                  country_practice: v,
-                  address: { ...p.address, wilaya: "", city: "" },
-                }))
-              }
-              placeholder={t("auth.lawyerRegister.countryPractice")}
-              className="h-12"
-              disabled={isSubmitting}
-            />
-          </div>
           <div className="relative z-40">
             <label className={labelCls}>
-              {formData.country_practice === "France"
+              {isFrance
                 ? t("auth.lawyerRegister.region")
                 : t("auth.lawyerRegister.wilaya")}{" "}
               *
             </label>
             <CustomSelect
-              options={
-                formData.country_practice === "France"
-                  ? regionOptions
-                  : wilayaOptions
-              }
+              options={isFrance ? regionOptions : wilayaOptions}
               value={formData.address.wilaya || ""}
               onChange={(v) =>
                 setFormData((p) => ({
@@ -787,7 +813,7 @@ export default function LawyerRegisterPage() {
                 }))
               }
               placeholder={
-                formData.country_practice === "France"
+                isFrance
                   ? t("auth.lawyerRegister.regionPh")
                   : t("auth.lawyerRegister.wilayaPh")
               }
@@ -798,7 +824,7 @@ export default function LawyerRegisterPage() {
           </div>
           <div className="relative z-30">
             <label className={labelCls}>
-              {formData.country_practice === "France"
+              {isFrance
                 ? t("auth.lawyerRegister.ville")
                 : t("auth.lawyerRegister.commune")}{" "}
               *
@@ -814,7 +840,9 @@ export default function LawyerRegisterPage() {
               }
               placeholder={
                 formData.address.wilaya
-                  ? t("auth.lawyerRegister.communePh")
+                  ? isFrance
+                    ? t("auth.lawyerRegister.villePh")
+                    : t("auth.lawyerRegister.communePh")
                   : t("auth.lawyerRegister.communePhDisabled")
               }
               className="h-12"
@@ -847,7 +875,11 @@ export default function LawyerRegisterPage() {
                 }}
                 className={inputCls}
                 placeholder={
-                  locale === "ar" ? toArabicNumerals("16000") : "16000"
+                  locale === "ar"
+                    ? toArabicNumerals(isFrance ? "75001" : "16000")
+                    : isFrance
+                      ? "75001"
+                      : "16000"
                 }
                 maxLength={5}
                 disabled={isSubmitting}
@@ -861,14 +893,21 @@ export default function LawyerRegisterPage() {
               !(formData as any).isAssermente
             ) && (
               <div>
-                <label className={labelCls}>{currentProf?.numLabel} *</label>
+                <label className={labelCls}>
+                  {currentProf?.numLabel}
+                  {!isFrance && " *"}
+                </label>
                 <input
                   type="text"
                   name="barNumber"
                   value={formData.barNumber}
                   onChange={handleInput}
                   className={inputCls}
-                  placeholder={currentProf?.numPlaceholder}
+                  placeholder={
+                    isFrance
+                      ? t("auth.lawyerRegister.numPlaceholderFrance")
+                      : currentProf?.numPlaceholder
+                  }
                   disabled={isSubmitting}
                 />
                 {errors.barNumber && (
@@ -956,7 +995,7 @@ export default function LawyerRegisterPage() {
         </div>
       );
 
-    if (currentStep === 3)
+    if (currentStep === 4)
       return (
         <div className="space-y-4">
           <div>
@@ -1011,7 +1050,7 @@ export default function LawyerRegisterPage() {
         </div>
       );
 
-    if (currentStep === 4)
+    if (currentStep === 5)
       return (
         <div className="space-y-4">
           <div>
@@ -1167,11 +1206,14 @@ export default function LawyerRegisterPage() {
               <ChevronLeft className="w-4 h-4" />{" "}
               {t("auth.lawyerRegister.back")}
             </button>
-            {currentStep < 4 ? (
+            {currentStep < 5 ? (
               <button
                 type="button"
                 onClick={handleNext}
-                disabled={currentStep === 0 && professions.length === 0}
+                disabled={
+                  (currentStep === 0 && !formData.country_practice) ||
+                  (currentStep === 1 && professions.length === 0)
+                }
                 className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-sm font-semibold bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] disabled:opacity-40 text-white transition-all cursor-pointer"
               >
                 {t("auth.lawyerRegister.continue")}{" "}
