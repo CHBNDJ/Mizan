@@ -152,7 +152,8 @@
     "profLink": "Comprendre les professions juridiques en Algérie →",
     "map": {
       "title": "Trouvez un professionnel près de chez vous",
-      "subtitle": "Les wilayas où nos professionnels sont présents"
+      "subtitle": "Les wilayas où nos professionnels sont présents",
+      "subtitleFrance": "Les régions où nos professionnels sont présents"
     },
     "stats": {
       "total": "Professionnels inscrits",

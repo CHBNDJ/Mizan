@@ -355,7 +355,7 @@ export default function HomePage() {
                 {t("home.map.title")}
               </h2>
               <p className="text-slate-500 dark:text-[#A8A8A6] text-sm">
-                {t("home.map.subtitle")}
+                {t("home.map.subtitleFrance")}.
               </p>
             </div>
             <FranceMap
