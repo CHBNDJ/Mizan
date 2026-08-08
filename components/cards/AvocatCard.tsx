@@ -21,7 +21,10 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
   const getProfileUrl = () => {
     const params = searchParams?.toString();
     const identifier = avocat.slug || avocat.id;
-    return `/lawyers/${identifier}${params ? `?${params}` : ""}`;
+    const base = `/lawyers/${identifier}`;
+    if (params) return `${base}?${params}`;
+    if (avocat.country_practice === "France") return `${base}?pays=france`;
+    return base;
   };
 
   const specialites = avocat.specialites || [];

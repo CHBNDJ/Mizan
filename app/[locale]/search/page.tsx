@@ -22,6 +22,7 @@ import { AvocatCard } from "@/components/cards/AvocatCard";
 import { SearchFilters, AvocatData } from "@/types";
 import { searchAvocats } from "@/lib/avocatsData";
 import { Link } from "@/i18n/navigation";
+import { useCountry } from "@/hooks/useCountry";
 import { localizedDigits } from "@/lib/arabicNumerals";
 import { getSpecialiteLabel } from "@/lib/i18nLabels";
 import { gsap } from "gsap";
@@ -73,6 +74,7 @@ function SearchResults() {
   const router = useRouter();
   const t = useTranslations();
   const locale = useLocale();
+  const country = useCountry();
   const ld = (s: string) => localizedDigits(s, locale);
 
   const [avocats, setAvocats] = useState<AvocatData[]>([]);
@@ -114,11 +116,11 @@ function SearchResults() {
   useEffect(() => {
     setLoading(true);
     setPage(1);
-    searchAvocats(filters, professionParam)
+    searchAvocats(filters, professionParam, country)
       .then(setAvocats)
       .catch(() => setAvocats([]))
       .finally(() => setLoading(false));
-  }, [filters, professionParam]);
+  }, [filters, professionParam, country]);
 
   useEffect(() => {
     if (loading) return;
@@ -156,6 +158,7 @@ function SearchResults() {
   const updateURL = (f: SearchFilters) => {
     const p = new URLSearchParams();
     p.set("profession", professionParam);
+    if (country === "France") p.set("pays", "france");
     f.specialite?.forEach((s) => p.append("specialite", s));
     if (f.wilaya) p.set("wilaya", f.wilaya);
     if (f.genre) p.set("genre", f.genre);
@@ -177,13 +180,15 @@ function SearchResults() {
 
   const handleProfessionSwitch = (newProf: string) => {
     if (newProf === professionParam) return;
+    const paysSuffix = country === "France" ? "?pays=france" : "";
     if (!filters.specialite?.length) {
       const p = new URLSearchParams();
       p.set("profession", newProf);
+      if (country === "France") p.set("pays", "france");
       if (filters.wilaya) p.set("wilaya", filters.wilaya);
       router.push(`/search?${p.toString()}`);
     } else {
-      router.push(`/${newProf}`);
+      router.push(`/${newProf}${paysSuffix}`);
     }
   };
 

@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { AlgeriaMap } from "@/components/AlgeriaMap";
+import { FranceMap } from "@/components/FranceMap";
+import { useCountry } from "@/hooks/useCountry";
 import { MultiSelectWithCheckboxes } from "@/components/ui/MultiSelectCheck";
 import {
   getWilayas,
@@ -112,11 +114,12 @@ function TopProsSection({
     </section>
   );
 }
-
 function ProfessionContent({ profId }: { profId: ProfId }) {
   const router = useRouter();
   const t = useTranslations();
   const locale = useLocale();
+  const country = useCountry();
+  const isFrance = country === "France";
   const ld = (s: string) => localizedDigits(s, locale);
   const profKey = PROF_KEY[profId];
   const ProfIcon = PROF_ICONS[profId] || Scale;
@@ -171,14 +174,14 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
   }, [wilayas, locale]);
 
   useEffect(() => {
-    getWilayas(profId).then((w) => {
+    getWilayas(profId, country).then((w) => {
       setWilayas(w);
       setLoadingWilayas(false);
     });
-    getTopRatedAvocats(6, profId).then(setTopPros);
+    getTopRatedAvocats(6, profId, country).then(setTopPros);
     setSelectedWilayas([]);
     setSelectedDomaines([]);
-  }, [profId]);
+  }, [profId, country]);
 
   useLayoutEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -217,6 +220,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
   const handleSearch = () => {
     const p = new URLSearchParams();
     p.set("profession", profId);
+    if (isFrance) p.set("pays", "france");
     if (selectedWilayas.length === 1) {
       p.set("wilaya", selectedWilayas[0]);
     } else if (
@@ -233,6 +237,7 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
   const handleMapSelectAndSearch = (wilaya: string) => {
     const p = new URLSearchParams();
     p.set("profession", profId);
+    if (isFrance) p.set("pays", "france");
     if (wilaya) p.set("wilaya", wilaya);
     selectedDomaines.forEach((d) => p.append("specialite", d));
     router.push(`/search?${p.toString()}`);
@@ -327,13 +332,21 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                 </button>
               </div>
               <div className="ph-map lg:hidden mt-6">
-                <AlgeriaMap
-                  selectedWilaya={mapSelectedWilaya}
-                  onSelect={setSelectedWilayas.bind(null, [])}
-                  onSelectAndSearch={handleMapSelectAndSearch}
-                  activeWilayas={wilayas}
-                  hideBar
-                />
+                {isFrance ? (
+                  <FranceMap
+                    selectedRegion={mapSelectedWilaya}
+                    onSelect={(r) => handleMapSelectAndSearch(r)}
+                    activeRegions={wilayas}
+                  />
+                ) : (
+                  <AlgeriaMap
+                    selectedWilaya={mapSelectedWilaya}
+                    onSelect={setSelectedWilayas.bind(null, [])}
+                    onSelectAndSearch={handleMapSelectAndSearch}
+                    activeWilayas={wilayas}
+                    hideBar
+                  />
+                )}
               </div>
               <div className="mt-8 space-y-4 relative" style={{ zIndex: 1 }}>
                 {prof.steps.map((step, i) => (
@@ -354,13 +367,21 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
               </div>
             </div>
             <div className="ph-map hidden lg:flex flex-col gap-3 sticky top-24">
-              <AlgeriaMap
-                selectedWilaya={mapSelectedWilaya}
-                onSelect={setSelectedWilayas.bind(null, [])}
-                onSelectAndSearch={handleMapSelectAndSearch}
-                activeWilayas={wilayas}
-                hideBar
-              />
+              {isFrance ? (
+                <FranceMap
+                  selectedRegion={mapSelectedWilaya}
+                  onSelect={(r) => handleMapSelectAndSearch(r)}
+                  activeRegions={wilayas}
+                />
+              ) : (
+                <AlgeriaMap
+                  selectedWilaya={mapSelectedWilaya}
+                  onSelect={setSelectedWilayas.bind(null, [])}
+                  onSelectAndSearch={handleMapSelectAndSearch}
+                  activeWilayas={wilayas}
+                  hideBar
+                />
+              )}
               <Link href={"/professions/" + profId}>
                 <div className="bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/30 hover:border-teal-400 dark:hover:border-[#6fcf9f] rounded-2xl p-5 cursor-pointer transition-all hover:shadow-sm dark:hover:shadow-none group">
                   <div className="flex items-center gap-3 mb-2.5">

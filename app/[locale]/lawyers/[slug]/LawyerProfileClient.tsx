@@ -57,7 +57,12 @@ const PROF_KEY_MAP: Record<string, string> = {
 };
 
 const getMapsQuery = (a: AvocatData) =>
-  [a.adresse?.rue, a.adresse?.ville || a.ville, a.wilaya, "Algérie"]
+  [
+    a.adresse?.rue,
+    a.adresse?.ville || a.ville,
+    a.wilaya,
+    a.country_practice || "Algérie",
+  ]
     .filter(Boolean)
     .join(", ");
 const getGoogleMapsUrl = (a: AvocatData) =>
@@ -587,7 +592,13 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
     <div className="min-h-screen pt-16 pb-24 lg:pb-8 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:from-[#0a0a0a] dark:via-[#141415] dark:to-[#0a0a0a] overflow-x-hidden w-full">
       <div className="max-w-3xl mx-auto px-4 py-8">
         <button
-          onClick={() => router.push(`/search?${searchParams.toString()}`)}
+          onClick={() => {
+            const sp = searchParams.toString();
+            const suffix =
+              sp ||
+              (avocat?.country_practice === "France" ? "pays=france" : "");
+            router.push(suffix ? `/search?${suffix}` : "/search");
+          }}
           className="back-button opacity-0 invisible flex items-center gap-2 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#8fdfb5] cursor-pointer mb-6 text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -863,7 +874,7 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                   avocat.adresse?.rue,
                   avocat.adresse?.ville || avocat.ville,
                   avocat.wilaya,
-                  "Algérie",
+                  avocat.country_practice || "Algérie",
                 ]
                   .filter(Boolean)
                   .join(", ")}
