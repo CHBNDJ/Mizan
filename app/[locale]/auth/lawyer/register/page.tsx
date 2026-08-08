@@ -29,6 +29,7 @@ import {
   LANGUES_TRADUCTEUR,
 } from "@/utils/constants";
 import { COMMUNES_PAR_WILAYA } from "@/utils/communes";
+import { REGIONS_FRANCE, VILLES_PAR_REGION } from "@/utils/franceData";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { separatePhoneTypes } from "@/lib/phoneFormatter";
 import { useAuth } from "@/hooks/useAuth";
@@ -126,6 +127,7 @@ export default function LawyerRegisterPage() {
     experience: "",
     consultationPrice: "",
     address: { street: "", wilaya: "", city: "", postalCode: "" },
+    country_practice: "Algérie",
     website: "",
   });
   const [communeOptions, setCommuneOptions] = useState<
@@ -193,6 +195,25 @@ export default function LawyerRegisterPage() {
       setCommuneOptions([]);
       return;
     }
+    const isFrance = formData.country_practice === "France";
+    if (isFrance) {
+      const r = REGIONS_FRANCE.find(
+        (x) => x.toLowerCase().replace(/\s+/g, "-") === formData.address.wilaya
+      );
+      if (r && VILLES_PAR_REGION[r]) {
+        setCommuneOptions(
+          VILLES_PAR_REGION[r].map((c) => ({
+            value: c.toLowerCase().replace(/\s+/g, "-"),
+            label: c,
+          }))
+        );
+        setFormData((prev) => ({
+          ...prev,
+          address: { ...prev.address, city: "" },
+        }));
+      }
+      return;
+    }
     const w = WILAYAS.find(
       (x) => x.toLowerCase().replace(/\s+/g, "-") === formData.address.wilaya
     );
@@ -208,11 +229,15 @@ export default function LawyerRegisterPage() {
         address: { ...prev.address, city: "" },
       }));
     }
-  }, [formData.address.wilaya]);
+  }, [formData.address.wilaya, formData.country_practice]);
 
   const wilayaOptions = WILAYAS.map((w) => ({
     value: w.toLowerCase().replace(/\s+/g, "-"),
     label: translateWilaya(w),
+  }));
+  const regionOptions = REGIONS_FRANCE.map((r) => ({
+    value: r.toLowerCase().replace(/\s+/g, "-"),
+    label: r,
   }));
   const countryOptions = COUNTRIES.map((c) => {
     const nom = getCountryLabel(c.id, t);
@@ -713,12 +738,47 @@ export default function LawyerRegisterPage() {
             />
             {errors.street && <p className={errCls}>{errors.street}</p>}
           </div>
-          <div className="relative z-40">
+          <div className="relative z-50">
             <label className={labelCls}>
-              {t("auth.lawyerRegister.wilaya")} *
+              {t("auth.lawyerRegister.countryPractice")} *
             </label>
             <CustomSelect
-              options={wilayaOptions}
+              options={[
+                {
+                  value: "Algérie",
+                  label: t("auth.lawyerRegister.countryAlgeria"),
+                },
+                {
+                  value: "France",
+                  label: t("auth.lawyerRegister.countryFrance"),
+                },
+              ]}
+              value={formData.country_practice || "Algérie"}
+              onChange={(v) =>
+                setFormData((p) => ({
+                  ...p,
+                  country_practice: v,
+                  address: { ...p.address, wilaya: "", city: "" },
+                }))
+              }
+              placeholder={t("auth.lawyerRegister.countryPractice")}
+              className="h-12"
+              disabled={isSubmitting}
+            />
+          </div>
+          <div className="relative z-40">
+            <label className={labelCls}>
+              {formData.country_practice === "France"
+                ? t("auth.lawyerRegister.region")
+                : t("auth.lawyerRegister.wilaya")}{" "}
+              *
+            </label>
+            <CustomSelect
+              options={
+                formData.country_practice === "France"
+                  ? regionOptions
+                  : wilayaOptions
+              }
               value={formData.address.wilaya || ""}
               onChange={(v) =>
                 setFormData((p) => ({
@@ -726,7 +786,11 @@ export default function LawyerRegisterPage() {
                   address: { ...p.address, wilaya: v, city: "" },
                 }))
               }
-              placeholder={t("auth.lawyerRegister.wilayaPh")}
+              placeholder={
+                formData.country_practice === "France"
+                  ? t("auth.lawyerRegister.regionPh")
+                  : t("auth.lawyerRegister.wilayaPh")
+              }
               className="h-12"
               disabled={isSubmitting}
             />
@@ -734,7 +798,10 @@ export default function LawyerRegisterPage() {
           </div>
           <div className="relative z-30">
             <label className={labelCls}>
-              {t("auth.lawyerRegister.commune")} *
+              {formData.country_practice === "France"
+                ? t("auth.lawyerRegister.ville")
+                : t("auth.lawyerRegister.commune")}{" "}
+              *
             </label>
             <CustomSelect
               options={communeOptions}

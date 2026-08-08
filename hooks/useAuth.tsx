@@ -171,6 +171,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         wilaya?: string;
         postalCode: string;
       };
+      country_practice?: string;
     }
   ) => {
     try {
@@ -248,6 +249,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               is_assermente: !!userData.is_assermente,
               inscription_year: userData.inscription_year ?? null,
               experience_years: userData.experience_years ?? 0,
+              country_practice: userData.country_practice || "Algérie",
             })
             .eq("id", authData.user.id);
           if (userData.website) {

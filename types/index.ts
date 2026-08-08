@@ -245,6 +245,7 @@ export interface ExtendedLawyerSignupFormData {
   gender: string;
   languages: string[];
   website?: string;
+  country_practice?: string;
   address: {
     street: string;
     city: string;
