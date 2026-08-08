@@ -47,6 +47,7 @@ export interface AvocatData {
   is_claimed?: boolean;
   claimed_at?: string | null;
   created_at?: string | null;
+  country_practice?: string;
 }
 
 export interface Profile {

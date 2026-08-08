@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/DropdownMenu";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { CountrySwitcher } from "@/components/CountrySwitcher";
 
 function MizanLogo() {
   return (
@@ -526,6 +527,7 @@ export function Navigation() {
               </>
             )}
             <div className="flex items-center gap-2 rounded-full border border-teal-600 dark:border-[#6fcf9f] px-2.5 py-1.5">
+              <CountrySwitcher />
               <LanguageSwitcher />
               <span className="w-px h-3.5 bg-teal-600/30 dark:bg-[#6fcf9f]/30" />
               <ThemeToggle />
@@ -533,6 +535,7 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
+            <CountrySwitcher />
             <LanguageSwitcher />
             <ThemeToggle />
             <button

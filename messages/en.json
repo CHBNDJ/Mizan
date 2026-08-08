@@ -145,6 +145,7 @@
     "hero": {
       "title1": "Find your legal",
       "title2": "expert in Algeria",
+      "title2France": "Algerian legal expert in France",
       "sub1": "The directory that verifies for you.",
       "sub2": "Compare. Choose. Contact."
     },
@@ -157,7 +158,8 @@
       "total": "Registered professionals",
       "wilayas": "Wilayas covered",
       "categories": "Expert categories",
-      "verification": "Verification rate"
+      "verification": "Verification rate",
+      "regions": "Regions"
     },
     "howItWorks": {
       "title": "How it works",

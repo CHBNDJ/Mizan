@@ -145,6 +145,7 @@
     "hero": {
       "title1": "Trouvez votre expert",
       "title2": "juridique en Algérie",
+      "title2France": "juridique algérien en France",
       "sub1": "L'annuaire qui vérifie pour vous.",
       "sub2": "Comparez. Choisissez. Contactez."
     },
@@ -157,7 +158,8 @@
       "total": "Professionnels inscrits",
       "wilayas": "Wilayas couvertes",
       "categories": "Catégories d'experts",
-      "verification": "Taux de vérification"
+      "verification": "Taux de vérification",
+      "regions": "Régions"
     },
     "howItWorks": {
       "title": "Comment ça marche",

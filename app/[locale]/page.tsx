@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { AlgeriaMap } from "@/components/AlgeriaMap";
+import { FranceMap } from "@/components/FranceMap";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import {
@@ -24,6 +25,7 @@ import {
   getWilayas,
   getStatistiques,
 } from "@/lib/avocatsData";
+import { useCountry } from "@/hooks/useCountry";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
@@ -98,6 +100,7 @@ export default function HomePage() {
   const router = useRouter();
   const t = useTranslations();
   const locale = useLocale();
+  const country = useCountry();
   const ld = (s: string) => localizedDigits(s, locale);
   const [topAvocats, setTopAvocats] = useState<any[]>([]);
   const [wilayas, setWilayas] = useState<string[]>([]);
@@ -117,7 +120,9 @@ export default function HomePage() {
       {t("home.hero.title1")}
       <br className="hidden sm:block" />{" "}
       <span className="text-teal-600 dark:text-[#6fcf9f]">
-        {t("home.hero.title2")}
+        {country === "France"
+          ? t("home.hero.title2France")
+          : t("home.hero.title2")}
       </span>
     </>
   );
@@ -129,7 +134,13 @@ export default function HomePage() {
 
   const statsData = [
     { end: stats.total_avocats, label: t("home.stats.total") },
-    { end: wilayas.length, label: t("home.stats.wilayas") },
+    {
+      end: wilayas.length,
+      label:
+        country === "France"
+          ? t("home.stats.regions")
+          : t("home.stats.wilayas"),
+    },
     { end: 6, label: t("home.stats.categories") },
     {
       end: stats.pourcentage_verification,
@@ -145,14 +156,15 @@ export default function HomePage() {
   };
 
   useLayoutEffect(() => {
-    getWilayas().then(setWilayas);
-    Promise.all([getTopRatedAvocats(8), getStatistiques()]).then(
-      ([top, st]) => {
-        setTopAvocats(top);
-        setStats(st);
-      }
-    );
-  }, []);
+    getWilayas(undefined, country).then(setWilayas);
+    Promise.all([
+      getTopRatedAvocats(8, undefined, country),
+      getStatistiques(country),
+    ]).then(([top, st]) => {
+      setTopAvocats(top);
+      setStats(st);
+    });
+  }, [country]);
 
   useLayoutEffect(() => {
     const isMobile = window.innerWidth < 768;
@@ -315,24 +327,46 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-      <section className="map-section px-4 pb-14 sm:pb-20">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-6 sm:mb-8">
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
-              {t("home.map.title")}
-            </h2>
-            <p className="text-slate-500 dark:text-[#A8A8A6] text-sm">
-              {t("home.map.subtitle")}
-            </p>
+      {country !== "France" && (
+        <section className="map-section px-4 pb-14 sm:pb-20">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
+                {t("home.map.title")}
+              </h2>
+              <p className="text-slate-500 dark:text-[#A8A8A6] text-sm">
+                {t("home.map.subtitle")}
+              </p>
+            </div>
+            <AlgeriaMap
+              selectedWilaya=""
+              onSelect={() => {}}
+              readOnly
+              activeWilayas={wilayas}
+            />
           </div>
-          <AlgeriaMap
-            selectedWilaya=""
-            onSelect={() => {}}
-            readOnly
-            activeWilayas={wilayas}
-          />
-        </div>
-      </section>
+        </section>
+      )}
+      {country === "France" && (
+        <section className="map-section px-4 pb-14 sm:pb-20">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-2">
+                {t("home.map.title")}
+              </h2>
+              <p className="text-slate-500 dark:text-[#A8A8A6] text-sm">
+                {t("home.map.subtitle")}
+              </p>
+            </div>
+            <FranceMap
+              selectedRegion=""
+              onSelect={() => {}}
+              readOnly
+              activeRegions={wilayas}
+            />
+          </div>
+        </section>
+      )}
 
       <section className="steps-section py-12 sm:py-14 px-4">
         <div className="max-w-6xl mx-auto">

@@ -198,11 +198,13 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     is_cour_supreme: lawyer.is_cour_supreme || false,
     is_assermente: lawyer.is_assermente || false,
     bio: lawyer.bio || undefined,
+    country_practice: lawyer.country_practice || "Algérie",
   };
 }
 
 export async function getSupabaseAvocats(
-  profession?: string
+  profession?: string,
+  country = "Algérie"
 ): Promise<AvocatData[]> {
   const supabase = createClient();
   try {
@@ -210,6 +212,7 @@ export async function getSupabaseAvocats(
       .from("lawyers")
       .select("*, professions")
       .eq("is_verified", true)
+      .eq("country_practice", country)
       .order("ranking_score", { ascending: false, nullsFirst: false });
 
     if (profession)
@@ -239,13 +242,13 @@ export async function getSupabaseAvocats(
     return [];
   }
 }
-
 export async function searchAvocats(
   filters: SearchFilters,
-  profession?: string
+  profession?: string,
+  country = "Algérie"
 ): Promise<AvocatData[]> {
   const prof = profession || filters.profession || undefined;
-  const all = await getSupabaseAvocats(prof);
+  const all = await getSupabaseAvocats(prof, country);
   return all.filter((avocat) => {
     if (filters.specialite && filters.specialite.length > 0) {
       const hasMatch = avocat.specialites?.some((spec) =>
@@ -285,17 +288,20 @@ export async function searchAvocats(
   });
 }
 
-export async function getAvocats(profession?: string): Promise<AvocatData[]> {
+export async function getAvocats(
+  profession?: string,
+  country = "Algérie"
+): Promise<AvocatData[]> {
   try {
-    return await getSupabaseAvocats(profession);
+    return await getSupabaseAvocats(profession, country);
   } catch {
     return [];
   }
 }
 
-export async function getStatistiques() {
+export async function getStatistiques(country = "Algérie") {
   try {
-    const all = await getSupabaseAvocats();
+    const all = await getSupabaseAvocats(undefined, country);
     const verifies = all.filter((a) => a.verified).length;
     const wilayas = new Set(all.map((a) => a.wilaya));
     return {
@@ -316,9 +322,12 @@ export async function getStatistiques() {
     };
   }
 }
-export async function getWilayas(profession?: string): Promise<string[]> {
+export async function getWilayas(
+  profession?: string,
+  country = "Algérie"
+): Promise<string[]> {
   try {
-    const all = await getSupabaseAvocats(profession);
+    const all = await getSupabaseAvocats(profession, country);
     const set = new Set<string>();
     all.forEach((a) => {
       if (a.wilaya) set.add(a.wilaya);
@@ -328,13 +337,13 @@ export async function getWilayas(profession?: string): Promise<string[]> {
     return [];
   }
 }
-
 export async function getTopRatedAvocats(
   limit = 10,
-  profession?: string
+  profession?: string,
+  country = "Algérie"
 ): Promise<AvocatData[]> {
   try {
-    const all = await getSupabaseAvocats(profession);
+    const all = await getSupabaseAvocats(profession, country);
     return all
       .filter(
         (a) =>
@@ -349,6 +358,25 @@ export async function getTopRatedAvocats(
       .slice(0, limit);
   } catch {
     return [];
+  }
+}
+
+export async function getPaysAvecAvocats(): Promise<string[]> {
+  const supabase = createClient();
+  try {
+    const { data, error } = await supabase
+      .from("lawyers")
+      .select("country_practice")
+      .eq("is_verified", true);
+    if (error || !data) return ["Algérie"];
+    const set = new Set<string>();
+    data.forEach((l: any) => {
+      if (l.country_practice) set.add(l.country_practice);
+    });
+    if (!set.has("Algérie")) set.add("Algérie");
+    return Array.from(set);
+  } catch {
+    return ["Algérie"];
   }
 }
 
