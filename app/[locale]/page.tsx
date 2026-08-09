@@ -153,7 +153,11 @@ export default function HomePage() {
 
   const goToWilaya = (wilaya: string) => {
     router.push(
-      wilaya ? `/search?wilaya=${encodeURIComponent(wilaya)}` : "/search"
+      wilaya
+        ? `/search?wilaya=${encodeURIComponent(wilaya)}${country === "France" ? "&pays=france" : ""}`
+        : country === "France"
+          ? "/search?pays=france"
+          : "/search"
     );
   };
 
@@ -230,8 +234,7 @@ export default function HomePage() {
     });
 
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
-  }, []);
-
+  }, [country]);
   useLayoutEffect(() => {
     if (!topAvocats.length) return;
     const isMobile = window.innerWidth < 768;
@@ -424,7 +427,11 @@ export default function HomePage() {
             </div>
             <div className="text-center">
               <button
-                onClick={() => router.push("/search")}
+                onClick={() =>
+                  router.push(
+                    country === "France" ? "/search?pays=france" : "/search"
+                  )
+                }
                 className="text-teal-600 dark:text-[#6fcf9f] inline-flex items-center gap-1.5 hover:text-teal-700 dark:hover:text-[#6fcf9f] cursor-pointer text-sm font-medium"
               >
                 {t("home.topRated.seeAll")} <ArrowRight className="w-4 h-4" />
@@ -504,7 +511,11 @@ export default function HomePage() {
             </p>
             <div className="mt-auto flex justify-center sm:justify-start">
               <button
-                onClick={() => router.push("/search")}
+                onClick={() =>
+                  router.push(
+                    country === "France" ? "/search?pays=france" : "/search"
+                  )
+                }
                 className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 text-teal-700 dark:text-[#6fcf9f] hover:bg-teal-50 dark:hover:bg-[#26492f] hover:border-teal-400 dark:hover:border-[#6fcf9f] font-semibold rounded-xl cursor-pointer transition-all text-sm"
               >
                 {t("home.ctaClient.action")}{" "}
