@@ -73,7 +73,11 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
         </div>
         <div className="flex items-center justify-center gap-1 text-[11px] text-slate-500 dark:text-[#A8A8A6] mb-2 w-full">
           <MapPin className="w-3 h-3 flex-shrink-0" />
-          <span className="truncate">{getWilayaLabel(avocat.wilaya, t)}</span>
+          <span className="truncate">
+            {avocat.country_practice === "France"
+              ? avocat.ville
+              : getWilayaLabel(avocat.wilaya, t)}
+          </span>
         </div>
         <div className="mt-auto space-y-1 w-full">
           {hasGoogleRating && (
@@ -145,7 +149,11 @@ export function AvocatCard({ avocat, searchParams }: AvocatCardProps) {
         </div>
         <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-[#A8A8A6] mb-2 flex-shrink-0">
           <MapPin className="w-3 h-3 flex-shrink-0" />
-          <span className="truncate">{getWilayaLabel(avocat.wilaya, t)}</span>
+          <span className="truncate">
+            {avocat.country_practice === "France"
+              ? avocat.ville
+              : getWilayaLabel(avocat.wilaya, t)}
+          </span>
         </div>
         <div className="mt-auto space-y-1 h-[44px]">
           {hasGoogleRating && (

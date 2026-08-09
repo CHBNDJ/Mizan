@@ -48,9 +48,10 @@ const PROFESSION_ICONS = [
   { id: "traducteur", Icon: Languages },
 ];
 
-function ProfCard({ id, Icon, label, desc, size = "normal" }: any) {
+function ProfCard({ id, Icon, label, desc, size = "normal", country }: any) {
+  const href = country === "France" ? `/${id}?pays=france` : `/${id}`;
   return (
-    <Link href={`/${id}`}>
+    <Link href={href}>
       <div
         className={`prof-card prof-card-btn bg-white dark:bg-[#1c1c1e] rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer h-full flex flex-col items-center text-center hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:shadow-md transition-all ${size === "big" ? "px-6 py-6 gap-3" : "px-4 py-4 gap-2"}`}
       >
@@ -76,9 +77,10 @@ function ProfCard({ id, Icon, label, desc, size = "normal" }: any) {
   );
 }
 
-function ProfCardHorizontal({ id, Icon, label, desc }: any) {
+function ProfCardHorizontal({ id, Icon, label, desc, country }: any) {
+  const href = country === "France" ? `/${id}?pays=france` : `/${id}`;
   return (
-    <Link href={`/${id}`}>
+    <Link href={href}>
       <div className="prof-card prof-card-btn bg-white dark:bg-[#1c1c1e] rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer flex items-center gap-4 px-4 py-4 hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:shadow-md transition-all">
         <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 flex items-center justify-center">
           <Icon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
@@ -272,26 +274,26 @@ export default function HomePage() {
 
           <div className="flex flex-col gap-3 max-w-sm mx-auto sm:hidden">
             {PROFESSIONS.map((p) => (
-              <ProfCardHorizontal key={p.id} {...p} />
+              <ProfCardHorizontal key={p.id} {...p} country={country} />
             ))}
           </div>
 
           <div className="hidden sm:flex lg:hidden flex-col gap-3 max-w-2xl mx-auto w-full">
             <div className="grid grid-cols-3 gap-3">
               {PROFESSIONS.slice(0, 3).map((p) => (
-                <ProfCard key={p.id} {...p} size="normal" />
+                <ProfCard key={p.id} {...p} size="normal" country={country} />
               ))}
             </div>
             <div className="grid grid-cols-3 gap-3">
               {PROFESSIONS.slice(3, 6).map((p) => (
-                <ProfCard key={p.id} {...p} size="normal" />
+                <ProfCard key={p.id} {...p} size="normal" country={country} />
               ))}
             </div>
           </div>
 
           <div className="hidden lg:grid grid-cols-6 gap-4 max-w-6xl mx-auto">
             {PROFESSIONS.map((p) => (
-              <ProfCard key={p.id} {...p} size="normal" />
+              <ProfCard key={p.id} {...p} size="normal" country={country} />
             ))}
           </div>
         </div>

@@ -549,7 +549,9 @@ function SearchResults() {
                   })}
                 </h3>
                 <p className="text-slate-500 dark:text-[#A8A8A6] mb-6 max-w-sm mx-auto text-sm">
-                  {t("search.noResultsDesc")}
+                  {country === "France"
+                    ? t("search.noResultsDescFrance")
+                    : t("search.noResultsDesc")}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   {hasLightFilters && (
@@ -559,7 +561,9 @@ function SearchResults() {
                   )}
                   <Link href={`/${professionParam}`}>
                     <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-[#0F6E56] dark:hover:bg-[#085041] text-white">
-                      {t("search.changeWilaya")}
+                      {country === "France"
+                        ? t("search.changeRegion")
+                        : t("search.changeWilaya")}
                     </Button>
                   </Link>
                 </div>

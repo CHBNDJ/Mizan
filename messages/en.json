@@ -235,7 +235,9 @@
     "noResultsTitle": "No {profession} matches",
     "noResultsDesc": "Adjust your filters or change wilaya",
     "resetFilters": "Reset filters",
-    "changeWilaya": "Change wilaya"
+    "changeWilaya": "Change wilaya",
+    "changeRegion": "Change region",
+    "noResultsDescFrance": "Adjust your filters or go back to change region"
   },
   "lawyerProfile": {
     "back": "Back to results",
@@ -3686,6 +3688,10 @@
     "whyChooseDesc": "Official role, duties and Algerian legal framework.",
     "learnMore": "Learn more",
     "ctaTitle": "Are you a {label} in Algeria?",
+    "regionLabel": "Region",
+    "allRegions": "Select region(s)",
+    "ctaTitleFrance": "Are you an Algerian {label} in France?",
+    "whyChooseDescFrance": "Role, duties and practice framework in France.",
     "ctaDesc": "Free registration, verification within 24-48h.",
     "ctaAction": "Create my profile",
     "professions": {
@@ -3693,6 +3699,8 @@
         "domainLabel": "Specialty",
         "hero": "Find your lawyer in Algeria",
         "sub": "Filter by specialty and wilaya. Client reviews, experience, direct contact — from Algeria or the diaspora.",
+        "heroFrance": "Find your Algerian lawyer in France",
+        "subFrance": "Filter by specialty and region. Client reviews, experience, direct contact — your Algerian legal matters, in France.",
         "searchLabel": "Find a lawyer",
         "steps": [
           {

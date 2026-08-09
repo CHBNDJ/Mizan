@@ -643,7 +643,10 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                     ))}
                     {avocat.barreau && (
                       <span className="text-[10px] text-slate-400 dark:text-[#7A7A78]">
-                        · {profInfo.numLabel} {translateWilaya(avocat.barreau)}
+                        · {profInfo.numLabel}{" "}
+                        {avocat.country_practice === "France"
+                          ? avocat.ville
+                          : translateWilaya(avocat.barreau)}
                       </span>
                     )}
                   </div>

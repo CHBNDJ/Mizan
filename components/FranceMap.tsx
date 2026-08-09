@@ -53,9 +53,18 @@ export function FranceMap({
     return id && REGION_NAMES[id] ? id : null;
   };
 
+  const normalize = (s: string) =>
+    s
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[\s-]+/g, "");
   const activeIds = (activeRegions || [])
     .map(
-      (name) => Object.entries(REGION_NAMES).find(([, v]) => v === name)?.[0]
+      (name) =>
+        Object.entries(REGION_NAMES).find(
+          ([, v]) => normalize(v) === normalize(name)
+        )?.[0]
     )
     .filter(Boolean) as string[];
 
@@ -89,12 +98,15 @@ export function FranceMap({
   return (
     <div className="relative w-full" ref={containerRef}>
       <style>{`
-        #france-real-map path { fill: #e2e8f0; stroke: #fff; stroke-width: 1; transition: fill 0.2s; cursor: ${readOnly ? "default" : "pointer"}; }
-        .dark #france-real-map path { fill: #232325; stroke: #1c1c1e; }
+      #france-real-map path { fill: #d1fae5; stroke: #ffffff; stroke-width: 1; transition: fill 0.12s ease; cursor: pointer; }
+        .dark #france-real-map path { fill: #2a2a28; stroke: #0a0e0d; }
         #france-real-map circle, #france-real-map [id="points"], #france-real-map [id="label_points"] { display: none; }
-        ${activeSelector ? `#france-real-map :is(${activeSelector}) { fill: #6fcf9f !important; }` : ""}
-        ${activeSelector && !readOnly ? `#france-real-map :is(${activeSelector}):hover { fill: #0F6E56 !important; }` : ""}
-        ${selectedId ? `#france-real-map #${selectedId} { fill: #0F6E56 !important; }` : ""}
+        ${activeSelector ? `#france-real-map :is(${activeSelector}) { fill: #5eead4 !important; }` : ""}
+        ${activeSelector ? `.dark #france-real-map :is(${activeSelector}) { fill: #6fcf9f !important; }` : ""}
+        ${selectedId ? `#france-real-map #${selectedId} { fill: #0d9488 !important; stroke: #0f766e !important; stroke-width: 2 !important; }` : ""}
+        ${selectedId ? `.dark #france-real-map #${selectedId} { fill: #6fcf9f !important; stroke: #0F6E56 !important; stroke-width: 2 !important; }` : ""}
+        ${hovered && !readOnly ? `#france-real-map :is(${activeSelector || "path"}):hover { fill: #5eead4 !important; }` : ""}
+        ${hovered && !readOnly ? `.dark #france-real-map :is(${activeSelector || "path"}):hover { fill: #6fcf9f !important; }` : ""}
       `}</style>
       <div
         onMouseMove={onMouseMove}

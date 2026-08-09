@@ -128,8 +128,12 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
   const labelPlural = t(`professions.${profKey}.plural`);
   const prof = {
     domainLabel: t(`professionLanding.professions.${profKey}.domainLabel`),
-    hero: t(`professionLanding.professions.${profKey}.hero`),
-    sub: t(`professionLanding.professions.${profKey}.sub`),
+    hero: isFrance
+      ? t(`professionLanding.professions.${profKey}.heroFrance`)
+      : t(`professionLanding.professions.${profKey}.hero`),
+    sub: isFrance
+      ? t(`professionLanding.professions.${profKey}.subFrance`)
+      : t(`professionLanding.professions.${profKey}.sub`),
     searchLabel: t(`professionLanding.professions.${profKey}.searchLabel`),
     steps: t.raw(`professionLanding.professions.${profKey}.steps`) as {
       title: string;
@@ -307,13 +311,19 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
 
                 <div className="relative" style={{ zIndex: 10 }}>
                   <label className="block text-xs font-semibold text-slate-500 dark:text-[#A8A8A6] uppercase tracking-wide mb-2">
-                    {t("professionLanding.wilayaLabel")}
+                    {isFrance
+                      ? t("professionLanding.regionLabel")
+                      : t("professionLanding.wilayaLabel")}
                   </label>
                   {loadingWilayas ? (
                     <div className="h-12 bg-slate-100 dark:bg-[#1c2220] rounded-lg animate-pulse" />
                   ) : (
                     <MultiSelectWithCheckboxes
-                      placeholder={t("professionLanding.allWilayas")}
+                      placeholder={
+                        isFrance
+                          ? t("professionLanding.allRegions")
+                          : t("professionLanding.allWilayas")
+                      }
                       options={wilayaOptions}
                       value={selectedWilayas}
                       onChange={setSelectedWilayas}
@@ -395,7 +405,9 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
                     </p>
                   </div>
                   <p className="text-xs text-teal-700 dark:text-[#6fcf9f] leading-relaxed mb-3">
-                    {t("professionLanding.whyChooseDesc")}
+                    {isFrance
+                      ? t("professionLanding.whyChooseDescFrance")
+                      : t("professionLanding.whyChooseDesc")}
                   </p>
                   <span className="inline-flex items-center gap-1 text-xs font-semibold text-teal-600 dark:text-[#6fcf9f] group-hover:text-teal-700 dark:group-hover:text-[#6fcf9f]">
                     {t("professionLanding.learnMore")}{" "}
@@ -420,7 +432,11 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
       <section className="py-12 px-4 bg-teal-600 dark:bg-[#0F6E56]">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-xl sm:text-2xl font-bold text-white mb-3">
-            {t("professionLanding.ctaTitle", { label: label.toLowerCase() })}
+            {isFrance
+              ? t("professionLanding.ctaTitleFrance", {
+                  label: label.toLowerCase(),
+                })
+              : t("professionLanding.ctaTitle", { label: label.toLowerCase() })}
           </h2>
           <p className="text-teal-100 dark:text-[#9FE1CB] mb-6 leading-relaxed text-sm sm:text-base">
             {t("professionLanding.ctaDesc")}

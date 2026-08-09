@@ -235,7 +235,9 @@
     "noResultsTitle": "Aucun {profession} ne correspond",
     "noResultsDesc": "Modifiez vos filtres ou revenez pour changer de wilaya",
     "resetFilters": "Réinitialiser les filtres",
-    "changeWilaya": "Changer de wilaya"
+    "changeWilaya": "Changer de wilaya",
+    "changeRegion": "Changer de région",
+    "noResultsDescFrance": "Modifiez vos filtres ou revenez pour changer de région"
   },
   "lawyerProfile": {
     "back": "Retour aux résultats",
@@ -3693,6 +3695,10 @@
     "whyChooseDesc": "Rôle officiel, missions et cadre légal algérien.",
     "learnMore": "En savoir plus",
     "ctaTitle": "Vous êtes {label} en Algérie ?",
+    "regionLabel": "Région",
+    "allRegions": "Choisir région(s)",
+    "ctaTitleFrance": "Vous êtes {label} algérien en France ?",
+    "whyChooseDescFrance": "Rôle, missions et cadre d'exercice en France.",
     "ctaDesc": "Inscription gratuite, vérification sous 24-48h.",
     "ctaAction": "Créer mon profil",
     "professions": {
@@ -3700,6 +3706,8 @@
         "domainLabel": "Spécialité",
         "hero": "Trouvez votre avocat en Algérie",
         "sub": "Filtrez par spécialité et wilaya. Avis clients, expérience, contact direct — depuis l'Algérie ou la diaspora.",
+        "heroFrance": "Trouvez votre avocat algérien en France",
+        "subFrance": "Filtrez par spécialité et région. Avis clients, expérience, contact direct — vos démarches juridiques algériennes, en France.",
         "searchLabel": "Rechercher un avocat",
         "steps": [
           {
