@@ -135,7 +135,11 @@ function ProfessionContent({ profId }: { profId: ProfId }) {
       ? t(`professionLanding.professions.${profKey}.subFrance`)
       : t(`professionLanding.professions.${profKey}.sub`),
     searchLabel: t(`professionLanding.professions.${profKey}.searchLabel`),
-    steps: t.raw(`professionLanding.professions.${profKey}.steps`) as {
+    steps: t.raw(
+      isFrance
+        ? `professionLanding.professions.${profKey}.stepsFrance`
+        : `professionLanding.professions.${profKey}.steps`
+    ) as {
       title: string;
       desc: string;
     }[],

@@ -3728,6 +3728,8 @@
         "domainLabel": "Domaine",
         "hero": "Trouvez un notaire en Algérie",
         "sub": "Actes immobiliers, successions, mariages, donations — nos notaires vérifiés depuis n'importe où.",
+        "heroFrance": "Trouvez votre notaire algérien en France",
+        "subFrance": "Actes, successions, immobilier — vos démarches notariales algériennes, accompagnées depuis la France.",
         "searchLabel": "Rechercher un notaire",
         "steps": [
           {
@@ -3748,6 +3750,8 @@
         "domainLabel": "Type d'intervention",
         "hero": "Trouvez un huissier en Algérie",
         "sub": "Constats officiels, exécution de jugements, recouvrement de créances — partout en Algérie.",
+        "heroFrance": "Trouvez votre huissier algérien en France",
+        "subFrance": "Constats, significations, recouvrements — vos démarches algériennes, accompagnées depuis la France.",
         "searchLabel": "Rechercher un huissier",
         "steps": [
           {
@@ -3768,6 +3772,8 @@
         "domainLabel": "Domaine",
         "hero": "Trouvez un comptable en Algérie",
         "sub": "Création d'entreprise, bilans, déclarations fiscales — pour entrepreneurs résidents et diaspora.",
+        "heroFrance": "Trouvez votre comptable algérien en France",
+        "subFrance": "Comptabilité, fiscalité, création d'entreprise — votre gestion algérienne, accompagnée depuis la France.",
         "searchLabel": "Rechercher un comptable",
         "steps": [
           {
@@ -3788,6 +3794,8 @@
         "domainLabel": "Domaine",
         "hero": "Trouvez un expert-comptable en Algérie",
         "sub": "Audit, évaluation d'entreprise, consolidation, due diligence — pour entreprises et diaspora.",
+        "heroFrance": "Trouvez votre expert-comptable algérien en France",
+        "subFrance": "Audit, expertise, conseil — votre gestion algérienne, accompagnée depuis la France.",
         "searchLabel": "Rechercher un expert-comptable",
         "steps": [
           {
@@ -3808,6 +3816,8 @@
         "domainLabel": "Document",
         "hero": "Trouvez un traducteur en Algérie",
         "sub": "Traduction officielle d'actes, diplômes et documents juridiques — pour résidents et diaspora.",
+        "heroFrance": "Trouvez votre traducteur algérien en France",
+        "subFrance": "Traductions officielles, actes, documents — vos traductions arabe-français, accompagnées depuis la France.",
         "searchLabel": "Rechercher un traducteur",
         "steps": [
           {

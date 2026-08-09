@@ -413,7 +413,6 @@
         "expertComptable": "ONEC2024-001",
         "traducteur": "TRD2024-001"
       },
-
       "barNumberRequired": "{numLabel} is required",
       "inscriptionYearLabels": {
         "avocat": "Year of bar admission",
@@ -524,12 +523,20 @@
           {
             "title": "Register",
             "desc": "Create your profile — specialties, experience, office. Your bar number will be requested.",
-            "points": ["Complete profile", "Bar number required", "Free"]
+            "points": [
+              "Complete profile",
+              "Bar number required",
+              "Free"
+            ]
           },
           {
             "title": "Verification",
             "desc": "Our team validates your bar registration within 24-48h.",
-            "points": ["24-48h delay", "Bar verification", "Manual activation"]
+            "points": [
+              "24-48h delay",
+              "Bar verification",
+              "Manual activation"
+            ]
           },
           {
             "title": "Receive clients",
@@ -566,7 +573,11 @@
           {
             "title": "Register",
             "desc": "Create your notarial profile. Your chamber number will be required.",
-            "points": ["Complete profile", "Chamber of notaries number", "Free"]
+            "points": [
+              "Complete profile",
+              "Chamber of notaries number",
+              "Free"
+            ]
           },
           {
             "title": "Verification",
@@ -612,7 +623,11 @@
           {
             "title": "Register",
             "desc": "Create your profile. Your official bailiff number will be required.",
-            "points": ["Complete profile", "Bailiff number required", "Free"]
+            "points": [
+              "Complete profile",
+              "Bailiff number required",
+              "Free"
+            ]
           },
           {
             "title": "Verification",
@@ -708,12 +723,20 @@
           {
             "title": "Register",
             "desc": "Create your profile. Your ONEC accreditation number will be required.",
-            "points": ["Complete profile", "ONEC number required", "Free"]
+            "points": [
+              "Complete profile",
+              "ONEC number required",
+              "Free"
+            ]
           },
           {
             "title": "Verification",
             "desc": "Our team verifies your registration with the ONEC order within 24-48h.",
-            "points": ["24-48h delay", "ONEC verification", "Manual activation"]
+            "points": [
+              "24-48h delay",
+              "ONEC verification",
+              "Manual activation"
+            ]
           },
           {
             "title": "Corporate clients",
@@ -750,7 +773,11 @@
           {
             "title": "Sign up",
             "desc": "Create your profile. Your Ministry of Justice accreditation number will be required.",
-            "points": ["Full profile", "Accreditation required", "Free"]
+            "points": [
+              "Full profile",
+              "Accreditation required",
+              "Free"
+            ]
           },
           {
             "title": "Verification",
@@ -764,7 +791,11 @@
           {
             "title": "Diaspora clients",
             "desc": "The diaspora needing official translations for their procedures finds you directly.",
-            "points": ["Records & diplomas", "Legal documents", "Remote"]
+            "points": [
+              "Records & diplomas",
+              "Legal documents",
+              "Remote"
+            ]
           }
         ],
         "faqs": [
@@ -3715,12 +3746,28 @@
             "title": "Contact directly",
             "desc": "Secure messaging. Free client registration."
           }
+        ],
+        "stepsFrance": [
+          {
+            "title": "Choose your specialty",
+            "desc": "Specify your need: civil, criminal, family, business law..."
+          },
+          {
+            "title": "Select your region",
+            "desc": "On the interactive map or via the menu — find an Algerian lawyer near you in France."
+          },
+          {
+            "title": "Contact directly",
+            "desc": "Secure messaging. Free client registration."
+          }
         ]
       },
       "notaire": {
         "domainLabel": "Area",
         "hero": "Find a notary in Algeria",
         "sub": "Real estate deeds, inheritance, marriages, donations — our verified notaries from anywhere.",
+        "heroFrance": "Find your Algerian notary in France",
+        "subFrance": "Deeds, inheritance, real estate — your Algerian notarial matters, handled from France.",
         "searchLabel": "Find a notary",
         "steps": [
           {
@@ -3735,12 +3782,28 @@
             "title": "Get in touch",
             "desc": "Describe your situation, the notary responds directly."
           }
+        ],
+        "stepsFrance": [
+          {
+            "title": "Specify your need",
+            "desc": "Inheritance, real estate, marriage — each notary has their specialties."
+          },
+          {
+            "title": "Choose the region",
+            "desc": "Find an accessible Algerian notary for your deeds and procedures from France."
+          },
+          {
+            "title": "Get in touch",
+            "desc": "Describe your situation, the notary responds directly."
+          }
         ]
       },
       "huissier": {
         "domainLabel": "Type of intervention",
         "hero": "Find a bailiff in Algeria",
         "sub": "Official reports, enforcement of judgments, debt collection — throughout Algeria.",
+        "heroFrance": "Find your Algerian bailiff in France",
+        "subFrance": "Official reports, service, recovery — your Algerian procedures, handled from France.",
         "searchLabel": "Find a bailiff",
         "steps": [
           {
@@ -3755,12 +3818,28 @@
             "title": "Quick contact",
             "desc": "Some interventions are urgent. Contact directly."
           }
+        ],
+        "stepsFrance": [
+          {
+            "title": "Type of action",
+            "desc": "Report, service of process, debt collection — specify your need."
+          },
+          {
+            "title": "Identify the region",
+            "desc": "Find an Algerian bailiff operating in your area in France."
+          },
+          {
+            "title": "Quick contact",
+            "desc": "Some interventions are urgent. Contact directly."
+          }
         ]
       },
       "comptable": {
         "domainLabel": "Area",
         "hero": "Find an accountant in Algeria",
         "sub": "Company formation, balance sheets, tax filings — for resident entrepreneurs and the diaspora.",
+        "heroFrance": "Find your Algerian accountant in France",
+        "subFrance": "Accounting, tax, company setup — your Algerian management, handled from France.",
         "searchLabel": "Find an accountant",
         "steps": [
           {
@@ -3775,12 +3854,28 @@
             "title": "Remote consultation",
             "desc": "Most assignments are done via messaging and documents."
           }
+        ],
+        "stepsFrance": [
+          {
+            "title": "Specify your need",
+            "desc": "Balance sheet, IFU/G50 filings, EURL formation — each has their specialty."
+          },
+          {
+            "title": "Choose the region",
+            "desc": "An Algerian accountant near you makes your exchanges and procedures easier in France."
+          },
+          {
+            "title": "Remote consultation",
+            "desc": "Most assignments are done via messaging and documents."
+          }
         ]
       },
       "expertComptable": {
         "domainLabel": "Area",
         "hero": "Find a chartered accountant in Algeria",
         "sub": "Audit, business valuation, consolidation, due diligence — for companies and the diaspora.",
+        "heroFrance": "Find your Algerian chartered accountant in France",
+        "subFrance": "Audit, expertise, advisory — your Algerian management, handled from France.",
         "searchLabel": "Find a chartered accountant",
         "steps": [
           {
@@ -3795,12 +3890,28 @@
             "title": "Remote consultation",
             "desc": "Most expert assignments are done remotely through document exchange."
           }
+        ],
+        "stepsFrance": [
+          {
+            "title": "Specify your assignment",
+            "desc": "Statutory audit, valuation, due diligence, consolidation — each expert has their specialties."
+          },
+          {
+            "title": "Choose the region",
+            "desc": "An accessible Algerian chartered accountant for your management from France."
+          },
+          {
+            "title": "Remote consultation",
+            "desc": "Most expert assignments are done remotely through document exchange."
+          }
         ]
       },
       "traducteur": {
         "domainLabel": "Document",
         "hero": "Find a sworn translator in Algeria",
         "sub": "Official translation of records, diplomas and legal documents — for residents and the diaspora.",
+        "heroFrance": "Find your Algerian translator in France",
+        "subFrance": "Official translations, deeds, documents — your Arabic-French translations, handled from France.",
         "searchLabel": "Search for a sworn translator",
         "steps": [
           {
@@ -3810,6 +3921,20 @@
           {
             "title": "Choose the wilaya",
             "desc": "A local accredited translator makes handing over original documents easier."
+          },
+          {
+            "title": "Certified translation",
+            "desc": "Most exchanges happen by messaging, with delivery of the stamped document."
+          }
+        ],
+        "stepsFrance": [
+          {
+            "title": "Specify your need",
+            "desc": "Language pair and document type: civil record, diploma, judgment..."
+          },
+          {
+            "title": "Choose the region",
+            "desc": "An Algerian translator near you makes handing over original documents easier in France."
           },
           {
             "title": "Certified translation",
@@ -4438,7 +4563,15 @@
     "noAvailNote": "Suggest a time, {prof} will confirm directly."
   },
   "bookingModal": {
-    "daysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "daysShort": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
     "daysFull": [
       "Sunday",
       "Monday",
