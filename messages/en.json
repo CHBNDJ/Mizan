@@ -167,7 +167,7 @@
       "steps": [
         {
           "title": "Choose your expert",
-          "desc": "Select the right category — lawyer, notary, bailiff or accountant."
+          "desc": "Select the right category — lawyer, notary, bailiff, accountant, chartered accountant or translator."
         },
         {
           "title": "Filter by wilaya",
@@ -176,6 +176,20 @@
         {
           "title": "Contact directly",
           "desc": "Secure messaging. Accessible from Algeria or abroad. Free registration."
+        }
+      ],
+      "stepsFrance": [
+        {
+          "title": "Choose your expert",
+          "desc": "Select the right category — lawyer, notary, bailiff, accountant, chartered accountant or translator."
+        },
+        {
+          "title": "Filter by region",
+          "desc": "Choose your region on the interactive map or via the selector."
+        },
+        {
+          "title": "Contact directly",
+          "desc": "Secure messaging. Your Algerian legal matters, from France. Free registration."
         }
       ]
     },
@@ -192,7 +206,7 @@
     },
     "ctaClient": {
       "title": "Looking for a legal expert?",
-      "desc": "Browse verified profiles of lawyers, notaries, bailiffs and accountants.",
+      "desc": "Browse verified profiles of lawyers, notaries, bailiffs, accountants, chartered accountants and translators.",
       "action": "Find an expert"
     },
     "ctaLawyer": {
@@ -456,7 +470,7 @@
   },
   "howItWorks": {
     "heroTitle": "How does Mizan work?",
-    "heroSubtitle": "Mizan connects clients — in Algeria or abroad — with verified lawyers, notaries, bailiffs, accountants and chartered accountants.",
+    "heroSubtitle": "Mizan connects clients — in Algeria or abroad — with verified lawyers, notaries, bailiffs, accountants, chartered accountants and translators.",
     "tabClient": "You are a client",
     "tabPro": "You are a professional",
     "faqTitle": "Frequently asked questions",

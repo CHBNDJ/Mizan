@@ -129,7 +129,11 @@ export default function HomePage() {
     </>
   );
 
-  const howItWorksSteps = t.raw("home.howItWorks.steps") as {
+  const howItWorksSteps = t.raw(
+    country === "France"
+      ? "home.howItWorks.stepsFrance"
+      : "home.howItWorks.steps"
+  ) as {
     title: string;
     desc: string;
   }[];

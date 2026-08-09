@@ -167,7 +167,7 @@
       "steps": [
         {
           "title": "Choisissez votre expert",
-          "desc": "Sélectionnez la catégorie adaptée — avocat, notaire, huissier ou comptable."
+          "desc": "Sélectionnez la catégorie adaptée — avocat, notaire, huissier, comptable, expert-comptable ou traducteur."
         },
         {
           "title": "Filtrez par wilaya",
@@ -176,6 +176,20 @@
         {
           "title": "Contactez directement",
           "desc": "Messagerie sécurisée. Accessible depuis l'Algérie ou l'étranger. Inscription gratuite."
+        }
+      ],
+      "stepsFrance": [
+        {
+          "title": "Choisissez votre expert",
+          "desc": "Sélectionnez la catégorie adaptée — avocat, notaire, huissier, comptable, expert-comptable ou traducteur."
+        },
+        {
+          "title": "Filtrez par région",
+          "desc": "Choisissez votre région sur la carte interactive ou via le sélecteur."
+        },
+        {
+          "title": "Contactez directement",
+          "desc": "Messagerie sécurisée. Vos démarches juridiques algériennes, depuis la France. Inscription gratuite."
         }
       ]
     },
@@ -192,7 +206,7 @@
     },
     "ctaClient": {
       "title": "Vous cherchez un expert juridique ?",
-      "desc": "Parcourez les profils vérifiés d'avocats, notaires, huissiers et comptables.",
+      "desc": "Parcourez les profils vérifiés d'avocats, notaires, huissiers, comptables, experts-comptables et traducteurs.",
       "action": "Trouver un expert"
     },
     "ctaLawyer": {
@@ -456,7 +470,7 @@
   },
   "howItWorks": {
     "heroTitle": "Comment fonctionne Mizan ?",
-    "heroSubtitle": "Mizan connecte des clients — en Algérie ou à l'étranger — avec des avocats, notaires, huissiers, comptables et experts-comptables vérifiés.",
+    "heroSubtitle": "Mizan connecte des clients — en Algérie ou à l'étranger — avec des avocats, notaires, huissiers, comptables, experts-comptables et traducteurs vérifiés.",
     "tabClient": "Vous êtes client",
     "tabPro": "Vous êtes professionnel",
     "faqTitle": "Questions fréquentes",
@@ -523,7 +537,11 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil — spécialités, expérience, cabinet. Votre numéro de barreau sera demandé.",
-            "points": ["Profil complet", "N° de barreau requis", "Gratuit"]
+            "points": [
+              "Profil complet",
+              "N° de barreau requis",
+              "Gratuit"
+            ]
           },
           {
             "title": "Vérification",
@@ -569,7 +587,11 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil notarial. Votre N° de chambre sera requis.",
-            "points": ["Profil complet", "N° chambre des notaires", "Gratuit"]
+            "points": [
+              "Profil complet",
+              "N° chambre des notaires",
+              "Gratuit"
+            ]
           },
           {
             "title": "Vérification",
@@ -615,7 +637,11 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° officiel d'huissier sera requis.",
-            "points": ["Profil complet", "N° d'huissier requis", "Gratuit"]
+            "points": [
+              "Profil complet",
+              "N° d'huissier requis",
+              "Gratuit"
+            ]
           },
           {
             "title": "Vérification",
@@ -661,7 +687,11 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° d'agrément ONEC ou ONCA sera requis.",
-            "points": ["Profil complet", "N° agrément requis", "Gratuit"]
+            "points": [
+              "Profil complet",
+              "N° agrément requis",
+              "Gratuit"
+            ]
           },
           {
             "title": "Vérification",
@@ -707,7 +737,11 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° d'agrément ONEC sera requis.",
-            "points": ["Profil complet", "N° ONEC requis", "Gratuit"]
+            "points": [
+              "Profil complet",
+              "N° ONEC requis",
+              "Gratuit"
+            ]
           },
           {
             "title": "Vérification",
@@ -753,7 +787,11 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° d'agrément du Ministère de la Justice sera requis.",
-            "points": ["Profil complet", "N° agrément requis", "Gratuit"]
+            "points": [
+              "Profil complet",
+              "N° agrément requis",
+              "Gratuit"
+            ]
           },
           {
             "title": "Vérification",
@@ -3722,6 +3760,20 @@
             "title": "Contactez directement",
             "desc": "Messagerie sécurisée. Inscription client gratuite."
           }
+        ],
+        "stepsFrance": [
+          {
+            "title": "Choisissez votre spécialité",
+            "desc": "Précisez votre besoin : droit civil, pénal, famille, affaires..."
+          },
+          {
+            "title": "Sélectionnez votre région",
+            "desc": "Sur la carte interactive ou via le menu — trouvez un avocat algérien proche de vous en France."
+          },
+          {
+            "title": "Contactez directement",
+            "desc": "Messagerie sécurisée. Inscription client gratuite."
+          }
         ]
       },
       "notaire": {
@@ -3739,6 +3791,20 @@
           {
             "title": "Choisissez la wilaya",
             "desc": "Le notaire doit être compétent dans la wilaya du bien ou de l'acte."
+          },
+          {
+            "title": "Prenez contact",
+            "desc": "Décrivez votre situation, le notaire vous répond directement."
+          }
+        ],
+        "stepsFrance": [
+          {
+            "title": "Précisez votre besoin",
+            "desc": "Succession, immobilier, mariage — chaque notaire a ses spécialités."
+          },
+          {
+            "title": "Choisissez la région",
+            "desc": "Trouvez un notaire algérien accessible pour vos actes et démarches depuis la France."
           },
           {
             "title": "Prenez contact",
@@ -3766,6 +3832,20 @@
             "title": "Contact rapide",
             "desc": "Certaines interventions sont urgentes. Contactez directement."
           }
+        ],
+        "stepsFrance": [
+          {
+            "title": "Type d'acte",
+            "desc": "Constat, signification, recouvrement — précisez votre besoin."
+          },
+          {
+            "title": "Identifiez la région",
+            "desc": "Trouvez un huissier algérien intervenant dans votre secteur en France."
+          },
+          {
+            "title": "Contact rapide",
+            "desc": "Certaines interventions sont urgentes. Contactez directement."
+          }
         ]
       },
       "comptable": {
@@ -3783,6 +3863,20 @@
           {
             "title": "Choisissez la wilaya",
             "desc": "Un comptable local connaît les exigences de l'administration algérienne."
+          },
+          {
+            "title": "Consultation à distance",
+            "desc": "La plupart des missions se font par messagerie et documents."
+          }
+        ],
+        "stepsFrance": [
+          {
+            "title": "Précisez votre besoin",
+            "desc": "Bilan, déclarations IFU/G50, création EURL — chacun sa spécialité."
+          },
+          {
+            "title": "Choisissez la région",
+            "desc": "Un comptable algérien proche de vous facilite vos échanges et démarches en France."
           },
           {
             "title": "Consultation à distance",
@@ -3810,6 +3904,20 @@
             "title": "Consultation à distance",
             "desc": "La majorité des missions d'expertise se font à distance par échange de documents."
           }
+        ],
+        "stepsFrance": [
+          {
+            "title": "Précisez votre mission",
+            "desc": "Audit légal, évaluation, due diligence, consolidation — chaque expert a ses spécialités."
+          },
+          {
+            "title": "Choisissez la région",
+            "desc": "Un expert-comptable algérien accessible pour votre gestion depuis la France."
+          },
+          {
+            "title": "Consultation à distance",
+            "desc": "La majorité des missions d'expertise se font à distance par échange de documents."
+          }
         ]
       },
       "traducteur": {
@@ -3827,6 +3935,20 @@
           {
             "title": "Choisissez la wilaya",
             "desc": "Un traducteur agréé près de chez vous facilite la remise des documents originaux."
+          },
+          {
+            "title": "Traduction certifiée",
+            "desc": "La plupart des échanges se font par messagerie, avec remise du document tamponné."
+          }
+        ],
+        "stepsFrance": [
+          {
+            "title": "Précisez votre besoin",
+            "desc": "Paire de langues et type de document : acte d'état civil, diplôme, jugement..."
+          },
+          {
+            "title": "Choisissez la région",
+            "desc": "Un traducteur algérien près de chez vous facilite la remise des documents originaux en France."
           },
           {
             "title": "Traduction certifiée",
@@ -4455,7 +4577,15 @@
     "noAvailNote": "Proposez un créneau, {prof} confirmera directement."
   },
   "bookingModal": {
-    "daysShort": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+    "daysShort": [
+      "Dim",
+      "Lun",
+      "Mar",
+      "Mer",
+      "Jeu",
+      "Ven",
+      "Sam"
+    ],
     "daysFull": [
       "Dimanche",
       "Lundi",
