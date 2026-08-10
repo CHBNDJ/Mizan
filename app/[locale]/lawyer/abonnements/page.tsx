@@ -3,12 +3,16 @@ import { useState } from "react";
 import { Check } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { localizedDigits } from "@/lib/arabicNumerals";
+import { useAuth } from "@/hooks/useAuth";
 
 const PLANS_RAW = [
   {
     id: "3mois",
     price: 18000,
     monthly: 6000,
+    priceEur: 240,
+    monthlyEur: 80,
+    savingsEur: null as null | number,
     badge: null as null | "mostChosen",
     savings: null as null | number,
     features: [
@@ -26,6 +30,9 @@ const PLANS_RAW = [
     id: "6mois",
     price: 33000,
     monthly: 5500,
+    priceEur: 420,
+    monthlyEur: 70,
+    savingsEur: 60 as null | number,
     badge: "mostChosen" as const,
     savings: 3000,
     features: [
@@ -43,6 +50,9 @@ const PLANS_RAW = [
     id: "12mois",
     price: 60000,
     monthly: 5000,
+    priceEur: 720,
+    monthlyEur: 60,
+    savingsEur: 240 as null | number,
     badge: "bestOffer" as const,
     savings: 12000,
     features: [
@@ -62,17 +72,28 @@ export default function AbonnementsPage() {
   const [selected, setSelected] = useState("6mois");
   const t = useTranslations();
   const locale = useLocale();
+  const { lawyerProfile } = useAuth();
+  const isFrance = (lawyerProfile as any)?.country_practice === "France";
   const numLocale =
     locale === "ar" ? "ar-EG" : locale === "en" ? "en-US" : "fr-DZ";
   const ld = (s: string) => localizedDigits(s, locale);
+  const monthlyLocale = isFrance ? "fr-FR" : numLocale;
+  const perMonthLabel = isFrance
+    ? t("subscriptionPlans.perMonthEur")
+    : t("subscriptionPlans.perMonth");
 
   const fmt = (n: number) =>
-    ld(n.toLocaleString(numLocale)) +
-    " " +
-    t("subscriptionPlans.perMonth").split("/")[0];
+    isFrance
+      ? ld(n.toLocaleString("fr-FR")) + " €"
+      : ld(n.toLocaleString(numLocale)) +
+        " " +
+        t("subscriptionPlans.perMonth").split("/")[0];
 
   const PLANS = PLANS_RAW.map((p) => ({
     ...p,
+    price: isFrance ? p.priceEur : p.price,
+    monthly: isFrance ? p.monthlyEur : p.monthly,
+    savings: isFrance ? p.savingsEur : p.savings,
     duration: t(`durations.${p.id}`),
     badgeLabel:
       p.badge === "mostChosen"
@@ -82,9 +103,14 @@ export default function AbonnementsPage() {
           : null,
     savingsLabel:
       p.savings != null
-        ? t("subscriptionPlans.savings", {
-            amount: ld(p.savings.toLocaleString(numLocale)),
-          })
+        ? t(
+            isFrance
+              ? "subscriptionPlans.savingsEur"
+              : "subscriptionPlans.savings",
+            {
+              amount: ld(p.savings.toLocaleString(monthlyLocale)),
+            }
+          )
         : null,
     features: p.features.map((f) => ({
       ...f,
@@ -179,10 +205,10 @@ export default function AbonnementsPage() {
               )}
               <div className="mb-1">
                 <span className="text-5xl font-bold tracking-tight text-white leading-none">
-                  {ld(p.monthly.toLocaleString(numLocale))}
+                  {ld(p.monthly.toLocaleString(monthlyLocale))}
                 </span>
                 <span className="text-sm ml-2 text-white/50">
-                  {t("subscriptionPlans.perMonth")}
+                  {perMonthLabel}
                 </span>
               </div>
               <div className="text-sm text-white/40 mb-2">
@@ -257,12 +283,12 @@ export default function AbonnementsPage() {
                   <span
                     className={`card-price text-5xl font-bold tracking-tight leading-none ${on ? "text-white" : "text-slate-900 dark:text-[#F5F5F4]"}`}
                   >
-                    {ld(p.monthly.toLocaleString(numLocale))}
+                    {ld(p.monthly.toLocaleString(monthlyLocale))}
                   </span>
                   <span
                     className={`card-unit text-sm ml-2 ${on ? "text-white/45" : "text-slate-400 dark:text-[#7A7A78]"}`}
                   >
-                    {t("subscriptionPlans.perMonth")}
+                    {perMonthLabel}
                   </span>
                 </div>
 

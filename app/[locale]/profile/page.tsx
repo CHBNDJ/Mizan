@@ -30,6 +30,7 @@ import { CustomSelect } from "@/components/ui/CustomSelect";
 import { dbToFrontend, frontendToDb } from "@/lib/genderUtils";
 import { SPECIALITES, WILAYAS, LOCATION, LANGUES } from "@/utils/constants";
 import { COMMUNES_PAR_WILAYA } from "@/utils/communes";
+import { REGIONS_FRANCE, VILLES_PAR_REGION } from "@/utils/franceData";
 import { DOMAINES_PAR_PROFESSION } from "@/lib/avocatsData";
 import { getInitials } from "@/lib/utils";
 import ImageCropModal from "@/components/ImageCropModal";
@@ -63,6 +64,7 @@ const cap = (str: string) =>
 function ProfilePageContent() {
   const supabase = createClient();
   const { user, profile, lawyerProfile, loading, refreshProfile } = useAuth();
+  const isFrance = (lawyerProfile as any)?.country_practice === "France";
   const t = useTranslations();
   const locale = useLocale();
   const ld = (s: string) => localizedDigits(s, locale);
@@ -159,6 +161,20 @@ function ProfilePageContent() {
       setCommuneOptions([]);
       return;
     }
+    if (isFrance) {
+      const regionNorm = REGIONS_FRANCE.find(
+        (r) => r.toLowerCase().replace(/\s+/g, "-") === addressData.wilaya
+      );
+      if (regionNorm && VILLES_PAR_REGION[regionNorm]) {
+        setCommuneOptions(
+          VILLES_PAR_REGION[regionNorm].map((c) => ({
+            value: c.toLowerCase().replace(/\s+/g, "-"),
+            label: c,
+          }))
+        );
+      }
+      return;
+    }
     const wilayaNorm = WILAYAS.find(
       (w) => w.toLowerCase().replace(/\s+/g, "-") === addressData.wilaya
     );
@@ -170,7 +186,7 @@ function ProfilePageContent() {
         }))
       );
     }
-  }, [addressData.wilaya]);
+  }, [addressData.wilaya, isFrance]);
 
   useEffect(() => {
     if (!containerRef.current || loading) return;
@@ -207,9 +223,9 @@ function ProfilePageContent() {
       );
   }, [loading]);
 
-  const wilayaOptions = WILAYAS.map((w) => ({
+  const wilayaOptions = (isFrance ? REGIONS_FRANCE : WILAYAS).map((w) => ({
     value: w.toLowerCase().replace(/\s+/g, "-"),
-    label: translateWilaya(w),
+    label: isFrance ? w : translateWilaya(w),
   }));
   const langueOptions = LANGUES.map((l) => ({
     value: l,
@@ -850,7 +866,11 @@ function ProfilePageContent() {
                               city: "",
                             }))
                           }
-                          placeholder={t("myProfile.wilaya")}
+                          placeholder={
+                            isFrance
+                              ? t("myProfile.region")
+                              : t("myProfile.wilaya")
+                          }
                           className="h-12"
                         />
                         <CustomSelect
@@ -861,8 +881,12 @@ function ProfilePageContent() {
                           }
                           placeholder={
                             addressData.wilaya
-                              ? t("myProfile.commune")
-                              : t("myProfile.chooseWilayaFirst")
+                              ? isFrance
+                                ? t("myProfile.ville")
+                                : t("myProfile.commune")
+                              : isFrance
+                                ? t("myProfile.chooseRegionFirst")
+                                : t("myProfile.chooseWilayaFirst")
                           }
                           className="h-12"
                           disabled={!addressData.wilaya}

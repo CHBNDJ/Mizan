@@ -3252,7 +3252,7 @@
     "badgeBestOffer": "Meilleure offre",
     "savings": "Économisez {amount} DZD",
     "perMonth": "DZD/mois",
-    "totalOnce": "{price} total · paiement unique",
+    "totalOnce": "soit {price} facturés en une fois",
     "features": {
       "publicProfile": "Profil public visible",
       "clientRequests": "Accès aux demandes clients",
@@ -3262,7 +3262,9 @@
       "featuredBadge": "Badge « Mis en avant »",
       "searchPriority": "Priorité dans la recherche",
       "visibilityStats": "Statistiques de visibilité"
-    }
+    },
+    "perMonthEur": "€/mois",
+    "savingsEur": "Économisez {amount} €"
   },
   "myProfile": {
     "title": "Mon profil",
@@ -3329,7 +3331,10 @@
       "comptable": "ex: ONEC-2024-001",
       "expertComptable": "ex: ONEC-2024-001",
       "traducteur": "TRD2024-001"
-    }
+    },
+    "region": "Région",
+    "ville": "Ville",
+    "chooseRegionFirst": "Choisissez d'abord la région"
   },
   "settingsPage": {
     "title": "Paramètres",

@@ -579,7 +579,7 @@
     "badgeBestOffer": "أفضل عرض",
     "savings": "وفّر {amount} دج",
     "perMonth": "دج/شهريًا",
-    "totalOnce": "{price} إجمالي · دفعة واحدة",
+    "totalOnce": "أي {price} تُدفع دفعة واحدة",
     "features": {
       "publicProfile": "ملف عام مرئي",
       "clientRequests": "الوصول إلى طلبات العملاء",
@@ -589,7 +589,9 @@
       "featuredBadge": "شعار «مميز»",
       "searchPriority": "أولوية في البحث",
       "visibilityStats": "إحصائيات الظهور"
-    }
+    },
+    "perMonthEur": "€/شهر",
+    "savingsEur": "وفّر {amount} €"
   },
   "myProfile": {
     "title": "ملفي الشخصي",
@@ -656,7 +658,10 @@
       "comptable": "مثال: ONEC-٢٠٢٤-٠٠١",
       "expertComptable": "مثال: ONEC-٢٠٢٤-٠٠١",
       "traducteur": "TRD2024-001"
-    }
+    },
+    "region": "المنطقة",
+    "ville": "المدينة",
+    "chooseRegionFirst": "اختر المنطقة أولاً"
   },
   "settingsPage": {
     "title": "الإعدادات",
