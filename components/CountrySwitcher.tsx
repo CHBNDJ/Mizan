@@ -47,6 +47,7 @@ export function CountrySwitcher() {
     setOpen(false);
     try {
       localStorage.setItem("mizan-pays", country);
+      window.dispatchEvent(new Event("mizan-pays-change"));
     } catch {}
     if (country === "France") router.push(`${pathname}?pays=france`);
     else router.push(`${pathname}?pays=algerie`);
