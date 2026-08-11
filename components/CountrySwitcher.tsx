@@ -12,8 +12,22 @@ export function CountrySwitcher() {
   const [pays, setPays] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const current = searchParams.get("pays") === "france" ? "France" : "Algérie";
-
+  const [current, setCurrent] = useState<string>("Algérie");
+  const paysParam = searchParams.get("pays");
+  useEffect(() => {
+    if (paysParam === "france") {
+      setCurrent("France");
+    } else if (paysParam === "algerie") {
+      setCurrent("Algérie");
+    } else {
+      try {
+        const stored = localStorage.getItem("mizan-pays");
+        setCurrent(stored === "France" ? "France" : "Algérie");
+      } catch {
+        setCurrent("Algérie");
+      }
+    }
+  }, [paysParam]);
   useEffect(() => {
     getPaysAvecAvocats().then(setPays);
   }, []);
@@ -31,8 +45,11 @@ export function CountrySwitcher() {
 
   const changeCountry = (country: string) => {
     setOpen(false);
+    try {
+      localStorage.setItem("mizan-pays", country);
+    } catch {}
     if (country === "France") router.push(`${pathname}?pays=france`);
-    else router.push(pathname);
+    else router.push(`${pathname}?pays=algerie`);
   };
 
   return (
