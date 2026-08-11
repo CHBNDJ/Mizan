@@ -1,14 +1,11 @@
 import { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
-
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
-
 const LOCALES = ["fr", "ar", "en"] as const;
 const DEFAULT_LOCALE = "fr";
-
 const PROFESSIONS = [
   "avocat",
   "notaire",
@@ -17,7 +14,6 @@ const PROFESSIONS = [
   "expert-comptable",
   "traducteur",
 ];
-
 const SPECIALITES_SLUGS = [
   "droit-de-la-famille",
   "droit-commercial",
@@ -28,7 +24,16 @@ const SPECIALITES_SLUGS = [
   "droit-fiscal",
   "droit-administratif",
 ];
-
+const WILAYAS_SLUGS = [
+  "alger",
+  "oran",
+  "constantine",
+  "setif",
+  "blida",
+  "annaba",
+  "bejaia",
+  "tizi-ouzou",
+];
 const BLOG_SLUGS = [
   "exequatur-algerie-jugement-etranger",
   "comment-divorcer-en-algerie",
@@ -41,15 +46,12 @@ const BLOG_SLUGS = [
   "heriter-bien-immobilier-algerie-france",
   "vendre-appartement-algerie-etranger",
 ];
-
 const baseUrl = "https://mizan-dz.com";
-
 function localeUrl(locale: string, path: string): string {
   return locale === DEFAULT_LOCALE
     ? `${baseUrl}${path || "/"}`
     : `${baseUrl}/${locale}${path}`;
 }
-
 function entry(
   path: string,
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
@@ -68,7 +70,6 @@ function entry(
     },
   };
 }
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     entry("", "daily", 1),
@@ -79,26 +80,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entry("/contact", "monthly", 0.6),
     entry("/privacy", "yearly", 0.3),
   ];
-
   const professionPages = PROFESSIONS.map((prof) =>
     entry(`/${prof}`, "weekly", 0.95)
   );
-
   const specialitePages = SPECIALITES_SLUGS.map((slug) =>
     entry(`/lawyers/specialite/${slug}`, "weekly", 0.85)
   );
-
+  const wilayaPages = WILAYAS_SLUGS.map((slug) =>
+    entry(`/lawyers/wilaya/${slug}`, "weekly", 0.85)
+  );
   const blogPages = BLOG_SLUGS.map((slug) =>
     entry(`/blog/${slug}`, "monthly", 0.7)
   );
-
   try {
     const { data: lawyers } = await supabase
       .from("lawyers")
       .select("id, slug, updated_at, users!inner(user_type)")
       .eq("is_verified", true)
       .eq("users.user_type", "lawyer");
-
     const lawyerPages = (lawyers || []).map((lawyer) =>
       entry(
         `/lawyers/${lawyer.slug || lawyer.id}`,
@@ -107,11 +106,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         new Date(lawyer.updated_at || new Date())
       )
     );
-
     return [
       ...staticPages,
       ...professionPages,
       ...specialitePages,
+      ...wilayaPages,
       ...blogPages,
       ...lawyerPages,
     ];
@@ -120,6 +119,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...staticPages,
       ...professionPages,
       ...specialitePages,
+      ...wilayaPages,
       ...blogPages,
     ];
   }

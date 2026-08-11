@@ -41,7 +41,8 @@ export function CountrySwitcher() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  if (!pays.includes("France")) return null;
+  const FRANCE_ENABLED = false;
+  if (!FRANCE_ENABLED || !pays.includes("France")) return null;
 
   const changeCountry = (country: string) => {
     setOpen(false);
