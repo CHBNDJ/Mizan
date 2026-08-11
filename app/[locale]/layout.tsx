@@ -111,7 +111,7 @@ export default async function RootLayout({
           name="google-site-verification"
           content="W7PDaGtQ4F7JD8rOf8RDI1wmwSrgdMt0ivpebaRSeww"
         />
-        <link rel="alternate" hrefLang="fr" href={`${siteConfig.url}/fr`} />
+        <link rel="alternate" hrefLang="fr" href={siteConfig.url} />
         <link rel="alternate" hrefLang="ar" href={`${siteConfig.url}/ar`} />
         <link rel="alternate" hrefLang="en" href={`${siteConfig.url}/en`} />
         <link rel="alternate" hrefLang="x-default" href={siteConfig.url} />

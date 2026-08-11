@@ -86,7 +86,7 @@ export const homeMetadata: Metadata = {
   alternates: {
     canonical: siteConfig.url,
     languages: {
-      "fr-DZ": `${siteConfig.url}/fr`,
+      "fr-DZ": siteConfig.url,
       "ar-DZ": `${siteConfig.url}/ar`,
       "en-US": `${siteConfig.url}/en`,
       "x-default": siteConfig.url,
@@ -116,7 +116,7 @@ export const searchMetadata: Metadata = {
   alternates: {
     canonical: `${siteConfig.url}/search`,
     languages: {
-      "fr-DZ": `${siteConfig.url}/fr/search`,
+      "fr-DZ": `${siteConfig.url}/search`,
       "ar-DZ": `${siteConfig.url}/ar/search`,
       "en-US": `${siteConfig.url}/en/search`,
       "x-default": `${siteConfig.url}/search`,
