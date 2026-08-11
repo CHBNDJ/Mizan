@@ -73,7 +73,7 @@ export function FranceMap({
       const r = containerRef.current?.getBoundingClientRect();
       const id = getId(e.target as Element);
       if (id && activeIds.includes(id)) {
-        setHovered(REGION_NAMES[id]);
+        setHovered(id);
         if (r) setTooltipPos({ x: e.clientX - r.left, y: e.clientY - r.top });
       } else {
         setHovered(null);
@@ -109,8 +109,8 @@ export function FranceMap({
         ${activeSelector ? `.dark #france-real-map :is(${activeSelector}) { fill: #6fcf9f !important; }` : ""}
         ${selectedId ? `#france-real-map #${selectedId} { fill: #0d9488 !important; stroke: #0f766e !important; stroke-width: 2 !important; }` : ""}
         ${selectedId ? `.dark #france-real-map #${selectedId} { fill: #6fcf9f !important; stroke: #0F6E56 !important; stroke-width: 2 !important; }` : ""}
-        ${activeSelector && !readOnly ? `#france-real-map :is(${activeSelector}):hover { fill: #5eead4 !important; }` : ""}
-        ${activeSelector && !readOnly ? `.dark #france-real-map :is(${activeSelector}):hover { fill: #6fcf9f !important; }` : ""}
+        ${hovered && !readOnly ? `#france-real-map #${hovered} { fill: #5eead4 !important; }` : ""}
+        ${hovered && !readOnly ? `.dark #france-real-map #${hovered} { fill: #6fcf9f !important; }` : ""}
       `}</style>
       <div
         onMouseMove={onMouseMove}
@@ -132,7 +132,7 @@ export function FranceMap({
           className="pointer-events-none absolute z-50 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-medium shadow-lg whitespace-nowrap"
           style={{ left: tooltipPos.x + 12, top: tooltipPos.y + 12 }}
         >
-          {hovered}
+          {REGION_NAMES[hovered]}
         </div>
       )}
     </div>

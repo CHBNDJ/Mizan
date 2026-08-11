@@ -112,8 +112,8 @@ const ARTICLE_META: Record<
       titres: {
         fr: [
           "Professeur des universités en Algérie",
-          "Avocat agréé près la Cour suprême et le Conseil d'État",
-          "Membre du Conseil de l'Ordre des Avocats de Béjaïa",
+          "Avocat agréé auprès de la Cour suprême et du Conseil d'État",
+          "Membre du Conseil de l'Ordre des Avocats au barreau de Béjaïa",
         ],
         ar: [
           "أستاذ جامعي في الجزائر",
