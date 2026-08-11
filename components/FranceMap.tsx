@@ -68,26 +68,29 @@ export function FranceMap({
     )
     .filter(Boolean) as string[];
 
-  const onMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const r = containerRef.current?.getBoundingClientRect();
-    const id = getId(e.target as Element);
-    if (id) {
-      setHovered(REGION_NAMES[id]);
-      if (r) setTooltipPos({ x: e.clientX - r.left, y: e.clientY - r.top });
-    } else {
-      setHovered(null);
-    }
-  }, []);
+  const onMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const r = containerRef.current?.getBoundingClientRect();
+      const id = getId(e.target as Element);
+      if (id && activeIds.includes(id)) {
+        setHovered(REGION_NAMES[id]);
+        if (r) setTooltipPos({ x: e.clientX - r.left, y: e.clientY - r.top });
+      } else {
+        setHovered(null);
+      }
+    },
+    [activeIds]
+  );
 
   const onClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (readOnly) return;
       const id = getId(e.target as Element);
-      if (!id) return;
+      if (!id || !activeIds.includes(id)) return;
       const name = REGION_NAMES[id];
       onSelect(selectedRegion === name ? "" : name);
     },
-    [selectedRegion, onSelect, readOnly]
+    [selectedRegion, onSelect, readOnly, activeIds]
   );
 
   const activeSelector = activeIds.map((id) => `#${id}`).join(",");
@@ -98,15 +101,16 @@ export function FranceMap({
   return (
     <div className="relative w-full" ref={containerRef}>
       <style>{`
-      #france-real-map path { fill: #d1fae5; stroke: #ffffff; stroke-width: 1; transition: fill 0.12s ease; cursor: pointer; }
+        #france-real-map path { fill: #d1fae5; stroke: #ffffff; stroke-width: 1; transition: fill 0.12s ease; cursor: default; }
         .dark #france-real-map path { fill: #2a2a28; stroke: #0a0e0d; }
+        ${activeSelector ? `#france-real-map :is(${activeSelector}) { cursor: pointer; }` : ""}
         #france-real-map circle, #france-real-map [id="points"], #france-real-map [id="label_points"] { display: none; }
         ${activeSelector ? `#france-real-map :is(${activeSelector}) { fill: #5eead4 !important; }` : ""}
         ${activeSelector ? `.dark #france-real-map :is(${activeSelector}) { fill: #6fcf9f !important; }` : ""}
         ${selectedId ? `#france-real-map #${selectedId} { fill: #0d9488 !important; stroke: #0f766e !important; stroke-width: 2 !important; }` : ""}
         ${selectedId ? `.dark #france-real-map #${selectedId} { fill: #6fcf9f !important; stroke: #0F6E56 !important; stroke-width: 2 !important; }` : ""}
-        ${hovered && !readOnly ? `#france-real-map :is(${activeSelector || "path"}):hover { fill: #5eead4 !important; }` : ""}
-        ${hovered && !readOnly ? `.dark #france-real-map :is(${activeSelector || "path"}):hover { fill: #6fcf9f !important; }` : ""}
+        ${activeSelector && !readOnly ? `#france-real-map :is(${activeSelector}):hover { fill: #5eead4 !important; }` : ""}
+        ${activeSelector && !readOnly ? `.dark #france-real-map :is(${activeSelector}):hover { fill: #6fcf9f !important; }` : ""}
       `}</style>
       <div
         onMouseMove={onMouseMove}
