@@ -162,7 +162,7 @@ export default function LawyerRegisterPage() {
     : [];
 
   const handleProfessionSelect = (p: Profession) => {
-    if (p === "expert-comptable") {
+    if (p === "expert-comptable" && !isFrance) {
       setProfessions(["expert-comptable", "comptable"]);
     } else {
       setProfessions([p]);
@@ -639,8 +639,7 @@ export default function LawyerRegisterPage() {
               );
             })}
           </div>
-
-          {professions[0] === "expert-comptable" && (
+          {professions[0] === "expert-comptable" && !isFrance && (
             <div className="mt-4 bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 rounded-xl px-4 py-3 flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-teal-600 dark:text-[#6fcf9f] flex-shrink-0 mt-0.5" />
               <p className="text-xs text-teal-700 dark:text-[#6fcf9f]">
