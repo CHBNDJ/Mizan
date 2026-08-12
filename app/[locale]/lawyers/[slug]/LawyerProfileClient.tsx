@@ -593,6 +593,10 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
       <div className="max-w-3xl mx-auto px-4 py-8">
         <button
           onClick={() => {
+            if (typeof window !== "undefined" && window.history.length > 1) {
+              router.back();
+              return;
+            }
             const sp = searchParams.toString();
             const suffix =
               sp ||
