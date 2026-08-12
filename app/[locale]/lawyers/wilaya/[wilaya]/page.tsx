@@ -5,13 +5,27 @@ import { SearchResults } from "@/components/SearchResults";
 
 const VILLES_WILAYA: Record<string, string> = {
   alger: "alger",
+  bejaia: "béjaïa",
   oran: "oran",
   constantine: "constantine",
-  setif: "sétif",
-  blida: "blida",
   annaba: "annaba",
-  bejaia: "béjaïa",
-  "tizi-ouzou": "tizi ouzou",
+  blida: "blida",
+  tlemcen: "tlemcen",
+  skikda: "skikda",
+  setif: "sétif",
+  batna: "batna",
+  "bordj-bou-arreridj": "bordj-bou-arréridj",
+  medea: "médéa",
+  "tizi-ouzou": "tizi-ouzou",
+  tiaret: "tiaret",
+  chlef: "chlef",
+  tipaza: "tipaza",
+  mostaganem: "mostaganem",
+  "ain-temouchent": "aïn-témouchent",
+  jijel: "jijel",
+  ghardaia: "ghardaïa",
+  laghouat: "laghouat",
+  bouira: "bouira",
 };
 
 export default function VillePage({

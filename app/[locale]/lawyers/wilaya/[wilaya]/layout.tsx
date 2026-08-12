@@ -6,6 +6,11 @@ const VILLES_SEO: Record<string, { label: string; description: string }> = {
     description:
       "Trouvez un avocat à Alger inscrit au barreau. Droit de la famille, divorce, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
   },
+  bejaia: {
+    label: "Béjaïa",
+    description:
+      "Trouvez un avocat à Béjaïa inscrit au barreau. Droit de la famille, divorce, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+  },
   oran: {
     label: "Oran",
     description:
@@ -16,30 +21,95 @@ const VILLES_SEO: Record<string, { label: string; description: string }> = {
     description:
       "Trouvez un avocat à Constantine inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
   },
-  setif: {
-    label: "Sétif",
+  annaba: {
+    label: "Annaba",
     description:
-      "Trouvez un avocat à Sétif inscrit au barreau. Famille, immobilier, travail, pénal — profils vérifiés, avis et honoraires transparents.",
+      "Trouvez un avocat à Annaba inscrit au barreau. Famille, immobilier, travail, pénal — profils vérifiés, avis et honoraires transparents.",
   },
   blida: {
     label: "Blida",
     description:
       "Trouvez un avocat à Blida inscrit au barreau. Famille, divorce, immobilier, pénal — profils vérifiés, avis et honoraires transparents.",
   },
-  annaba: {
-    label: "Annaba",
+  tlemcen: {
+    label: "Tlemcen",
     description:
-      "Trouvez un avocat à Annaba inscrit au barreau. Famille, immobilier, travail, pénal — profils vérifiés, avis et honoraires transparents.",
+      "Trouvez un avocat à Tlemcen inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
   },
-  bejaia: {
-    label: "Béjaïa",
+  skikda: {
+    label: "Skikda",
     description:
-      "Trouvez un avocat à Béjaïa inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+      "Trouvez un avocat à Skikda inscrit au barreau. Famille, immobilier, travail, pénal — profils vérifiés, avis et honoraires transparents.",
+  },
+  setif: {
+    label: "Sétif",
+    description:
+      "Trouvez un avocat à Sétif inscrit au barreau. Famille, immobilier, travail, pénal — profils vérifiés, avis et honoraires transparents.",
+  },
+  batna: {
+    label: "Batna",
+    description:
+      "Trouvez un avocat à Batna inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+  },
+  "bordj-bou-arreridj": {
+    label: "Bordj Bou Arréridj",
+    description:
+      "Trouvez un avocat à Bordj Bou Arréridj inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+  },
+  medea: {
+    label: "Médéa",
+    description:
+      "Trouvez un avocat à Médéa inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
   },
   "tizi-ouzou": {
     label: "Tizi Ouzou",
     description:
       "Trouvez un avocat à Tizi Ouzou inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+  },
+  tiaret: {
+    label: "Tiaret",
+    description:
+      "Trouvez un avocat à Tiaret inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+  },
+  chlef: {
+    label: "Chlef",
+    description:
+      "Trouvez un avocat à Chlef inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+  },
+  tipaza: {
+    label: "Tipaza",
+    description:
+      "Trouvez un avocat à Tipaza inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+  },
+  mostaganem: {
+    label: "Mostaganem",
+    description:
+      "Trouvez un avocat à Mostaganem inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+  },
+  "ain-temouchent": {
+    label: "Aïn Témouchent",
+    description:
+      "Trouvez un avocat à Aïn Témouchent inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+  },
+  jijel: {
+    label: "Jijel",
+    description:
+      "Trouvez un avocat à Jijel inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+  },
+  ghardaia: {
+    label: "Ghardaïa",
+    description:
+      "Trouvez un avocat à Ghardaïa inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+  },
+  laghouat: {
+    label: "Laghouat",
+    description:
+      "Trouvez un avocat à Laghouat inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
+  },
+  bouira: {
+    label: "Bouira",
+    description:
+      "Trouvez un avocat à Bouira inscrit au barreau. Famille, immobilier, pénal, affaires — profils vérifiés, avis et honoraires transparents.",
   },
 };
 
