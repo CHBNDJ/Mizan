@@ -111,7 +111,8 @@ export default function LawyerRegisterPage() {
   const supabase = createClient();
 
   const [professions, setProfessions] = useState<Profession[]>([]);
-  const [currentStep, setCurrentStep] = useState(0);
+  const FRANCE_ENABLED = false;
+  const [currentStep, setCurrentStep] = useState(FRANCE_ENABLED ? 0 : 1);
   const [formData, setFormData] = useState<ExtendedLawyerSignupFormData>({
     firstName: "",
     lastName: "",
@@ -373,10 +374,9 @@ export default function LawyerRegisterPage() {
     }
   };
   const handleBack = () => {
-    setCurrentStep((s) => s - 1);
+    setCurrentStep((s) => Math.max(s - 1, FRANCE_ENABLED ? 0 : 1));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
   const handleSubmit = async () => {
     if (!validateStep(5) || professions.length === 0) return;
     setIsSubmitting(true);
