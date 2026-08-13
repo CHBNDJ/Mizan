@@ -3,15 +3,15 @@ import { Metadata } from "next";
 export const siteConfig = {
   name: "MIZAN",
   description:
-    "Plateforme de mise en relation avec des experts juridiques vérifiés en Algérie. Avocats, notaires, huissiers, comptables.",
+    "Plateforme de mise en relation avec des experts juridiques vérifiés en Algérie. Avocats, notaires, huissiers, comptables, experts-comptables et traducteurs.",
   url: "https://mizan-dz.com",
   ogImage: "https://mizan-dz.com/og-image.png",
 };
 
 export const homeMetadata: Metadata = {
-  title: "MIZAN — Trouvez votre expert juridique en Algérie",
+  title: "Avocats & notaires vérifiés en Algérie — Avis clients | MIZAN",
   description:
-    "Trouvez rapidement un avocat, notaire, huissier, comptable ou expert-comptable vérifié en Algérie. Experts vérifiés dans toutes les wilayas. Que vous soyez en Algérie ou à l'étranger.",
+    "Trouvez un avocat, notaire ou huissier vérifié en Algérie. Avis clients réels, honoraires transparents, consultation en ligne depuis l'Algérie ou l'étranger.",
   keywords: [
     "avocat algérie",
     "avocat en ligne algérie",
@@ -31,7 +31,7 @@ export const homeMetadata: Metadata = {
     "trouver avocat algérie",
     "expert juridique algérie",
     "droit algérien",
-    "diaspora algérienne avocat",
+    "avocat algérien étranger",
     "محامي الجزائر",
     "موثق الجزائر",
     "محضر قضائي الجزائر",
@@ -53,7 +53,7 @@ export const homeMetadata: Metadata = {
     locale: "fr_DZ",
     alternateLocale: ["fr_FR", "ar_DZ", "en_US"],
     url: siteConfig.url,
-    title: "MIZAN — Trouvez votre expert juridique en Algérie",
+    title: "Avocats & notaires vérifiés en Algérie — Avis clients | MIZAN",
     description: siteConfig.description,
     siteName: "MIZAN",
     images: [

@@ -69,9 +69,9 @@ export const metadata: Metadata = {
     locale: "fr_DZ",
     url: siteConfig.url,
     siteName: "MIZAN",
-    title: "MIZAN — Trouvez votre expert juridique en Algérie",
+    title: "Avocats & notaires vérifiés en Algérie — Avis clients | MIZAN",
     description:
-      "Avocats, notaires, huissiers, comptables vérifiés en Algérie. Consultations en ligne depuis l'Algérie et la diaspora.",
+      "Avocats, notaires, huissiers, comptables, experts-comptables et traducteurs vérifiés en Algérie. Consultation en ligne depuis l'Algérie ou l'étranger.",
     images: [
       {
         url: `${siteConfig.url}/og-image.png`,
@@ -85,8 +85,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@mizan_dz",
-    title: "MIZAN — Trouvez votre expert juridique en Algérie",
-    description: "Avocats, notaires, huissiers, comptables vérifiés en Algérie",
+    title: "Avocats & notaires vérifiés en Algérie | MIZAN",
+    description:
+      "Avocats, notaires, huissiers, experts-comptables et traducteurs vérifiés en Algérie",
     images: [`${siteConfig.url}/og-image.png`],
   },
   appleWebApp: { capable: true, statusBarStyle: "default", title: "MIZAN" },
