@@ -299,37 +299,3 @@ export function generateProfessionalMetadata(
 }
 
 export const generateAvocatMetadata = generateProfessionalMetadata;
-
-export function generateWilayaMetadata(
-  wilaya: string,
-  profession = "avocat"
-): Metadata {
-  const prof = PROF_META[profession] || PROF_META.avocat;
-  return {
-    title: `${prof.plural} à ${wilaya} — Vérifiés | MIZAN Algérie`,
-    description: `Trouvez les meilleurs ${prof.plural.toLowerCase()} vérifiés à ${wilaya}, Algérie. Profils détaillés, avis clients, contact direct sur MIZAN.`,
-    keywords: [
-      `${prof.singular.toLowerCase()} ${wilaya.toLowerCase()}`,
-      `${prof.plural.toLowerCase()} ${wilaya.toLowerCase()}`,
-      `${prof.singular.toLowerCase()} ${wilaya.toLowerCase()} algérie`,
-      `consultation ${prof.singular.toLowerCase()} ${wilaya.toLowerCase()}`,
-    ],
-    openGraph: {
-      title: `${prof.plural} à ${wilaya} | MIZAN`,
-      description: `${prof.plural} vérifiés à ${wilaya} — MIZAN Algérie.`,
-      url: `${siteConfig.url}/wilayas/${wilaya}`,
-      siteName: "MIZAN",
-      type: "website",
-      images: [
-        {
-          url: siteConfig.ogImage,
-          width: 1200,
-          height: 630,
-          alt: `${prof.plural} à ${wilaya} — MIZAN`,
-        },
-      ],
-    },
-    alternates: { canonical: `${siteConfig.url}/wilayas/${wilaya}` },
-    robots: { index: true, follow: true },
-  };
-}
