@@ -127,9 +127,11 @@ export async function generateMetadata({
     keywords: [
       `avocat ${data.label.toLowerCase()}`,
       `meilleur avocat ${data.label.toLowerCase()}`,
+      `avocats ${data.label.toLowerCase()} les mieux notés`,
       `avocat divorce ${data.label.toLowerCase()}`,
       `avocat droit de la famille ${data.label.toLowerCase()}`,
       `avocate ${data.label.toLowerCase()}`,
+      `avocat bâtonnier ${data.label.toLowerCase()}`,
     ],
     openGraph: {
       title: `Meilleurs avocats à ${data.label} | Mizan`,
