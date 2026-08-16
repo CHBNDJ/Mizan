@@ -30,6 +30,11 @@ export const metadata: Metadata = {
 
 const ARTICLE_META = [
   {
+    slug: "acheter-appartement-sur-plan-algerie-vsp",
+    categorie: "immobilier",
+    date: "2026-08-16",
+  },
+  {
     slug: "exequatur-algerie-jugement-etranger",
     categorie: "famille",
     date: "2026-08-05",

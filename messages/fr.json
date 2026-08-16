@@ -537,11 +537,7 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil — spécialités, expérience, cabinet. Votre numéro de barreau sera demandé.",
-            "points": [
-              "Profil complet",
-              "N° de barreau requis",
-              "Gratuit"
-            ]
+            "points": ["Profil complet", "N° de barreau requis", "Gratuit"]
           },
           {
             "title": "Vérification",
@@ -587,11 +583,7 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil notarial. Votre N° de chambre sera requis.",
-            "points": [
-              "Profil complet",
-              "N° chambre des notaires",
-              "Gratuit"
-            ]
+            "points": ["Profil complet", "N° chambre des notaires", "Gratuit"]
           },
           {
             "title": "Vérification",
@@ -637,11 +629,7 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° officiel d'huissier sera requis.",
-            "points": [
-              "Profil complet",
-              "N° d'huissier requis",
-              "Gratuit"
-            ]
+            "points": ["Profil complet", "N° d'huissier requis", "Gratuit"]
           },
           {
             "title": "Vérification",
@@ -687,11 +675,7 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° d'agrément ONEC ou ONCA sera requis.",
-            "points": [
-              "Profil complet",
-              "N° agrément requis",
-              "Gratuit"
-            ]
+            "points": ["Profil complet", "N° agrément requis", "Gratuit"]
           },
           {
             "title": "Vérification",
@@ -737,11 +721,7 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° d'agrément ONEC sera requis.",
-            "points": [
-              "Profil complet",
-              "N° ONEC requis",
-              "Gratuit"
-            ]
+            "points": ["Profil complet", "N° ONEC requis", "Gratuit"]
           },
           {
             "title": "Vérification",
@@ -787,11 +767,7 @@
           {
             "title": "Inscrivez-vous",
             "desc": "Créez votre profil. Votre N° d'agrément du Ministère de la Justice sera requis.",
-            "points": [
-              "Profil complet",
-              "N° agrément requis",
-              "Gratuit"
-            ]
+            "points": ["Profil complet", "N° agrément requis", "Gratuit"]
           },
           {
             "title": "Vérification",
@@ -3665,6 +3641,10 @@
         "titre": "Exequatur en Algérie : faire reconnaître un divorce ou un jugement étranger",
         "resume": "Un jugement rendu à l'étranger (divorce, succession) n'a aucune valeur en Algérie sans exequatur. Guide complet de la procédure et des documents, en Algérie comme depuis l'étranger."
       },
+      "acheter-appartement-sur-plan-algerie-vsp": {
+        "titre": "Acheter un appartement sur plan (VSP) en Algérie : le guide pour sécuriser votre achat",
+        "resume": "Acheter un logement sur plan en Algérie (VSP) attire par ses prix mais comporte des risques. Contrat de réservation, garantie FGCMPI, retards, malfaçons : le guide complet."
+      },
       "comment-divorcer-en-algerie": {
         "titre": "Comment divorcer en Algérie : les étapes à suivre",
         "resume": "Le divorce en Algérie est régi par le Code de la famille. Découvrez les différentes procédures, les délais et les droits de chaque partie."
@@ -4582,15 +4562,7 @@
     "noAvailNote": "Proposez un créneau, {prof} confirmera directement."
   },
   "bookingModal": {
-    "daysShort": [
-      "Dim",
-      "Lun",
-      "Mar",
-      "Mer",
-      "Jeu",
-      "Ven",
-      "Sam"
-    ],
+    "daysShort": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
     "daysFull": [
       "Dimanche",
       "Lundi",
@@ -4646,6 +4618,11 @@
       "titre": "Exequatur en Algérie : faire reconnaître un divorce ou un jugement étranger",
       "resume": "Un jugement rendu à l'étranger (divorce, succession, décision commerciale) n'a aucune valeur en Algérie sans exequatur. Guide complet de la procédure, des conditions et des documents, en Algérie comme depuis l'étranger.",
       "contenu": "\n## Qu'est-ce que l'exequatur en Algérie ?\n\nL'exequatur est la procédure par laquelle une décision de justice ou une sentence arbitrale rendue par une juridiction étrangère est reconnue comme exécutoire en Algérie, exactement comme un jugement algérien. Tant qu'un jugement étranger n'a pas obtenu l'exequatur, il n'existe pratiquement pas aux yeux des autorités algériennes.\n\nCela concerne aussi bien les Algériens installés à l'étranger que ceux qui vivent en Algérie : un divorce prononcé en France, une décision commerciale rendue au Canada ou une sentence arbitrale signée à l'étranger n'ont d'effet en Algérie qu'après cette reconnaissance.\n\n## Pourquoi l'exequatur est indispensable\n\nSans exequatur, un jugement étranger ne peut ni être exécuté de force en Algérie (saisies, inscriptions, modification de l'état civil), ni être opposé aux tribunaux, à l'administration ou aux consulats algériens.\n\nConcrètement, si vous avez divorcé à l'étranger et que vous voulez faire inscrire ce divorce sur votre état civil algérien, vous remarier en Algérie ou régler une succession, l'exequatur est obligatoire.\n\nLa procédure est encadrée par le Code de procédure civile et administrative (CPCA), notamment les articles 605 à 608 relatifs à l'exécution des jugements étrangers. Pour les sentences arbitrales, l'article 1035 du même code organise la déclaration de force exécutoire par le président du tribunal compétent.\n\n## Mon divorce prononcé à l'étranger est-il valable en Algérie ?\n\nC'est l'une des questions les plus fréquentes chez les Algériens de l'étranger. La réponse est claire : un divorce prononcé à l'étranger, même entre deux ressortissants algériens, ne produit aucun effet en Algérie tant qu'il n'a pas obtenu l'exequatur.\n\nTant que cette étape n'est pas franchie, vous restez considéré comme marié au regard de l'état civil algérien. C'est pourquoi tout jugement de divorce rendu à l'étranger concernant un Algérien doit passer par l'exequatur pour être transcrit et produire ses effets sur le territoire national.\n\n## Les conditions pour faire reconnaître un jugement étranger\n\nAvant d'accorder l'exequatur, le tribunal algérien vérifie plusieurs conditions :\n\n- **La compétence de la juridiction étrangère** qui a rendu la décision.\n- **La régularité de la procédure** : les parties doivent avoir été régulièrement informées et le principe du contradictoire respecté.\n- **Le caractère définitif et exécutoire** du jugement dans son pays d'origine (force de chose jugée, absence de recours).\n- **La conformité à l'ordre public algérien** et aux bonnes mœurs : la décision ne doit pas heurter les principes fondamentaux du droit algérien.\n\nSi ces conditions sont réunies, le juge algérien délivre une décision d'exequatur qui confère au jugement étranger la même force qu'un jugement rendu en Algérie.\n\n## La procédure d'exequatur étape par étape\n\n1. **Déposer une requête** auprès du tribunal algérien compétent, généralement déterminé par le lieu de naissance ou de résidence de l'intéressé, ou par l'objet du litige.\n2. **Joindre les pièces justificatives** requises.\n3. **Examen du dossier** par le tribunal, qui vérifie le respect des conditions.\n4. **Décision d'exequatur** : si les conditions sont remplies, le jugement devient exécutoire en Algérie ; sinon, la demande est rejetée.\n\n## Les documents à fournir\n\nLe dossier d'exequatur comprend généralement :\n\n- Le **jugement original** ou une copie authentifiée.\n- L'**acte de notification** du jugement.\n- Le **certificat de non-recours** (attestant l'absence d'appel ou de pourvoi en cassation).\n- Une **traduction officielle en langue arabe** de la décision.\n- La **pièce d'identité** du demandeur.\n\nUn dossier incomplet ou mal préparé est la première cause de rejet ou de retard : c'est là qu'un avocat spécialisé fait la différence.\n\n## Cas pratique : le divorce prononcé à l'étranger\n\nPour un couple algérien divorcé en France, en Belgique ou au Canada, l'exequatur est l'étape qui permet d'inscrire le divorce à l'état civil algérien, de mettre à jour les actes et de régulariser la situation matrimoniale. Sans lui, les deux ex-époux restent mariés en Algérie, avec toutes les conséquences sur l'héritage, le remariage ou la garde des enfants.\n\n## Cas pratique : les sentences arbitrales\n\nLes sentences arbitrales, qu'elles soient d'origine algérienne ou étrangère, peuvent faire l'objet d'une exécution volontaire. En cas de refus, il faut recourir à une procédure d'exécution forcée qui requiert une ordonnance d'exequatur émise par le président du tribunal compétent. Cette ordonnance est requise soit dans le ressort où la sentence a été rendue, soit, si le siège du tribunal arbitral est situé à l'étranger, dans le lieu d'exécution.\n\n## Faut-il un avocat pour une procédure d'exequatur ?\n\nL'exequatur relève du droit international privé, un domaine technique où chaque condition compte et où un dossier mal monté peut être rejeté. Que vous soyez en Algérie ou à l'étranger, un avocat spécialisé peut constituer votre dossier, le déposer devant le bon tribunal et suivre la procédure à votre place, y compris à distance.\n"
+    },
+    "acheter-appartement-sur-plan-algerie-vsp": {
+      "titre": "Acheter un appartement sur plan (VSP) en Algérie : le guide pour sécuriser votre achat",
+      "resume": "Acheter un logement sur plan en Algérie (VSP) attire par ses prix, mais comporte des risques. Contrat de réservation, garantie FGCMPI, retards de livraison, malfaçons : le guide complet pour sécuriser votre investissement, en Algérie comme depuis l'étranger.",
+      "contenu": "\n## Qu'est-ce que la Vente sur Plans (VSP) en Algérie ?\n\nLa Vente sur Plans (VSP) est un contrat par lequel un acquéreur achète un logement ou un local commercial en cours de construction ou avant le début du chantier.\n\nParce que l'acquéreur finance un bien futur, la Loi n° 11-04 fixant les règles régissant l'activité de promotion immobilière impose un cadre d'ordre public. Ce texte retire toute liberté d'improvisation aux promoteurs et structure chaque étape financière et technique du projet.\n\nDevenir propriétaire d'un bien qui n'est pas encore construit est une formule attractive, mais elle exige une vigilance absolue. Le législateur encadre strictement la VSP afin de protéger les acquéreurs contre les risques d'abandon de chantier ou de malfaçons.\n\n## Le contrat de réservation : une étape facultative mais encadrée\n\nAvant de formaliser la vente définitive, le promoteur et l'acquéreur signent fréquemment un contrat de réservation. Ce document préliminaire obéit à des règles strictes qu'il convient de vérifier :\n\n- **Un caractère facultatif** : la loi n'oblige pas à passer par cette phase ; elle sert avant tout à réserver le bien et à en geler le prix de vente.\n- **Un plafond financier de 20%** : le versement initial exigé par le promoteur lors de la signature de ce contrat préliminaire ne peut légalement pas dépasser 20% du prix total du bien. Exiger un montant supérieur à ce stade constitue une infraction à la réglementation.\n- **Pas de transfert de propriété** : ce document n'est qu'une promesse synallagmatique. Il ne fait pas de vous le propriétaire légal du bien.\n\n## L'acte notarié et la garantie FGCMPI : vos deux piliers de sécurité\n\nLa véritable sécurisation de votre investissement repose sur la réunion obligatoire de deux éléments.\n\n**L'acte notarié publié**\n\nLe transfert de propriété d'un bien en VSP requiert obligatoirement un acte authentique établi par un notaire. Pour être pleinement opposable aux tiers et interdire toute possibilité de double vente, cet acte doit impérativement faire l'objet d'une publication auprès de la Conservation Foncière compétente.\n\n**L'attestation de garantie du FGCMPI**\n\nLe Fonds de Garantie et de Caution Mutuelle de la Promotion Immobilière (FGCMPI) est l'organisme public chargé de protéger votre épargne. En cas de défaillance, de faillite ou d'arrêt prolongé du chantier par le promoteur, le FGCMPI prend le relais pour garantir soit l'achèvement des travaux, soit le remboursement intégral des sommes que vous avez versées.\n\n**Règle d'or opérationnelle** : en vertu de l'article 18 de la Loi 11-04, le promoteur est tenu de vous remettre l'attestation de garantie originale nominative liée au projet avant de percevoir le moindre centime. Une simple promesse d'adhésion au fonds est juridiquement insuffisante.\n\n## Retard de livraison : quelles sont les obligations du promoteur ?\n\nLe non-respect des délais de livraison représente la source de contentieux la plus fréquente sur le marché. L'article 54 de la Loi 11-04 pose un principe clair : le respect de la date de livraison mentionnée dans le contrat notarié constitue une obligation de résultat pour le promoteur.\n\nEn cas de dépassement des délais, l'acquéreur dispose d'un arsenal graduel pour faire valoir ses droits :\n\n1. La mise en demeure par voie d'huissier de justice, qui acte formellement et juridiquement le retard du chantier.\n2. L'application des pénalités de retard, prévues par le contrat ou la loi, qui permettent de figer le préjudice financier.\n3. L'action en responsabilité contractuelle devant le tribunal civil pour solliciter l'exécution ou l'indemnisation.\n4. La demande de résiliation du contrat en cas de manquement lourd et prolongé.\n\nLe promoteur ne peut se soustraire à sa responsabilité qu'en apportant la preuve absolue d'un cas de force majeure (événement extérieur, imprévisible et irrésistible). Des difficultés financières internes, des pénuries de matériaux classiques ou des intempéries courantes ne constituent pas des excuses légales valables devant le juge.\n\n## Malfaçons et non-conformité : vos recours après la remise des clés\n\nLa réception du bien est une étape cruciale. L'article 26 de la Loi 11-04 précise que la remise des clés ne décharge pas le promoteur de ses responsabilités. Il demeure garant des vices cachés, des défauts de construction et du strict respect du cahier des charges de l'immeuble.\n\nLe cahier des charges et les plans annexés à votre acte notarié font foi. Toute divergence constatée (surfaces réduites, matériaux non conformes aux promesses, qualité défaillante des équipements) engage la responsabilité du professionnel.\n\n**Le piège du procès-verbal de réception** : le promoteur reste tenu d'une garantie de parfait achèvement pendant un délai d'un an à compter de la livraison, comme le rappelle de manière constante la jurisprudence de la Cour Suprême. Il est donc vivement recommandé de consigner l'ensemble des réserves, défauts visibles et malfaçons sur le procès-verbal de réception contradictoire lors de la remise des clés, et de ne jamais signer un document de conformité totale si le bien présente des anomalies.\n\n## Conclusion : comment aborder sereinement votre projet en VSP ?\n\nLa Vente sur Plans demeure un excellent levier pour se constituer un patrimoine immobilier en Algérie, mais elle exige une grande rigueur dans le suivi documentaire.\n\nVérifier la publication de l'acte, exiger l'attestation originale du FGCMPI avant tout versement et formaliser chaque échange par écrit constituent les meilleures pratiques pour sécuriser vos fonds et concrétiser votre projet en toute sérénité.\n\nFace à la complexité de ces démarches et aux montants engagés, l'accompagnement d'un avocat spécialisé en droit immobilier reste le meilleur moyen de vérifier chaque document et de défendre vos intérêts à chaque étape.\n"
     },
     "comment-divorcer-en-algerie": {
       "titre": "Comment divorcer en Algérie : les étapes à suivre",

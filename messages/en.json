@@ -537,20 +537,12 @@
           {
             "title": "Register",
             "desc": "Create your profile — specialties, experience, office. Your bar number will be requested.",
-            "points": [
-              "Complete profile",
-              "Bar number required",
-              "Free"
-            ]
+            "points": ["Complete profile", "Bar number required", "Free"]
           },
           {
             "title": "Verification",
             "desc": "Our team validates your bar registration within 24-48h.",
-            "points": [
-              "24-48h delay",
-              "Bar verification",
-              "Manual activation"
-            ]
+            "points": ["24-48h delay", "Bar verification", "Manual activation"]
           },
           {
             "title": "Receive clients",
@@ -587,11 +579,7 @@
           {
             "title": "Register",
             "desc": "Create your notarial profile. Your chamber number will be required.",
-            "points": [
-              "Complete profile",
-              "Chamber of notaries number",
-              "Free"
-            ]
+            "points": ["Complete profile", "Chamber of notaries number", "Free"]
           },
           {
             "title": "Verification",
@@ -637,11 +625,7 @@
           {
             "title": "Register",
             "desc": "Create your profile. Your official bailiff number will be required.",
-            "points": [
-              "Complete profile",
-              "Bailiff number required",
-              "Free"
-            ]
+            "points": ["Complete profile", "Bailiff number required", "Free"]
           },
           {
             "title": "Verification",
@@ -737,20 +721,12 @@
           {
             "title": "Register",
             "desc": "Create your profile. Your ONEC accreditation number will be required.",
-            "points": [
-              "Complete profile",
-              "ONEC number required",
-              "Free"
-            ]
+            "points": ["Complete profile", "ONEC number required", "Free"]
           },
           {
             "title": "Verification",
             "desc": "Our team verifies your registration with the ONEC order within 24-48h.",
-            "points": [
-              "24-48h delay",
-              "ONEC verification",
-              "Manual activation"
-            ]
+            "points": ["24-48h delay", "ONEC verification", "Manual activation"]
           },
           {
             "title": "Corporate clients",
@@ -787,11 +763,7 @@
           {
             "title": "Sign up",
             "desc": "Create your profile. Your Ministry of Justice accreditation number will be required.",
-            "points": [
-              "Full profile",
-              "Accreditation required",
-              "Free"
-            ]
+            "points": ["Full profile", "Accreditation required", "Free"]
           },
           {
             "title": "Verification",
@@ -805,11 +777,7 @@
           {
             "title": "Diaspora clients",
             "desc": "The diaspora needing official translations for their procedures finds you directly.",
-            "points": [
-              "Records & diplomas",
-              "Legal documents",
-              "Remote"
-            ]
+            "points": ["Records & diplomas", "Legal documents", "Remote"]
           }
         ],
         "faqs": [
@@ -3665,6 +3633,10 @@
         "titre": "Exequatur in Algeria: Getting a Foreign Divorce or Judgment Recognized",
         "resume": "A judgment issued abroad (divorce, inheritance) has no legal value in Algeria without exequatur. A complete guide to the procedure and documents, in Algeria and from abroad."
       },
+      "acheter-appartement-sur-plan-algerie-vsp": {
+        "titre": "Buying an Off-Plan Apartment (VSP) in Algeria: A Guide to Securing Your Purchase",
+        "resume": "Buying off-plan in Algeria (VSP) is attractive but risky. Reservation contract, FGCMPI guarantee, delivery delays, defects: the complete guide."
+      },
       "comment-divorcer-en-algerie": {
         "titre": "How to divorce in Algeria: the steps to follow",
         "resume": "Divorce in Algeria is governed by the Family Code. Discover the different procedures, timeframes and rights of each party."
@@ -4582,15 +4554,7 @@
     "noAvailNote": "Suggest a time, {prof} will confirm directly."
   },
   "bookingModal": {
-    "daysShort": [
-      "Sun",
-      "Mon",
-      "Tue",
-      "Wed",
-      "Thu",
-      "Fri",
-      "Sat"
-    ],
+    "daysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     "daysFull": [
       "Sunday",
       "Monday",
@@ -4646,6 +4610,11 @@
       "titre": "Exequatur in Algeria: Getting a Foreign Divorce or Judgment Recognized",
       "resume": "A judgment issued abroad (divorce, inheritance, commercial ruling) has no legal value in Algeria without exequatur. A complete guide to the procedure, conditions and documents, in Algeria and from abroad.",
       "contenu": "\n## What is exequatur in Algeria?\n\nExequatur is the procedure by which a court decision or an arbitral award issued by a foreign jurisdiction is recognized as enforceable in Algeria, exactly like an Algerian judgment. Until a foreign judgment obtains exequatur, it practically does not exist in the eyes of the Algerian authorities.\n\nThis concerns both Algerians living abroad and those living in Algeria: a divorce granted in France, a commercial ruling issued in Canada or an arbitral award signed abroad only take effect in Algeria after this recognition.\n\n## Why exequatur is essential\n\nWithout exequatur, a foreign judgment can neither be enforced in Algeria (seizures, registrations, changes to civil status records) nor be relied upon before Algerian courts, the administration or consulates.\n\nIn concrete terms, if you divorced abroad and want that divorce recorded in your Algerian civil status, want to remarry in Algeria or settle an inheritance, exequatur is mandatory.\n\nThe procedure is governed by the Code of Civil and Administrative Procedure (CPCA), in particular articles 605 to 608 on the enforcement of foreign judgments. For arbitral awards, article 1035 of the same code organizes the declaration of enforceability by the president of the competent court.\n\n## Is my divorce granted abroad valid in Algeria?\n\nThis is one of the most common questions among Algerians abroad. The answer is clear: a divorce granted abroad, even between two Algerian nationals, produces no effect in Algeria until it has obtained exequatur.\n\nUntil this step is completed, you remain considered married under Algerian civil status. This is why any divorce judgment issued abroad concerning an Algerian must go through exequatur to be transcribed and take effect on national territory.\n\n## Conditions for recognizing a foreign judgment\n\nBefore granting exequatur, the Algerian court checks several conditions:\n\n- **The jurisdiction of the foreign court** that issued the decision.\n- **The regularity of the procedure**: the parties must have been duly informed and the adversarial principle respected.\n- **The final and enforceable nature** of the judgment in its country of origin (res judicata, no available appeal).\n- **Compliance with Algerian public order** and good morals: the decision must not conflict with the fundamental principles of Algerian law.\n\nIf these conditions are met, the Algerian judge issues an exequatur decision granting the foreign judgment the same force as a judgment rendered in Algeria.\n\n## The exequatur procedure step by step\n\n1. **File a petition** with the competent Algerian court, generally determined by the place of birth or residence of the person concerned, or by the subject of the dispute.\n2. **Attach the required supporting documents**.\n3. **Review of the file** by the court, which verifies that the conditions are met.\n4. **Exequatur decision**: if the conditions are met, the judgment becomes enforceable in Algeria; otherwise, the request is rejected.\n\n## Documents to provide\n\nThe exequatur file generally includes:\n\n- The **original judgment** or a certified copy.\n- The **notification document** of the judgment.\n- The **certificate of non-appeal** (attesting the absence of appeal or cassation).\n- An **official Arabic translation** of the decision.\n- The applicant's **identity document**.\n\nAn incomplete or poorly prepared file is the leading cause of rejection or delay: this is where a specialized lawyer makes the difference.\n\n## Practical case: divorce granted abroad\n\nFor an Algerian couple divorced in France, Belgium or Canada, exequatur is the step that allows the divorce to be recorded in the Algerian civil status, records to be updated and the marital situation regularized. Without it, both former spouses remain married in Algeria, with all the consequences on inheritance, remarriage or child custody.\n\n## Practical case: arbitral awards\n\nArbitral awards, whether Algerian or foreign in origin, may be enforced voluntarily. In the event of refusal, a forced enforcement procedure is required, which needs an exequatur order issued by the president of the competent court. This order is required either in the jurisdiction where the award was made, or, if the seat of the arbitral tribunal is abroad, in the place of enforcement.\n\n## Do you need a lawyer for an exequatur procedure?\n\nExequatur falls under private international law, a technical field where every condition matters and where a poorly prepared file can be rejected. Whether you are in Algeria or abroad, a specialized lawyer can prepare your file, submit it to the right court and handle the procedure on your behalf, including remotely.\n"
+    },
+    "acheter-appartement-sur-plan-algerie-vsp": {
+      "titre": "Buying an Off-Plan Apartment (VSP) in Algeria: A Guide to Securing Your Purchase",
+      "resume": "Buying an off-plan home in Algeria (VSP) is attractive for its prices but carries risks. Reservation contract, FGCMPI guarantee, delivery delays, defects: the complete guide to securing your investment, from Algeria or abroad.",
+      "contenu": "\n## What is an Off-Plan Sale (VSP) in Algeria?\n\nAn off-plan sale (VSP) is a contract by which a buyer purchases a home or commercial space that is under construction or before construction begins.\n\nBecause the buyer is financing a future property, Law No. 11-04 governing real estate development activity imposes a framework of public order. This text removes any freedom of improvisation from developers and structures every financial and technical stage of the project.\n\nBecoming the owner of a property that is not yet built is an attractive option, but it requires absolute vigilance. The legislator strictly regulates off-plan sales to protect buyers against the risks of abandoned construction or defects.\n\n## The reservation contract: an optional but regulated step\n\nBefore finalizing the definitive sale, the developer and the buyer frequently sign a reservation contract. This preliminary document is subject to strict rules that should be verified:\n\n- **An optional nature**: the law does not require going through this phase; it mainly serves to reserve the property and freeze the sale price.\n- **A 20% financial cap**: the initial payment required by the developer when signing this preliminary contract may not legally exceed 20% of the total price of the property. Demanding a higher amount at this stage constitutes a regulatory violation.\n- **No transfer of ownership**: this document is only a mutual promise. It does not make you the legal owner of the property.\n\n## The notarized deed and the FGCMPI guarantee: your two pillars of security\n\nThe real security of your investment rests on the mandatory combination of two elements.\n\n**The published notarized deed**\n\nThe transfer of ownership of an off-plan property requires a notarized authentic deed. To be fully enforceable against third parties and to prevent any possibility of a double sale, this deed must be published with the competent Land Registry.\n\n**The FGCMPI guarantee certificate**\n\nThe Guarantee and Mutual Surety Fund for Real Estate Development (FGCMPI) is the public body responsible for protecting your savings. In the event of the developer's default, bankruptcy, or prolonged work stoppage, the FGCMPI steps in to guarantee either the completion of the work or the full reimbursement of the amounts you have paid.\n\n**Operational golden rule**: under Article 18 of Law 11-04, the developer is required to give you the original nominative guarantee certificate linked to the project before collecting a single dinar. A mere promise to join the fund is legally insufficient.\n\n## Delivery delays: what are the developer's obligations?\n\nFailure to meet delivery deadlines is the most frequent source of litigation on the market. Article 54 of Law 11-04 sets a clear principle: respecting the delivery date stated in the notarized contract is an obligation of result for the developer.\n\nIf deadlines are exceeded, the buyer has a graduated set of tools to assert their rights:\n\n1. A formal notice through a judicial officer, which formally and legally establishes the delay of the construction.\n2. The application of late penalties, provided for by the contract or the law, which allow the financial harm to be fixed.\n3. A contractual liability action before the civil court to seek performance or compensation.\n4. A request to terminate the contract in the event of a serious and prolonged breach.\n\nThe developer can only escape liability by providing absolute proof of a case of force majeure (an external, unforeseeable, and irresistible event). Internal financial difficulties, ordinary material shortages, or common bad weather do not constitute valid legal excuses before the judge.\n\n## Defects and non-compliance: your remedies after the handover of keys\n\nReceiving the property is a crucial step. Article 26 of Law 11-04 specifies that handing over the keys does not release the developer from their responsibilities. They remain liable for hidden defects, construction flaws, and strict compliance with the building's specifications.\n\nThe specifications and plans attached to your notarized deed are authoritative. Any discrepancy observed (reduced surfaces, materials not conforming to promises, defective quality of equipment) engages the professional's liability.\n\n**The trap of the acceptance report**: the developer remains bound by a guarantee of perfect completion for one year from delivery, as the Supreme Court's case law consistently recalls. It is therefore strongly recommended to record all reservations, visible defects, and flaws on the contradictory acceptance report at the handover of keys, and never to sign a document of total conformity if the property presents anomalies.\n\n## Conclusion: how to approach your off-plan project with peace of mind?\n\nOff-plan sales remain an excellent way to build a real estate portfolio in Algeria, but they require great rigor in documentary follow-up.\n\nVerifying the publication of the deed, demanding the original FGCMPI certificate before any payment, and formalizing every exchange in writing are the best practices to secure your funds and carry out your project with peace of mind.\n\nGiven the complexity of these procedures and the amounts involved, the support of a lawyer specialized in real estate law remains the best way to check each document and defend your interests at every stage.\n"
     },
     "comment-divorcer-en-algerie": {
       "titre": "How to divorce in Algeria: the steps to follow",

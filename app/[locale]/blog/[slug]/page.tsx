@@ -49,7 +49,7 @@ const ARTICLE_META: Record<
   "droits-locataire-algerie": {
     categorieKey: "immobilier",
     date: "2025-02-15",
-    specialiteSlug: "droit-de-l-immobilier",
+    specialiteSlug: "droit-immobilier",
     articlesLies: ["acheter-bien-immobilier-algerie", "creer-sarl-algerie"],
   },
   "licenciement-algerie": {
@@ -61,7 +61,7 @@ const ARTICLE_META: Record<
   "acheter-bien-immobilier-algerie": {
     categorieKey: "immobilier",
     date: "2025-01-15",
-    specialiteSlug: "droit-de-l-immobilier",
+    specialiteSlug: "droit-immobilier",
     articlesLies: [
       "droits-locataire-algerie",
       "vendre-appartement-algerie-etranger",
@@ -88,7 +88,7 @@ const ARTICLE_META: Record<
   "vendre-appartement-algerie-etranger": {
     categorieKey: "immobilier",
     date: "2026-05-28",
-    specialiteSlug: "droit-de-l-immobilier",
+    specialiteSlug: "droit-immobilier",
     articlesLies: [
       "heriter-bien-immobilier-algerie-france",
       "acheter-bien-immobilier-algerie",
@@ -125,6 +125,28 @@ const ARTICLE_META: Record<
           "Lawyer admitted to the Supreme Court and Council of State",
           "Member of the Béjaïa Bar Council",
         ],
+      },
+    },
+  },
+  "acheter-appartement-sur-plan-algerie-vsp": {
+    categorieKey: "immobilier",
+    date: "2026-08-16",
+    specialiteSlug: "droit-immobilier",
+    articlesLies: [
+      "acheter-bien-immobilier-algerie",
+      "vendre-appartement-algerie-etranger",
+    ],
+    auteur: {
+      nom: {
+        fr: "Me Meriem Aichaoui",
+        ar: "الأستاذة مريم عيشاوي",
+        en: "Me Meriem Aichaoui",
+      },
+      slug: "meriem-aichaoui",
+      titres: {
+        fr: ["Avocate agréée à la Cour — Barreau d'Annaba"],
+        ar: ["محامية معتمدة لدى المجلس — منظمة المحامين لعنابة"],
+        en: ["Lawyer admitted to the Court — Annaba Bar"],
       },
     },
   },

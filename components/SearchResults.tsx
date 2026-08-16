@@ -69,7 +69,13 @@ const MapPinSmall = () => (
   </svg>
 );
 
-function SearchResultsInner({ forcedWilaya }: { forcedWilaya?: string }) {
+function SearchResultsInner({
+  forcedWilaya,
+  forcedSpecialite,
+}: {
+  forcedWilaya?: string;
+  forcedSpecialite?: string;
+}) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const t = useTranslations();
@@ -98,8 +104,11 @@ function SearchResultsInner({ forcedWilaya }: { forcedWilaya?: string }) {
     const f: SearchFilters = {};
     if (forcedWilaya) f.wilaya = forcedWilaya;
     else if (searchParams.get("wilaya")) f.wilaya = searchParams.get("wilaya")!;
-    const specs = searchParams.getAll("specialite");
-    if (specs.length) f.specialite = specs;
+    if (forcedSpecialite) f.specialite = [forcedSpecialite];
+    else {
+      const specs = searchParams.getAll("specialite");
+      if (specs.length) f.specialite = specs;
+    }
     if (searchParams.get("genre")) f.genre = searchParams.get("genre") as any;
     if (searchParams.get("experience_min"))
       f.experience_min = parseInt(searchParams.get("experience_min")!);
@@ -112,7 +121,7 @@ function SearchResultsInner({ forcedWilaya }: { forcedWilaya?: string }) {
 
   useEffect(() => {
     setFilters(readFilters());
-  }, [searchParams, forcedWilaya]);
+  }, [searchParams, forcedWilaya, forcedSpecialite]);
 
   useEffect(() => {
     setLoading(true);
@@ -157,7 +166,7 @@ function SearchResultsInner({ forcedWilaya }: { forcedWilaya?: string }) {
   }, [page]);
 
   const updateURL = (f: SearchFilters) => {
-    if (forcedWilaya) return;
+    if (forcedWilaya || forcedSpecialite) return;
     const p = new URLSearchParams();
     p.set("profession", professionParam);
     if (country === "France") p.set("pays", "france");
@@ -176,6 +185,7 @@ function SearchResultsInner({ forcedWilaya }: { forcedWilaya?: string }) {
     const nf = { ...filters, [key]: value || undefined };
     if (!value || (Array.isArray(value) && value.length === 0)) delete nf[key];
     if (forcedWilaya) nf.wilaya = forcedWilaya;
+    if (forcedSpecialite) nf.specialite = [forcedSpecialite];
     setFilters(nf);
     setPage(1);
     updateURL(nf);
@@ -184,11 +194,12 @@ function SearchResultsInner({ forcedWilaya }: { forcedWilaya?: string }) {
   const handleProfessionSwitch = (newProf: string) => {
     if (newProf === professionParam) return;
     const paysSuffix = country === "France" ? "?pays=france" : "";
-    if (forcedWilaya) {
+    if (forcedWilaya || forcedSpecialite) {
       const p = new URLSearchParams();
       p.set("profession", newProf);
       if (country === "France") p.set("pays", "france");
-      p.set("wilaya", forcedWilaya);
+      if (forcedWilaya) p.set("wilaya", forcedWilaya);
+      if (forcedSpecialite) p.append("specialite", forcedSpecialite);
       router.push(`/search?${p.toString()}`);
       return;
     }
@@ -448,17 +459,19 @@ function SearchResultsInner({ forcedWilaya }: { forcedWilaya?: string }) {
                   className="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-600 dark:bg-[#0F6E56] text-white rounded-full text-xs font-semibold"
                 >
                   {getSpecialiteLabel(s, t)}
-                  <button
-                    onClick={() =>
-                      handleFilter(
-                        "specialite",
-                        filters.specialite?.filter((sp) => sp !== s)
-                      )
-                    }
-                    className="ms-0.5 text-teal-200 hover:text-white cursor-pointer leading-none"
-                  >
-                    ×
-                  </button>
+                  {!(forcedSpecialite && s === forcedSpecialite) && (
+                    <button
+                      onClick={() =>
+                        handleFilter(
+                          "specialite",
+                          filters.specialite?.filter((sp) => sp !== s)
+                        )
+                      }
+                      className="ms-0.5 text-teal-200 hover:text-white cursor-pointer leading-none"
+                    >
+                      ×
+                    </button>
+                  )}
                 </span>
               ))}
             </div>
@@ -589,7 +602,13 @@ function SearchResultsInner({ forcedWilaya }: { forcedWilaya?: string }) {
   );
 }
 
-export function SearchResults({ forcedWilaya }: { forcedWilaya?: string }) {
+export function SearchResults({
+  forcedWilaya,
+  forcedSpecialite,
+}: {
+  forcedWilaya?: string;
+  forcedSpecialite?: string;
+}) {
   return (
     <Suspense
       fallback={
@@ -598,7 +617,10 @@ export function SearchResults({ forcedWilaya }: { forcedWilaya?: string }) {
         </div>
       }
     >
-      <SearchResultsInner forcedWilaya={forcedWilaya} />
+      <SearchResultsInner
+        forcedWilaya={forcedWilaya}
+        forcedSpecialite={forcedSpecialite}
+      />
     </Suspense>
   );
 }
