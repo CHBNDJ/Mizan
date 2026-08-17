@@ -90,38 +90,6 @@ function ProfCard({
   );
 }
 
-function ProfCardHorizontal({
-  id,
-  Icon,
-  label,
-  desc,
-  selected,
-  onSelect,
-}: any) {
-  return (
-    <button
-      type="button"
-      onClick={() => onSelect(id)}
-      className={`prof-card prof-card-btn bg-white dark:bg-[#1c1c1e] rounded-2xl border-2 cursor-pointer flex items-center gap-4 px-4 py-4 w-full hover:shadow-md transition-all ${selected ? "border-teal-500 dark:border-[#6fcf9f] ring-2 ring-teal-200 dark:ring-[#6fcf9f]/30" : "border-slate-200 dark:border-[#1c2220] hover:border-teal-400 dark:hover:border-[#6fcf9f]"}`}
-    >
-      <div
-        className={`w-10 h-10 flex-shrink-0 rounded-xl border flex items-center justify-center ${selected ? "bg-teal-600 dark:bg-[#0F6E56] border-teal-600 dark:border-[#0F6E56]" : "bg-teal-50 dark:bg-[#6fcf9f]/10 border-teal-100 dark:border-[#6fcf9f]/20"}`}
-      >
-        <Icon
-          className={`w-5 h-5 ${selected ? "text-white" : "text-teal-600 dark:text-[#6fcf9f]"}`}
-        />
-      </div>
-      <div className="text-start">
-        <div className="font-bold text-slate-800 dark:text-[#F5F5F4] text-sm">
-          {label}
-        </div>
-        <div className="text-xs text-slate-400 dark:text-[#7A7A78] mt-0.5 leading-relaxed">
-          {desc}
-        </div>
-      </div>
-    </button>
-  );
-}
 export default function HomePage() {
   const router = useRouter();
   const t = useTranslations();
