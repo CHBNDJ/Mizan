@@ -665,15 +665,28 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                     <div className="flex items-center gap-1.5">
                       <div className="w-1 h-1 rounded-full bg-teal-500 dark:bg-[#6fcf9f] flex-shrink-0" />
                       <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-teal-600 dark:text-[#6fcf9f]" />
-                      <span className="text-sm text-slate-600 dark:text-[#E8E8E6] font-medium">
-                        {ld(String(expAnnees))} {t("experienceYears")}
-                      </span>
-                      <span className="text-sm text-slate-400 dark:text-[#7A7A78]">
-                        · {t("registeredIn")}{" "}
-                        {avocat.experience?.date_inscription
-                          ? ld(String(avocat.experience.date_inscription))
-                          : "N/A"}
-                      </span>
+                      {expAnnees <= 1 ? (
+                        <span className="text-sm text-slate-600 dark:text-[#E8E8E6] font-medium">
+                          {avocat.genre === "femme"
+                            ? t("registeredSinceF")
+                            : t("registeredSince")}{" "}
+                          {avocat.experience?.date_inscription
+                            ? ld(String(avocat.experience.date_inscription))
+                            : "N/A"}
+                        </span>
+                      ) : (
+                        <>
+                          <span className="text-sm text-slate-600 dark:text-[#E8E8E6] font-medium">
+                            {ld(String(expAnnees))} {t("experienceYears")}
+                          </span>
+                          <span className="text-sm text-slate-400 dark:text-[#7A7A78]">
+                            · {t("registeredIn")}{" "}
+                            {avocat.experience?.date_inscription
+                              ? ld(String(avocat.experience.date_inscription))
+                              : "N/A"}
+                          </span>
+                        </>
+                      )}
                     </div>
                     {avocat.langues && avocat.langues.length > 0 && (
                       <div className="flex items-center gap-1.5">
