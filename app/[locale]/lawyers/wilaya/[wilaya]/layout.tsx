@@ -120,7 +120,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { wilaya } = await params;
   const data = VILLES_SEO[wilaya?.toLowerCase() ?? ""];
-  if (!data) return { title: "Avocats | Mizan" };
+  if (!data) return { title: "Avocats | MIZAN" };
   return {
     title: `Meilleurs avocats à ${data.label} — Vérifiés, avis clients | Mizan`,
     description: data.description,

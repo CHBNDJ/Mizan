@@ -459,7 +459,7 @@ export default function LawyerRegisterPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             subject: `Nouveau ${currentProf?.label} inscrit`,
-            title: `Nouveau professionnel sur Mizan`,
+            title: `Nouveau professionnel sur MIZAN`,
             message: `
               <p><strong>Nom :</strong> ${formData.firstName} ${formData.lastName}</p>
               <p><strong>Email :</strong> ${emailNorm}</p>
