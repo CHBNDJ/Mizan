@@ -143,6 +143,11 @@
   },
   "home": {
     "hero": {
+      "specialitesCount": "{n} spécialité(s) sélectionnée(s)",
+      "specialitePlaceholder": "Toutes spécialités",
+      "allSpecialites": "Toutes les spécialités",
+      "searchWilayaPlaceholder": "Wilaya",
+      "searchButton": "Rechercher",
       "title1": "Trouvez votre expert",
       "title2": "juridique en Algérie",
       "title2France": "juridique algérien en France",

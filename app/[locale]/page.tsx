@@ -1,5 +1,5 @@
 "use client";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
@@ -14,6 +14,8 @@ import {
   TrendingUp,
   MessageCircle,
   Languages,
+  MapPin,
+  Search,
 } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
 import { AlgeriaMap } from "@/components/AlgeriaMap";
@@ -24,6 +26,7 @@ import {
   getTopRatedAvocats,
   getWilayas,
   getStatistiques,
+  DOMAINES_PAR_PROFESSION,
 } from "@/lib/avocatsData";
 import { useCountry } from "@/hooks/useCountry";
 import { gsap } from "gsap";
@@ -48,56 +51,77 @@ const PROFESSION_ICONS = [
   { id: "traducteur", Icon: Languages },
 ];
 
-function ProfCard({ id, Icon, label, desc, size = "normal", country }: any) {
-  const href = country === "France" ? `/${id}?pays=france` : `/${id}`;
+function ProfCard({
+  id,
+  Icon,
+  label,
+  desc,
+  size = "normal",
+  selected,
+  onSelect,
+}: any) {
+  const isCompact = size === "compact";
   return (
-    <Link href={href}>
+    <button
+      type="button"
+      onClick={() => onSelect(id)}
+      className={`prof-card prof-card-btn bg-white dark:bg-[#1c1c1e] rounded-2xl border-2 cursor-pointer h-full w-full flex flex-col items-center text-center hover:shadow-md transition-all ${size === "big" ? "px-6 py-6 gap-3" : isCompact ? "px-2 py-3 gap-1.5" : "px-4 py-4 gap-2"} ${selected ? "border-teal-500 dark:border-[#6fcf9f] ring-2 ring-teal-200 dark:ring-[#6fcf9f]/30" : "border-slate-200 dark:border-[#1c2220] hover:border-teal-400 dark:hover:border-[#6fcf9f]"}`}
+    >
       <div
-        className={`prof-card prof-card-btn bg-white dark:bg-[#1c1c1e] rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer h-full flex flex-col items-center text-center hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:shadow-md transition-all ${size === "big" ? "px-6 py-6 gap-3" : "px-4 py-4 gap-2"}`}
+        className={`flex-shrink-0 rounded-xl border flex items-center justify-center ${selected ? "bg-teal-600 dark:bg-[#0F6E56] border-teal-600 dark:border-[#0F6E56]" : "bg-teal-50 dark:bg-[#6fcf9f]/10 border-teal-100 dark:border-[#6fcf9f]/20"} ${size === "big" ? "w-12 h-12" : isCompact ? "w-8 h-8" : "w-9 h-9"}`}
       >
+        <Icon
+          className={`${selected ? "text-white" : "text-teal-600 dark:text-[#6fcf9f]"} ${size === "big" ? "w-6 h-6" : isCompact ? "w-4 h-4" : "w-4 h-4"}`}
+        />
+      </div>
+      <div>
         <div
-          className={`flex-shrink-0 rounded-xl bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 flex items-center justify-center ${size === "big" ? "w-12 h-12" : "w-9 h-9"}`}
+          className={`font-bold text-slate-800 dark:text-[#F5F5F4] ${size === "big" ? "text-base" : isCompact ? "text-[11px] leading-tight" : "text-sm"}`}
         >
-          <Icon
-            className={`text-teal-600 dark:text-[#6fcf9f] ${size === "big" ? "w-6 h-6" : "w-4 h-4"}`}
-          />
+          {label}
         </div>
-        <div>
-          <div
-            className={`font-bold text-slate-800 dark:text-[#F5F5F4] ${size === "big" ? "text-base" : "text-sm"}`}
-          >
-            {label}
-          </div>
+        {!isCompact && (
           <div className="text-xs text-slate-400 dark:text-[#7A7A78] mt-0.5 leading-relaxed line-clamp-2">
             {desc}
           </div>
-        </div>
+        )}
       </div>
-    </Link>
+    </button>
   );
 }
 
-function ProfCardHorizontal({ id, Icon, label, desc, country }: any) {
-  const href = country === "France" ? `/${id}?pays=france` : `/${id}`;
+function ProfCardHorizontal({
+  id,
+  Icon,
+  label,
+  desc,
+  selected,
+  onSelect,
+}: any) {
   return (
-    <Link href={href}>
-      <div className="prof-card prof-card-btn bg-white dark:bg-[#1c1c1e] rounded-2xl border-2 border-slate-200 dark:border-[#1c2220] cursor-pointer flex items-center gap-4 px-4 py-4 hover:border-teal-400 dark:hover:border-[#6fcf9f] hover:shadow-md transition-all">
-        <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-100 dark:border-[#6fcf9f]/20 flex items-center justify-center">
-          <Icon className="w-5 h-5 text-teal-600 dark:text-[#6fcf9f]" />
+    <button
+      type="button"
+      onClick={() => onSelect(id)}
+      className={`prof-card prof-card-btn bg-white dark:bg-[#1c1c1e] rounded-2xl border-2 cursor-pointer flex items-center gap-4 px-4 py-4 w-full hover:shadow-md transition-all ${selected ? "border-teal-500 dark:border-[#6fcf9f] ring-2 ring-teal-200 dark:ring-[#6fcf9f]/30" : "border-slate-200 dark:border-[#1c2220] hover:border-teal-400 dark:hover:border-[#6fcf9f]"}`}
+    >
+      <div
+        className={`w-10 h-10 flex-shrink-0 rounded-xl border flex items-center justify-center ${selected ? "bg-teal-600 dark:bg-[#0F6E56] border-teal-600 dark:border-[#0F6E56]" : "bg-teal-50 dark:bg-[#6fcf9f]/10 border-teal-100 dark:border-[#6fcf9f]/20"}`}
+      >
+        <Icon
+          className={`w-5 h-5 ${selected ? "text-white" : "text-teal-600 dark:text-[#6fcf9f]"}`}
+        />
+      </div>
+      <div className="text-start">
+        <div className="font-bold text-slate-800 dark:text-[#F5F5F4] text-sm">
+          {label}
         </div>
-        <div className="text-start">
-          <div className="font-bold text-slate-800 dark:text-[#F5F5F4] text-sm">
-            {label}
-          </div>
-          <div className="text-xs text-slate-400 dark:text-[#7A7A78] mt-0.5 leading-relaxed">
-            {desc}
-          </div>
+        <div className="text-xs text-slate-400 dark:text-[#7A7A78] mt-0.5 leading-relaxed">
+          {desc}
         </div>
       </div>
-    </Link>
+    </button>
   );
 }
-
 export default function HomePage() {
   const router = useRouter();
   const t = useTranslations();
@@ -110,7 +134,12 @@ export default function HomePage() {
     total_avocats: 0,
     pourcentage_verification: 100,
   });
-
+  const [selectedProf, setSelectedProf] = useState("");
+  const [selectedSpecialites, setSelectedSpecialites] = useState<string[]>([]);
+  const [showSpecialiteMenu, setShowSpecialiteMenu] = useState(false);
+  const [wilayaQuery, setWilayaQuery] = useState("");
+  const [showWilayaSuggestions, setShowWilayaSuggestions] = useState(false);
+  const heroSearchRef = useRef<HTMLDivElement>(null);
   const PROFESSIONS = PROFESSION_ICONS.map((p) => ({
     ...p,
     label: t(`professions.${PROF_KEY[p.id]}.label`),
@@ -165,6 +194,47 @@ export default function HomePage() {
     );
   };
 
+  const filteredWilayas = wilayaQuery.trim()
+    ? wilayas.filter((w) =>
+        w.toLowerCase().includes(wilayaQuery.trim().toLowerCase())
+      )
+    : wilayas;
+
+  const handleSelectProf = (id: string) => {
+    setSelectedProf(id);
+    setSelectedSpecialites([]);
+    setShowSpecialiteMenu(false);
+  };
+
+  const toggleSpecialite = (spec: string) => {
+    setSelectedSpecialites((prev) =>
+      prev.includes(spec) ? prev.filter((s) => s !== spec) : [...prev, spec]
+    );
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        heroSearchRef.current &&
+        !heroSearchRef.current.contains(e.target as Node)
+      ) {
+        setShowSpecialiteMenu(false);
+        setShowWilayaSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+  const handleHeroSearch = (wilayaValue?: string) => {
+    const w = wilayaValue ?? wilayaQuery.trim();
+    const p = new URLSearchParams();
+    p.set("profession", selectedProf || "avocat");
+    if (country === "France") p.set("pays", "france");
+    selectedSpecialites.forEach((s) => p.append("specialite", s));
+    if (w) p.set("wilaya", w);
+    router.push(`/search?${p.toString()}`);
+  };
+
   useLayoutEffect(() => {
     getWilayas(undefined, country).then(setWilayas);
     Promise.all([
@@ -200,6 +270,12 @@ export default function HomePage() {
         { opacity: 0, y: 24 },
         { opacity: 1, y: 0, duration: cardDur, stagger },
         "-=0.4"
+      )
+      .fromTo(
+        ".hero-search",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6 },
+        "-=0.1"
       )
       .fromTo(
         ".stat-card",
@@ -263,7 +339,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-teal-100 via-white to-teal-100 dark:bg-none overflow-x-hidden">
       <style>{`
-        .hero-title,.hero-sub,.prof-card,.stat-card,.map-section,.steps-section,.avocat-card,.cta-section,.prof-roles-link,.testimonials-section,.feedback-cta { opacity:0; }
+        .hero-title,.hero-sub,.hero-search,.prof-card,.stat-card,.map-section,.steps-section,.avocat-card,.cta-section,.prof-roles-link,.testimonials-section,.feedback-cta { opacity:0; }
         .prof-card-btn { transition:all 0.2s ease; }
         .prof-card-btn:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,148,136,0.15); border-color:#0D9488 !important; }
       `}</style>
@@ -273,35 +349,250 @@ export default function HomePage() {
           <h1 className="hero-title text-2xl sm:text-4xl lg:text-6xl font-bold text-slate-800 dark:text-[#F5F5F4] mb-5 leading-tight tracking-tight">
             {heroTitle}
           </h1>
-          <p className="hero-sub text-sm sm:text-lg text-slate-500 dark:text-[#A8A8A6] mb-10 sm:mb-14 max-w-xl mx-auto leading-relaxed">
+          <p className="hero-sub text-sm sm:text-lg text-slate-500 dark:text-[#A8A8A6] mb-8 sm:mb-10 max-w-xl mx-auto leading-relaxed">
             {t("home.hero.sub1")}
             <br />
             {t("home.hero.sub2")}
           </p>
 
-          <div className="flex flex-col gap-3 max-w-sm mx-auto sm:hidden">
+          <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto sm:hidden mb-6">
             {PROFESSIONS.map((p) => (
-              <ProfCardHorizontal key={p.id} {...p} country={country} />
+              <ProfCard
+                key={p.id}
+                {...p}
+                size="normal"
+                selected={selectedProf === p.id}
+                onSelect={handleSelectProf}
+              />
             ))}
           </div>
 
-          <div className="hidden sm:flex lg:hidden flex-col gap-3 max-w-2xl mx-auto w-full">
+          <div className="hidden sm:flex lg:hidden flex-col gap-3 max-w-2xl mx-auto w-full mb-6">
             <div className="grid grid-cols-3 gap-3">
               {PROFESSIONS.slice(0, 3).map((p) => (
-                <ProfCard key={p.id} {...p} size="normal" country={country} />
+                <ProfCard
+                  key={p.id}
+                  {...p}
+                  size="normal"
+                  selected={selectedProf === p.id}
+                  onSelect={handleSelectProf}
+                />
               ))}
             </div>
             <div className="grid grid-cols-3 gap-3">
               {PROFESSIONS.slice(3, 6).map((p) => (
-                <ProfCard key={p.id} {...p} size="normal" country={country} />
+                <ProfCard
+                  key={p.id}
+                  {...p}
+                  size="normal"
+                  selected={selectedProf === p.id}
+                  onSelect={handleSelectProf}
+                />
               ))}
             </div>
           </div>
 
-          <div className="hidden lg:grid grid-cols-6 gap-4 max-w-6xl mx-auto">
+          <div className="hidden lg:grid grid-cols-6 gap-4 max-w-6xl mx-auto mb-6">
             {PROFESSIONS.map((p) => (
-              <ProfCard key={p.id} {...p} size="normal" country={country} />
+              <ProfCard
+                key={p.id}
+                {...p}
+                size="normal"
+                selected={selectedProf === p.id}
+                onSelect={handleSelectProf}
+              />
             ))}
+          </div>
+
+          <div
+            ref={heroSearchRef}
+            className="hero-search max-w-2xl mx-auto mb-8 sm:mb-10 relative z-50"
+          >
+            <div className="flex flex-col sm:flex-row gap-2 sm:bg-white sm:dark:bg-[#1c1c1e] sm:border sm:border-slate-200 sm:dark:border-[#1c2220] sm:rounded-2xl sm:p-2 sm:shadow-sm relative z-40">
+              {selectedProf &&
+                DOMAINES_PAR_PROFESSION[selectedProf]?.length > 0 && (
+                  <div className="relative sm:flex-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowSpecialiteMenu(!showSpecialiteMenu);
+                        setShowWilayaSuggestions(false);
+                      }}
+                      className="w-full flex items-center gap-2 px-3 py-3 sm:py-2.5 bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl shadow-sm sm:bg-transparent sm:border-0 sm:border-r sm:border-slate-100 dark:sm:border-[#1c2220] sm:rounded-none sm:shadow-none cursor-pointer"
+                    >
+                      <Briefcase className="w-4 h-4 text-slate-400 dark:text-[#7A7A78] flex-shrink-0" />
+                      <span
+                        className={`text-sm truncate ${selectedSpecialites.length > 0 ? "text-slate-800 dark:text-[#F5F5F4]" : "text-slate-400 dark:text-[#7A7A78]"}`}
+                      >
+                        {selectedSpecialites.length > 0
+                          ? t("home.hero.specialitesCount", {
+                              n: selectedSpecialites.length,
+                            })
+                          : t("home.hero.specialitePlaceholder")}
+                      </span>
+                      <ChevronRight
+                        className={`w-4 h-4 text-slate-400 dark:text-[#7A7A78] ms-auto flex-shrink-0 transition-transform ${showSpecialiteMenu ? "rotate-90" : ""}`}
+                      />
+                    </button>
+                    {showSpecialiteMenu && (
+                      <div className="sm:hidden mt-2 bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl shadow-lg overflow-hidden">
+                        <div className="max-h-72 overflow-y-auto">
+                          {DOMAINES_PAR_PROFESSION[selectedProf].map((spec) => {
+                            const checked = selectedSpecialites.includes(spec);
+                            return (
+                              <button
+                                key={spec}
+                                type="button"
+                                onClick={() => toggleSpecialite(spec)}
+                                className="w-full flex items-center justify-between gap-3 px-4 py-3 text-start hover:bg-teal-50 dark:hover:bg-[#26492f] cursor-pointer transition-colors border-b border-slate-100 dark:border-[#1c2220] last:border-b-0"
+                              >
+                                <span
+                                  className={`text-sm ${checked ? "text-teal-700 dark:text-[#6fcf9f] font-medium" : "text-slate-700 dark:text-[#E8E8E6]"}`}
+                                >
+                                  {spec}
+                                </span>
+                                <span
+                                  className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-teal-600 dark:bg-[#0F6E56] border-teal-600 dark:border-[#0F6E56]" : "border-slate-300 dark:border-[#3a3a3d]"}`}
+                                >
+                                  {checked && (
+                                    <svg
+                                      className="w-3.5 h-3.5 text-white"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  )}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              <div className="relative sm:flex-1">
+                <div className="flex items-center gap-2 px-3 py-3 sm:py-2.5 h-full bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl shadow-sm sm:bg-transparent sm:border-0 sm:rounded-none sm:shadow-none">
+                  <MapPin className="w-4 h-4 text-slate-400 dark:text-[#7A7A78] flex-shrink-0" />
+                  <input
+                    type="text"
+                    value={wilayaQuery}
+                    onChange={(e) => {
+                      setWilayaQuery(e.target.value);
+                      setShowWilayaSuggestions(true);
+                      setShowSpecialiteMenu(false);
+                    }}
+                    onFocus={() => {
+                      setShowWilayaSuggestions(true);
+                      setShowSpecialiteMenu(false);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleHeroSearch();
+                    }}
+                    placeholder={t("home.hero.searchWilayaPlaceholder")}
+                    className="w-full bg-transparent text-sm text-slate-800 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78] focus:outline-none"
+                  />
+                </div>
+                {showWilayaSuggestions && filteredWilayas.length > 0 && (
+                  <div className="sm:hidden mt-2 bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl shadow-lg overflow-hidden">
+                    <div className="max-h-72 overflow-y-auto">
+                      {filteredWilayas.map((w) => (
+                        <button
+                          key={w}
+                          type="button"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            setWilayaQuery(w);
+                            setShowWilayaSuggestions(false);
+                          }}
+                          className="w-full text-start px-4 py-3 text-sm text-slate-700 dark:text-[#E8E8E6] hover:bg-teal-50 dark:hover:bg-[#26492f] flex items-center gap-2 cursor-pointer transition-colors border-b border-slate-100 dark:border-[#1c2220] last:border-b-0"
+                        >
+                          <MapPin className="w-4 h-4 text-teal-500 dark:text-[#6fcf9f] flex-shrink-0" />
+                          {w}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={() => handleHeroSearch()}
+                className="flex items-center justify-center gap-2 bg-teal-600 dark:bg-[#0F6E56] hover:bg-teal-700 dark:hover:bg-[#085041] text-white font-semibold text-sm px-5 sm:px-6 py-2.5 rounded-xl cursor-pointer transition-colors flex-shrink-0"
+              >
+                <span>{t("home.hero.searchButton")}</span>
+              </button>
+            </div>
+
+            {showWilayaSuggestions && filteredWilayas.length > 0 && (
+              <div className="hidden sm:block mt-2">
+                <div className="w-full bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl overflow-hidden">
+                  <div className="max-h-72 overflow-y-auto">
+                    {filteredWilayas.map((w) => (
+                      <button
+                        key={w}
+                        type="button"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          setWilayaQuery(w);
+                          setShowWilayaSuggestions(false);
+                        }}
+                        className="w-full text-start px-4 py-3 text-sm text-slate-700 dark:text-[#E8E8E6] hover:bg-teal-50 dark:hover:bg-[#26492f] flex items-center gap-2 cursor-pointer transition-colors border-b border-slate-100 dark:border-[#1c2220] last:border-b-0"
+                      >
+                        <MapPin className="w-4 h-4 text-teal-500 dark:text-[#6fcf9f] flex-shrink-0" />
+                        {w}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+            {selectedProf &&
+              showSpecialiteMenu &&
+              DOMAINES_PAR_PROFESSION[selectedProf]?.length > 0 && (
+                <div className="hidden sm:block mt-2 bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-xl overflow-hidden">
+                  <div className="max-h-72 overflow-y-auto">
+                    {DOMAINES_PAR_PROFESSION[selectedProf].map((spec) => {
+                      const checked = selectedSpecialites.includes(spec);
+                      return (
+                        <button
+                          key={spec}
+                          type="button"
+                          onClick={() => toggleSpecialite(spec)}
+                          className="w-full flex items-center justify-between gap-3 px-4 py-3 text-start hover:bg-teal-50 dark:hover:bg-[#26492f] cursor-pointer transition-colors border-b border-slate-100 dark:border-[#1c2220] last:border-b-0"
+                        >
+                          <span
+                            className={`text-sm ${checked ? "text-teal-700 dark:text-[#6fcf9f] font-medium" : "text-slate-700 dark:text-[#E8E8E6]"}`}
+                          >
+                            {spec}
+                          </span>
+                          <span
+                            className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-teal-600 dark:bg-[#0F6E56] border-teal-600 dark:border-[#0F6E56]" : "border-slate-300 dark:border-[#3a3a3d]"}`}
+                          >
+                            {checked && (
+                              <svg
+                                className="w-3.5 h-3.5 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            )}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
           </div>
         </div>
       </section>

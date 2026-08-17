@@ -143,6 +143,11 @@
   },
   "home": {
     "hero": {
+      "specialitesCount": "{n} تخصص محدد",
+      "specialitePlaceholder": "كل التخصصات",
+      "allSpecialites": "كل التخصصات",
+      "searchWilayaPlaceholder": "الولاية",
+      "searchButton": "بحث",
       "title1": "اعثر على خبيرك",
       "title2": "القانوني في الجزائر",
       "title2France": "القانوني الجزائري في فرنسا",

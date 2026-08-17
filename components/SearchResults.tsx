@@ -406,12 +406,9 @@ function SearchResultsInner({
       <div className="search-header sticky top-20 z-50 border-b border-slate-200 dark:border-[#1c2220] bg-white/90 dark:bg-[#1c1c1e]/95 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
           <div className="flex items-center gap-1.5 sm:gap-2 mb-2 flex-wrap">
-            <Link href={`/${professionParam}`}>
+            <Link href="/">
               <button className="flex items-center gap-1 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] text-xs sm:text-sm font-medium cursor-pointer me-1 sm:me-2">
                 <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span className="hidden sm:inline capitalize">
-                  {currentProf.label}
-                </span>
               </button>
             </Link>
             <div className="h-3.5 w-px bg-slate-200 me-1 hidden sm:block" />
