@@ -49,6 +49,7 @@ const WILAYAS_SLUGS = [
   "bouira",
 ];
 const BLOG_SLUGS = [
+  "acheter-appartement-sur-plan-algerie-vsp",
   "exequatur-algerie-jugement-etranger",
   "comment-divorcer-en-algerie",
   "creer-sarl-algerie",
