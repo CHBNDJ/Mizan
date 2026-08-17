@@ -246,17 +246,17 @@ export default function HomePage() {
         "-=0.1"
       )
       .fromTo(
+        ".prof-roles-link",
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.5 },
+        "-=0.2"
+      )
+      .fromTo(
         ".stat-card",
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 },
         "-=0.2"
       );
-
-    gsap.fromTo(
-      ".prof-roles-link",
-      { opacity: 0, y: 8 },
-      { opacity: 1, y: 0, duration: 0.5, delay: 1.5, ease: "power2.out" }
-    );
 
     [
       "map-section",
