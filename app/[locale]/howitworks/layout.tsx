@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Comment fonctionne Mizan ? | Guide complet",
+  title: "Comment fonctionne MIZAN ? | Guide complet",
   description:
     "Découvrez comment utiliser Mizan pour trouver un avocat, notaire, huissier ou comptable en Algérie. Guide étape par étape pour clients et professionnels.",
   keywords: [
