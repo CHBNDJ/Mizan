@@ -112,7 +112,6 @@ export default function VillePage({
   return (
     <>
       <SearchResults forcedWilaya={wilaya} />
-
       <section className="px-4 py-12 sm:py-16 bg-gradient-to-br from-teal-50 via-white to-teal-50 dark:from-[#0a0a0a] dark:via-[#141415] dark:to-[#0a0a0a]">
         <div className="max-w-3xl mx-auto">
           <div className="mb-10">

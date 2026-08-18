@@ -144,10 +144,51 @@ export async function generateMetadata({
   };
 }
 
-export default function VilleLayout({
+const FAQ_WILAYA = (label: string) => [
+  {
+    q: `Comment trouver un avocat à ${label} ?`,
+    a: `Sur MIZAN, vous consultez les profils d'avocats inscrits au barreau de ${label}, avec leurs domaines d'intervention, leurs avis clients et leurs coordonnées. Vous pouvez filtrer par spécialité et contacter directement l'avocat de votre choix, sans intermédiaire.`,
+  },
+  {
+    q: `Quels domaines du droit sont couverts à ${label} ?`,
+    a: `Les avocats de ${label} interviennent en droit de la famille, divorce, droit immobilier, droit pénal, droit du travail, droit des affaires et bien d'autres domaines. Chaque profil précise les spécialités de l'avocat.`,
+  },
+  {
+    q: `Peut-on consulter un avocat de ${label} à distance ?`,
+    a: `Oui. De nombreux avocats proposent des consultations à distance, par message, téléphone ou visioconférence. C'est particulièrement adapté aux Algériens de l'étranger qui doivent régler une affaire en Algérie.`,
+  },
+  {
+    q: `Les avocats sur MIZAN sont-ils vérifiés ?`,
+    a: `Oui. Tous les avocats présents sur MIZAN sont inscrits au barreau et leur profil est vérifié par notre équipe avant publication. Vous consultez uniquement des professionnels habilités à exercer.`,
+  },
+];
+
+export default async function VilleLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ wilaya: string }>;
 }) {
-  return children;
+  const { wilaya } = await params;
+  const data = VILLES_SEO[wilaya?.toLowerCase() ?? ""];
+  if (!data) return children;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQ_WILAYA(data.label).map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {children}
+    </>
+  );
 }
