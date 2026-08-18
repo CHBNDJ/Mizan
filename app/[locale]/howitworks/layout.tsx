@@ -5,18 +5,18 @@ export const metadata: Metadata = {
   description:
     "Découvrez comment utiliser Mizan pour trouver un avocat, notaire, huissier ou comptable en Algérie. Guide étape par étape pour clients et professionnels.",
   keywords: [
-    "comment utiliser mizan",
+    "comment utiliser MIZAN",
     "trouver avocat algérie",
     "trouver notaire algérie",
     "trouver huissier algérie",
     "trouver comptable algérie",
-    "guide mizan",
+    "guide MIZAN",
     "fonctionnement plateforme juridique",
   ],
   openGraph: {
-    title: "Comment fonctionne Mizan ?",
+    title: "Comment fonctionne MIZAN ?",
     description:
-      "Guide complet d'utilisation de la plateforme Mizan — avocats, notaires, huissiers, comptables",
+      "Guide complet d'utilisation de la plateforme MIZAN — avocats, notaires, huissiers, comptables",
     url: "https://mizan-dz.com/howitworks",
   },
   alternates: { canonical: "https://mizan-dz.com/howitworks" },
