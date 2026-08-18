@@ -84,9 +84,9 @@ export async function POST(request: NextRequest) {
 
     try {
       const { error: emailError } = await resend.emails.send({
-        from: "Mizan <noreply@mizan-dz.com>",
+        from: "MIZAN <noreply@mizan-dz.com>",
         to: email,
-        subject: "🔐 Code de vérification - Réclamation de profil Mizan",
+        subject: "🔐 Code de vérification - Réclamation de profil MIZAN",
         html: `
           <!DOCTYPE html>
           <html>
@@ -97,13 +97,13 @@ export async function POST(request: NextRequest) {
             <div style="max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px;">
               <div style="background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
                 <h1 style="margin: 0;">🔐 Code de Vérification</h1>
-                <p style="margin: 10px 0 0 0; opacity: 0.9;">Réclamation de votre profil Mizan</p>
+                <p style="margin: 10px 0 0 0; opacity: 0.9;">Réclamation de votre profil MIZAN</p>
               </div>
               
               <div style="padding: 30px;">
                 <p>Bonjour <strong>${lawyer.first_name} ${lawyer.last_name}</strong>,</p>
                 
-                <p>Vous avez demandé à réclamer votre profil d'avocat sur <strong>Mizan</strong>.</p>
+                <p>Vous avez demandé à réclamer votre profil d'avocat sur <strong>MIZAN</strong>.</p>
                 
                 <div style="background: white; border: 3px dashed #0d9488; border-radius: 10px; padding: 30px; text-align: center; margin: 20px 0;">
                   <p style="margin: 0 0 10px 0; color: #6b7280; font-size: 14px;">Votre code de vérification :</p>
@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
                 </ul>
                 
                 <div style="text-align: center; color: #6b7280; font-size: 14px; margin-top: 30px;">
-                  <p>Cet email a été envoyé par <strong>Mizan</strong></p>
+                  <p>Cet email a été envoyé par <strong>MIZAN</strong></p>
                 </div>
               </div>
             </div>

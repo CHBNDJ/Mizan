@@ -2,8 +2,8 @@ export function OrganizationJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": ["Organization", "LegalService"],
-    name: "Mizan",
-    alternateName: "Mizan - Annuaire des Avocats d'Algérie",
+    name: "MIZAN",
+    alternateName: "MIZAN - Annuaire des Avocats d'Algérie",
     url: "https://mizan-dz.com",
     logo: "https://mizan-dz.com/logo-512.png",
     image: "https://mizan-dz.com/og-image.png",

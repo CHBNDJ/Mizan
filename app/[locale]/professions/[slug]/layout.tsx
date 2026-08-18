@@ -64,12 +64,12 @@ export async function generateMetadata({
 
   if (!data) {
     return {
-      title: "Profession | Mizan",
-      description: "Découvrez les professions juridiques en Algérie sur Mizan.",
+      title: "Profession | MIZAN",
+      description: "Découvrez les professions juridiques en Algérie sur MIZAN.",
     };
   }
 
-  const title = `${data.label} en Algérie — Rôle, missions et quand faire appel | Mizan`;
+  const title = `${data.label} en Algérie — Rôle, missions et quand faire appel | MIZAN`;
   const url = `${siteConfig.url}/professions/${slug}`;
   const desc = descriptions[slug] || data.tagline;
 
@@ -88,7 +88,7 @@ export async function generateMetadata({
           url: siteConfig.ogImage,
           width: 1200,
           height: 630,
-          alt: `${data.label} en Algérie - Mizan`,
+          alt: `${data.label} en Algérie - MIZAN`,
         },
       ],
     },

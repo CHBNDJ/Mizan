@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Questions Fréquentes (FAQ) | Mizan",
+  title: "Questions Fréquentes (FAQ) | MIZAN",
   description:
-    "Trouvez des réponses aux questions fréquentes sur Mizan : avocats, notaires, huissiers, comptables — inscription, sécurité, consultations en Algérie.",
+    "Trouvez des réponses aux questions fréquentes sur MIZAN : avocats, notaires, huissiers, comptables — inscription, sécurité, consultations en Algérie.",
   keywords: [
     "faq mizan",
     "questions fréquentes",
@@ -12,8 +12,8 @@ export const metadata: Metadata = {
     "comment utiliser mizan",
   ],
   openGraph: {
-    title: "Questions Fréquentes | Mizan",
-    description: "Toutes vos questions sur Mizan et nos 4 catégories d'experts",
+    title: "Questions Fréquentes | MIZAN",
+    description: "Toutes vos questions sur MIZAN et nos 4 catégories d'experts",
     url: "https://mizan-dz.com/faq",
   },
   alternates: { canonical: "https://mizan-dz.com/faq" },

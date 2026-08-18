@@ -3,13 +3,13 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "Professions juridiques en Algérie | Mizan",
-    template: "%s | Mizan",
+    default: "Professions juridiques en Algérie | MIZAN",
+    template: "%s | MIZAN",
   },
   description:
     "Comprenez le rôle de chaque professionnel juridique en Algérie : avocat, notaire, huissier, comptable agréé, expert-comptable. Cadre légal, missions et quand faire appel.",
   openGraph: {
-    siteName: "Mizan",
+    siteName: "MIZAN",
     locale: "fr_DZ",
     type: "website",
   },

@@ -33,12 +33,12 @@ function MizanLogo() {
       <img
         src="/favicon-light.svg"
         className="block dark:hidden w-7 h-7 sm:w-8 sm:h-8 lg:w-10 lg:h-10"
-        alt="Mizan"
+        alt="MIZAN"
       />
       <img
         src="/favicon-dark.svg"
         className="hidden dark:block w-7 h-7 sm:w-8 sm:h-8 lg:w-10 lg:h-10"
-        alt="Mizan"
+        alt="MIZAN"
       />
     </div>
   );
@@ -125,7 +125,7 @@ export function Navigation() {
                 "Notification" in window &&
                 Notification.permission === "granted"
               ) {
-                new Notification("Nouveau message - Mizan", {
+                new Notification("Nouveau message - MIZAN", {
                   body: "Vous avez reçu un nouveau message",
                   icon: "/favicon-192.png",
                   tag: "mizan-message",

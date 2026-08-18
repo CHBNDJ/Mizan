@@ -56,14 +56,14 @@ function shell(title: string, tag: string, inner: string): string {
 <body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f8fafc;margin:0;padding:24px">
   <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
     <div style="background:#0f6e56;padding:24px 28px">
-      <p style="color:#9fe1cb;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;margin:0 0 6px">Mizan · ${tag}</p>
+      <p style="color:#9fe1cb;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;margin:0 0 6px">MIZAN · ${tag}</p>
       <h1 style="color:#fff;font-size:20px;font-weight:700;margin:0">${title}</h1>
     </div>
     <div style="padding:28px">
       ${inner}
     </div>
     <div style="padding:16px 28px;border-top:1px solid #f1f5f9">
-      <p style="color:#94a3b8;font-size:12px;margin:0">Mizan · Plateforme juridique en Algérie · <a href="${APP_URL}" style="color:#0f6e56;text-decoration:none">mizan-dz.com</a></p>
+      <p style="color:#94a3b8;font-size:12px;margin:0">MIZAN · Plateforme juridique en Algérie · <a href="${APP_URL}" style="color:#0f6e56;text-decoration:none">mizan-dz.com</a></p>
     </div>
   </div>
 </body>
@@ -159,7 +159,7 @@ export async function POST(req: NextRequest) {
 
       try {
         await resend.emails.send({
-          from: "Mizan <notifications@mizan-dz.com>",
+          from: "MIZAN <notifications@mizan-dz.com>",
           to: lawyer.email,
           subject: isScheduled
             ? `Rendez-vous confirmé — ${clientName}`
@@ -206,7 +206,7 @@ export async function POST(req: NextRequest) {
 
       try {
         await resend.emails.send({
-          from: "Mizan <notifications@mizan-dz.com>",
+          from: "MIZAN <notifications@mizan-dz.com>",
           to: client.email,
           subject: isScheduled
             ? `Rendez-vous confirmé avec ${lawyerName}`

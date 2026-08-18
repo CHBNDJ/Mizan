@@ -83,9 +83,9 @@ export async function POST(request: NextRequest) {
       if (lawyer) {
         try {
           await resend.emails.send({
-            from: "Mizan <noreply@mizan-dz.com>",
+            from: "MIZAN <noreply@mizan-dz.com>",
             to: lawyer.email,
-            subject: "📩 Nouvelle consultation - Mizan",
+            subject: "📩 Nouvelle consultation - MIZAN",
             html: `
               <!DOCTYPE html>
               <html>
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
                     <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
                     
                     <p style="color: #94a3b8; font-size: 13px; line-height: 1.5;">
-                      Vous recevez cet email car vous avez un compte avocat sur Mizan.
+                      Vous recevez cet email car vous avez un compte avocat sur MIZAN.
                       <br>
                       <a href="${process.env.NEXT_PUBLIC_APP_URL}/settings" 
                          style="color: #0d9488; text-decoration: none;">

@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
       };
 
       await resend.emails.send({
-        from: "Mizan System <noreply@mizan-dz.com>",
+        from: "MIZAN System <noreply@mizan-dz.com>",
         to: process.env.ADMIN_EMAIL || "admin@mizan-dz.com",
         subject: `${typeEmojis[type]} Nouveau feedback : ${typeLabels[type]}`,
         html: `

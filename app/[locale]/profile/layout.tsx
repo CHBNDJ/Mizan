@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Mon profil | Mizan",
+  title: "Mon profil | MIZAN",
   description:
-    "Consultez et gérez votre profil personnel sur Mizan. Accédez à vos informations, statistiques et paramètres de compte.",
+    "Consultez et gérez votre profil personnel sur MIZAN. Accédez à vos informations, statistiques et paramètres de compte.",
   robots: {
     index: false,
     follow: false,

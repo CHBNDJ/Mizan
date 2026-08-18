@@ -24,7 +24,7 @@ export async function generateMetadata({
 
     if (!lawyer) {
       return {
-        title: "Professionnel non trouvé | Mizan",
+        title: "Professionnel non trouvé | MIZAN",
         description:
           "Ce professionnel n'existe pas ou son profil a été supprimé.",
       };
@@ -39,7 +39,7 @@ export async function generateMetadata({
 
     if (!user) {
       return {
-        title: "Professionnel non trouvé | Mizan",
+        title: "Professionnel non trouvé | MIZAN",
         description:
           "Ce professionnel n'existe pas ou son profil a été supprimé.",
       };
@@ -76,7 +76,7 @@ export async function generateMetadata({
   } catch (error) {
     console.error("Erreur récupération professionnel:", error);
     return {
-      title: "Erreur | Mizan",
+      title: "Erreur | MIZAN",
       description: "Une erreur est survenue lors du chargement du profil.",
     };
   }

@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
         ? reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / mizanCount
         : 0;
 
-    console.log("📊 Stats Mizan calculées:", {
+    console.log("📊 Stats MIZAN calculées:", {
       mizanCount,
       mizanAvg: mizanAvg.toFixed(2),
     });

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Rechercher un expert juridique en Algérie | Mizan",
+  title: "Rechercher un expert juridique en Algérie | MIZAN",
   description:
     "Recherchez un avocat, notaire, huissier ou comptable en Algérie. Filtrez par wilaya et domaine d'intervention. Profils vérifiés, avis clients.",
   keywords: [
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "annuaire juridique algérie",
   ],
   openGraph: {
-    title: "Rechercher un expert juridique | Mizan",
+    title: "Rechercher un expert juridique | MIZAN",
     description:
       "Trouvez l'expert juridique qui correspond à vos besoins en Algérie",
     url: "https://mizan-dz.com/search",

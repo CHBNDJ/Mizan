@@ -51,9 +51,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { specialite } = await params;
   const data = SPECIALITES_SEO[specialite?.toLowerCase() ?? ""];
-  if (!data) return { title: "Avocats | Mizan" };
+  if (!data) return { title: "Avocats | MIZAN" };
   return {
-    title: `Avocat ${data.label} en Algérie — Vérifiés, avis clients | Mizan`,
+    title: `Avocat ${data.label} en Algérie — Vérifiés, avis clients | MIZAN`,
     description: data.description,
     keywords: [
       `avocat ${data.label.toLowerCase()}`,
@@ -61,7 +61,7 @@ export async function generateMetadata({
       `meilleur avocat ${data.label.toLowerCase()}`,
     ],
     openGraph: {
-      title: `Avocat ${data.label} en Algérie | Mizan`,
+      title: `Avocat ${data.label} en Algérie | MIZAN`,
       description: data.description,
       url: `https://mizan-dz.com/lawyers/specialite/${specialite}`,
     },

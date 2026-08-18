@@ -200,11 +200,11 @@
     },
     "topRated": {
       "title": "Top rated",
-      "subtitle": "Recommended by our community · Verified by Mizan",
+      "subtitle": "Recommended by our community · Verified by MIZAN",
       "seeAll": "See all professionals"
     },
     "feedbackCta": {
-      "title": "Have you used Mizan?",
+      "title": "Have you used MIZAN?",
       "subtitleShort": "3 users share their feedback",
       "subtitleLong": "Share your experience and help the community choose the right professional.",
       "action": "Give my feedback"
@@ -216,7 +216,7 @@
     },
     "ctaLawyer": {
       "title": "Are you a legal professional?",
-      "desc": "Join Mizan and become visible to clients across Algeria and the diaspora.",
+      "desc": "Join MIZAN and become visible to clients across Algeria and the diaspora.",
       "action": "Create my profile"
     }
   },
@@ -276,7 +276,7 @@
     "registeredIn": "registered in",
     "registeredSince": "Member of the Bar since",
     "registeredSinceF": "Member of the Bar since",
-    "verifiedBadge": "Verified by Mizan",
+    "verifiedBadge": "Verified by MIZAN",
     "courSupremeBadge": "Supreme Court accredited",
     "assermenteBadge": "Sworn translator",
     "assermenteBadgeF": "Sworn translator",
@@ -336,7 +336,7 @@
       "login": "Log in"
     },
     "lawyerRegister": {
-      "joinTitle": "Join Mizan",
+      "joinTitle": "Join MIZAN",
       "joinSubtitle": "Choose your profession to get started",
       "registerTitle": "{profession} Registration",
       "registerSubtitle": "Create your verified professional profile",
@@ -409,7 +409,7 @@
       "passwordPh": "Minimum 8 characters",
       "confirmPassword": "Confirm password",
       "confirmPasswordPh": "Repeat your password",
-      "termsNote": "By creating your account, you accept Mizan's <cgu>terms of use</cgu> and <privacy>privacy policy</privacy>. Your profile will be reviewed before publication (24–48 business hours).",
+      "termsNote": "By creating your account, you accept MIZAN's <cgu>terms of use</cgu> and <privacy>privacy policy</privacy>. Your profile will be reviewed before publication (24–48 business hours).",
       "back": "Back",
       "continue": "Continue",
       "submit": "Create my account",
@@ -457,7 +457,7 @@
       "forgotPassword": "Forgot password?",
       "submit": "Log in",
       "submitting": "Logging in...",
-      "newHere": "New to Mizan?",
+      "newHere": "New to MIZAN?",
       "createAccount": "Create an account"
     },
     "lawyerLogin": {
@@ -471,17 +471,17 @@
       "forgotPassword": "Forgot password?",
       "submit": "Log in",
       "submitting": "Logging in...",
-      "newHere": "New to Mizan?",
+      "newHere": "New to MIZAN?",
       "createAccount": "Create an account"
     }
   },
   "howItWorks": {
-    "heroTitle": "How does Mizan work?",
-    "heroSubtitle": "Mizan connects clients — in Algeria or abroad — with verified lawyers, notaries, bailiffs, accountants, chartered accountants and translators.",
+    "heroTitle": "How does MIZAN work?",
+    "heroSubtitle": "MIZAN connects clients — in Algeria or abroad — with verified lawyers, notaries, bailiffs, accountants, chartered accountants and translators.",
     "tabClient": "You are a client",
     "tabPro": "You are a professional",
     "faqTitle": "Frequently asked questions",
-    "claimBannerTitle": "Your profile may already exist on Mizan",
+    "claimBannerTitle": "Your profile may already exist on MIZAN",
     "claimBannerDesc": "If you have a Google Business listing, your information may already be referenced. Claim your profile.",
     "claimBannerAction": "Search for my profile",
     "ctaTitle": "Ready to get started?",
@@ -520,7 +520,7 @@
       ],
       "faqs": [
         {
-          "q": "Can I use Mizan from abroad?",
+          "q": "Can I use MIZAN from abroad?",
           "a": "Yes, the platform is accessible from any country. The Algerian diaspora can contact a lawyer, notary or accountant from France, Canada or elsewhere."
         },
         {
@@ -529,11 +529,11 @@
         },
         {
           "q": "How do I know if a professional is trustworthy?",
-          "a": "Every professional is verified by our team before activation. Google and Mizan reviews are displayed on their profile."
+          "a": "Every professional is verified by our team before activation. Google and MIZAN reviews are displayed on their profile."
         },
         {
           "q": "Can I contact a notary or bailiff?",
-          "a": "Yes — notaries, bailiffs, lawyers, accountants and chartered accountants are all accessible via Mizan messaging."
+          "a": "Yes — notaries, bailiffs, lawyers, accountants and chartered accountants are all accessible via MIZAN messaging."
         }
       ]
     },
@@ -622,7 +622,7 @@
           },
           {
             "q": "Can clients send documents?",
-            "a": "Yes, via Mizan messaging. Clients can attach documents to their requests."
+            "a": "Yes, via MIZAN messaging. Clients can attach documents to their requests."
           }
         ]
       },
@@ -718,7 +718,7 @@
           },
           {
             "q": "Can clients send documents?",
-            "a": "Yes, via secure Mizan messaging. Ideal for diaspora managing their company remotely."
+            "a": "Yes, via secure MIZAN messaging. Ideal for diaspora managing their company remotely."
           }
         ]
       },
@@ -760,7 +760,7 @@
           },
           {
             "q": "Can assignments be done remotely?",
-            "a": "Yes. Most assignments can be done through document exchange and messaging. Mizan facilitates this flow from first contact."
+            "a": "Yes. Most assignments can be done through document exchange and messaging. MIZAN facilitates this flow from first contact."
           }
         ]
       },
@@ -790,7 +790,7 @@
         "faqs": [
           {
             "q": "Do I need to be a sworn translator to register?",
-            "a": "No. Both sworn and non-sworn translators can join Mizan. A badge clearly identifies, on the profile, translators accredited by the Ministry of Justice."
+            "a": "No. Both sworn and non-sworn translators can join MIZAN. A badge clearly identifies, on the profile, translators accredited by the Ministry of Justice."
           },
           {
             "q": "Is registration free?",
@@ -2856,11 +2856,11 @@
         "label": "General",
         "questions": [
           {
-            "q": "What is Mizan?",
-            "a": "Mizan is an online platform connecting clients with verified legal and accounting professionals in Algeria: lawyers, notaries, bailiffs, accountants and chartered accountants. Simple, direct, no middleman."
+            "q": "What is MIZAN?",
+            "a": "MIZAN is an online platform connecting clients with verified legal and accounting professionals in Algeria: lawyers, notaries, bailiffs, accountants and chartered accountants. Simple, direct, no middleman."
           },
           {
-            "q": "Is using Mizan free?",
+            "q": "Is using MIZAN free?",
             "a": "Yes, registration and searching for professionals are entirely free for clients."
           },
           {
@@ -2886,11 +2886,11 @@
           },
           {
             "q": "Can I consult from abroad?",
-            "a": "Yes, Mizan messaging works from any country. The Algerian diaspora can contact a lawyer, notary, accountant or chartered accountant from France, Canada or elsewhere."
+            "a": "Yes, MIZAN messaging works from any country. The Algerian diaspora can contact a lawyer, notary, accountant or chartered accountant from France, Canada or elsewhere."
           },
           {
             "q": "What's the difference between a notary and a lawyer?",
-            "a": "A lawyer represents and advises in court. A notary draws up official deeds — real estate, inheritance, marriages, contracts. Both are accessible via Mizan."
+            "a": "A lawyer represents and advises in court. A notary draws up official deeds — real estate, inheritance, marriages, contracts. Both are accessible via MIZAN."
           },
           {
             "q": "What is a bailiff for?",
@@ -2906,7 +2906,7 @@
           },
           {
             "q": "Are reviews reliable?",
-            "a": "All Mizan reviews are moderated before publication. Google reviews come from Google Business and are displayed as-is."
+            "a": "All MIZAN reviews are moderated before publication. Google reviews come from Google Business and are displayed as-is."
           },
           {
             "q": "Can I contact several professionals?",
@@ -2919,7 +2919,7 @@
         "questions": [
           {
             "q": "How do I claim my profile?",
-            "a": "If you find your profile on Mizan, click 'Claim this profile'. You'll receive a verification code on your professional email registered with the bar."
+            "a": "If you find your profile on MIZAN, click 'Claim this profile'. You'll receive a verification code on your professional email registered with the bar."
           },
           {
             "q": "Is registration paid?",
@@ -2943,7 +2943,7 @@
           },
           {
             "q": "Is my profile visible abroad?",
-            "a": "Yes. Mizan is accessible from France, Canada, and the entire diaspora. Your profile is visible to all logged-in clients, wherever they are."
+            "a": "Yes. MIZAN is accessible from France, Canada, and the entire diaspora. Your profile is visible to all logged-in clients, wherever they are."
           }
         ]
       },
@@ -2955,12 +2955,12 @@
             "a": "Yes. Your chamber of notaries number will be required for verification. Your profile appears in results after validation within 24-48h."
           },
           {
-            "q": "What deeds can I offer on Mizan?",
+            "q": "What deeds can I offer on MIZAN?",
             "a": "Real estate deeds (sale, mortgage), inheritance, marriage contracts, donations, powers of attorney, company formation, legalizations."
           },
           {
             "q": "Can the diaspora contact me?",
-            "a": "Yes, it's one of the most frequent use cases. The diaspora needs notaries for inheritance, real estate deeds in Algeria, powers of attorney. Mizan makes you visible from abroad."
+            "a": "Yes, it's one of the most frequent use cases. The diaspora needs notaries for inheritance, real estate deeds in Algeria, powers of attorney. MIZAN makes you visible from abroad."
           },
           {
             "q": "Is advertising allowed for notaries?",
@@ -2968,7 +2968,7 @@
           },
           {
             "q": "Can clients send documents?",
-            "a": "Yes, via Mizan messaging. Clients can attach property titles, birth certificates or other documents to their requests."
+            "a": "Yes, via MIZAN messaging. Clients can attach property titles, birth certificates or other documents to their requests."
           },
           {
             "q": "Is my chamber number displayed publicly?",
@@ -2989,15 +2989,15 @@
           },
           {
             "q": "Are urgent requests possible?",
-            "a": "Yes. Mizan messaging lets clients indicate the urgency of their request. You then manage priorities from your dashboard."
+            "a": "Yes. MIZAN messaging lets clients indicate the urgency of their request. You then manage priorities from your dashboard."
           },
           {
-            "q": "What is my area of jurisdiction on Mizan?",
+            "q": "What is my area of jurisdiction on MIZAN?",
             "a": "You set your wilaya of jurisdiction in your profile. Clients filter by wilaya, so you only appear for your area of practice."
           },
           {
             "q": "Can businesses contact me?",
-            "a": "Yes. Individuals and businesses use Mizan. Businesses particularly look for bailiffs for debt collection and commercial reports."
+            "a": "Yes. Individuals and businesses use MIZAN. Businesses particularly look for bailiffs for debt collection and commercial reports."
           },
           {
             "q": "Is registration paid?",
@@ -3010,7 +3010,7 @@
         "questions": [
           {
             "q": "Chartered accountant or accredited accountant — what's the difference?",
-            "a": "The chartered accountant (ONEC) can sign official financial statements and act as statutory auditor. The accredited accountant (ONCA) handles day-to-day bookkeeping, filings and payslips. Both can register on Mizan."
+            "a": "The chartered accountant (ONEC) can sign official financial statements and act as statutory auditor. The accredited accountant (ONCA) handles day-to-day bookkeeping, filings and payslips. Both can register on MIZAN."
           },
           {
             "q": "What number is required for registration?",
@@ -3022,11 +3022,11 @@
           },
           {
             "q": "Is the diaspora a relevant target?",
-            "a": "Absolutely. Algerians abroad setting up an EURL or SARL in Algeria need a local accountant. Mizan makes you visible from France, Canada or elsewhere."
+            "a": "Absolutely. Algerians abroad setting up an EURL or SARL in Algeria need a local accountant. MIZAN makes you visible from France, Canada or elsewhere."
           },
           {
             "q": "Can assignments be done remotely?",
-            "a": "Yes. Most accounting assignments are done through document exchange and messaging. Mizan facilitates this flow from first contact."
+            "a": "Yes. Most accounting assignments are done through document exchange and messaging. MIZAN facilitates this flow from first contact."
           },
           {
             "q": "Is registration paid?",
@@ -3039,7 +3039,7 @@
         "questions": [
           {
             "q": "What's the difference with an accredited accountant?",
-            "a": "The chartered accountant (ONEC) can sign official financial statements, perform statutory audits and act as statutory auditor. The accredited accountant (ONCA) handles day-to-day bookkeeping. Two distinct professions, both present on Mizan."
+            "a": "The chartered accountant (ONEC) can sign official financial statements, perform statutory audits and act as statutory auditor. The accredited accountant (ONCA) handles day-to-day bookkeeping. Two distinct professions, both present on MIZAN."
           },
           {
             "q": "What number is required for registration?",
@@ -3051,11 +3051,11 @@
           },
           {
             "q": "Is the diaspora a relevant target?",
-            "a": "Absolutely. Algerians abroad need chartered accountants to audit their Algerian companies, evaluate acquisitions or perform due diligence. Mizan makes you visible from abroad."
+            "a": "Absolutely. Algerians abroad need chartered accountants to audit their Algerian companies, evaluate acquisitions or perform due diligence. MIZAN makes you visible from abroad."
           },
           {
             "q": "Can assignments be done remotely?",
-            "a": "Yes for most assignments. Document exchange via Mizan messaging facilitates the flow from first contact."
+            "a": "Yes for most assignments. Document exchange via MIZAN messaging facilitates the flow from first contact."
           },
           {
             "q": "Is advertising allowed?",
@@ -3220,7 +3220,7 @@
   },
   "subscriptionPlans": {
     "paymentSoonBadge": "Online payment coming soon",
-    "heroTitle1": "Join Mizan.",
+    "heroTitle1": "Join MIZAN.",
     "heroTitle2": "Guaranteed visibility.",
     "heroSubtitle": "Fixed subscription. Zero commission.",
     "badgeMostChosen": "Most chosen",
@@ -3598,7 +3598,7 @@
     "close": "Close",
     "actionError": "Error performing action.",
     "autoMessages": {
-      "decline": "❌ Request declined\n\n{lawyerName} is unable to handle your request at this time.\n\nWe invite you to consult other available lawyers on Mizan.",
+      "decline": "❌ Request declined\n\n{lawyerName} is unable to handle your request at this time.\n\nWe invite you to consult other available lawyers on MIZAN.",
       "close": "✅ Consultation closed\n\n{lawyerName} has marked this consultation as completed.\n\nThank you for your trust."
     }
   },
@@ -3627,7 +3627,7 @@
     "subtitle": "Practical guides and legal advice for individuals and businesses in Algeria. Written to be accessible, verified by legal professionals.",
     "readArticle": "Read the article",
     "ctaTitle": "Do you have a legal question?",
-    "ctaDesc": "Find a bar-registered lawyer, check their profile and reviews, and contact them directly via Mizan.",
+    "ctaDesc": "Find a bar-registered lawyer, check their profile and reviews, and contact them directly via MIZAN.",
     "ctaAction": "Find a lawyer",
     "categories": {
       "famille": "Family law",
@@ -3674,7 +3674,7 @@
     "thanksTitle": "Thank you for your feedback!",
     "thanksDesc": "Your message has been sent successfully.",
     "title": "We'd love your feedback",
-    "subtitle": "Help us improve your experience on Mizan",
+    "subtitle": "Help us improve your experience on MIZAN",
     "types": {
       "testimonial": "Share my experience",
       "suggestion": "Suggest an improvement",
@@ -3710,7 +3710,7 @@
     "wilayaLabel": "Wilaya",
     "allWilayas": "Choose wilaya(s)",
     "topRatedTitle": "Top rated {plural}",
-    "topRatedSubtitle": "Recommended by our community · Verified by Mizan",
+    "topRatedSubtitle": "Recommended by our community · Verified by MIZAN",
     "seeAllPlural": "See all {plural}",
     "seeButton": "See {plural}",
     "whyChoose": "Why choose a {label}?",
@@ -3949,7 +3949,7 @@
     "title": "Legal professionals in Algeria",
     "subtitle": "Lawyer, notary, bailiff, accountant — each professional has a specific role defined by Algerian law. Understand who to contact based on your situation.",
     "ctaTitle": "Find the right professional",
-    "ctaDesc": "All verified by Mizan before activation.",
+    "ctaDesc": "All verified by MIZAN before activation.",
     "ctaAction": "Search for a professional"
   },
   "professionsData": {
@@ -4333,7 +4333,7 @@
       "labelPlural": "translators",
       "tagline": "Document translation, sworn or standard",
       "intro": "A translator faithfully converts your documents from one language to another: records, diplomas, contracts, correspondence. There are two profiles. The sworn translator is accredited by the Ministry of Justice: their translations carry an official stamp with legal value, recognized by administrations and courts — essential for a visa, diploma equivalence or judicial file. The standard (non-sworn) translator produces faithful professional translations for any use that does not require an official stamp: commercial or technical documents, correspondence, websites.",
-      "cadreJuridique": "The sworn translator (official translator-interpreter) operates under Ministry of Justice accreditation. They take an oath before the court and their stamp gives their translations official value enforceable before Algerian and foreign administrations and courts. The non-sworn translator does not hold this official status: their translations are valid for any private or professional use, but are not recognized by administrations for official documents. On Mizan, a badge clearly indicates whether a translator is sworn.",
+      "cadreJuridique": "The sworn translator (official translator-interpreter) operates under Ministry of Justice accreditation. They take an oath before the court and their stamp gives their translations official value enforceable before Algerian and foreign administrations and courts. The non-sworn translator does not hold this official status: their translations are valid for any private or professional use, but are not recognized by administrations for official documents. On MIZAN, a badge clearly indicates whether a translator is sworn.",
       "missions": [
         {
           "title": "Civil record translation",
@@ -4403,9 +4403,9 @@
     "vsOthersTitle": "{label} vs other professionals",
     "vsLabel": "{label} vs {avec}",
     "ctaTitle": "Find a verified {label} in Algeria",
-    "ctaDesc": "All professionals on Mizan are verified before activation.",
+    "ctaDesc": "All professionals on MIZAN are verified before activation.",
     "ctaAction": "Find a {label}",
-    "otherProfessions": "Other professions on Mizan"
+    "otherProfessions": "Other professions on MIZAN"
   },
   "customSelect": {
     "defaultPlaceholder": "Select...",
@@ -4607,7 +4607,7 @@
     "home": "Home",
     "blog": "Blog",
     "ctaTitle": "Need a specialized lawyer?",
-    "ctaDesc": "Find and contact a bar-registered lawyer directly via Mizan.",
+    "ctaDesc": "Find and contact a bar-registered lawyer directly via MIZAN.",
     "ctaAction": "Find a specialized lawyer",
     "relatedArticles": "Related articles",
     "read": "Read"
@@ -4691,7 +4691,7 @@
     "call": "Call"
   },
   "acquisitionPopup": {
-    "title": "Welcome to Mizan",
+    "title": "Welcome to MIZAN",
     "question": "How did you hear about us?",
     "facebook": "Facebook",
     "tiktok": "TikTok",

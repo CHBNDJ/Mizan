@@ -122,7 +122,7 @@ export async function generateMetadata({
   const data = VILLES_SEO[wilaya?.toLowerCase() ?? ""];
   if (!data) return { title: "Avocats | MIZAN" };
   return {
-    title: `Meilleurs avocats à ${data.label} — Vérifiés, avis clients | Mizan`,
+    title: `Meilleurs avocats à ${data.label} — Vérifiés, avis clients | MIZAN`,
     description: data.description,
     keywords: [
       `avocat ${data.label.toLowerCase()}`,
@@ -134,7 +134,7 @@ export async function generateMetadata({
       `avocat bâtonnier ${data.label.toLowerCase()}`,
     ],
     openGraph: {
-      title: `Meilleurs avocats à ${data.label} | Mizan`,
+      title: `Meilleurs avocats à ${data.label} | MIZAN`,
       description: data.description,
       url: `https://mizan-dz.com/lawyers/wilaya/${wilaya}`,
     },

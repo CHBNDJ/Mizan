@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Votre avis nous intéresse | Mizan",
+  title: "Votre avis nous intéresse | MIZAN",
   description:
-    "Partagez votre expérience, suggérez des améliorations ou signalez un problème sur Mizan. Votre feedback compte.",
+    "Partagez votre expérience, suggérez des améliorations ou signalez un problème sur MIZAN. Votre feedback compte.",
   openGraph: {
-    title: "Feedback | Mizan",
+    title: "Feedback | MIZAN",
     url: "https://mizan-dz.com/feedback",
   },
   alternates: {

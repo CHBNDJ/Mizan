@@ -92,9 +92,9 @@ export async function POST(request: NextRequest) {
     }
 
     const { error: emailError } = await resend.emails.send({
-      from: "Mizan <noreply@mizan-dz.com>",
+      from: "MIZAN <noreply@mizan-dz.com>",
       to: email,
-      subject: "🔐 Votre code de vérification Mizan",
+      subject: "🔐 Votre code de vérification MIZAN",
       html: `
         <!DOCTYPE html>
         <html>
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
                       <td style="padding:40px 30px;">
                         <p style="margin:0 0 20px;color:#334155;font-size:16px;">Bonjour ${firstName || ""},</p>
                         <p style="margin:0 0 30px;color:#334155;font-size:16px;">
-                          Merci de vous être inscrit sur <strong>Mizan</strong> ! Pour finaliser la création de votre compte ${userType === "lawyer" ? "professionnel" : "client"}, veuillez entrer le code ci-dessous :
+                          Merci de vous être inscrit sur <strong>MIZAN</strong> ! Pour finaliser la création de votre compte ${userType === "lawyer" ? "professionnel" : "client"}, veuillez entrer le code ci-dessous :
                         </p>
                         <div style="background-color:#f0fdfa;border:2px dashed #0d9488;border-radius:12px;padding:30px;text-align:center;margin:30px 0;">
                           <p style="margin:0 0 10px;color:#64748b;font-size:14px;font-weight:600;">VOTRE CODE DE VÉRIFICATION</p>
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
                         <p style="margin:0;color:#0d9488;font-size:14px;font-weight:600;">
                           <a href="mailto:support@mizan-dz.com" style="color:#0d9488;text-decoration:none;">support@mizan-dz.com</a>
                         </p>
-                        <p style="margin:20px 0 0;color:#94a3b8;font-size:12px;">© ${new Date().getFullYear()} Mizan</p>
+                        <p style="margin:20px 0 0;color:#94a3b8;font-size:12px;">© ${new Date().getFullYear()} MIZAN</p>
                       </td>
                     </tr>
                   </table>

@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Politique de Confidentialité | Mizan",
+  title: "Politique de Confidentialité | MIZAN",
   description:
-    "Politique de confidentialité et protection des données personnelles sur Mizan. Comment nous collectons, utilisons et protégeons vos informations.",
+    "Politique de confidentialité et protection des données personnelles sur MIZAN. Comment nous collectons, utilisons et protégeons vos informations.",
   openGraph: {
-    title: "Politique de Confidentialité | Mizan",
+    title: "Politique de Confidentialité | MIZAN",
     url: "https://mizan-dz.com/privacy",
   },
   alternates: {

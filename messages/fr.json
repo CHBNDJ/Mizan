@@ -200,11 +200,11 @@
     },
     "topRated": {
       "title": "Les mieux notés",
-      "subtitle": "Recommandés par notre communauté · Vérifiés par Mizan",
+      "subtitle": "Recommandés par notre communauté · Vérifiés par MIZAN",
       "seeAll": "Voir tous les professionnels"
     },
     "feedbackCta": {
-      "title": "Vous avez utilisé Mizan ?",
+      "title": "Vous avez utilisé MIZAN ?",
       "subtitleShort": "3 utilisateurs partagent leur avis",
       "subtitleLong": "Partagez votre expérience et aidez la communauté à choisir le bon professionnel.",
       "action": "Donner mon avis"
@@ -216,7 +216,7 @@
     },
     "ctaLawyer": {
       "title": "Vous êtes professionnel du droit ?",
-      "desc": "Rejoignez Mizan et soyez visible par des clients de toute l'Algérie et de la diaspora.",
+      "desc": "Rejoignez MIZAN et soyez visible par des clients de toute l'Algérie et de la diaspora.",
       "action": "Créer mon profil"
     }
   },
@@ -276,7 +276,7 @@
     "registeredIn": "inscrit en",
     "registeredSince": "Inscrit au barreau depuis",
     "registeredSinceF": "Inscrite au barreau depuis",
-    "verifiedBadge": "Vérifié par Mizan",
+    "verifiedBadge": "Vérifié par MIZAN",
     "courSupremeBadge": "Agréé Cour Suprême",
     "assermenteBadge": "Assermenté",
     "assermenteBadgeF": "Assermentée",
@@ -336,7 +336,7 @@
       "login": "Se connecter"
     },
     "lawyerRegister": {
-      "joinTitle": "Rejoindre Mizan",
+      "joinTitle": "Rejoindre MIZAN",
       "joinSubtitle": "Choisissez votre profession pour commencer",
       "registerTitle": "Inscription {profession}",
       "registerSubtitle": "Créez votre profil professionnel vérifié",
@@ -409,7 +409,7 @@
       "passwordPh": "Minimum 8 caractères",
       "confirmPassword": "Confirmer le mot de passe",
       "confirmPasswordPh": "Répétez votre mot de passe",
-      "termsNote": "En créant votre compte, vous acceptez les <cgu>CGU</cgu> et la <privacy>politique de confidentialité</privacy> de Mizan. Votre profil sera examiné avant publication (24–48h ouvrées).",
+      "termsNote": "En créant votre compte, vous acceptez les <cgu>CGU</cgu> et la <privacy>politique de confidentialité</privacy> de MIZAN. Votre profil sera examiné avant publication (24–48h ouvrées).",
       "back": "Retour",
       "continue": "Continuer",
       "submit": "Créer mon compte",
@@ -457,7 +457,7 @@
       "forgotPassword": "Mot de passe oublié ?",
       "submit": "Se connecter",
       "submitting": "Connexion en cours...",
-      "newHere": "Nouveau sur Mizan ?",
+      "newHere": "Nouveau sur MIZAN ?",
       "createAccount": "Créer un compte"
     },
     "lawyerLogin": {
@@ -471,17 +471,17 @@
       "forgotPassword": "Mot de passe oublié ?",
       "submit": "Se connecter",
       "submitting": "Connexion...",
-      "newHere": "Nouveau sur Mizan ?",
+      "newHere": "Nouveau sur MIZAN ?",
       "createAccount": "Créer un compte"
     }
   },
   "howItWorks": {
-    "heroTitle": "Comment fonctionne Mizan ?",
-    "heroSubtitle": "Mizan connecte des clients — en Algérie ou à l'étranger — avec des avocats, notaires, huissiers, comptables, experts-comptables et traducteurs vérifiés.",
+    "heroTitle": "Comment fonctionne MIZAN ?",
+    "heroSubtitle": "MIZAN connecte des clients — en Algérie ou à l'étranger — avec des avocats, notaires, huissiers, comptables, experts-comptables et traducteurs vérifiés.",
     "tabClient": "Vous êtes client",
     "tabPro": "Vous êtes professionnel",
     "faqTitle": "Questions fréquentes",
-    "claimBannerTitle": "Votre profil existe peut-être déjà sur Mizan",
+    "claimBannerTitle": "Votre profil existe peut-être déjà sur MIZAN",
     "claimBannerDesc": "Si vous avez un Google Business, vos informations ont pu être référencées. Réclamez votre profil.",
     "claimBannerAction": "Chercher mon profil",
     "ctaTitle": "Prêt à commencer ?",
@@ -520,7 +520,7 @@
       ],
       "faqs": [
         {
-          "q": "Puis-je utiliser Mizan depuis l'étranger ?",
+          "q": "Puis-je utiliser MIZAN depuis l'étranger ?",
           "a": "Oui, la plateforme est accessible depuis n'importe quel pays. La diaspora algérienne peut contacter un avocat, notaire ou comptable depuis la France, le Canada ou ailleurs."
         },
         {
@@ -529,11 +529,11 @@
         },
         {
           "q": "Comment savoir si un professionnel est fiable ?",
-          "a": "Chaque professionnel est vérifié par notre équipe avant activation. Les avis Google et Mizan sont affichés sur son profil."
+          "a": "Chaque professionnel est vérifié par notre équipe avant activation. Les avis Google et MIZAN sont affichés sur son profil."
         },
         {
           "q": "Puis-je contacter un notaire ou huissier ?",
-          "a": "Oui — notaires, huissiers, avocats, comptables et experts-comptables sont tous accessibles via la messagerie Mizan."
+          "a": "Oui — notaires, huissiers, avocats, comptables et experts-comptables sont tous accessibles via la messagerie MIZAN."
         }
       ]
     },
@@ -626,7 +626,7 @@
           },
           {
             "q": "Les clients peuvent-ils envoyer des docs ?",
-            "a": "Oui, via la messagerie Mizan. Les clients peuvent joindre des documents à leurs demandes."
+            "a": "Oui, via la messagerie MIZAN. Les clients peuvent joindre des documents à leurs demandes."
           }
         ]
       },
@@ -718,7 +718,7 @@
           },
           {
             "q": "Les clients peuvent-ils envoyer des docs ?",
-            "a": "Oui, via la messagerie Mizan sécurisée. Idéal pour la diaspora qui gère son entreprise à distance."
+            "a": "Oui, via la messagerie MIZAN sécurisée. Idéal pour la diaspora qui gère son entreprise à distance."
           }
         ]
       },
@@ -764,7 +764,7 @@
           },
           {
             "q": "Les missions peuvent-elles se faire à distance ?",
-            "a": "Oui. La plupart des missions peuvent se faire par échange de documents et messagerie. Mizan facilite ce flux dès le premier contact."
+            "a": "Oui. La plupart des missions peuvent se faire par échange de documents et messagerie. MIZAN facilite ce flux dès le premier contact."
           }
         ]
       },
@@ -798,7 +798,7 @@
         "faqs": [
           {
             "q": "Faut-il être traducteur assermenté pour s'inscrire ?",
-            "a": "Non. Les traducteurs assermentés comme non assermentés peuvent rejoindre Mizan. Un badge distingue clairement, sur le profil, les traducteurs agréés par le Ministère de la Justice."
+            "a": "Non. Les traducteurs assermentés comme non assermentés peuvent rejoindre MIZAN. Un badge distingue clairement, sur le profil, les traducteurs agréés par le Ministère de la Justice."
           },
           {
             "q": "L'inscription est-elle payante ?",
@@ -2864,11 +2864,11 @@
         "label": "Général",
         "questions": [
           {
-            "q": "Qu'est-ce que Mizan ?",
-            "a": "Mizan est une plateforme en ligne qui met en relation des clients avec des professionnels du droit et du chiffre vérifiés en Algérie : avocats, notaires, huissiers de justice, comptables et experts-comptables. Simple, direct, sans intermédiaire."
+            "q": "Qu'est-ce que MIZAN ?",
+            "a": "MIZAN est une plateforme en ligne qui met en relation des clients avec des professionnels du droit et du chiffre vérifiés en Algérie : avocats, notaires, huissiers de justice, comptables et experts-comptables. Simple, direct, sans intermédiaire."
           },
           {
-            "q": "L'utilisation de Mizan est-elle gratuite ?",
+            "q": "L'utilisation de MIZAN est-elle gratuite ?",
             "a": "Oui, l'inscription et la recherche de professionnels sont entièrement gratuites pour les clients."
           },
           {
@@ -2894,11 +2894,11 @@
           },
           {
             "q": "Puis-je consulter depuis l'étranger ?",
-            "a": "Oui, la messagerie Mizan fonctionne depuis n'importe quel pays. La diaspora algérienne peut contacter un avocat, notaire, comptable ou expert-comptable depuis la France, le Canada ou ailleurs."
+            "a": "Oui, la messagerie MIZAN fonctionne depuis n'importe quel pays. La diaspora algérienne peut contacter un avocat, notaire, comptable ou expert-comptable depuis la France, le Canada ou ailleurs."
           },
           {
             "q": "Quelle différence entre un notaire et un avocat ?",
-            "a": "L'avocat représente et conseille en justice. Le notaire établit des actes officiels — immobilier, successions, mariages, contrats. Les deux sont accessibles via Mizan."
+            "a": "L'avocat représente et conseille en justice. Le notaire établit des actes officiels — immobilier, successions, mariages, contrats. Les deux sont accessibles via MIZAN."
           },
           {
             "q": "À quoi sert un huissier ?",
@@ -2914,7 +2914,7 @@
           },
           {
             "q": "Les avis sont-ils fiables ?",
-            "a": "Tous les avis Mizan sont soumis à modération avant publication. Les avis Google proviennent de Google Business et sont affichés tels quels."
+            "a": "Tous les avis MIZAN sont soumis à modération avant publication. Les avis Google proviennent de Google Business et sont affichés tels quels."
           },
           {
             "q": "Puis-je contacter plusieurs professionnels ?",
@@ -2927,7 +2927,7 @@
         "questions": [
           {
             "q": "Comment réclamer mon profil ?",
-            "a": "Si vous trouvez votre profil sur Mizan, cliquez sur 'Réclamer ce profil'. Vous recevrez un code de vérification sur votre email professionnel inscrit au barreau."
+            "a": "Si vous trouvez votre profil sur MIZAN, cliquez sur 'Réclamer ce profil'. Vous recevrez un code de vérification sur votre email professionnel inscrit au barreau."
           },
           {
             "q": "L'inscription est-elle payante ?",
@@ -2951,7 +2951,7 @@
           },
           {
             "q": "Mon profil est-il visible à l'étranger ?",
-            "a": "Oui. Mizan est accessible depuis la France, le Canada, et toute la diaspora. Votre profil est visible pour tous les clients connectés, où qu'ils soient."
+            "a": "Oui. MIZAN est accessible depuis la France, le Canada, et toute la diaspora. Votre profil est visible pour tous les clients connectés, où qu'ils soient."
           }
         ]
       },
@@ -2963,12 +2963,12 @@
             "a": "Oui. Votre numéro de chambre des notaires sera requis pour vérification. Votre profil apparaît dans les résultats après validation sous 24-48h."
           },
           {
-            "q": "Quels actes puis-je proposer sur Mizan ?",
+            "q": "Quels actes puis-je proposer sur MIZAN ?",
             "a": "Actes immobiliers (vente, hypothèque), successions et héritages, contrats de mariage, donations, procurations, création d'entreprise, légalisations."
           },
           {
             "q": "La diaspora peut-elle me contacter ?",
-            "a": "Oui, c'est l'un des cas d'usage les plus fréquents. La diaspora a besoin de notaires pour successions, actes immobiliers en Algérie, procurations. Mizan vous rend visible depuis l'étranger."
+            "a": "Oui, c'est l'un des cas d'usage les plus fréquents. La diaspora a besoin de notaires pour successions, actes immobiliers en Algérie, procurations. MIZAN vous rend visible depuis l'étranger."
           },
           {
             "q": "La publicité est-elle autorisée pour les notaires ?",
@@ -2976,7 +2976,7 @@
           },
           {
             "q": "Les clients peuvent-ils envoyer des documents ?",
-            "a": "Oui, via la messagerie Mizan. Les clients peuvent joindre des titres de propriété, actes de naissance ou autres documents à leurs demandes."
+            "a": "Oui, via la messagerie MIZAN. Les clients peuvent joindre des titres de propriété, actes de naissance ou autres documents à leurs demandes."
           },
           {
             "q": "Mon numéro de chambre est-il affiché publiquement ?",
@@ -2997,15 +2997,15 @@
           },
           {
             "q": "Des demandes d'urgence sont-elles possibles ?",
-            "a": "Oui. La messagerie Mizan permet aux clients d'indiquer l'urgence de leur demande. Vous gérez ensuite les priorités depuis votre tableau de bord."
+            "a": "Oui. La messagerie MIZAN permet aux clients d'indiquer l'urgence de leur demande. Vous gérez ensuite les priorités depuis votre tableau de bord."
           },
           {
-            "q": "Quelle est ma zone de compétence sur Mizan ?",
+            "q": "Quelle est ma zone de compétence sur MIZAN ?",
             "a": "Vous définissez votre wilaya de compétence dans votre profil. Les clients filtrent par wilaya, donc vous apparaissez uniquement pour votre zone d'intervention."
           },
           {
             "q": "Des entreprises peuvent-elles me contacter ?",
-            "a": "Oui. Particuliers et entreprises utilisent Mizan. Les entreprises recherchent notamment des huissiers pour le recouvrement de créances et les constats commerciaux."
+            "a": "Oui. Particuliers et entreprises utilisent MIZAN. Les entreprises recherchent notamment des huissiers pour le recouvrement de créances et les constats commerciaux."
           },
           {
             "q": "L'inscription est-elle payante ?",
@@ -3018,7 +3018,7 @@
         "questions": [
           {
             "q": "Expert-comptable ou comptable agréé — quelle différence ?",
-            "a": "L'expert-comptable (ONEC) peut signer des bilans officiels et faire du commissariat aux comptes. Le comptable agréé (ONCA) gère la comptabilité courante, les déclarations et les bulletins de paie. Les deux peuvent s'inscrire sur Mizan."
+            "a": "L'expert-comptable (ONEC) peut signer des bilans officiels et faire du commissariat aux comptes. Le comptable agréé (ONCA) gère la comptabilité courante, les déclarations et les bulletins de paie. Les deux peuvent s'inscrire sur MIZAN."
           },
           {
             "q": "Quel numéro est requis pour l'inscription ?",
@@ -3030,11 +3030,11 @@
           },
           {
             "q": "La diaspora est-elle une cible pertinente ?",
-            "a": "Absolument. Les Algériens de l'étranger qui créent une EURL ou SARL en Algérie ont besoin d'un comptable local. Mizan vous rend visible depuis la France, le Canada ou ailleurs."
+            "a": "Absolument. Les Algériens de l'étranger qui créent une EURL ou SARL en Algérie ont besoin d'un comptable local. MIZAN vous rend visible depuis la France, le Canada ou ailleurs."
           },
           {
             "q": "Les missions peuvent-elles se faire à distance ?",
-            "a": "Oui. La plupart des missions comptables se font par échange de documents et messagerie. Mizan facilite ce flux dès le premier contact."
+            "a": "Oui. La plupart des missions comptables se font par échange de documents et messagerie. MIZAN facilite ce flux dès le premier contact."
           },
           {
             "q": "L'inscription est-elle payante ?",
@@ -3047,7 +3047,7 @@
         "questions": [
           {
             "q": "Quelle différence avec le comptable agréé ?",
-            "a": "L'expert-comptable (ONEC) peut signer des bilans officiels, réaliser des audits légaux et exercer le commissariat aux comptes. Le comptable agréé (ONCA) gère la comptabilité courante. Deux métiers distincts, tous deux présents sur Mizan."
+            "a": "L'expert-comptable (ONEC) peut signer des bilans officiels, réaliser des audits légaux et exercer le commissariat aux comptes. Le comptable agréé (ONCA) gère la comptabilité courante. Deux métiers distincts, tous deux présents sur MIZAN."
           },
           {
             "q": "Quel numéro est requis pour l'inscription ?",
@@ -3059,11 +3059,11 @@
           },
           {
             "q": "La diaspora est-elle une cible pertinente ?",
-            "a": "Absolument. Les Algériens de l'étranger ont besoin d'experts-comptables pour auditer leurs sociétés algériennes, évaluer des acquisitions ou réaliser des due diligences. Mizan vous rend visible depuis l'étranger."
+            "a": "Absolument. Les Algériens de l'étranger ont besoin d'experts-comptables pour auditer leurs sociétés algériennes, évaluer des acquisitions ou réaliser des due diligences. MIZAN vous rend visible depuis l'étranger."
           },
           {
             "q": "Les missions peuvent-elles se faire à distance ?",
-            "a": "Oui pour la majorité des missions. L'échange de documents via la messagerie Mizan facilite le flux dès le premier contact."
+            "a": "Oui pour la majorité des missions. L'échange de documents via la messagerie MIZAN facilite le flux dès le premier contact."
           },
           {
             "q": "La publicité est-elle autorisée ?",
@@ -3228,7 +3228,7 @@
   },
   "subscriptionPlans": {
     "paymentSoonBadge": "Paiement en ligne bientôt disponible",
-    "heroTitle1": "Rejoignez Mizan.",
+    "heroTitle1": "Rejoignez MIZAN.",
     "heroTitle2": "Visibilité garantie.",
     "heroSubtitle": "Abonnement fixe. Zéro commission.",
     "badgeMostChosen": "Le plus choisi",
@@ -3606,7 +3606,7 @@
     "close": "Clôturer",
     "actionError": "Erreur lors de l'action.",
     "autoMessages": {
-      "decline": "❌ Demande déclinée\n\n{lawyerName} n'est pas en mesure de prendre en charge votre demande actuellement.\n\nNous vous invitons à consulter d'autres avocats disponibles sur Mizan.",
+      "decline": "❌ Demande déclinée\n\n{lawyerName} n'est pas en mesure de prendre en charge votre demande actuellement.\n\nNous vous invitons à consulter d'autres avocats disponibles sur MIZAN.",
       "close": "✅ Consultation clôturée\n\n{lawyerName} a marqué cette consultation comme terminée.\n\nMerci de votre confiance."
     }
   },
@@ -3635,7 +3635,7 @@
     "subtitle": "Guides pratiques et conseils juridiques pour particuliers et entreprises en Algérie. Rédigés pour être accessibles, vérifiés par des professionnels du droit.",
     "readArticle": "Lire l'article",
     "ctaTitle": "Vous avez une question juridique ?",
-    "ctaDesc": "Trouvez un avocat inscrit au barreau, consultez son profil et ses avis, et contactez-le directement via Mizan.",
+    "ctaDesc": "Trouvez un avocat inscrit au barreau, consultez son profil et ses avis, et contactez-le directement via MIZAN.",
     "ctaAction": "Trouver un avocat",
     "categories": {
       "famille": "Droit de la famille",
@@ -3682,7 +3682,7 @@
     "thanksTitle": "Merci pour votre feedback !",
     "thanksDesc": "Votre message a bien été envoyé.",
     "title": "Votre avis nous intéresse",
-    "subtitle": "Aidez-nous à améliorer votre expérience sur Mizan",
+    "subtitle": "Aidez-nous à améliorer votre expérience sur MIZAN",
     "types": {
       "testimonial": "Partager mon expérience",
       "suggestion": "Suggérer une amélioration",
@@ -3718,7 +3718,7 @@
     "wilayaLabel": "Wilaya",
     "allWilayas": "Choisir wilaya(s)",
     "topRatedTitle": "{plural} les mieux notés",
-    "topRatedSubtitle": "Recommandés par notre communauté · Vérifiés par Mizan",
+    "topRatedSubtitle": "Recommandés par notre communauté · Vérifiés par MIZAN",
     "seeAllPlural": "Voir tous les {plural}",
     "seeButton": "Voir les {plural}",
     "whyChoose": "Pourquoi choisir un {label} ?",
@@ -3957,7 +3957,7 @@
     "title": "Les professionnels du droit en Algérie",
     "subtitle": "Avocat, notaire, huissier, comptable — chaque professionnel a un rôle précis défini par la loi algérienne. Comprenez qui contacter selon votre situation.",
     "ctaTitle": "Trouvez le bon professionnel",
-    "ctaDesc": "Tous vérifiés par Mizan avant activation.",
+    "ctaDesc": "Tous vérifiés par MIZAN avant activation.",
     "ctaAction": "Rechercher un professionnel"
   },
   "professionsData": {
@@ -4341,7 +4341,7 @@
       "labelPlural": "traducteurs",
       "tagline": "Traduction de documents, assermentée ou non",
       "intro": "Le traducteur convertit fidèlement vos documents d'une langue à une autre : actes, diplômes, contrats, correspondances. On distingue deux profils. Le traducteur assermenté est agréé par le Ministère de la Justice : ses traductions portent un cachet officiel à valeur légale, reconnu par les administrations et tribunaux — indispensable pour un visa, une équivalence de diplôme ou un dossier judiciaire. Le traducteur non assermenté réalise des traductions professionnelles fidèles pour tous les usages qui n'exigent pas de cachet officiel : documents commerciaux, techniques, correspondances, sites web.",
-      "cadreJuridique": "Le traducteur assermenté (traducteur-interprète officiel) exerce sous l'agrément du Ministère de la Justice. Il prête serment devant la cour et son cachet confère à ses traductions une valeur officielle opposable aux administrations et juridictions algériennes comme étrangères. Le traducteur non assermenté n'a pas ce statut officiel : ses traductions sont valables pour tout usage privé ou professionnel, mais ne sont pas reconnues par les administrations pour les actes officiels. Sur Mizan, un badge indique clairement si un traducteur est assermenté.",
+      "cadreJuridique": "Le traducteur assermenté (traducteur-interprète officiel) exerce sous l'agrément du Ministère de la Justice. Il prête serment devant la cour et son cachet confère à ses traductions une valeur officielle opposable aux administrations et juridictions algériennes comme étrangères. Le traducteur non assermenté n'a pas ce statut officiel : ses traductions sont valables pour tout usage privé ou professionnel, mais ne sont pas reconnues par les administrations pour les actes officiels. Sur MIZAN, un badge indique clairement si un traducteur est assermenté.",
       "missions": [
         {
           "title": "Traduction d'actes d'état civil",
@@ -4411,9 +4411,9 @@
     "vsOthersTitle": "{label} vs autres professionnels",
     "vsLabel": "{label} vs {avec}",
     "ctaTitle": "Trouvez un {label} vérifié en Algérie",
-    "ctaDesc": "Tous les professionnels sur Mizan sont vérifiés avant activation.",
+    "ctaDesc": "Tous les professionnels sur MIZAN sont vérifiés avant activation.",
     "ctaAction": "Trouver un {label}",
-    "otherProfessions": "Autres professions sur Mizan"
+    "otherProfessions": "Autres professions sur MIZAN"
   },
   "customSelect": {
     "defaultPlaceholder": "Sélectionner...",
@@ -4615,7 +4615,7 @@
     "home": "Accueil",
     "blog": "Blog",
     "ctaTitle": "Besoin d'un avocat spécialisé ?",
-    "ctaDesc": "Trouvez et contactez directement un avocat inscrit au barreau via Mizan.",
+    "ctaDesc": "Trouvez et contactez directement un avocat inscrit au barreau via MIZAN.",
     "ctaAction": "Trouver un avocat spécialisé",
     "relatedArticles": "Articles liés",
     "read": "Lire"
@@ -4699,7 +4699,7 @@
     "call": "Appeler"
   },
   "acquisitionPopup": {
-    "title": "Bienvenue sur Mizan",
+    "title": "Bienvenue sur MIZAN",
     "question": "Comment nous avez-vous connus ?",
     "facebook": "Facebook",
     "tiktok": "TikTok",

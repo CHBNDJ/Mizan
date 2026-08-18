@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Conditions Générales d'Utilisation (CGU) | Mizan",
+  title: "Conditions Générales d'Utilisation (CGU) | MIZAN",
   description:
-    "Conditions générales d'utilisation de la plateforme Mizan : droits, obligations, responsabilités des clients et professionnels (avocats, notaires, huissiers, comptables).",
+    "Conditions générales d'utilisation de la plateforme MIZAN : droits, obligations, responsabilités des clients et professionnels (avocats, notaires, huissiers, comptables).",
   openGraph: {
-    title: "CGU | Mizan",
+    title: "CGU | MIZAN",
     url: "https://mizan-dz.com/cgu",
   },
   alternates: { canonical: "https://mizan-dz.com/cgu" },

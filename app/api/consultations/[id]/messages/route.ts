@@ -176,7 +176,7 @@ export async function POST(
           (system_key === "close" ? es.closed : es.attachment);
 
         await resend.emails.send({
-          from: "Mizan <noreply@mizan-dz.com>",
+          from: "MIZAN <noreply@mizan-dz.com>",
           to: recipient.email,
           subject: `${es.subject} ${senderName}`,
           html: `<!DOCTYPE html>
@@ -195,7 +195,7 @@ export async function POST(
               <path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
             </svg>
           </td>
-          <td style="padding-left:10px;font-size:17px;font-weight:700;color:#134e4a;">Mizan</td>
+          <td style="padding-left:10px;font-size:17px;font-weight:700;color:#134e4a;">MIZAN</td>
         </tr></table>
       </td>
     </tr>
@@ -225,7 +225,7 @@ export async function POST(
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="border-top:1px solid #e2e8f0;padding-top:16px;font-size:11px;color:#94a3b8;">
-                    © 2026 Mizan · <a href="https://mizan-dz.com" style="color:#94a3b8;text-decoration:none;">mizan-dz.com</a>
+                    © 2026 MIZAN · <a href="https://mizan-dz.com" style="color:#94a3b8;text-decoration:none;">mizan-dz.com</a>
                   </td>
                 </tr>
               </table>

@@ -31,7 +31,7 @@ const PROF_KEY: Record<ProfessionSlug, string> = {
 };
 
 export const metadata = {
-  title: "Les professions juridiques en Algérie | Mizan",
+  title: "Les professions juridiques en Algérie | MIZAN",
   description:
     "Comprenez le rôle de chaque professionnel juridique en Algérie : avocat, notaire, huissier, comptable agréé, expert-comptable. Missions, cadre légal et quand faire appel.",
   alternates: { canonical: "https://mizan-dz.com/professions" },

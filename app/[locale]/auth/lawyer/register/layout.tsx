@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Inscription professionnel | Mizan",
+  title: "Inscription professionnel | MIZAN",
   description:
-    "Inscrivez-vous sur Mizan en tant qu'avocat, notaire, huissier ou comptable et rejoignez notre annuaire d'experts juridiques vérifiés.",
+    "Inscrivez-vous sur MIZAN en tant qu'avocat, notaire, huissier ou comptable et rejoignez notre annuaire d'experts juridiques vérifiés.",
   robots: { index: false, follow: false },
 };
 export default function LawyerRegisterLayout({

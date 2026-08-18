@@ -78,11 +78,11 @@ export async function POST(request: NextRequest) {
     const timeLabel = appt.start_time?.slice(0, 5) || "";
 
     await resend.emails.send({
-      from: "Mizan <noreply@mizan-dz.com>",
+      from: "MIZAN <noreply@mizan-dz.com>",
       to: lawyer.email,
       subject: `📅 Nouveau rendez-vous — ${dateLabel} à ${timeLabel}`,
       html: `<!DOCTYPE html>
-<html lang="fr"><head><meta charset="UTF-8"><title>Nouveau RDV Mizan</title></head>
+<html lang="fr"><head><meta charset="UTF-8"><title>Nouveau RDV MIZAN</title></head>
 <body style="margin:0;padding:0;background:#f1f5f9;font-family:Arial,sans-serif">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:32px 16px">
 <tr><td align="center">
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
           <path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
         </svg>
       </td>
-      <td style="padding-left:10px;font-size:17px;font-weight:700;color:#0f2d24">Mizan</td>
+      <td style="padding-left:10px;font-size:17px;font-weight:700;color:#0f2d24">MIZAN</td>
     </tr></table>
   </td></tr>
   <tr><td style="background:#ffffff;border-top:3px solid #0f6e56;border-radius:0 0 12px 12px;padding:32px">
@@ -126,18 +126,18 @@ export async function POST(request: NextRequest) {
     </table>
   </td></tr>
   <tr><td style="padding-top:16px;text-align:center;font-size:10px;color:#94a3b8">
-    © 2026 Mizan · <a href="https://mizan-dz.com" style="color:#94a3b8;text-decoration:none">mizan-dz.com</a>
+    © 2026 MIZAN · <a href="https://mizan-dz.com" style="color:#94a3b8;text-decoration:none">mizan-dz.com</a>
   </td></tr>
 </table></td></tr></table>
 </body></html>`,
     });
 
     await resend.emails.send({
-      from: "Mizan <noreply@mizan-dz.com>",
+      from: "MIZAN <noreply@mizan-dz.com>",
       to: client.email,
       subject: `✅ Votre rendez-vous est enregistré — ${dateLabel}`,
       html: `<!DOCTYPE html>
-<html lang="fr"><head><meta charset="UTF-8"><title>Confirmation RDV Mizan</title></head>
+<html lang="fr"><head><meta charset="UTF-8"><title>Confirmation RDV MIZAN</title></head>
 <body style="margin:0;padding:0;background:#f1f5f9;font-family:Arial,sans-serif">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:32px 16px">
 <tr><td align="center">
@@ -150,7 +150,7 @@ export async function POST(request: NextRequest) {
           <path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
         </svg>
       </td>
-      <td style="padding-left:10px;font-size:17px;font-weight:700;color:#0f2d24">Mizan</td>
+      <td style="padding-left:10px;font-size:17px;font-weight:700;color:#0f2d24">MIZAN</td>
     </tr></table>
   </td></tr>
   <tr><td style="background:#ffffff;border-top:3px solid #0f6e56;border-radius:0 0 12px 12px;padding:32px">
@@ -162,7 +162,7 @@ export async function POST(request: NextRequest) {
       <tr><td style="width:36px;height:2px;background:#0f6e56;font-size:0">&nbsp;</td></tr>
     </table>
     <p style="margin:0 0 16px;font-size:13px;color:#334155;line-height:1.75">
-      Votre demande de rendez-vous a bien été transmise au ${profLabel.toLowerCase()}. Il confirmera le créneau par message sur Mizan.
+      Votre demande de rendez-vous a bien été transmise au ${profLabel.toLowerCase()}. Il confirmera le créneau par message sur MIZAN.
     </p>
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fffe;border:1px solid #d0f0e8;border-radius:8px;padding:16px;margin-bottom:20px">
       <tr><td style="padding:4px 0;font-size:13px;color:#334155"><strong>📅 Date demandée :</strong> ${dateLabel}</td></tr>
@@ -183,7 +183,7 @@ export async function POST(request: NextRequest) {
     </table>
   </td></tr>
   <tr><td style="padding-top:16px;text-align:center;font-size:10px;color:#94a3b8">
-    © 2026 Mizan · <a href="https://mizan-dz.com" style="color:#94a3b8;text-decoration:none">mizan-dz.com</a>
+    © 2026 MIZAN · <a href="https://mizan-dz.com" style="color:#94a3b8;text-decoration:none">mizan-dz.com</a>
   </td></tr>
 </table></td></tr></table>
 </body></html>`,

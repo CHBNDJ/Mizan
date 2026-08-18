@@ -48,6 +48,8 @@ const WILAYAS_SLUGS = [
   "laghouat",
   "bouira",
 ];
+const FEMMES_WILAYAS = ["alger", "bejaia", "oran"];
+
 const BLOG_SLUGS = [
   "acheter-appartement-sur-plan-algerie-vsp",
   "exequatur-algerie-jugement-etranger",
@@ -104,6 +106,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const wilayaPages = WILAYAS_SLUGS.map((slug) =>
     entry(`/lawyers/wilaya/${slug}`, "weekly", 0.85)
   );
+  const femmesPages = FEMMES_WILAYAS.map((slug) =>
+    entry(`/lawyers/femmes/${slug}`, "weekly", 0.8)
+  );
   const blogPages = BLOG_SLUGS.map((slug) =>
     entry(`/blog/${slug}`, "monthly", 0.7)
   );
@@ -126,6 +131,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...professionPages,
       ...specialitePages,
       ...wilayaPages,
+      ...femmesPages,
       ...blogPages,
       ...lawyerPages,
     ];
@@ -135,6 +141,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...professionPages,
       ...specialitePages,
       ...wilayaPages,
+      ...femmesPages,
       ...blogPages,
     ];
   }

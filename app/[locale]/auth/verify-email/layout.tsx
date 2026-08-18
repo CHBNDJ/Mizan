@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Vérification email | Mizan",
-  description: "Vérifiez votre adresse email pour activer votre compte Mizan.",
+  title: "Vérification email | MIZAN",
+  description: "Vérifiez votre adresse email pour activer votre compte MIZAN.",
   robots: {
     index: false,
     follow: false,

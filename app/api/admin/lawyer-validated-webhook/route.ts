@@ -84,7 +84,7 @@ const buildEmailHtml = (
                 <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
               </svg>
             </td>
-            <td style="padding-left:10px;font-size:18px;font-weight:700;color:#134e4a;letter-spacing:-.02em;">Mizan</td>
+            <td style="padding-left:10px;font-size:18px;font-weight:700;color:#134e4a;letter-spacing:-.02em;">MIZAN</td>
           </tr>
         </table>
       </td>
@@ -114,7 +114,7 @@ const buildEmailHtml = (
 
               <p style="margin:0 0 20px;font-size:14px;color:#334155;line-height:1.7;">
                 Notre équipe a examiné et validé votre inscription en tant que <strong>${cfg.label}</strong>.
-                Votre profil est maintenant <strong>actif et visible</strong> sur Mizan.
+                Votre profil est maintenant <strong>actif et visible</strong> sur MIZAN.
                 ${numStr ? `<br><span style="color:#64748b;font-size:13px;">${numStr}</span>` : ""}
               </p>
 
@@ -165,7 +165,7 @@ const buildEmailHtml = (
 
     <tr>
       <td style="padding-top:20px;text-align:center;font-size:11px;color:#94a3b8;">
-        © 2026 Mizan ·
+        © 2026 MIZAN ·
         <a href="https://mizan-dz.com" style="color:#94a3b8;text-decoration:none;">mizan-dz.com</a>
       </td>
     </tr>
@@ -206,9 +206,9 @@ export async function POST(request: NextRequest) {
     }
 
     await resend.emails.send({
-      from: "Mizan <noreply@mizan-dz.com>",
+      from: "MIZAN <noreply@mizan-dz.com>",
       to: user.email,
-      subject: "✅ Votre compte Mizan est maintenant actif",
+      subject: "✅ Votre compte MIZAN est maintenant actif",
       html: buildEmailHtml(
         user.first_name,
         user.last_name,

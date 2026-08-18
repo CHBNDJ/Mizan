@@ -72,9 +72,11 @@ const MapPinSmall = () => (
 function SearchResultsInner({
   forcedWilaya,
   forcedSpecialite,
+  forcedGenre,
 }: {
   forcedWilaya?: string;
   forcedSpecialite?: string;
+  forcedGenre?: string;
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -109,7 +111,9 @@ function SearchResultsInner({
       const specs = searchParams.getAll("specialite");
       if (specs.length) f.specialite = specs;
     }
-    if (searchParams.get("genre")) f.genre = searchParams.get("genre") as any;
+    if (forcedGenre) f.genre = forcedGenre as any;
+    else if (searchParams.get("genre"))
+      f.genre = searchParams.get("genre") as any;
     if (searchParams.get("experience_min"))
       f.experience_min = parseInt(searchParams.get("experience_min")!);
     const langs = searchParams.getAll("langues");
@@ -121,7 +125,7 @@ function SearchResultsInner({
 
   useEffect(() => {
     setFilters(readFilters());
-  }, [searchParams, forcedWilaya, forcedSpecialite]);
+  }, [searchParams, forcedWilaya, forcedSpecialite, forcedGenre]);
 
   useEffect(() => {
     setLoading(true);
@@ -166,7 +170,7 @@ function SearchResultsInner({
   }, [page]);
 
   const updateURL = (f: SearchFilters) => {
-    if (forcedWilaya || forcedSpecialite) return;
+    if (forcedWilaya || forcedSpecialite || forcedGenre) return;
     const p = new URLSearchParams();
     p.set("profession", professionParam);
     if (country === "France") p.set("pays", "france");
@@ -186,6 +190,7 @@ function SearchResultsInner({
     if (!value || (Array.isArray(value) && value.length === 0)) delete nf[key];
     if (forcedWilaya) nf.wilaya = forcedWilaya;
     if (forcedSpecialite) nf.specialite = [forcedSpecialite];
+    if (forcedGenre) nf.genre = forcedGenre as any;
     setFilters(nf);
     setPage(1);
     updateURL(nf);
@@ -194,12 +199,13 @@ function SearchResultsInner({
   const handleProfessionSwitch = (newProf: string) => {
     if (newProf === professionParam) return;
     const paysSuffix = country === "France" ? "?pays=france" : "";
-    if (forcedWilaya || forcedSpecialite) {
+    if (forcedWilaya || forcedSpecialite || forcedGenre) {
       const p = new URLSearchParams();
       p.set("profession", newProf);
       if (country === "France") p.set("pays", "france");
       if (forcedWilaya) p.set("wilaya", forcedWilaya);
       if (forcedSpecialite) p.append("specialite", forcedSpecialite);
+      if (forcedGenre) p.set("genre", forcedGenre);
       router.push(`/search?${p.toString()}`);
       return;
     }
@@ -602,9 +608,11 @@ function SearchResultsInner({
 export function SearchResults({
   forcedWilaya,
   forcedSpecialite,
+  forcedGenre,
 }: {
   forcedWilaya?: string;
   forcedSpecialite?: string;
+  forcedGenre?: string;
 }) {
   return (
     <Suspense
@@ -617,6 +625,7 @@ export function SearchResults({
       <SearchResultsInner
         forcedWilaya={forcedWilaya}
         forcedSpecialite={forcedSpecialite}
+        forcedGenre={forcedGenre}
       />
     </Suspense>
   );

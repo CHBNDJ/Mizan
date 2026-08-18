@@ -27,7 +27,7 @@ const CANAL_CONFIG: Record<
   message: {
     icon: MessageSquare,
     label: "Message écrit",
-    desc: "Réponse sous 24-48h par messagerie sécurisée Mizan",
+    desc: "Réponse sous 24-48h par messagerie sécurisée MIZAN",
   },
   phone: {
     icon: Phone,
