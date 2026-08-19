@@ -9,9 +9,9 @@ export const siteConfig = {
 };
 
 export const homeMetadata: Metadata = {
-  title: "Avocats & notaires vérifiés en Algérie — Avis clients | MIZAN",
+  title: "Trouver un avocat en Algérie — notaires, experts-comptables | MIZAN",
   description:
-    "Trouvez un avocat, notaire ou huissier vérifié en Algérie. Avis clients réels, honoraires transparents, consultation en ligne depuis l'Algérie ou l'étranger.",
+    "Trouvez un avocat, notaire ou expert-comptable en Algérie. Avis clients réels, consultation en ligne depuis l'Algérie ou l'étranger. Contact direct, sans intermédiaire.",
   keywords: [
     "avocat algérie",
     "avocat en ligne algérie",
@@ -53,7 +53,8 @@ export const homeMetadata: Metadata = {
     locale: "fr_DZ",
     alternateLocale: ["fr_FR", "ar_DZ", "en_US"],
     url: siteConfig.url,
-    title: "Avocats & notaires vérifiés en Algérie — Avis clients | MIZAN",
+    title:
+      "Trouver un avocat en Algérie — notaires, experts-comptables | MIZAN",
     description: siteConfig.description,
     siteName: "MIZAN",
     images: [
