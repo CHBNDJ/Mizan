@@ -83,12 +83,13 @@ export default function TestimonialsSection() {
           </div>
 
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
-            {testimonials.map((item, i) => {
-              const clientsBefore = testimonials
-                .slice(0, i)
-                .filter((tm) => tm.user_type === "client").length;
-              const showOnMobile =
-                item.user_type === "client" && clientsBefore < 3;
+            {testimonials.map((item) => {
+              const MOBILE_IDS = [
+                "8ecc3270-d030-4fc6-bf31-3d13a740f00d",
+                "10203660-01ec-4967-9ef5-bf2703cd17ce",
+                "f01c478f-9119-4357-8b82-84376098576d",
+              ];
+              const showOnMobile = MOBILE_IDS.includes(item.id);
               return (
                 <div
                   key={item.id}
