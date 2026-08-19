@@ -83,10 +83,10 @@ export default function TestimonialsSection() {
           </div>
 
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
-            {testimonials.map((item) => (
+            {testimonials.map((item, i) => (
               <div
                 key={item.id}
-                className="break-inside-avoid bg-white/85 dark:bg-[#232325] border border-teal-100 dark:border-[#3a3a3d] rounded-2xl p-6 flex flex-col gap-4 hover:shadow-md hover:border-teal-300 dark:hover:border-[#6fcf9f] transition-all"
+                className={`break-inside-avoid bg-white/85 dark:bg-[#232325] border border-teal-100 dark:border-[#3a3a3d] rounded-2xl p-6 flex flex-col gap-4 hover:shadow-md hover:border-teal-300 dark:hover:border-[#6fcf9f] transition-all ${i >= 3 ? "hidden sm:block" : ""}`}
               >
                 <div className="flex justify-end">
                   <span className="text-4xl leading-none text-teal-400 dark:text-[#6fcf9f] font-serif -mb-2">

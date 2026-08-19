@@ -12,6 +12,29 @@ const supabaseAdmin = createClient(
   }
 );
 
+const verifyRateLimit = new Map<string, { count: number; resetAt: number }>();
+const VERIFY_WINDOW_MS = 15 * 60 * 1000;
+const VERIFY_MAX = 5;
+
+function checkVerifyLimit(key: string): boolean {
+  const now = Date.now();
+  const entry = verifyRateLimit.get(key);
+  if (!entry || now > entry.resetAt) {
+    verifyRateLimit.set(key, { count: 1, resetAt: now + VERIFY_WINDOW_MS });
+    return true;
+  }
+  if (entry.count >= VERIFY_MAX) return false;
+  entry.count += 1;
+  return true;
+}
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of verifyRateLimit.entries()) {
+    if (now > entry.resetAt) verifyRateLimit.delete(key);
+  }
+}, 5 * 60 * 1000);
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -22,6 +45,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Email et code requis" },
         { status: 400 }
+      );
+    }
+
+    const ip =
+      (request.headers.get("x-forwarded-for") || "unknown").split(",")[0].trim();
+    if (!checkVerifyLimit(`${ip}:${email}`)) {
+      return NextResponse.json(
+        { error: "Trop de tentatives. Réessayez dans 15 minutes." },
+        { status: 429 }
       );
     }
 
@@ -82,7 +114,10 @@ export async function POST(request: NextRequest) {
     try {
       await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/admin/notify`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-internal-secret": process.env.INTERNAL_API_SECRET || "",
+        },
         body: JSON.stringify({
           subject: `Nouvel utilisateur ${userType} vérifié`,
           title: "Nouveau compte vérifié",

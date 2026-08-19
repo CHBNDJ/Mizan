@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient();
     const body = await request.json();
 
-    if (!body.lawyer_id || !body.client_id || !body.question) {
+    if (!body.lawyer_id || !body.question) {
       return NextResponse.json(
         { success: false, error: "Données manquantes" },
         { status: 400 }
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     const { data: consultation, error: insertError } = await supabase
       .from("consultations")
       .insert({
-        client_id: body.client_id,
+        client_id: user.id,
         lawyer_id: body.lawyer_id,
         question: "📋 Consultation",
         status: "pending",
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       .from("consultation_messages")
       .insert({
         consultation_id: consultation.id,
-        sender_id: body.client_id,
+        sender_id: user.id,
         sender_type: "client",
         message: encryptMessage(body.question.trim()),
         is_read: false,
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
       const { data: client } = await supabase
         .from("users")
         .select("first_name, last_name")
-        .eq("id", body.client_id)
+        .eq("id", user.id)
         .single();
 
       if (lawyer) {

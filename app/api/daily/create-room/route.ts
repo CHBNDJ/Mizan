@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { createClient as createSessionClient } from "@/lib/supabase/server";
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -8,12 +9,34 @@ const supabaseAdmin = createClient(
 
 export async function POST(req: NextRequest) {
   try {
+    const supabase = await createSessionClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+    }
+
     const { consultationId } = await req.json();
     if (!consultationId)
       return NextResponse.json(
         { error: "Missing consultationId" },
         { status: 400 }
       );
+
+    const { data: consultation } = await supabaseAdmin
+      .from("consultations")
+      .select("client_id, lawyer_id")
+      .eq("id", consultationId)
+      .single();
+
+    if (
+      !consultation ||
+      (user.id !== consultation.client_id && user.id !== consultation.lawyer_id)
+    ) {
+      return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
+    }
 
     const { data: existing } = await supabaseAdmin
       .from("consultation_rooms")

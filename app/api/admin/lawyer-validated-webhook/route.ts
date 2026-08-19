@@ -179,6 +179,14 @@ const buildEmailHtml = (
 
 export async function POST(request: NextRequest) {
   try {
+    const webhookSecret = request.headers.get("x-webhook-secret");
+    if (
+      !process.env.SUPABASE_WEBHOOK_SECRET ||
+      webhookSecret !== process.env.SUPABASE_WEBHOOK_SECRET
+    ) {
+      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+    }
+
     const payload = await request.json();
 
     const lawyerId = payload.record?.id;
