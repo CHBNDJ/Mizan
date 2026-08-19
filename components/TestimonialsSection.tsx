@@ -83,43 +83,50 @@ export default function TestimonialsSection() {
           </div>
 
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
-            {testimonials.map((item, i) => (
-              <div
-                key={item.id}
-                className={`break-inside-avoid bg-white/85 dark:bg-[#232325] border border-teal-100 dark:border-[#3a3a3d] rounded-2xl p-6 flex flex-col gap-4 hover:shadow-md hover:border-teal-300 dark:hover:border-[#6fcf9f] transition-all ${i >= 3 ? "hidden sm:block" : ""}`}
-              >
-                <div className="flex justify-end">
-                  <span className="text-4xl leading-none text-teal-400 dark:text-[#6fcf9f] font-serif -mb-2">
-                    &rdquo;
-                  </span>
-                </div>
-                <p
-                  className="text-sm text-slate-600 dark:text-[#E8E8E6] leading-relaxed flex-1 italic"
-                  dir={locale === "ar" ? "rtl" : "ltr"}
+            {testimonials.map((item, i) => {
+              const clientsBefore = testimonials
+                .slice(0, i)
+                .filter((tm) => tm.user_type === "client").length;
+              const showOnMobile =
+                item.user_type === "client" && clientsBefore < 3;
+              return (
+                <div
+                  key={item.id}
+                  className={`break-inside-avoid bg-white/85 dark:bg-[#232325] border border-teal-100 dark:border-[#3a3a3d] rounded-2xl p-6 flex flex-col gap-4 hover:shadow-md hover:border-teal-300 dark:hover:border-[#6fcf9f] transition-all ${showOnMobile ? "" : "hidden sm:block"}`}
                 >
-                  {item.translations?.[locale] || item.message}
-                </p>
-                <div className="flex items-center gap-3 pt-3 border-t border-teal-100 dark:border-[#3a3a3d]">
-                  <div className="w-9 h-9 bg-teal-600 dark:bg-[#0F6E56] rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-sm font-bold">
-                      {getInitials(item.user_name)}
+                  <div className="flex justify-end">
+                    <span className="text-4xl leading-none text-teal-400 dark:text-[#6fcf9f] font-serif -mb-2">
+                      &rdquo;
                     </span>
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold text-slate-800 dark:text-[#F5F5F4]">
-                      {shortName(item.user_name)}
-                    </p>
-                    <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
-                      {item.user_type === "lawyer"
-                        ? t("verifiedPro")
-                        : item.country
-                          ? `${t("client")} · ${translateCountry(item.country)}`
-                          : t("client")}
-                    </p>
+                  <p
+                    className="text-sm text-slate-600 dark:text-[#E8E8E6] leading-relaxed flex-1 italic"
+                    dir={locale === "ar" ? "rtl" : "ltr"}
+                  >
+                    {item.translations?.[locale] || item.message}
+                  </p>
+                  <div className="flex items-center gap-3 pt-3 border-t border-teal-100 dark:border-[#3a3a3d]">
+                    <div className="w-9 h-9 bg-teal-600 dark:bg-[#0F6E56] rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-bold">
+                        {getInitials(item.user_name)}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800 dark:text-[#F5F5F4]">
+                        {shortName(item.user_name)}
+                      </p>
+                      <p className="text-xs text-slate-500 dark:text-[#A8A8A6]">
+                        {item.user_type === "lawyer"
+                          ? t("verifiedPro")
+                          : item.country
+                            ? `${t("client")} · ${translateCountry(item.country)}`
+                            : t("client")}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
