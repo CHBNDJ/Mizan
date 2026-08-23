@@ -30,6 +30,11 @@ export const metadata: Metadata = {
 
 const ARTICLE_META = [
   {
+    slug: "creer-entreprise-algerie",
+    categorie: "commercial",
+    date: "2026-08-20",
+  },
+  {
     slug: "acheter-appartement-sur-plan-algerie-vsp",
     categorie: "immobilier",
     date: "2026-08-16",
@@ -44,7 +49,6 @@ const ARTICLE_META = [
     categorie: "famille",
     date: "2025-04-01",
   },
-  { slug: "creer-sarl-algerie", categorie: "commercial", date: "2025-03-15" },
   {
     slug: "succession-algerie-depuis-etranger",
     categorie: "famille",

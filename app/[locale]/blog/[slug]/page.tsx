@@ -31,11 +31,36 @@ const ARTICLE_META: Record<
       "droits-locataire-algerie",
     ],
   },
-  "creer-sarl-algerie": {
+  "creer-entreprise-algerie": {
     categorieKey: "commercial",
-    date: "2025-03-15",
-    specialiteSlug: "droit-commercial-et-des-affaires",
-    articlesLies: ["licenciement-algerie", "acheter-bien-immobilier-algerie"],
+    date: "2026-08-20",
+    specialiteSlug: "droit-commercial",
+    articlesLies: [
+      "acheter-bien-immobilier-algerie",
+      "succession-algerie-depuis-etranger",
+    ],
+    auteur: {
+      nom: {
+        fr: "Me Imene Mofredj",
+        ar: "الأستاذة إيمان مفرج",
+        en: "Me Imene Mofredj",
+      },
+      slug: "imene-mofredj",
+      titres: {
+        fr: [
+          "Avocate agréée auprès de la Cour suprême et du Conseil d'État",
+          "Barreau d'Alger",
+        ],
+        ar: [
+          "محامية معتمدة لدى المحكمة العليا ومجلس الدولة",
+          "منظمة المحامين للجزائر",
+        ],
+        en: [
+          "Lawyer admitted to the Supreme Court and Council of State",
+          "Algiers Bar",
+        ],
+      },
+    },
   },
   "succession-algerie-depuis-etranger": {
     categorieKey: "famille",
@@ -50,13 +75,19 @@ const ARTICLE_META: Record<
     categorieKey: "immobilier",
     date: "2025-02-15",
     specialiteSlug: "droit-immobilier",
-    articlesLies: ["acheter-bien-immobilier-algerie", "creer-sarl-algerie"],
+    articlesLies: [
+      "acheter-bien-immobilier-algerie",
+      "creer-entreprise-algerie",
+    ],
   },
   "licenciement-algerie": {
     categorieKey: "travail",
     date: "2025-02-01",
     specialiteSlug: "droit-du-travail-et-social",
-    articlesLies: ["creer-sarl-algerie", "acheter-bien-immobilier-algerie"],
+    articlesLies: [
+      "creer-entreprise-algerie",
+      "acheter-bien-immobilier-algerie",
+    ],
   },
   "acheter-bien-immobilier-algerie": {
     categorieKey: "immobilier",
@@ -67,15 +98,7 @@ const ARTICLE_META: Record<
       "vendre-appartement-algerie-etranger",
     ],
   },
-  "creer-entreprise-algerie-diaspora": {
-    categorieKey: "commercial",
-    date: "2026-05-28",
-    specialiteSlug: "droit-commercial-et-des-affaires",
-    articlesLies: [
-      "heriter-bien-immobilier-algerie-france",
-      "vendre-appartement-algerie-etranger",
-    ],
-  },
+
   "heriter-bien-immobilier-algerie-france": {
     categorieKey: "famille",
     date: "2026-05-28",
@@ -134,7 +157,7 @@ const ARTICLE_META: Record<
     specialiteSlug: "droit-immobilier",
     articlesLies: [
       "acheter-bien-immobilier-algerie",
-      "vendre-appartement-algerie-etranger",
+      "succession-algerie-depuis-etranger",
     ],
     auteur: {
       nom: {
@@ -420,9 +443,12 @@ export default async function BlogArticlePage({ params }: Props) {
     .map((s) => {
       const m = ARTICLE_META[s];
       if (!m) return null;
+      const titreKey = `blogArticles.${s}.titre`;
+      const titreLie = t(titreKey);
+      if (titreLie === titreKey) return null;
       return {
         slug: s,
-        titre: t(`blogArticles.${s}.titre`),
+        titre: titreLie,
         resume: t(`blogArticles.${s}.resume`),
         categorie: t(`blogPage.categories.${m.categorieKey}`),
       };

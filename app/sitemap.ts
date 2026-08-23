@@ -51,15 +51,14 @@ const WILAYAS_SLUGS = [
 const FEMMES_WILAYAS = ["alger", "bejaia", "oran"];
 
 const BLOG_SLUGS = [
+  "creer-entreprise-algerie",
   "acheter-appartement-sur-plan-algerie-vsp",
   "exequatur-algerie-jugement-etranger",
   "comment-divorcer-en-algerie",
-  "creer-sarl-algerie",
   "succession-algerie-depuis-etranger",
   "droits-locataire-algerie",
   "licenciement-algerie",
   "acheter-bien-immobilier-algerie",
-  "creer-entreprise-algerie-diaspora",
   "heriter-bien-immobilier-algerie-france",
   "vendre-appartement-algerie-etranger",
 ];

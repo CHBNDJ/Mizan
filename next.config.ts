@@ -19,6 +19,30 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/blog/creer-sarl-algerie",
+        destination: "/blog/creer-entreprise-algerie",
+        permanent: true,
+      },
+      {
+        source: "/blog/creer-entreprise-algerie-diaspora",
+        destination: "/blog/creer-entreprise-algerie",
+        permanent: true,
+      },
+      {
+        source: "/:locale(ar|en)/blog/creer-sarl-algerie",
+        destination: "/:locale/blog/creer-entreprise-algerie",
+        permanent: true,
+      },
+      {
+        source: "/:locale(ar|en)/blog/creer-entreprise-algerie-diaspora",
+        destination: "/:locale/blog/creer-entreprise-algerie",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);
