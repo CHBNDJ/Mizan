@@ -27,7 +27,7 @@ const ARTICLE_META: Record<
     date: "2025-04-01",
     specialiteSlug: "droit-de-la-famille",
     articlesLies: [
-      "succession-algerie-depuis-etranger",
+      "heritage-succession-algerie-france",
       "droits-locataire-algerie",
     ],
   },
@@ -37,7 +37,7 @@ const ARTICLE_META: Record<
     specialiteSlug: "droit-commercial",
     articlesLies: [
       "acheter-bien-immobilier-algerie",
-      "succession-algerie-depuis-etranger",
+      "heritage-succession-algerie-france",
     ],
     auteur: {
       nom: {
@@ -62,14 +62,36 @@ const ARTICLE_META: Record<
       },
     },
   },
-  "succession-algerie-depuis-etranger": {
+  "heritage-succession-algerie-france": {
     categorieKey: "famille",
-    date: "2025-03-01",
+    date: "2026-08-21",
     specialiteSlug: "droit-de-la-famille",
     articlesLies: [
       "comment-divorcer-en-algerie",
-      "heriter-bien-immobilier-algerie-france",
+      "acheter-bien-immobilier-algerie",
     ],
+    auteur: {
+      nom: {
+        fr: "Me Imene Mofredj",
+        ar: "الأستاذة إيمان مفرج",
+        en: "Me Imene Mofredj",
+      },
+      slug: "imene-mofredj",
+      titres: {
+        fr: [
+          "Avocate agréée auprès de la Cour suprême et du Conseil d'État",
+          "Barreau d'Alger",
+        ],
+        ar: [
+          "محامية معتمدة لدى المحكمة العليا ومجلس الدولة",
+          "منظمة المحامين للجزائر",
+        ],
+        en: [
+          "Lawyer admitted to the Supreme Court and Council of State",
+          "Algiers Bar",
+        ],
+      },
+    },
   },
   "droits-locataire-algerie": {
     categorieKey: "immobilier",
@@ -99,22 +121,13 @@ const ARTICLE_META: Record<
     ],
   },
 
-  "heriter-bien-immobilier-algerie-france": {
-    categorieKey: "famille",
-    date: "2026-05-28",
-    specialiteSlug: "droit-de-la-famille",
-    articlesLies: [
-      "vendre-appartement-algerie-etranger",
-      "succession-algerie-depuis-etranger",
-    ],
-  },
   "vendre-appartement-algerie-etranger": {
     categorieKey: "immobilier",
     date: "2026-05-28",
     specialiteSlug: "droit-immobilier",
     articlesLies: [
-      "heriter-bien-immobilier-algerie-france",
       "acheter-bien-immobilier-algerie",
+      "droits-locataire-algerie",
     ],
   },
   "exequatur-algerie-jugement-etranger": {
@@ -123,7 +136,7 @@ const ARTICLE_META: Record<
     specialiteSlug: "droit-de-la-famille",
     articlesLies: [
       "comment-divorcer-en-algerie",
-      "succession-algerie-depuis-etranger",
+      "heritage-succession-algerie-france",
     ],
     auteur: {
       nom: {
@@ -157,7 +170,7 @@ const ARTICLE_META: Record<
     specialiteSlug: "droit-immobilier",
     articlesLies: [
       "acheter-bien-immobilier-algerie",
-      "succession-algerie-depuis-etranger",
+      "heritage-succession-algerie-france",
     ],
     auteur: {
       nom: {

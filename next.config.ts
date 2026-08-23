@@ -41,6 +41,26 @@ const nextConfig: NextConfig = {
         destination: "/:locale/blog/creer-entreprise-algerie",
         permanent: true,
       },
+      {
+        source: "/blog/succession-algerie-depuis-etranger",
+        destination: "/blog/heritage-succession-algerie-france",
+        permanent: true,
+      },
+      {
+        source: "/blog/heriter-bien-immobilier-algerie-france",
+        destination: "/blog/heritage-succession-algerie-france",
+        permanent: true,
+      },
+      {
+        source: "/:locale(ar|en)/blog/succession-algerie-depuis-etranger",
+        destination: "/:locale/blog/heritage-succession-algerie-france",
+        permanent: true,
+      },
+      {
+        source: "/:locale(ar|en)/blog/heriter-bien-immobilier-algerie-france",
+        destination: "/:locale/blog/heritage-succession-algerie-france",
+        permanent: true,
+      },
     ];
   },
 };

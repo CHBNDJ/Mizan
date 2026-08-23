@@ -55,11 +55,10 @@ const BLOG_SLUGS = [
   "acheter-appartement-sur-plan-algerie-vsp",
   "exequatur-algerie-jugement-etranger",
   "comment-divorcer-en-algerie",
-  "succession-algerie-depuis-etranger",
+  "heritage-succession-algerie-france",
   "droits-locataire-algerie",
   "licenciement-algerie",
   "acheter-bien-immobilier-algerie",
-  "heriter-bien-immobilier-algerie-france",
   "vendre-appartement-algerie-etranger",
 ];
 const baseUrl = "https://mizan-dz.com";
