@@ -754,7 +754,7 @@ export default function LawyerProfileClient({ slug }: { slug: string }) {
                         : t("assermenteBadge")}
                     </div>
                   )}
-                  {avocat.profession === "expert-comptable" &&
+                  {(avocat as any).is_commissaire_aux_comptes &&
                     avocat.country_practice !== "France" && (
                       <div className="flex items-center gap-1 text-[11px] text-amber-700 dark:text-[#E0B568] font-medium bg-amber-50 dark:bg-[#3D2E1F] border border-amber-200 dark:border-[#5A4A2A] px-2 py-0.5 rounded-full">
                         <CheckCircle className="w-3 h-3" />{" "}

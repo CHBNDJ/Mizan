@@ -155,12 +155,22 @@ export default function LawyerRegisterPage() {
 
   const primaryProfession = professions[0] || null;
   const currentProf = PROFESSIONS.find((p) => p.id === primaryProfession);
-  const domaineOptions = primaryProfession
-    ? (DOMAINES_PAR_PROFESSION[primaryProfession] || []).map((d) => ({
-        value: d,
-        label: translateSpec(d),
-      }))
+  const isCommissaireAuxComptes =
+    primaryProfession === "expert-comptable" ||
+    ((formData as any).isCommissaireAuxComptes &&
+      primaryProfession === "comptable");
+  const domaineSlugs = primaryProfession
+    ? [
+        ...(DOMAINES_PAR_PROFESSION[primaryProfession] || []),
+        ...(isCommissaireAuxComptes
+          ? DOMAINES_PAR_PROFESSION["commissaire-aux-comptes"] || []
+          : []),
+      ]
     : [];
+  const domaineOptions = Array.from(new Set(domaineSlugs)).map((d) => ({
+    value: d,
+    label: translateSpec(d),
+  }));
 
   const handleProfessionSelect = (p: Profession) => {
     if (p === "expert-comptable" && !isFrance) {
@@ -425,6 +435,10 @@ export default function LawyerRegisterPage() {
         userType: "lawyer" as const,
         location: formData.address.city.trim(),
         is_cour_supreme: !!(formData as any).isCourtSupreme,
+        is_commissaire_aux_comptes:
+          primaryProfession === "expert-comptable"
+            ? true
+            : !!(formData as any).isCommissaireAuxComptes,
         is_assermente:
           primaryProfession === "traducteur"
             ? !!(formData as any).isAssermente
@@ -942,6 +956,47 @@ export default function LawyerRegisterPage() {
               </label>
             </div>
           )}
+          {(primaryProfession === "comptable" ||
+            primaryProfession === "expert-comptable") &&
+            !isFrance && (
+              <div className="flex items-start gap-3 p-4 border border-amber-200 dark:border-[#5A4A2A] bg-amber-50 dark:bg-[#3D2E1F] rounded-xl">
+                <input
+                  type="checkbox"
+                  id="commissaire_aux_comptes"
+                  checked={
+                    primaryProfession === "expert-comptable"
+                      ? true
+                      : (formData as any).isCommissaireAuxComptes || false
+                  }
+                  disabled={
+                    isSubmitting || primaryProfession === "expert-comptable"
+                  }
+                  onChange={(e) =>
+                    setFormData(
+                      (p) =>
+                        ({
+                          ...p,
+                          isCommissaireAuxComptes: e.target.checked,
+                        }) as any
+                    )
+                  }
+                  className="w-4 h-4 accent-amber-600 mt-0.5 flex-shrink-0 cursor-pointer"
+                />
+                <label
+                  htmlFor="commissaire_aux_comptes"
+                  className="text-sm text-amber-800 dark:text-[#E0B568] cursor-pointer"
+                >
+                  <span className="font-semibold">
+                    {t("auth.lawyerRegister.cacLabel")}
+                  </span>
+                  <p className="text-xs text-amber-600 dark:text-[#E0B568]/80 mt-0.5 font-normal">
+                    {primaryProfession === "expert-comptable"
+                      ? t("auth.lawyerRegister.cacNoteExpert")
+                      : t("auth.lawyerRegister.cacNote")}
+                  </p>
+                </label>
+              </div>
+            )}
           {primaryProfession === "traducteur" && (
             <div className="flex items-start gap-3 p-4 border border-amber-200 dark:border-[#5A4A2A] bg-amber-50 dark:bg-[#3D2E1F] rounded-xl">
               <input

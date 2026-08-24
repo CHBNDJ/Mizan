@@ -36,6 +36,7 @@ export interface AvocatData {
   verified?: boolean;
   is_cour_supreme?: boolean;
   is_assermente?: boolean;
+  is_commissaire_aux_comptes?: boolean;
   available_now?: boolean;
   available_now_since?: string | null;
 

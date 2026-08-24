@@ -163,6 +163,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       languages?: string[];
       website?: string;
       is_cour_supreme?: boolean;
+      is_commissaire_aux_comptes?: boolean;
       is_assermente?: boolean;
       address?: {
         street: string;
@@ -246,6 +247,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               professions: professionsToSet,
               slug: uniqueSlug,
               is_cour_supreme: !!userData.is_cour_supreme,
+              is_commissaire_aux_comptes: !!userData.is_commissaire_aux_comptes,
               is_assermente: !!userData.is_assermente,
               inscription_year: userData.inscription_year ?? null,
               experience_years: userData.experience_years ?? 0,

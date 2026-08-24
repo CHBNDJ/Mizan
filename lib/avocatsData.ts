@@ -81,11 +81,18 @@ export const DOMAINES_PAR_PROFESSION: Record<string, string[]> = {
     "Déclarations fiscales (IFU, G50, IBS)",
     "Paie et charges sociales",
     "Bilan annuel",
-    "Expertise comptable",
-    "Audit et commissariat aux comptes",
     "Conseil fiscal",
     "Comptabilité EURL/SARL",
     "Déclaration CASNOS",
+  ],
+  "commissaire-aux-comptes": [
+    "Commissariat aux comptes",
+    "Audit légal",
+    "Certification des comptes annuels",
+    "Contrôle légal des comptes",
+    "Procédure d'alerte",
+    "Vérification des conventions réglementées",
+    "Rapport général et rapport spécial",
   ],
   "expert-comptable": [
     "Expertise comptable et commissariat aux comptes",
@@ -197,6 +204,7 @@ function convertSupabaseToAvocatData(lawyer: any): AvocatData {
     professions: lawyer.professions || [lawyer.profession || "avocat"],
     is_cour_supreme: lawyer.is_cour_supreme || false,
     is_assermente: lawyer.is_assermente || false,
+    is_commissaire_aux_comptes: lawyer.is_commissaire_aux_comptes || false,
     bio: lawyer.bio || undefined,
     country_practice: lawyer.country_practice || "Algérie",
   };
@@ -393,7 +401,7 @@ export async function getAvocatById(
     const { data: lawyer } = await supabase
       .from("lawyers")
       .select(
-        "id, slug, bar_number, specializations, experience_years, inscription_year, consultation_price, is_verified, is_claimed, claimed_at, rating_google, reviews_count_google, rating_mizan, reviews_count_mizan, available_now, available_now_since, updated_at, created_at, profession, professions, is_cour_supreme, is_assermente, bio, country_practice"
+        "id, slug, bar_number, specializations, experience_years, inscription_year, consultation_price, is_verified, is_claimed, claimed_at, rating_google, reviews_count_google, rating_mizan, reviews_count_mizan, available_now, available_now_since, updated_at, created_at, profession, professions, is_cour_supreme, is_assermente, is_commissaire_aux_comptes, bio, country_practice"
       )
       .eq(isUUID ? "id" : "slug", idOrSlug)
       .eq("is_verified", true)
