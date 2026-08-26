@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import FeedbackPopup from "@/components/FeedbackPopup";
@@ -7,10 +8,17 @@ import FeedbackPopup from "@/components/FeedbackPopup";
 export default function FeedbackTrigger() {
   const supabase = createClient();
   const { user, profile } = useAuth();
+  const pathname = usePathname();
   const [showFeedback, setShowFeedback] = useState(false);
+
+  const isBlockedPage =
+    /\/lawyers\//.test(pathname) ||
+    /\/mes-consultations/.test(pathname) ||
+    /\/lawyer\/consultations/.test(pathname);
 
   useEffect(() => {
     if (!user || !profile) return;
+    if (isBlockedPage) return;
     let cancelled = false;
     (async () => {
       if (profile.user_type === "client") {
@@ -59,13 +67,13 @@ export default function FeedbackTrigger() {
       if (!eligible) return;
 
       setTimeout(() => {
-        if (!cancelled) setShowFeedback(true);
+        if (!cancelled && !isBlockedPage) setShowFeedback(true);
       }, 8000);
     })();
     return () => {
       cancelled = true;
     };
-  }, [user, profile, supabase]);
+  }, [user, profile, supabase, isBlockedPage, pathname]);
 
   if (!showFeedback) return null;
   return <FeedbackPopup onClose={() => setShowFeedback(false)} />;
