@@ -30,6 +30,11 @@ export const metadata: Metadata = {
 
 const ARTICLE_META = [
   {
+    slug: "comment-divorcer-en-algerie",
+    categorie: "famille",
+    date: "2026-08-27",
+  },
+  {
     slug: "heritage-succession-algerie-france",
     categorie: "famille",
     date: "2026-08-21",
@@ -48,11 +53,6 @@ const ARTICLE_META = [
     slug: "exequatur-algerie-jugement-etranger",
     categorie: "famille",
     date: "2026-08-05",
-  },
-  {
-    slug: "comment-divorcer-en-algerie",
-    categorie: "famille",
-    date: "2025-04-01",
   },
   {
     slug: "droits-locataire-algerie",

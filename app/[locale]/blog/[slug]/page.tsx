@@ -24,12 +24,37 @@ const ARTICLE_META: Record<
 > = {
   "comment-divorcer-en-algerie": {
     categorieKey: "famille",
-    date: "2025-04-01",
+    date: "2026-08-27",
     specialiteSlug: "droit-de-la-famille",
     articlesLies: [
+      "exequatur-algerie-jugement-etranger",
       "heritage-succession-algerie-france",
-      "droits-locataire-algerie",
     ],
+    auteur: {
+      nom: {
+        fr: "Me Atmani Bilal",
+        ar: "الأستاذ أتماني بلال",
+        en: "Me Atmani Bilal",
+      },
+      slug: "bilal-atmani",
+      titres: {
+        fr: [
+          "Professeur des universités en Algérie",
+          "Avocat agréé auprès de la Cour suprême et du Conseil d'État",
+          "Membre du Conseil de l'Ordre des Avocats au barreau de Béjaïa",
+        ],
+        ar: [
+          "أستاذ جامعي في الجزائر",
+          "محامٍ معتمد لدى المحكمة العليا ومجلس الدولة",
+          "عضو مجلس منظمة المحامين ببجاية",
+        ],
+        en: [
+          "University professor in Algeria",
+          "Lawyer admitted to the Supreme Court and Council of State",
+          "Member of the Béjaïa Bar Council",
+        ],
+      },
+    },
   },
   "creer-entreprise-algerie": {
     categorieKey: "commercial",
