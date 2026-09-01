@@ -1,6 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import { createClient as createRawClient } from "@supabase/supabase-js";
+import { sendAdminNotification } from "@/lib/email/admin-notifications";
 
 const supabaseVerify = createRawClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -32,6 +33,49 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = await createAdminClient();
+
+    // Récupérer les infos du compte AVANT suppression (pour l'alerte)
+    let alertInfo = "";
+    try {
+      const { data: userData } = await supabase
+        .from("users")
+        .select("first_name, last_name, email, user_type, location")
+        .eq("id", userId)
+        .single();
+      if (userData) {
+        let professionInfo = userData.user_type;
+        if (userData.user_type === "lawyer") {
+          const { data: lawyerData } = await supabase
+            .from("lawyers")
+            .select("profession, slug")
+            .eq("id", userId)
+            .single();
+          if (lawyerData?.profession) professionInfo = lawyerData.profession;
+        }
+        alertInfo = `<strong>${userData.first_name || ""} ${userData.last_name || ""}</strong><br/>
+          Email : ${userData.email || "—"}<br/>
+          Type : ${professionInfo}<br/>
+          Localisation : ${userData.location || "—"}<br/>
+          ID : ${userId}`;
+      }
+    } catch (e) {
+      console.error("Impossible de récupérer les infos avant suppression:", e);
+    }
+
+    // Envoyer l'alerte admin AVANT de supprimer
+    if (alertInfo) {
+      try {
+        await sendAdminNotification({
+          subject: "Suppression de compte",
+          title: "Un compte a été supprimé",
+          message: `Un utilisateur vient de supprimer son compte MIZAN :<br/><br/>${alertInfo}`,
+          priority: "high",
+        });
+      } catch (e) {
+        console.error("Erreur envoi alerte suppression:", e);
+        // On continue la suppression même si l'email échoue
+      }
+    }
 
     const { error } = await supabase.auth.admin.deleteUser(userId);
 
