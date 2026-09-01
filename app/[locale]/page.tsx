@@ -204,7 +204,6 @@ export default function HomePage() {
   };
 
   useLayoutEffect(() => {
-    getWilayas(undefined, country).then(setWilayas);
     Promise.all([
       getTopRatedAvocats(8, undefined, country),
       getStatistiques(country),
@@ -213,6 +212,9 @@ export default function HomePage() {
       setStats(st);
     });
   }, [country]);
+  useEffect(() => {
+    getWilayas(selectedProf || undefined, country).then(setWilayas);
+  }, [selectedProf, country]);
 
   useLayoutEffect(() => {
     const isMobile = window.innerWidth < 768;
