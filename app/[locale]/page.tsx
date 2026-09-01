@@ -98,6 +98,7 @@ export default function HomePage() {
   const ld = (s: string) => localizedDigits(s, locale);
   const [topAvocats, setTopAvocats] = useState<any[]>([]);
   const [wilayas, setWilayas] = useState<string[]>([]);
+  const [allWilayas, setAllWilayas] = useState<string[]>([]);
   const [stats, setStats] = useState<any>({
     total_avocats: 0,
     pourcentage_verification: 100,
@@ -138,7 +139,7 @@ export default function HomePage() {
   const statsData = [
     { end: stats.total_avocats, label: t("home.stats.total") },
     {
-      end: wilayas.length,
+      end: allWilayas.length,
       label:
         country === "France"
           ? t("home.stats.regions")
@@ -204,6 +205,7 @@ export default function HomePage() {
   };
 
   useLayoutEffect(() => {
+    getWilayas(undefined, country).then(setAllWilayas);
     Promise.all([
       getTopRatedAvocats(8, undefined, country),
       getStatistiques(country),
@@ -212,6 +214,7 @@ export default function HomePage() {
       setStats(st);
     });
   }, [country]);
+
   useEffect(() => {
     getWilayas(selectedProf || undefined, country).then(setWilayas);
   }, [selectedProf, country]);
@@ -612,7 +615,7 @@ export default function HomePage() {
               selectedWilaya=""
               onSelect={() => {}}
               readOnly
-              activeWilayas={wilayas}
+              activeWilayas={allWilayas}
             />
           </div>
         </section>
@@ -632,7 +635,7 @@ export default function HomePage() {
               selectedRegion=""
               onSelect={() => {}}
               readOnly
-              activeRegions={wilayas}
+              activeRegions={allWilayas}
             />
           </div>
         </section>
