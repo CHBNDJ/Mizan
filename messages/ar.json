@@ -612,6 +612,8 @@
     "saving": "جارٍ الحفظ...",
     "cancel": "إلغاء",
     "timeoutError": "انتهت المهلة — تحقق من اتصالك",
+    "imageFormatError": "هذا الملف ليس صورة صالحة. الصيغ المقبولة: JPG، PNG، WebP.",
+    "imageLoadError": "تعذّر تحميل هذه الصورة. جرّب صورة أخرى (يُفضّل JPG أو PNG).",
     "saveError": "خطأ: {msg}",
     "notProvided": "غير محدد",
     "notProvidedF": "غير محددة",

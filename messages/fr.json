@@ -3261,6 +3261,8 @@
     "saving": "Sauvegarde...",
     "cancel": "Annuler",
     "timeoutError": "Timeout — Vérifiez votre connexion",
+    "imageFormatError": "Ce fichier n'est pas une image valide. Formats acceptés : JPG, PNG, WebP.",
+    "imageLoadError": "Impossible de charger cette image. Essayez une autre photo (JPG ou PNG de préférence).",
     "saveError": "Erreur : {msg}",
     "notProvided": "Non renseigné",
     "notProvidedF": "Non renseignée",

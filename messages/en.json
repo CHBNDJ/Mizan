@@ -3253,6 +3253,8 @@
     "saving": "Saving...",
     "cancel": "Cancel",
     "timeoutError": "Timeout — Check your connection",
+    "imageFormatError": "This file is not a valid image. Accepted formats: JPG, PNG, WebP.",
+    "imageLoadError": "Unable to load this image. Try another photo (JPG or PNG preferred).",
     "saveError": "Error: {msg}",
     "notProvided": "Not provided",
     "notProvidedF": "Not provided",

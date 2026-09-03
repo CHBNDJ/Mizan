@@ -266,14 +266,51 @@ function ProfilePageContent() {
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !file.type.startsWith("image/") || file.size > 5 * 1024 * 1024)
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setSaveError(t("myProfile.imageFormatError"));
+      e.target.value = "";
       return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
-      setSelectedImage(reader.result as string);
-      setShowCropModal(true);
+      const img = new window.Image();
+      img.onload = () => {
+        const MAX = 1200;
+        let { width, height } = img;
+        if (width > MAX || height > MAX) {
+          if (width > height) {
+            height = Math.round((height * MAX) / width);
+            width = MAX;
+          } else {
+            width = Math.round((width * MAX) / height);
+            height = MAX;
+          }
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          setSelectedImage(reader.result as string);
+          setShowCropModal(true);
+          return;
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+        const compressed = canvas.toDataURL("image/jpeg", 0.85);
+        setSelectedImage(compressed);
+        setShowCropModal(true);
+      };
+      img.onerror = () => {
+        setSaveError(t("myProfile.imageLoadError"));
+      };
+      img.src = reader.result as string;
+    };
+    reader.onerror = () => {
+      setSaveError(t("myProfile.imageLoadError"));
     };
     reader.readAsDataURL(file);
+    e.target.value = "";
   };
 
   const handleCropComplete = async (croppedBlob: Blob) => {
@@ -492,7 +529,7 @@ function ProfilePageContent() {
                         <input
                           id="avatar-upload"
                           type="file"
-                          accept="image/jpeg,image/png,image/jpg,image/webp"
+                          accept="image/*"
                           onChange={handleImageSelect}
                           disabled={isUploadingAvatar}
                           className="hidden"
@@ -527,7 +564,7 @@ function ProfilePageContent() {
                         <input
                           id="avatar-upload-initial"
                           type="file"
-                          accept="image/jpeg,image/png,image/jpg,image/webp"
+                          accept="image/*"
                           onChange={handleImageSelect}
                           disabled={isUploadingAvatar}
                           className="hidden"
