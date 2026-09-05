@@ -1,8 +1,8 @@
 "use client";
-import { useLayoutEffect, useState, useRef, useEffect } from "react";
+import { useLayoutEffect, useState, useRef, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations, useLocale, useMessages } from "next-intl";
 import { localizedDigits } from "@/lib/arabicNumerals";
 import {
   ArrowRight,
@@ -94,6 +94,25 @@ export default function HomePage() {
   const router = useRouter();
   const t = useTranslations();
   const locale = useLocale();
+  const messages = useMessages();
+  const specialitesLookup = useMemo(() => {
+    const raw = (messages as any)?.specialites || {};
+    const map: Record<string, string> = {};
+    Object.entries(raw).forEach(([k, v]) => {
+      map[k.toLowerCase()] = v as string;
+    });
+    return map;
+  }, [messages]);
+  const translateSpec = (s: string) => specialitesLookup[s.toLowerCase()] || s;
+  const wilayasLookup = useMemo(() => {
+    const raw = (messages as any)?.wilayas || {};
+    const map: Record<string, string> = {};
+    Object.entries(raw).forEach(([k, v]) => {
+      map[k.toLowerCase()] = v as string;
+    });
+    return map;
+  }, [messages]);
+  const translateWilaya = (s: string) => wilayasLookup[s.toLowerCase()] || s;
   const country = useCountry();
   const ld = (s: string) => localizedDigits(s, locale);
   const [topAvocats, setTopAvocats] = useState<any[]>([]);
@@ -422,7 +441,7 @@ export default function HomePage() {
                                 <span
                                   className={`text-sm ${checked ? "text-teal-700 dark:text-[#6fcf9f] font-medium" : "text-slate-700 dark:text-[#E8E8E6]"}`}
                                 >
-                                  {spec}
+                                  {translateSpec(spec)}
                                 </span>
                                 <span
                                   className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-teal-600 dark:bg-[#0F6E56] border-teal-600 dark:border-[#0F6E56]" : "border-slate-300 dark:border-[#3a3a3d]"}`}
@@ -486,7 +505,7 @@ export default function HomePage() {
                           className="w-full text-start px-4 py-3 text-sm text-slate-700 dark:text-[#E8E8E6] hover:bg-teal-50 dark:hover:bg-[#26492f] flex items-center gap-2 cursor-pointer transition-colors border-b border-slate-100 dark:border-[#1c2220] last:border-b-0"
                         >
                           <MapPin className="w-4 h-4 text-teal-500 dark:text-[#6fcf9f] flex-shrink-0" />
-                          {w}
+                          {translateWilaya(w)}
                         </button>
                       ))}
                     </div>
@@ -517,7 +536,7 @@ export default function HomePage() {
                         className="w-full text-start px-4 py-3 text-sm text-slate-700 dark:text-[#E8E8E6] hover:bg-teal-50 dark:hover:bg-[#26492f] flex items-center gap-2 cursor-pointer transition-colors border-b border-slate-100 dark:border-[#1c2220] last:border-b-0"
                       >
                         <MapPin className="w-4 h-4 text-teal-500 dark:text-[#6fcf9f] flex-shrink-0" />
-                        {w}
+                        {translateWilaya(w)}
                       </button>
                     ))}
                   </div>
@@ -541,7 +560,7 @@ export default function HomePage() {
                           <span
                             className={`text-sm ${checked ? "text-teal-700 dark:text-[#6fcf9f] font-medium" : "text-slate-700 dark:text-[#E8E8E6]"}`}
                           >
-                            {spec}
+                            {translateSpec(spec)}
                           </span>
                           <span
                             className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all ${checked ? "bg-teal-600 dark:bg-[#0F6E56] border-teal-600 dark:border-[#0F6E56]" : "border-slate-300 dark:border-[#3a3a3d]"}`}
