@@ -117,9 +117,19 @@ export function AlgeriaMap({
     return id && WILAYA_NAMES[id] ? id : null;
   };
 
+  const normalizeWilaya = (s: string) =>
+    (s || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/['''`]/g, "")
+      .replace(/[\s-]+/g, "");
   const activeIds = (activeWilayas || [])
     .map(
-      (name) => Object.entries(WILAYA_NAMES).find(([, v]) => v === name)?.[0]
+      (name) =>
+        Object.entries(WILAYA_NAMES).find(
+          ([, v]) => normalizeWilaya(v) === normalizeWilaya(name)
+        )?.[0]
     )
     .filter(Boolean) as string[];
 
@@ -169,7 +179,10 @@ export function AlgeriaMap({
   const isLanding = !!onSelectAndSearch;
   const activeSelector = (activeWilayas || [])
     .map(
-      (name) => Object.entries(WILAYA_NAMES).find(([, v]) => v === name)?.[0]
+      (name) =>
+        Object.entries(WILAYA_NAMES).find(
+          ([, v]) => normalizeWilaya(v) === normalizeWilaya(name)
+        )?.[0]
     )
     .filter(Boolean)
     .map((id) => cssId(id as string))

@@ -651,7 +651,7 @@ export default function HomePage() {
               {howItWorksSteps.map((s, i) => (
                 <div
                   key={s.title}
-                  className={`flex gap-4 ${i < 2 ? "md:border-e md:border-slate-100 dark:border-[#1c2220] md:pe-10 pb-6 md:pb-0 border-b md:border-b-0 border-slate-100 dark:border-[#1c2220]" : ""}`}
+                  className={`flex gap-4 ${i < 2 ? "md:border-e md:border-slate-100 md:pe-10 pb-6 md:pb-0 border-b md:border-b-0 border-slate-100 dark:border-[#1c2220]" : ""}`}
                 >
                   <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-teal-50 dark:bg-[#6fcf9f]/10 border border-teal-200 dark:border-[#6fcf9f]/20 flex items-center justify-center text-sm font-bold text-teal-700 dark:text-[#6fcf9f] flex-shrink-0 mt-0.5">
                     {ld(String(i + 1))}
