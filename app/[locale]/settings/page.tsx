@@ -142,11 +142,6 @@ export default function SettingsPage() {
       } catch {}
       if (profile?.user_type === "lawyer")
         await supabase.from("lawyers").delete().eq("id", userId);
-      const { error: userError } = await supabase
-        .from("users")
-        .delete()
-        .eq("id", userId);
-      if (userError) throw userError;
       try {
         await fetch("/api/delete-auth-user", {
           method: "POST",
@@ -157,6 +152,11 @@ export default function SettingsPage() {
           body: JSON.stringify({ userId }),
         });
       } catch {}
+      const { error: userError } = await supabase
+        .from("users")
+        .delete()
+        .eq("id", userId);
+      if (userError) throw userError;
       await signOut();
       showToast(t("toasts.deleteSuccess"), "success");
       try {
