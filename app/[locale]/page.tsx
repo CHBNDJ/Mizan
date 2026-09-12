@@ -243,7 +243,7 @@ export default function HomePage() {
     const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
     const stagger = isMobile ? 0.07 : isTablet ? 0.09 : 0.1;
     const cardDur = isMobile ? 0.4 : 0.5;
-    const trigStart = isMobile ? "top 92%" : "top 78%";
+    const trigStart = isMobile ? "top 98%" : "top 78%";
 
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
     tl.fromTo(
@@ -305,6 +305,7 @@ export default function HomePage() {
       );
     });
 
+    ScrollTrigger.refresh();
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, [country]);
   useLayoutEffect(() => {

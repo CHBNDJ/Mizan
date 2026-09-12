@@ -411,8 +411,8 @@ function SearchResultsInner({
 
       <div className="search-header sticky top-20 z-50 border-b border-slate-200 dark:border-[#1c2220] bg-white/90 dark:bg-[#1c1c1e]/95 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
-          <div className="flex items-center gap-1.5 sm:gap-2 mb-2 flex-wrap">
-            <Link href="/">
+          <div className="flex items-center gap-1.5 sm:gap-2 mb-2 flex-nowrap sm:flex-wrap overflow-x-auto sm:overflow-x-visible [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <Link href="/" className="flex-shrink-0">
               <button className="flex items-center gap-1 text-teal-600 dark:text-[#6fcf9f] hover:text-teal-700 dark:hover:text-[#6fcf9f] text-xs sm:text-sm font-medium cursor-pointer me-1 sm:me-2">
                 <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
@@ -422,7 +422,7 @@ function SearchResultsInner({
               <button
                 key={p.id}
                 onClick={() => handleProfessionSwitch(p.id)}
-                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                className={`flex-shrink-0 flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   professionParam === p.id
                     ? "bg-teal-600 dark:bg-[#0F6E56] text-white"
                     : "text-slate-500 dark:text-[#A8A8A6] hover:bg-slate-100 dark:hover:bg-[#1c2220]"
