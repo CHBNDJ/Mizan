@@ -488,7 +488,7 @@ export default function HomePage() {
                       if (e.key === "Enter") handleHeroSearch();
                     }}
                     placeholder={t("home.hero.searchWilayaPlaceholder")}
-                    className="w-full bg-transparent text-sm text-slate-800 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78] focus:outline-none"
+                    className="w-full bg-transparent text-base sm:text-sm text-slate-800 dark:text-[#F5F5F4] placeholder:text-slate-400 dark:placeholder:text-[#7A7A78] focus:outline-none"
                   />
                 </div>
                 {showWilayaSuggestions && filteredWilayas.length > 0 && (
