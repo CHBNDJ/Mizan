@@ -311,6 +311,10 @@ export default function HomePage() {
   useLayoutEffect(() => {
     if (!topAvocats.length) return;
     const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      gsap.set(".avocat-card", { opacity: 1, x: 0 });
+      return;
+    }
     gsap.fromTo(
       ".avocat-card",
       { opacity: 0, x: -30 },
@@ -322,7 +326,7 @@ export default function HomePage() {
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".avocats-section",
-          start: isMobile ? "top 95%" : "top 60%",
+          start: "top 60%",
           toggleActions: "play none none none",
         },
       }
