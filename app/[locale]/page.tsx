@@ -282,30 +282,34 @@ export default function HomePage() {
         "-=0.2"
       );
 
-    [
+    const sections = [
       "map-section",
       "steps-section",
       "cta-section",
       "testimonials-section",
       "feedback-cta",
-    ].forEach((cls) => {
-      gsap.fromTo(
-        `.${cls}`,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          scrollTrigger: {
-            trigger: `.${cls}`,
-            start: trigStart,
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    });
-
-    ScrollTrigger.refresh();
+    ];
+    if (isMobile) {
+      sections.forEach((cls) => gsap.set(`.${cls}`, { opacity: 1, y: 0 }));
+    } else {
+      sections.forEach((cls) => {
+        gsap.fromTo(
+          `.${cls}`,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            scrollTrigger: {
+              trigger: `.${cls}`,
+              start: trigStart,
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      });
+      ScrollTrigger.refresh();
+    }
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, [country]);
   useLayoutEffect(() => {
