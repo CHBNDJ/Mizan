@@ -192,6 +192,14 @@ export default function HomePage() {
     setSelectedProf(id);
     setSelectedSpecialites([]);
     setShowSpecialiteMenu(false);
+    if (window.innerWidth < 1024) {
+      setTimeout(() => {
+        heroSearchRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 80);
+    }
   };
 
   const toggleSpecialite = (spec: string) => {
@@ -407,7 +415,7 @@ export default function HomePage() {
 
           <div
             ref={heroSearchRef}
-            className="hero-search max-w-2xl mx-auto mb-8 sm:mb-10 relative z-50"
+            className="hero-search scroll-mt-20 max-w-2xl mx-auto mb-8 sm:mb-10 relative z-50"
           >
             <div className="flex flex-col sm:flex-row gap-2 sm:bg-white sm:dark:bg-[#1c1c1e] sm:border sm:border-slate-200 sm:dark:border-[#1c2220] sm:rounded-2xl sm:p-2 sm:shadow-sm relative z-40">
               {selectedProf &&
