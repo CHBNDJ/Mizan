@@ -14,7 +14,7 @@ import {
   TrendingUp,
   MessageCircle,
   Languages,
-  MapPin,
+  Map as MapIcon,
   Search,
 } from "lucide-react";
 import { AvocatCard } from "@/components/cards/AvocatCard";
@@ -487,7 +487,7 @@ export default function HomePage() {
                 )}
               <div className="relative sm:flex-1">
                 <div className="flex items-center gap-2 px-3 py-3 sm:py-2.5 h-full bg-white dark:bg-[#1c1c1e] border border-slate-200 dark:border-[#1c2220] rounded-2xl shadow-sm sm:bg-transparent sm:border-0 sm:rounded-none sm:shadow-none">
-                  <MapPin className="w-4 h-4 text-slate-400 dark:text-[#7A7A78] flex-shrink-0" />
+                  <MapIcon className="w-4 h-4 text-slate-400 dark:text-[#7A7A78] flex-shrink-0" />
                   <input
                     type="text"
                     value={wilayaQuery}
@@ -521,7 +521,7 @@ export default function HomePage() {
                           }}
                           className="w-full text-start px-4 py-3 text-sm text-slate-700 dark:text-[#E8E8E6] hover:bg-teal-50 dark:hover:bg-[#26492f] flex items-center gap-2 cursor-pointer transition-colors border-b border-slate-100 dark:border-[#1c2220] last:border-b-0"
                         >
-                          <MapPin className="w-4 h-4 text-teal-500 dark:text-[#6fcf9f] flex-shrink-0" />
+                          <MapIcon className="w-4 h-4 text-teal-500 dark:text-[#6fcf9f] flex-shrink-0" />
                           {translateWilaya(w)}
                         </button>
                       ))}
@@ -552,7 +552,7 @@ export default function HomePage() {
                         }}
                         className="w-full text-start px-4 py-3 text-sm text-slate-700 dark:text-[#E8E8E6] hover:bg-teal-50 dark:hover:bg-[#26492f] flex items-center gap-2 cursor-pointer transition-colors border-b border-slate-100 dark:border-[#1c2220] last:border-b-0"
                       >
-                        <MapPin className="w-4 h-4 text-teal-500 dark:text-[#6fcf9f] flex-shrink-0" />
+                        <MapIcon className="w-4 h-4 text-teal-500 dark:text-[#6fcf9f] flex-shrink-0" />
                         {translateWilaya(w)}
                       </button>
                     ))}
